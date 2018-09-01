@@ -1,0 +1,10 @@
+FROM node:10-alpine
+
+RUN npm i -g yarn
+RUN yarn global add @vue/cli
+RUN apk add bash
+
+ADD ./run.sh /
+RUN chmod a+x /run.sh
+
+ENTRYPOINT ["/run.sh"]
