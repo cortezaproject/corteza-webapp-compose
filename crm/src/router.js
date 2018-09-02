@@ -21,11 +21,10 @@ function publicRoutes () {
 }
 
 function privateRoutes () {
-  var moduleActions = [
-    route('edit', 'Modules/Edit'),
-  ]
   return [
-    route('/modules/:name', 'Modules/Index', moduleActions),
+    route('/modules/edit'),
+    route('/modules/:name', 'Modules/Index'),
+    route('/modules/:name/edit', 'Modules/Edit'),
   ]
 }
 
