@@ -9,7 +9,7 @@
     </template>
     <ul v-else>
       <li v-for="module in modules" :key="module.id">
-        <a :href="module.link">{{module.title}}</a>
+        <a :href="module.link">{{module.name}}</a>
       </li>
     </ul>
   </div>
@@ -40,7 +40,7 @@ export default {
       if (Array.isArray(response.data.response)) {
         this.modules.splice(0)
         response.data.response.forEach((module) => {
-          module.link = '/modules/' + module.Id
+          module.link = '/modules/' + module.id
           this.modules.push(module)
         })
         return
