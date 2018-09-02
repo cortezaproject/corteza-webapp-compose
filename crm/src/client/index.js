@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+// If you want to edit this file, talk to @titpetric before :)
+
 class Client {
   constructor (baseLink, jwt) {
     this.baseLink = baseLink || 'https://api.crm.crust.kendu.si'
