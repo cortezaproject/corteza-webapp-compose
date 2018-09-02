@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-if="loaded >= 1">
-  <h1 v-if="'name' in params">{{ _('Editing module fields') }}</h1>
+  <h1 v-if="'id' in params">{{ _('Editing module fields') }}</h1>
   <h1 v-else>{{ _('Creating new module') }}</h1>
 
   <template v-if="error">
@@ -9,13 +9,16 @@
 
   <p>{{ _('A module is created from any number of fields. You can add as many fields as you wish below.') }}</p>
 
+  <label>Name for the module</label>
+  <input v-model="module.name" type="text"/>
+
   <table class="table" border="1">
     <thead>
       <tr>
         <th>#</th>
         <th>Name <a class="btn btn-info" v-tooltip="_('Must be lower-case a-z, 0-9 and underscore')"></a></th>
         <th>Title <a class="btn btn-info" v-tooltip="_('The name displayed in form input / data lists')"></a></th>
-        <th>Type</th>
+        <th>Kind</th>
         <th>GDPR</th>
         <th>Show in list</th>
       </tr>
@@ -25,7 +28,7 @@
         <td class="handle">[{{field.id}}]</td>
         <td><input v-model="field.name" type="text"/></td>
         <td><input v-model="field.title" type="text"/></td>
-        <td><select v-model="field.type">
+        <td><select v-model="field.kind">
         <option v-for="fieldType in fields" :key="fieldType.field_type" :value="fieldType.field_type">{{ _(fieldType.field_name) }}</option>
         </select></td>
         <td>
@@ -40,6 +43,7 @@
 
   <p>
     <button @click="addField()">Add new field</button>
+    <button @click="save">Save</button>
   </p>
 
   <p>Modules Edit, params={{params}}</p>
@@ -60,6 +64,7 @@ export default {
       fields: [],
       fieldSeq: 0,
       module: {
+        name: '',
         fields: [],
       },
       params: {},
@@ -77,7 +82,7 @@ export default {
         id: this.newID(),
         name: '',
         title: '',
-        type: 'text',
+        kind: 'text',
         gdpr: false,
       })
     },
@@ -97,7 +102,6 @@ export default {
         if (Array.isArray(response.data.response)) {
           this.fields.splice(0)
           response.data.response.forEach((field) => {
-            field.id = this.newID()
             this.fields.push(field)
           })
           return
@@ -113,6 +117,41 @@ export default {
         .catch(fieldListError)
         .finally(fieldListFinalizer)
     },
+    save: function () {
+      var moduleSaveError = (error) => {
+        this.error = error.toString()
+      }
+      var moduleSave = (response) => {
+        if ('error' in response.data) {
+          moduleSaveError(response.data.error.message)
+          return
+        }
+        if (Array.isArray(response.data.response)) {
+          this.fields.splice(0)
+          response.data.response.forEach((field) => {
+            field.id = this.newID()
+            this.fields.push(field)
+          })
+          return
+        }
+        moduleSaveError('Unexpected response when saving module')
+      }
+      var moduleSaveFinalizer = () => {
+        this.loaded++
+      }
+
+      var request = () => {
+        if ('id' in this.params) {
+          return client.moduleEdit(this.params.id, this.module.name, this.module.fields)
+        }
+        return client.moduleCreate(this.module.name, this.module.fields)
+      }
+
+      request()
+        .then(moduleSave)
+        .catch(moduleSaveError)
+        .finally(moduleSaveFinalizer)
+    }
   },
 }
 </script>
