@@ -23,8 +23,8 @@ function publicRoutes () {
 function privateRoutes () {
   return [
     route('/modules/edit'),
-    route('/modules/:name', 'Modules/Index'),
-    route('/modules/:name/edit', 'Modules/Edit'),
+    route('/modules/:id', 'Modules/Index'),
+    route('/modules/:id/edit', 'Modules/Edit'),
   ]
 }
 
