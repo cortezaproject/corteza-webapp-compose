@@ -1,15 +1,15 @@
 <template>
-  <div class="container" v-if="loaded">
-    <template v-if="modules.length == 0">
-      <p>You haven't created any modules so far.</p>
-      <a class="btn btn-primary" href="/modules/edit">Create new module</a>
-    </template>
-    <ul v-else>
-      <li v-for="module in modules">
-        <a :href="module.link">{{module.title}}</a>
-      </li>
-    </ul>
-  </div>
+	<div class="container" v-if="loaded">
+		<template v-if="modules.length == 0">
+			<p>You haven't created any modules so far.</p>
+			<a class="btn btn-primary" href="/modules/edit">Create new module</a>
+		</template>
+		<ul v-else>
+			<li v-for="module in modules">
+				<a :href="module.link">{{module.title}}</a>
+			</li>
+		</ul>
+	</div>
 </template>
 
 <script>
