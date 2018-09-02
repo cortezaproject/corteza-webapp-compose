@@ -46,7 +46,7 @@ class Client {
     })
   }
 
-  moduleCreate (name) {
+  moduleCreate (name, fields) {
     const endpoint = `${this.baseLink}/module/`
     return axios({
       method: 'POST',
@@ -54,6 +54,7 @@ class Client {
       headers: this.headers,
       data: {
         'name': name,
+        'fields': fields,
       },
     })
   }
@@ -68,7 +69,7 @@ class Client {
     })
   }
 
-  moduleEdit (id, name) {
+  moduleEdit (id, name, fields) {
     const endpoint = `${this.baseLink}/module/${id}`
     return axios({
       method: 'POST',
@@ -76,6 +77,7 @@ class Client {
       headers: this.headers,
       data: {
         'name': name,
+        'fields': fields,
       },
     })
   }
@@ -100,14 +102,14 @@ class Client {
     })
   }
 
-  moduleContentCreate (module, payload) {
+  moduleContentCreate (module, fields) {
     const endpoint = `${this.baseLink}/module/${module}/content`
     return axios({
       method: 'POST',
       url: endpoint,
       headers: this.headers,
       data: {
-        'payload': payload,
+        'fields': fields,
       },
     })
   }
@@ -122,14 +124,14 @@ class Client {
     })
   }
 
-  moduleContentEdit (module, id, payload) {
+  moduleContentEdit (module, id, fields) {
     const endpoint = `${this.baseLink}/module/${module}/content/${id}`
     return axios({
       method: 'POST',
       url: endpoint,
       headers: this.headers,
       data: {
-        'payload': payload,
+        'fields': fields,
       },
     })
   }
