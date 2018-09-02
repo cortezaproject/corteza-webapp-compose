@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import store from '@/store'
+// import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -67,7 +67,8 @@ function route (path, componentName, children) {
 
 function protect (routeEntry) {
   routeEntry.beforeEnter = (to, from, next) => {
-    next(store.getters['auth/isAuthenticated'] ? true : '/auth/signin')
+    next(true)
+    // next(store.getters['auth/isAuthenticated'] ? true : '/auth/signin')
   }
   return routeEntry
 }

@@ -1,3 +1,3 @@
 <template>
-	<p>Auth SignIn</p>
+  <p>Auth SignIn</p>
 </template>

@@ -35,8 +35,8 @@ Vue.mixin({
         return String.format(key, ...params)
       }
       return key
-    }
-  }
+    },
+  },
 })
 
 addComponents([

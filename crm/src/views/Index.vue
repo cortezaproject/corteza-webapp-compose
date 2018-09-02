@@ -1,15 +1,18 @@
 <template>
-	<div class="container" v-if="loaded">
-		<template v-if="modules.length == 0">
-			<p>You haven't created any modules so far.</p>
-			<a class="btn btn-primary" href="/modules/edit">Create new module</a>
-		</template>
-		<ul v-else>
-			<li v-for="module in modules">
-				<a :href="module.link">{{module.title}}</a>
-			</li>
-		</ul>
-	</div>
+  <div class="container" v-if="loaded">
+    <template v-if="error">
+      <p>An error occured: {{error}}</p>
+    </template>
+    <template v-if="modules.length == 0">
+      <p>No modules have been created yet.</p>
+      <a class="btn btn-primary" href="/modules/edit">Create new module</a>
+    </template>
+    <ul v-else>
+      <li v-for="module in modules" :key="module.id">
+        <a :href="module.link">{{module.title}}</a>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -18,6 +21,7 @@ import client from '@/store/client'
 export default {
   data () {
     return {
+      'error': '',
       'loaded': true,
       'modules': [],
       'result': {},
@@ -25,9 +29,8 @@ export default {
   },
 
   created () {
-
     var moduleListError = (error) => {
-      this.result.error = error
+      this.error = error.toString()
     }
     var moduleList = (response) => {
       if ('error' in response.data) {
@@ -42,7 +45,7 @@ export default {
         })
         return
       }
-      moduleListError("Unexpected response when fetching module list")
+      moduleListError('Unexpected response when fetching module list')
     }
     var moduleListFinalizer = () => {
       this.loaded = true

@@ -1,3 +1,3 @@
 <template>
-	<p>Modules Index</p>
+  <p>Modules Index</p>
 </template>

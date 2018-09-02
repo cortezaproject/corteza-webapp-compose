@@ -1,3 +1,3 @@
 <template>
-	<p>Auth SignOut</p>
+  <p>Auth SignOut</p>
 </template>
