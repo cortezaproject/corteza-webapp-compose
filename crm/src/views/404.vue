@@ -1,3 +1,3 @@
 <template>
-  <p>Index</p>
+	<p>404</p>
 </template>
