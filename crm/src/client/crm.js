@@ -1,5 +1,7 @@
 import crm from '@/client/api/crm'
+import config from '@/api/config'
+import store from '@/store'
 
-const client = new crm('http://peer.lan:3001', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MzYxMDAwNjYsInN1YiI6IjEifQ.o_KjmvV8oCk8kByS4jpKnk6EGZR4lBFqh3jT3AtwDN0')
+const client = new crm(config.endpoints.auth || window.location.protocol + '//' + window.location.hostname + ':3001', store.getters['auth/jwt'])
 
 export default client

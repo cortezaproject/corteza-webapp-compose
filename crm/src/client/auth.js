@@ -1,5 +1,7 @@
 import auth from '@/client/api/auth'
+import config from '@/api/config'
+import store from '@/store'
 
-const client = new auth('http://peer.lan:3002', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MzYxMDAwNjYsInN1YiI6IjEifQ.o_KjmvV8oCk8kByS4jpKnk6EGZR4lBFqh3jT3AtwDN0')
+const client = new auth(config.endpoints.auth || window.location.protocol + '//' + window.location.hostname + ':3002', store.getters['auth/jwt'])
 
 export default client

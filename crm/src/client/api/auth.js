@@ -4,10 +4,14 @@ import axios from 'axios'
 
 class auth {
   constructor (baseLink, jwt) {
-    this.baseLink = baseLink || 'https://api.auth.crust.kendu.si'
-    this.jwt = jwt
+    this.baseLink = baseLink
     this.headers = {}
+    this.setJWT(jwt)
+  }
+
+  setJWT (jwt) {
     if (jwt) {
+      this.jwt = jwt
       this.headers = {
         Authorization: 'Bearer ' + this.jwt,
       }
