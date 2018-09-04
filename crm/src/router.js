@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-// import store from '@/store'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -17,6 +17,9 @@ export default new VueRouter({
 function publicRoutes () {
   return [
     route('/'),
+    route('/auth/signin', 'Auth/SignIn'),
+    route('/auth/signup', 'Auth/SignUp'),
+    route('/auth/signout', 'Auth/SignOut'),
   ]
 }
 
@@ -67,8 +70,7 @@ function route (path, componentName, children) {
 
 function protect (routeEntry) {
   routeEntry.beforeEnter = (to, from, next) => {
-    next(true)
-    // next(store.getters['auth/isAuthenticated'] ? true : '/auth/signin')
+    next(store.getters['auth/isAuthenticated'] ? true : '/auth/signin')
   }
   return routeEntry
 }
