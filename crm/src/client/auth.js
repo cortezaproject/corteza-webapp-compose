@@ -1,46 +1,5 @@
-import axios from 'axios'
+import auth from '@/client/api/auth'
 
-// If you want to edit this file, talk to @titpetric before :)
+const client = new auth('http://peer.lan:3002', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MzYxMDAwNjYsInN1YiI6IjEifQ.o_KjmvV8oCk8kByS4jpKnk6EGZR4lBFqh3jT3AtwDN0')
 
-class auth {
-  constructor (baseLink, jwt) {
-    this.baseLink = baseLink || 'https://api.auth.crust.kendu.si'
-    this.jwt = jwt
-    this.headers = {}
-    if (jwt) {
-      this.headers = {
-        Authorization: 'Bearer ' + this.jwt,
-      }
-    }
-  }
-
-  authLogin (username, password) {
-    const endpoint = `${this.baseLink}/auth/`
-    return axios({
-      method: 'POST',
-      url: endpoint,
-      headers: this.headers,
-      data: {
-        'username': username,
-        'password': password,
-      },
-    })
-  }
-
-  authCreate (name, email, username, password) {
-    const endpoint = `${this.baseLink}/auth/create`
-    return axios({
-      method: 'POST',
-      url: endpoint,
-      headers: this.headers,
-      data: {
-        'name': name,
-        'email': email,
-        'username': username,
-        'password': password,
-      },
-    })
-  }
-}
-
-export default auth
+export default client
