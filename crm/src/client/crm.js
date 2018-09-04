@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // If you want to edit this file, talk to @titpetric before :)
 
-class Client {
+class crm {
   constructor (baseLink, jwt) {
     this.baseLink = baseLink || 'https://api.crm.crust.kendu.si'
     this.jwt = jwt
@@ -147,4 +147,4 @@ class Client {
   }
 }
 
-export default Client
+export default crm
