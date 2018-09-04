@@ -73,8 +73,12 @@ export default {
   created () {
     this.params = this.$route.params
     this.listFields()
-    this.addField()
-    this.loaded = true
+    if (this.params.id) {
+      this.read(this.params.id)
+    } else {
+      this.addField()
+      this.loaded = true
+    }
   },
   methods: {
     addField: function () {
@@ -91,12 +95,12 @@ export default {
       return this.fieldSeq
     },
     listFields: function () {
-      var fieldListError = (error) => {
-        this.error = error.toString()
-      }
-      var fieldList = (response) => {
+      this.clearError()
+
+      // response handler
+      var response = (response) => {
         if ('error' in response.data) {
-          fieldListError(response.data.error.message)
+          this.showError(response.data.error.message)
           return
         }
         if (Array.isArray(response.data.response)) {
@@ -106,38 +110,58 @@ export default {
           })
           return
         }
-        fieldListError('Unexpected response when fetching field list')
-      }
-      var fieldListFinalizer = () => {
-        this.loaded++
+        this.showError('Unexpected response when fetching field list')
       }
 
       client.fieldList()
-        .then(fieldList)
-        .catch(fieldListError)
-        .finally(fieldListFinalizer)
+        .then(response)
+        .catch((e) => this.showError(e))
+        .finally(() => {
+          this.loaded++
+        })
     },
-    save: function () {
-      var moduleSaveError = (error) => {
-        this.error = error.toString()
-      }
-      var moduleSave = (response) => {
-        if ('error' in response.data) {
-          moduleSaveError(response.data.error.message)
+    read: function (id) {
+      this.clearError()
+
+      // response handler
+      var response = (resp) => {
+        this.loaded = true
+        if ('error' in resp.data) {
+          this.showError(resp.data.error.message)
           return
         }
-        if (Array.isArray(response.data.response)) {
+        if (typeof resp.data.response === "object") {
+          this.module = resp.data.response
+          return
+        }
+        this.showError('Unexpected response when reading module')
+      }
+
+      client.moduleRead(id)
+        .then(response)
+        .catch((e) => this.showError(e))
+        .finally(() => {
+          this.loaded++
+        })
+    },
+    save: function () {
+      this.clearError()
+
+      // response handler
+      var response = (resp) => {
+        if ('error' in resp.data) {
+          this.showError(resp.data.error.message)
+          return
+        }
+        if (Array.isArray(resp.data.response)) {
           this.fields.splice(0)
-          response.data.response.forEach((field) => {
+          resp.data.response.forEach((field) => {
             field.id = this.newID()
             this.fields.push(field)
           })
           return
         }
-        moduleSaveError('Unexpected response when saving module')
-      }
-      var moduleSaveFinalizer = () => {
-        this.loaded++
+        this.showError('Unexpected response when saving module')
       }
 
       var request = () => {
@@ -148,9 +172,11 @@ export default {
       }
 
       request()
-        .then(moduleSave)
-        .catch(moduleSaveError)
-        .finally(moduleSaveFinalizer)
+        .then(response)
+        .catch((e) => this.showError(e))
+        .finally(() => {
+          this.loaded++
+        })
     }
   },
 }

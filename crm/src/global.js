@@ -6,6 +6,11 @@ import VTooltip from 'v-tooltip'
 import axios from 'axios'
 axios.defaults.timeout = 15000
 
+var JSONbig = require('json-bigint')({storeAsString: true})
+axios.defaults.transformResponse = [(data) => {
+  return JSONbig.parse(data)
+}]
+
 // Global functions
 
 if (!String.format) {
@@ -28,6 +33,11 @@ Vue.config.productionTip = false
 Vue.use(VTooltip)
 
 Vue.mixin({
+  data () {
+    return {
+      error: '',
+    }
+  },
   methods: {
     // @todo: placeholder translation method with a "gettext" signature (underscore fn)
     _: function (key, params) {
@@ -36,6 +46,12 @@ Vue.mixin({
       }
       return key
     },
+    clearError: function () {
+      this.error = ''
+    },
+    showError: function (error) {
+      this.error = error.toString()
+    }
   },
 })
 

@@ -9,7 +9,7 @@
     </template>
     <ul v-else>
       <li v-for="module in modules" :key="module.id">
-        <a :href="module.link">{{module.name}}</a>
+        <a :href="module.links.read">{{module.name}}</a> [<a :href="module.links.edit">edit</a>]
       </li>
     </ul>
   </div>
@@ -21,7 +21,6 @@ import client from '@/store/client'
 export default {
   data () {
     return {
-      'error': '',
       'loaded': true,
       'modules': [],
       'result': {},
@@ -29,32 +28,39 @@ export default {
   },
 
   created () {
-    var moduleListError = (error) => {
-      this.error = error.toString()
-    }
-    var moduleList = (response) => {
-      if ('error' in response.data) {
-        moduleListError(response.data.error.message)
-        return
-      }
-      if (Array.isArray(response.data.response)) {
-        this.modules.splice(0)
-        response.data.response.forEach((module) => {
-          module.link = '/modules/' + module.id
-          this.modules.push(module)
-        })
-        return
-      }
-      moduleListError('Unexpected response when fetching module list')
-    }
-    var moduleListFinalizer = () => {
-      this.loaded = true
-    }
-
-    client.moduleList()
-      .then(moduleList)
-      .catch(moduleListError)
-      .finally(moduleListFinalizer)
+    this.moduleList()
   },
+
+  methods: {
+    moduleList () {
+      this.clearError()
+      var moduleList = (response) => {
+        if ('error' in response.data) {
+          this.showError(response.data.error.message)
+          return
+        }
+        if (Array.isArray(response.data.response)) {
+          this.modules.splice(0)
+          response.data.response.forEach((module) => {
+            module.links = {
+              'read': '/modules/' + module.id,
+              'edit': '/modules/' + module.id + '/edit',
+            }
+            this.modules.push(module)
+          })
+          return
+        }
+        this.showError('Unexpected response when fetching module list')
+      }
+      var moduleListFinalizer = () => {
+        this.loaded = true
+      }
+
+      client.moduleList()
+        .then(moduleList)
+        .catch((e) => this.showError(e))
+        .finally(moduleListFinalizer)
+    },
+  }
 }
 </script>
