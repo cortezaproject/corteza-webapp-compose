@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import client from '@/store/client'
+import crm from '@/client/crm'
 import draggable from 'vuedraggable'
 
 export default {
@@ -113,7 +113,7 @@ export default {
         this.showError('Unexpected response when fetching field list')
       }
 
-      client.fieldList()
+      crm.fieldList()
         .then(response)
         .catch((e) => this.showError(e))
         .finally(() => {
@@ -137,7 +137,7 @@ export default {
         this.showError('Unexpected response when reading module')
       }
 
-      client.moduleRead(id)
+      crm.moduleRead(id)
         .then(response)
         .catch((e) => this.showError(e))
         .finally(() => {
@@ -166,9 +166,9 @@ export default {
 
       var request = () => {
         if ('id' in this.params) {
-          return client.moduleEdit(this.params.id, this.module.name, this.module.fields)
+          return crm.moduleEdit(this.params.id, this.module.name, this.module.fields)
         }
-        return client.moduleCreate(this.module.name, this.module.fields)
+        return crm.moduleCreate(this.module.name, this.module.fields)
       }
 
       request()

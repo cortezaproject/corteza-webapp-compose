@@ -12,11 +12,14 @@
         <a :href="module.links.read">{{module.name}}</a> [<a :href="module.links.edit">edit</a>]
       </li>
     </ul>
+
+    <a href="/auth/signin">Sign In</a>
+    <a href="/auth/signout">Sign Out</a>
   </div>
 </template>
 
 <script>
-import client from '@/store/client'
+import crm from '@/client/crm'
 
 export default {
   data () {
@@ -56,7 +59,7 @@ export default {
         this.loaded = true
       }
 
-      client.moduleList()
+      crm.moduleList()
         .then(moduleList)
         .catch((e) => this.showError(e))
         .finally(moduleListFinalizer)
