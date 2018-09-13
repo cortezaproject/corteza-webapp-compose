@@ -1,0 +1,256 @@
+
+[class^="icon-"], [class*=" icon-"] {
+	color:$defaulticoncolor;
+}
+
+//paste the rest of icomoon here
+$icon-align-justify: "\e903";
+$icon-bell2: "\e901";
+$icon-chevron-down: "\e904";
+$icon-chevron-left: "\e905";
+$icon-chevron-right: "\e906";
+$icon-chevron-up: "\e907";
+$icon-copy: "\e908";
+$icon-film: "\e909";
+$icon-git-commit: "\e90a";
+$icon-info: "\e90b";
+$icon-menu: "\e90c";
+$icon-message-circle: "\e90d";
+$icon-more-vertical: "\e90e";
+$icon-plus: "\e90f";
+$icon-plus-circle: "\e910";
+$icon-square: "\e911";
+$icon-terminal: "\e912";
+$icon-user2: "\e902";
+$icon-x: "\e913";
+$icon-settings-horizontal: "\e914";
+$icon-tabs: "\e915";
+$icon-menu4: "\e916";
+$icon-message-circle-left-speak: "\e917";
+$icon-message-circle-right-speak: "\e918";
+$icon-message-circle-right: "\e919";
+$icon-menu3: "\e91a";
+$icon-menu-dots: "\e900";
+$icon-files-empty: "\e925";
+$icon-bell: "\e951";
+$icon-bubble: "\e96b";
+$icon-bubble2: "\e96e";
+$icon-user: "\e971";
+$icon-equalizer: "\e992";
+$icon-menu2: "\e9bd";
+$icon-info2: "\ea0c";
+$icon-play3: "\ea1c";
+$icon-indent-decrease: "\ea7c";
+
+
+@font-face {
+  font-family: 'crust-icomoon';
+  src:
+    url('#{$icomoon-font-path}/crust-icomoon.ttf?1mz7bt') format('truetype'),
+    url('#{$icomoon-font-path}/crust-icomoon.woff?1mz7bt') format('woff'),
+    url('#{$icomoon-font-path}/crust-icomoon.svg?1mz7bt#crust-icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'crust-icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-align-justify {
+  &:before {
+    content: $icon-align-justify; 
+  }
+}
+.icon-bell2 {
+  &:before {
+    content: $icon-bell2; 
+  }
+}
+.icon-chevron-down {
+  &:before {
+    content: $icon-chevron-down; 
+  }
+}
+.icon-chevron-left {
+  &:before {
+    content: $icon-chevron-left; 
+  }
+}
+.icon-chevron-right {
+  &:before {
+    content: $icon-chevron-right; 
+  }
+}
+.icon-chevron-up {
+  &:before {
+    content: $icon-chevron-up; 
+  }
+}
+.icon-copy {
+  &:before {
+    content: $icon-copy; 
+  }
+}
+.icon-film {
+  &:before {
+    content: $icon-film; 
+  }
+}
+.icon-git-commit {
+  &:before {
+    content: $icon-git-commit; 
+  }
+}
+.icon-info {
+  &:before {
+    content: $icon-info; 
+  }
+}
+.icon-menu {
+  &:before {
+    content: $icon-menu; 
+  }
+}
+.icon-message-circle {
+  &:before {
+    content: $icon-message-circle; 
+  }
+}
+.icon-more-vertical {
+  &:before {
+    content: $icon-more-vertical; 
+  }
+}
+.icon-plus {
+  &:before {
+    content: $icon-plus; 
+  }
+}
+.icon-plus-circle {
+  &:before {
+    content: $icon-plus-circle; 
+  }
+}
+.icon-square {
+  &:before {
+    content: $icon-square; 
+  }
+}
+.icon-terminal {
+  &:before {
+    content: $icon-terminal; 
+  }
+}
+.icon-user2 {
+  &:before {
+    content: $icon-user2; 
+  }
+}
+.icon-x {
+  &:before {
+    content: $icon-x; 
+  }
+}
+.icon-settings-horizontal {
+  &:before {
+    content: $icon-settings-horizontal; 
+  }
+}
+.icon-tabs {
+  &:before {
+    content: $icon-tabs; 
+  }
+}
+.icon-menu4 {
+  &:before {
+    content: $icon-menu4; 
+  }
+}
+.icon-message-circle-left-speak {
+  &:before {
+    content: $icon-message-circle-left-speak; 
+  }
+}
+.icon-message-circle-right-speak {
+  &:before {
+    content: $icon-message-circle-right-speak; 
+  }
+}
+.icon-message-circle-right {
+  &:before {
+    content: $icon-message-circle-right; 
+  }
+}
+.icon-menu3 {
+  &:before {
+    content: $icon-menu3; 
+  }
+}
+.icon-menu-dots {
+  &:before {
+    content: $icon-menu-dots; 
+  }
+}
+.icon-files-empty {
+  &:before {
+    content: $icon-files-empty; 
+  }
+}
+.icon-bell {
+  &:before {
+    content: $icon-bell; 
+  }
+}
+.icon-bubble {
+  &:before {
+    content: $icon-bubble; 
+  }
+}
+.icon-bubble2 {
+  &:before {
+    content: $icon-bubble2; 
+  }
+}
+.icon-user {
+  &:before {
+    content: $icon-user; 
+  }
+}
+.icon-equalizer {
+  &:before {
+    content: $icon-equalizer; 
+  }
+}
+.icon-menu2 {
+  &:before {
+    content: $icon-menu2; 
+  }
+}
+.icon-info2 {
+  &:before {
+    content: $icon-info2; 
+  }
+}
+.icon-play3 {
+  &:before {
+    content: $icon-play3; 
+  }
+}
+.icon-indent-decrease {
+  &:before {
+    content: $icon-indent-decrease; 
+  }
+}
+

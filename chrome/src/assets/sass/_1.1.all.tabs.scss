@@ -1,0 +1,147 @@
+.crust
+{
+	&_tab_list_wrapper
+	{
+		height:0;
+		position:fixed;
+		bottom:-100vh;
+		left:0;
+		right:0;
+
+		background-color:$tabbgcolor;
+		-webkit-transition: all 0.5s ease; /* For Safari 3.1 to 6.0 */
+		transition: all 0.5s ease;	
+		z-index:3;		
+	}
+	
+	.crust_tab_title,
+	.crust_tab_list
+	{
+		display:none;
+	}
+	
+	#crust_show-tabs:checked ~ .crust_tab_list_wrapper
+	{
+		height:calc(100% - 6rem);
+		display:block;
+		z-index:3;	
+		bottom:0;
+	}
+	
+	#crust_show-tabs:checked ~ .crust_tab_list_wrapper
+	{
+		.crust_tab_title,
+		.crust_tab_list
+		{
+			display:block;
+		}
+	}
+	
+	&_tab_title
+	{
+		padding:1.5rem;
+		color:$tabtitletxtcolor;
+		font-size:1.8rem;
+	}
+	
+	&_tab_list
+	{
+		margin:1.5rem;
+		padding:0;
+		list-style:none;
+	}
+	
+	&_tab_item
+	{
+		padding:1.5rem;
+		background-color:rgba($defaultlinecolor,0.15);
+		border-radius:3px;
+		margin-bottom:1rem;
+		color:$tabitemtxtcolor;
+		font-size:1.4rem;
+		.icon-close
+		{
+			float:right;
+			padding: 1.5rem;
+			margin: -1.5rem;			
+		}
+	}
+	
+	&_tab_current_item
+	{
+		background-color:$tabcurrentbgcolor;
+	}
+	
+	&_tab_display
+	{
+		position:fixed;
+		width:5.6rem;
+		height:5.6rem;
+		background-color:$defaultlinecolor;
+		color:$tabitemtxtcolor;
+		right:1.5rem;
+		bottom:2rem;
+		border-radius:100%;
+		line-height:5.6rem;
+		display:block;
+		text-align:center;
+
+	}
+	
+	&-tab-notification,
+	&-tab-opener-notification
+	{
+		//float:right;
+		&:after
+		{
+			display:inline-block;
+			border-radius:100%;
+			content:"";
+			background-color:$notificationcolor;
+			height:1rem;
+			width:1rem;
+			font-size:1;
+			color:$headerbgcolor;
+		}
+	}
+	
+	&-tab-opener-notification
+	{
+		&:after
+		{
+			position:absolute;
+			top:0;
+			right:0;
+			border:solid 2px $headerbgcolor;
+		}
+	}
+	
+	&_tab_count
+	{
+		line-height:1;
+		position:absolute;
+		top:3rem;
+		left:2rem;
+	}
+	
+	
+	&-tab-closer
+	{
+		color:$tabitemtxtcolor;
+		[class*=icon]
+		{
+			color:$tabitemtxtcolor;
+		}
+	}
+	
+	&_tab_bg
+	{
+		position:absolute;
+		height:3.6rem;
+		width:3.6rem;
+		font-size:3.6rem;
+		left:1rem;
+		top:1rem;
+		color:$tabitemtxtcolor;
+	}
+}

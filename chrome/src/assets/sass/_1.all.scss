@@ -1,0 +1,529 @@
+.crust
+{  
+	font-size:10px;
+	max-width:100vw;
+	min-height:100vh;
+	background-color : $mainbgcolor;
+	font-family:$crustregular;
+	
+	*
+	{
+		box-sizing:border-box;
+	}
+	
+	label
+	{
+		cursor:pointer;
+	}
+	
+	&_readable_text
+	{
+		font-size:0;
+	}
+	
+	&_main-header,
+	&_iam_footer,
+	&_iam-header
+	{
+		position:fixed;
+		width: 100%;
+		left:0;
+		right:0;
+		overflow:hidden;
+	}
+		
+	&_main-header
+	{
+		background-color: $headerbgcolor;
+		box-shadow: 0 0.1rem 0.2rem 0 rgba($defaulttextcolor, 0.1);
+		height: 6rem;
+		max-height: 6rem;
+		top:0;
+		z-index:999;
+		&_title-wrap
+		{
+			float:left;
+			display:block;
+			line-height:6rem;
+			margin:0 0.5rem 0 1.5rem;
+		}
+		&_title
+		{
+			
+			font-size:2.4rem;
+			line-height:1;
+			display:inline-block;
+			vertical-align:middle;
+			&__pf
+			{
+				background-color:$pfbgcolor;
+				line-height:1;
+				display:inline-block;
+				padding:0.2rem 0.5rem;
+				vertical-align:middle;
+				border-radius:2rem;
+				font-weight:normal;
+				font-size:1rem;
+				font-family:$crustsemibold;
+				text-transform:uppercase;
+				margin-left:1rem;
+			}
+		}
+		&_toolbox
+		{
+			float:right;
+			line-height:6rem;
+			margin-right:1.5rem;
+			vertical-align:middle;
+
+			&-item
+			{
+				display:inline-block;
+				line-height: 1;
+				vertical-align: middle;		
+				margin: 0 0 0 1rem;
+				i
+				{
+					display:inline-block;
+					min-width:3rem;
+					font-size:3rem;
+					color:$defaultlinecolor;
+					//border:solid 2px transparent;
+					border-radius:100%;				
+				}
+			}
+			&_notification
+			{
+				
+			}
+			&_has_notification
+			{
+				&:after
+				{
+					display:inline-block;
+					border-radius:100%;
+					content:".";
+					background-color:$notificationcolor;
+					height:1rem;
+					width:1rem;
+					margin-left:-1.5rem;
+					font-size:1;
+					color:$headerbgcolor;
+					border:solid 2px $headerbgcolor;
+				}
+			}
+			&_menu
+			{
+			}
+		}
+	}
+	
+	&_profile-pic
+	{
+		display:inline-block;
+		height:3rem;
+		width:3rem;
+		border:solid 2px $defaultlinecolor;
+		border-radius:100%;
+		background:url('/assets/pics/no-profile-pic.png') center center no-repeat;
+		background-size:contain;
+	}
+	
+	&_iam_main-input
+	{
+		border:none;
+		width:calc(100% - 13rem);
+	}
+	
+	&-invisible-button
+	{
+		visibility:hidden;
+	}
+	
+	&_iam_main_form
+	{
+		
+	}
+	
+	//mainmenu switch
+	&_main-menu,
+	&_iam-menu,
+	&_iam-channel_members
+	{
+		//display:none;
+		position:fixed;
+		width:0%;
+		height:calc(100vh - 6rem);
+		max-height:100vh;
+		overflow-x:hidden;
+		overflow-y:auto;
+		background-color:$headerbgcolor;
+		border-right:solid 1px $defaultlinecolor;
+		margin:0;
+		left:0;
+		top:0;
+		margin:0;
+		margin-top:6rem;
+		z-index:2;
+		-webkit-transition: width 0.5s ease; /* For Safari 3.1 to 6.0 */
+		transition: width 0.5s ease;		
+	}
+	
+	&_main-menu_list,
+	&_iam-menu
+	{
+		line-height:2rem;
+		list-style:none;
+	}
+	
+	&_iam-channel_subitems
+	{
+		padding-left:0.5rem;
+	}
+	
+	&_main-menu_item,
+	&_iam-menu_item,
+	&_iam-channel_item
+	{
+		padding:0.2rem 1.5rem;
+		margin:0;
+		list-style:none;
+	}
+	&_iam-channel_members
+	{
+		right:0;
+		left:auto;
+		border-right:none;
+		border-left:solid 1px $defaultlinecolor;
+		margin-top:12.1rem;
+	}
+	
+	&_iam-menu
+	{
+		font-size:1.6rem;
+		line-height:2.5rem;
+	}
+	
+	&_main-menu
+	{
+		z-index:3;
+	}
+	
+	#crust_show-main-menu:checked 
+	~ .crust_main-menu
+	{
+		display:block;
+		width:80vw;
+	}
+	
+	//iam switch
+	#crust_show-iam-menu:checked
+	~ .crust_iam-menu
+	{
+		display:block;
+		width:80vw;
+	}	
+
+	#crust_show-iam-members:checked
+	~ .crust_iam-channel_members
+	{
+		display:block;
+		width:80vw;
+	}
+	
+	&_iam-header
+	{
+		top:6rem;
+		height:6rem;
+		line-height:6rem;
+		border-bottom:solid 1px $defaultlinecolor;
+		background-color:$mainbgcolor;
+		padding: 0 1.5rem;
+		z-index:2;
+		i
+		{
+			display:inline-block;
+			font-size:2rem;
+			line-height:1;			
+		}		
+	}
+	&_iam_show_threads
+	{
+		display:inline-block;
+		vertical-align:middle;
+		font-size:2rem;
+		line-height:1;
+		margin-right:1.5rem;
+	}
+	
+	&_iam-project
+	{	
+		background-color:$projectbgcolor;
+		color:$projecttxtcolor;
+		text-transform:uppercase;
+		border-radius:0.5rem;
+		font-size:0.9rem;
+		padding:0.2rem 0.5rem;
+		margin-left:0.9rem;
+		vertical-align:middle;
+	}
+	
+	&_iam-header_toolbox
+	{
+		float:right;
+	}
+	
+	&_iam-people,
+	&_iam-info
+	{
+		i
+		{
+			vertical-align:middle;
+		}
+	}
+	
+	&_iam-people
+	{
+		margin-right:1.5rem;
+		&_count
+		{
+			color:$defaulticoncolor;
+			vertical-align:super;
+			font-size:1rem;
+			margin-right:-0.5rem;
+		}
+	}
+	
+	&_iam-thread
+	{
+		font-family: $crustheavy;
+		font-size:1.5rem;
+		display:inline-block;
+		vertical-align:middle;
+		font-weight: normal;
+	}
+	&_iam_main
+	{
+		height:auto;
+		max-width:100vw;
+		padding:12rem 1.5rem 5rem 1.5rem;
+		overflow-y:hidden;
+		overflow-x:scroll;
+	}
+	&_iam_footer
+	{
+		background-color: $footerbgcolor;
+		box-shadow: 0 -1px 4px 0 rgba($defaulttextcolor, 0.15);
+		width: 100%;
+		height: 5rem;
+		max-height: 5rem;
+		line-height:5rem;
+		text-align:center;
+		bottom:0;
+	}
+	
+	&_iam_main__messages
+	{
+		padding:0;
+		list-style:none;
+	}
+	&_iam_main__message
+	{
+		padding-left:50px;
+		position:relative;
+		margin-bottom:1rem;
+	}
+	&_iam_main__message__meta-avatar,
+	&_iam_main__message__meta-time
+	{
+		position:absolute;
+		left:0;
+		top:0;
+	}
+	&_iam_main__message__meta-time
+	{
+		top:4rem;
+	}
+	&_iam_main__message__meta-date
+	{
+		display:none;
+	}
+	&_iam_main__message:hover
+	{
+		.crust_iam_main__message__meta-date
+		{
+			display:block;
+			float:right;
+		}
+	}
+	&_iam_main__message--current
+	{
+		.crust_iam_main__message__content
+		{
+			background-color:$currentmessagebgcolor;
+			color:$currentmessagetxtcolor; 
+			&:before
+			{
+				background-color:$currentmessagebgcolor;
+			}
+		}
+	}
+	
+	&_iam_main__message__content
+	{
+		position:relative;
+		background-color:$messagebgcolor;
+		padding:6px;
+		border-radius:3px;
+		margin:0;
+		font-size:1.6rem;
+		&:before
+		{
+			content:" ";
+			background-color:$messagebgcolor;
+			position:absolute;
+			left:-5px;
+			top:8px;
+			width:10px;
+			height:10px;
+			transform:rotate(45deg);
+		}
+	}
+	
+	&_tab_list
+	{
+		height:0;
+		position:fixed;
+		bottom:0;
+		left:0;
+		right:0;
+		background-color:$tabbgcolor;
+		-webkit-transition: height 0.5s ease; /* For Safari 3.1 to 6.0 */
+		transition: height 0.5s ease;	
+		z-index:3;		
+	}
+	
+	#crust_show-tabs:checked ~ 
+	.crust_tab_list
+	{
+		height:calc(100% - 6rem);
+		display:block;
+		z-index:3;		
+	}
+	
+	&_tab_title
+	{
+		padding:1.5rem;
+		color:$tabtitletxtcolor;
+		font-size:1.8rem;
+	}
+	
+	&_tab_list
+	{
+		margin:1.5rem;
+		padding:0;
+		list-style:none;
+	}
+	
+	&_tab_item
+	{
+		padding:1.5rem;
+		background-color:rgba($defaultlinecolor,0.15);
+		border-radius:3px;
+		margin-bottom:1rem;
+		color:$tabitemtxtcolor;
+		font-size:1.4rem;
+	}
+	
+	&_tab_current_item
+	{
+		background-color:$tabcurrentbgcolor;
+	}
+	
+	&_tab_display
+	{
+		position:fixed;
+		width:5.6rem;
+		height:5.6rem;
+		background-color:$defaultlinecolor;
+		color:$tabitemtxtcolor;
+		right:1.5rem;
+		bottom:2rem;
+		border-radius:100%;
+		line-height:5.6rem;
+		display:block;
+		text-align:center;
+
+	}
+	
+	&-tab-notification,
+	&-tab-opener-notification
+	{
+		float:right;
+		&:after
+		{
+			display:inline-block;
+			border-radius:100%;
+			content:"";
+			background-color:$notificationcolor;
+			height:1rem;
+			width:1rem;
+			font-size:1;
+			color:$headerbgcolor;
+		}
+	}
+	
+	&-tab-opener-notification
+	{
+		&:after
+		{
+			position:absolute;
+			top:0;
+			right:0;
+			border:solid 2px $headerbgcolor;
+		}
+	}
+	
+	&_tab_count
+	{
+		line-height:1;
+		position:absolute;
+		top:3rem;
+		left:2rem;
+	}
+	
+	&-closer
+	{
+		display:block;
+		float:right;
+		font-size:2rem;
+	}
+	
+	&-tab-closer
+	{
+		color:$tabitemtxtcolor;
+		[class*=icon]
+		{
+			color:$tabitemtxtcolor;
+		}
+	}
+	
+	&_iam_input_text_mark,
+	&_iam_main-input
+	{
+		font-size:1.5rem;
+		line-height:2rem;
+		padding:0;
+	}
+	
+	&_tab_bg
+	{
+		position:absolute;
+		height:3.6rem;
+		width:3.6rem;
+		font-size:3.6rem;
+		left:1rem;
+		top:1rem;
+		color:$tabitemtxtcolor;
+	}
+}
