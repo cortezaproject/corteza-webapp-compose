@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // If you want to edit this file, talk to @titpetric before :)
 
-class auth {
+class Auth {
   constructor (baseLink, jwt) {
     this.baseLink = baseLink
     this.headers = {}
@@ -24,6 +24,7 @@ class auth {
       method: 'POST',
       url: endpoint,
       headers: this.headers,
+      params: {},
       data: {
         'username': username,
         'password': password,
@@ -37,6 +38,7 @@ class auth {
       method: 'POST',
       url: endpoint,
       headers: this.headers,
+      params: {},
       data: {
         'name': name,
         'email': email,
@@ -47,4 +49,4 @@ class auth {
   }
 }
 
-export default auth
+export default Auth

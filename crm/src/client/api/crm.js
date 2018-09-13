@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // If you want to edit this file, talk to @titpetric before :)
 
-class crm {
+class CRM {
   constructor (baseLink, jwt) {
     this.baseLink = baseLink
     this.headers = {}
@@ -24,6 +24,7 @@ class crm {
       method: 'GET',
       url: endpoint,
       headers: this.headers,
+      params: {},
       data: {},
     })
   }
@@ -34,6 +35,7 @@ class crm {
       method: 'GET',
       url: endpoint,
       headers: this.headers,
+      params: {},
       data: {},
     })
   }
@@ -44,9 +46,10 @@ class crm {
       method: 'GET',
       url: endpoint,
       headers: this.headers,
-      data: {
+      params: {
         'query': query,
       },
+      data: {},
     })
   }
 
@@ -56,6 +59,7 @@ class crm {
       method: 'POST',
       url: endpoint,
       headers: this.headers,
+      params: {},
       data: {
         'name': name,
         'fields': fields,
@@ -69,6 +73,7 @@ class crm {
       method: 'GET',
       url: endpoint,
       headers: this.headers,
+      params: {},
       data: {},
     })
   }
@@ -79,6 +84,7 @@ class crm {
       method: 'POST',
       url: endpoint,
       headers: this.headers,
+      params: {},
       data: {
         'name': name,
         'fields': fields,
@@ -92,6 +98,7 @@ class crm {
       method: 'DELETE',
       url: endpoint,
       headers: this.headers,
+      params: {},
       data: {},
     })
   }
@@ -102,6 +109,7 @@ class crm {
       method: 'GET',
       url: endpoint,
       headers: this.headers,
+      params: {},
       data: {},
     })
   }
@@ -112,6 +120,7 @@ class crm {
       method: 'POST',
       url: endpoint,
       headers: this.headers,
+      params: {},
       data: {
         'fields': fields,
       },
@@ -124,6 +133,7 @@ class crm {
       method: 'GET',
       url: endpoint,
       headers: this.headers,
+      params: {},
       data: {},
     })
   }
@@ -134,6 +144,7 @@ class crm {
       method: 'POST',
       url: endpoint,
       headers: this.headers,
+      params: {},
       data: {
         'fields': fields,
       },
@@ -146,9 +157,10 @@ class crm {
       method: 'DELETE',
       url: endpoint,
       headers: this.headers,
+      params: {},
       data: {},
     })
   }
 }
 
-export default crm
+export default CRM
