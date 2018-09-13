@@ -6,5 +6,8 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes: [{ path: '/', component: () => import('./views/Index.vue') }],
+  routes: [
+    { path: '/:name', component: () => import('./views/Workspace.vue') },
+    { path: '/', component: () => import('./views/Workspace.vue') },
+  ],
 })
