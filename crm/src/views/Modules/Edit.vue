@@ -130,7 +130,7 @@ export default {
           this.showError(resp.data.error.message)
           return
         }
-        if (typeof resp.data.response === "object") {
+        if (typeof resp.data.response === 'object') {
           this.module = resp.data.response
           return
         }
@@ -177,7 +177,7 @@ export default {
         .finally(() => {
           this.loaded++
         })
-    }
+    },
   },
 }
 </script>

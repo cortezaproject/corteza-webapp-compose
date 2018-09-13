@@ -48,7 +48,7 @@ export default {
     return {
       baseUrl: '',
       username: '',
-      password: ''
+      password: '',
     }
   },
 
@@ -57,8 +57,8 @@ export default {
       orgBaseUrl: 'auth/baseUrl',
       authError: 'auth/error',
       processing: 'auth/processing',
-      isAuthenticated: 'auth/isAuthenticated'
-    })
+      isAuthenticated: 'auth/isAuthenticated',
+    }),
   },
 
   mounted () {
@@ -75,18 +75,18 @@ export default {
       if (isAuthenticated) {
         this.$router.push('/')
       }
-    }
+    },
   },
 
   methods: {
     ...mapActions({
-      authenticate: 'auth/authenticate'
+      authenticate: 'auth/authenticate',
     }),
 
     onSubmit () {
-      this.authenticate({baseUrl: this.baseUrl, username: this.username, password: this.password})
-    }
-  }
+      this.authenticate({ baseUrl: this.baseUrl, username: this.username, password: this.password })
+    },
+  },
 }
 </script>
 

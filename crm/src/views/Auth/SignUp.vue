@@ -61,7 +61,7 @@ export default {
       name: '',
       email: '',
       username: '',
-      password: ''
+      password: '',
     }
   },
 
@@ -70,8 +70,8 @@ export default {
       orgBaseUrl: 'auth/baseUrl',
       authError: 'auth/error',
       processing: 'auth/processing',
-      isAuthenticated: 'auth/isAuthenticated'
-    })
+      isAuthenticated: 'auth/isAuthenticated',
+    }),
   },
 
   mounted () {
@@ -84,12 +84,12 @@ export default {
       if (isAuthenticated) {
         this.$router.push('/')
       }
-    }
+    },
   },
 
   methods: {
     ...mapActions({
-      createAccount: 'auth/create'
+      createAccount: 'auth/create',
     }),
 
     onSubmit () {
@@ -98,10 +98,10 @@ export default {
         name: this.name,
         email: this.email,
         username: this.username,
-        password: this.password
+        password: this.password,
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

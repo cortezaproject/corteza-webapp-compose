@@ -6,7 +6,7 @@ import VTooltip from 'v-tooltip'
 import axios from 'axios'
 axios.defaults.timeout = 15000
 
-var JSONbig = require('json-bigint')({storeAsString: true})
+var JSONbig = require('json-bigint')({ storeAsString: true })
 axios.defaults.transformResponse = [(data) => {
   return JSONbig.parse(data)
 }]
@@ -51,7 +51,7 @@ Vue.mixin({
     },
     showError: function (error) {
       this.error = error.toString()
-    }
+    },
   },
 })
 

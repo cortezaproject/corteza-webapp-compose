@@ -64,6 +64,6 @@ export default {
         .catch((e) => this.showError(e))
         .finally(moduleListFinalizer)
     },
-  }
+  },
 }
 </script>
