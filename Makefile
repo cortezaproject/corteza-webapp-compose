@@ -1,34 +1,22 @@
-.PHONY: deploy clean docker docker-enter
-
-build: dist deploy clean
-
-dist:
-	yarn build production
-
-deploy:
-	rsync -var dist/* sookie.kendu.si:/opt/crust.sam.spa/
-
-clean:
-	rm -rf dist
+.PHONY: deploy clean docker enter
 
 docker:
-	cd docker && docker build --rm -f Dockerfile.dev -t crusttech/crm-front-dev . && cd ..
+	cd docker && docker build --rm -f Dockerfile.dev -t crusttech/front-dev . && cd ..
 
-docker-enter:
-	docker run -it --net=host -v ${PWD}:/app -w /app crusttech/crm-front-dev
+enter:
+	docker run -it --net=host -v ${PWD}:/app -w /app crusttech/front-dev
 
-docker-serve:
-	docker run -it --net=host -v ${PWD}/crm:/app/crm -w /app/crm crusttech/crm-front-dev yarn serve
+serve:
+	docker run -it --net=host -v ${PWD}/${name}:/app/${name} -w /app/${name} crusttech/front-dev yarn serve
 
-docker-build:
-	docker run -it --net=host -v ${PWD}/crm:/app/crm -w /app/crm crusttech/crm-front-dev yarn build
+build:
+	docker run -it --net=host -v ${PWD}/${name}:/app/${name} -w /app/${name} crusttech/front-dev yarn build
 
-docker-test:
-	docker run -it --net=host -v ${PWD}/crm:/app/crm -w /app/crm crusttech/crm-front-dev yarn lint
-	docker run -it --net=host -v ${PWD}/crm:/app/crm -w /app/crm crusttech/crm-front-dev yarn test:unit
+test:
+	docker run -it --net=host -v ${PWD}/${name}:/app/${name} -w /app/${name} crusttech/front-dev yarn lint
+	docker run -it --net=host -v ${PWD}/${name}:/app/${name} -w /app/${name} crusttech/front-dev yarn test:unit
 
 create:
-	rm -rf crm
-	docker run -it --net=host -v ${PWD}:/app -w /app crusttech/crm-front-dev vue create crm
-	docker run -it --net=host -v ${PWD}:/app/crm -w /app crusttech/crm-front-dev yarn add axios --save
-	rsync -ai --del src/ crm/src/
+	rm -rf ${name}
+	docker run -it --net=host -v ${PWD}:/app -w /app crusttech/front-dev vue create ${name}
+	docker run -it --net=host -v ${PWD}:/app/${name} -w /app crusttech/front-dev yarn add axios --save
