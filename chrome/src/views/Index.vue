@@ -1,6 +1,5 @@
 <template>
   <div id="crust-chrome" class="crust">
-    index
     <router-multi-view/>
   </div>
 </template>

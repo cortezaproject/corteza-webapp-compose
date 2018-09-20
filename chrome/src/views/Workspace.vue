@@ -18,17 +18,13 @@ export default {
         {
           class: 'fl',
           rows: [
-            { 'component': Panel, 'link': 'https://drive.google.com' },
-            { 'component': Panel, 'link': 'https://web.telegram.org' },
-            { 'component': Panel, 'link': 'https://web.skype.com' },
+            { 'component': Panel, 'link': 'https://latest.rustbucket.io' }
           ],
         },
         {
           class: 'fr',
           rows: [
-            { 'component': Panel, 'link': 'https://www.office.com' },
-            { 'component': Panel, 'link': 'https://dropbox.com' },
-            { 'component': Panel, 'link': 'https://web.whatsapp.com/' },
+            { 'component': Panel, 'link': 'https://latest.rustbucket.io' }
           ],
         },
       ],
@@ -38,6 +34,11 @@ export default {
 </script>
 
 <style>
+body {
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+}
 .fr {
   float: right;
 }
@@ -45,13 +46,13 @@ export default {
   float: left;
 }
 .column {
-  border: 1px solid red;
-  width: 45%;
-  height: 95vh;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  width: 50%;
+  height: 100vh;
 }
 .row {
-  border: 1px solid green;
   width: 100%;
-  height: 15vh;
+  height: 100vh;
 }
 </style>
