@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "vue": "^2.5.17",
+    "vue-multipane": "^0.9.5",
     "vue-router": "^3.0.1",
     "vue-router-multi-view": "^0.0.4",
+    "vuedraggable": "^2.16.0",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
