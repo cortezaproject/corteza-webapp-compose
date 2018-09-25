@@ -1,5 +1,5 @@
 <template>
-  <multipane-resizer></multipane-resizer>
+  <multipane-resizer :dir="dir" :class="dir"></multipane-resizer>
 </template>
 
 <script>
@@ -21,23 +21,24 @@ export default
     {
       type: String,
       required: false,
-      default: 'h',
+      default: 'v',
     },
   },
-
 }
 </script>
 
 <style scoped lang="scss">
 .multipane-resizer {
-  margin: 0; left: 0; /* reset default styling */
-  width: 5px;
+  margin: 0; left: auto; /* reset default styling */
+  width: 0;
+  border:solid 3px #ccc;
   background: rgb(240, 240, 240);
   height: auto;
-  &.v
+  z-index:10;
+  &.h
   {
       width: auto;
-      height:5px;
+      height:15px;
       top:0;
   }
 }

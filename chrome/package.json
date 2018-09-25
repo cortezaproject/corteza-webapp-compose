@@ -11,6 +11,7 @@
   "dependencies": {
     "vue": "^2.5.17",
     "vue-multipane": "^0.9.5",
+    "vue-panel-split": "^1.0.3",
     "vue-router": "^3.0.1",
     "vue-router-multi-view": "^0.0.4",
     "vuedraggable": "^2.16.0",

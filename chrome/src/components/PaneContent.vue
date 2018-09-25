@@ -1,11 +1,25 @@
 <template>
-  <div class="iFrameWrap"><iframe
+  <div class="iFrameWrap">
+    <div class="iFrameContainer">
+      <div
+        v-for="(tab, index) in tabs" :key="index"
+        style="width: 100%; height:100%; overflow-x: hidden; overflow-y: auto;"
+        :class="[ { active : active_tab === tab.id } ]"
+        class="iframeContent"
+      >
+      <br /><br /><h1> tab : {{ index }} </h1>
+
+      contenu : {{ tab.src }}
+      </div>
+      <!-- iframe
       v-for="(tab, index) in tabs" :key="index"
       style="width: 100%; height:100%; overflow-x: hidden; overflow-y: scroll;"
       class="iframeContent"
       :class="[ { active : active_tab === tab.id } ]"
       frameborder="0"
-      :src="tab.src"/></div>
+      :src="tab.src"/ -->
+    </div>
+  </div>
 </template>
 
 <script>
@@ -48,14 +62,20 @@ export default {
   .iFrameWrap
   {
     margin-top:0;
+    height:100%;
     *
     {
       box-sizing: border-box;
     }
+    .iFrameContainer
+    {
+      height:100%;
+      width:100%;
+      background-color:aliceblue;
+    }
     .iframeContent
     {
       display:none;
-      min-height:calc(100vh - 96px);
       &.active
       {
         display:block;

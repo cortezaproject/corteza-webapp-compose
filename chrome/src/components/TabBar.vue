@@ -4,16 +4,16 @@
     :style="(top === ''?'':'top:' + top) + ';' + (left ==='' ? '' : 'left:calc('+left+' - 5px)')">
     <draggable
       v-model="tabs"
-      :options="{ groupe:'tabs' }"
+      :options="{ group:'tabs' }"
       class="tab_list"
       @start="drag=true"
-      @end="drag=false">
+      @end="drag=true">
       <div
         class="tab_item item"
         :class="[ { active : active_tab === tab.id } ]"
         v-for="(tab, index) in tabs" :key="index"
-        @touch="switchActive(tab.id)"
-        @mousedown="switchActive(tab.id)">
+        @touch="switchActive({id:tab.id, pane:pane_id})"
+        @mousedown="switchActive({id:tab.id, pane:pane_id})">
         <span>{{ tab.title }}</span>
         <i class="icon-close"></i>
       </div>
@@ -33,13 +33,13 @@ export default {
     draggable,
   },
   props: {
-    pane_id: {
-      required: true,
-      type: Number,
-    },
     showapps: {
       required: true,
       type: Boolean,
+    },
+    pane_id: {
+      required: true,
+      type: Number,
     },
     top:
     {
@@ -67,7 +67,7 @@ export default {
   methods:
   {
     switchActive: function (newActiveTab) {
-      console.log('newActiveTab ' + newActiveTab)
+      // console.log('newActiveTab ' + newActiveTab.id + ' in pane ' + newActiveTab.pane)
       this.$emit('changeActive', newActiveTab)
     },
   },
@@ -231,7 +231,7 @@ export default {
     .tab_list_wrapper
     {
       background:none;
-      position:fixed;
+      position:absolute;
       //this should be replaced by value from props
       top:0;
       margin:0;
