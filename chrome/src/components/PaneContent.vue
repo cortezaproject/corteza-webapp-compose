@@ -1,7 +1,7 @@
 <template>
   <div class="iFrameWrap">
     <div class="iFrameContainer">
-      <div
+      <!-- div
         v-for="(tab, index) in tabs" :key="index"
         style="width: 100%; height:100%; overflow-x: hidden; overflow-y: auto;"
         :class="[ { active : active_tab === tab.id } ]"
@@ -10,14 +10,14 @@
       <br /><br /><h1> tab : {{ index }} </h1>
 
       contenu : {{ tab.src }}
-      </div>
-      <!-- iframe
+      </div -->
+      <iframe
       v-for="(tab, index) in tabs" :key="index"
       style="width: 100%; height:100%; overflow-x: hidden; overflow-y: scroll;"
       class="iframeContent"
       :class="[ { active : active_tab === tab.id } ]"
       frameborder="0"
-      :src="tab.src"/ -->
+      :src="tab.src" />
     </div>
   </div>
 </template>

@@ -23,7 +23,7 @@ export default {
         id: '01234567891',
         has_notifications: false,
         username: 'BetaUser',
-        avatar: '1',
+        avatar: '',
       },
     }
   },

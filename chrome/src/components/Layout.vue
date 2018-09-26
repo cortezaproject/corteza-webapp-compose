@@ -182,8 +182,8 @@ export default
               },
               {
                 id: 1,
-                title: 'OtherSearch',
-                src: 'https://duckduckgo.com/',
+                title: 'Example',
+                src: 'https://www.example.com/',
               },
             ],
           },
@@ -234,6 +234,7 @@ export default
 </script>
 
 <style scoped lang="scss">
+@import '@/assets/sass/_0.declare.scss';
 .layout
 {
   position:absolute;
@@ -243,6 +244,13 @@ export default
   width:100vw;
   overflow:hidden;
   background-color:black;
+  .is-resizing
+  {
+    iframe
+    {
+      pointer-events:none;
+    }
+  }
 }
 .layout-h .pane
 {
