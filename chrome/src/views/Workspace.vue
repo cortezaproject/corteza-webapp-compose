@@ -7,7 +7,7 @@
 
 <script>
 import Header from '@/components/Header.vue'
-import Layout from '@/components/Layout.1.vue'
+import Layout from '@/components/Layout.2.vue'
 // import Panel from '@/components/Panel.vue'
 
 export default {

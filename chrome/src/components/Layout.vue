@@ -254,7 +254,7 @@ export default
 }
 .layout-h .pane
 {
-
+  height:auto;
 }
 .layout-v .pane
 {

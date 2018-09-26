@@ -35,11 +35,18 @@ export default
   background: rgb(240, 240, 240);
   height: auto;
   z-index:10;
+  &.v
+  {
+    border-top:none;
+    border-bottom:none;
+  }
   &.h
   {
-      width: auto;
-      height:15px;
-      top:0;
+    border-left:none;
+    border-right:none;
+    width: auto;
+    height:0;
+    top:0;
   }
 }
 </style>

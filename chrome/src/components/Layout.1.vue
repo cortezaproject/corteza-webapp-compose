@@ -9,7 +9,8 @@
           class="pane"
           :class="[ { last : (panes.items.length - 1 === paneindex) } ]"
           :style="{ width: (100/panes.items.length)+'%' }"
-          style="background-color:#ddeeff;" :key="paneindex">
+          style="background-color:#ddeeff;"
+          :key="paneindex">
           <TabBar
             :pane_id="paneindex"
             :tabs="pane.tabs"
@@ -159,7 +160,7 @@ export default
 }
 .layout-h .pane
 {
-
+  height:auto;
 }
 .layout-v .pane
 {
