@@ -105,7 +105,7 @@ export default
           // first split is horizontal if type:rowfirst
           itempos: [ [ 0, 1 ], [ 2 ] ],
           // single vue should be :
-          //itempos: [ [ 0 ] ],
+          // itempos: [ [ 0 ] ],
         },
         // items
         items:
@@ -223,5 +223,9 @@ export default
 .layout-v > .pane
 {
   height:100% !important;
+  &.last
+  {
+    width:auto!important;
+  }
 }
 </style>
