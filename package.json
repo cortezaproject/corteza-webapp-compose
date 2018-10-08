@@ -23,6 +23,7 @@
     "@vue/cli-plugin-eslint": "^3.0.1",
     "@vue/cli-plugin-unit-mocha": "^3.0.1",
     "@vue/cli-service": "^3.0.1",
+    "@vue/eslint-config-prettier": "^3.0.4",
     "@vue/eslint-config-standard": "^3.0.1",
     "@vue/test-utils": "^1.0.0-beta.20",
     "chai": "^4.1.2",
