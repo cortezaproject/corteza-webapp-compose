@@ -3,7 +3,7 @@
         <!-- template v-if="error">
       <p>An error occured: {{error}}</p>
     </template -->
-        <template v-if="modules.length == 0">
+        <!-- <template v-if="modules.length == 0">
             <p>No modules have been created yet.</p>
             <a class="btn btn-primary" href="/modules/edit">Create new module</a>
         </template>
@@ -11,7 +11,10 @@
             <li v-for="module in modules" :key="module.id">
                 <a :href="module.links.read">{{module.name}}</a> [<a :href="module.links.edit">edit</a>]
             </li>
-        </ul>
+        </ul> -->
+
+    
+
     </div>
 </template>
 
