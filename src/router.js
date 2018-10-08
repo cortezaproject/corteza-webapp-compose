@@ -20,6 +20,7 @@ function publicRoutes () {
     route('/auth/signin', 'Auth/SignIn'),
     route('/auth/signup', 'Auth/SignUp'),
     route('/auth/signout', 'Auth/SignOut'),
+    route('/builder'),
   ]
 }
 
