@@ -1,5 +1,5 @@
 <template>
-    <div class="container" v-if="loaded">
+    <div class="builder" v-if="loaded">
         <!-- template v-if="error">
       <p>An error occured: {{error}}</p>
     </template -->
@@ -13,15 +13,19 @@
             </li>
         </ul> -->
 
-    
+        <BlockSelector></BlockSelector>
 
     </div>
 </template>
 
 <script>
 import crm from '@/client/crm'
+import BlockSelector from '@/components/builder/BlockSelector'
 
 export default {
+    components: {
+        BlockSelector,
+    },
     data() {
         return {
             loaded: true,
@@ -67,3 +71,8 @@ export default {
     },
 }
 </script>
+<style lang="scss" scoped>
+.builder {
+    display: flex;
+}
+</style>
