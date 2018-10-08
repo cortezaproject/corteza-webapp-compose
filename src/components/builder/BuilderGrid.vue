@@ -1,8 +1,7 @@
 <template>
     <div class="builder-grid">
-        <!-- {{layout}} -->
-        <grid-layout :layout="layout" :col-num="1" :row-height="90" :is-draggable="draggable" :is-resizable="resizable" :vertical-compact="false" :use-css-transforms="true" @layout-updated="onLayoutUpdated">
-            <grid-item v-for="item in layout" v-bind:key="item.i" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" @move="move" @moved="moved" @resize="resize" @resized="resized">
+        <grid-layout :layout="layout" :col-num="2" :row-height="90" :is-draggable="draggable" :is-resizable="resizable" :vertical-compact="true" :use-css-transforms="true">
+            <grid-item v-for="item in layout" v-bind:key="item.i" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" :moved="true">
                 <span class="text">{{item.i}}</span>
                 <div>{{item}}</div>
             </grid-item>
@@ -13,7 +12,6 @@
 import VueGridLayout from 'vue-grid-layout';
 import { mapState } from 'vuex';
 
-const layout = [];
 export default {
     name: 'BuilderGrid',
 
@@ -27,42 +25,13 @@ export default {
     computed: {
         ...mapState({
             layout: state => state.builder.layout,
+            index: state => state.builder.index,
         }),
     },
 
-    methods: {
-        onLayoutUpdated(val) {
-            console.log(val);
-            console.log('onLayoutUpdated');
-            console.log(this.layout);
-            this.$store.commit('builder/setLayout', this.layout);
-        },
+    methods: {},
 
-        move(val) {
-            console.log(val);
-            console.log('move');
-            // this.$store.commit('builder/setLayout', []);
-            //this.layout2 = ;
-        },
-
-        moved(val) {
-            console.log(val);
-            console.log('moved');
-            // this.$store.commit('builder/setLayout', []);
-        },
-
-        resize(val) {
-            console.log(val);
-            console.log('resize');
-            // this.$store.commit('builder/setLayout', []);
-        },
-
-        resized(val) {
-            console.log(val);
-            console.log('resized');
-            // this.$store.commit('builder/setLayout', []);
-        },
-    },
+    mounted() {},
 };
 </script>
 

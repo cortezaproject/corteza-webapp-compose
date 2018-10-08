@@ -8,7 +8,11 @@ Vue.use(Vuex);
 
 const state = {
     //
-    layout: [],
+    layout: [
+        { i: '1', x: 0, y: 0, w: 2, h: 1 },
+        { i: '2', x: 1, y: 1, w: 1, h: 1 },
+    ],
+    index: 0,
 
     //
     blockType: null,
@@ -21,7 +25,7 @@ const state = {
 
     // block data defaults
     defaults: {
-        x: 1,
+        x: 0,
         w: 1,
         h: 1,
     },
@@ -75,9 +79,9 @@ const actions = {
             w: state.defaults.w,
             h: state.defaults.h,
             data: state.addblockFormData,
-            moved: false,
         };
 
+        commit('incrementIndex');
         commit('addBlockToLayout', block);
     },
 };
@@ -94,6 +98,10 @@ const mutations = {
 
     setBlockInLayout(state, block) {
         console.log(block);
+    },
+
+    incrementIndex(state) {
+        state.index++;
     },
 
     /**
