@@ -28,10 +28,6 @@ export default {
             index: state => state.builder.index,
         }),
     },
-
-    methods: {},
-
-    mounted() {},
 };
 </script>
 
