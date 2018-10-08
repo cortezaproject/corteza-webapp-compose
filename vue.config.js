@@ -1,4 +1,5 @@
 module.exports = {
+    lintOnSave: false,
     configureWebpack: {
         // other webpack options to merge in ...
     },
@@ -9,5 +10,4 @@ module.exports = {
         disableHostCheck: true,
     },
     runtimeCompiler: true,
-    lintOnSave: false,
 }

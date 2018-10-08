@@ -51,5 +51,8 @@ export default {
 .block-selector {
     padding: 1em;
     background: lightgrey;
+    position: absolute;
+    bottom: 1em;
+    left: 1em;
 }
 </style>
