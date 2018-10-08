@@ -14,62 +14,65 @@
         </ul> -->
 
         <BlockSelector></BlockSelector>
+        <BuilderGrid></BuilderGrid>
 
     </div>
 </template>
 
 <script>
-import crm from '@/client/crm'
-import BlockSelector from '@/components/builder/BlockSelector'
+import crm from '@/client/crm';
+import BlockSelector from '@/components/builder/BlockSelector';
+import BuilderGrid from '@/components/builder/BuilderGrid';
 
 export default {
     components: {
         BlockSelector,
+        BuilderGrid,
     },
     data() {
         return {
             loaded: true,
             modules: [],
             result: {},
-        }
+        };
     },
 
     created() {
-        this.moduleList()
+        this.moduleList();
     },
 
     methods: {
         moduleList() {
-            this.clearError()
+            this.clearError();
             var moduleList = response => {
                 if ('error' in response.data) {
-                    this.showError(response.data.error.message)
-                    return
+                    this.showError(response.data.error.message);
+                    return;
                 }
                 if (Array.isArray(response.data.response)) {
-                    this.modules.splice(0)
+                    this.modules.splice(0);
                     response.data.response.forEach(module => {
                         module.links = {
                             read: '/modules/' + module.id,
                             edit: '/modules/' + module.id + '/edit',
-                        }
-                        this.modules.push(module)
-                    })
-                    return
+                        };
+                        this.modules.push(module);
+                    });
+                    return;
                 }
-                this.showError('Unexpected response when fetching module list')
-            }
+                this.showError('Unexpected response when fetching module list');
+            };
             var moduleListFinalizer = () => {
-                this.loaded = true
-            }
+                this.loaded = true;
+            };
 
             crm.moduleList()
                 .then(moduleList)
                 .catch(e => this.showError(e))
-                .finally(moduleListFinalizer)
+                .finally(moduleListFinalizer);
         },
     },
-}
+};
 </script>
 <style lang="scss" scoped>
 .builder {

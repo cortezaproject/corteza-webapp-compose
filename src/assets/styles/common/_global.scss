@@ -1,5 +1,6 @@
 html {
     height: 100%;
+    overflow: hidden;
 }
 
 body {
@@ -8,4 +9,9 @@ body {
 
     // font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
     // color: $font-color;
+}
+
+.view {
+    overflow: auto;
+    height: 100%;
 }
