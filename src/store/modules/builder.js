@@ -9,23 +9,24 @@ import SharedService from '../../services/SharedService';
 Vue.use(Vuex);
 
 const state = {
-    //
+    // The layout of the builder
     layout: [{ i: '1', x: 0, y: 0, w: 2, h: 1 }, { i: '2', x: 1, y: 1, w: 1, h: 1 }],
+    // Unkown - may be imporant
     index: 0,
+    // Are (all) the grid items resizable
     resizable: true,
+    // Are (all) the grid items draggable
     draggable: true,
 
-    //
+    // Current selected block type
     blockType: null,
+    // Current jsonSchema (changes with block type)
     jsonSchema: null,
 
-    //
-    addblockFormData: {
-        title: '',
-        url: '',
-    },
+    // Form's model when adding a block
+    addBlockFormData: {},
 
-    // block data defaults
+    // Block data defaults
     defaults: {
         x: 0,
         w: 1,
@@ -56,6 +57,8 @@ const getters = {
 
 const actions = {
     /**
+     * Fetches the correct json schema
+     * then sets (via mutation) the block type and the json schema
      *
      * @param {*} param0
      * @param {*} event
@@ -65,28 +68,32 @@ const actions = {
 
         // Api call to get json schema
         try {
-
             const response = await axios.get(`mock/json-schema-type-${selected}.json`);
 
             commit('setJsonSchema', response.data);
             commit('setBlockType', selected);
-
-
         } catch (e) {
             console.log(e);
         }
-        
-
     },
 
     /**
+     * Gets the last y of the layout
+     * Gets a uniq ID for the block
+     * Create a block taking the current addBlockFormData
+     * Increments the index (mutation)
+     * Adds the block to the layout (mutation)
      *
      * @param {*} param0
      * @param {*} blockData
      */
     handleBlockSelectorFormSubmit({ commit, getters, state }) {
+        // It maybe useless to get this
         const maxY = getters.getMaxY;
+
         const uniqID = SharedService.generateUniqID();
+
+        console.log(state);
 
         const block = {
             i: uniqID,
@@ -94,7 +101,8 @@ const actions = {
             y: maxY,
             w: state.defaults.w,
             h: state.defaults.h,
-            data: state.addblockFormData,
+            data: state.addBlockFormData,
+            blockType: state.blockType,
         };
 
         commit('incrementIndex');
@@ -103,37 +111,26 @@ const actions = {
 };
 
 const mutations = {
-    /**
-     *
-     * @param {*} state
-     * @param {*} layout
-     */
     setLayout(state, newValue) {
         state.layout = newValue;
-    },
-
-    incrementIndex(state) {
-        state.index++;
     },
 
     setJsonSchema(state, newValue) {
         state.jsonSchema = newValue;
     },
 
-    /**
-     *
-     * @param {*} state
-     * @param {*} newValue
-     */
     setBlockType(state, newValue) {
         state.blockType = newValue;
     },
 
-    /**
-     *
-     * @param {*} state
-     * @param {*} block
-     */
+    addBlockFormData(state, newValue) {
+        state.addBlockFormData = newValue;
+    },
+
+    incrementIndex(state) {
+        state.index++;
+    },
+
     addBlockToLayout(state, block) {
         const layout = JSON.parse(JSON.stringify(state.layout));
         layout.push(block);

@@ -2,7 +2,8 @@
     <div class="builder-grid">
         <grid-layout :layout="layout" :col-num="2" :row-height="90" :is-draggable="draggable" :is-resizable="resizable" :vertical-compact="true" :use-css-transforms="true">
             <grid-item v-for="item in layout" v-bind:key="item.i" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" :moved="true">
-                <div>{{item.data}}</div>
+                <h2 v-if="item.blockType">{{ item.blockType }}</h2>
+                <div>{{ item.data }}</div>
             </grid-item>
         </grid-layout>
     </div>

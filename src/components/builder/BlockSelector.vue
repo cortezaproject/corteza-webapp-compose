@@ -8,7 +8,7 @@
             <option v-bind:value="'google-meet'">Google meet</option>
         </select>
 
-        <FormSchema ref="formSchema" v-model="model" @submit.prevent="submit">
+        <FormSchema ref="formSchema" v-model="addBlockFormData" @submit.prevent="handleBlockSelectorFormSubmit">
             <button type="submit">Insert Block</button>
         </FormSchema>
 
@@ -17,12 +17,12 @@
 
             <div class="input-container">
                 <label for="title">Title</label>
-                <input type="text" name="title" id="title" v-model="addblockFormData.title">
+                <input type="text" name="title" id="title" v-model="addBlockFormData.title">
             </div>
 
             <div class="input-container">
                 <label for="url">URL</label>
-                <input type="text" name="url" id="url" v-model="addblockFormData.url">
+                <input type="text" name="url" id="url" v-model="addBlockFormData.url">
             </div>
 
             <input type="submit" value="Add block">
@@ -53,8 +53,16 @@ export default {
         ...mapState({
             blockType: state => state.builder.blockType,
             jsonSchema: state => state.builder.jsonSchema,
-            addblockFormData: state => state.builder.addblockFormData,
         }),
+
+        addBlockFormData: {
+            get() {
+                return this.$store.state.builder.addBlockFormData;
+            },
+            set(newValue) {
+                this.$store.commit('builder/addBlockFormData', newValue);
+            },
+        },
     },
 
     methods: {
