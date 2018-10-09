@@ -13,6 +13,8 @@ const state = {
         { i: '2', x: 1, y: 1, w: 1, h: 1 },
     ],
     index: 0,
+    resizable: true,
+    draggable: true,
 
     //
     blockType: null,

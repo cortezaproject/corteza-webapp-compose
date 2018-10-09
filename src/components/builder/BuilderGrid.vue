@@ -15,16 +15,11 @@ import { mapState } from 'vuex';
 export default {
     name: 'BuilderGrid',
 
-    data() {
-        return {
-            draggable: true,
-            resizable: true,
-        };
-    },
-
     computed: {
         ...mapState({
             layout: state => state.builder.layout,
+            draggable: state => state.builder.draggable,
+            resizable: state => state.builder.resizable,
             index: state => state.builder.index,
         }),
     },
@@ -37,6 +32,8 @@ export default {
     margin: 0 auto;
 }
 
+/* vue-grid-layout 
+ * ================================================== */
 .layoutJSON {
     background: #ddd;
     border: 1px solid black;
