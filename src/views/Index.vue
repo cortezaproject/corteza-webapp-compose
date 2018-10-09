@@ -13,8 +13,8 @@
       </li>
     </ul>
 
-    <a href="/auth/signin">Sign In</a>
-    <a href="/auth/signout">Sign Out</a>
+    <a href="/crm/auth/signin">Sign In</a>
+    <a href="/crm/auth/signout">Sign Out</a>
   </div>
 </template>
 

@@ -7,88 +7,54 @@
           <span class="crust_main-header_title__pf">platform</span>
         </div>
       </div>
-      <form v-on:submit.prevent="onSubmit" class="large-form">
-        <div class="error" v-if="authError">
-          {{ authError }}
-        </div>
-
-        <div class="input-wrap">
-          <label for="api">Crust server API</label>
-          <input type="text" name="api" id="api" v-model="baseUrl" required :disabled="processing" autocomplete="baseUrl" />
-        </div>
-
-        <div class="input-wrap">
-          <label for="username">Username</label>
-          <input type="text" id="username" name="username" v-model="username" required  :disabled="processing" autocomplete="username" />
-        </div>
-
-        <div class="input-wrap">
-          <label for="password" class="with-note float-left">Password</label>
-          <span class="form-link-wrap float-right"><a class="form-link" href="/url-for-lost-password">Lost-Password ?</a></span>
-          <input type="password" id="password" name="password" v-model="password" required :disabled="processing" autocomplete="password" />
-        </div>
-
-        <div class="button-wrap">
-          <button class="validate center-button" type="submit" :disabled="processing">Sign in</button>
-        </div>
-
-        <div class="form-footer-info">
-          No account yet? <router-link :to="{name:'signup'}" class="form-link">Sign up now.</router-link> It's free.
-        </div>
-      </form>
+      <section>
+        <a :href="oidc">Login</a>
+      </section>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data () {
     return {
-      baseUrl: '',
-      username: '',
-      password: '',
+      oidc: this.$auth.baseURL() + '/oidc',
     }
   },
 
   computed: {
     ...mapGetters({
-      orgBaseUrl: 'auth/baseUrl',
-      authError: 'auth/error',
-      processing: 'auth/processing',
       isAuthenticated: 'auth/isAuthenticated',
     }),
   },
 
-  mounted () {
-    if (this.isAuthenticated) {
-      this.$router.push('/')
-    }
-
-    // Set current/default base url from the store
-    this.baseUrl = this.orgBaseUrl
-  },
-
-  watch: {
-    isAuthenticated: function (isAuthenticated) {
-      if (isAuthenticated) {
-        this.$router.push('/')
-      }
-    },
-  },
-
   methods: {
     ...mapActions({
-      authenticate: 'auth/authenticate',
+      setUser: 'auth/setUser',
     }),
+  },
 
-    onSubmit () {
-      this.authenticate({ baseUrl: this.baseUrl, username: this.username, password: this.password })
-    },
+  mounted () {
+    this.$auth.check().then((user) => {
+      this.$router.push({ name: 'root' })
+    }).catch((error) => {
+      console.error(error)
+    })
   },
 }
 </script>
 
 <style scoped>
+section {
+  text-align: center;
+  height: 120px;
+}
+
+section a {
+  padding: 50px;
+  font-size: 20px;
+  text-decoration: none;
+}
 </style>

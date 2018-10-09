@@ -16,19 +16,18 @@ export default new VueRouter({
 
 function publicRoutes () {
   return [
-    route('/'),
-    route('/auth/signin', 'Auth/SignIn'),
-    route('/auth/signup', 'Auth/SignUp'),
-    route('/auth/signout', 'Auth/SignOut'),
+    route('/crm', 'Index'),
+    route('/crm/auth/signin', 'Auth/SignIn'),
+    route('/crm/auth/signout', 'Auth/SignOut'),
     route('/builder'),
   ]
 }
 
 function privateRoutes () {
   return [
-    route('/modules/edit'),
-    route('/modules/:id', 'Modules/Index'),
-    route('/modules/:id/edit', 'Modules/Edit'),
+    route('/crm/modules/edit'),
+    route('/crm/modules/:id', 'Modules/Index'),
+    route('/crm/modules/:id/edit', 'Modules/Edit'),
   ]
 }
 
