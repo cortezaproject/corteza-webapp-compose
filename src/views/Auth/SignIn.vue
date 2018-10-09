@@ -11,7 +11,6 @@
         <a :href="oidc">Login</a>
       </section>
     </div>
-  </div>
 </template>
 
 <script>
