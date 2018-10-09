@@ -634,6 +634,10 @@
     lodash "^4.17.5"
     to-fast-properties "^2.0.0"
 
+"@formschema/native@^2.0.0-alpha.2":
+  version "2.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@formschema/native/-/native-2.0.0-alpha.2.tgz#793dabb7bfe5c2359124a3f44aeaa0ab9f309e5d"
+
 "@intervolga/optimize-cssnano-plugin@^1.0.5":
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/@intervolga/optimize-cssnano-plugin/-/optimize-cssnano-plugin-1.0.6.tgz#be7c7846128b88f6a9b1d1261a0ad06eb5c0fdf8"

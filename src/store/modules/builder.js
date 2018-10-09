@@ -1,5 +1,7 @@
 'use strict';
 
+// import crm from '@/client/crm';
+import axios from 'axios';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import SharedService from '../../services/SharedService';
@@ -8,16 +10,14 @@ Vue.use(Vuex);
 
 const state = {
     //
-    layout: [
-        { i: '1', x: 0, y: 0, w: 2, h: 1 },
-        { i: '2', x: 1, y: 1, w: 1, h: 1 },
-    ],
+    layout: [{ i: '1', x: 0, y: 0, w: 2, h: 1 }, { i: '2', x: 1, y: 1, w: 1, h: 1 }],
     index: 0,
     resizable: true,
     draggable: true,
 
     //
     blockType: null,
+    jsonSchema: null,
 
     //
     addblockFormData: {
@@ -60,9 +60,23 @@ const actions = {
      * @param {*} param0
      * @param {*} event
      */
-    handleBlockTypeChange({ commit }, event) {
+    async handleBlockTypeChange({ commit }, event) {
         const selected = event.target.value;
-        commit('setBlockType', selected);
+
+        // Api call to get json schema
+        try {
+
+            const response = await axios.get(`mock/json-schema-type-${selected}.json`);
+
+            commit('setJsonSchema', response.data);
+            commit('setBlockType', selected);
+
+
+        } catch (e) {
+            console.log(e);
+        }
+        
+
     },
 
     /**
@@ -94,16 +108,16 @@ const mutations = {
      * @param {*} state
      * @param {*} layout
      */
-    setLayout(state, layout) {
-        state.layout = layout;
-    },
-
-    setBlockInLayout(state, block) {
-        console.log(block);
+    setLayout(state, newValue) {
+        state.layout = newValue;
     },
 
     incrementIndex(state) {
         state.index++;
+    },
+
+    setJsonSchema(state, newValue) {
+        state.jsonSchema = newValue;
     },
 
     /**

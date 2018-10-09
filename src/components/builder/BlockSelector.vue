@@ -8,8 +8,12 @@
             <option v-bind:value="'google-meet'">Google meet</option>
         </select>
 
-        <form @submit.prevent="handleBlockSelectorFormSubmit">
-            <!-- This will need to be dynamic -->
+        <FormSchema ref="formSchema" v-model="model" @submit.prevent="submit">
+            <button type="submit">Insert Block</button>
+        </FormSchema>
+
+        <!-- This will need to be dynamic -->
+        <!-- <form @submit.prevent="handleBlockSelectorFormSubmit">
 
             <div class="input-container">
                 <label for="title">Title</label>
@@ -23,31 +27,53 @@
 
             <input type="submit" value="Add block">
 
-        </form>
+        </form> -->
 
     </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import FormSchema from '@formschema/native';
+import axios from 'axios';
 
 export default {
     name: 'BlockSelector',
+    components: {
+        FormSchema,
+    },
+
+    data() {
+        return {
+            model: {},
+        };
+    },
 
     computed: {
         ...mapState({
             blockType: state => state.builder.blockType,
+            jsonSchema: state => state.builder.jsonSchema,
             addblockFormData: state => state.builder.addblockFormData,
         }),
     },
 
     methods: {
         ...mapActions('builder', ['handleBlockTypeChange', 'handleBlockSelectorFormSubmit']),
+
+        submit(e) {
+            console.log('submitted', this.model);
+        },
+    },
+
+    watch: {
+        jsonSchema(value) {
+            this.$refs.formSchema.load(value);
+        },
     },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .block-selector {
     z-index: 999;
     padding: 1em;
@@ -55,5 +81,17 @@ export default {
     position: absolute;
     bottom: 2em;
     left: 2em;
+}
+
+[id^='form-schema'] {
+    margin: 20px 0;
+    padding: 1em;
+    border: 1px dashed grey;
+
+    form {
+        & > div {
+            margin-bottom: 1em;
+        }
+    }
 }
 </style>

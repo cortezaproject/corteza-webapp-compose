@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "title": {
+            "title": "Block Title Statistics",
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 80,
+            "attrs": {
+                "placeholder": "Block Title",
+                "title": "Please enter the block title"
+            }
+        },
+        "lists": {
+            "title": "Un select",
+            "type": "string",
+            "enum": ["Select 1", "Select 2"]
+        }
+    },
+    "required": ["title"]
+}
