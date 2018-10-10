@@ -11,10 +11,6 @@
                 "placeholder": "Block Title",
                 "title": "Please enter the block title"
             }
-        },
-        "fixed": {
-            "title": "Is fixed ?",
-            "type": "boolean"
         }
     },
     "required": ["title"]

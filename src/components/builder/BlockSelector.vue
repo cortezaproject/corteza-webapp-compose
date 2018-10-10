@@ -10,9 +10,16 @@
         </select>
 
         <div v-if="blockType" class="form-schema">
+
+            <form class="form-meta">
+                <input type="checkbox" id="fixed" v-model="addBlockFormMeta.fixed">
+                <label for="fixed">Fixed ?</label>
+            </form>
+
             <FormSchema ref="formSchema" v-model="addBlockFormData" @submit.prevent="handleBlockSelectorFormSubmit">
                 <button type="submit">Insert Block</button>
             </FormSchema>
+
         </div>
 
         <!-- This will need to be dynamic -->
@@ -63,7 +70,16 @@ export default {
                 return this.$store.state.builder.addBlockFormData;
             },
             set(newValue) {
-                this.$store.commit('builder/addBlockFormData', newValue);
+                this.$store.commit('builder/setAddBlockFormData', newValue);
+            },
+        },
+
+        addBlockFormMeta: {
+            get() {
+                return this.$store.state.builder.addBlockFormMeta;
+            },
+            set(newValue) {
+                this.$store.commit('builder/setAddBlockFormMeta', newValue);
             },
         },
     },
@@ -92,7 +108,7 @@ export default {
     left: 2em;
 }
 
-[id^='form-schema'] {
+[id^='form-schema'], form.form-meta {
     margin: 20px 0;
     padding: 1em;
     border: 1px dashed grey;

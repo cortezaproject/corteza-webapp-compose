@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import createLogger from 'vuex/dist/logger';
 import auth from './auth';
 import builder from './modules/builder';
 
@@ -11,7 +10,7 @@ const store = new Vuex.Store({
         auth,
         builder,
     },
-    plugins: [createLogger()],
+    // plugins: [createLogger()],
 });
 
 export default store;

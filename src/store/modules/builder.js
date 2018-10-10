@@ -1,15 +1,15 @@
 'use strict';
 
 // import crm from '@/client/crm';
+import SharedService from '@/services/SharedService';
 import Vue from 'vue';
 import Vuex from 'vuex';
-import SharedService from '../../services/SharedService';
 
 Vue.use(Vuex);
 
 const state = {
     // The layout of the builder
-    layout: [{ i: '1', x: 0, y: 0, w: 2, h: 1 }, { i: '2', x: 1, y: 1, w: 1, h: 1 }],
+    layout: [{ i: '2', x: 1, y: 1, w: 1, h: 1, meta: { fixed: false } }],
     // Unkown - may be imporant
     index: 0,
     // Are (all) the grid items resizable
@@ -24,6 +24,7 @@ const state = {
 
     // Form's model when adding a block
     addBlockFormData: {},
+    addBlockFormMeta: {},
 
     // Block data defaults
     defaults: {
@@ -89,18 +90,30 @@ const actions = {
      * @param {*} blockData
      */
     handleBlockSelectorFormSubmit({ commit, getters, state }) {
-        // It maybe useless to get this
-        const maxY = getters.getMaxY;
+        console.log(state.addBlockFormData, state.addBlockFormMeta);
 
+        // It maybe useless to get this
+        let y = getters.getMaxY;
         const uniqID = SharedService.generateUniqID();
+
+        // console.log(state);
+
+        if (state.addBlockFormMeta.fixed) {
+            commit('moveAllBlocksY');
+
+            y = 0;
+        }
+
+        console.log(y);
 
         const block = {
             i: uniqID,
             x: state.defaults.x,
-            y: maxY,
+            y,
             w: state.defaults.w,
             h: state.defaults.h,
             data: state.addBlockFormData,
+            meta: state.addBlockFormMeta,
             blockType: state.blockType,
         };
 
@@ -123,8 +136,12 @@ const mutations = {
         state.blockType = newValue;
     },
 
-    addBlockFormData(state, newValue) {
+    setAddBlockFormData(state, newValue) {
         state.addBlockFormData = newValue;
+    },
+
+    setAddBlockFormMeta(state, newValue) {
+        state.addBlockFormMeta = newValue;
     },
 
     resetAddBlockFormData(state) {
