@@ -9,9 +9,11 @@
             <option v-bind:value="'header'">Header</option>
         </select>
 
-        <FormSchema ref="formSchema" v-model="addBlockFormData" @submit.prevent="handleBlockSelectorFormSubmit">
-            <button type="submit">Insert Block</button>
-        </FormSchema>
+        <div v-if="blockType" class="form-schema">
+            <FormSchema ref="formSchema" v-model="addBlockFormData" @submit.prevent="handleBlockSelectorFormSubmit">
+                <button type="submit">Insert Block</button>
+            </FormSchema>
+        </div>
 
         <!-- This will need to be dynamic -->
         <!-- <form @submit.prevent="handleBlockSelectorFormSubmit">
@@ -68,15 +70,13 @@ export default {
 
     methods: {
         ...mapActions('builder', ['handleBlockTypeChange', 'handleBlockSelectorFormSubmit']),
-
-        submit(e) {
-            console.log('submitted', this.model);
-        },
     },
 
     watch: {
         jsonSchema(value) {
-            this.$refs.formSchema.load(value);
+            setTimeout(() => {
+                this.$refs.formSchema.load(value);
+            }, 0);
         },
     },
 };

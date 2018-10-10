@@ -94,8 +94,6 @@ const actions = {
 
         const uniqID = SharedService.generateUniqID();
 
-        console.log(state);
-
         const block = {
             i: uniqID,
             x: state.defaults.x,
@@ -108,6 +106,7 @@ const actions = {
 
         commit('incrementIndex');
         commit('addBlockToLayout', block);
+        commit('resetAddBlockFormData');
     },
 };
 
@@ -126,6 +125,11 @@ const mutations = {
 
     addBlockFormData(state, newValue) {
         state.addBlockFormData = newValue;
+    },
+
+    resetAddBlockFormData(state) {
+        state.blockType = null;
+        state.addBlockFormData = {};
     },
 
     incrementIndex(state) {
