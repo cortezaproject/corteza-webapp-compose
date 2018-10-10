@@ -6,6 +6,7 @@
             <option v-bind:value="'stats'">Stats</option>
             <option v-bind:value="'slack-channel'">Slack Channel</option>
             <option v-bind:value="'google-meet'">Google meet</option>
+            <option v-bind:value="'header'">Header</option>
         </select>
 
         <FormSchema ref="formSchema" v-model="addBlockFormData" @submit.prevent="handleBlockSelectorFormSubmit">

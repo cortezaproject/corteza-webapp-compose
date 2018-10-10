@@ -1,7 +1,6 @@
 'use strict';
 
 // import crm from '@/client/crm';
-import axios from 'axios';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import SharedService from '../../services/SharedService';
@@ -55,6 +54,8 @@ const getters = {
     },
 };
 
+// TEMP
+
 const actions = {
     /**
      * Fetches the correct json schema
@@ -68,9 +69,9 @@ const actions = {
 
         // Api call to get json schema
         try {
-            const response = await axios.get(`mock/json-schema-type-${selected}.json`);
+            const json = require(`../../api/mock/json-schema-type-${selected}.json`);
 
-            commit('setJsonSchema', response.data);
+            commit('setJsonSchema', json);
             commit('setBlockType', selected);
         } catch (e) {
             console.log(e);
