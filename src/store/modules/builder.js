@@ -1,38 +1,42 @@
 'use strict'
 
 // import crm from '@/client/crm';
-import SharedService from '@/services/SharedService'
-import Vue from 'vue'
-import Vuex from 'vuex'
+import SharedService from '@/services/SharedService';
+import Vue from 'vue';
+import Vuex from 'vuex';
 
 Vue.use(Vuex)
 
 const state = {
-  // The layout of the builder
-  layout: [{ i: '2', x: 1, y: 1, w: 1, h: 1, meta: { fixed: false } }],
-  // Unkown - may be imporant
-  index: 0,
-  // Are (all) the grid items resizable
-  resizable: true,
-  // Are (all) the grid items draggable
-  draggable: true,
+    // The layout of the builder
+    layout: [{ i: '2', x: 1, y: 1, w: 1, h: 1, meta: { fixed: false } }],
+    // Unkown - may be imporant
+    index: 0,
+    // Are (all) the grid items resizable
+    resizable: true,
+    // Are (all) the grid items draggable
+    draggable: true,
+    //
+    colNum: 2,
+    //
+    rowHeight: 90,
 
-  // Current selected block type
-  blockType: null,
-  // Current jsonSchema (changes with block type)
-  jsonSchema: null,
+    // Current selected block type
+    blockType: null,
+    // Current jsonSchema (changes with block type)
+    jsonSchema: null,
 
-  // Form's model when adding a block
-  addBlockFormData: {},
-  addBlockFormMeta: {},
+    // Form's model when adding a block
+    addBlockFormData: {},
+    addBlockFormMeta: {},
 
-  // Block data defaults
-  defaults: {
-    x: 0,
-    w: 1,
-    h: 1,
-  },
-}
+    // Block data defaults
+    defaults: {
+        x: 0,
+        w: 1,
+        h: 1,
+    },
+};
 
 const getters = {
   /**
@@ -92,30 +96,40 @@ const actions = {
   handleBlockSelectorFormSubmit ({ commit, getters, state }) {
     console.log(state.addBlockFormData, state.addBlockFormMeta)
 
-    // It maybe useless to get this
-    let y = getters.getMaxY
-    const uniqID = SharedService.generateUniqID()
+        // Index
+        const i = SharedService.generateUniqID();
 
-    // console.log(state);
+        // X value
+        const x = state.defaults.x;
+
+        // It maybe useless to get this
+        let y = getters.getMaxY;
+
+        // Width
+        let w = state.defaults.w;
+
+        // Height
+        const h = state.defaults.h;
 
     if (state.addBlockFormMeta.fixed) {
       commit('moveAllBlocksY')
 
-      y = 0
-    }
+            y = 0;
+            w = state.colNum;
+        }
 
     console.log(y)
 
-    const block = {
-      i: uniqID,
-      x: state.defaults.x,
-      y,
-      w: state.defaults.w,
-      h: state.defaults.h,
-      data: state.addBlockFormData,
-      meta: state.addBlockFormMeta,
-      blockType: state.blockType,
-    }
+        const block = {
+            i,
+            x,
+            y,
+            w,
+            h,
+            data: state.addBlockFormData,
+            meta: state.addBlockFormMeta,
+            blockType: state.blockType,
+        };
 
     commit('incrementIndex')
     commit('addBlockToLayout', block)
@@ -157,9 +171,15 @@ const mutations = {
     const layout = JSON.parse(JSON.stringify(state.layout))
     layout.push(block)
 
-    state.layout = layout
-  },
-}
+        state.layout = layout;
+    },
+
+    moveAllBlocksY(state) {
+        state.layout.map(o => {
+            console.log(o);
+        });
+    },
+};
 
 export default {
   namespaced: true,

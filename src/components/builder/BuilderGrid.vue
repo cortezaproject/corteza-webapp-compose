@@ -1,6 +1,6 @@
 <template>
     <div class="builder-grid">
-        <grid-layout :layout="layout" :col-num="2" :row-height="90" :is-draggable="draggable" :is-resizable="resizable" :vertical-compact="true" :use-css-transforms="true">
+        <grid-layout :layout="layout" :col-num="colNum" :row-height="rowHeight" :is-draggable="draggable" :is-resizable="resizable" :vertical-compact="true" :use-css-transforms="true">
             <grid-item v-for="item in layout" v-bind:key="item.i" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" v-bind:is-draggable="!item.meta.fixed">
                 <!-- <h2 v-if="item.blockType">{{ item.blockType }}</h2> -->
                 <div>{{ item }}</div>
@@ -21,10 +21,12 @@ export default {
       layout: state => state.builder.layout,
       draggable: state => state.builder.draggable,
       resizable: state => state.builder.resizable,
+      colNum: state => state.builder.colNum,
+      rowHeight: state => state.builder.rowHeight,
       index: state => state.builder.index,
     }),
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
