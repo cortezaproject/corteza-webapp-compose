@@ -93,9 +93,7 @@ const actions = {
      * @param {*} param0
      * @param {*} blockData
      */
-  handleBlockSelectorFormSubmit ({ commit, getters, state }) {
-    console.log(state.addBlockFormData, state.addBlockFormMeta)
-
+    handleBlockSelectorFormSubmit({ commit, getters, state }) {
         // Index
         const i = SharedService.generateUniqID();
 
@@ -117,8 +115,6 @@ const actions = {
             y = 0;
             w = state.colNum;
         }
-
-    console.log(y)
 
         const block = {
             i,
@@ -176,7 +172,7 @@ const mutations = {
 
     moveAllBlocksY(state) {
         state.layout.map(o => {
-            console.log(o);
+            o.y ++;
         });
     },
 };
