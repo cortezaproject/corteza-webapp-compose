@@ -6,6 +6,9 @@ docker:
 enter:
 	docker run -it --env-file .env.local --net=host -v ${PWD}:/app -w /app crusttech/front-dev
 
+install:
+	docker run -it --env-file .env.local --net=host -v ${PWD}/${name}:/app/${name} -w /app/${name} crusttech/front-dev yarn install
+
 serve:
 	docker run -it --env-file .env.local --net=host -v ${PWD}/${name}:/app/${name} -w /app/${name} crusttech/front-dev yarn serve
 
