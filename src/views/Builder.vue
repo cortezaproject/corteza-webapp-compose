@@ -20,58 +20,59 @@
 </template>
 
 <script>
-import BlockSelector from '@/components/builder/BlockSelector';
-import BuilderGrid from '@/components/builder/BuilderGrid';
+import BlockSelector from '@/components/builder/BlockSelector'
+import BuilderGrid from '@/components/builder/BuilderGrid'
 
 export default {
-    components: {
-        BlockSelector,
-        BuilderGrid,
-    },
-    data() {
-        return {
-            loaded: true,
-            modules: [],
-            result: {},
-        };
-    },
+  components: {
+    BlockSelector,
+    BuilderGrid,
+  },
+  data () {
+    return {
+      loaded: true,
+      modules: [],
+      result: {},
+    }
+  },
 
-    created() {
-        this.moduleList();
-    },
+  created () {
+    this.moduleList()
+  },
 
-    methods: {
-        moduleList() {
-            this.clearError();
-            var moduleList = response => {
-                if ('error' in response.data) {
-                    this.showError(response.data.error.message);
-                    return;
-                }
-                if (Array.isArray(response.data.response)) {
-                    this.modules.splice(0);
-                    response.data.response.forEach(module => {
-                        module.links = {
-                            read: '/modules/' + module.id,
-                            edit: '/modules/' + module.id + '/edit',
-                        };
-                        this.modules.push(module);
-                    });
-                    return;
-                }
-                this.showError('Unexpected response when fetching module list');
-            };
-            var moduleListFinalizer = () => {
-                this.loaded = true;
-            };
+  methods: {
+    moduleList () {
+      this.clearError()
+      var moduleList = response => {
+        if ('error' in response.data) {
+          this.showError(response.data.error.message)
+          return
+        }
+        if (Array.isArray(response.data.response)) {
+          this.modules.splice(0)
+          response.data.response.forEach(module => {
+            module.links = {
+              read: '/modules/' + module.id,
+              edit: '/modules/' + module.id + '/edit',
+            }
+            this.modules.push(module)
+          })
+          return
+        }
+        this.showError('Unexpected response when fetching module list')
+      }
+      var moduleListFinalizer = () => {
+        this.loaded = true
+      }
 
-            this.$crm.moduleList()
-                .then(moduleList)
-                .catch(e => this.showError(e))
-                .finally(moduleListFinalizer);
-        },
+      this.$crm
+        .moduleList()
+        .then(moduleList)
+        .catch(e => this.showError(e))
+        .finally(moduleListFinalizer)
     },
-};
+  },
+}
 </script>
 <style lang="scss" scoped>
 .builder {

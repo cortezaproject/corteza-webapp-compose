@@ -16,6 +16,7 @@ export default new VueRouter({
 
 function publicRoutes () {
   return [
+    route('/'),
     route('/crm', 'Index'),
     route('/crm/auth/signin', 'Auth/SignIn'),
     route('/crm/auth/signout', 'Auth/SignOut'),

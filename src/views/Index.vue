@@ -20,41 +20,42 @@
 
 <script>
 export default {
-    data() {
-        return {
-            loaded: true,
-            modules: [],
-            result: {},
-        };
+  data () {
+    return {
+      loaded: true,
+      modules: [],
+      result: {},
+    }
+  },
+  created () {
+    this.moduleList()
+  },
+  methods: {
+    moduleList () {
+      this.clearError()
+      var moduleList = response => {
+        if (Array.isArray(response.data.response)) {
+          this.modules.splice(0)
+          response.data.response.forEach(module => {
+            module.links = {
+              read: '/modules/' + module.id,
+              edit: '/modules/' + module.id + '/edit',
+            }
+            this.modules.push(module)
+          })
+          return
+        }
+        this.showError('Unexpected response when fetching module list')
+      }
+      var moduleListFinalizer = () => {
+        this.loaded = true
+      }
+      this.$crm
+        .moduleList()
+        .then(moduleList)
+        .catch(e => this.showError(e.message))
+        .finally(moduleListFinalizer)
     },
-    created() {
-        this.moduleList();
-    },
-    methods: {
-        moduleList() {
-            this.clearError();
-            var moduleList = response => {
-                if (Array.isArray(response.data.response)) {
-                    this.modules.splice(0);
-                    response.data.response.forEach(module => {
-                        module.links = {
-                            read: '/modules/' + module.id,
-                            edit: '/modules/' + module.id + '/edit',
-                        };
-                        this.modules.push(module);
-                    });
-                    return;
-                }
-                this.showError('Unexpected response when fetching module list');
-            };
-            var moduleListFinalizer = () => {
-                this.loaded = true;
-            };
-            this.$crm.moduleList()
-                .then(moduleList)
-                .catch(e => this.showError(e.message))
-                .finally(moduleListFinalizer);
-        },
-    },
-};
+  },
+}
 </script>

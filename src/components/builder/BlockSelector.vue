@@ -43,59 +43,59 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import FormSchema from '@formschema/native';
-import axios from 'axios';
+import { mapState, mapActions } from 'vuex'
+import FormSchema from '@formschema/native'
+import axios from 'axios'
 
 export default {
-    name: 'BlockSelector',
-    components: {
-        FormSchema,
+  name: 'BlockSelector',
+  components: {
+    FormSchema,
+  },
+
+  data () {
+    return {
+      model: {},
+    }
+  },
+
+  computed: {
+    ...mapState({
+      blockType: state => state.builder.blockType,
+      jsonSchema: state => state.builder.jsonSchema,
+    }),
+
+    addBlockFormData: {
+      get () {
+        return this.$store.state.builder.addBlockFormData
+      },
+      set (newValue) {
+        this.$store.commit('builder/setAddBlockFormData', newValue)
+      },
     },
 
-    data() {
-        return {
-            model: {},
-        };
+    addBlockFormMeta: {
+      get () {
+        return this.$store.state.builder.addBlockFormMeta
+      },
+      set (newValue) {
+        this.$store.commit('builder/setAddBlockFormMeta', newValue)
+      },
     },
+  },
 
-    computed: {
-        ...mapState({
-            blockType: state => state.builder.blockType,
-            jsonSchema: state => state.builder.jsonSchema,
-        }),
+  methods: {
+    ...mapActions('builder', ['handleBlockTypeChange', 'handleBlockSelectorFormSubmit']),
+  },
 
-        addBlockFormData: {
-            get() {
-                return this.$store.state.builder.addBlockFormData;
-            },
-            set(newValue) {
-                this.$store.commit('builder/setAddBlockFormData', newValue);
-            },
-        },
-
-        addBlockFormMeta: {
-            get() {
-                return this.$store.state.builder.addBlockFormMeta;
-            },
-            set(newValue) {
-                this.$store.commit('builder/setAddBlockFormMeta', newValue);
-            },
-        },
+  watch: {
+    jsonSchema (value) {
+      setTimeout(() => {
+        this.$refs.formSchema.load(value)
+      }, 0)
     },
-
-    methods: {
-        ...mapActions('builder', ['handleBlockTypeChange', 'handleBlockSelectorFormSubmit']),
-    },
-
-    watch: {
-        jsonSchema(value) {
-            setTimeout(() => {
-                this.$refs.formSchema.load(value);
-            }, 0);
-        },
-    },
-};
+  },
+}
 </script>
 
 <style lang="scss">
@@ -108,7 +108,8 @@ export default {
     left: 2em;
 }
 
-[id^='form-schema'], form.form-meta {
+[id^='form-schema'],
+form.form-meta {
     margin: 20px 0;
     padding: 1em;
     border: 1px dashed grey;

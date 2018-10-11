@@ -97,10 +97,10 @@ export default {
       this.clearError()
 
       // response handler
-      var response = (response) => {
+      var response = response => {
         if (Array.isArray(response.data.response)) {
           this.fields.splice(0)
-          response.data.response.forEach((field) => {
+          response.data.response.forEach(field => {
             this.fields.push(field)
           })
           return
@@ -108,9 +108,10 @@ export default {
         this.showError('Unexpected response when fetching field list')
       }
 
-      this.$crm.fieldList()
+      this.$crm
+        .fieldList()
         .then(response)
-        .catch((e) => this.showError(e.message))
+        .catch(e => this.showError(e.message))
         .finally(() => {
           this.loaded++
         })
@@ -119,7 +120,7 @@ export default {
       this.clearError()
 
       // response handler
-      var response = (resp) => {
+      var response = resp => {
         this.loaded = true
         if (typeof resp.data.response === 'object') {
           this.module = resp.data.response
@@ -128,9 +129,10 @@ export default {
         this.showError('Unexpected response when reading module')
       }
 
-      this.$crm.moduleRead(id)
+      this.$crm
+        .moduleRead(id)
         .then(response)
-        .catch((e) => this.showError(e.message))
+        .catch(e => this.showError(e.message))
         .finally(() => {
           this.loaded++
         })
@@ -139,10 +141,10 @@ export default {
       this.clearError()
 
       // response handler
-      var response = (resp) => {
+      var response = resp => {
         if (Array.isArray(resp.data.response)) {
           this.fields.splice(0)
-          resp.data.response.forEach((field) => {
+          resp.data.response.forEach(field => {
             field.id = this.newID()
             this.fields.push(field)
           })
@@ -160,7 +162,7 @@ export default {
 
       request()
         .then(response)
-        .catch((e) => this.showError(e.message))
+        .catch(e => this.showError(e.message))
         .finally(() => {
           this.loaded++
         })

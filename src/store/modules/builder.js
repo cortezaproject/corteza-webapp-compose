@@ -1,85 +1,85 @@
-'use strict';
+'use strict'
 
 // import crm from '@/client/crm';
-import SharedService from '@/services/SharedService';
-import Vue from 'vue';
-import Vuex from 'vuex';
+import SharedService from '@/services/SharedService'
+import Vue from 'vue'
+import Vuex from 'vuex'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 const state = {
-    // The layout of the builder
-    layout: [{ i: '2', x: 1, y: 1, w: 1, h: 1, meta: { fixed: false } }],
-    // Unkown - may be imporant
-    index: 0,
-    // Are (all) the grid items resizable
-    resizable: true,
-    // Are (all) the grid items draggable
-    draggable: true,
+  // The layout of the builder
+  layout: [{ i: '2', x: 1, y: 1, w: 1, h: 1, meta: { fixed: false } }],
+  // Unkown - may be imporant
+  index: 0,
+  // Are (all) the grid items resizable
+  resizable: true,
+  // Are (all) the grid items draggable
+  draggable: true,
 
-    // Current selected block type
-    blockType: null,
-    // Current jsonSchema (changes with block type)
-    jsonSchema: null,
+  // Current selected block type
+  blockType: null,
+  // Current jsonSchema (changes with block type)
+  jsonSchema: null,
 
-    // Form's model when adding a block
-    addBlockFormData: {},
-    addBlockFormMeta: {},
+  // Form's model when adding a block
+  addBlockFormData: {},
+  addBlockFormMeta: {},
 
-    // Block data defaults
-    defaults: {
-        x: 0,
-        w: 1,
-        h: 1,
-    },
-};
+  // Block data defaults
+  defaults: {
+    x: 0,
+    w: 1,
+    h: 1,
+  },
+}
 
 const getters = {
-    /**
+  /**
      * Return the max y of the layout
      *
      * @param {*} state
      */
-    getMaxY(state) {
-        const array = state.layout.map(o => o.y);
-        let max;
+  getMaxY (state) {
+    const array = state.layout.map(o => o.y)
+    let max
 
-        if (array.length === 0) {
-            max = 0;
-        } else {
-            max = Math.max(...array);
-            max++;
-        }
+    if (array.length === 0) {
+      max = 0
+    } else {
+      max = Math.max(...array)
+      max++
+    }
 
-        return max;
-    },
-};
+    return max
+  },
+}
 
 // TEMP
 
 const actions = {
-    /**
+  /**
      * Fetches the correct json schema
      * then sets (via mutation) the block type and the json schema
      *
      * @param {*} param0
      * @param {*} event
      */
-    async handleBlockTypeChange({ commit }, event) {
-        const selected = event.target.value;
+  async handleBlockTypeChange ({ commit }, event) {
+    const selected = event.target.value
 
-        // Api call to get json schema
-        try {
-            const json = require(`../../api/mock/json-schema-type-${selected}.json`);
+    // Api call to get json schema
+    try {
+      const json = require(`../../api/mock/json-schema-type-${selected}.json`)
 
-            commit('setJsonSchema', json);
-            commit('setBlockType', selected);
-        } catch (e) {
-            console.log(e);
-        }
-    },
+      commit('setJsonSchema', json)
+      commit('setBlockType', selected)
+    } catch (e) {
+      console.log(e)
+    }
+  },
 
-    /**
+  /**
      * Gets the last y of the layout
      * Gets a uniq ID for the block
      * Create a block taking the current addBlockFormData
@@ -89,82 +89,82 @@ const actions = {
      * @param {*} param0
      * @param {*} blockData
      */
-    handleBlockSelectorFormSubmit({ commit, getters, state }) {
-        console.log(state.addBlockFormData, state.addBlockFormMeta);
+  handleBlockSelectorFormSubmit ({ commit, getters, state }) {
+    console.log(state.addBlockFormData, state.addBlockFormMeta)
 
-        // It maybe useless to get this
-        let y = getters.getMaxY;
-        const uniqID = SharedService.generateUniqID();
+    // It maybe useless to get this
+    let y = getters.getMaxY
+    const uniqID = SharedService.generateUniqID()
 
-        // console.log(state);
+    // console.log(state);
 
-        if (state.addBlockFormMeta.fixed) {
-            commit('moveAllBlocksY');
+    if (state.addBlockFormMeta.fixed) {
+      commit('moveAllBlocksY')
 
-            y = 0;
-        }
+      y = 0
+    }
 
-        console.log(y);
+    console.log(y)
 
-        const block = {
-            i: uniqID,
-            x: state.defaults.x,
-            y,
-            w: state.defaults.w,
-            h: state.defaults.h,
-            data: state.addBlockFormData,
-            meta: state.addBlockFormMeta,
-            blockType: state.blockType,
-        };
+    const block = {
+      i: uniqID,
+      x: state.defaults.x,
+      y,
+      w: state.defaults.w,
+      h: state.defaults.h,
+      data: state.addBlockFormData,
+      meta: state.addBlockFormMeta,
+      blockType: state.blockType,
+    }
 
-        commit('incrementIndex');
-        commit('addBlockToLayout', block);
-        commit('resetAddBlockFormData');
-    },
-};
+    commit('incrementIndex')
+    commit('addBlockToLayout', block)
+    commit('resetAddBlockFormData')
+  },
+}
 
 const mutations = {
-    setLayout(state, newValue) {
-        state.layout = newValue;
-    },
+  setLayout (state, newValue) {
+    state.layout = newValue
+  },
 
-    setJsonSchema(state, newValue) {
-        state.jsonSchema = newValue;
-    },
+  setJsonSchema (state, newValue) {
+    state.jsonSchema = newValue
+  },
 
-    setBlockType(state, newValue) {
-        state.blockType = newValue;
-    },
+  setBlockType (state, newValue) {
+    state.blockType = newValue
+  },
 
-    setAddBlockFormData(state, newValue) {
-        state.addBlockFormData = newValue;
-    },
+  setAddBlockFormData (state, newValue) {
+    state.addBlockFormData = newValue
+  },
 
-    setAddBlockFormMeta(state, newValue) {
-        state.addBlockFormMeta = newValue;
-    },
+  setAddBlockFormMeta (state, newValue) {
+    state.addBlockFormMeta = newValue
+  },
 
-    resetAddBlockFormData(state) {
-        state.blockType = null;
-        state.addBlockFormData = {};
-    },
+  resetAddBlockFormData (state) {
+    state.blockType = null
+    state.addBlockFormData = {}
+  },
 
-    incrementIndex(state) {
-        state.index++;
-    },
+  incrementIndex (state) {
+    state.index++
+  },
 
-    addBlockToLayout(state, block) {
-        const layout = JSON.parse(JSON.stringify(state.layout));
-        layout.push(block);
+  addBlockToLayout (state, block) {
+    const layout = JSON.parse(JSON.stringify(state.layout))
+    layout.push(block)
 
-        state.layout = layout;
-    },
-};
+    state.layout = layout
+  },
+}
 
 export default {
-    namespaced: true,
-    state,
-    getters,
-    actions,
-    mutations,
-};
+  namespaced: true,
+  state,
+  getters,
+  actions,
+  mutations,
+}

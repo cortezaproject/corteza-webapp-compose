@@ -1,15 +1,17 @@
 import axios from 'axios'
 
 var JSONbig = require('json-bigint')({ storeAsString: true })
-axios.defaults.transformResponse = [(data) => {
-  return JSONbig.parse(data)
-}]
+axios.defaults.transformResponse = [
+  data => {
+    return JSONbig.parse(data)
+  },
+]
 
-const stdRejection = (reject) => (error) => {
+const stdRejection = reject => error => {
   reject(error)
 }
 
-const stdResolve = (resolve, reject) => (response) => {
+const stdResolve = (resolve, reject) => response => {
   if (response.data.error) {
     reject(response.data.error)
   } else {
@@ -41,6 +43,7 @@ class CRM {
       axios({
         method: 'GET',
         url: endpoint,
+        withCredentials: true,
         headers: this.headers,
         params: {},
         data: {},
@@ -54,6 +57,7 @@ class CRM {
       axios({
         method: 'GET',
         url: endpoint,
+        withCredentials: true,
         headers: this.headers,
         params: {},
         data: {},
@@ -67,9 +71,10 @@ class CRM {
       axios({
         method: 'GET',
         url: endpoint,
+        withCredentials: true,
         headers: this.headers,
         params: {
-          'query': query,
+          query: query,
         },
         data: {},
       }).then(stdResolve(resolve, reject), stdRejection(reject))
@@ -82,11 +87,12 @@ class CRM {
       axios({
         method: 'POST',
         url: endpoint,
+        withCredentials: true,
         headers: this.headers,
         params: {},
         data: {
-          'name': name,
-          'fields': fields,
+          name: name,
+          fields: fields,
         },
       }).then(stdResolve(resolve, reject), stdRejection(reject))
     })
@@ -98,6 +104,7 @@ class CRM {
       axios({
         method: 'GET',
         url: endpoint,
+        withCredentials: true,
         headers: this.headers,
         params: {},
         data: {},
@@ -111,11 +118,12 @@ class CRM {
       axios({
         method: 'POST',
         url: endpoint,
+        withCredentials: true,
         headers: this.headers,
         params: {},
         data: {
-          'name': name,
-          'fields': fields,
+          name: name,
+          fields: fields,
         },
       }).then(stdResolve(resolve, reject), stdRejection(reject))
     })
@@ -127,6 +135,7 @@ class CRM {
       axios({
         method: 'DELETE',
         url: endpoint,
+        withCredentials: true,
         headers: this.headers,
         params: {},
         data: {},
@@ -140,6 +149,7 @@ class CRM {
       axios({
         method: 'GET',
         url: endpoint,
+        withCredentials: true,
         headers: this.headers,
         params: {},
         data: {},
@@ -153,10 +163,11 @@ class CRM {
       axios({
         method: 'POST',
         url: endpoint,
+        withCredentials: true,
         headers: this.headers,
         params: {},
         data: {
-          'fields': fields,
+          fields: fields,
         },
       }).then(stdResolve(resolve, reject), stdRejection(reject))
     })
@@ -168,6 +179,7 @@ class CRM {
       axios({
         method: 'GET',
         url: endpoint,
+        withCredentials: true,
         headers: this.headers,
         params: {},
         data: {},
@@ -181,10 +193,11 @@ class CRM {
       axios({
         method: 'POST',
         url: endpoint,
+        withCredentials: true,
         headers: this.headers,
         params: {},
         data: {
-          'fields': fields,
+          fields: fields,
         },
       }).then(stdResolve(resolve, reject), stdRejection(reject))
     })
@@ -196,6 +209,7 @@ class CRM {
       axios({
         method: 'DELETE',
         url: endpoint,
+        withCredentials: true,
         headers: this.headers,
         params: {},
         data: {},
@@ -204,11 +218,10 @@ class CRM {
   }
 }
 
-
 export default {
   install (Vue, store) {
     const client = new CRM(window.CrustConfig.crm.baseUrl, store.getters['auth/jwt'])
 
     Vue.prototype.$crm = client
-  }
+  },
 }

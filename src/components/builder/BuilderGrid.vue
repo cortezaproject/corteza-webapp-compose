@@ -9,21 +9,21 @@
     </div>
 </template>
 <script>
-import VueGridLayout from 'vue-grid-layout';
-import { mapState } from 'vuex';
+import VueGridLayout from 'vue-grid-layout'
+import { mapState } from 'vuex'
 
 export default {
-    name: 'BuilderGrid',
+  name: 'BuilderGrid',
 
-    computed: {
-        ...mapState({
-            layout: state => state.builder.layout,
-            draggable: state => state.builder.draggable,
-            resizable: state => state.builder.resizable,
-            index: state => state.builder.index,
-        }),
-    },
-};
+  computed: {
+    ...mapState({
+      layout: state => state.builder.layout,
+      draggable: state => state.builder.draggable,
+      resizable: state => state.builder.resizable,
+      index: state => state.builder.index,
+    }),
+  },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -32,7 +32,7 @@ export default {
     margin: 0 auto;
 }
 
-/* vue-grid-layout 
+/* vue-grid-layout
  * ================================================== */
 .layoutJSON {
     background: #ddd;

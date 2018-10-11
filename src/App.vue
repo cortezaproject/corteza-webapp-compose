@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-    created() {},
+  created () {},
 }
 </script>
 
