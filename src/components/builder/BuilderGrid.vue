@@ -9,6 +9,7 @@
     </div>
 </template>
 <script>
+// eslint-disable-next-line
 import VueGridLayout from 'vue-grid-layout'
 import { mapState } from 'vuex'
 

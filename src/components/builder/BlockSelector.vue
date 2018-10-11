@@ -45,7 +45,6 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import FormSchema from '@formschema/native'
-import axios from 'axios'
 
 export default {
   name: 'BlockSelector',
