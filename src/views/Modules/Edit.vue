@@ -98,9 +98,9 @@ export default {
 
       // response handler
       var response = response => {
-        if (Array.isArray(response.data.response)) {
+        if (Array.isArray(response)) {
           this.fields.splice(0)
-          response.data.response.forEach(field => {
+          response.forEach(field => {
             this.fields.push(field)
           })
           return
@@ -122,8 +122,8 @@ export default {
       // response handler
       var response = resp => {
         this.loaded = true
-        if (typeof resp.data.response === 'object') {
-          this.module = resp.data.response
+        if (typeof resp === 'object') {
+          this.module = resp
           return
         }
         this.showError('Unexpected response when reading module')
@@ -142,9 +142,9 @@ export default {
 
       // response handler
       var response = resp => {
-        if (Array.isArray(resp.data.response)) {
+        if (Array.isArray(resp)) {
           this.fields.splice(0)
-          resp.data.response.forEach(field => {
+          resp.forEach(field => {
             field.id = this.newID()
             this.fields.push(field)
           })

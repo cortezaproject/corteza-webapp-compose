@@ -34,9 +34,9 @@ export default {
     moduleList () {
       this.clearError()
       var moduleList = response => {
-        if (Array.isArray(response.data.response)) {
+        if (Array.isArray(response)) {
           this.modules.splice(0)
-          response.data.response.forEach(module => {
+          response.forEach(module => {
             module.links = {
               read: '/modules/' + module.id,
               edit: '/modules/' + module.id + '/edit',
