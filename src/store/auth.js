@@ -1,145 +1,71 @@
-import axios from 'axios';
-import { encode as qsEncode } from 'querystring';
-
-const localStorageKey = 'crust.auth';
+const localStorageKey = 'auth.user'
 
 // Initial state
 const state = {
-    processing: false,
+  user: null,
+}
 
-    baseUrl: null,
-    jwt: null,
-    user: null,
-
-    error: null,
-};
-
-const storedState = JSON.parse(localStorage.getItem(localStorageKey));
-if (storedState !== null && storedState.baseUrl) {
-    console.debug('Auth state loaded from localstorage, values:', storedState);
-
-    state.baseUrl = storedState.baseUrl;
-    state.user = storedState.user;
-    state.jwt = storedState.jwt;
-} else {
-    console.debug('Auth state not found in localstorage');
+const storedJSON = localStorage.getItem(localStorageKey)
+try {
+  if (storedJSON !== null) {
+    const storedUser = JSON.parse(localStorage.getItem(localStorageKey))
+    if (storedUser !== null) {
+      console.debug(`User loaded from localstorage (key:${localStorageKey}):`, storedUser)
+      state.user = storedUser
+    } else {
+      console.debug(`User not found in local storage (key:${localStorageKey})`)
+    }
+  }
+} catch (e) {
+  console.warn(`Failed to parse JSON (${storedJSON}) from local storage:`, e)
+  console.debug(`Cleaning local storage (key:${localStorageKey})`)
+  localStorage.removeItem(localStorageKey)
 }
 
 // getters
 const getters = {
-    // @todo more proper JWT validation
-    isAuthenticated: state => state.jwt !== null && state.jwt.length > 0,
-    baseUrl: state => state.baseUrl || 'https://api.crm.latest.rustbucket.io', // api.sam.crust.kendu.si
-    jwt: state => state.jwt,
-    user: state => state.user,
-    error: state => state.error,
-    processing: state => state.processing,
-};
+  isAuthenticated: (state) => !!state.user,
+  user: (state) => state.user,
+}
 
 // actions
 const actions = {
-    clear({ commit }) {
-        console.debug('Cleaning & flushing state');
-        commit('clean');
-        commit('flush');
-    },
+  clear ({ commit }) {
+    commit('clean')
+    commit('flush')
+  },
 
-    authenticate({ commit }, credentials) {
-        const endpoint = `${credentials.baseUrl}/auth/login`;
-
-        commit('setProcessing', true);
-
-        axios
-            .post(endpoint, qsEncode({ username: credentials.username, password: credentials.password }))
-            .then(({ data }) => {
-                if (data.response && data.response.JWT && data.response.user) {
-                    commit('setError', null);
-                    commit('setBaseUrl', credentials.baseUrl);
-                    commit('setToken', data.response.JWT);
-                    commit('setUser', data.response.user);
-                } else {
-                    commit('setError', data.error.message || 'Unexpected data returned');
-                }
-            })
-            .catch(error => {
-                commit('setError', error || 'Protocol error');
-            })
-            .finally(() => {
-                commit('setProcessing', false);
-                commit('flush');
-            });
-    },
-
-    create({ commit }, info) {
-        const endpoint = `${info.baseUrl}/auth/create`;
-
-        commit('setProcessing', true);
-
-        axios
-            .post(endpoint, qsEncode(info))
-            .then(({ data }) => {
-                if (data.response && data.response.JWT && data.response.user) {
-                    commit('setError', null);
-                    commit('setBaseUrl', info.baseUrl);
-                    commit('setToken', data.response.JWT);
-                    commit('setUser', data.response.user);
-                } else {
-                    commit('setError', data.error.message || 'Unexpected data returned');
-                }
-            })
-            .catch(error => {
-                commit('setError', error || 'Protocol error');
-            })
-            .finally(() => {
-                commit('setProcessing', false);
-                commit('flush');
-            });
-    },
-};
+  setUser ({ commit }, user) {
+    commit('setUser', user)
+    commit('flush')
+  },
+}
 
 // mutations
 const mutations = {
-    flush(state) {
-        localStorage.setItem(
-            localStorageKey,
-            JSON.stringify({
-                baseUrl: state.baseUrl,
-                jwt: state.jwt,
-                user: state.user,
-            }),
-        );
-    },
+  flush (state) {
+    if (state.user) {
+      localStorage.setItem(localStorageKey, JSON.stringify(state.user))
+    } else {
+      localStorage.removeItem(localStorageKey)
+    }
+  },
 
-    clean(state) {
-        state.jwt = null;
-        state.user = null;
-    },
+  clean (state) {
+    state.user = null
+  },
 
-    setProcessing(state, processing) {
-        state.processing = processing;
-    },
-
-    setBaseUrl(state, baseUrl) {
-        state.baseUrl = baseUrl;
-    },
-
-    setToken(state, token) {
-        state.jwt = token;
-    },
-
-    setUser(state, user) {
-        state.user = user;
-    },
-
-    setError(state, error) {
-        state.error = error;
-    },
-};
+  setUser (state, user) {
+    if (user) {
+      state.user = user
+    }
+  },
+}
 
 export default {
-    namespaced: true,
-    state,
-    getters,
-    actions,
-    mutations,
-};
+  namespaced: true,
+  state,
+  getters,
+  actions,
+  mutations,
+}
