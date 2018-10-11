@@ -5,7 +5,7 @@
         </template>
         <template v-if="modules.length == 0">
             <p>No modules have been created yet.</p>
-            <a class="btn btn-primary" href="/modules/edit">Create new module</a>
+            <p><a class="btn btn-primary" href="/modules/edit">Create new module</a></p>
         </template>
         <ul v-else>
             <li v-for="module in modules" :key="module.id">
@@ -13,13 +13,12 @@
             </li>
         </ul>
 
-        <a href="/crm/auth/signin">Sign In</a>
-        <a href="/crm/auth/signout">Sign Out</a>
+        <p><a href="/crm/auth/signin">Sign In</a></p>
+        <p><a href="/crm/auth/signout">Sign Out</a></p>
     </div>
 </template>
 
 <script>
-import crm from '@/client/crm';
 export default {
     data() {
         return {
@@ -35,10 +34,6 @@ export default {
         moduleList() {
             this.clearError();
             var moduleList = response => {
-                if ('error' in response.data) {
-                    this.showError(response.data.error.message);
-                    return;
-                }
                 if (Array.isArray(response.data.response)) {
                     this.modules.splice(0);
                     response.data.response.forEach(module => {
@@ -55,9 +50,9 @@ export default {
             var moduleListFinalizer = () => {
                 this.loaded = true;
             };
-            crm.moduleList()
+            this.$crm.moduleList()
                 .then(moduleList)
-                .catch(e => this.showError(e))
+                .catch(e => this.showError(e.message))
                 .finally(moduleListFinalizer);
         },
     },

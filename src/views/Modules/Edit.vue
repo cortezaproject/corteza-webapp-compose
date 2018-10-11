@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import crm from '@/client/crm'
 import draggable from 'vuedraggable'
 
 export default {
@@ -99,10 +98,6 @@ export default {
 
       // response handler
       var response = (response) => {
-        if ('error' in response.data) {
-          this.showError(response.data.error.message)
-          return
-        }
         if (Array.isArray(response.data.response)) {
           this.fields.splice(0)
           response.data.response.forEach((field) => {
@@ -113,9 +108,9 @@ export default {
         this.showError('Unexpected response when fetching field list')
       }
 
-      crm.fieldList()
+      this.$crm.fieldList()
         .then(response)
-        .catch((e) => this.showError(e))
+        .catch((e) => this.showError(e.message))
         .finally(() => {
           this.loaded++
         })
@@ -126,10 +121,6 @@ export default {
       // response handler
       var response = (resp) => {
         this.loaded = true
-        if ('error' in resp.data) {
-          this.showError(resp.data.error.message)
-          return
-        }
         if (typeof resp.data.response === 'object') {
           this.module = resp.data.response
           return
@@ -137,9 +128,9 @@ export default {
         this.showError('Unexpected response when reading module')
       }
 
-      crm.moduleRead(id)
+      this.$crm.moduleRead(id)
         .then(response)
-        .catch((e) => this.showError(e))
+        .catch((e) => this.showError(e.message))
         .finally(() => {
           this.loaded++
         })
@@ -149,10 +140,6 @@ export default {
 
       // response handler
       var response = (resp) => {
-        if ('error' in resp.data) {
-          this.showError(resp.data.error.message)
-          return
-        }
         if (Array.isArray(resp.data.response)) {
           this.fields.splice(0)
           resp.data.response.forEach((field) => {
@@ -166,14 +153,14 @@ export default {
 
       var request = () => {
         if ('id' in this.params) {
-          return crm.moduleEdit(this.params.id, this.module.name, this.module.fields)
+          return this.$crm.moduleEdit(this.params.id, this.module.name, this.module.fields)
         }
-        return crm.moduleCreate(this.module.name, this.module.fields)
+        return this.$crm.moduleCreate(this.module.name, this.module.fields)
       }
 
       request()
         .then(response)
-        .catch((e) => this.showError(e))
+        .catch((e) => this.showError(e.message))
         .finally(() => {
           this.loaded++
         })

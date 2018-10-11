@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import crm from '@/client/crm';
 import BlockSelector from '@/components/builder/BlockSelector';
 import BuilderGrid from '@/components/builder/BuilderGrid';
 
@@ -66,7 +65,7 @@ export default {
                 this.loaded = true;
             };
 
-            crm.moduleList()
+            this.$crm.moduleList()
                 .then(moduleList)
                 .catch(e => this.showError(e))
                 .finally(moduleListFinalizer);
