@@ -9,8 +9,6 @@
     </div>
 </template>
 <script>
-// eslint-disable-next-line
-import VueGridLayout from 'vue-grid-layout'
 import { mapState } from 'vuex'
 
 export default {
@@ -26,7 +24,7 @@ export default {
       index: state => state.builder.index,
     }),
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

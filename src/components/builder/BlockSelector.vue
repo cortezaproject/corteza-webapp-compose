@@ -1,29 +1,29 @@
 <template>
-    <div class="block-selector">
+  <div class="block-selector">
 
-        <select :value="blockType" v-on:change="handleBlockTypeChange" name="block-type" id="block-type">
-            <option v-bind:value="''" default selected disabled>-- Select a block type --</option>
-            <option v-bind:value="'stats'">Stats</option>
-            <option v-bind:value="'slack-channel'">Slack Channel</option>
-            <option v-bind:value="'google-meet'">Google meet</option>
-            <option v-bind:value="'header'">Header</option>
-        </select>
+    <select :value="blockType" v-on:change="handleBlockTypeChange" name="block-type" id="block-type">
+      <option v-bind:value="''" default selected disabled>-- Select a block type --</option>
+      <option v-bind:value="'stats'">Stats</option>
+      <option v-bind:value="'slack-channel'">Slack Channel</option>
+      <option v-bind:value="'google-meet'">Google meet</option>
+      <option v-bind:value="'header'">Header</option>
+    </select>
 
-        <div v-if="blockType" class="form-schema">
+    <div v-if="blockType" class="form-schema">
 
-            <form class="form-meta">
-                <input type="checkbox" id="fixed" v-model="addBlockFormMeta.fixed">
-                <label for="fixed">Fixed ?</label>
-            </form>
+      <form class="form-meta">
+        <input type="checkbox" id="fixed" v-model="addBlockFormMeta.fixed">
+        <label for="fixed">Fixed ?</label>
+      </form>
 
-            <FormSchema ref="formSchema" v-model="addBlockFormData" @submit.prevent="handleBlockSelectorFormSubmit">
-                <button type="submit">Insert Block</button>
-            </FormSchema>
+      <FormSchema ref="formSchema" v-model="addBlockFormData" @submit.prevent="handleBlockSelectorFormSubmit">
+        <button type="submit">Insert Block</button>
+      </FormSchema>
 
-        </div>
+    </div>
 
-        <!-- This will need to be dynamic -->
-        <!-- <form @submit.prevent="handleBlockSelectorFormSubmit">
+    <!-- This will need to be dynamic -->
+    <!-- <form @submit.prevent="handleBlockSelectorFormSubmit">
 
             <div class="input-container">
                 <label for="title">Title</label>
@@ -39,7 +39,7 @@
 
         </form> -->
 
-    </div>
+  </div>
 </template>
 
 <script>
@@ -99,24 +99,24 @@ export default {
 
 <style lang="scss">
 .block-selector {
-    z-index: 999;
-    padding: 1em;
-    background: lightgrey;
-    position: absolute;
-    bottom: 2em;
-    left: 2em;
+  z-index: 999;
+  padding: 1em;
+  background: lightgrey;
+  position: absolute;
+  bottom: 2em;
+  left: 2em;
 }
 
-[id^='form-schema'],
+[id^="form-schema"],
 form.form-meta {
-    margin: 20px 0;
-    padding: 1em;
-    border: 1px dashed grey;
+  margin: 20px 0;
+  padding: 1em;
+  border: 1px dashed grey;
 
-    form {
-        & > div {
-            margin-bottom: 1em;
-        }
+  form {
+    & > div {
+      margin-bottom: 1em;
     }
+  }
 }
 </style>

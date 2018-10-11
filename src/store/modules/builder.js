@@ -8,34 +8,34 @@ import Vuex from 'vuex';
 Vue.use(Vuex)
 
 const state = {
-    // The layout of the builder
-    layout: [{ i: '2', x: 1, y: 1, w: 1, h: 1, meta: { fixed: false } }],
-    // Unkown - may be imporant
-    index: 0,
-    // Are (all) the grid items resizable
-    resizable: true,
-    // Are (all) the grid items draggable
-    draggable: true,
-    //
-    colNum: 2,
-    //
-    rowHeight: 90,
+  // The layout of the builder
+  layout: [{ i: '2', x: 1, y: 1, w: 1, h: 1, meta: { fixed: false } }],
+  // Unkown - may be imporant
+  index: 0,
+  // Are (all) the grid items resizable
+  resizable: true,
+  // Are (all) the grid items draggable
+  draggable: true,
+  //
+  colNum: 2,
+  //
+  rowHeight: 90,
 
-    // Current selected block type
-    blockType: null,
-    // Current jsonSchema (changes with block type)
-    jsonSchema: null,
+  // Current selected block type
+  blockType: null,
+  // Current jsonSchema (changes with block type)
+  jsonSchema: null,
 
-    // Form's model when adding a block
-    addBlockFormData: {},
-    addBlockFormMeta: {},
+  // Form's model when adding a block
+  addBlockFormData: {},
+  addBlockFormMeta: {},
 
-    // Block data defaults
-    defaults: {
-        x: 0,
-        w: 1,
-        h: 1,
-    },
+  // Block data defaults
+  defaults: {
+    x: 0,
+    w: 1,
+    h: 1,
+  },
 };
 
 const getters = {
@@ -93,39 +93,39 @@ const actions = {
      * @param {*} param0
      * @param {*} blockData
      */
-    handleBlockSelectorFormSubmit({ commit, getters, state }) {
-        // Index
-        const i = SharedService.generateUniqID();
+  handleBlockSelectorFormSubmit ({ commit, getters, state }) {
+    // Index
+    const i = SharedService.generateUniqID();
 
-        // X value
-        const x = state.defaults.x;
+    // X value
+    const x = state.defaults.x;
 
-        // It maybe useless to get this
-        let y = getters.getMaxY;
+    // It maybe useless to get this
+    let y = getters.getMaxY;
 
-        // Width
-        let w = state.defaults.w;
+    // Width
+    let w = state.defaults.w;
 
-        // Height
-        const h = state.defaults.h;
+    // Height
+    const h = state.defaults.h;
 
     if (state.addBlockFormMeta.fixed) {
       commit('moveAllBlocksY')
 
-            y = 0;
-            w = state.colNum;
-        }
+      y = 0;
+      w = state.colNum;
+    }
 
-        const block = {
-            i,
-            x,
-            y,
-            w,
-            h,
-            data: state.addBlockFormData,
-            meta: state.addBlockFormMeta,
-            blockType: state.blockType,
-        };
+    const block = {
+      i,
+      x,
+      y,
+      w,
+      h,
+      data: state.addBlockFormData,
+      meta: state.addBlockFormMeta,
+      blockType: state.blockType,
+    };
 
     commit('incrementIndex')
     commit('addBlockToLayout', block)
@@ -167,14 +167,14 @@ const mutations = {
     const layout = JSON.parse(JSON.stringify(state.layout))
     layout.push(block)
 
-        state.layout = layout;
-    },
+    state.layout = layout;
+  },
 
-    moveAllBlocksY(state) {
-        state.layout.map(o => {
-            o.y ++;
-        });
-    },
+  moveAllBlocksY (state) {
+    state.layout.map(o => {
+      o.y++;
+    });
+  },
 };
 
 export default {
