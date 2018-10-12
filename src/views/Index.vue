@@ -13,6 +13,7 @@
       </li>
     </ul>
     <p><a href="/crm/pages">Pages</a></p>
+    <p><a href="/crm/modules">Modules</a></p>
     <p><a href="/crm/auth/signin">Sign In</a></p>
     <p><a href="/crm/auth/signout">Sign Out</a></p>
   </div>
