@@ -27,7 +27,8 @@
           <li v-for="(page, index) in pages" :key="index" class="list-group-item d-flex justify-content-between">
             <div>{{ page.name }}</div>
             <div class='d-flex align-items-center actions'>
-              <router-link :to="'/crm/pages/' + page.id + '/edit'" class="actions__action">Edit</router-link>
+              <router-link :to="'/builder?pageId=' + page.id" class="actions__action">Organize page</router-link>
+              <router-link :to="'/crm/pages/' + page.id + '/edit'" class="actions__action">Edit data</router-link>
               <button type="button" class="btn btn-default actions__action" v-on:click="handleDeletePage(page.id)">Delete</button>
             </div>
           </li>
