@@ -1,9 +1,9 @@
-import Vue from 'vue'
-import VTooltip from 'v-tooltip'
-
 // Global Axios defaults
-
 import axios from 'axios'
+import BootstrapVue from 'bootstrap-vue'
+import VTooltip from 'v-tooltip'
+import Vue from 'vue'
+
 axios.defaults.timeout = 15000
 
 var JSONbig = require('json-bigint')({ storeAsString: true })
@@ -31,6 +31,8 @@ Vue.config.productionTip = false
 // Global Vue components
 
 Vue.use(VTooltip)
+
+Vue.use(BootstrapVue)
 
 Vue.mixin({
   data () {

@@ -2,6 +2,7 @@
 
 ## Project setup
 ```
+yarn global add @vue/cli
 yarn install
 ```
 

@@ -1,7 +1,7 @@
-import Vue from 'vue'
-import store from '@/store'
-import crm from '@/plugins/crm'
 import auth from '@/plugins/auth'
+import crm from '@/plugins/crm'
+import store from '@/store'
+import Vue from 'vue'
 
 console.log('[plugins] register auth')
 Vue.use(auth, store)
