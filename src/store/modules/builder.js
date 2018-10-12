@@ -119,7 +119,7 @@ const actions = {
 
     commit('incrementIndex')
     commit('addBlockToLayout', block)
-    commit('resetAddBlockFormData')
+    commit('resetAddFormData')
   },
 }
 
