@@ -1,6 +1,6 @@
-import store from '@/store'
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import store from '@/store';
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
 Vue.use(VueRouter)
 
@@ -15,6 +15,7 @@ export default new VueRouter({
 
 function publicRoutes () {
   return [
+    route('/'),
     route('/crm/pages', 'Pages/Index'), // Temporary
     route('/crm/pages/:id/edit', 'Pages/Edit'), // Temporary
     route('/crm', 'Index'),
