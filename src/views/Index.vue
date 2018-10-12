@@ -1,24 +1,26 @@
 <template>
-    <div class="container" v-if="loaded">
-        <template v-if="error">
-            <p>An error occured: {{error}}</p>
-        </template>
-        <template v-if="modules.length == 0">
-            <p>No modules have been created yet.</p>
-            <p><a class="btn btn-primary" href="/modules/edit">Create new module</a></p>
-        </template>
-        <ul v-else>
-            <li v-for="module in modules" :key="module.id">
-                <a :href="module.links.read">{{module.name}}</a> [<a :href="module.links.edit">edit</a>]
-            </li>
-        </ul>
-
-        <p><a href="/crm/auth/signin">Sign In</a></p>
-        <p><a href="/crm/auth/signout">Sign Out</a></p>
-    </div>
+  <div class="container" v-if="loaded">
+    <template v-if="error">
+      <p>An error occured: {{error}}</p>
+    </template>
+    <template v-if="modules.length == 0">
+      <p>No modules have been created yet.</p>
+      <p><a class="btn btn-primary" href="/modules/edit">Create new module</a></p>
+    </template>
+    <ul v-else>
+      <li v-for="module in modules" :key="module.id">
+        <a :href="module.links.read">{{module.name}}</a> [<a :href="module.links.edit">edit</a>]
+      </li>
+    </ul>
+    <p><a href="/crm/pages">Pages</a></p>
+    <p><a href="/crm/auth/signin">Sign In</a></p>
+    <p><a href="/crm/auth/signout">Sign Out</a></p>
+  </div>
 </template>
 
 <script>
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 export default {
   data () {
     return {
