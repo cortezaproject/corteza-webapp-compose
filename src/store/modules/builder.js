@@ -9,7 +9,7 @@ Vue.use(Vuex)
 
 const state = {
   // The layout of the builder
-  layout: [{ i: '2', x: 1, y: 1, w: 1, h: 1, meta: { fixed: false } }],
+  layout: [],
   // Unkown - may be imporant
   index: 0,
   // Are (all) the grid items resizable
@@ -40,10 +40,10 @@ const state = {
 
 const getters = {
   /**
-     * Return the max y of the layout
-     *
-     * @param {*} state
-     */
+    * Return the max y of the layout
+    *
+    * @param {*} state
+    */
   getMaxY (state) {
     const array = state.layout.map(o => o.y)
     let max
@@ -62,13 +62,26 @@ const getters = {
 // TEMP
 
 const actions = {
+
   /**
-     * Fetches the correct json schema
-     * then sets (via mutation) the block type and the json schema
-     *
-     * @param {*} param0
-     * @param {*} event
-     */
+   * Fetches the layout
+   * 
+   * @param {*} param0 
+   */
+  fetchLayout ({ commit }) {
+    const layout = JSON.parse(localStorage.getItem('layout'))
+    if (layout) {
+      commit('setLayout', layout)
+    }
+  },
+
+  /**
+    * Fetches the correct json schema
+    * then sets (via mutation) the block type and the json schema
+    *
+    * @param {*} param0
+    * @param {*} event
+    */
   async handleBlockTypeChange ({ commit }, event) {
     const selected = event.target.value
 
@@ -84,15 +97,15 @@ const actions = {
   },
 
   /**
-     * Gets the last y of the layout
-     * Gets a uniq ID for the block
-     * Create a block taking the current addBlockFormData
-     * Increments the index (mutation)
-     * Adds the block to the layout (mutation)
-     *
-     * @param {*} param0
-     * @param {*} blockData
-     */
+    * Gets the last y of the layout
+    * Gets a uniq ID for the block
+    * Create a block taking the current addBlockFormData
+    * Increments the index (mutation)
+    * Adds the block to the layout (mutation)
+    *
+    * @param {*} param0
+    * @param {*} blockData
+    */
   handleBlockSelectorFormSubmit ({ commit, getters, state }) {
     // Index
     const i = SharedService.generateUniqID()
@@ -137,8 +150,16 @@ const actions = {
     }
 
     commit('incrementIndex')
+    commit('resetAddBlockFormData')
     commit('addBlockToLayout', block)
-    commit('resetAddFormData')
+  },
+
+  handleDoneButtonClick ({ state }) {
+    const layout = SharedService.cloneObject(state.layout)
+
+    localStorage.setItem('layout', JSON.stringify(layout))
+
+    alert('layout saved !')
   },
 }
 
@@ -173,10 +194,22 @@ const mutations = {
   },
 
   addBlockToLayout (state, block) {
-    const layout = JSON.parse(JSON.stringify(state.layout))
+    const layout = SharedService.cloneObject(state.layout)
     layout.push(block)
 
     state.layout = layout
+  },
+
+  removeBlockFromLayout (state, block) {
+    const blockID = block.i
+    const blockIndex = state.layout.findIndex(o => o.i === blockID)
+
+    const answer = confirm(`Are you sure you want to remove block ${blockID} ?`);
+    if (answer) {
+      state.layout.splice(blockIndex, 1);
+      console.log('removing', blockID, 'at index', blockIndex)
+    }
+
   },
 
   moveAllBlocksY (state) {

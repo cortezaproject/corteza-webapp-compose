@@ -1,9 +1,9 @@
 <template>
-    <div class="builder" v-if="loaded">
-        <!-- template v-if="error">
+  <div class="builder" v-if="loaded">
+    <!-- template v-if="error">
       <p>An error occured: {{error}}</p>
     </template -->
-        <!-- <template v-if="modules.length == 0">
+    <!-- <template v-if="modules.length == 0">
             <p>No modules have been created yet.</p>
             <a class="btn btn-primary" href="/modules/edit">Create new module</a>
         </template>
@@ -13,19 +13,22 @@
             </li>
         </ul> -->
 
-        <BlockSelector></BlockSelector>
-        <BuilderGrid></BuilderGrid>
+    <BlockSelector></BlockSelector>
+    <DoneButton></DoneButton>
+    <BuilderGrid></BuilderGrid>
 
-    </div>
+  </div>
 </template>
 
 <script>
 import BlockSelector from '@/components/builder/BlockSelector'
 import BuilderGrid from '@/components/builder/BuilderGrid'
+import DoneButton from '@/components/builder/DoneButton'
 
 export default {
   components: {
     BlockSelector,
+    DoneButton,
     BuilderGrid,
   },
   data () {
@@ -76,6 +79,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .builder {
-    display: flex;
+  display: flex;
 }
 </style>

@@ -1,9 +1,9 @@
 export default class SharedService {
-  generateUniqID () {
+  static generateUniqID () {
     return '_' + Math.random().toString(36).substr(2, 9)
   }
 
-  cloneObject (object) {
+  static cloneObject (object) {
     return JSON.parse(JSON.stringify(object))
   }
 }
