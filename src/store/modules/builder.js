@@ -1,9 +1,9 @@
 'use strict'
 
 // import crm from '@/client/crm';
-import SharedService from '@/services/SharedService';
-import Vue from 'vue';
-import Vuex from 'vuex';
+import SharedService from '@/services/SharedService'
+import Vue from 'vue'
+import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
@@ -65,8 +65,8 @@ const actions = {
 
   /**
    * Fetches the layout
-   * 
-   * @param {*} param0 
+   *
+   * @param {*} param0
    */
   fetchLayout ({ commit }) {
     const layout = JSON.parse(localStorage.getItem('layout'))
@@ -204,12 +204,11 @@ const mutations = {
     const blockID = block.i
     const blockIndex = state.layout.findIndex(o => o.i === blockID)
 
-    const answer = confirm(`Are you sure you want to remove block ${blockID} ?`);
+    const answer = confirm(`Are you sure you want to remove block ${blockID} ?`)
     if (answer) {
-      state.layout.splice(blockIndex, 1);
+      state.layout.splice(blockIndex, 1)
       console.log('removing', blockID, 'at index', blockIndex)
     }
-
   },
 
   moveAllBlocksY (state) {
