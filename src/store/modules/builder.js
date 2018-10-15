@@ -1,9 +1,9 @@
 'use strict'
 
 // import crm from '@/client/crm';
-import SharedService from '@/services/SharedService'
-import Vue from 'vue'
-import Vuex from 'vuex'
+import SharedService from '@/services/SharedService';
+import Vue from 'vue';
+import Vuex from 'vuex';
 
 Vue.use(Vuex)
 
@@ -109,6 +109,15 @@ const actions = {
     // Height
     const h = state.defaults.h
 
+    // Data
+    const data = SharedService.cloneObject(state.addBlockFormData)
+
+    // Meta
+    const meta = SharedService.cloneObject(state.addBlockFormMeta)
+
+    // Block Type
+    const blockType = SharedService.cloneObject(state.blockType)
+
     if (state.addBlockFormMeta.fixed) {
       commit('moveAllBlocksY')
 
@@ -122,9 +131,9 @@ const actions = {
       y,
       w,
       h,
-      data: state.addBlockFormData,
-      meta: state.addBlockFormMeta,
-      blockType: state.blockType,
+      data,
+      meta,
+      blockType,
     }
 
     commit('incrementIndex')
