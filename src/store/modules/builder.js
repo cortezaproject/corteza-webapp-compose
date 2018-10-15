@@ -1,9 +1,9 @@
 'use strict'
 
 // import crm from '@/client/crm';
-import SharedService from '@/services/SharedService';
-import Vue from 'vue';
-import Vuex from 'vuex';
+import SharedService from '@/services/SharedService'
+import Vue from 'vue'
+import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
@@ -36,7 +36,7 @@ const state = {
     w: 1,
     h: 1,
   },
-};
+}
 
 const getters = {
   /**
@@ -95,25 +95,25 @@ const actions = {
      */
   handleBlockSelectorFormSubmit ({ commit, getters, state }) {
     // Index
-    const i = SharedService.generateUniqID();
+    const i = SharedService.generateUniqID()
 
     // X value
-    const x = state.defaults.x;
+    const x = state.defaults.x
 
     // It maybe useless to get this
-    let y = getters.getMaxY;
+    let y = getters.getMaxY
 
     // Width
-    let w = state.defaults.w;
+    let w = state.defaults.w
 
     // Height
-    const h = state.defaults.h;
+    const h = state.defaults.h
 
     if (state.addBlockFormMeta.fixed) {
       commit('moveAllBlocksY')
 
-      y = 0;
-      w = state.colNum;
+      y = 0
+      w = state.colNum
     }
 
     const block = {
@@ -125,7 +125,7 @@ const actions = {
       data: state.addBlockFormData,
       meta: state.addBlockFormMeta,
       blockType: state.blockType,
-    };
+    }
 
     commit('incrementIndex')
     commit('addBlockToLayout', block)
@@ -167,15 +167,15 @@ const mutations = {
     const layout = JSON.parse(JSON.stringify(state.layout))
     layout.push(block)
 
-    state.layout = layout;
+    state.layout = layout
   },
 
   moveAllBlocksY (state) {
     state.layout.map(o => {
-      o.y++;
-    });
+      o.y++
+    })
   },
-};
+}
 
 export default {
   namespaced: true,
