@@ -1,28 +1,21 @@
 import axios from 'axios'
+import MockCRM from './crm_mock.js'
 
 var JSONbig = require('json-bigint')({ storeAsString: true })
 axios.defaults.transformResponse = [
-  data => {
+  (data) => {
     return JSONbig.parse(data)
   },
 ]
 
-const stdRejection = reject => error => {
-  reject(error)
-}
-
-const stdResolve = (resolve, reject) => response => {
-  if (response.data.error) {
-    reject(response.data.error)
-  } else {
-    resolve(response.data.response)
-  }
-}
-
 // If you want to edit this file, talk to @titpetric before :)
 
-class CRM {
+// As this file is generated, any mock calls should go into
+// the related *_mock.js file; please don't modify this file.
+
+class CRM extends MockCRM {
   constructor (baseLink, jwt) {
+    super()
     this.baseLink = baseLink || 'https://crm.api.latest.rustbucket.io'
     this.headers = {}
     this.setJWT(jwt)
@@ -37,6 +30,22 @@ class CRM {
     }
   }
 
+  stdReject (reject) {
+    return (error) => {
+      reject(error)
+    }
+  }
+
+  stdResolve (resolve, reject) {
+    return (response) => {
+      if (response.data.error) {
+        reject(response.data.error)
+      } else {
+        resolve(response.data.response)
+      }
+    }
+  }
+
   async fieldList () {
     const endpoint = `${this.baseLink}/field/`
     return new Promise((resolve, reject) => {
@@ -47,7 +56,7 @@ class CRM {
         headers: this.headers,
         params: {},
         data: {},
-      }).then(stdResolve(resolve, reject), stdRejection(reject))
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })
   }
 
@@ -61,7 +70,91 @@ class CRM {
         headers: this.headers,
         params: {},
         data: {},
-      }).then(stdResolve(resolve, reject), stdRejection(reject))
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async pageList () {
+    const endpoint = `${this.baseLink}/page/`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {},
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async pageCreate (selfID, moduleID, title, description, visible, blocks) {
+    const endpoint = `${this.baseLink}/page/`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {
+          'selfID': selfID,
+          'moduleID': moduleID,
+          'title': title,
+          'description': description,
+          'visible': visible,
+          'blocks': blocks,
+        },
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async pageRead (id) {
+    const endpoint = `${this.baseLink}/page/${id}`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {},
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async pageEdit (id, selfID, moduleID, title, description, visible, blocks) {
+    const endpoint = `${this.baseLink}/page/${id}`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {
+          'selfID': selfID,
+          'moduleID': moduleID,
+          'title': title,
+          'description': description,
+          'visible': visible,
+          'blocks': blocks,
+        },
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async pageDelete (id) {
+    const endpoint = `${this.baseLink}/page/${id}`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'DELETE',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {},
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })
   }
 
@@ -74,10 +167,10 @@ class CRM {
         withCredentials: true,
         headers: this.headers,
         params: {
-          query: query,
+          'query': query,
         },
         data: {},
-      }).then(stdResolve(resolve, reject), stdRejection(reject))
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })
   }
 
@@ -91,10 +184,10 @@ class CRM {
         headers: this.headers,
         params: {},
         data: {
-          name: name,
-          fields: fields,
+          'name': name,
+          'fields': fields,
         },
-      }).then(stdResolve(resolve, reject), stdRejection(reject))
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })
   }
 
@@ -108,7 +201,7 @@ class CRM {
         headers: this.headers,
         params: {},
         data: {},
-      }).then(stdResolve(resolve, reject), stdRejection(reject))
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })
   }
 
@@ -122,10 +215,10 @@ class CRM {
         headers: this.headers,
         params: {},
         data: {
-          name: name,
-          fields: fields,
+          'name': name,
+          'fields': fields,
         },
-      }).then(stdResolve(resolve, reject), stdRejection(reject))
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })
   }
 
@@ -139,11 +232,11 @@ class CRM {
         headers: this.headers,
         params: {},
         data: {},
-      }).then(stdResolve(resolve, reject), stdRejection(reject))
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })
   }
 
-  async moduleContentList (module) {
+  async moduleContentList (moduleID) {
     const endpoint = `${this.baseLink}/module/${module}/content`
     return new Promise((resolve, reject) => {
       axios({
@@ -153,11 +246,11 @@ class CRM {
         headers: this.headers,
         params: {},
         data: {},
-      }).then(stdResolve(resolve, reject), stdRejection(reject))
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })
   }
 
-  async moduleContentCreate (module, fields) {
+  async moduleContentCreate (moduleID, fields) {
     const endpoint = `${this.baseLink}/module/${module}/content`
     return new Promise((resolve, reject) => {
       axios({
@@ -167,13 +260,13 @@ class CRM {
         headers: this.headers,
         params: {},
         data: {
-          fields: fields,
+          'fields': fields,
         },
-      }).then(stdResolve(resolve, reject), stdRejection(reject))
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })
   }
 
-  async moduleContentRead (module, id) {
+  async moduleContentRead (moduleID, id) {
     const endpoint = `${this.baseLink}/module/${module}/content/${id}`
     return new Promise((resolve, reject) => {
       axios({
@@ -183,11 +276,11 @@ class CRM {
         headers: this.headers,
         params: {},
         data: {},
-      }).then(stdResolve(resolve, reject), stdRejection(reject))
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })
   }
 
-  async moduleContentEdit (module, id, fields) {
+  async moduleContentEdit (moduleID, id, fields) {
     const endpoint = `${this.baseLink}/module/${module}/content/${id}`
     return new Promise((resolve, reject) => {
       axios({
@@ -197,13 +290,13 @@ class CRM {
         headers: this.headers,
         params: {},
         data: {
-          fields: fields,
+          'fields': fields,
         },
-      }).then(stdResolve(resolve, reject), stdRejection(reject))
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })
   }
 
-  async moduleContentDelete (module, id) {
+  async moduleContentDelete (moduleID, id) {
     const endpoint = `${this.baseLink}/module/${module}/content/${id}`
     return new Promise((resolve, reject) => {
       axios({
@@ -213,56 +306,7 @@ class CRM {
         headers: this.headers,
         params: {},
         data: {},
-      }).then(stdResolve(resolve, reject), stdRejection(reject))
-    })
-  }
-  async pageList () {
-    return new Promise((resolve, reject) => {
-      try {
-        const result = require(`../api/mock/json-page-list.json`)
-        resolve(result)
-      } catch (error) {
-        reject(error)
-      }
-    })
-  }
-
-  async pageCreate (name) {
-    alert('TODO API : pageCreate(' + name + ')')
-    return { name, id: Math.random() }
-  }
-
-  async pageRead (id) {
-    alert('TODO API : pageRead(' + id + ')')
-    return new Promise((resolve, reject) => {
-      try {
-        const result = require(`../api/mock/json-page-get.json`)
-        resolve(result)
-      } catch (error) {
-        reject(error)
-      }
-    })
-  }
-
-  async pageEdit (id, name) {
-    alert('TODO API : pageEdit(' + id + ',' + name + ')')
-    return new Promise((resolve, reject) => {
-      try {
-        setTimeout(() => resolve(true), 1000)
-      } catch (error) {
-        reject(error)
-      }
-    })
-  }
-
-  async pageDelete (id) {
-    alert('TODO API : pageDelete(' + id + ')')
-    return new Promise((resolve, reject) => {
-      try {
-        setTimeout(() => resolve(true), 1000)
-      } catch (error) {
-        reject(error)
-      }
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })
   }
 }
