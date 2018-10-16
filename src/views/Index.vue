@@ -20,8 +20,6 @@
 </template>
 
 <script>
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
 export default {
   data () {
     return {
@@ -62,3 +60,6 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+@import "~bootstrap/scss/bootstrap";
+</style>

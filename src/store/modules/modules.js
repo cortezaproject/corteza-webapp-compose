@@ -5,21 +5,52 @@ import Vue from 'vue'
 const state = {
   initListError: '',
   list: [],
+
+  // --- B --- Add
   addModuleFormData: {
     name: '',
   },
   addModuleFormSubmitError: '',
+  // --- E --- Add
+
+  // --- B --- Delete
   deleteError: '',
   deleteModuleError: '',
   deleteModuleId: '',
+  // --- E --- Delete
+
+  // --- B --- Edit
   initEditModuleError: '',
   editModuleFormData: {
     name: '',
+    fields: [],
   },
   editModuleFormSubmitError: '',
+  // --- E --- Edit
 }
 
 const getters = {}
+
+/**
+ * Get new unique id from fields.
+ * @param {{id}[]} fields
+ * @param {String|null|undefined} potentialId
+ */
+const getNewIDForField = (fields, potentialId) => {
+  if (potentialId == null) {
+    return getNewIDForField(fields, 1)
+  }
+  let founded = false
+  fields.forEach((value) => {
+    if (value.id === potentialId) {
+      founded = true
+    }
+  })
+  if (founded) {
+    return getNewIDForField(fields, ++potentialId)
+  }
+  return potentialId
+}
 
 // TEMP
 
@@ -30,12 +61,12 @@ const actions = {
   async handleAddModuleFormSubmit ({ commit, state }) {
     try {
       commit('setAddModuleFormSubmitError', '')
-      const module = await this._vm.$crm.moduleCreate(state.addModuleFormData.name)
+      const module = await this._vm.$crm.moduleCreate(state.addModuleFormData.name, [])
       commit('resetAddModuleFormData')
       commit('addModuleToList', module)
     } catch (e) {
-      console.error(e)
       commit('setAddModuleFormSubmitError', 'Error when trying to create module.')
+      throw e
     }
   },
 
@@ -51,8 +82,8 @@ const actions = {
       const json = await this._vm.$crm.moduleList()
       commit('setList', json)
     } catch (e) {
-      console.error(e)
       commit('setListError', 'Error when trying to get list of modules.')
+      throw e
     }
   },
 
@@ -67,8 +98,8 @@ const actions = {
       const json = await this._vm.$crm.moduleRead(id)
       commit('setEditModuleFormData', json)
     } catch (e) {
-      console.error(e)
       commit('setEditModuleFormDataError', 'Error when trying to init module form.')
+      throw e
     }
   },
 
@@ -82,8 +113,8 @@ const actions = {
       await this._vm.$crm.moduleDelete(id)
       commit('deleteModuleFromList', id)
     } catch (e) {
-      console.error(e)
       commit('setDeleteModuleError', 'Error when trying to delete module.')
+      throw e
     }
   },
 
@@ -93,12 +124,26 @@ const actions = {
   async handleEditModuleFormSubmit ({ commit, state }) {
     try {
       commit('setEditModuleFormSubmitError', '')
-      await this._vm.$crm.moduleEdit(state.editModuleFormData.id, state.editModuleFormData.name)
+      await this._vm.$crm.moduleEdit(state.editModuleFormData.id, state.editModuleFormData.name, state.editModuleFormData.fields)
       commit('resetEditModuleFormData')
     } catch (e) {
-      console.error(e)
       commit('setEditModuleFormSubmitError', 'Error when trying to edit module.')
+      throw e
     }
+  },
+
+  /**
+     * @param {commit: any, state: any} param0
+     */
+  async handleEditModuleAddNewField ({ commit, state }) {
+    commit('editModuleAddEmptyField')
+  },
+
+  /**
+     * @param {commit: any} param0
+     */
+  async handleEditModuleRemoveField ({ commit }, field) {
+    commit('editModuleRemoveField', field)
   },
 }
 
@@ -121,6 +166,24 @@ const mutations = {
     console.log(JSON.stringify(state.editModuleFormData))
     console.log(newValue)
     state.editModuleFormData = newValue
+  },
+
+  editModuleAddEmptyField (state) {
+    state.editModuleFormData.fields.push({
+      id: getNewIDForField(state.editModuleFormData.fields),
+      name: '',
+      title: '',
+      kind: 'text',
+      gdpr: false,
+    })
+  },
+
+  editModuleRemoveField (state, field) {
+    const index = state.editModuleFormData.fields.indexOf(field)
+    console.log(field)
+    if (index !== -1) {
+      state.editModuleFormData.fields.splice(index, 1)
+    }
   },
 
   /**

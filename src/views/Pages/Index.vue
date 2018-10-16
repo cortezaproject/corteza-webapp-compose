@@ -27,7 +27,7 @@
           <li v-for="(page, index) in pages" :key="index" class="list-group-item d-flex justify-content-between">
             <div>{{ page.title }}</div>
             <div class='d-flex align-items-center actions'>
-              <router-link :to="'/builder?pageId=' + page.id" class="actions__action">Organize page</router-link>
+              <router-link :to="'/crm/builder?pageId=' + page.id" class="actions__action">Organize page</router-link>
               <router-link :to="'/crm/pages/' + page.id + '/edit'" class="actions__action">Edit data</router-link>
               <button type="button" class="btn btn-default actions__action" v-on:click="handleDeletePage(page.id)">Delete</button>
             </div>
@@ -49,12 +49,10 @@
 </template>
 
 <script>
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { mapState, mapActions } from 'vuex'
 export default {
   idToDelete: '',
-  name: 'Page',
+  name: 'PageList',
   created () {
     this.$store.dispatch('pages/initList')
   },
@@ -94,7 +92,8 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+@import "~bootstrap/scss/bootstrap";
 .actions__action {
     padding-left: 5px;
     padding-right: 5px;

@@ -10,7 +10,13 @@
               <label for="title">Page title</label>
               <input required type="text" v-model="editPageFormData.title" class="form-control" id="title" placeholder="Page title" />
             </div>
-            <button type="submit" class="btn btn-default">Edit</button>
+            <div class="form-group">
+              <label for="module">Module</label>
+              <select v-model="editPageFormData.moduleID" class="form-control" id="module">
+                <option v-for="module in modules" :key="module.id" :value="module.id">{{ module.name }}</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
             <div v-if="editPageFormSubmitError" style="color:red">
               {{ editPageFormSubmitError }}
             </div>
@@ -22,18 +28,18 @@
 </template>
 
 <script>
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { mapState, mapActions } from 'vuex'
 export default {
-  name: 'Page',
+  name: 'PageEdit',
   created () {
     this.$store.dispatch('pages/initEditPageFormData', this.$route.params.id)
+    this.$store.dispatch('modules/initList', this.$route.params.id)
   },
   computed: {
     ...mapState({
       initEditPageError: state => state.pages.initEditPageError,
       editPageFormSubmitError: state => state.pages.editPageFormSubmitError,
+      modules: state => state.modules.list,
     }),
     editPageFormData: {
       get () {
@@ -53,3 +59,6 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+@import "~bootstrap/scss/bootstrap";
+</style>
