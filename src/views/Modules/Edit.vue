@@ -1,172 +1,117 @@
 <template>
-  <div class="container" v-if="loaded >= 1">
-  <h1 v-if="'id' in params">{{ _('Editing module fields') }}</h1>
-  <h1 v-else>{{ _('Creating new module') }}</h1>
-
-  <template v-if="error">
-    <p>An error occured: {{error}}</p>
-  </template>
-
-  <p>{{ _('A module is created from any number of fields. You can add as many fields as you wish below.') }}</p>
-
-  <label>Name for the module</label>
-  <input v-model="module.name" type="text"/>
-
-  <table class="table" border="1">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Name <a class="btn btn-info" v-tooltip="_('Must be lower-case a-z, 0-9 and underscore')"></a></th>
-        <th>Title <a class="btn btn-info" v-tooltip="_('The name displayed in form input / data lists')"></a></th>
-        <th>Kind</th>
-        <th>GDPR</th>
-        <th>Show in list</th>
-      </tr>
-    </thead>
-    <draggable v-model="module.fields" :options="{handle:'.handle'}" :element="'tbody'">
-      <tr v-for="field in module.fields" :key="field.id">
-        <td class="handle">[{{field.id}}]</td>
-        <td><input v-model="field.name" type="text"/></td>
-        <td><input v-model="field.title" type="text"/></td>
-        <td><select v-model="field.kind">
-        <option v-for="fieldType in fields" :key="fieldType.type" :value="fieldType.type">{{ _(fieldType.name) }}</option>
-        </select></td>
-        <td>
-          <input v-model="field.gdpr" type="checkbox"> Sensitive data
-        </td>
-        <td>
-          <input v-model="field.show" type="checkbox"> Show
-        </td>
-      </tr>
-    </draggable>
-  </table>
-
-  <p>
-    <button @click="addField()">Add new field</button>
-    <button @click="save">Save</button>
-  </p>
-
-  <p>Modules Edit, params={{params}}</p>
-</div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="well">
+          <h2>Edit module</h2>
+          <form @submit.prevent="handleEditModuleFormSubmit">
+            <input required type="hidden" v-model="editModuleFormData.id" id="id" />
+            <div class="form-group">
+              <label for="name">Module name</label>
+              <input required type="text" v-model="editModuleFormData.name" class="form-control" id="name" placeholder="Module name" />
+            </div>
+            <div class="form-group">
+              <label for="name">Module fields</label>
+              <table class="table" border="1">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th v-b-tooltip.hover title="Must be lower-case a-z, 0-9 and underscore">Name</th>
+                    <th v-b-tooltip.hover title="The name displayed in form input / data lists">Title</th>
+                    <th>Kind</th>
+                    <th>GDPR</th>
+                    <th>Show in list</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <draggable v-model="editModuleFormData.fields" :options="{handle:'.handle'}" :element="'tbody'">
+                  <tr v-for="field in editModuleFormData.fields" :key="field.id">
+                    <td class="handle">[{{field.id}}]</td>
+                    <td><input v-model="field.name" type="text" /></td>
+                    <td><input v-model="field.title" type="text" /></td>
+                    <td><select v-model="field.kind">
+                        <option v-for="fieldType in fields" :key="fieldType.type" :value="fieldType.type">{{ _(fieldType.name) }}</option>
+                      </select></td>
+                    <td>
+                      <input v-model="field.gdpr" type="checkbox"> Sensitive data
+                    </td>
+                    <td>
+                      <input v-model="field.show" type="checkbox"> Show
+                    </td>
+                    <td>
+                       <button @click="handleEditModuleRemoveField(field)" type="button" class="btn btn-default">Delete</button>
+                    </td>
+                  </tr>
+                </draggable>
+              </table>
+            </div>
+            <button @click="handleEditModuleAddNewField()" type="button" class="btn btn-default">Add new field</button>
+            <div class="row">
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+            <div v-if="editModuleFormSubmitError" style="color:red">
+              {{ editModuleFormSubmitError }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
-
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import { mapState, mapActions } from 'vuex'
 export default {
+  name: 'ModuleEdit',
   components: {
     draggable,
   },
-  data () {
-    return {
-      loaded: 0,
-      fields: [],
-      fieldSeq: 0,
-      module: {
-        name: '',
-        fields: [],
-      },
-      params: {},
-    }
-  },
   created () {
-    this.params = this.$route.params
-    this.listFields()
-    if (this.params.id) {
-      this.read(this.params.id)
-    } else {
-      this.addField()
-      this.loaded = true
-    }
+    this.$store.dispatch(
+      'modules/initEditModuleFormData',
+      this.$route.params.id
+    )
+    this.$store.dispatch(
+      'fields/initList',
+      this.$route.params.id
+    )
+  },
+  computed: {
+    ...mapState({
+      initEditModuleError: state => state.modules.initEditModuleError,
+      editModuleFormSubmitError: state =>
+        state.modules.editModuleFormSubmitError,
+      fields: state => state.fields.list,
+    }),
+    editModuleFormData: {
+      get () {
+        return this.$store.state.modules.editModuleFormData
+      },
+      set (newValue) {
+        this.$store.commit('modules/setEditModuleFormData', newValue)
+      },
+    },
   },
   methods: {
-    addField: function () {
-      this.module.fields.push({
-        id: this.newID(),
-        name: '',
-        title: '',
-        kind: 'text',
-        gdpr: false,
-      })
+    ...mapActions('modules', []),
+    async handleEditModuleFormSubmit () {
+      await this.$store.dispatch('modules/handleEditModuleFormSubmit')
+      this.$router.push({ path: '/crm/modules' })
     },
-    newID: function () {
-      this.fieldSeq++
-      return this.fieldSeq
+    async handleEditModuleAddNewField () {
+      await this.$store.dispatch('modules/handleEditModuleAddNewField')
     },
-    listFields: function () {
-      this.clearError()
-
-      // response handler
-      var response = response => {
-        if (Array.isArray(response)) {
-          this.fields.splice(0)
-          response.forEach(field => {
-            this.fields.push(field)
-          })
-          return
-        }
-        this.showError('Unexpected response when fetching field list')
-      }
-
-      this.$crm
-        .fieldList()
-        .then(response)
-        .catch(e => this.showError(e.message))
-        .finally(() => {
-          this.loaded++
-        })
-    },
-    read: function (id) {
-      this.clearError()
-
-      // response handler
-      var response = resp => {
-        this.loaded = true
-        if (typeof resp === 'object') {
-          this.module = resp
-          return
-        }
-        this.showError('Unexpected response when reading module')
-      }
-
-      this.$crm
-        .moduleRead(id)
-        .then(response)
-        .catch(e => this.showError(e.message))
-        .finally(() => {
-          this.loaded++
-        })
-    },
-    save: function () {
-      this.clearError()
-
-      // response handler
-      var response = resp => {
-        if (Array.isArray(resp)) {
-          this.fields.splice(0)
-          resp.forEach(field => {
-            field.id = this.newID()
-            this.fields.push(field)
-          })
-          return
-        }
-        this.showError('Unexpected response when saving module')
-      }
-
-      var request = () => {
-        if ('id' in this.params) {
-          return this.$crm.moduleEdit(this.params.id, this.module.name, this.module.fields)
-        }
-        return this.$crm.moduleCreate(this.module.name, this.module.fields)
-      }
-
-      request()
-        .then(response)
-        .catch(e => this.showError(e.message))
-        .finally(() => {
-          this.loaded++
-        })
+    async handleEditModuleRemoveField (field) {
+      await this.$store.dispatch('modules/handleEditModuleRemoveField', field)
     },
   },
 }
 </script>
+<style lang="scss">
+button[type=submit] {
+    margin-top: 10px;
+}
+</style>

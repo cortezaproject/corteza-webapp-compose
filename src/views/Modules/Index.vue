@@ -24,11 +24,11 @@
           {{ deleteModuleError }}
         </div>
         <ul class="list-group">
-          <li v-for="(moduleElmt, index) in modules" :key="index" class="list-group-item d-flex justify-content-between">
-            <div>{{ moduleElmt.name }}</div>
+          <li v-for="(module, index) in modules" :key="index" class="list-group-item d-flex justify-content-between">
+            <div>{{ module.name }}</div>
+            <div>(Updated at : {{ module.updatedAt }})</div>
             <div class='d-flex align-items-center actions'>
-              <router-link :to="'/builder?moduleElmtId=' + moduleElmt.id" class="actions__action">Organize moduleElmt</router-link>
-              <router-link :to="'/crm/modules/' + moduleElmt.id + '/edit'" class="actions__action">Edit data</router-link>
+              <router-link :to="'/crm/modules/' + module.id + '/edit'" class="actions__action">Edit data</router-link>
               <button type="button" class="btn btn-default actions__action" v-on:click="handleDeleteModule(module.id)">Delete</button>
             </div>
           </li>
@@ -54,7 +54,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { mapState, mapActions } from 'vuex'
 export default {
   idToDelete: '',
-  name: 'Module',
+  name: 'ModuleList',
   created () {
     this.$store.dispatch('modules/initList')
   },
