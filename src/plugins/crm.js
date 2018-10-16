@@ -1,13 +1,6 @@
 import axios from 'axios'
 import MockCRM from './crm_mock.js'
 
-var JSONbig = require('json-bigint')({ storeAsString: true })
-axios.defaults.transformResponse = [
-  (data) => {
-    return JSONbig.parse(data)
-  },
-]
-
 // If you want to edit this file, talk to @titpetric before :)
 
 // As this file is generated, any mock calls should go into
@@ -17,7 +10,6 @@ class CRM extends MockCRM {
   constructor (baseLink) {
     super()
     this.baseLink = baseLink || 'https://crm.api.latest.rustbucket.io'
-    this.headers = {}
     this.headers = {
       'Content-Type': 'application/json',
     }
