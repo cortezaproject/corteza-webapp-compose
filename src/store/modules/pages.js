@@ -1,12 +1,12 @@
 'use strict'
 
-import Vue from 'vue'
+import Vue from 'vue';
 
 const state = {
   initListError: '',
   list: [],
   addPageFormData: {
-    name: '',
+    title: '',
   },
   addPageFormSubmitError: '',
   deleteError: '',
@@ -14,7 +14,7 @@ const state = {
   deletePageId: '',
   initEditPageError: '',
   editPageFormData: {
-    name: '',
+    title: '',
   },
   editPageFormSubmitError: '',
 }
@@ -30,7 +30,7 @@ const actions = {
   async handleAddPageFormSubmit ({ commit, state }) {
     try {
       commit('setAddPageFormSubmitError', '')
-      const page = await this._vm.$crm.pageCreate(state.addPageFormData.name)
+      const page = await this._vm.$crm.pageCreate(null, null, state.addPageFormData.title, null, true, null)
       commit('resetAddPageFormData')
       commit('addPageToList', page)
     } catch (e) {
@@ -93,7 +93,7 @@ const actions = {
   async handleEditPageFormSubmit ({ commit, state }) {
     try {
       commit('setEditPageFormSubmitError', '')
-      await this._vm.$crm.pageEdit(state.editPageFormData.id, state.editPageFormData.name)
+      await this._vm.$crm.pageEdit(state.editPageFormData.id, null, null, state.editPageFormData.title, null, true, null)
       commit('resetEditPageFormData')
     } catch (e) {
       console.error(e)

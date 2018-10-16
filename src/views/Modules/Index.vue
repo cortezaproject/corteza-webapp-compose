@@ -6,7 +6,7 @@
           <h2>Create a new module</h2>
           <form @submit.prevent="handleAddModuleFormSubmit">
             <div class="form-group">
-              <label for="moduleitem">Module name</label>
+              <label for="name">Module name</label>
               <input required type="text" v-model="addModuleFormData.name" class="form-control" id="name" placeholder="Module name" />
             </div>
             <button type="submit" class="btn btn-default">Create</button>

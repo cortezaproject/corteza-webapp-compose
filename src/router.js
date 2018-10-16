@@ -1,6 +1,6 @@
-import store from '@/store'
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import store from '@/store';
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
 Vue.use(VueRouter)
 
@@ -18,10 +18,7 @@ function publicRoutes () {
     route('/'),
     route('/crm', 'Index'),
 
-    route('/crm/pages', 'Pages/Index'), // Temporary
-    route('/crm/pages/:id/edit', 'Pages/Edit'), // Temporary
     route('/crm/modules', 'Modules/Index'), // Temporary
-    route('/crm/pages/:id/edit', 'Pages/Edit'), // Temporary
 
     route('/crm/auth/signin', 'Auth/SignIn'),
     route('/crm/auth/signout', 'Auth/SignOut'),
@@ -34,6 +31,10 @@ function privateRoutes () {
     route('/crm/modules/edit', 'Modules/Edit'),
     route('/crm/modules/:id', 'Modules/Index'),
     route('/crm/modules/:id/edit', 'Modules/Edit'),
+
+    route('/crm/pages', 'Pages/Index'),
+    route('/crm/pages/:id/edit', 'Pages/Edit'),
+    route('/crm/pages/:id/edit', 'Pages/Edit'),
   ]
 }
 
