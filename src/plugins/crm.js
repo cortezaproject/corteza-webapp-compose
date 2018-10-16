@@ -14,19 +14,12 @@ axios.defaults.transformResponse = [
 // the related *_mock.js file; please don't modify this file.
 
 class CRM extends MockCRM {
-  constructor (baseLink, jwt) {
+  constructor (baseLink) {
     super()
     this.baseLink = baseLink || 'https://crm.api.latest.rustbucket.io'
     this.headers = {}
-    this.setJWT(jwt)
-  }
-
-  setJWT (jwt) {
-    if (jwt) {
-      this.jwt = jwt
-      this.headers = {
-        Authorization: 'Bearer ' + this.jwt,
-      }
+    this.headers = {
+      'Content-Type': 'application/json',
     }
   }
 
@@ -313,7 +306,7 @@ class CRM extends MockCRM {
 
 export default {
   install (Vue, store) {
-    const client = new CRM(window.CrustConfig.crm.baseUrl, store.getters['auth/jwt'])
+    const client = new CRM(window.CrustConfig.crm.baseUrl)
 
     Vue.prototype.$crm = client
   },
