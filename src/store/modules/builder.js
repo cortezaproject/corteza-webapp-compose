@@ -1,7 +1,7 @@
 'use strict'
 
-// import crm from '@/client/crm';
 import SharedService from '@/services/SharedService'
+import _ from 'lodash'
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -10,6 +10,8 @@ Vue.use(Vuex)
 const state = {
   // The layout of the builder
   layout: [],
+  layoutTemp: [],
+  layoutMobile: [],
   // Unkown - may be imporant
   index: 0,
   // Are (all) the grid items resizable
@@ -35,7 +37,12 @@ const state = {
     x: 0,
     w: 1,
     h: 1,
+    colNum: 2,
   },
+
+  // Is the mobile preview active
+  mobilePreview: false,
+
 }
 
 const getters = {
@@ -58,8 +65,6 @@ const getters = {
     return max
   },
 }
-
-// TEMP
 
 const actions = {
 
@@ -154,43 +159,110 @@ const actions = {
     commit('addBlockToLayout', block)
   },
 
-  handleDoneButtonClick ({ state }) {
+  /**
+   *
+   *
+   * @param {*} param0
+   */
+  handleMobilePreviewButtonClick ({ commit, state }) {
     const layout = SharedService.cloneObject(state.layout)
 
-    localStorage.setItem('layout', JSON.stringify(layout))
+    // Saving layout in temp
+    commit('setLayoutTemp', layout)
 
-    alert('layout saved !')
+    // Building mobile layout
+    commit('showMobileLayout')
+    commit('setMobilePreview', true)
+
+    const layoutMobile = SharedService.cloneObject(state.layout)
+
+    // Saving layout mobile in temp
+    commit('setLayoutMobile', layoutMobile)
+  },
+
+  handleDoneButtonClick ({ commit, state }) {
+    // Saving layout
+    localStorage.setItem('layout', JSON.stringify(state.layoutTemp))
+
+    // Saving layout mobile
+    localStorage.setItem('layout-mobile', JSON.stringify(state.layoutMobile))
+
+    // Returning to desktop view
+    commit('setMobilePreview', false)
+
+    // Setting colNum to default
+    commit('setColNum', state.defaults.colNum)
+
+    // Showing desktop layout
+    commit('setLayout', state.layoutTemp)
+
+    alert('Layouts saved !')
   },
 }
 
 const mutations = {
+  //
+  // ─── LAYOUT ─────────────────────────────────────────────────────────────────────
+  //
+
+  /**
+   * Rearrange layout to fit mobile. (1 column)
+   *
+   * @param {*} state
+   */
+  showMobileLayout (state) {
+    // Clone layout object
+    const layout = SharedService.cloneObject(state.layout)
+
+    // Group blocks by y
+    const groupedByY = _.groupBy(layout, 'y')
+
+    // Order all groups by x (asc)
+    const orderedByYAndX = _.map(groupedByY, (group) => {
+      return _.orderBy(group, ['x'], ['asc'])
+    })
+
+    // Flatten array
+    const flattened = _.flatten(orderedByYAndX)
+
+    // Set colNum to 1
+    state.colNum = 1
+
+    // Increment all y
+    // All x at 0
+    // All w at 1
+    flattened.forEach((block, index, array) => {
+      array[index].y = index
+      array[index].x = 0
+      array[index].w = 1
+    })
+
+    // Set layout
+    state.layout = SharedService.cloneObject(flattened)
+  },
+
+  setMobilePreview (state, newValue) {
+    state.mobilePreview = newValue
+  },
+
   setLayout (state, newValue) {
     state.layout = newValue
   },
 
-  setJsonSchema (state, newValue) {
-    state.jsonSchema = newValue
+  setLayoutTemp (state, newValue) {
+    state.layoutTemp = newValue
   },
 
-  setBlockType (state, newValue) {
-    state.blockType = newValue
-  },
-
-  setAddBlockFormData (state, newValue) {
-    state.addBlockFormData = newValue
-  },
-
-  setAddBlockFormMeta (state, newValue) {
-    state.addBlockFormMeta = newValue
-  },
-
-  resetAddBlockFormData (state) {
-    state.blockType = null
-    state.addBlockFormData = {}
+  setLayoutMobile (state, newValue) {
+    state.layoutMobile = newValue
   },
 
   incrementIndex (state) {
     state.index++
+  },
+
+  setColNum (state, newValue) {
+    state.colNum = newValue
   },
 
   addBlockToLayout (state, block) {
@@ -216,6 +288,32 @@ const mutations = {
       o.y++
     })
   },
+
+  // ────────────────────────────────────────────────────────────────────────────────
+  //
+  // ─── BLOCK TYPE FORM ────────────────────────────────────────────────────────────
+  //
+  setJsonSchema (state, newValue) {
+    state.jsonSchema = newValue
+  },
+
+  setBlockType (state, newValue) {
+    state.blockType = newValue
+  },
+
+  setAddBlockFormData (state, newValue) {
+    state.addBlockFormData = newValue
+  },
+
+  setAddBlockFormMeta (state, newValue) {
+    state.addBlockFormMeta = newValue
+  },
+
+  resetAddBlockFormData (state) {
+    state.blockType = null
+    state.addBlockFormData = {}
+  },
+  // ────────────────────────────────────────────────────────────────────────────────
 }
 
 export default {

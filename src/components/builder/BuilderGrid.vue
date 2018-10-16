@@ -1,6 +1,6 @@
 <template>
-  <div v-if="layout.length >= 1" class="builder-grid">
-    <grid-layout :layout="layout" :col-num="2" :row-height="90" :is-draggable="draggable" :is-resizable="resizable" :vertical-compact="true" :use-css-transforms="true">
+  <div v-if="layout.length >= 1" v-bind:class="{ 'mobile': mobilePreview }" class="builder-grid">
+    <grid-layout :layout="layout" :col-num="colNum" :row-height="rowHeight" :is-draggable="draggable" :is-resizable="resizable" :vertical-compact="true" :use-css-transforms="true">
       <grid-item v-for="item in layout" v-bind:key="item.i" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" v-bind:is-draggable="!item.meta.fixed">
         <h4>ID: {{ item.i }}</h4>
         <div class="actions">
@@ -29,6 +29,9 @@ export default {
       draggable: state => state.builder.draggable,
       resizable: state => state.builder.resizable,
       index: state => state.builder.index,
+      colNum: state => state.builder.colNum,
+      rowHeight: state => state.builder.rowHeight,
+      mobilePreview: state => state.builder.mobilePreview,
     }),
   },
 
@@ -44,16 +47,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "src/assets/styles/shared";
+
 h4 {
   margin: 0.2em 0 0.4em 0;
 }
 
 .builder-grid {
-  width: 50%;
-  margin: 0 auto;
+  width: 100%;
+  background: rgb(235, 235, 235);
+
+  &.mobile {
+    width: 320px;
+    margin: 0 auto;
+  }
 }
 
-/* vue-grid-layout
+/* vue-grid-layout CSS
  * ================================================== */
 .layoutJSON {
   background: #ddd;

@@ -105,6 +105,7 @@ export default {
   position: absolute;
   bottom: 2em;
   left: 2em;
+  border-radius: 1em;
 }
 
 [id^="form-schema"],
