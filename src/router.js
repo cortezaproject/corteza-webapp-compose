@@ -29,7 +29,7 @@ function publicRoutes () {
 
 function privateRoutes () {
   return [
-    route('/crm/modules/edit'),
+    route('/crm/modules/edit', 'Modules/Edit'),
     route('/crm/modules/:id', 'Modules/Index'),
     route('/crm/modules/:id/edit', 'Modules/Edit'),
   ]
@@ -74,7 +74,7 @@ function route (path, componentName, children) {
 
 function protect (routeEntry) {
   routeEntry.beforeEnter = (to, from, next) => {
-    next(store.getters['auth/isAuthenticated'] ? true : '/auth/signin')
+    next(store.getters['auth/isAuthenticated'] ? true : '/crm/auth/signin')
   }
   return routeEntry
 }
