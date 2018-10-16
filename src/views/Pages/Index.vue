@@ -49,8 +49,6 @@
 </template>
 
 <script>
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { mapState, mapActions } from 'vuex'
 export default {
   idToDelete: '',
@@ -94,7 +92,8 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+@import "~bootstrap/scss/bootstrap";
 .actions__action {
     padding-left: 5px;
     padding-right: 5px;

@@ -61,8 +61,6 @@
 
 <script>
 import draggable from 'vuedraggable'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { mapState, mapActions } from 'vuex'
 export default {
   name: 'ModuleEdit',
@@ -110,7 +108,8 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+@import "~bootstrap/scss/bootstrap";
 button[type=submit] {
     margin-top: 10px;
 }
