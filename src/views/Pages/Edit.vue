@@ -7,8 +7,8 @@
           <form @submit.prevent="handleEditPageFormSubmit">
             <input required type="hidden" v-model="editPageFormData.id" id="id" />
             <div class="form-group">
-              <label for="pageitem">Page name</label>
-              <input required type="text" v-model="editPageFormData.name" class="form-control" id="name" placeholder="Page name" />
+              <label for="title">Page title</label>
+              <input required type="text" v-model="editPageFormData.title" class="form-control" id="title" placeholder="Page title" />
             </div>
             <button type="submit" class="btn btn-default">Edit</button>
             <div v-if="editPageFormSubmitError" style="color:red">

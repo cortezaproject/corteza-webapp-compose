@@ -6,8 +6,8 @@
           <h2>Create a new page</h2>
           <form @submit.prevent="handleAddPageFormSubmit">
             <div class="form-group">
-              <label for="pageitem">Page name</label>
-              <input required type="text" v-model="addPageFormData.name" class="form-control" id="name" placeholder="Page name" />
+              <label for="title">Page title</label>
+              <input required type="text" v-model="addPageFormData.title" class="form-control" id="title" placeholder="Page title" />
             </div>
             <button type="submit" class="btn btn-default">Create</button>
             <div v-if="addPageFormSubmitError" style="color:red">
@@ -25,7 +25,7 @@
         </div>
         <ul class="list-group">
           <li v-for="(page, index) in pages" :key="index" class="list-group-item d-flex justify-content-between">
-            <div>{{ page.name }}</div>
+            <div>{{ page.title }}</div>
             <div class='d-flex align-items-center actions'>
               <router-link :to="'/builder?pageId=' + page.id" class="actions__action">Organize page</router-link>
               <router-link :to="'/crm/pages/' + page.id + '/edit'" class="actions__action">Edit data</router-link>
