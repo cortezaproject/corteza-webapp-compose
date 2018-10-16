@@ -22,6 +22,7 @@ const state = {
   initEditPageError: '',
   editPageFormData: {
     title: '',
+    moduleID: '',
   },
   editPageFormSubmitError: '',
   // --- E --- Edit
@@ -42,8 +43,8 @@ const actions = {
       commit('resetAddPageFormData')
       commit('addPageToList', page)
     } catch (e) {
-      console.error(e)
       commit('setAddPageFormSubmitError', 'Error when trying to create page.')
+      throw e
     }
   },
 
@@ -57,8 +58,8 @@ const actions = {
       const json = await this._vm.$crm.pageList()
       commit('setList', json)
     } catch (e) {
-      console.error(e)
       commit('setListError', 'Error when trying to get list of pages.')
+      throw e
     }
   },
 
@@ -73,8 +74,8 @@ const actions = {
       const json = await this._vm.$crm.pageRead(id)
       commit('setEditPageFormData', json)
     } catch (e) {
-      console.error(e)
       commit('setEditPageFormDataError', 'Error when trying to init page form.')
+      throw e
     }
   },
 
@@ -88,8 +89,8 @@ const actions = {
       await this._vm.$crm.pageDelete(id)
       commit('deletePageFromList', id)
     } catch (e) {
-      console.error(e)
       commit('setDeletePageError', 'Error when trying to delete page.')
+      throw e
     }
   },
 
@@ -99,11 +100,11 @@ const actions = {
   async handleEditPageFormSubmit ({ commit, state }) {
     try {
       commit('setEditPageFormSubmitError', '')
-      await this._vm.$crm.pageEdit(state.editPageFormData.id, null, null, state.editPageFormData.title, null, true, null)
+      await this._vm.$crm.pageEdit(state.editPageFormData.id, null, state.editPageFormData.moduleID, state.editPageFormData.title, null, true, null)
       commit('resetEditPageFormData')
     } catch (e) {
-      console.error(e)
       commit('setEditPageFormSubmitError', 'Error when trying to edit page.')
+      throw e
     }
   },
 }

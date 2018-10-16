@@ -65,8 +65,8 @@ const actions = {
       commit('resetAddModuleFormData')
       commit('addModuleToList', module)
     } catch (e) {
-      console.error(e)
       commit('setAddModuleFormSubmitError', 'Error when trying to create module.')
+      throw e
     }
   },
 
@@ -82,8 +82,8 @@ const actions = {
       const json = await this._vm.$crm.moduleList()
       commit('setList', json)
     } catch (e) {
-      console.error(e)
       commit('setListError', 'Error when trying to get list of modules.')
+      throw e
     }
   },
 
@@ -98,8 +98,8 @@ const actions = {
       const json = await this._vm.$crm.moduleRead(id)
       commit('setEditModuleFormData', json)
     } catch (e) {
-      console.error(e)
       commit('setEditModuleFormDataError', 'Error when trying to init module form.')
+      throw e
     }
   },
 
@@ -113,8 +113,8 @@ const actions = {
       await this._vm.$crm.moduleDelete(id)
       commit('deleteModuleFromList', id)
     } catch (e) {
-      console.error(e)
       commit('setDeleteModuleError', 'Error when trying to delete module.')
+      throw e
     }
   },
 
@@ -127,8 +127,8 @@ const actions = {
       await this._vm.$crm.moduleEdit(state.editModuleFormData.id, state.editModuleFormData.name, state.editModuleFormData.fields)
       commit('resetEditModuleFormData')
     } catch (e) {
-      console.error(e)
       commit('setEditModuleFormSubmitError', 'Error when trying to edit module.')
+      throw e
     }
   },
 

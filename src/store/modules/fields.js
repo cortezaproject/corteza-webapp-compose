@@ -20,8 +20,8 @@ const actions = {
       const json = await this._vm.$crm.fieldList()
       commit('setList', json)
     } catch (e) {
-      console.error(e)
       commit('setListError', 'Error when trying to get list of pages.')
+      throw e
     }
   },
 
