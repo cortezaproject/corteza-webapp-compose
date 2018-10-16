@@ -16,14 +16,16 @@ export default new VueRouter({
 function publicRoutes () {
   return [
     route('/'),
+    route('/crm', 'Index'),
+
     route('/crm/pages', 'Pages/Index'), // Temporary
     route('/crm/pages/:id/edit', 'Pages/Edit'), // Temporary
     route('/crm/modules', 'Modules/Index'), // Temporary
     route('/crm/pages/:id/edit', 'Pages/Edit'), // Temporary
-    route('/crm', 'Index'),
+
     route('/crm/auth/signin', 'Auth/SignIn'),
     route('/crm/auth/signout', 'Auth/SignOut'),
-    route('/builder'),
+    route('/crm/builder', 'Builder'),
   ]
 }
 

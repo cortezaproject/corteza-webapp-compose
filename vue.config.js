@@ -1,4 +1,5 @@
 module.exports = {
+  baseUrl: '/crm/',
   lintOnSave: false,
   configureWebpack: {
     // other webpack options to merge in ...
