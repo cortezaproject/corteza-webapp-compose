@@ -1,7 +1,7 @@
 .PHONY: deploy clean docker enter
 
 docker:
-	cd docker && docker build --rm -f Dockerfile.dev -t crusttech/front-dev . && cd ..
+	cd docker && docker build --no-cache --rm -f Dockerfile.dev -t crusttech/front-dev . && cd ..
 
 enter:
 	docker run -it --env-file .env.local --net=host -v ${PWD}:/app -w /app crusttech/front-dev
