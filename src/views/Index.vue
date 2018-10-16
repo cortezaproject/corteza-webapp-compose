@@ -5,7 +5,7 @@
     </template>
     <template v-if="modules.length == 0">
       <p>No modules have been created yet.</p>
-      <p><a class="btn btn-primary" href="/modules/edit">Create new module</a></p>
+      <p><a class="btn btn-primary" href="/crm/modules/edit">Create new module</a></p>
     </template>
     <ul v-else>
       <li v-for="module in modules" :key="module.id">
@@ -41,8 +41,8 @@ export default {
           this.modules.splice(0)
           response.forEach(module => {
             module.links = {
-              read: '/modules/' + module.id,
-              edit: '/modules/' + module.id + '/edit',
+              read: '/crm/modules/' + module.id,
+              edit: '/crm/modules/' + module.id + '/edit',
             }
             this.modules.push(module)
           })
