@@ -10,7 +10,7 @@
               <label for="title">Page title</label>
               <input required type="text" v-model="editPageFormData.title" class="form-control" id="title" placeholder="Page title" />
             </div>
-            <button type="submit" class="btn btn-default">Edit</button>
+            <button type="submit" class="btn btn-primary">Save</button>
             <div v-if="editPageFormSubmitError" style="color:red">
               {{ editPageFormSubmitError }}
             </div>
