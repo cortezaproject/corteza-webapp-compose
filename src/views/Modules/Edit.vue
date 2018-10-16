@@ -29,7 +29,7 @@
         <td><input v-model="field.name" type="text"/></td>
         <td><input v-model="field.title" type="text"/></td>
         <td><select v-model="field.kind">
-        <option v-for="fieldType in fields" :key="fieldType.field_type" :value="fieldType.field_type">{{ _(fieldType.field_name) }}</option>
+        <option v-for="fieldType in fields" :key="fieldType.type" :value="fieldType.type">{{ _(fieldType.name) }}</option>
         </select></td>
         <td>
           <input v-model="field.gdpr" type="checkbox"> Sensitive data
