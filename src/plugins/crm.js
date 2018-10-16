@@ -229,7 +229,7 @@ class CRM extends MockCRM {
     })
   }
 
-  async moduleContentList (moduleID) {
+  async moduleContentList (moduleID, page, perPage) {
     const endpoint = `${this.baseLink}/module/${module}/content`
     return new Promise((resolve, reject) => {
       axios({
@@ -237,7 +237,10 @@ class CRM extends MockCRM {
         url: endpoint,
         withCredentials: true,
         headers: this.headers,
-        params: {},
+        params: {
+          'page': page,
+          'perPage': perPage,
+        },
         data: {},
       }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })
