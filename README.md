@@ -1,10 +1,14 @@
 # crm
 
 ## Project setup
+
+- commands :
 ```
 yarn global add @vue/cli
 yarn install
 ```
+- create a copy of "config.latest.js" to "config.js".
+
 
 ### Compiles and hot-reloads for development
 ```
