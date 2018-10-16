@@ -26,7 +26,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { mapState, mapActions } from 'vuex'
 export default {
-  name: 'Page',
+  name: 'PageEdit',
   created () {
     this.$store.dispatch('pages/initEditPageFormData', this.$route.params.id)
   },

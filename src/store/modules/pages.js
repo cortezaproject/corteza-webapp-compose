@@ -1,22 +1,30 @@
 'use strict'
 
-import Vue from 'vue'
-
 const state = {
   initListError: '',
   list: [],
+
+  // --- B --- Add
   addPageFormData: {
     title: '',
   },
   addPageFormSubmitError: '',
+  // --- E --- Add
+
+  // --- B --- Delete
   deleteError: '',
   deletePageError: '',
   deletePageId: '',
+
+  // --- E --- Delete
+
+  // --- B --- Edit
   initEditPageError: '',
   editPageFormData: {
     title: '',
   },
   editPageFormSubmitError: '',
+  // --- E --- Edit
 }
 
 const getters = {}
@@ -45,8 +53,6 @@ const actions = {
   async initList ({ commit }) {
     // TODO API CALL to get json schema
     try {
-      console.log(this)
-      console.log(Vue)
       commit('setListError', '')
       const json = await this._vm.$crm.pageList()
       commit('setList', json)
@@ -118,8 +124,6 @@ const mutations = {
      * @param {*} newValue
      */
   setEditPageFormData (state, newValue) {
-    console.log(JSON.stringify(state.editPageFormData))
-    console.log(newValue)
     state.editPageFormData = newValue
   },
 

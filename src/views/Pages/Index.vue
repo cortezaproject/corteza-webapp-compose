@@ -54,7 +54,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { mapState, mapActions } from 'vuex'
 export default {
   idToDelete: '',
-  name: 'Page',
+  name: 'PageList',
   created () {
     this.$store.dispatch('pages/initList')
   },
