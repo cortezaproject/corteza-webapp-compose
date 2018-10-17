@@ -8,6 +8,10 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
+
+  // Page data
+  pageData: null,
+
   // The layout of the builder
   layout: [],
   layoutTemp: [],
@@ -68,39 +72,30 @@ const getters = {
 
 const actions = {
 
-  /**
-   * Fetches the layout
-   *
-   * @param {*} param0
-   */
-  fetchLayout ({ commit }) {
-    // const layout = JSON.parse(localStorage.getItem('layout'))
-    // if (layout) {
-    //   commit('setLayout', layout)
-    // }
+  async fetchPageData ({ commit }, pageID) {
+    if (pageID) {
+      const page = await this._vm.$crm.pageRead(pageID)
+      console.log(page)
+
+      // Setting pageData in state
+      commit('setPageData', page)
+
+      // Setting layout in state (if null, set empty array instead)
+      commit('setLayout', page.blocks || [])
+    } else {
+      console.error('No page ID provided')
+    }
   },
 
   /**
-    * Fetches the correct json schema
-    * then sets (via mutation) the block type and the json schema
+    * Sets (via mutation) the block type
     *
     * @param {*} param0
     * @param {*} event
     */
   async handleBlockTypeChange ({ commit }, event) {
     const selected = event.target.value
-
-    // Api call to get json schema
-    try {
-      console.log('===> TODO: handleBlockTypeChange', selected)
-
-      // const json = require(`../../api/mock/json-schema-type-${selected}.json`)
-
-      // commit('setJsonSchema', json)
-      commit('setBlockType', selected)
-    } catch (e) {
-      console.log(e)
-    }
+    commit('setBlockType', selected)
   },
 
   /**
@@ -182,12 +177,19 @@ const actions = {
     commit('setLayoutMobile', layoutMobile)
   },
 
-  handleDoneButtonClick ({ commit, state }) {
-    // Saving layout
-    localStorage.setItem('layout', JSON.stringify(state.layoutTemp))
+  async handleDoneButtonClick ({ commit, state }) {
+    const pageID = state.pageData.id
+    const pageModuleID = state.pageData.module.id
+    const pageInfos = {
+      title: state.pageData.title,
+      description: state.pageData.description,
+      visible: state.pageData.visible,
+    }
+    const pageBlocks = state.layout
 
-    // Saving layout mobile
-    localStorage.setItem('layout-mobile', JSON.stringify(state.layoutMobile))
+    console.log(pageID, pageModuleID, pageInfos, pageBlocks)
+
+    await this._vm.$crm.pageEdit(pageID, /* selfID */ null, pageModuleID, pageInfos.title, pageInfos.description, pageInfos.visible, pageBlocks)
 
     // Returning to desktop view
     commit('setMobilePreview', false)
@@ -198,7 +200,7 @@ const actions = {
     // Showing desktop layout
     commit('setLayout', state.layoutTemp)
 
-    alert('Layouts saved !')
+    // alert('Layouts saved !')
   },
 }
 
@@ -241,6 +243,10 @@ const mutations = {
 
     // Set layout
     state.layout = SharedService.cloneObject(flattened)
+  },
+
+  setPageData (state, newValue) {
+    state.pageData = newValue
   },
 
   setMobilePreview (state, newValue) {

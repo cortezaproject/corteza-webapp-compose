@@ -20,7 +20,12 @@ export default {
   },
 
   methods: {
-    ...mapActions('builder', ['handleMobilePreviewButtonClick', 'handleDoneButtonClick']),
+    ...mapActions('builder', ['handleMobilePreviewButtonClick']),
+
+    async handleDoneButtonClick () {
+      const route = this.$route
+      await this.$store.dispatch('builder/handleDoneButtonClick', route)
+    },
   },
 
 }

@@ -6,6 +6,7 @@
         <div class="actions">
           <h4>Actions:</h4>
           <button @click="removeBlockFromLayout(item)">Remove block</button>
+          <button @click="editBlock(item)">Edit block</button>
         </div>
       </grid-item>
     </grid-layout>
@@ -18,7 +19,7 @@
 
 /* eslint-disable-next-line */
 import VueGridLayout from 'vue-grid-layout'
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'BuilderGrid',
@@ -37,11 +38,6 @@ export default {
 
   methods: {
     ...mapMutations('builder', ['removeBlockFromLayout']),
-    ...mapActions('builder', ['fetchLayout']),
-  },
-
-  created () {
-    this.fetchLayout()
   },
 }
 </script>

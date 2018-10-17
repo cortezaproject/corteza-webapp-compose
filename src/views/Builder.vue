@@ -28,46 +28,13 @@ export default {
   },
 
   created () {
-    this.fetchModuleList()
+    this.fetchPage()
   },
 
   methods: {
-
-    async fetchModuleList () {
-      // const modules = await this.$crm.moduleContentList()
-      // console.log(modules)
+    async fetchPage () {
+      await this.$store.dispatch('builder/fetchPageData', this.$route.query.pageId)
     },
-
-    // moduleList () {
-    //   this.clearError()
-    //   var moduleList = response => {
-    //     if ('error' in response.data) {
-    //       this.showError(response.data.error.message)
-    //       return
-    //     }
-    //     if (Array.isArray(response)) {
-    //       this.modules.splice(0)
-    //       response.forEach(module => {
-    //         module.links = {
-    //           read: '/modules/' + module.id,
-    //           edit: '/modules/' + module.id + '/edit',
-    //         }
-    //         this.modules.push(module)
-    //       })
-    //       return
-    //     }
-    //     this.showError('Unexpected response when fetching module list')
-    //   }
-    //   var moduleListFinalizer = () => {
-    //     this.loaded = true
-    //   }
-
-    //   this.$crm
-    //     .moduleList()
-    //     .then(moduleList)
-    //     .catch(e => this.showError(e))
-    //     .finally(moduleListFinalizer)
-    // },
   },
 }
 </script>
