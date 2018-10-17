@@ -5,8 +5,8 @@
         <h4>ID: {{ item.i }}</h4>
         <div class="actions">
           <h4>Actions:</h4>
-          <button @click="removeBlockFromLayout(item)">Remove block</button>
-          <button @click="editBlock(item)">Edit block</button>
+          <button @click="handleRemoveBlockButtonClick(item)">Remove block</button>
+          <button @click="handleEditBlockButtonClick(item)">Edit block</button>
         </div>
       </grid-item>
     </grid-layout>
@@ -37,7 +37,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations('builder', ['removeBlockFromLayout']),
+    ...mapMutations('builder', ['handleRemoveBlockButtonClick', 'handleEditBlockButtonClick']),
   },
 }
 </script>

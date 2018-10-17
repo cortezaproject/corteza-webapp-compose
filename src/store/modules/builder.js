@@ -99,6 +99,10 @@ const actions = {
     commit('setBlockType', selected)
   },
 
+  async handleEditBlockButtonClick ({ state, commit }, item) {
+    console.log(item)
+  },
+
   /**
     * Gets the last y of the layout
     * Gets a uniq ID for the block
@@ -162,14 +166,14 @@ const actions = {
    *
    * @param {*} param0
    */
-  handleMobilePreviewButtonClick ({ commit, state }) {
+  handleMobilePreviewButtonClick ({ commit, dispatch, state }) {
     const layout = SharedService.cloneObject(state.layout)
 
     // Saving layout in temp
     commit('setLayoutTemp', layout)
 
     // Building mobile layout
-    commit('showMobileLayout')
+    dispatch('showMobileLayout')
     commit('setMobilePreview', true)
 
     const layoutMobile = SharedService.cloneObject(state.layout)
@@ -203,19 +207,13 @@ const actions = {
 
     alert('Layouts saved !')
   },
-}
-
-const mutations = {
-  //
-  // ─── LAYOUT ─────────────────────────────────────────────────────────────────────
-  //
 
   /**
    * Rearrange layout to fit mobile. (1 column)
    *
    * @param {*} state
    */
-  showMobileLayout (state) {
+  showMobileLayout ({ commit, state }) {
     // Clone layout object
     const layout = SharedService.cloneObject(state.layout)
 
@@ -231,7 +229,7 @@ const mutations = {
     const flattened = _.flatten(orderedByYAndX)
 
     // Set colNum to 1
-    state.colNum = 1
+    commit('setColNum', 1)
 
     // Increment all y
     // All x at 0
@@ -243,8 +241,15 @@ const mutations = {
     })
 
     // Set layout
-    state.layout = SharedService.cloneObject(flattened)
+    commit('setLayout', SharedService.cloneObject(flattened))
   },
+
+}
+
+const mutations = {
+  //
+  // ─── LAYOUT ─────────────────────────────────────────────────────────────────────
+  //
 
   setPageData (state, newValue) {
     state.pageData = newValue
@@ -281,7 +286,7 @@ const mutations = {
     state.layout = layout
   },
 
-  removeBlockFromLayout (state, block) {
+  handleRemoveBlockButtonClick (state, block) {
     const blockID = block.i
     const blockIndex = state.layout.findIndex(o => o.i === blockID)
 
