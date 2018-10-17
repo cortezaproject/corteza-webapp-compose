@@ -32,6 +32,7 @@ export default {
   mounted () {
     if (this.isAuthenticated) {
       this.$auth.clear().catch((err) => {
+        /* eslint-disable-next-line */
         console.error(err)
       })
     }

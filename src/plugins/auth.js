@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 
 // Handles basic auth comm + state management
 export default {
@@ -46,6 +46,7 @@ export default {
               } else {
                 // Authentication successful, update state
                 // and notify the caller
+                /* eslint-disable-next-line */
                 console.debug('AuthCheck:', data.response.user)
                 store.dispatch('auth/setUser', data.response.user)
                 resolve(data.response.user)

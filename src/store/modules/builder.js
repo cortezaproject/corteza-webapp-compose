@@ -1,9 +1,9 @@
 'use strict'
 
-import SharedService from '@/services/SharedService'
-import _ from 'lodash'
-import Vue from 'vue'
-import Vuex from 'vuex'
+import SharedService from '@/services/SharedService';
+import _ from 'lodash';
+import Vue from 'vue';
+import Vuex from 'vuex';
 
 Vue.use(Vuex)
 
@@ -87,7 +87,7 @@ const actions = {
       // Setting layout in state (if null, set empty array instead)
       commit('setLayout', page.blocks || [])
     } else {
-      console.error('No page ID provided')
+      alert('No page ID provided')
     }
   },
 

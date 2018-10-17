@@ -40,6 +40,7 @@ export default {
     this.$auth.check().then((user) => {
       this.$router.push({ name: 'root' })
     }).catch((error) => {
+      /* eslint-disable-next-line */
       console.error(error)
     })
   },

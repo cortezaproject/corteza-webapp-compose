@@ -1,6 +1,5 @@
 'use strict'
 
-import Vue from 'vue'
 
 const state = {
   initListError: '',
@@ -76,8 +75,6 @@ const actions = {
   async initList ({ commit }) {
     // TODO API CALL to get json schema
     try {
-      console.log(this)
-      console.log(Vue)
       commit('setListError', '')
       const json = await this._vm.$crm.moduleList()
       commit('setList', json)
@@ -163,8 +160,6 @@ const mutations = {
      * @param {*} newValue
      */
   setEditModuleFormData (state, newValue) {
-    console.log(JSON.stringify(state.editModuleFormData))
-    console.log(newValue)
     state.editModuleFormData = newValue
   },
 
@@ -180,7 +175,6 @@ const mutations = {
 
   editModuleRemoveField (state, field) {
     const index = state.editModuleFormData.fields.indexOf(field)
-    console.log(field)
     if (index !== -1) {
       state.editModuleFormData.fields.splice(index, 1)
     }

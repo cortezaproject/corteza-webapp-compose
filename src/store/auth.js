@@ -10,14 +10,18 @@ try {
   if (storedJSON !== null) {
     const storedUser = JSON.parse(localStorage.getItem(localStorageKey))
     if (storedUser !== null) {
+      /* eslint-disable-next-line */
       console.debug(`User loaded from localstorage (key:${localStorageKey}):`, storedUser)
       state.user = storedUser
     } else {
+      /* eslint-disable-next-line */
       console.debug(`User not found in local storage (key:${localStorageKey})`)
     }
   }
 } catch (e) {
+  /* eslint-disable-next-line */
   console.warn(`Failed to parse JSON (${storedJSON}) from local storage:`, e)
+  /* eslint-disable-next-line */
   console.debug(`Cleaning local storage (key:${localStorageKey})`)
   localStorage.removeItem(localStorageKey)
 }
