@@ -187,7 +187,7 @@ const actions = {
       description: state.pageData.description,
       visible: state.pageData.visible,
     }
-    const pageBlocks = state.layout
+    const pageBlocks = state.layoutTemp
 
     // Editing page
     await this._vm.$crm.pageEdit(pageID, /* selfID */ null, pageModuleID, pageInfos.title, pageInfos.description, pageInfos.visible, pageBlocks)

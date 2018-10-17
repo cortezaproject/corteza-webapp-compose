@@ -4,6 +4,18 @@ const state = {
   initListError: '',
   list: [],
 
+  // --- B --- View
+  viewPageData: {
+    title: '',
+    blocks: [],
+  },
+  viewPageDataError: '',
+  viewPageLayout: {
+    index: 0,
+    colNum: 2,
+  },
+  // --- E --- View
+
   // --- B --- Add
   addPageFormData: {
     title: '',
@@ -67,6 +79,21 @@ const actions = {
      *@param {commit: any} param0
      *@param {String} id
      */
+  async initViewPageData ({ commit }, id) {
+    // TODO API CALL to get json schema
+    try {
+      commit('setViewPageDataError', '')
+      const json = await this._vm.$crm.pageRead(id)
+      commit('setViewPageData', json)
+    } catch (e) {
+      commit('setViewPageDataError', 'Error when trying to get page data.')
+      throw e
+    }
+  },
+  /**
+     *@param {commit: any} param0
+     *@param {String} id
+     */
   async initEditPageFormData ({ commit }, id) {
     // TODO API CALL to get json schema
     try {
@@ -117,6 +144,15 @@ const mutations = {
      */
   setAddPageFormData (state, newValue) {
     state.addPageFormData = newValue
+  },
+
+  /**
+     *
+     * @param {*} state
+     * @param {*} newValue
+     */
+  setViewPageData (state, newValue) {
+    state.viewPageData = newValue
   },
 
   /**
@@ -207,6 +243,15 @@ const mutations = {
      */
   setEditPageFormDataError (state, error) {
     state.editPageFormDataError = error
+  },
+
+  /**
+     *
+     * @param {*} state
+     * @param {String} error
+     */
+  setViewPageDataError (state, error) {
+    state.viewPageDataError = error
   },
 
   /**
