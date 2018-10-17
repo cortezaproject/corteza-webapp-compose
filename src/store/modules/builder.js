@@ -48,6 +48,9 @@ const state = {
 
   // Is the mobile preview active
   mobilePreview: false,
+
+  // Mode
+  mode: 'add'
 }
 
 const getters = {
@@ -100,7 +103,15 @@ const actions = {
   },
 
   async handleEditBlockButtonClick ({ state, commit }, item) {
-    console.log(item)
+    // Change mode
+    commit('setMode', 'edit')
+
+    // Change current block type
+    const blockType = item.blockType
+    commit('setBlockType', blockType)
+
+    // Change addBlockFormData
+    commit('setAddBlockFormData', item.data)
   },
 
   /**
@@ -114,51 +125,64 @@ const actions = {
     * @param {*} blockData
     */
   handleBlockSelectorFormSubmit ({ commit, getters, state }) {
-    // Index
-    const i = SharedService.generateUniqID()
 
-    // X value
-    const x = state.defaults.x
+    if (state.mode === 'add') {
 
-    // It maybe useless to get this
-    let y = getters.getMaxY
 
-    // Width
-    let w = state.defaults.w
+      // Index
+      const i = SharedService.generateUniqID()
 
-    // Height
-    const h = state.defaults.h
+      // X value
+      const x = state.defaults.x
 
-    // Data
-    const data = SharedService.cloneObject(state.addBlockFormData)
+      // It maybe useless to get this
+      let y = getters.getMaxY
 
-    // Meta
-    const meta = SharedService.cloneObject(state.addBlockFormMeta)
+      // Width
+      let w = state.defaults.w
 
-    // Block Type
-    const blockType = SharedService.cloneObject(state.blockType)
+      // Height
+      const h = state.defaults.h
 
-    if (state.addBlockFormMeta.fixed) {
-      commit('moveAllBlocksY')
+      // Data
+      const data = SharedService.cloneObject(state.addBlockFormData)
 
-      y = 0
-      w = state.colNum
+      // Meta
+      const meta = SharedService.cloneObject(state.addBlockFormMeta)
+
+      // Block Type
+      const blockType = SharedService.cloneObject(state.blockType)
+
+      if (state.addBlockFormMeta.fixed) {
+        commit('moveAllBlocksY')
+
+        y = 0
+        w = state.colNum
+      }
+
+      const block = {
+        i,
+        x,
+        y,
+        w,
+        h,
+        data,
+        meta,
+        blockType,
+      }
+
+      commit('incrementIndex')
+      commit('resetAddBlockFormData')
+      commit('addBlockToLayout', block)
+
+    } else if (state.mode === 'edit') {
+      // Hide form
+      commit('resetAddBlockFormData')
+
+      // Go back to add mode
+      commit('setMode', 'add')
     }
 
-    const block = {
-      i,
-      x,
-      y,
-      w,
-      h,
-      data,
-      meta,
-      blockType,
-    }
-
-    commit('incrementIndex')
-    commit('resetAddBlockFormData')
-    commit('addBlockToLayout', block)
   },
 
   /**
@@ -191,7 +215,7 @@ const actions = {
       description: state.pageData.description,
       visible: state.pageData.visible,
     }
-    const pageBlocks = state.layout
+    const pageBlocks = state.layoutTemp
 
     // Editing page
     await this._vm.$crm.pageEdit(pageID, /* selfID */ null, pageModuleID, pageInfos.title, pageInfos.description, pageInfos.visible, pageBlocks)
@@ -324,6 +348,10 @@ const mutations = {
     state.blockType = null
     state.addBlockFormData = {}
   },
+
+  setMode (state, newValue) {
+    state.mode = newValue
+  }
   // ────────────────────────────────────────────────────────────────────────────────
 }
 

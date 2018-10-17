@@ -8,6 +8,7 @@
     </select>
 
     <div v-if="blockType" class="form-schema">
+      <h4>Mode: {{ mode }}</h4>
       <form @submit.prevent="handleBlockSelectorFormSubmit">
         <fieldset class="form-group">
 
@@ -38,6 +39,7 @@
         </fieldset>
 
         <fieldset class="form-group">
+          <p>TODO: Spécific fields</p>
         </fieldset>
 
         <fieldset class="form-group">
@@ -58,6 +60,7 @@ export default {
   computed: {
     ...mapState({
       blockType: state => state.builder.blockType,
+      mode: state => state.builder.mode,
     }),
 
     addBlockFormData: {

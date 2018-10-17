@@ -8,6 +8,9 @@
           <button @click="handleRemoveBlockButtonClick(item)">Remove block</button>
           <button @click="handleEditBlockButtonClick(item)">Edit block</button>
         </div>
+        <div class="data">
+          {{item.data}}
+        </div>
       </grid-item>
     </grid-layout>
   </div>
@@ -19,7 +22,7 @@
 
 /* eslint-disable-next-line */
 import VueGridLayout from 'vue-grid-layout'
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'BuilderGrid',
@@ -37,7 +40,8 @@ export default {
   },
 
   methods: {
-    ...mapMutations('builder', ['handleRemoveBlockButtonClick', 'handleEditBlockButtonClick']),
+    ...mapMutations('builder', ['handleRemoveBlockButtonClick']),
+    ...mapActions('builder', ['handleEditBlockButtonClick'])
   },
 }
 </script>
