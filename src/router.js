@@ -33,6 +33,7 @@ function privateRoutes () {
 
     // --- B --- Pages CRUD
     route('/crm/pages', 'Pages/Index'),
+    route('/crm/pages/:id', 'Pages/View'),
     route('/crm/pages/:id/edit', 'Pages/Edit'),
     // --- E --- Pages CRUD
   ]

@@ -27,9 +27,11 @@
           <li v-for="(page, index) in pages" :key="index" class="list-group-item d-flex justify-content-between">
             <div>{{ page.title }}</div>
             <div class='d-flex align-items-center actions'>
-              <router-link :to="'/crm/builder?pageId=' + page.id" class="actions__action">Organize page</router-link>
+              <router-link v-if="page.blocks && page.blocks.length >= 1" :to="'/crm/pages/' + page.id" class="actions__action">View page</router-link>
+              <div title="You need to build page to view your page !" v-if="!page.blocks || page.blocks.length == 0" class="actions__action--disabled">View page</div>
+              <router-link :to="'/crm/builder?pageId=' + page.id" class="actions__action">Build page</router-link>
               <router-link :to="'/crm/pages/' + page.id + '/edit'" class="actions__action">Edit data</router-link>
-              <button type="button" class="btn btn-default actions__action" v-on:click="handleDeletePage(page.id)">Delete</button>
+              <button type="button" class="btn btn-default actions__action" @click="handleDeletePage(page.id)">Delete</button>
             </div>
           </li>
         </ul>
@@ -94,8 +96,15 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "~bootstrap/scss/bootstrap";
+.container /deep/ {
+  // Bootstrap Modal doesnt work if we comment this line
+  @import "~bootstrap/scss/bootstrap";
+}
 .actions__action {
     padding-left: 5px;
     padding-right: 5px;
+}
+.actions__action--disabled {
+  cursor: help;
 }
 </style>
