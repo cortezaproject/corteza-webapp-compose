@@ -13,6 +13,7 @@
             <div class="form-group">
               <label for="module">Module</label>
               <select v-model="editPageFormData.moduleID" class="form-control" id="module">
+                <option :value="null"></option>
                 <option v-for="module in modules" :key="module.id" :value="module.id">{{ module.name }}</option>
               </select>
               <router-link :to="'/crm/modules'" class="actions__action">Add a module</router-link>
