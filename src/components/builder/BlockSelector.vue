@@ -3,41 +3,53 @@
 
     <select :value="blockType" v-on:change="handleBlockTypeChange" name="block-type" id="block-type">
       <option v-bind:value="''" default selected disabled>-- Select a block type --</option>
-      <option v-bind:value="'stats'">Stats</option>
-      <option v-bind:value="'slack-channel'">Slack Channel</option>
-      <option v-bind:value="'google-meet'">Google meet</option>
-      <option v-bind:value="'header'">Header</option>
+      <option v-bind:value="'fields'">Fields</option>
     </select>
 
     <div v-if="blockType" class="form-schema">
 
-      <form class="form-meta">
-        <input type="checkbox" id="fixed" v-model="addBlockFormMeta.fixed">
-        <label for="fixed">Fixed ?</label>
+      <form @submit.prevent="handleBlockSelectorFormSubmit">
+        <fieldset class="form-group">
+
+          <div class="form-group form-check">
+            <input type="checkbox" id="fixed" class="form-check-input" v-model="addBlockFormMeta.fixed">
+            <label for="fixed" class="form-check-label">Fixed ?</label>
+          </div>
+
+        </fieldset>
+
+        <fieldset class="form-group">
+
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input v-model="addBlockFormData.title" type="text" class="form-control form-control-sm" id="title" placeholder="Block Title">
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input v-model="addBlockFormData.description" type="text" class="form-control form-control-sm" id="description" placeholder="Block Description">
+          </div>
+
+          <div class="form-group">
+            <label for="footer">Footer</label>
+            <input v-model="addBlockFormData.footer" type="text" class="form-control form-control-sm" id="footer" placeholder="Block Footer">
+          </div>
+
+        </fieldset>
+
+        <fieldset class="form-group">
+        </fieldset>
+
+        <fieldset class="form-group">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </fieldset>
       </form>
 
-      <FormSchema ref="formSchema" v-model="addBlockFormData" @submit.prevent="handleBlockSelectorFormSubmit">
+      <!-- <FormSchema ref="formSchema" v-model="addBlockFormData" @submit.prevent="handleBlockSelectorFormSubmit">
         <button type="submit">Insert Block</button>
-      </FormSchema>
+      </FormSchema> -->
 
     </div>
-
-    <!-- This will need to be dynamic -->
-    <!-- <form @submit.prevent="handleBlockSelectorFormSubmit">
-
-            <div class="input-container">
-                <label for="title">Title</label>
-                <input type="text" name="title" id="title" v-model="addBlockFormData.title">
-            </div>
-
-            <div class="input-container">
-                <label for="url">URL</label>
-                <input type="text" name="url" id="url" v-model="addBlockFormData.url">
-            </div>
-
-            <input type="submit" value="Add block">
-
-        </form> -->
 
   </div>
 </template>
@@ -94,10 +106,16 @@ export default {
       }, 0)
     },
   },
+
+  async created () {
+
+  },
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+@import "~bootstrap/scss/bootstrap";
+
 .block-selector {
   z-index: 999;
   padding: 1em;
@@ -108,16 +126,14 @@ export default {
   border-radius: 1em;
 }
 
-[id^="form-schema"],
-form.form-meta {
-  margin: 20px 0;
-  padding: 1em;
+fieldset {
+  margin-bottom: 1em;
+  margin-top: 1em;
   border: 1px dashed grey;
+  padding: 0.5em;
 
-  form {
-    & > div {
-      margin-bottom: 1em;
-    }
+  .form-group {
+    margin-bottom: 1em;
   }
 }
 </style>

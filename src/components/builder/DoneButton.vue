@@ -1,8 +1,8 @@
 <template>
 
   <div class="done-button">
-    <button v-if="!mobilePreview" @click="handleMobilePreviewButtonClick">Done (mobile preview)</button>
-    <button v-if="mobilePreview" @click="handleDoneButtonClick">Done (save layouts)</button>
+    <button :disabled="layout.length <= 0" v-if="!mobilePreview" @click="handleMobilePreviewButtonClick">Done (mobile preview)</button>
+    <button :disabled="layout.length <= 0" v-if="mobilePreview" @click="handleDoneButtonClick">Done (save layouts)</button>
   </div>
 
 </template>

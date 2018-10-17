@@ -74,10 +74,10 @@ const actions = {
    * @param {*} param0
    */
   fetchLayout ({ commit }) {
-    const layout = JSON.parse(localStorage.getItem('layout'))
-    if (layout) {
-      commit('setLayout', layout)
-    }
+    // const layout = JSON.parse(localStorage.getItem('layout'))
+    // if (layout) {
+    //   commit('setLayout', layout)
+    // }
   },
 
   /**
@@ -92,9 +92,11 @@ const actions = {
 
     // Api call to get json schema
     try {
-      const json = require(`../../api/mock/json-schema-type-${selected}.json`)
+      console.log('===> TODO: handleBlockTypeChange', selected)
 
-      commit('setJsonSchema', json)
+      // const json = require(`../../api/mock/json-schema-type-${selected}.json`)
+
+      // commit('setJsonSchema', json)
       commit('setBlockType', selected)
     } catch (e) {
       console.log(e)
