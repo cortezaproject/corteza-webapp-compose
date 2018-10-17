@@ -8,7 +8,6 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-
   // Page data
   pageData: null,
 
@@ -16,21 +15,24 @@ const state = {
   layout: [],
   layoutTemp: [],
   layoutMobile: [],
+
   // Unkown - may be imporant
   index: 0,
+
   // Are (all) the grid items resizable
   resizable: true,
+
   // Are (all) the grid items draggable
   draggable: true,
-  //
+
+  // Number of columns in the grid
   colNum: 2,
-  //
+
+  // Height (in px) of a row in the grid
   rowHeight: 90,
 
   // Current selected block type
   blockType: null,
-  // Current jsonSchema (changes with block type)
-  jsonSchema: null,
 
   // Form's model when adding a block
   addBlockFormData: {},
@@ -46,7 +48,6 @@ const state = {
 
   // Is the mobile preview active
   mobilePreview: false,
-
 }
 
 const getters = {
@@ -74,8 +75,8 @@ const actions = {
 
   async fetchPageData ({ commit }, pageID) {
     if (pageID) {
+      // Getting current page
       const page = await this._vm.$crm.pageRead(pageID)
-      console.log(page)
 
       // Setting pageData in state
       commit('setPageData', page)
@@ -178,6 +179,7 @@ const actions = {
   },
 
   async handleDoneButtonClick ({ commit, state }) {
+    // Getting all infos
     const pageID = state.pageData.id
     const pageModuleID = state.pageData.module.id
     const pageInfos = {
@@ -187,8 +189,7 @@ const actions = {
     }
     const pageBlocks = state.layout
 
-    console.log(pageID, pageModuleID, pageInfos, pageBlocks)
-
+    // Editing page
     await this._vm.$crm.pageEdit(pageID, /* selfID */ null, pageModuleID, pageInfos.title, pageInfos.description, pageInfos.visible, pageBlocks)
 
     // Returning to desktop view
@@ -200,7 +201,7 @@ const actions = {
     // Showing desktop layout
     commit('setLayout', state.layoutTemp)
 
-    // alert('Layouts saved !')
+    alert('Layouts saved !')
   },
 }
 
@@ -301,9 +302,6 @@ const mutations = {
   //
   // ─── BLOCK TYPE FORM ────────────────────────────────────────────────────────────
   //
-  setJsonSchema (state, newValue) {
-    state.jsonSchema = newValue
-  },
 
   setBlockType (state, newValue) {
     state.blockType = newValue

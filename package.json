@@ -12,7 +12,6 @@
     "pre-commit": "yarn lint"
   },
   "dependencies": {
-    "@formschema/native": "^2.0.0-alpha.2",
     "axios": "^0.18.0",
     "bootstrap-vue": "^2.0.0-rc.11",
     "ejs": "^2.6.1",

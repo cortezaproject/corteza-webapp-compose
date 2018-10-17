@@ -3,11 +3,11 @@
 
     <select :value="blockType" v-on:change="handleBlockTypeChange" name="block-type" id="block-type">
       <option v-bind:value="''" default selected disabled>-- Select a block type --</option>
+      <!-- Maybe this needs to be dynamic -->
       <option v-bind:value="'fields'">Fields</option>
     </select>
 
     <div v-if="blockType" class="form-schema">
-
       <form @submit.prevent="handleBlockSelectorFormSubmit">
         <fieldset class="form-group">
 
@@ -45,35 +45,19 @@
         </fieldset>
       </form>
 
-      <!-- <FormSchema ref="formSchema" v-model="addBlockFormData" @submit.prevent="handleBlockSelectorFormSubmit">
-        <button type="submit">Insert Block</button>
-      </FormSchema> -->
-
     </div>
-
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import FormSchema from '@formschema/native'
 
 export default {
   name: 'BlockSelector',
-  components: {
-    FormSchema,
-  },
-
-  data () {
-    return {
-      model: {},
-    }
-  },
 
   computed: {
     ...mapState({
       blockType: state => state.builder.blockType,
-      jsonSchema: state => state.builder.jsonSchema,
     }),
 
     addBlockFormData: {
@@ -97,18 +81,6 @@ export default {
 
   methods: {
     ...mapActions('builder', ['handleBlockTypeChange', 'handleBlockSelectorFormSubmit']),
-  },
-
-  watch: {
-    jsonSchema (value) {
-      setTimeout(() => {
-        this.$refs.formSchema.load(value)
-      }, 0)
-    },
-  },
-
-  async created () {
-
   },
 }
 </script>
