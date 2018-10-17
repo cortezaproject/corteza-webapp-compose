@@ -15,6 +15,7 @@
               <select v-model="editPageFormData.moduleID" class="form-control" id="module">
                 <option v-for="module in modules" :key="module.id" :value="module.id">{{ module.name }}</option>
               </select>
+              <router-link :to="'/crm/modules'" class="actions__action">Add a module</router-link>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
             <div v-if="editPageFormSubmitError" style="color:red">
@@ -61,4 +62,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "~bootstrap/scss/bootstrap";
+.container /deep/ {
+  // Bootstrap Modal doesnt work if we comment this line
+  @import "~bootstrap/scss/bootstrap";
+}
 </style>
