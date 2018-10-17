@@ -41,7 +41,7 @@ export default {
 
   methods: {
     ...mapMutations('builder', ['handleRemoveBlockButtonClick']),
-    ...mapActions('builder', ['handleEditBlockButtonClick'])
+    ...mapActions('builder', ['handleEditBlockButtonClick']),
   },
 }
 </script>

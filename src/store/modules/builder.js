@@ -50,7 +50,7 @@ const state = {
   mobilePreview: false,
 
   // Mode
-  mode: 'add'
+  mode: 'add',
 }
 
 const getters = {
@@ -125,10 +125,7 @@ const actions = {
     * @param {*} blockData
     */
   handleBlockSelectorFormSubmit ({ commit, getters, state }) {
-
     if (state.mode === 'add') {
-
-
       // Index
       const i = SharedService.generateUniqID()
 
@@ -174,7 +171,6 @@ const actions = {
       commit('incrementIndex')
       commit('resetAddBlockFormData')
       commit('addBlockToLayout', block)
-
     } else if (state.mode === 'edit') {
       // Hide form
       commit('resetAddBlockFormData')
@@ -182,7 +178,6 @@ const actions = {
       // Go back to add mode
       commit('setMode', 'add')
     }
-
   },
 
   /**
@@ -351,7 +346,7 @@ const mutations = {
 
   setMode (state, newValue) {
     state.mode = newValue
-  }
+  },
   // ────────────────────────────────────────────────────────────────────────────────
 }
 
