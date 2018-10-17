@@ -1,9 +1,9 @@
 'use strict'
 
-import SharedService from '@/services/SharedService';
-import _ from 'lodash';
-import Vue from 'vue';
-import Vuex from 'vuex';
+import SharedService from '@/services/SharedService'
+import _ from 'lodash'
+import Vue from 'vue'
+import Vuex from 'vuex'
 
 Vue.use(Vuex)
 

@@ -1,6 +1,5 @@
 'use strict'
 
-
 const state = {
   initListError: '',
   list: [],

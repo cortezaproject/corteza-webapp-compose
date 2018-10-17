@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 
 // Handles basic auth comm + state management
 export default {
