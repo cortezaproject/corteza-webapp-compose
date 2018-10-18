@@ -14,7 +14,6 @@ const actions = {
      *@param {commit: any} param0
      */
   async initList ({ commit }) {
-    // TODO API CALL to get json schema
     try {
       commit('setListError', '')
       const json = await this._vm.$crm.fieldList()
