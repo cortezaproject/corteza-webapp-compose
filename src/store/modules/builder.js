@@ -30,9 +30,6 @@ const state = {
   // Number of columns in the grid
   colNum: 2,
 
-  // Height (in px) of a row in the grid
-  rowHeight: 90,
-
   // Current selected block type
   blockType: null,
 

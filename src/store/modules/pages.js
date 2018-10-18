@@ -5,6 +5,7 @@ const state = {
   list: [],
 
   // --- B --- View
+  viewPageColNum: 2,
   viewPageData: {
     title: '',
     blocks: [],
@@ -12,7 +13,6 @@ const state = {
   viewPageDataError: '',
   viewPageLayout: {
     index: 0,
-    colNum: 2,
   },
   // --- E --- View
 
