@@ -39,9 +39,16 @@
         </fieldset>
 
         <fieldset class="form-group">
-          <p>TODO: Spécific fields</p>
+          <label for="select-content-fields">Fields</label>
+          <multiselect  v-if="contentFieldsEnabled" v-model="addBlockFormContentFields" :options="contentFieldsAvailable" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Pick some" label="name" track-by="name">
+            <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
+          </multiselect>
+          <div style="color:red" v-if="!contentFieldsEnabled">
+            Fields are not available here.
+            <br>
+            <router-link :to="'/crm/pages/' + this.$route.query.pageId + '/edit'" class="actions__action">Set a module with fields</router-link>.
+          </div>
         </fieldset>
-
         <fieldset class="form-group">
           <button type="submit" class="btn btn-primary">Submit</button>
         </fieldset>
@@ -53,6 +60,9 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import Vue from 'vue'
+import Multiselect from 'vue-multiselect'
+Vue.component('multiselect', Multiselect)
 
 export default {
   name: 'BlockSelector',
@@ -61,8 +71,9 @@ export default {
     ...mapState({
       blockType: state => state.builder.blockType,
       mode: state => state.builder.mode,
+      contentFieldsAvailable: state => state.builder.contentFieldsAvailable,
+      contentFieldsEnabled: state => state.builder.contentFieldsEnabled,
     }),
-
     addBlockFormData: {
       get () {
         return this.$store.state.builder.addBlockFormData
@@ -80,16 +91,28 @@ export default {
         this.$store.commit('builder/setAddBlockFormMeta', newValue)
       },
     },
+
+    addBlockFormContentFields: {
+      get () {
+        return this.$store.state.builder.addBlockFormContent.fields
+      },
+      set (newValue) {
+        this.$store.commit('builder/setAddBlockFormContentFields', newValue)
+      },
+    },
   },
 
   methods: {
-    ...mapActions('builder', ['handleBlockTypeChange', 'handleBlockSelectorFormSubmit']),
+    ...mapActions('builder', [
+      'handleBlockTypeChange',
+      'handleBlockSelectorFormSubmit',
+    ]),
   },
 }
 </script>
-
 <style lang="scss" scoped>
 @import "~bootstrap/scss/bootstrap";
+@import "~vue-multiselect/dist/vue-multiselect.min.css";
 
 .block-selector {
   z-index: 999;

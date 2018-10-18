@@ -10,6 +10,8 @@ Vue.use(Vuex)
 const state = {
   // Page data
   pageData: null,
+  contentFieldsAvailable: [],
+  contentFieldsEnabled: false,
 
   // The layout of the builder
   layout: [],
@@ -28,15 +30,15 @@ const state = {
   // Number of columns in the grid
   colNum: 2,
 
-  // Height (in px) of a row in the grid
-  rowHeight: 90,
-
   // Current selected block type
   blockType: null,
 
   // Form's model when adding a block
   addBlockFormData: {},
   addBlockFormMeta: {},
+  addBlockFormContent: {
+    fields: [],
+  },
 
   // Block data defaults
   defaults: {
@@ -86,6 +88,12 @@ const actions = {
 
       // Setting layout in state (if null, set empty array instead)
       commit('setLayout', page.blocks || [])
+
+      // Available fields if we have a module linked to the page
+      commit('setContentFieldsEnabled', !!page.module)
+
+      // Available fields if we have a module linked to the page
+      commit('setContentFieldsAvailable', page.module ? page.module.fields : null)
     } else {
       alert('No page ID provided')
     }
@@ -112,6 +120,10 @@ const actions = {
 
     // Change addBlockFormData
     commit('setAddBlockFormData', item.data)
+
+    console.log('handleEditBlockButtonClick', item)
+    // Change addBlockFormContent
+    commit('setAddBlockFormContent', item.content)
   },
 
   /**
@@ -147,6 +159,10 @@ const actions = {
       // Meta
       const meta = SharedService.cloneObject(state.addBlockFormMeta)
 
+      // Content
+      console.log(state)
+      const content = SharedService.cloneObject(state.addBlockFormContent)
+
       // Block Type
       const blockType = SharedService.cloneObject(state.blockType)
 
@@ -166,7 +182,10 @@ const actions = {
         data,
         meta,
         blockType,
+        content,
       }
+
+      console.log('block', block)
 
       commit('incrementIndex')
       commit('resetAddBlockFormData')
@@ -174,6 +193,8 @@ const actions = {
     } else if (state.mode === 'edit') {
       // Hide form
       commit('resetAddBlockFormData')
+
+      commit('resetAddBlockFormContent')
 
       // Go back to add mode
       commit('setMode', 'add')
@@ -186,6 +207,7 @@ const actions = {
    * @param {*} param0
    */
   handleMobilePreviewButtonClick ({ commit, dispatch, state }) {
+    console.log('handleMobilePreviewButtonClick', state.layout)
     const layout = SharedService.cloneObject(state.layout)
 
     // Saving layout in temp
@@ -211,6 +233,7 @@ const actions = {
       visible: state.pageData.visible,
     }
     const pageBlocks = state.layoutTemp
+    console.log(pageBlocks)
 
     // Editing page
     await this._vm.$crm.pageEdit(pageID, /* selfID */ null, pageModuleID, pageInfos.title, pageInfos.description, pageInfos.visible, pageBlocks)
@@ -278,6 +301,14 @@ const mutations = {
     state.mobilePreview = newValue
   },
 
+  setContentFieldsAvailable (state, newValue) {
+    state.contentFieldsAvailable = newValue
+  },
+
+  setContentFieldsEnabled (state, newValue) {
+    state.contentFieldsEnabled = newValue
+  },
+
   setLayout (state, newValue) {
     state.layout = newValue
   },
@@ -339,9 +370,25 @@ const mutations = {
     state.addBlockFormMeta = newValue
   },
 
+  setAddBlockFormContent (state, newValue) {
+    state.addBlockFormContent = newValue
+    console.log(state.addBlockFormContent)
+  },
+
+  setAddBlockFormContentFields (state, newValue) {
+    state.addBlockFormContent.fields = newValue
+    console.log(state.addBlockFormContent)
+  },
+
   resetAddBlockFormData (state) {
     state.blockType = null
     state.addBlockFormData = {}
+  },
+
+  resetAddBlockFormContent (state) {
+    state.addBlockFormContent = {
+      fields: [],
+    }
   },
 
   setMode (state, newValue) {
