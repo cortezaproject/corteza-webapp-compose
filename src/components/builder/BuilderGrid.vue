@@ -11,6 +11,9 @@
         <div class="data">
           {{item.data}}
         </div>
+        <div class="content">
+          {{item.content}}
+        </div>
       </grid-item>
     </grid-layout>
   </div>
