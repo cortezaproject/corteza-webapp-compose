@@ -1,6 +1,6 @@
 <template>
   <div class="view-grid">
-    <grid-layout :layout="blocks" :col-num="colNum" :is-draggable="false" :is-resizable="false" :vertical-compact="true" :use-css-transforms="true">
+    <grid-layout v-if="blocks.length > 0" :layout="blocks" :col-num="colNum" :is-draggable="false" :is-resizable="false" :vertical-compact="true" :use-css-transforms="true">
       <grid-item v-for="item in blocks" v-bind:key="item.i" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" v-bind:is-draggable="false">
         <div class="page-data">
           <div class="page-data__title">{{ item.data.title }}</div>
@@ -33,6 +33,9 @@
         </div>
       </grid-item>
     </grid-layout>
+    <div v-if="viewPageDataError" style="color:red">
+      {{ viewPageDataError }}
+    </div>
   </div>
 </template>
 
@@ -49,7 +52,7 @@ export default {
     ...mapState({
       blocks: state => state.pages.viewPageData.blocks,
       colNum: state => 2,
-      initViewPageDataError: state => state.pages.initViewPageDataError,
+      viewPageDataError: state => state.pages.viewPageDataError,
       viewPageData: state => state.pages.viewPageData,
     }),
   },

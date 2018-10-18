@@ -84,6 +84,9 @@ const actions = {
     try {
       commit('setViewPageDataError', '')
       const json = await this._vm.$crm.pageRead(id)
+      if (json.id === '0') {
+        throw new Error('No id')
+      };
       commit('setViewPageData', json)
     } catch (e) {
       commit('setViewPageDataError', 'Error when trying to get page data.')
