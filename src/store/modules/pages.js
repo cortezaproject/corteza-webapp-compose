@@ -1,5 +1,5 @@
 'use strict'
-
+import BlocksService from '@/services/BlocksService'
 const state = {
   initListError: '',
   list: [],
@@ -9,11 +9,9 @@ const state = {
   viewPageData: {
     title: '',
     blocks: [],
+    mobileBlocks: [],
   },
   viewPageDataError: '',
-  viewPageLayout: {
-    index: 0,
-  },
   // --- E --- View
 
   // --- B --- Add
@@ -87,6 +85,7 @@ const actions = {
       if (json.id === '0') {
         throw new Error('No id')
       };
+      json.mobileBlocks = BlocksService.cloneBlocksForMobileView(json.blocks)
       commit('setViewPageData', json)
     } catch (e) {
       commit('setViewPageDataError', 'Error when trying to get page data.')
@@ -156,6 +155,15 @@ const mutations = {
      */
   setViewPageData (state, newValue) {
     state.viewPageData = newValue
+  },
+
+  /**
+     *
+     * @param {*} state
+     * @param {*} newValue
+     */
+  setViewPageColNum (state, newValue) {
+    state.viewPageColNum = newValue
   },
 
   /**

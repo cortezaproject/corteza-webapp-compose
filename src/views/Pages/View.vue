@@ -1,6 +1,6 @@
 <template>
-  <div class="view-grid" v-bind:class="{ 'mobile': false }">
-    <grid-layout v-if="blocks.length > 0" :layout="blocks" :col-num="colNum" :row-height="90" :is-draggable="false" :is-resizable="false" :vertical-compact="true" :use-css-transforms="true">
+  <div class="view-grid" v-bind:class="{ 'mobile': !wide }">
+    <grid-layout v-if="blocks.length > 0" :layout="blocks" :col-num="viewPageColNum" :row-height="90" :is-draggable="false" :is-resizable="false" :vertical-compact="true" :use-css-transforms="true">
       <grid-item v-for="block in blocks" v-bind:key="block.i" :x="block.x" :y="block.y" :w="block.w" :h="block.h" :i="block.i" v-bind:is-draggable="false">
         <Block :block="block"></Block>
       </grid-item>
@@ -21,19 +21,51 @@ export default {
   components: {
     Block,
   },
+  data () {
+    return {
+      wideWidth: 768,
+      wide: false,
+      window: {
+        width: 0,
+        height: 0,
+      }
+    }
+  },
   created () {
     this.$store.dispatch('pages/initViewPageData', this.$route.params.id)
+    window.addEventListener('resize', this.handleResize)
+    this.handleResize()
+  },
+  destroyed () {
+    window.removeEventListener('resize', this.handleResize)
   },
   computed: {
     ...mapState({
-      blocks: state => state.pages.viewPageData.blocks,
       viewPageDataError: state => state.pages.viewPageDataError,
       viewPageData: state => state.pages.viewPageData,
-      colNum: state => state.pages.viewPageColNum,
+      viewPageColNum: state => state.pages.viewPageColNum,
     }),
+    blocks () {
+      if (this.wide) {
+        return this.$store.state.pages.viewPageData.blocks
+      } else {
+        return this.$store.state.pages.viewPageData.mobileBlocks
+      }
+    },
   },
   methods: {
     ...mapActions('pages', []),
+    handleResize () {
+      this.window.width = window.innerWidth
+      this.window.height = window.innerHeight
+      if (this.window.width > this.wideWidth) {
+        this.wide = true
+        this.$store.commit('pages/setViewPageColNum', 2)
+      } else {
+        this.wide = false
+        this.$store.commit('pages/setViewPageColNum', 1)
+      }
+    },
   },
 }
 </script>

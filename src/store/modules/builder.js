@@ -1,7 +1,7 @@
 'use strict'
 
+import BlocksService from '@/services/BlocksService'
 import SharedService from '@/services/SharedService'
-import _ from 'lodash'
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -121,7 +121,6 @@ const actions = {
     // Change addBlockFormData
     commit('setAddBlockFormData', item.data)
 
-    console.log('handleEditBlockButtonClick', item)
     // Change addBlockFormContent
     commit('setAddBlockFormContent', item.content)
   },
@@ -160,7 +159,6 @@ const actions = {
       const meta = SharedService.cloneObject(state.addBlockFormMeta)
 
       // Content
-      console.log(state)
       const content = SharedService.cloneObject(state.addBlockFormContent)
 
       // Block Type
@@ -184,9 +182,6 @@ const actions = {
         blockType,
         content,
       }
-
-      console.log('block', block)
-
       commit('incrementIndex')
       commit('resetAddBlockFormData')
       commit('addBlockToLayout', block)
@@ -207,7 +202,6 @@ const actions = {
    * @param {*} param0
    */
   handleMobilePreviewButtonClick ({ commit, dispatch, state }) {
-    console.log('handleMobilePreviewButtonClick', state.layout)
     const layout = SharedService.cloneObject(state.layout)
 
     // Saving layout in temp
@@ -233,7 +227,6 @@ const actions = {
       visible: state.pageData.visible,
     }
     const pageBlocks = state.layoutTemp
-    console.log(pageBlocks)
 
     // Editing page
     await this._vm.$crm.pageEdit(pageID, /* selfID */ null, pageModuleID, pageInfos.title, pageInfos.description, pageInfos.visible, pageBlocks)
@@ -256,34 +249,13 @@ const actions = {
    * @param {*} state
    */
   showMobileLayout ({ commit, state }) {
-    // Clone layout object
-    const layout = SharedService.cloneObject(state.layout)
-
-    // Group blocks by y
-    const groupedByY = _.groupBy(layout, 'y')
-
-    // Order all groups by x (asc)
-    const orderedByYAndX = _.map(groupedByY, (group) => {
-      return _.orderBy(group, ['x'], ['asc'])
-    })
-
-    // Flatten array
-    const flattened = _.flatten(orderedByYAndX)
+    const blocksForMobile = BlocksService.cloneBlocksForMobileView(state.layout)
 
     // Set colNum to 1
     commit('setColNum', 1)
 
-    // Increment all y
-    // All x at 0
-    // All w at 1
-    flattened.forEach((block, index, array) => {
-      array[index].y = index
-      array[index].x = 0
-      array[index].w = 1
-    })
-
     // Set layout
-    commit('setLayout', SharedService.cloneObject(flattened))
+    commit('setLayout', blocksForMobile)
   },
 
 }
@@ -343,7 +315,6 @@ const mutations = {
     const answer = confirm(`Are you sure you want to remove block ${blockID} ?`)
     if (answer) {
       state.layout.splice(blockIndex, 1)
-      console.log('removing', blockID, 'at index', blockIndex)
     }
   },
 
@@ -372,12 +343,10 @@ const mutations = {
 
   setAddBlockFormContent (state, newValue) {
     state.addBlockFormContent = newValue
-    console.log(state.addBlockFormContent)
   },
 
   setAddBlockFormContentFields (state, newValue) {
     state.addBlockFormContent.fields = newValue
-    console.log(state.addBlockFormContent)
   },
 
   resetAddBlockFormData (state) {
