@@ -24,7 +24,7 @@
           {{ deleteModuleError }}
         </div>
         <ul class="list-group">
-          <li v-for="(module, index) in modules" :key="index" class="list-group-item d-flex justify-content-between">
+          <li v-for="(module, index) in list" :key="index" class="list-group-item d-flex justify-content-between">
             <div>{{ module.name }}</div>
             <div>(Updated at : {{ module.updatedAt }})</div>
             <div class='d-flex align-items-center actions'>
@@ -33,8 +33,8 @@
             </div>
           </li>
         </ul>
-        <div v-if="initListError" style="color:red">
-          {{ initListError }}
+        <div v-if="listError" style="color:red">
+          {{ listError }}
         </div>
       </div>
     </div>
@@ -49,19 +49,29 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   idToDelete: '',
   name: 'ModuleList',
-  created () {
-    this.$store.dispatch('modules/initList')
+  data () {
+    return {
+      deleteModuleError: '',
+      listError: '',
+      addModuleFormSubmitError: '',
+    }
+  },
+  async created () {
+    try {
+      this.listError = ''
+      await this.$store.dispatch('modules/initList')
+    } catch (e) {
+      this.listError = 'Error when trying to get list of modules.'
+    }
   },
   computed: {
-    ...mapState({
-      initListError: state => state.modules.initListError,
-      addModuleFormSubmitError: state => state.modules.addModuleFormSubmitError,
-      deleteModuleError: state => state.modules.deleteModuleError,
-    }),
+    ...mapState('modules', [
+      'list',
+    ]),
     addModuleFormData: {
       get () {
         return this.$store.state.modules.addModuleFormData
@@ -70,20 +80,26 @@ export default {
         this.$store.commit('modules/setAddModuleFormData', newValue)
       },
     },
-    modules: {
-      get () {
-        return this.$store.state.modules.list
-      },
-    },
   },
   methods: {
-    ...mapActions('modules', ['handleAddModuleFormSubmit']),
+    async handleAddModuleFormSubmit () {
+      this.addModuleFormSubmitError = ''
+      try {
+        await this.$store.dispatch('modules/handleAddModuleFormSubmit')
+      } catch (e) {
+        this.addModuleFormSubmitError = 'Error when trying to create module.'
+      }
+    },
     async handleDeleteModule (id) {
       this.idToDelete = id
       this.$refs.myDeleteModalRef.show(id)
     },
     async handleModalConfirmYes () {
-      await this.$store.dispatch('modules/deleteModule', this.idToDelete)
+      try {
+        await this.$store.dispatch('modules/deleteModule', this.idToDelete)
+      } catch (e) {
+        this.deleteModuleError = 'Error when trying to delete module.'
+      }
       this.$refs.myDeleteModalRef.hide()
     },
     handleModalConfirmNo () {

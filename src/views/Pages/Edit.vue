@@ -4,7 +4,10 @@
       <div class="col-md-12">
         <div class="well">
           <h2>Edit page</h2>
-          <form @submit.prevent="handleEditPageFormSubmit">
+          <div v-if="editPageError" style="color:red">
+              {{ editPageError }}
+          </div>
+          <form v-if="!editPageError" @submit.prevent="handleEditPageFormSubmit">
             <input required type="hidden" v-model="editPageFormData.id" id="id" />
             <div class="form-group">
               <label for="title">Page title</label>
@@ -14,7 +17,7 @@
               <label for="module">Module</label>
               <select v-model="editPageFormData.moduleID" class="form-control" id="module">
                 <option :value="null"></option>
-                <option v-for="module in modules" :key="module.id" :value="module.id">{{ module.name }}</option>
+                <option v-for="module in modulesList" :key="module.id" :value="module.id">{{ module.name }}</option>
               </select>
               <router-link :to="'/crm/modules'" class="actions__action">Add a module</router-link>
             </div>
@@ -30,18 +33,30 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'PageEdit',
-  created () {
-    this.$store.dispatch('pages/initEditPageFormData', this.$route.params.id)
-    this.$store.dispatch('modules/initList', this.$route.params.id)
+  data () {
+    return {
+      editPageError: '',
+      editPageFormSubmitError: '',
+
+    }
+  },
+  async created () {
+    try {
+      this.editPageError = ''
+      await Promise.all([
+        this.$store.dispatch('pages/initEditPageFormData', this.$route.params.id),
+        this.$store.dispatch('modules/initList', this.$route.params.id),
+      ])
+    } catch (e) {
+      this.editPageError = 'Error when trying to init page form.'
+    }
   },
   computed: {
-    ...mapState({
-      initEditPageError: state => state.pages.initEditPageError,
-      editPageFormSubmitError: state => state.pages.editPageFormSubmitError,
-      modules: state => state.modules.list,
+    ...mapState('modules', {
+      'modulesList': 'list',
     }),
     editPageFormData: {
       get () {
@@ -53,10 +68,14 @@ export default {
     },
   },
   methods: {
-    ...mapActions('pages', []),
     async handleEditPageFormSubmit () {
-      await this.$store.dispatch('pages/handleEditPageFormSubmit')
-      this.$router.push({ path: '/crm/pages' })
+      try {
+        this.editPageFormSubmitError = ''
+        await this.$store.dispatch('pages/handleEditPageFormSubmit')
+        this.$router.push({ path: '/crm/pages' })
+      } catch (e) {
+        this.editPageFormSubmitError = 'Error when trying to edit page.'
+      }
     },
   },
 }

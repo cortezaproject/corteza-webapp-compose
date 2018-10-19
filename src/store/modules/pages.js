@@ -1,7 +1,6 @@
 'use strict'
 import BlocksService from '@/services/BlocksService'
 const state = {
-  initListError: '',
   list: [],
 
   // --- B --- View
@@ -29,7 +28,7 @@ const state = {
   // --- E --- Delete
 
   // --- B --- Edit
-  initEditPageError: '',
+  editPageError: '',
   editPageFormData: {
     title: '',
     moduleID: '',
@@ -62,15 +61,8 @@ const actions = {
      *@param {commit: any} param0
      */
   async initList ({ commit }) {
-    // TODO API CALL to get json schema
-    try {
-      commit('setListError', '')
-      const json = await this._vm.$crm.pageList()
-      commit('setList', json)
-    } catch (e) {
-      commit('setListError', 'Error when trying to get list of pages.')
-      throw e
-    }
+    const json = await this._vm.$crm.pageList()
+    commit('setList', json)
   },
 
   /**
@@ -78,34 +70,20 @@ const actions = {
      *@param {String} id
      */
   async initViewPageData ({ commit }, id) {
-    // TODO API CALL to get json schema
-    try {
-      commit('setViewPageDataError', '')
-      const json = await this._vm.$crm.pageRead(id)
-      if (json.id === '0') {
-        throw new Error('No id')
-      };
-      json.mobileBlocks = BlocksService.cloneBlocksForMobileView(json.blocks)
-      commit('setViewPageData', json)
-    } catch (e) {
-      commit('setViewPageDataError', 'Error when trying to get page data.')
-      throw e
-    }
+    const json = await this._vm.$crm.pageRead(id)
+    if (json.id === '0') {
+      throw new Error('No id')
+    };
+    json.mobileBlocks = BlocksService.cloneBlocksForMobileView(json.blocks)
+    commit('setViewPageData', json)
   },
   /**
      *@param {commit: any} param0
      *@param {String} id
      */
   async initEditPageFormData ({ commit }, id) {
-    // TODO API CALL to get json schema
-    try {
-      commit('setEditPageFormDataError', '')
-      const json = await this._vm.$crm.pageRead(id)
-      commit('setEditPageFormData', json)
-    } catch (e) {
-      commit('setEditPageFormDataError', 'Error when trying to init page form.')
-      throw e
-    }
+    const json = await this._vm.$crm.pageRead(id)
+    commit('setEditPageFormData', json)
   },
 
   /**
@@ -113,28 +91,16 @@ const actions = {
      *@param {String} id
      */
   async deletePage ({ commit }, id) {
-    try {
-      commit('setDeletePageError', '')
-      await this._vm.$crm.pageDelete(id)
-      commit('deletePageFromList', id)
-    } catch (e) {
-      commit('setDeletePageError', 'Error when trying to delete page.')
-      throw e
-    }
+    await this._vm.$crm.pageDelete(id)
+    commit('deletePageFromList', id)
   },
 
   /**
      * @param {commit: any, state: any} param0
      */
   async handleEditPageFormSubmit ({ commit, state }) {
-    try {
-      commit('setEditPageFormSubmitError', '')
-      await this._vm.$crm.pageEdit(state.editPageFormData.id, null, state.editPageFormData.moduleID, state.editPageFormData.title, null, true, null)
-      commit('resetEditPageFormData')
-    } catch (e) {
-      commit('setEditPageFormSubmitError', 'Error when trying to edit page.')
-      throw e
-    }
+    await this._vm.$crm.pageEdit(state.editPageFormData.id, null, state.editPageFormData.moduleID, state.editPageFormData.title, null, true, null)
+    commit('resetEditPageFormData')
   },
 }
 
@@ -218,60 +184,6 @@ const mutations = {
     state.list = state.list.filter(function (obj) {
       return obj.id !== id
     })
-  },
-
-  /**
-     *
-     * @param {*} state
-     * @param {String} error
-     */
-  setListError (state, error) {
-    state.listError = error
-  },
-
-  /**
-     *
-     * @param {*} state
-     * @param {String} error
-     */
-  setAddPageFormSubmitError (state, error) {
-    state.addPageFormSubmitError = error
-  },
-
-  /**
-     *
-     * @param {*} state
-     * @param {String} error
-     */
-  setDeletePageError (state, error) {
-    state.deletePageError = error
-  },
-
-  /**
-     *
-     * @param {*} state
-     * @param {String} error
-     */
-  setEditPageFormDataError (state, error) {
-    state.editPageFormDataError = error
-  },
-
-  /**
-     *
-     * @param {*} state
-     * @param {String} error
-     */
-  setViewPageDataError (state, error) {
-    state.viewPageDataError = error
-  },
-
-  /**
-     *
-     * @param {*} state
-     * @param {String} error
-     */
-  setEditPageFormSubmitError (state, error) {
-    state.editPageFormSubmitError = error
   },
 }
 

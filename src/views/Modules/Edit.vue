@@ -4,7 +4,10 @@
       <div class="col-md-12">
         <div class="well">
           <h2>Edit module</h2>
-          <form @submit.prevent="handleEditModuleFormSubmit">
+          <div v-if="editModuleError" style="color:red">
+            {{ editModuleError }}
+          </div>
+          <form v-if="!editModuleError" @submit.prevent="handleEditModuleFormSubmit">
             <input required type="hidden" v-model="editModuleFormData.id" id="id" />
             <div class="form-group">
               <label for="name">Module name</label>
@@ -30,7 +33,7 @@
                     <td><input v-model="field.name" type="text" /></td>
                     <td><input v-model="field.title" type="text" /></td>
                     <td><select v-model="field.kind">
-                        <option v-for="fieldType in fields" :key="fieldType.type" :value="fieldType.type">{{ _(fieldType.name) }}</option>
+                        <option v-for="fieldType in fieldsList" :key="fieldType.type" :value="fieldType.type">{{ _(fieldType.name) }}</option>
                       </select></td>
                     <td>
                       <input v-model="field.gdpr" type="checkbox"> Sensitive data
@@ -39,7 +42,7 @@
                       <input v-model="field.show" type="checkbox"> Show
                     </td>
                     <td>
-                       <button @click="handleEditModuleRemoveField(field)" type="button" class="btn btn-default">Delete</button>
+                      <button @click="handleEditModuleRemoveField(field)" type="button" class="btn btn-default">Delete</button>
                     </td>
                   </tr>
                 </draggable>
@@ -61,28 +64,33 @@
 
 <script>
 import draggable from 'vuedraggable'
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'ModuleEdit',
   components: {
     draggable,
   },
-  created () {
-    this.$store.dispatch(
-      'modules/initEditModuleFormData',
-      this.$route.params.id
-    )
-    this.$store.dispatch(
-      'fields/initList',
-      this.$route.params.id
-    )
+  data () {
+    return {
+      editModuleError: '',
+      editModuleFormSubmitError: '',
+
+    }
+  },
+  async created () {
+    try {
+      this.editModuleError = ''
+      await Promise.all([
+        this.$store.dispatch('modules/initEditModuleFormData', this.$route.params.id),
+        this.$store.dispatch('fields/initList'),
+      ])
+    } catch (e) {
+      this.editModuleError = 'Error when trying to init module form.'
+    }
   },
   computed: {
-    ...mapState({
-      initEditModuleError: state => state.modules.initEditModuleError,
-      editModuleFormSubmitError: state =>
-        state.modules.editModuleFormSubmitError,
-      fields: state => state.fields.list,
+    ...mapState('fields', {
+      fieldsList: 'list',
     }),
     editModuleFormData: {
       get () {
@@ -94,10 +102,14 @@ export default {
     },
   },
   methods: {
-    ...mapActions('modules', []),
     async handleEditModuleFormSubmit () {
-      await this.$store.dispatch('modules/handleEditModuleFormSubmit')
-      this.$router.push({ path: '/crm/modules' })
+      try {
+        this.editModuleFormSubmitError = ''
+        await this.$store.dispatch('modules/handleEditModuleFormSubmit')
+        this.$router.push({ path: '/crm/modules' })
+      } catch (e) {
+        this.editModuleFormSubmitError = 'Error when trying to edit module.'
+      }
     },
     async handleEditModuleAddNewField () {
       await this.$store.dispatch('modules/handleEditModuleAddNewField')
@@ -114,7 +126,7 @@ export default {
   // Bootstrap Modal doesnt work if we comment this line
   @import "~bootstrap/scss/bootstrap";
 }
-button[type=submit] {
-    margin-top: 10px;
+button[type="submit"] {
+  margin-top: 10px;
 }
 </style>

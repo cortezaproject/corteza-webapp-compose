@@ -1,29 +1,23 @@
 'use strict'
 
 const state = {
-  initListError: '',
   list: [],
 
   // --- B --- Add
   addModuleFormData: {
     name: '',
   },
-  addModuleFormSubmitError: '',
   // --- E --- Add
 
   // --- B --- Delete
-  deleteError: '',
-  deleteModuleError: '',
   deleteModuleId: '',
   // --- E --- Delete
 
   // --- B --- Edit
-  initEditModuleError: '',
   editModuleFormData: {
     name: '',
     fields: [],
   },
-  editModuleFormSubmitError: '',
   // --- E --- Edit
 }
 
@@ -57,30 +51,17 @@ const actions = {
      * @param {commit: any, state: any} param0
      */
   async handleAddModuleFormSubmit ({ commit, state }) {
-    try {
-      commit('setAddModuleFormSubmitError', '')
-      const module = await this._vm.$crm.moduleCreate(state.addModuleFormData.name, [])
-      commit('resetAddModuleFormData')
-      commit('addModuleToList', module)
-    } catch (e) {
-      commit('setAddModuleFormSubmitError', 'Error when trying to create module.')
-      throw e
-    }
+    const module = await this._vm.$crm.moduleCreate(state.addModuleFormData.name, [])
+    commit('resetAddModuleFormData')
+    commit('addModuleToList', module)
   },
 
   /**
      *@param {commit: any} param0
      */
   async initList ({ commit }) {
-    // TODO API CALL to get json schema
-    try {
-      commit('setListError', '')
-      const json = await this._vm.$crm.moduleList()
-      commit('setList', json)
-    } catch (e) {
-      commit('setListError', 'Error when trying to get list of modules.')
-      throw e
-    }
+    const json = await this._vm.$crm.moduleList()
+    commit('setList', json)
   },
 
   /**
@@ -88,15 +69,8 @@ const actions = {
      *@param {String} id
      */
   async initEditModuleFormData ({ commit }, id) {
-    // TODO API CALL to get json schema
-    try {
-      commit('setEditModuleFormDataError', '')
-      const json = await this._vm.$crm.moduleRead(id)
-      commit('setEditModuleFormData', json)
-    } catch (e) {
-      commit('setEditModuleFormDataError', 'Error when trying to init module form.')
-      throw e
-    }
+    const json = await this._vm.$crm.moduleRead(id)
+    commit('setEditModuleFormData', json)
   },
 
   /**
@@ -104,28 +78,16 @@ const actions = {
      *@param {String} id
      */
   async deleteModule ({ commit }, id) {
-    try {
-      commit('setDeleteModuleError', '')
-      await this._vm.$crm.moduleDelete(id)
-      commit('deleteModuleFromList', id)
-    } catch (e) {
-      commit('setDeleteModuleError', 'Error when trying to delete module.')
-      throw e
-    }
+    await this._vm.$crm.moduleDelete(id)
+    commit('deleteModuleFromList', id)
   },
 
   /**
      * @param {commit: any, state: any} param0
      */
   async handleEditModuleFormSubmit ({ commit, state }) {
-    try {
-      commit('setEditModuleFormSubmitError', '')
-      await this._vm.$crm.moduleEdit(state.editModuleFormData.id, state.editModuleFormData.name, state.editModuleFormData.fields)
-      commit('resetEditModuleFormData')
-    } catch (e) {
-      commit('setEditModuleFormSubmitError', 'Error when trying to edit module.')
-      throw e
-    }
+    await this._vm.$crm.moduleEdit(state.editModuleFormData.id, state.editModuleFormData.name, state.editModuleFormData.fields)
+    commit('resetEditModuleFormData')
   },
 
   /**
@@ -224,50 +186,6 @@ const mutations = {
     })
   },
 
-  /**
-     *
-     * @param {*} state
-     * @param {String} error
-     */
-  setListError (state, error) {
-    state.listError = error
-  },
-
-  /**
-     *
-     * @param {*} state
-     * @param {String} error
-     */
-  setAddModuleFormSubmitError (state, error) {
-    state.addModuleFormSubmitError = error
-  },
-
-  /**
-     *
-     * @param {*} state
-     * @param {String} error
-     */
-  setDeleteModuleError (state, error) {
-    state.deleteModuleError = error
-  },
-
-  /**
-     *
-     * @param {*} state
-     * @param {String} error
-     */
-  setEditModuleFormDataError (state, error) {
-    state.editModuleFormDataError = error
-  },
-
-  /**
-     *
-     * @param {*} state
-     * @param {String} error
-     */
-  setEditModuleFormSubmitError (state, error) {
-    state.editModuleFormSubmitError = error
-  },
 }
 
 export default {

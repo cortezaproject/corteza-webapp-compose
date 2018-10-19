@@ -24,7 +24,7 @@
           {{ deletePageError }}
         </div>
         <ul class="list-group">
-          <li v-for="(page, index) in pages" :key="index" class="list-group-item d-flex justify-content-between">
+          <li v-for="(page, index) in list" :key="index" class="list-group-item d-flex justify-content-between">
             <div>{{ page.title }}</div>
             <div class='d-flex align-items-center actions'>
               <router-link v-if="page.blocks && page.blocks.length >= 1" :to="'/crm/pages/' + page.id" class="actions__action">View page</router-link>
@@ -35,8 +35,8 @@
             </div>
           </li>
         </ul>
-        <div v-if="initListError" style="color:red">
-          {{ initListError }}
+        <div v-if="listError" style="color:red">
+          {{ listError }}
         </div>
       </div>
     </div>
@@ -51,19 +51,29 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   idToDelete: '',
   name: 'PageList',
-  created () {
-    this.$store.dispatch('pages/initList')
+  data () {
+    return {
+      deletePageError: '',
+      listError: '',
+      addPageFormSubmitError: '',
+    }
+  },
+  async created () {
+    try {
+      this.listError = ''
+      await this.$store.dispatch('pages/initList')
+    } catch (e) {
+      this.listError = 'Error when trying to get list of pages.'
+    }
   },
   computed: {
-    ...mapState({
-      initListError: state => state.pages.initListError,
-      addPageFormSubmitError: state => state.pages.addPageFormSubmitError,
-      deletePageError: state => state.pages.deletePageError,
-    }),
+    ...mapState('pages', [
+      'list',
+    ]),
     addPageFormData: {
       get () {
         return this.$store.state.pages.addPageFormData
@@ -72,20 +82,27 @@ export default {
         this.$store.commit('pages/setAddPageFormData', newValue)
       },
     },
-    pages: {
-      get () {
-        return this.$store.state.pages.list
-      },
-    },
   },
   methods: {
-    ...mapActions('pages', ['handleAddPageFormSubmit']),
+    async handleAddPageFormSubmit () {
+      this.addPageFormSubmitError = ''
+      try {
+        await this.$store.dispatch('pages/handleAddPageFormSubmit')
+      } catch (e) {
+        this.addPageFormSubmitError = 'Error when trying to create page.'
+      }
+    },
     async handleDeletePage (id) {
       this.idToDelete = id
       this.$refs.myDeleteModalRef.show(id)
     },
     async handleModalConfirmYes () {
-      await this.$store.dispatch('pages/deletePage', this.idToDelete)
+      try {
+        this.deletePageError = ''
+        await this.$store.dispatch('pages/deletePage', this.idToDelete)
+      } catch (e) {
+        this.deletePageError = 'Error when trying to delete page.'
+      }
       this.$refs.myDeleteModalRef.hide()
     },
     handleModalConfirmNo () {
