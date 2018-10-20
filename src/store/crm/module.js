@@ -15,7 +15,7 @@ const state = {
 const getters = {}
 
 const actions = {
-  async List ({ commit, query }) {
+  async List ({ commit }, { query }) {
     try {
       commit('error', '')
       commit('moduleList', {})
@@ -26,7 +26,7 @@ const actions = {
       throw e
     }
   },
-  async Create ({ commit, name, fields }) {
+  async Create ({ commit }, { name, fields }) {
     try {
       commit('error', '')
       commit('moduleCreate', {})
@@ -37,7 +37,7 @@ const actions = {
       throw e
     }
   },
-  async Read ({ commit, id }) {
+  async Read ({ commit }, { id }) {
     try {
       commit('error', '')
       commit('moduleRead', {})
@@ -48,7 +48,7 @@ const actions = {
       throw e
     }
   },
-  async Edit ({ commit, id, name, fields }) {
+  async Edit ({ commit }, { id, name, fields }) {
     try {
       commit('error', '')
       commit('moduleEdit', {})
@@ -59,7 +59,7 @@ const actions = {
       throw e
     }
   },
-  async Delete ({ commit, id }) {
+  async Delete ({ commit }, { id }) {
     try {
       commit('error', '')
       commit('moduleDelete', {})

@@ -26,7 +26,7 @@ const actions = {
       throw e
     }
   },
-  async Create ({ commit, selfID, moduleID, title, description, visible, blocks }) {
+  async Create ({ commit }, { selfID, moduleID, title, description, visible, blocks }) {
     try {
       commit('error', '')
       commit('pageCreate', {})
@@ -37,7 +37,7 @@ const actions = {
       throw e
     }
   },
-  async Read ({ commit, id }) {
+  async Read ({ commit }, { id }) {
     try {
       commit('error', '')
       commit('pageRead', {})
@@ -48,7 +48,7 @@ const actions = {
       throw e
     }
   },
-  async Edit ({ commit, id, selfID, moduleID, title, description, visible, blocks }) {
+  async Edit ({ commit }, { id, selfID, moduleID, title, description, visible, blocks }) {
     try {
       commit('error', '')
       commit('pageEdit', {})
@@ -59,7 +59,7 @@ const actions = {
       throw e
     }
   },
-  async Delete ({ commit, id }) {
+  async Delete ({ commit }, { id }) {
     try {
       commit('error', '')
       commit('pageDelete', {})

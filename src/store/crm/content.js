@@ -15,7 +15,7 @@ const state = {
 const getters = {}
 
 const actions = {
-  async List ({ commit, moduleID, page, perPage }) {
+  async List ({ commit }, { moduleID, page, perPage }) {
     try {
       commit('error', '')
       commit('contentList', {})
@@ -26,7 +26,7 @@ const actions = {
       throw e
     }
   },
-  async Create ({ commit, moduleID, fields }) {
+  async Create ({ commit }, { moduleID, fields }) {
     try {
       commit('error', '')
       commit('contentCreate', {})
@@ -37,7 +37,7 @@ const actions = {
       throw e
     }
   },
-  async Read ({ commit, moduleID, id }) {
+  async Read ({ commit }, { moduleID, id }) {
     try {
       commit('error', '')
       commit('contentRead', {})
@@ -48,7 +48,7 @@ const actions = {
       throw e
     }
   },
-  async Edit ({ commit, moduleID, id, fields }) {
+  async Edit ({ commit }, { moduleID, id, fields }) {
     try {
       commit('error', '')
       commit('contentEdit', {})
@@ -59,7 +59,7 @@ const actions = {
       throw e
     }
   },
-  async Delete ({ commit, moduleID, id }) {
+  async Delete ({ commit }, { moduleID, id }) {
     try {
       commit('error', '')
       commit('contentDelete', {})

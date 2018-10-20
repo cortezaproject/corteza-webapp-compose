@@ -23,7 +23,7 @@ const actions = {
       throw e
     }
   },
-  async Type ({ commit, id }) {
+  async Type ({ commit }, { id }) {
     try {
       commit('error', '')
       commit('fieldType', {})
