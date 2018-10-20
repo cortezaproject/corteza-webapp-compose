@@ -53,7 +53,7 @@ const actions = {
   async handleAddModuleFormSubmit ({ commit, state }) {
     const module = await this._vm.$crm.moduleCreate({
       name: state.addModuleFormData.name,
-      fields: []
+      fields: [],
     })
     commit('resetAddModuleFormData')
     commit('addModuleToList', module)
