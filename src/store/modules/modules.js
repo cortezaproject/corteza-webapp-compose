@@ -51,7 +51,10 @@ const actions = {
      * @param {commit: any, state: any} param0
      */
   async handleAddModuleFormSubmit ({ commit, state }) {
-    const module = await this._vm.$crm.moduleCreate(state.addModuleFormData.name, [])
+    const module = await this._vm.$crm.moduleCreate({
+      name: state.addModuleFormData.name,
+      fields: []
+    })
     commit('resetAddModuleFormData')
     commit('addModuleToList', module)
   },
@@ -60,7 +63,7 @@ const actions = {
      *@param {commit: any} param0
      */
   async initList ({ commit }) {
-    const json = await this._vm.$crm.moduleList()
+    const json = await this._vm.$crm.moduleList({})
     commit('setList', json)
   },
 
@@ -69,7 +72,7 @@ const actions = {
      *@param {String} id
      */
   async initEditModuleFormData ({ commit }, id) {
-    const json = await this._vm.$crm.moduleRead(id)
+    const json = await this._vm.$crm.moduleRead({ id })
     commit('setEditModuleFormData', json)
   },
 
@@ -78,7 +81,7 @@ const actions = {
      *@param {String} id
      */
   async deleteModule ({ commit }, id) {
-    await this._vm.$crm.moduleDelete(id)
+    await this._vm.$crm.moduleDelete({ id })
     commit('deleteModuleFromList', id)
   },
 
@@ -86,7 +89,11 @@ const actions = {
      * @param {commit: any, state: any} param0
      */
   async handleEditModuleFormSubmit ({ commit, state }) {
-    await this._vm.$crm.moduleEdit(state.editModuleFormData.id, state.editModuleFormData.name, state.editModuleFormData.fields)
+    await this._vm.$crm.moduleEdit({
+      id: state.editModuleFormData.id,
+      name: state.editModuleFormData.name,
+      fields: state.editModuleFormData.fields,
+    })
     commit('resetEditModuleFormData')
   },
 
