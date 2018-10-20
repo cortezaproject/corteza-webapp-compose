@@ -45,7 +45,7 @@ class CRM extends MockCRM {
     })
   }
 
-  async fieldType (id) {
+  async fieldType ({ id }) {
     const endpoint = `${this.baseLink}/field/${id}`
     return new Promise((resolve, reject) => {
       axios({
@@ -73,7 +73,7 @@ class CRM extends MockCRM {
     })
   }
 
-  async pageCreate (selfID, moduleID, title, description, visible, blocks) {
+  async pageCreate ({ selfID, moduleID, title, description, visible, blocks }) {
     const endpoint = `${this.baseLink}/page/`
     return new Promise((resolve, reject) => {
       axios({
@@ -94,7 +94,7 @@ class CRM extends MockCRM {
     })
   }
 
-  async pageRead (id) {
+  async pageRead ({ id }) {
     const endpoint = `${this.baseLink}/page/${id}`
     return new Promise((resolve, reject) => {
       axios({
@@ -108,7 +108,7 @@ class CRM extends MockCRM {
     })
   }
 
-  async pageEdit (id, selfID, moduleID, title, description, visible, blocks) {
+  async pageEdit ({ id, selfID, moduleID, title, description, visible, blocks }) {
     const endpoint = `${this.baseLink}/page/${id}`
     return new Promise((resolve, reject) => {
       axios({
@@ -129,7 +129,7 @@ class CRM extends MockCRM {
     })
   }
 
-  async pageDelete (id) {
+  async pageDelete ({ id }) {
     const endpoint = `${this.baseLink}/page/${id}`
     return new Promise((resolve, reject) => {
       axios({
@@ -143,7 +143,7 @@ class CRM extends MockCRM {
     })
   }
 
-  async moduleList (query) {
+  async moduleList ({ query }) {
     const endpoint = `${this.baseLink}/module/`
     return new Promise((resolve, reject) => {
       axios({
@@ -159,7 +159,7 @@ class CRM extends MockCRM {
     })
   }
 
-  async moduleCreate (name, fields) {
+  async moduleCreate ({ name, fields }) {
     const endpoint = `${this.baseLink}/module/`
     return new Promise((resolve, reject) => {
       axios({
@@ -176,7 +176,7 @@ class CRM extends MockCRM {
     })
   }
 
-  async moduleRead (id) {
+  async moduleRead ({ id }) {
     const endpoint = `${this.baseLink}/module/${id}`
     return new Promise((resolve, reject) => {
       axios({
@@ -190,7 +190,7 @@ class CRM extends MockCRM {
     })
   }
 
-  async moduleEdit (id, name, fields) {
+  async moduleEdit ({ id, name, fields }) {
     const endpoint = `${this.baseLink}/module/${id}`
     return new Promise((resolve, reject) => {
       axios({
@@ -207,7 +207,7 @@ class CRM extends MockCRM {
     })
   }
 
-  async moduleDelete (id) {
+  async moduleDelete ({ id }) {
     const endpoint = `${this.baseLink}/module/${id}`
     return new Promise((resolve, reject) => {
       axios({
@@ -221,8 +221,8 @@ class CRM extends MockCRM {
     })
   }
 
-  async moduleContentList (moduleID, page, perPage) {
-    const endpoint = `${this.baseLink}/module/${moduleID}/content`
+  async moduleContentList ({ moduleID, page, perPage }) {
+    const endpoint = `${this.baseLink}/module/${module}/content`
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -238,7 +238,7 @@ class CRM extends MockCRM {
     })
   }
 
-  async moduleContentCreate (moduleID, fields) {
+  async moduleContentCreate ({ moduleID, fields }) {
     const endpoint = `${this.baseLink}/module/${module}/content`
     return new Promise((resolve, reject) => {
       axios({
@@ -254,7 +254,7 @@ class CRM extends MockCRM {
     })
   }
 
-  async moduleContentRead (moduleID, id) {
+  async moduleContentRead ({ moduleID, id }) {
     const endpoint = `${this.baseLink}/module/${module}/content/${id}`
     return new Promise((resolve, reject) => {
       axios({
@@ -268,7 +268,7 @@ class CRM extends MockCRM {
     })
   }
 
-  async moduleContentEdit (moduleID, id, fields) {
+  async moduleContentEdit ({ moduleID, id, fields }) {
     const endpoint = `${this.baseLink}/module/${module}/content/${id}`
     return new Promise((resolve, reject) => {
       axios({
@@ -284,7 +284,7 @@ class CRM extends MockCRM {
     })
   }
 
-  async moduleContentDelete (moduleID, id) {
+  async moduleContentDelete ({ moduleID, id }) {
     const endpoint = `${this.baseLink}/module/${module}/content/${id}`
     return new Promise((resolve, reject) => {
       axios({
