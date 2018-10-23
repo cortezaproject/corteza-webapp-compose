@@ -1,9 +1,9 @@
 'use strict'
 
-import BlocksService from '@/services/BlocksService'
-import SharedService from '@/services/SharedService'
-import Vue from 'vue'
-import Vuex from 'vuex'
+import BlocksService from '@/services/BlocksService';
+import SharedService from '@/services/SharedService';
+import Vue from 'vue';
+import Vuex from 'vuex';
 
 Vue.use(Vuex)
 
@@ -90,7 +90,11 @@ const actions = {
       commit('setPageData', page)
 
       // Setting layout in state (if null, set empty array instead)
-      commit('setLayout', page.blocks || [])
+      if (page.blocks && page.blocks.length > 0) {
+        commit('setLayout', page.blocks)
+      } else {
+        commit('setLayout', [])
+      }
 
       // Available fields if we have a module linked to the page
       commit('setContentFieldsEnabled', !!page.module)
