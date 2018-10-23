@@ -14,6 +14,25 @@
               <input required type="text" v-model="editPageFormData.title" class="form-control" id="title" placeholder="Page title" />
             </div>
             <div class="form-group">
+              <label for="selfID">Parent page </label>
+              <select v-model="editPageFormData.selfID" class="form-control" id="selfID">
+                <option :value="null"></option>
+                <option v-for="page in pageList" :key="page.id" :value="page.id">{{ page.title }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="order">Order (API update neded)</label>
+               <input required type="number" v-model="editPageFormData.order" class="form-control" id="order" placeholder="Order" />
+            </div>
+            <div class="form-group">
+              <label for="title">Description</label>
+              <textarea v-model="editPageFormData.description" class="form-control" id="description" placeholder="Page description" />
+            </div>
+            <div class="form-group form-check">
+              <input type="checkbox" id="visible" class="form-check-input" v-model="editPageFormData.fixed">
+              <label for="visible" class="form-check-label">Visible ?</label>
+            </div>
+            <div class="form-group">
               <label for="module">Module</label>
               <select v-model="editPageFormData.moduleID" class="form-control" id="module">
                 <option :value="null"></option>
@@ -48,6 +67,7 @@ export default {
       this.editPageError = ''
       await Promise.all([
         this.$store.dispatch('pages/initEditPageFormData', this.$route.params.id),
+        this.$store.dispatch('pages/initList', this.$route.params.id),
         this.$store.dispatch('modules/initList', this.$route.params.id),
       ])
     } catch (e) {
@@ -57,6 +77,11 @@ export default {
   computed: {
     ...mapState('modules', {
       'modulesList': 'list',
+    }),
+    ...mapState({
+      pageList (state) {
+        return state.pages.list.filter((page) => page.id !== this.$route.params.id)
+      },
     }),
     editPageFormData: {
       get () {
