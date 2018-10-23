@@ -1,8 +1,8 @@
 // Global Axios defaults
-import axios from 'axios';
-import BootstrapVue from 'bootstrap-vue';
-import VTooltip from 'v-tooltip';
-import Vue from 'vue';
+import axios from 'axios'
+import BootstrapVue from 'bootstrap-vue'
+import VTooltip from 'v-tooltip'
+import Vue from 'vue'
 
 axios.defaults.timeout = 15000
 
