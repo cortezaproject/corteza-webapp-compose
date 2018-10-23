@@ -29,7 +29,7 @@
               <textarea v-model="editPageFormData.description" class="form-control" id="description" placeholder="Page description" />
             </div>
             <div class="form-group form-check">
-              <input type="checkbox" id="visible" class="form-check-input" v-model="editPageFormData.fixed">
+              <input type="checkbox" id="visible" class="form-check-input" v-model="editPageFormData.visible">
               <label for="visible" class="form-check-label">Visible ?</label>
             </div>
             <div class="form-group">
