@@ -6,34 +6,29 @@ const state = {
   // --- B --- View
   viewPageColNum: 2,
   viewPageData: {
+    id: '',
     title: '',
     blocks: [],
     mobileBlocks: [],
   },
-  viewPageDataError: '',
   // --- E --- View
 
   // --- B --- Add
   addPageFormData: {
     title: '',
   },
-  addPageFormSubmitError: '',
   // --- E --- Add
 
   // --- B --- Delete
-  deleteError: '',
-  deletePageError: '',
   deletePageId: '',
 
   // --- E --- Delete
 
   // --- B --- Edit
-  editPageError: '',
   editPageFormData: {
     title: '',
     moduleID: '',
   },
-  editPageFormSubmitError: '',
   // --- E --- Edit
 }
 
@@ -46,15 +41,9 @@ const actions = {
      * @param {commit: any, state: any} param0
      */
   async handleAddPageFormSubmit ({ commit, state }) {
-    try {
-      commit('setAddPageFormSubmitError', '')
-      const page = await this._vm.$crm.pageCreate(null, null, state.addPageFormData.title, null, true, null)
-      commit('resetAddPageFormData')
-      commit('addPageToList', page)
-    } catch (e) {
-      commit('setAddPageFormSubmitError', 'Error when trying to create page.')
-      throw e
-    }
+    const page = await this._vm.$crm.pageCreate(null, null, state.addPageFormData.title, null, true, null)
+    commit('resetAddPageFormData')
+    commit('addPageToList', page)
   },
 
   /**
@@ -99,7 +88,7 @@ const actions = {
      * @param {commit: any, state: any} param0
      */
   async handleEditPageFormSubmit ({ commit, state }) {
-    await this._vm.$crm.pageEdit(state.editPageFormData.id, null, state.editPageFormData.moduleID, state.editPageFormData.title, null, true, null)
+    await this._vm.$crm.pageEdit(state.editPageFormData.id, null, state.editPageFormData.moduleID, state.editPageFormData.title, null, true, state.editPageFormData.blocks)
     commit('resetEditPageFormData')
   },
 }

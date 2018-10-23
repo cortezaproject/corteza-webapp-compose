@@ -1,8 +1,8 @@
 // Global Axios defaults
-import axios from 'axios'
-import BootstrapVue from 'bootstrap-vue'
-import VTooltip from 'v-tooltip'
-import Vue from 'vue'
+import axios from 'axios';
+import BootstrapVue from 'bootstrap-vue';
+import VTooltip from 'v-tooltip';
+import Vue from 'vue';
 
 axios.defaults.timeout = 15000
 
@@ -56,19 +56,3 @@ Vue.mixin({
     },
   },
 })
-
-addComponents(['Navigation'])
-
-/** Map component path into component name (Front/Header.vue -> <front-header>) */
-function addComponents (components) {
-  components.forEach(function (componentPath) {
-    var name = componentPath.toLowerCase().replace('/', '-')
-    Vue.component(name, component(componentPath))
-  })
-}
-
-function component (name, resolve) {
-  return function (resolve) {
-    require(['./components/' + name + '.vue'], resolve)
-  }
-}

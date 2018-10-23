@@ -3,8 +3,8 @@
 
     <select :value="blockType" v-on:change="handleBlockTypeChange" name="block-type" id="block-type">
       <option v-bind:value="''" default selected disabled>-- Select a block type --</option>
-      <!-- Maybe this needs to be dynamic -->
-      <option v-bind:value="'fields'">Fields</option>
+      <option v-if="contentFieldsEnabled" v-bind:value="'fields'">Fields</option>
+      <option v-if="contentListEnabled" v-bind:value="'list'">List</option>
     </select>
 
     <div v-if="blockType" class="form-schema">
@@ -38,9 +38,9 @@
 
         </fieldset>
 
-        <fieldset class="form-group">
+        <fieldset class="form-group" v-if="contentFieldsEnabled">
           <label for="select-content-fields">Fields</label>
-          <multiselect  v-if="contentFieldsEnabled" v-model="addBlockFormContentFields" :options="contentFieldsAvailable" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Pick some" label="name" track-by="name">
+          <multiselect  v-model="addBlockFormContentFields" :options="contentFieldsAvailable" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Pick some" label="name" track-by="name">
             <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
           </multiselect>
           <div style="color:red" v-if="!contentFieldsEnabled">
@@ -50,10 +50,15 @@
           </div>
         </fieldset>
         <fieldset class="form-group">
+          <label for="select-content-list">List</label>
+          <select v-model="addBlockFormContentList" class="form-control" id="select-content-list" required>
+            <option value="http://vuetable.ratiw.net/api/users">http://vuetable.ratiw.net/api/users</option>
+          </select>
+        </fieldset>
+        <fieldset class="form-group">
           <button type="submit" class="btn btn-primary">Submit</button>
         </fieldset>
       </form>
-
     </div>
   </div>
 </template>
@@ -68,12 +73,13 @@ export default {
   name: 'BlockSelector',
 
   computed: {
-    ...mapState({
-      blockType: state => state.builder.blockType,
-      mode: state => state.builder.mode,
-      contentFieldsAvailable: state => state.builder.contentFieldsAvailable,
-      contentFieldsEnabled: state => state.builder.contentFieldsEnabled,
-    }),
+    ...mapState('builder', [
+      'blockType',
+      'mode',
+      'contentFieldsAvailable',
+      'contentFieldsEnabled',
+      'contentListEnabled',
+    ]),
     addBlockFormData: {
       get () {
         return this.$store.state.builder.addBlockFormData
@@ -98,6 +104,15 @@ export default {
       },
       set (newValue) {
         this.$store.commit('builder/setAddBlockFormContentFields', newValue)
+      },
+    },
+
+    addBlockFormContentList: {
+      get () {
+        return this.$store.state.builder.addBlockFormContent.list
+      },
+      set (newValue) {
+        this.$store.commit('builder/setAddBlockFormContentList', newValue)
       },
     },
   },

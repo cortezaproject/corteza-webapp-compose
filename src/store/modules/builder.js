@@ -12,6 +12,7 @@ const state = {
   pageData: null,
   contentFieldsAvailable: [],
   contentFieldsEnabled: false,
+  contentListEnabled: false,
 
   // The layout of the builder
   layout: [],
@@ -91,6 +92,9 @@ const actions = {
 
       // Available fields if we have a module linked to the page
       commit('setContentFieldsEnabled', !!page.module)
+
+      // Available list if we don't have a module linked to the page
+      commit('setContentListEnabled', !page.module)
 
       // Available fields if we have a module linked to the page
       commit('setContentFieldsAvailable', page.module ? page.module.fields : null)
@@ -220,7 +224,7 @@ const actions = {
   async handleDoneButtonClick ({ commit, state }) {
     // Getting all infos
     const pageID = state.pageData.id
-    const pageModuleID = state.pageData.module.id
+    const pageModuleID = state.pageData.module ? state.pageData.module.id : null
     const pageInfos = {
       title: state.pageData.title,
       description: state.pageData.description,
@@ -279,6 +283,10 @@ const mutations = {
 
   setContentFieldsEnabled (state, newValue) {
     state.contentFieldsEnabled = newValue
+  },
+
+  setContentListEnabled (state, newValue) {
+    state.contentListEnabled = newValue
   },
 
   setLayout (state, newValue) {
@@ -347,6 +355,10 @@ const mutations = {
 
   setAddBlockFormContentFields (state, newValue) {
     state.addBlockFormContent.fields = newValue
+  },
+
+  setAddBlockFormContentList (state, newValue) {
+    state.addBlockFormContent.list = newValue
   },
 
   resetAddBlockFormData (state) {
