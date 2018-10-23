@@ -1,4 +1,5 @@
 class MockCRM {
+/*
   async pageList () {
     return new Promise((resolve, reject) => {
       try {
@@ -48,6 +49,7 @@ class MockCRM {
       }
     })
   }
+*/
 }
 
 export default MockCRM

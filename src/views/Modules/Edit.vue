@@ -74,7 +74,6 @@ export default {
     return {
       editModuleError: '',
       editModuleFormSubmitError: '',
-
     }
   },
   async created () {
@@ -82,15 +81,15 @@ export default {
       this.editModuleError = ''
       await Promise.all([
         this.$store.dispatch('modules/initEditModuleFormData', this.$route.params.id),
-        this.$store.dispatch('fields/initList'),
+        this.$store.dispatch('field/List'),
       ])
     } catch (e) {
       this.editModuleError = 'Error when trying to init module form.'
     }
   },
   computed: {
-    ...mapState('fields', {
-      fieldsList: 'list',
+    ...mapState({
+      fieldsList: 'field/List',
     }),
     editModuleFormData: {
       get () {
