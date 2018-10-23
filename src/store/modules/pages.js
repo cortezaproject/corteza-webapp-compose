@@ -41,7 +41,7 @@ const actions = {
      * @param {commit: any, state: any} param0
      */
   async handleAddPageFormSubmit ({ commit, state }) {
-    const page = await this._vm.$crm.pageCreate(null, null, state.addPageFormData.title, null, true, null)
+    const page = await this._vm.$crm.pageCreate({ title: state.addPageFormData.title, visible: true, blocks: [] })
     commit('resetAddPageFormData')
     commit('addPageToList', page)
   },
@@ -59,7 +59,7 @@ const actions = {
      *@param {String} id
      */
   async initViewPageData ({ commit }, id) {
-    const json = await this._vm.$crm.pageRead(id)
+    const json = await this._vm.$crm.pageRead({ id })
     if (json.id === '0') {
       throw new Error('No id')
     };
@@ -71,7 +71,7 @@ const actions = {
      *@param {String} id
      */
   async initEditPageFormData ({ commit }, id) {
-    const json = await this._vm.$crm.pageRead(id)
+    const json = await this._vm.$crm.pageRead({ id })
     commit('setEditPageFormData', json)
   },
 
@@ -80,7 +80,7 @@ const actions = {
      *@param {String} id
      */
   async deletePage ({ commit }, id) {
-    await this._vm.$crm.pageDelete(id)
+    await this._vm.$crm.pageDelete({ id })
     commit('deletePageFromList', id)
   },
 
@@ -88,7 +88,7 @@ const actions = {
      * @param {commit: any, state: any} param0
      */
   async handleEditPageFormSubmit ({ commit, state }) {
-    await this._vm.$crm.pageEdit(state.editPageFormData.id, null, state.editPageFormData.moduleID, state.editPageFormData.title, null, true, state.editPageFormData.blocks)
+    await this._vm.$crm.pageEdit(state.editPageFormData)
     commit('resetEditPageFormData')
   },
 }

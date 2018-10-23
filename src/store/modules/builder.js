@@ -63,6 +63,7 @@ const getters = {
     * @param {*} state
     */
   getMaxY (state) {
+    console.log(state.layout)
     const array = state.layout.map(o => o.y)
     let max
 
@@ -82,7 +83,8 @@ const actions = {
   async fetchPageData ({ commit }, pageID) {
     if (pageID) {
       // Getting current page
-      const page = await this._vm.$crm.pageRead(pageID)
+      const page = await this._vm.$crm.pageRead({ id: pageID })
+      console.log(page.blocks)
 
       // Setting pageData in state
       commit('setPageData', page)
@@ -233,7 +235,7 @@ const actions = {
     const pageBlocks = state.layoutTemp
 
     // Editing page
-    await this._vm.$crm.pageEdit(pageID, /* selfID */ null, pageModuleID, pageInfos.title, pageInfos.description, pageInfos.visible, pageBlocks)
+    await this._vm.$crm.pageEdit({ id: pageID, selfID: null, moduleID: pageModuleID, title: pageInfos.title, description: pageInfos.description, visible: pageInfos.visible, blocks: pageBlocks })
 
     // Returning to desktop view
     commit('setMobilePreview', false)

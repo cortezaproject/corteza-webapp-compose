@@ -49,7 +49,7 @@
             <router-link :to="'/crm/pages/' + this.$route.query.pageId + '/edit'" class="actions__action">Set a module with fields</router-link>.
           </div>
         </fieldset>
-        <fieldset class="form-group">
+        <fieldset class="form-group" v-if="contentListEnabled">
           <label for="select-content-list">List</label>
           <select v-model="addBlockFormContentList" class="form-control" id="select-content-list" required>
             <option value="http://vuetable.ratiw.net/api/users">http://vuetable.ratiw.net/api/users</option>
