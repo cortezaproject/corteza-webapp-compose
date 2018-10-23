@@ -1,9 +1,9 @@
 'use strict'
 
-import BlocksService from '@/services/BlocksService';
-import SharedService from '@/services/SharedService';
-import Vue from 'vue';
-import Vuex from 'vuex';
+import BlocksService from '@/services/BlocksService'
+import SharedService from '@/services/SharedService'
+import Vue from 'vue'
+import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
