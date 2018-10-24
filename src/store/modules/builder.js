@@ -1,9 +1,9 @@
 'use strict'
 
-import BlocksService from '@/services/BlocksService';
-import SharedService from '@/services/SharedService';
-import Vue from 'vue';
-import Vuex from 'vuex';
+import BlocksService from '@/services/BlocksService'
+import SharedService from '@/services/SharedService'
+import Vue from 'vue'
+import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
@@ -91,7 +91,7 @@ const actions = {
       commit('setPageData', page)
 
       // Setting layout in state (if null, set empty array instead)
-      let blocks = [];
+      let blocks = []
       if (page.blocks && page.blocks.length > 0) {
         blocks = page.blocks
       }
@@ -109,7 +109,7 @@ const actions = {
       allFieldsAvailableForPage.forEach((value) => {
         allFieldsAvailableForPageIndexedById[value.id] = value
       })
-      console.log(allFieldsAvailableForPageIndexedById);
+      console.log(allFieldsAvailableForPageIndexedById)
       blocks.forEach((value) => {
         if (value.content && value.content.fields) {
           value.content.fields.forEach((valueField) => {

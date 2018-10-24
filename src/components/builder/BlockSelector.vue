@@ -81,7 +81,7 @@ Vue.component('multiselect', Multiselect)
 export default {
   name: 'BlockSelector',
   components: {
-    draggable
+    draggable,
   },
   computed: {
     ...mapState('builder', [
