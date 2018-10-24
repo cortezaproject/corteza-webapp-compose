@@ -42,15 +42,15 @@
 
 <script>
 export default {
-  name: "BlockContentFields",
-  props: ["fields"],
+  name: 'BlockContentFields',
+  props: ['fields'],
   computed: {
-    sortedFields() {
+    sortedFields () {
       // TODO Sort ?
-      return this.fields.concat();
-    }
-  }
-};
+      return this.fields.concat()
+    },
+  },
+}
 </script>
 <style lang="scss" scoped>
 @import "~bootstrap/scss/bootstrap";
