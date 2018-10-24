@@ -1,16 +1,15 @@
 'use strict'
 
-import BlocksService from '@/services/BlocksService'
-import SharedService from '@/services/SharedService'
-import Vue from 'vue'
-import Vuex from 'vuex'
+import BlocksService from '@/services/BlocksService';
+import SharedService from '@/services/SharedService';
+import Vue from 'vue';
+import Vuex from 'vuex';
 
 Vue.use(Vuex)
 
 const state = {
   // Page data
   pageData: null,
-  contentFieldsAvailable: [],
   contentFieldsEnabled: false,
   contentListEnabled: false,
 
@@ -54,6 +53,8 @@ const state = {
 
   // Mode
   mode: 'add',
+
+  contentFieldsAvailable: [],
 }
 
 const getters = {
@@ -90,11 +91,11 @@ const actions = {
       commit('setPageData', page)
 
       // Setting layout in state (if null, set empty array instead)
+      let blocks = [];
       if (page.blocks && page.blocks.length > 0) {
-        commit('setLayout', page.blocks)
-      } else {
-        commit('setLayout', [])
+        blocks = page.blocks
       }
+      commit('setLayout', blocks)
 
       // Available fields if we have a module linked to the page
       commit('setContentFieldsEnabled', !!page.module)
@@ -102,8 +103,23 @@ const actions = {
       // Available list if we don't have a module linked to the page
       commit('setContentListEnabled', !page.module)
 
-      // Available fields if we have a module linked to the page
-      commit('setContentFieldsAvailable', page.module ? page.module.fields : null)
+      // --- B ---- Available fields building
+      const allFieldsAvailableForPage = page.module ? page.module.fields : []
+      const allFieldsAvailableForPageIndexedById = {}
+      allFieldsAvailableForPage.forEach((value) => {
+        allFieldsAvailableForPageIndexedById[value.id] = value
+      })
+      console.log(allFieldsAvailableForPageIndexedById);
+      blocks.forEach((value) => {
+        if (value.content && value.content.fields) {
+          value.content.fields.forEach((valueField) => {
+            console.log('deleted')
+            delete allFieldsAvailableForPageIndexedById[valueField.id]
+          })
+        }
+      })
+      commit('setContentFieldsAvailable', Object.values(allFieldsAvailableForPageIndexedById))
+      // --- E ---- Available fields building
     } else {
       alert('No page ID provided')
     }

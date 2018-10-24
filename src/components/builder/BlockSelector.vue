@@ -39,10 +39,18 @@
         </fieldset>
 
         <fieldset class="form-group" v-if="contentFieldsEnabled">
-          <label for="select-content-fields">Fields</label>
-          <multiselect  v-model="addBlockFormContentFields" :options="contentFieldsAvailable" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Pick some" label="name" track-by="name">
+          <label for="select-content-fields">Fields Selected</label>
+          <draggable class="drag-area" :options="{group:'people'}" v-model="addBlockFormContentFields" @start="drag=true" @end="drag=true">
+            <div v-for="element in addBlockFormContentFields" :key="element.id">{{element.name}}</div>
+          </draggable>
+          <br>
+          <label for="select-content-fields">Fields Available</label>
+          <draggable class="drag-area" :options="{group:'people'}" v-model="contentFieldsAvailable" @start="drag=true" @end="drag=true">
+            <div v-for="element in contentFieldsAvailable" :key="element.id">{{element.name}}</div>
+          </draggable>
+          <!-- <multiselect  v-model="addBlockFormContentFields" :options="contentFieldsAvailable" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Pick some" label="name" track-by="name">
             <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
-          </multiselect>
+          </multiselect> -->
           <div style="color:red" v-if="!contentFieldsEnabled">
             Fields are not available here.
             <br>
@@ -67,16 +75,18 @@
 import { mapState, mapActions } from 'vuex'
 import Vue from 'vue'
 import Multiselect from 'vue-multiselect'
+import draggable from 'vuedraggable'
 Vue.component('multiselect', Multiselect)
 
 export default {
   name: 'BlockSelector',
-
+  components: {
+    draggable
+  },
   computed: {
     ...mapState('builder', [
       'blockType',
       'mode',
-      'contentFieldsAvailable',
       'contentFieldsEnabled',
       'contentListEnabled',
     ]),
@@ -104,6 +114,15 @@ export default {
       },
       set (newValue) {
         this.$store.commit('builder/setAddBlockFormContentFields', newValue)
+      },
+    },
+
+    contentFieldsAvailable: {
+      get () {
+        return this.$store.state.builder.contentFieldsAvailable
+      },
+      set (newValue) {
+        this.$store.commit('builder/setContentFieldsAvailable', newValue)
       },
     },
 
@@ -148,5 +167,10 @@ fieldset {
   .form-group {
     margin-bottom: 1em;
   }
+}
+
+.drag-area {
+  min-height: 100px;
+  background-color: white;
 }
 </style>
