@@ -18,7 +18,7 @@
 
 /* eslint-disable-next-line */
 import VueGridLayout from 'vue-grid-layout'
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import Block from '@/components/block/Block'
 
 export default {
@@ -38,8 +38,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations('builder', ['handleRemoveBlockButtonClick']),
-    ...mapActions('builder', ['handleEditBlockButtonClick']),
+    ...mapActions('builder', ['handleEditBlockButtonClick', 'handleRemoveBlockButtonClick']),
   },
 }
 </script>

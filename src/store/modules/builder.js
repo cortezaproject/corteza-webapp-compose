@@ -93,12 +93,17 @@ const actions = {
       // Setting pageData in state
       commit('setPageData', page)
 
-      // Setting layout in state (if null, set empty array instead)
-      let blocks = []
-      if (page.blocks && page.blocks.length > 0) {
-        blocks = page.blocks
-      }
+      // --- B --- Setting layout in state
+      let blocks = await BlocksService.cloneBlocksAndPopulate(page, page.blocks, this._vm.$crm)
+
+      // --- B --- in order to display a "listBuilder" PageContent (just simple table with thead) and not the really table with data
+      blocks.forEach((block) => {
+        block.content.listBuilder = block.content.list
+        delete block.content.list
+      })
+      // --- E --- in order to display a "listBuilder" PageContent (just simple table with thead) and not the really table with data
       commit('setLayout', blocks)
+      // --- E --- Setting layout in state
 
       // Available fields if we have a module linked to the page
       commit('setContentFieldsEnabled', !!page.module)
@@ -106,23 +111,9 @@ const actions = {
       // Available list if we don't have a module linked to the page
       commit('setContentListEnabled', !page.module)
 
-      const allFieldsAvailableForPage = page.module ? page.module.fields : []
-      const allFieldsAvailableForPageIndexedById = {}
-      allFieldsAvailableForPage.forEach((value) => {
-        allFieldsAvailableForPageIndexedById[value.id] = value
-      })
-
       // --- B ---- Available fields building
-      const contentFieldsAvailableById = SharedService.cloneObject(allFieldsAvailableForPageIndexedById)
-      blocks.forEach((value) => {
-        if (value.content && value.content.fields) {
-          value.content.fields.forEach((valueField) => {
-            console.log('deleted')
-            delete contentFieldsAvailableById[valueField.id]
-          })
-        }
-      })
-      commit('setContentFieldsAvailable', Object.values(contentFieldsAvailableById))
+
+      commit('setContentFieldsAvailable', BlocksService.getContentFieldsAvailable(page, blocks))
       // --- E ---- Available fields building
     } else {
       alert('No page ID provided')
@@ -140,7 +131,14 @@ const actions = {
     commit('setBlockType', selected)
   },
 
-  async handleEditBlockButtonClick ({ state, commit }, item) {
+  async handleSelectContentListModule ({ commit }, { moduleId, modulesList }) {
+    const selectedModule = modulesList.filter((module) => module.id === moduleId)[0]
+    commit('setAddBlockFormContentBuilderListModule', selectedModule)
+    commit('setAddBlockFormContentBuilderListFields', [])
+    commit('setContentListFieldsAvailable', selectedModule.fields)
+  },
+
+  async handleEditBlockButtonClick ({ dispatch, commit, state }, item) {
     // Change mode
     commit('setMode', 'edit')
 
@@ -153,6 +151,27 @@ const actions = {
 
     // Change addBlockFormContent
     commit('setAddBlockFormContent', item.content)
+
+    // Set avaialble fields for list builder
+    if (item.content.listBuilder && item.content.listBuilder.module) {
+      // Dont set already selected fields
+      commit('setContentListFieldsAvailable', item.content.listBuilder.module.fields.filter(
+        (field) => {
+          const fieldFounded = item.content.listBuilder.fields.filter(fieldHere => fieldHere.id === field.id)
+          return fieldFounded.length === 0
+        }))
+    }
+  },
+
+  handleRemoveBlockButtonClick ({ state, commit }, block) {
+    const blockID = block.i
+    const blockIndex = state.layout.findIndex(o => o.i === blockID)
+
+    const answer = confirm(`Are you sure you want to remove block ${blockID} ?`)
+    if (answer) {
+      state.layout.splice(blockIndex, 1)
+      commit('setContentFieldsAvailable', BlocksService.getContentFieldsAvailable(state.pageData, state.layout))
+    }
   },
 
   /**
@@ -215,6 +234,7 @@ const actions = {
       commit('incrementIndex')
       commit('resetAddBlockFormData')
       commit('addBlockToLayout', block)
+      commit('resetAddBlockFormContent')
     } else if (state.mode === 'edit') {
       // Hide form
       commit('resetAddBlockFormData')
@@ -249,17 +269,41 @@ const actions = {
 
   async handleDoneButtonClick ({ commit, state }) {
     // Getting all infos
-    const pageID = state.pageData.id
-    const pageModuleID = state.pageData.module ? state.pageData.module.id : null
     const pageInfos = {
+      id: state.pageData.id,
       title: state.pageData.title,
       description: state.pageData.description,
       visible: state.pageData.visible,
+      moduleID: state.pageData.module ? state.pageData.module.id : null,
     }
-    const pageBlocks = state.layoutTemp
+
+    // --- B ---- api format for blocks : set only the id and not the objects entirely
+    const pageBlocks = SharedService.cloneObject(state.layoutTemp)
+    pageBlocks.forEach((block) => {
+      if (block.content.listBuilder) {
+        block.content.list = {}
+        if (block.content.listBuilder.fields) {
+          block.content.list.fieldsID = block.content.listBuilder.fields.map(field => field.id)
+        }
+        if (block.content.listBuilder.module) {
+          block.content.list.moduleID = block.content.listBuilder.module.id
+        }
+        delete block.content.listBuilder
+      }
+      if (block.content.fields) {
+        block.content.fieldsID = block.content.fields.map(field => field.id)
+        delete block.content.fields
+      }
+    })
+    // --- E ---- api format for blocks : set only the id and not all the objects entirely
+
+    const pageEditData = {
+      ...pageInfos,
+      blocks: pageBlocks,
+    }
 
     // Editing page
-    await this._vm.$crm.pageEdit({ id: pageID, selfID: null, moduleID: pageModuleID, title: pageInfos.title, description: pageInfos.description, visible: pageInfos.visible, blocks: pageBlocks })
+    await this._vm.$crm.pageEdit(pageEditData)
 
     // Returning to desktop view
     commit('setMobilePreview', false)
@@ -286,12 +330,6 @@ const actions = {
 
     // Set layout
     commit('setLayout', blocksForMobile)
-  },
-
-  setAddBlockFormContentBuilderListModule ({ commit, state }, module) {
-    commit('setAddBlockFormContentBuilderListModule', module)
-    commit('setAddBlockFormContentBuilderListFields', [])
-    commit('setContentListFieldsAvailable', module.fields)
   },
 
 }
@@ -350,16 +388,6 @@ const mutations = {
     layout.push(block)
 
     state.layout = layout
-  },
-
-  handleRemoveBlockButtonClick (state, block) {
-    const blockID = block.i
-    const blockIndex = state.layout.findIndex(o => o.i === blockID)
-
-    const answer = confirm(`Are you sure you want to remove block ${blockID} ?`)
-    if (answer) {
-      state.layout.splice(blockIndex, 1)
-    }
   },
 
   moveAllBlocksY (state) {

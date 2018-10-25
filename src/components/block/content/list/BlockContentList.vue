@@ -65,7 +65,6 @@ export default {
   computed: {
     fields () {
       const result = (this.list && this.list.fields && this.list.fields.length > 0) ? this.list.fields : []
-      console.log(result)
       return result
     },
   },
@@ -92,7 +91,6 @@ export default {
       this.$refs.vuetable.changePage(page)
     },
     onCellClicked (data, field, event) {
-      console.log('cellClicked: ', field.name)
       this.$refs.vuetable.toggleDetailRow(data.id)
     },
   },

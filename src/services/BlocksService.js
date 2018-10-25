@@ -1,4 +1,3 @@
-
 import SharedService from '@/services/SharedService'
 import _ from 'lodash'
 
@@ -11,7 +10,7 @@ export default class BlocksService {
     const groupedByY = _.groupBy(blocksForMobile, 'y')
 
     // Order all groups by x (asc)
-    const orderedByYAndX = _.map(groupedByY, (group) => {
+    const orderedByYAndX = _.map(groupedByY, group => {
       return _.orderBy(group, ['x'], ['asc'])
     })
 
@@ -28,5 +27,68 @@ export default class BlocksService {
     })
 
     return SharedService.cloneObject(flattened)
+  }
+
+  static async cloneBlocksAndPopulate (page, blocks, $crm) {
+    if (!blocks) {
+      return []
+    }
+    const blocksHere = SharedService.cloneObject(blocks)
+    const promises = []
+    blocksHere.forEach(block => {
+      promises.push(BlocksService.populateBlock(page, block, $crm))
+    })
+    await Promise.all(promises)
+    return blocksHere
+  }
+
+  static async populateBlock (page, block, $crm) {
+    // populate fields of LIST CONTENT TYPE
+    if (
+      block.content.list &&
+      block.content.list.fieldsID &&
+      block.content.list.moduleID
+    ) {
+      const module = await $crm.moduleRead({ id: block.content.list.moduleID })
+      block.content.list.module = module
+      block.content.list.fields = []
+      block.content.list.fieldsID.forEach(id => {
+        module.fields.forEach(fieldOfModule => {
+          if (fieldOfModule.id === id) {
+            block.content.list.fields.push(fieldOfModule)
+          }
+        })
+      })
+    }
+    // populate fields of FIELDS CONTENT TYPE
+    if (block.content.fieldsID && page.module) {
+      block.content.fields = []
+      block.content.fieldsID.forEach(id => {
+        page.module.fields.forEach(fieldOfModule => {
+          if (fieldOfModule.id === id) {
+            block.content.fields.push(fieldOfModule)
+          }
+        })
+      })
+    }
+  }
+
+  static getContentFieldsAvailable (page, blocks) {
+    const allFieldsAvailableForPage = page.module ? page.module.fields : []
+    const allFieldsAvailableForPageIndexedById = {}
+    allFieldsAvailableForPage.forEach(value => {
+      allFieldsAvailableForPageIndexedById[value.id] = value
+    })
+    const contentFieldsAvailableById = SharedService.cloneObject(
+      allFieldsAvailableForPageIndexedById
+    )
+    blocks.forEach(value => {
+      if (value.content && value.content.fields) {
+        value.content.fields.forEach(valueField => {
+          delete contentFieldsAvailableById[valueField.id]
+        })
+      }
+    })
+    return Object.values(contentFieldsAvailableById)
   }
 }
