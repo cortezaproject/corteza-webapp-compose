@@ -63,6 +63,7 @@ const actions = {
     if (json.id === '0') {
       throw new Error('No id')
     };
+    json.blocks = await BlocksService.cloneBlocksAndPopulate(json, json.blocks, this._vm.$crm)
     json.mobileBlocks = BlocksService.cloneBlocksForMobileView(json.blocks)
     commit('setViewPageData', json)
   },

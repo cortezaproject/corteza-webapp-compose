@@ -60,8 +60,8 @@
             {{ modulesListError }}
           </div>
           <!-- B select a module -->
-          <select required v-model="addBlockFormContentBuilderListModule" class="form-control" id="select-content-list">
-            <option v-for="module in modulesList" :key="module.id" :value="module">{{ module.name }}</option>
+          <select :value="addBlockFormContentBuilderListModule ? addBlockFormContentBuilderListModule.id : null" required @input="handleSelectContentListModule($event.target.value)" class="form-control" id="select-content-list">
+            <option v-for="module in modulesList" :key="module.id" :value="module.id">{{ module.name }}</option>
           </select>
           <!-- E select a module -->
 
@@ -178,9 +178,6 @@ export default {
       get () {
         return this.$store.state.builder.addBlockFormContent.listBuilder.module
       },
-      set (newValue) {
-        this.$store.dispatch('builder/setAddBlockFormContentBuilderListModule', newValue)
-      },
     },
   },
 
@@ -188,7 +185,11 @@ export default {
     ...mapActions('builder', [
       'handleBlockTypeChange',
       'handleBlockSelectorFormSubmit',
+
     ]),
+    handleSelectContentListModule (moduleId) {
+      this.$store.dispatch('builder/handleSelectContentListModule', { moduleId, modulesList: this.modulesList })
+    },
   },
 }
 </script>

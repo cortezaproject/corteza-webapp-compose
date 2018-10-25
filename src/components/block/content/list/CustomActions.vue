@@ -20,7 +20,6 @@ export default {
   methods: {
     itemAction (action, data, index) {
       alert('todo')
-      console.log('custom-actions: ' + action, data.name, index)
     },
   },
 }
