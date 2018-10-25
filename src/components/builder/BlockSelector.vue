@@ -48,9 +48,6 @@
           <draggable class="drag-area" :options="{group:'people'}" v-model="contentFieldsAvailable" @start="drag=true" @end="drag=true">
             <div v-for="element in contentFieldsAvailable" :key="element.id">{{element.name}}</div>
           </draggable>
-          <!-- <multiselect  v-model="addBlockFormContentFields" :options="contentFieldsAvailable" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Pick some" label="name" track-by="name">
-            <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
-          </multiselect> -->
           <div style="color:red" v-if="!contentFieldsEnabled">
             Fields are not available here.
             <br>
@@ -58,10 +55,29 @@
           </div>
         </fieldset>
         <fieldset class="form-group" v-if="contentListEnabled">
-          <label for="select-content-list">List</label>
-          <select v-model="addBlockFormContentList" class="form-control" id="select-content-list" required>
-            <option value="http://vuetable.ratiw.net/api/users">http://vuetable.ratiw.net/api/users</option>
+          <label for="select-content-list">Module</label>
+          <div v-if="modulesListError" style="color:red">
+            {{ modulesListError }}
+          </div>
+          <!-- B select a module -->
+          <select required v-model="addBlockFormContentBuilderListModule" class="form-control" id="select-content-list">
+            <option v-for="module in modulesList" :key="module.id" :value="module">{{ module.name }}</option>
           </select>
+          <!-- E select a module -->
+
+          <!-- B select fields of module -->
+          <div class="list__fields">
+            <label for="select-content-fields">Fields Selected</label>
+            <draggable class="drag-area" :options="{group:'people'}" v-model="addBlockFormContentBuilderListFields" @start="drag=true" @end="drag=true">
+              <div v-for="element in addBlockFormContentBuilderListFields" :key="element.id">{{element.name}}</div>
+            </draggable>
+            <br>
+            <label for="select-content-fields">Fields Available</label>
+            <draggable class="drag-area" :options="{group:'people'}" v-model="contentListFieldsAvailable" @start="drag=true" @end="drag=true">
+              <div v-for="element in contentListFieldsAvailable" :key="element.id">{{element.name}}</div>
+            </draggable>
+          </div>
+           <!-- E select fields of module -->
         </fieldset>
         <fieldset class="form-group">
           <button type="submit" class="btn btn-primary">Submit</button>
@@ -83,6 +99,16 @@ export default {
   components: {
     draggable,
   },
+  async created () {
+    try {
+      this.modulesListError = ''
+      await Promise.all([
+        this.$store.dispatch('modules/initList'),
+      ])
+    } catch (e) {
+      this.modulesListError = 'Error when trying to init modules.'
+    }
+  },
   computed: {
     ...mapState('builder', [
       'blockType',
@@ -90,6 +116,9 @@ export default {
       'contentFieldsEnabled',
       'contentListEnabled',
     ]),
+    ...mapState('modules', {
+      'modulesList': 'list',
+    }),
     addBlockFormData: {
       get () {
         return this.$store.state.builder.addBlockFormData
@@ -126,12 +155,30 @@ export default {
       },
     },
 
-    addBlockFormContentList: {
+    contentListFieldsAvailable: {
       get () {
-        return this.$store.state.builder.addBlockFormContent.list
+        return this.$store.state.builder.contentListFieldsAvailable
       },
       set (newValue) {
-        this.$store.commit('builder/setAddBlockFormContentList', newValue)
+        this.$store.commit('builder/setContentListFieldsAvailable', newValue)
+      },
+    },
+
+    addBlockFormContentBuilderListFields: {
+      get () {
+        return this.$store.state.builder.addBlockFormContent.listBuilder.fields
+      },
+      set (newValue) {
+        this.$store.commit('builder/setAddBlockFormContentBuilderListFields', newValue)
+      },
+    },
+
+    addBlockFormContentBuilderListModule: {
+      get () {
+        return this.$store.state.builder.addBlockFormContent.listBuilder.module
+      },
+      set (newValue) {
+        this.$store.dispatch('builder/setAddBlockFormContentBuilderListModule', newValue)
       },
     },
   },

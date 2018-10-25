@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <filter-bar></filter-bar>
-    <vuetable ref="vuetable" api-url="http://vuetable.ratiw.net/api/users" :fields="fields" pagination-path="" :css="css.table" :sort-order="sortOrder" :multi-sort="true" detail-row-component="my-detail-row" :append-params="moreParams" @vuetable:cell-clicked="onCellClicked" @vuetable:pagination-data="onPaginationData"></vuetable>
+    <vuetable :api-mode="false" ref="vuetable" :fields="fields" pagination-path="" :css="css.table" :sort-order="sortOrder" :multi-sort="true" detail-row-component="my-detail-row" :append-params="moreParams" @vuetable:cell-clicked="onCellClicked" @vuetable:pagination-data="onPaginationData"></vuetable>
     <div class="vuetable-pagination">
       <vuetable-pagination-info ref="paginationInfo" info-class="pagination-info"></vuetable-pagination-info>
       <vuetable-pagination ref="pagination" :css="css.pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
@@ -31,29 +31,6 @@ export default {
   },
   data () {
     return {
-      fields: [
-        {
-          name: 'name',
-          sortField: 'name',
-        },
-        {
-          name: 'email',
-          sortField: 'email',
-        },
-        {
-          name: 'birthdate',
-          sortField: 'birthdate',
-          titleClass: 'text-center',
-          dataClass: 'text-center',
-          callback: 'formatDate|DD-MM-YYYY',
-        },
-        {
-          name: '__component:custom-actions',
-          title: 'Actions',
-          titleClass: 'text-center',
-          dataClass: 'text-center',
-        },
-      ],
       css: {
         table: {
           tableClass: 'table table-bordered table-striped table-hover',
@@ -83,6 +60,14 @@ export default {
       sortOrder: [{ field: 'email', sortField: 'email', direction: 'asc' }],
       moreParams: {},
     }
+  },
+  props: ['list'],
+  computed: {
+    fields () {
+      const result = (this.list && this.list.fields && this.list.fields.length > 0) ? this.list.fields : []
+      console.log(result)
+      return result
+    },
   },
   methods: {
     allcap (value) {

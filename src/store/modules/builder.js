@@ -38,6 +38,10 @@ const state = {
   addBlockFormMeta: {},
   addBlockFormContent: {
     fields: [],
+    listBuilder: {
+      module: null,
+      fields: [],
+    },
   },
 
   // Block data defaults
@@ -55,6 +59,7 @@ const state = {
   mode: 'add',
 
   contentFieldsAvailable: [],
+  contentListFieldsAvailable: [],
 }
 
 const getters = {
@@ -64,7 +69,6 @@ const getters = {
     * @param {*} state
     */
   getMaxY (state) {
-    console.log(state.layout)
     const array = state.layout.map(o => o.y)
     let max
 
@@ -85,7 +89,6 @@ const actions = {
     if (pageID) {
       // Getting current page
       const page = await this._vm.$crm.pageRead({ id: pageID })
-      console.log(page.blocks)
 
       // Setting pageData in state
       commit('setPageData', page)
@@ -103,22 +106,23 @@ const actions = {
       // Available list if we don't have a module linked to the page
       commit('setContentListEnabled', !page.module)
 
-      // --- B ---- Available fields building
       const allFieldsAvailableForPage = page.module ? page.module.fields : []
       const allFieldsAvailableForPageIndexedById = {}
       allFieldsAvailableForPage.forEach((value) => {
         allFieldsAvailableForPageIndexedById[value.id] = value
       })
-      console.log(allFieldsAvailableForPageIndexedById)
+
+      // --- B ---- Available fields building
+      const contentFieldsAvailableById = SharedService.cloneObject(allFieldsAvailableForPageIndexedById)
       blocks.forEach((value) => {
         if (value.content && value.content.fields) {
           value.content.fields.forEach((valueField) => {
             console.log('deleted')
-            delete allFieldsAvailableForPageIndexedById[valueField.id]
+            delete contentFieldsAvailableById[valueField.id]
           })
         }
       })
-      commit('setContentFieldsAvailable', Object.values(allFieldsAvailableForPageIndexedById))
+      commit('setContentFieldsAvailable', Object.values(contentFieldsAvailableById))
       // --- E ---- Available fields building
     } else {
       alert('No page ID provided')
@@ -284,6 +288,12 @@ const actions = {
     commit('setLayout', blocksForMobile)
   },
 
+  setAddBlockFormContentBuilderListModule ({ commit, state }, module) {
+    commit('setAddBlockFormContentBuilderListModule', module)
+    commit('setAddBlockFormContentBuilderListFields', [])
+    commit('setContentListFieldsAvailable', module.fields)
+  },
+
 }
 
 const mutations = {
@@ -301,6 +311,10 @@ const mutations = {
 
   setContentFieldsAvailable (state, newValue) {
     state.contentFieldsAvailable = newValue
+  },
+
+  setContentListFieldsAvailable (state, newValue) {
+    state.contentListFieldsAvailable = newValue
   },
 
   setContentFieldsEnabled (state, newValue) {
@@ -379,8 +393,12 @@ const mutations = {
     state.addBlockFormContent.fields = newValue
   },
 
-  setAddBlockFormContentList (state, newValue) {
-    state.addBlockFormContent.list = newValue
+  setAddBlockFormContentBuilderListModule (state, newValue) {
+    state.addBlockFormContent.listBuilder.module = newValue
+  },
+
+  setAddBlockFormContentBuilderListFields (state, newValue) {
+    state.addBlockFormContent.listBuilder.fields = newValue
   },
 
   resetAddBlockFormData (state) {
@@ -391,6 +409,10 @@ const mutations = {
   resetAddBlockFormContent (state) {
     state.addBlockFormContent = {
       fields: [],
+      listBuilder: {
+        module: null,
+        fields: [],
+      },
     }
   },
 
