@@ -100,12 +100,15 @@ export default {
   components: {
     draggable,
   },
+  data () {
+    return {
+      modulesList: [],
+    }
+  },
   async created () {
     try {
       this.modulesListError = ''
-      await Promise.all([
-        this.$store.dispatch('modules/initList'),
-      ])
+      this.modulesList = await this.$crm.moduleList({})
     } catch (e) {
       this.modulesListError = 'Error when trying to init modules.'
     }
@@ -117,9 +120,6 @@ export default {
       'contentFieldsEnabled',
       'contentListEnabled',
     ]),
-    ...mapState('modules', {
-      'modulesList': 'list',
-    }),
     addBlockFormData: {
       get () {
         return this.$store.state.builder.addBlockFormData

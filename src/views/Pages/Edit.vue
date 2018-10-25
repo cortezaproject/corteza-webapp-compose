@@ -52,51 +52,36 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 export default {
   name: 'PageEdit',
   data () {
     return {
       editPageError: '',
       editPageFormSubmitError: '',
-
+      modulesList: [],
+      editPageFormData: {
+        title: '',
+        moduleID: '',
+      },
+      pageList: [],
     }
   },
   async created () {
     try {
       this.editPageError = ''
-      await Promise.all([
-        this.$store.dispatch('pages/initEditPageFormData', this.$route.params.id),
-        this.$store.dispatch('pages/initList', this.$route.params.id),
-        this.$store.dispatch('modules/initList', this.$route.params.id),
-      ])
+      this.editPageFormData = await this.$crm.pageRead({ id: this.$route.params.id })
+      // Parent pages : not itself
+      this.pageList = (await this.$crm.pageList({})).filter((page) => page.id !== this.$route.params.id)
+      this.modulesList = await this.$crm.moduleList({})
     } catch (e) {
       this.editPageError = 'Error when trying to init page form.'
     }
-  },
-  computed: {
-    ...mapState('modules', {
-      'modulesList': 'list',
-    }),
-    ...mapState({
-      pageList (state) {
-        return state.pages.list.filter((page) => page.id !== this.$route.params.id)
-      },
-    }),
-    editPageFormData: {
-      get () {
-        return this.$store.state.pages.editPageFormData
-      },
-      set (newValue) {
-        this.$store.commit('pages/setEditPageFormData', newValue)
-      },
-    },
   },
   methods: {
     async handleEditPageFormSubmit () {
       try {
         this.editPageFormSubmitError = ''
-        await this.$store.dispatch('pages/handleEditPageFormSubmit')
+        await this.$crm.pageEdit(this.editPageFormData)
         this.$router.push({ path: '/crm/pages' })
       } catch (e) {
         this.editPageFormSubmitError = 'Error when trying to edit page.'

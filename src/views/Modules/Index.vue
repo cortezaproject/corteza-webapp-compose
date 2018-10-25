@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+
 export default {
   idToDelete: '',
   name: 'ModuleList',
@@ -58,34 +58,30 @@ export default {
       deleteModuleError: '',
       listError: '',
       addModuleFormSubmitError: '',
+      list: [],
+      addModuleFormData: {
+        name: '',
+        fields: [],
+      },
     }
   },
   async created () {
-    try {
-      this.listError = ''
-      await this.$store.dispatch('modules/initList')
-    } catch (e) {
-      this.listError = 'Error when trying to get list of modules.'
-    }
-  },
-  computed: {
-    ...mapState('modules', [
-      'list',
-    ]),
-    addModuleFormData: {
-      get () {
-        return this.$store.state.modules.addModuleFormData
-      },
-      set (newValue) {
-        this.$store.commit('modules/setAddModuleFormData', newValue)
-      },
-    },
+    this.$_initList()
   },
   methods: {
+    async $_initList () {
+      try {
+        this.listError = ''
+        this.list = await this.$crm.moduleList({})
+      } catch (e) {
+        this.listError = 'Error when trying to get list of modules.'
+      }
+    },
     async handleAddModuleFormSubmit () {
       this.addModuleFormSubmitError = ''
       try {
-        await this.$store.dispatch('modules/handleAddModuleFormSubmit')
+        await this.$crm.moduleCreate(this.addModuleFormData)
+        await this.$_initList()
       } catch (e) {
         this.addModuleFormSubmitError = 'Error when trying to create module.'
       }
@@ -96,7 +92,8 @@ export default {
     },
     async handleModalConfirmYes () {
       try {
-        await this.$store.dispatch('modules/deleteModule', this.idToDelete)
+        await this.$crm.moduleDelete({ id: this.idToDelete })
+        await this.$_initList()
       } catch (e) {
         this.deleteModuleError = 'Error when trying to delete module.'
       }

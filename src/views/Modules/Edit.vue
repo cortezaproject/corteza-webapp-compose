@@ -64,7 +64,6 @@
 
 <script>
 import draggable from 'vuedraggable'
-import { mapState } from 'vuex'
 export default {
   name: 'ModuleEdit',
   components: {
@@ -74,47 +73,76 @@ export default {
     return {
       editModuleError: '',
       editModuleFormSubmitError: '',
+      fieldsList: [],
+      editModuleFormData: {
+        name: '',
+        fields: [],
+      },
     }
   },
   async created () {
     try {
       this.editModuleError = ''
-      await Promise.all([
-        this.$store.dispatch('modules/initEditModuleFormData', this.$route.params.id),
-        this.$store.dispatch('field/List'),
-      ])
+      await this.$_initFieldsList()
+      this.editModuleFormData = await this.$crm.moduleRead({ id: this.$route.params.id })
     } catch (e) {
       this.editModuleError = 'Error when trying to init module form.'
     }
   },
   computed: {
-    ...mapState({
-      fieldsList: 'field/List',
-    }),
-    editModuleFormData: {
-      get () {
-        return this.$store.state.modules.editModuleFormData
-      },
-      set (newValue) {
-        this.$store.commit('modules/setEditModuleFormData', newValue)
-      },
-    },
   },
   methods: {
+    async $_initFieldsList () {
+      try {
+        this.editModuleError = ''
+        this.fieldsList = await this.$crm.fieldList({})
+      } catch (e) {
+        this.editModuleError = 'Error when trying to get list of fields.'
+      }
+    },
+    /**
+     * Get new unique id from fields.
+     * @param {{id}[]} fields
+     * @param {String|null|undefined} potentialId
+     */
+    $_getNewIDForField (fields, potentialId) {
+      if (potentialId == null) {
+        return this.$_getNewIDForField(fields, 1)
+      }
+      let founded = false
+      fields.forEach((value) => {
+        if (value.id === potentialId) {
+          founded = true
+        }
+      })
+      if (founded) {
+        return this.$_getNewIDForField(fields, ++potentialId)
+      }
+      return potentialId
+    },
     async handleEditModuleFormSubmit () {
       try {
         this.editModuleFormSubmitError = ''
-        await this.$store.dispatch('modules/handleEditModuleFormSubmit')
+        await this.$crm.moduleEdit(this.editModuleFormData)
         this.$router.push({ path: '/crm/modules' })
       } catch (e) {
         this.editModuleFormSubmitError = 'Error when trying to edit module.'
       }
     },
     async handleEditModuleAddNewField () {
-      await this.$store.dispatch('modules/handleEditModuleAddNewField')
+      this.editModuleFormData.fields.push({
+        id: this.$_getNewIDForField(this.editModuleFormData.fields),
+        name: '',
+        title: '',
+        kind: 'text',
+        gdpr: false,
+      })
     },
     async handleEditModuleRemoveField (field) {
-      await this.$store.dispatch('modules/handleEditModuleRemoveField', field)
+      const index = this.editModuleFormData.fields.indexOf(field)
+      if (index !== -1) {
+        this.editModuleFormData.fields.splice(index, 1)
+      }
     },
   },
 }

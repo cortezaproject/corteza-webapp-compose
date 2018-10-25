@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 export default {
   idToDelete: '',
   name: 'PageList',
@@ -60,34 +59,29 @@ export default {
       deletePageError: '',
       listError: '',
       addPageFormSubmitError: '',
+      list: [],
+      addPageFormData: {
+        title: '',
+      },
     }
   },
   async created () {
-    try {
-      this.listError = ''
-      await this.$store.dispatch('pages/initList')
-    } catch (e) {
-      this.listError = 'Error when trying to get list of pages.'
-    }
-  },
-  computed: {
-    ...mapState('pages', [
-      'list',
-    ]),
-    addPageFormData: {
-      get () {
-        return this.$store.state.pages.addPageFormData
-      },
-      set (newValue) {
-        this.$store.commit('pages/setAddPageFormData', newValue)
-      },
-    },
+    this.$_initList()
   },
   methods: {
+    async $_initList () {
+      try {
+        this.listError = ''
+        this.list = await this.$crm.pageList({})
+      } catch (e) {
+        this.listError = 'Error when trying to get list of pages.'
+      }
+    },
     async handleAddPageFormSubmit () {
       this.addPageFormSubmitError = ''
       try {
-        await this.$store.dispatch('pages/handleAddPageFormSubmit')
+        await this.$crm.pageCreate(this.addPageFormData)
+        await this.$_initList()
       } catch (e) {
         this.addPageFormSubmitError = 'Error when trying to create page.'
       }
@@ -98,8 +92,8 @@ export default {
     },
     async handleModalConfirmYes () {
       try {
-        this.deletePageError = ''
-        await this.$store.dispatch('pages/deletePage', this.idToDelete)
+        await this.$crm.pageDelete({ id: this.idToDelete })
+        await this.$_initList()
       } catch (e) {
         this.deletePageError = 'Error when trying to delete page.'
       }
