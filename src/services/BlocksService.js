@@ -1,5 +1,5 @@
-import SharedService from '@/services/SharedService';
-import _ from 'lodash';
+import SharedService from '@/services/SharedService'
+import _ from 'lodash'
 
 export default class BlocksService {
   /**
