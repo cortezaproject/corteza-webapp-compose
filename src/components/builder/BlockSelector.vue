@@ -67,12 +67,13 @@
 
           <!-- B select fields of module -->
           <div class="list__fields">
-            <label for="select-content-fields">Fields Selected</label>
+            <br>
+            <label for="select-content-fields">Columns Selected</label>
             <draggable class="drag-area" :options="{group:'people'}" v-model="addBlockFormContentBuilderListFields" @start="drag=true" @end="drag=true">
               <div v-for="element in addBlockFormContentBuilderListFields" :key="element.id">{{element.name}}</div>
             </draggable>
             <br>
-            <label for="select-content-fields">Fields Available</label>
+            <label for="select-content-fields">Columns Available</label>
             <draggable class="drag-area" :options="{group:'people'}" v-model="contentListFieldsAvailable" @start="drag=true" @end="drag=true">
               <div v-for="element in contentListFieldsAvailable" :key="element.id">{{element.name}}</div>
             </draggable>
