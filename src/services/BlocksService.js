@@ -1,7 +1,11 @@
-import SharedService from '@/services/SharedService'
-import _ from 'lodash'
+import SharedService from '@/services/SharedService';
+import _ from 'lodash';
 
 export default class BlocksService {
+  /**
+   * Clone blocks to deal with mobile view
+   * @param {*} blocks
+   */
   static cloneBlocksForMobileView (blocks) {
     // Clone layout object
     const blocksForMobile = SharedService.cloneObject(blocks)
@@ -29,6 +33,12 @@ export default class BlocksService {
     return SharedService.cloneObject(flattened)
   }
 
+  /**
+   * Populate fields in blocks content : fieldsID => fields from API
+   * @param {*} page
+   * @param {*} block
+   * @param {*} $crm TODO Better way ?
+   */
   static async cloneBlocksAndPopulate (page, blocks, $crm) {
     if (!blocks) {
       return []
@@ -42,6 +52,12 @@ export default class BlocksService {
     return blocksHere
   }
 
+  /**
+   * Populate fields in content : fieldsID => fields from API
+   * @param {*} page
+   * @param {*} block
+   * @param {*} $crm TODO Better way ?
+   */
   static async populateBlock (page, block, $crm) {
     // populate fields of LIST CONTENT TYPE
     if (
@@ -73,6 +89,12 @@ export default class BlocksService {
     }
   }
 
+  /**
+   * Return fields available to be selected on a block.
+   * Indeed : a field cannot be in 2 blocks.
+   * @param {*} page
+   * @param {*} blocks
+   */
   static getContentFieldsAvailable (page, blocks) {
     const allFieldsAvailableForPage = page.module ? page.module.fields : []
     const allFieldsAvailableForPageIndexedById = {}
