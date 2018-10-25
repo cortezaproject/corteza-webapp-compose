@@ -4,7 +4,6 @@
       <thead>
         <tr>
           <th v-for="field in fields" :key="field.id">{{ field.name }}</th>
-          <th><i>Actions</i></th>
         </tr>
       </thead>
       <tbody>
