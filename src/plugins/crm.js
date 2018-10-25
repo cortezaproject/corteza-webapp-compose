@@ -59,7 +59,7 @@ class CRM extends MockCRM {
     })
   }
 
-  async pageList () {
+  async pageList ({ selfID }) {
     const endpoint = `${this.baseLink}/page/`
     return new Promise((resolve, reject) => {
       axios({
@@ -67,7 +67,9 @@ class CRM extends MockCRM {
         url: endpoint,
         withCredentials: true,
         headers: this.headers,
-        params: {},
+        params: {
+          'selfID': selfID,
+        },
         data: {},
       }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })
@@ -124,6 +126,22 @@ class CRM extends MockCRM {
           'description': description,
           'visible': visible,
           'blocks': blocks,
+        },
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async pageReorder ({ selfID, pageIDs }) {
+    const endpoint = `${this.baseLink}/page/${selfID}/reorder`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {
+          'pageIDs': pageIDs,
         },
       }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })
@@ -222,7 +240,7 @@ class CRM extends MockCRM {
   }
 
   async moduleContentList ({ moduleID, page, perPage }) {
-    const endpoint = `${this.baseLink}/module/${module}/content`
+    const endpoint = `${this.baseLink}/module/${moduleID}/content`
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -239,7 +257,7 @@ class CRM extends MockCRM {
   }
 
   async moduleContentCreate ({ moduleID, fields }) {
-    const endpoint = `${this.baseLink}/module/${module}/content`
+    const endpoint = `${this.baseLink}/module/${moduleID}/content`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -255,7 +273,7 @@ class CRM extends MockCRM {
   }
 
   async moduleContentRead ({ moduleID, id }) {
-    const endpoint = `${this.baseLink}/module/${module}/content/${id}`
+    const endpoint = `${this.baseLink}/module/${moduleID}/content/${id}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -269,7 +287,7 @@ class CRM extends MockCRM {
   }
 
   async moduleContentEdit ({ moduleID, id, fields }) {
-    const endpoint = `${this.baseLink}/module/${module}/content/${id}`
+    const endpoint = `${this.baseLink}/module/${moduleID}/content/${id}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -285,7 +303,7 @@ class CRM extends MockCRM {
   }
 
   async moduleContentDelete ({ moduleID, id }) {
-    const endpoint = `${this.baseLink}/module/${module}/content/${id}`
+    const endpoint = `${this.baseLink}/module/${moduleID}/content/${id}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'DELETE',

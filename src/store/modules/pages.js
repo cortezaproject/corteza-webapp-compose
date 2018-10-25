@@ -50,7 +50,7 @@ const actions = {
      *@param {commit: any} param0
      */
   async initList ({ commit }) {
-    const json = await this._vm.$crm.pageList()
+    const json = await this._vm.$crm.pageList({})
     commit('setList', json)
   },
 

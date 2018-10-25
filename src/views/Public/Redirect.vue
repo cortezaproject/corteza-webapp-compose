@@ -18,7 +18,7 @@ export default {
     // --- B --- redirect to pages/{pageId}
     try {
       // List pages without module
-      const json = (await this.$crm.pageList()).filter(page => !page.module)
+      const json = (await this.$crm.pageList({})).filter(page => !page.module)
       if (json.length > 0) {
         this.$router.push({ path: '/pages/' + json[0].id })
       } else {

@@ -9,17 +9,18 @@ const state = {
   Create: {},
   Read: {},
   Edit: {},
+  Reorder: {},
   Delete: {},
 }
 
 const getters = {}
 
 const actions = {
-  async List ({ commit }) {
+  async List ({ commit }, { selfID }) {
     try {
       commit('error', '')
       commit('pageList', {})
-      const response = this._vm.$crm.pageList()
+      const response = this._vm.$crm.pageList({ selfID })
       commit('pageList', response)
     } catch (e) {
       commit('error', e.message)
@@ -59,6 +60,17 @@ const actions = {
       throw e
     }
   },
+  async Reorder ({ commit }, { selfID, pageIDs }) {
+    try {
+      commit('error', '')
+      commit('pageReorder', {})
+      const response = this._vm.$crm.pageReorder({ selfID, pageIDs })
+      commit('pageReorder', response)
+    } catch (e) {
+      commit('error', e.message)
+      throw e
+    }
+  },
   async Delete ({ commit }, { id }) {
     try {
       commit('error', '')
@@ -93,6 +105,9 @@ const mutations = {
   },
   pageEdit (state, response) {
     state['Edit'] = response
+  },
+  pageReorder (state, response) {
+    state['Reorder'] = response
   },
   pageDelete (state, response) {
     state['Delete'] = response
