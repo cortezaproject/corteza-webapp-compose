@@ -44,8 +44,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "src/assets/styles/shared";
-
 .actions {
   position: absolute;
   right: 0;

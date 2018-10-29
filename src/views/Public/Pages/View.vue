@@ -106,13 +106,3 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-@import "src/assets/styles/shared";
-@import "~bootstrap/scss/bootstrap";
-.view /deep/ {
-  // Bootstrap Modal doesnt work if we comment this line
-  @import "~bootstrap/scss/bootstrap";
-}
-.content {
-}
-</style>

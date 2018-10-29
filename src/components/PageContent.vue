@@ -69,7 +69,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "src/assets/styles/shared";
 .view-grid {
   width: 100%;
   &.mobile {

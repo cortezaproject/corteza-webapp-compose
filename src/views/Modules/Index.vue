@@ -29,7 +29,7 @@
             <div>(Updated at : {{ module.updatedAt }})</div>
             <div class='d-flex align-items-center actions'>
               <router-link :to="'/crm/modules/' + module.id + '/edit'" class="actions__action">Edit data</router-link>
-              <button type="button" class="btn btn-default actions__action" v-on:click="handleDeleteModule(module.id)">Delete</button>
+              <button class="btn btn-secondary actions__action" v-on:click="handleDeleteModule(module.id)">Delete</button>
             </div>
           </li>
         </ul>
@@ -42,8 +42,8 @@
       <div class="d-block text-center">
         <h3>Do you confirm deletion ?</h3>
       </div>
-      <b-btn class="mt-3" variant="outline-info" block @click="handleModalConfirmYes()">Yes</b-btn>
-      <b-btn class="mt-3" variant="outline-danger" block @click="handleModalConfirmNo()">No</b-btn>
+      <button class="btn btn-secondary" @click="handleModalConfirmYes()">Yes</button>
+      <button class="btn btn-secondary" @click="handleModalConfirmNo()">No</button>
     </b-modal>
   </div>
 </template>
@@ -105,14 +105,11 @@ export default {
   },
 }
 </script>
+
 <style lang="scss" scoped>
-@import "~bootstrap/scss/bootstrap";
-.container /deep/ {
-  // Bootstrap Modal doesnt work if we comment this line
-  @import "~bootstrap/scss/bootstrap";
-}
 .actions__action {
-  padding-left: 5px;
-  padding-right: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 3px;
 }
 </style>

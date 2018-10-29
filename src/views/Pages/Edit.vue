@@ -5,7 +5,7 @@
         <div class="well">
           <h2>Edit page</h2>
           <div v-if="editPageError" style="color:red">
-              {{ editPageError }}
+            {{ editPageError }}
           </div>
           <form v-if="!editPageError" @submit.prevent="handleEditPageFormSubmit">
             <input required type="hidden" v-model="editPageFormData.id" id="id" />
@@ -22,7 +22,7 @@
             </div>
             <div class="form-group">
               <label for="order">Order (API update neded)</label>
-               <input required type="number" v-model="editPageFormData.order" class="form-control" id="order" placeholder="Order" />
+              <input required type="number" v-model="editPageFormData.order" class="form-control" id="order" placeholder="Order" />
             </div>
             <div class="form-group">
               <label for="title">Description</label>
@@ -30,25 +30,25 @@
             </div>
             <div class="form-group form-check">
               <input type="checkbox" id="visible" class="form-check-input" v-model="editPageFormData.visible">
-              <label for="visible" class="form-check-label">Visible ?</label>
-            </div>
-            <div class="form-group">
-              <label for="module">Module</label>
-              <select v-model="editPageFormData.moduleID" class="form-control" id="module">
-                <option :value="null"></option>
-                <option v-for="module in modulesList" :key="module.id" :value="module.id">{{ module.name }}</option>
-              </select>
-              <router-link :to="'/crm/modules'" class="actions__action">Add a module</router-link>
-            </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-            <div v-if="editPageFormSubmitError" style="color:red">
-              {{ editPageFormSubmitError }}
-            </div>
-          </form>
+                <label for="visible" class="form-check-label">Visible ?</label>
+              </div>
+              <div class="form-group">
+                <label for="module">Module</label>
+                <select v-model="editPageFormData.moduleID" class="form-control" id="module">
+                  <option :value="null"></option>
+                  <option v-for="module in modulesList" :key="module.id" :value="module.id">{{ module.name }}</option>
+                </select>
+                <router-link :to="'/crm/modules'" class="actions__action">Add a module</router-link>
+              </div>
+              <button type="submit" class="btn btn-primary">Save</button>
+              <div v-if="editPageFormSubmitError" style="color:red">
+                {{ editPageFormSubmitError }}
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -90,10 +90,3 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-@import "~bootstrap/scss/bootstrap";
-.container /deep/ {
-  // Bootstrap Modal doesnt work if we comment this line
-  @import "~bootstrap/scss/bootstrap";
-}
-</style>

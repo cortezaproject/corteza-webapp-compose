@@ -52,10 +52,3 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-@import "~bootstrap/scss/bootstrap";
-.block-content-fields /deep/ {
-  // Bootstrap Modal doesnt work if we comment this line
-  @import "~bootstrap/scss/bootstrap";
-}
-</style>

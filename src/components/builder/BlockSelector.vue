@@ -194,7 +194,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "~bootstrap/scss/bootstrap";
 @import "~vue-multiselect/dist/vue-multiselect.min.css";
 
 .block-selector {

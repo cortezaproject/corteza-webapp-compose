@@ -106,11 +106,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "~bootstrap/scss/bootstrap";
-.container /deep/ {
-  // Bootstrap Modal doesnt work if we comment this line
-  @import "~bootstrap/scss/bootstrap";
-}
 .actions__action {
     padding-left: 5px;
     padding-right: 5px;
