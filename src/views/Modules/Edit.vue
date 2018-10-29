@@ -7,7 +7,7 @@
           <div v-if="editModuleError" style="color:red">
             {{ editModuleError }}
           </div>
-          <form v-if="!editModuleError" @submit.prevent="handleEditModuleFormSubmit">
+          <form v-if="!editModuleError" @submit.prevent="FormSubmit">
             <input required type="hidden" v-model="editModuleFormData.id" id="id" />
             <div class="form-group">
               <label for="name">Module name</label>
@@ -29,12 +29,12 @@
                 </thead>
                 <draggable v-model="editModuleFormData.fields" :options="{handle:'.handle'}" :element="'tbody'">
                   <tr v-for="field in editModuleFormData.fields" :key="field.id">
-                    <td class="handle">[{{field.id}}]</td>
-                    <td><input v-model="field.name" type="text" /></td>
-                    <td><input v-model="field.title" type="text" /></td>
-                    <td><select v-model="field.kind">
-                        <option v-for="fieldType in fieldsList" :key="fieldType.type" :value="fieldType.type">{{ _(fieldType.name) }}</option>
-                      </select></td>
+                    <td class="handle text-nowrap">[{{field.id}}]</td>
+                    <td><input v-model="field.name" type="text" class="form-control" /></td>
+                    <td><input v-model="field.title" type="text" class="form-control" /></td>
+                    <td><select v-model="field.kind" class="form-control">
+                    <option v-for="fieldType in fieldsList" :key="fieldType.type" :value="fieldType.type">{{ _(fieldType.name) }}</option>
+                    </select></td>
                     <td>
                       <input v-model="field.gdpr" type="checkbox"> Sensitive data
                     </td>
@@ -42,15 +42,18 @@
                       <input v-model="field.show" type="checkbox"> Show
                     </td>
                     <td>
-                      <button @click="handleEditModuleRemoveField(field)" type="button" class="btn btn-default">Delete</button>
+                      <button @click="RemoveField(field)" type="button" class="btn btn-default">Delete</button>
                     </td>
                   </tr>
                 </draggable>
               </table>
             </div>
-            <button @click="handleEditModuleAddNewField()" type="button" class="btn btn-default">Add new field</button>
+            <button @click="AddNewField()" type="button" class="btn btn-default">Add new field</button>
             <div class="row">
-              <button type="submit" class="btn btn-primary">Save</button>
+              <div class="col-12" style="padding-top: 10px;">
+                <button type="submit" class="btn btn-primary">Save</button>&nbsp;
+                <button @click="redirect()" class="btn btn-secondary">Cancel</button>
+              </div>
             </div>
             <div v-if="editModuleFormSubmitError" style="color:red">
               {{ editModuleFormSubmitError }}
@@ -92,6 +95,11 @@ export default {
   computed: {
   },
   methods: {
+    redirect () {
+      this.$router.push({
+        path: '/crm/modules',
+      })
+    },
     async $_initFieldsList () {
       try {
         this.editModuleError = ''
@@ -120,16 +128,16 @@ export default {
       }
       return potentialId
     },
-    async handleEditModuleFormSubmit () {
+    async FormSubmit () {
       try {
         this.editModuleFormSubmitError = ''
         await this.$crm.moduleEdit(this.editModuleFormData)
-        this.$router.push({ path: '/crm/modules' })
+        this.redirect()
       } catch (e) {
         this.editModuleFormSubmitError = 'Error when trying to edit module.'
       }
     },
-    async handleEditModuleAddNewField () {
+    AddNewField () {
       this.editModuleFormData.fields.push({
         id: this.$_getNewIDForField(this.editModuleFormData.fields),
         name: '',
@@ -138,7 +146,7 @@ export default {
         gdpr: false,
       })
     },
-    async handleEditModuleRemoveField (field) {
+    RemoveField (field) {
       const index = this.editModuleFormData.fields.indexOf(field)
       if (index !== -1) {
         this.editModuleFormData.fields.splice(index, 1)
