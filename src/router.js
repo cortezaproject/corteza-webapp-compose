@@ -14,7 +14,7 @@ function view (name, resolve) {
   }
 }
 
-function defaultViews() {
+function defaultViews () {
   return [
     {
       path: '/auth',
@@ -32,7 +32,7 @@ function defaultViews() {
   ]
 }
 
-function crmViews() {
+function crmViews () {
   return [
     {
       path: '/crm',
