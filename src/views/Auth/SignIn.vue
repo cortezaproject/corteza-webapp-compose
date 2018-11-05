@@ -20,27 +20,29 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      oidc: this.$auth.baseURL() + '/oidc',
+      oidc: this.$system.baseURL() + '/oidc',
     }
   },
 
   computed: {
-    ...mapGetters({
-      isAuthenticated: 'auth/isAuthenticated',
-    }),
+    ...mapGetters('auth', [
+      'isAuthenticated',
+    ]),
   },
 
   methods: {
-    ...mapActions({
-      setUser: 'auth/setUser',
-    }),
+    ...mapActions('auth', [
+      'setUser',
+      'clear',
+    ]),
   },
 
   mounted () {
-    this.$auth.check().then((user) => {
+    this.$system.authCheck().then((user) => {
+      this.setUser(user)
       this.$router.push({ name: 'root' })
     }).catch((error) => {
-      /* eslint-disable-next-line */
+      this.clear()
       console.error(error)
     })
   },
