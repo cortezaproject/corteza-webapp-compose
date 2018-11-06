@@ -73,7 +73,9 @@ export default {
     draggable,
   },
   data () {
+    var moduleID = this.$route.params.moduleID
     return {
+      moduleID: moduleID,
       editModuleError: '',
       editModuleFormSubmitError: '',
       fieldsList: [],
@@ -87,7 +89,10 @@ export default {
     try {
       this.editModuleError = ''
       await this.$_initFieldsList()
-      this.editModuleFormData = await this.$crm.moduleRead({ id: this.$route.params.id })
+      var req = {
+        moduleID: this.moduleID,
+      }
+      this.editModuleFormData = await this.$crm.moduleRead(req)
     } catch (e) {
       this.editModuleError = 'Error when trying to init module form.'
     }

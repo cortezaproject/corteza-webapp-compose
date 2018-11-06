@@ -37,10 +37,24 @@ function crmViews () {
     {
       path: '/crm',
       component: view('IndexNested'),
+      redirect: '/crm/modules',
       children: [
-        { path: '/', name: 'root', component: view('Modules/Index'), beforeEnter: protect },
-        { path: '/modules', component: view('Modules/Index'), beforeEnter: protect },
-        { path: '/crm/modules/:id/edit', component: view('Modules/Edit'), beforeEnter: protect },
+        // list modules (contacts, etc.)
+        { path: '/crm/modules', name: 'root', component: view('Modules/Index'), beforeEnter: protect },
+        // create individual module structure (fields)
+        { path: '/crm/modules/edit', component: view('Modules/Edit'), beforeEnter: protect },
+        // list module contents (individual contact rows,...)
+        { path: '/crm/modules/:moduleID', component: view('Modules/Contents/Index'), beforeEnter: protect },
+        // edit individual module structure (fields)
+        { path: '/crm/modules/:moduleID/edit', component: view('Modules/Edit'), beforeEnter: protect },
+
+        // create an individual row (should display fields configured for the module)
+        { path: '/crm/modules/:moduleID/content/edit', component: view('Modules/Contents/Edit'), beforeEnter: protect },
+        // list an individual row (should display the page configured for the module)
+        { path: '/crm/modules/:moduleID/content/:contentID', component: view('Modules/Contents/Read'), beforeEnter: protect },
+        // edit an individual row (should display fields configured for the module)
+        { path: '/crm/modules/:moduleID/content/:contentID/edit', component: view('Modules/Contents/Edit'), beforeEnter: protect },
+
         { path: '/crm/pages', component: view('Pages/Index'), beforeEnter: protect },
         { path: '/crm/pages/:id', component: view('Pages/View'), beforeEnter: protect },
         { path: '/crm/pages/:id/edit', component: view('Pages/Edit'), beforeEnter: protect },
