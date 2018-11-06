@@ -1,5 +1,5 @@
 <template>
-  <div class="auth centering-wrap inactive-area">
+  <div class="centering-wrap inactive-area">
     <router-view/>
   </div>
 </template>

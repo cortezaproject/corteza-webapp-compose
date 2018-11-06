@@ -14,36 +14,18 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex'
-
 export default {
   data () {
     return {
       oidc: this.$system.baseURL() + '/oidc',
     }
   },
-
-  computed: {
-    ...mapGetters('auth', [
-      'isAuthenticated',
-    ]),
-  },
-
-  methods: {
-    ...mapActions('auth', [
-      'clear',
-    ]),
-  },
-
   mounted () {
-    if (this.isAuthenticated) {
-      this.$system.authLogout().catch((err) => {
-        console.error(err)
-      }).finally(() => {
-        this.clear()
-      })
-    }
-
+    this.$system.authLogout().catch((err) => {
+      console.error(err)
+    }).finally(() => {
+      this.$store.commit('clean')
+    })
     this.$router.push({ name: 'signin' })
   },
 }
