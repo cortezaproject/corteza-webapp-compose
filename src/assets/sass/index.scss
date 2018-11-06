@@ -1,0 +1,35 @@
+/* Import bootstrap styles from npm package */
+@import './_0.declare-light';
+@import '~bootstrap/scss/bootstrap-reboot.scss';
+@import '~bootstrap/scss/bootstrap-grid.scss';
+@import '~bootstrap/scss/_forms.scss';
+@import '~bootstrap/scss/_buttons.scss';
+@import '~bootstrap/scss/_button-group.scss';
+@import '~bootstrap/scss/_list-group.scss';
+@import '~bootstrap/scss/_tables.scss';
+@import '~bootstrap/scss/_tooltip.scss';
+@import '~bootstrap/scss/utilities/_sizing.scss';
+@import '~bootstrap/scss/utilities/_text.scss';
+
+html, body {
+	height: 100%;
+	background: $mainbgcolor;
+}
+html body {
+	color: $defaulttextcolor;
+	font-size: $defaultbodysize;
+}
+a,
+a:hover {
+	color:$defaultlinkcolor;
+}
+.well {
+	min-height: 20px;
+	padding: 19px;
+	margin-bottom: 20px;
+	background-color: $appwhite;
+	border: 1px solid $appgrey;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+}

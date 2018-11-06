@@ -1,0 +1,32 @@
+@import "_0.declare";
+
+body, html
+{
+	font-size:12px;
+  font-family:$crustregular;
+  box-sizing:border-box;
+}
+
+body
+{
+	margin:0;
+}
+
+*
+{
+  box-sizing: border-box;
+}
+
+.float-right
+{
+  float:right;
+}
+.float-left
+{
+  float:left;
+}
+
+label
+{
+  cursor:pointer;
+}
