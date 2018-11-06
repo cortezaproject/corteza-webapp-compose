@@ -13,6 +13,10 @@ class CRM {
     }
   }
 
+  baseURL () {
+    return this.baseLink
+  }
+
   stdReject (reject) {
     return (error) => {
       reject(error)

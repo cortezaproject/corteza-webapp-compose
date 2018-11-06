@@ -13,6 +13,10 @@ class System {
     }
   }
 
+  baseURL () {
+    return this.baseLink
+  }
+
   stdReject (reject) {
     return (error) => {
       reject(error)

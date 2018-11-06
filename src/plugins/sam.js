@@ -13,6 +13,10 @@ class SAM {
     }
   }
 
+  baseURL () {
+    return this.baseLink
+  }
+
   stdReject (reject) {
     return (error) => {
       reject(error)
@@ -248,7 +252,7 @@ class SAM {
     })
   }
 
-  async messageGetReplies ({ messageID }) {
+  async messageReplyGet ({ messageID }) {
     const endpoint = `${this.baseLink}/message/${messageID}/replies`
     return new Promise((resolve, reject) => {
       axios({
@@ -262,7 +266,7 @@ class SAM {
     })
   }
 
-  async messageCreateReply ({ messageID, message }) {
+  async messageReplyCreate ({ messageID, message }) {
     const endpoint = `${this.baseLink}/message/${messageID}/replies`
     return new Promise((resolve, reject) => {
       axios({
@@ -278,7 +282,7 @@ class SAM {
     })
   }
 
-  async messagePin ({ messageID }) {
+  async messagePinCreate ({ messageID }) {
     const endpoint = `${this.baseLink}/message/${messageID}/pin`
     return new Promise((resolve, reject) => {
       axios({
@@ -292,7 +296,7 @@ class SAM {
     })
   }
 
-  async messageRemovePin ({ messageID }) {
+  async messagePinRemove ({ messageID }) {
     const endpoint = `${this.baseLink}/message/${messageID}/pin`
     return new Promise((resolve, reject) => {
       axios({
@@ -306,7 +310,7 @@ class SAM {
     })
   }
 
-  async messageBookmark ({ messageID }) {
+  async messageBookmarkCreate ({ messageID }) {
     const endpoint = `${this.baseLink}/message/${messageID}/bookmark`
     return new Promise((resolve, reject) => {
       axios({
@@ -320,7 +324,7 @@ class SAM {
     })
   }
 
-  async messageRemoveBookmark ({ messageID }) {
+  async messageBookmarkRemove ({ messageID }) {
     const endpoint = `${this.baseLink}/message/${messageID}/bookmark`
     return new Promise((resolve, reject) => {
       axios({
@@ -334,7 +338,7 @@ class SAM {
     })
   }
 
-  async messageReact ({ messageID, reaction }) {
+  async messageReactionCreate ({ messageID, reaction }) {
     const endpoint = `${this.baseLink}/message/${messageID}/reaction/${reaction}`
     return new Promise((resolve, reject) => {
       axios({
@@ -348,7 +352,7 @@ class SAM {
     })
   }
 
-  async messageRemoveReaction ({ messageID, reaction }) {
+  async messageReactionRemove ({ messageID, reaction }) {
     const endpoint = `${this.baseLink}/message/${messageID}/reaction/${reaction}`
     return new Promise((resolve, reject) => {
       axios({
