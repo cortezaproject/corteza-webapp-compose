@@ -1,15 +1,6 @@
 /* Import bootstrap styles from npm package */
 @import './_0.declare-light';
-@import '~bootstrap/scss/bootstrap-reboot.scss';
-@import '~bootstrap/scss/bootstrap-grid.scss';
-@import '~bootstrap/scss/_forms.scss';
-@import '~bootstrap/scss/_buttons.scss';
-@import '~bootstrap/scss/_button-group.scss';
-@import '~bootstrap/scss/_list-group.scss';
-@import '~bootstrap/scss/_tables.scss';
-@import '~bootstrap/scss/_tooltip.scss';
-@import '~bootstrap/scss/utilities/_sizing.scss';
-@import '~bootstrap/scss/utilities/_text.scss';
+@import '~bootstrap/dist/css/bootstrap.min.css';
 
 html, body {
 	height: 100%;
@@ -32,4 +23,13 @@ a:hover {
 	border-radius: 4px;
 	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
 	box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+}
+.navbar-default .navbar-nav > li.dropdown:hover > a, 
+.navbar-default .navbar-nav > li.dropdown:hover > a:hover,
+.navbar-default .navbar-nav > li.dropdown:hover > a:focus {
+    background-color: rgb(231, 231, 231);
+    color: rgb(85, 85, 85);
+}
+li.dropdown:hover > .dropdown-menu {
+    display: block;
 }

@@ -59,6 +59,8 @@ function crmViews () {
         { path: '/crm/pages/:id', component: view('Pages/View'), beforeEnter: protect },
         { path: '/crm/pages/:id/edit', component: view('Pages/Edit'), beforeEnter: protect },
         { path: '/crm/builder', component: view('Builder'), beforeEnter: protect },
+        { path: '/crm/charts', component: view('Charts/Index'), beforeEnter: protect },
+        { path: '/crm/configuration', component: view('Configuration/Index'), beforeEnter: protect },
         // { path: '/', component: view('Public/Redirect'), beforeEnter: protect },
         { path: '/pages', component: view('Public/Redirect'), beforeEnter: protect },
         { path: '/pages/:id', component: view('Public/Pages/View'), beforeEnter: protect },
