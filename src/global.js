@@ -6,13 +6,6 @@ import Vue from 'vue'
 
 axios.defaults.timeout = 15000
 
-var JSONbig = require('json-bigint')({ storeAsString: true })
-axios.defaults.transformResponse = [
-  data => {
-    return JSONbig.parse(data)
-  },
-]
-
 // Global functions
 
 if (!String.format) {
@@ -31,7 +24,6 @@ Vue.config.productionTip = false
 // Global Vue components
 
 Vue.use(VTooltip)
-
 Vue.use(BootstrapVue)
 
 Vue.mixin({
