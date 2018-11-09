@@ -1,12 +1,7 @@
-import store from '@/store'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
-
-function protect (to, from, next) {
-  next(store.getters['auth/isAuthenticated'] ? true : '/auth/signin')
-}
 
 function view (name, resolve) {
   return function (resolve) {
@@ -36,34 +31,34 @@ function crmViews () {
   return [
     {
       path: '/crm',
-      component: view('IndexNested'),
+      component: view('IndexNestedProtected'),
       redirect: '/crm/modules',
       children: [
         // list modules (contacts, etc.)
-        { path: '/crm/modules', name: 'root', component: view('Modules/Index'), beforeEnter: protect },
+        { path: '/crm/modules', name: 'root', component: view('Modules/Index') },
         // create individual module structure (fields)
-        { path: '/crm/modules/edit', component: view('Modules/Edit'), beforeEnter: protect },
+        { path: '/crm/modules/edit', component: view('Modules/Edit') },
         // list module contents (individual contact rows,...)
-        { path: '/crm/modules/:moduleID', component: view('Modules/Contents/Index'), beforeEnter: protect },
+        { path: '/crm/modules/:moduleID', component: view('Modules/Contents/Index') },
         // edit individual module structure (fields)
-        { path: '/crm/modules/:moduleID/edit', component: view('Modules/Edit'), beforeEnter: protect },
+        { path: '/crm/modules/:moduleID/edit', component: view('Modules/Edit') },
 
         // create an individual row (should display fields configured for the module)
-        { path: '/crm/modules/:moduleID/content/edit', component: view('Modules/Contents/Edit'), beforeEnter: protect },
+        { path: '/crm/modules/:moduleID/content/edit', component: view('Modules/Contents/Edit') },
         // list an individual row (should display the page configured for the module)
-        { path: '/crm/modules/:moduleID/content/:contentID', component: view('Modules/Contents/Read'), beforeEnter: protect },
+        { path: '/crm/modules/:moduleID/content/:contentID', component: view('Modules/Contents/Read') },
         // edit an individual row (should display fields configured for the module)
-        { path: '/crm/modules/:moduleID/content/:contentID/edit', component: view('Modules/Contents/Edit'), beforeEnter: protect },
+        { path: '/crm/modules/:moduleID/content/:contentID/edit', component: view('Modules/Contents/Edit') },
 
-        { path: '/crm/pages', component: view('Pages/Index'), beforeEnter: protect },
-        { path: '/crm/pages/:id', component: view('Pages/View'), beforeEnter: protect },
-        { path: '/crm/pages/:id/edit', component: view('Pages/Edit'), beforeEnter: protect },
-        { path: '/crm/builder', component: view('Builder'), beforeEnter: protect },
-        { path: '/crm/charts', component: view('Charts/Index'), beforeEnter: protect },
-        { path: '/crm/configuration', component: view('Configuration/Index'), beforeEnter: protect },
-        // { path: '/', component: view('Public/Redirect'), beforeEnter: protect },
-        { path: '/pages', component: view('Public/Redirect'), beforeEnter: protect },
-        { path: '/pages/:id', component: view('Public/Pages/View'), beforeEnter: protect },
+        { path: '/crm/pages', component: view('Pages/Index') },
+        { path: '/crm/pages/:id', component: view('Pages/View') },
+        { path: '/crm/pages/:id/edit', component: view('Pages/Edit') },
+        { path: '/crm/builder', component: view('Builder') },
+        { path: '/crm/charts', component: view('Charts/Index') },
+        { path: '/crm/configuration', component: view('Configuration/Index') },
+        // { path: '/', component: view('Public/Redirect') },
+        { path: '/pages', component: view('Public/Redirect') },
+        { path: '/pages/:id', component: view('Public/Pages/View') },
       ],
     },
   ]

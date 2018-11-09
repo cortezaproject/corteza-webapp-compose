@@ -31,3 +31,10 @@
     <router-view class="view"></router-view>
   </div>
 </template>
+
+<script>
+import auth from '@/mixins/auth'
+export default {
+  mixins: [auth],
+}
+</script>

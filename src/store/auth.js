@@ -1,5 +1,6 @@
 // Initial state
 const state = {
+  loaded: false,
   user: null,
 }
 
@@ -14,6 +15,10 @@ const actions = {}
 
 // mutations
 const mutations = {
+  loaded (state, loaded) {
+    state.loaded = loaded
+  },
+
   clean (state) {
     state.user = null
   },
