@@ -26,7 +26,7 @@ export default {
       this.$store.commit('auth/setUser', check.user)
       this.$router.push({ name: 'root' })
     }).catch((error) => {
-      this.$store.commit('clear')
+      this.$store.commit('auth/clean')
       console.error(error)
     }).finally(() => {
       this.$store.commit('auth/loaded', true)
