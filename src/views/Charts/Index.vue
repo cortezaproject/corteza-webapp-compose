@@ -175,7 +175,7 @@ export default {
         this.listError = 'Error when trying to get list of charts.'
       }
     },
-    async $_initModulesSelect() {
+    async $_initModulesSelect () {
       try {
         this.moduleSelectError = ''
         this.moduleSelectOptions = await this.$crm.moduleList({})
@@ -187,15 +187,15 @@ export default {
       this.fillFieldSelectsError = ''
       try {
         this.fillFieldSelectsError = ''
-        
-        //We need to deselect the selected value. Somehow, it doens't happen...
-        /*this.$refs["selectX"].selectedIndex = '0'
+
+        // We need to deselect the selected value. Somehow, it doens't happen...
+        /* this.$refs["selectX"].selectedIndex = '0'
         this.$refs["selectXMin"].value = ''
         this.$refs["selectXMax"].value = ''
         this.$refs["selectY"].selectedIndex = '0'
         this.$refs["selectCount"].selectedIndex = '0'
         this.$refs["selectGroupBy"].selectedIndex = '0'
-        this.$refs["selectSum"].selectedIndex = '0'*/
+        this.$refs["selectSum"].selectedIndex = '0' */
 
         this.moduleFieldsSelectOptions = await this.$crm.moduleRead({ moduleID: moduleId })
       } catch (e) {
@@ -226,7 +226,7 @@ export default {
     },
     handleModalConfirmNo () {
       this.$refs.myDeleteModalRef.hide()
-    },    
+    },
   },
 }
 </script>

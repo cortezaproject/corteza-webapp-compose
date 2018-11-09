@@ -21,8 +21,8 @@
                     <th>#</th>
                     <th v-b-tooltip.hover title="Must be lower-case a-z, 0-9 and underscore">Name</th>
                     <th v-b-tooltip.hover title="The name displayed in form input / data lists">Title</th>
-                    <th>Kind</th>
-                    <th>GDPR</th>
+                    <th>Type</th>
+                    <th>Privacy sensitive data</th>
                     <th>Show in list</th>
                     <th></th>
                   </tr>

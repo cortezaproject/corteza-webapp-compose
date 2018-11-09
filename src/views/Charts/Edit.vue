@@ -85,7 +85,6 @@
               </select>
             </div>
 
-
             <div v-if="editChartFormSubmitError" style="color:red">
               {{ editChartFormSubmitError }}
             </div>
