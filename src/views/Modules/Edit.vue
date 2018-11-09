@@ -49,7 +49,7 @@
                     <tr v-if="getField(field.kind) in $options.components" :key="'modules-edit-' + field.id + '-options'">
                       <td>&nbsp;</td>
                       <td colspan="6">
-                        <component :is="getField(field.kind)"></component>
+                        <component :is="getField(field.kind)" :field="field"></component>
                       </td>
                     </tr>
                   </template>
