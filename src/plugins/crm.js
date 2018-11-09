@@ -210,6 +210,31 @@ class CRM {
     })
   }
 
+  async moduleChart ({ moduleID, name, description, xAxis, xMin, xMax, yAxis, groupBy, sum, count, kind }) {
+    const endpoint = `${this.baseLink}/module/${moduleID}/chart`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {
+          'name': name,
+          'description': description,
+          'xAxis': xAxis,
+          'xMin': xMin,
+          'xMax': xMax,
+          'yAxis': yAxis,
+          'groupBy': groupBy,
+          'sum': sum,
+          'count': count,
+          'kind': kind,
+        },
+        data: {},
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
   async moduleEdit ({ moduleID, name, fields }) {
     const endpoint = `${this.baseLink}/module/${moduleID}`
     return new Promise((resolve, reject) => {
@@ -241,7 +266,7 @@ class CRM {
     })
   }
 
-  async moduleContentList ({ moduleID, page, perPage }) {
+  async moduleContentList ({ moduleID, query, page, perPage }) {
     const endpoint = `${this.baseLink}/module/${moduleID}/content`
     return new Promise((resolve, reject) => {
       axios({
@@ -250,6 +275,7 @@ class CRM {
         withCredentials: true,
         headers: this.headers,
         params: {
+          'query': query,
           'page': page,
           'perPage': perPage,
         },
