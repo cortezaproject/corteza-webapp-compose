@@ -4,13 +4,13 @@
 
     <table class="table table-striped">
       <tbody>
-        <tr v-for="row in rows" :key="'modules-contents-index-' + row.id">
+        <tr v-for="row in list.contents" :key="'modules-contents-index-' + row.id">
           <td>{{row}}</td>
         </tr>
       </tbody>
     </table>
 
-    <template v-if="rows.length === 0">
+    <template v-if="list.contents.length === 0">
       <p>No content rows added yet.</p>
     </template>
 
@@ -33,7 +33,7 @@ export default {
       },
       page: 0,
       perPage: 20,
-      rows: [],
+      list: [],
       errors: [],
     }
   },
@@ -47,8 +47,9 @@ export default {
           page: this.page,
           perPage: this.perPage,
           moduleID: this.moduleID,
+          query: '',
         }
-        this.rows = await this.$crm.moduleContentList(req)
+        this.list = await this.$crm.moduleContentList(req)
       } catch (e) {
         this.errors = [e.message]
         throw e
