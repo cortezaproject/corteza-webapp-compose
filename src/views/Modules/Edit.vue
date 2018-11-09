@@ -28,23 +28,31 @@
                   </tr>
                 </thead>
                 <draggable v-model="editModuleFormData.fields" :options="{handle:'.handle'}" :element="'tbody'">
-                  <tr v-for="field in editModuleFormData.fields" :key="field.id">
-                    <td class="handle text-nowrap">[{{field.id}}]</td>
-                    <td><input v-model="field.name" type="text" class="form-control" /></td>
-                    <td><input v-model="field.title" type="text" class="form-control" /></td>
-                    <td><select v-model="field.kind" class="form-control">
-                    <option v-for="fieldType in fieldsList" :key="fieldType.type" :value="fieldType.type">{{ _(fieldType.name) }}</option>
-                    </select></td>
-                    <td>
-                      <input v-model="field.gdpr" type="checkbox"> Sensitive data
-                    </td>
-                    <td>
-                      <input v-model="field.show" type="checkbox"> Show
-                    </td>
-                    <td>
-                      <button @click="RemoveField(field)" type="button" class="btn btn-default">Delete</button>
-                    </td>
-                  </tr>
+                  <template v-for="field in editModuleFormData.fields">
+                    <tr :key="'modules-edit-' + field.id">
+                      <td class="handle text-nowrap">[{{field.id}}]</td>
+                      <td><input v-model="field.name" type="text" class="form-control" /></td>
+                      <td><input v-model="field.title" type="text" class="form-control" /></td>
+                      <td><select v-model="field.kind" class="form-control">
+                      <option v-for="fieldType in fieldsList" :key="fieldType.type" :value="fieldType.type">{{ _(fieldType.name) }}</option>
+                      </select></td>
+                      <td>
+                        <input v-model="field.gdpr" type="checkbox"> Sensitive data
+                      </td>
+                      <td>
+                        <input v-model="field.show" type="checkbox"> Show
+                      </td>
+                      <td>
+                        <button @click="RemoveField(field)" type="button" class="btn btn-default">Delete</button>
+                      </td>
+                    </tr>
+                    <tr v-if="getField(field.kind) in $options.components" :key="'modules-edit-' + field.id + '-options'">
+                      <td>&nbsp;</td>
+                      <td colspan="6">
+                        <component :is="getField(field.kind)"></component>
+                      </td>
+                    </tr>
+                  </template>
                 </draggable>
               </table>
             </div>
@@ -66,15 +74,21 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import draggable from 'vuedraggable'
+
+import ModuleFieldRelated from '@/components/Module/Field/Related.vue'
+
 export default {
   name: 'ModuleEdit',
   components: {
     draggable,
+    ModuleFieldRelated,
   },
   data () {
     var moduleID = this.$route.params.moduleID
     return {
+      components: Vue.options.components,
       moduleID: moduleID,
       editModuleError: '',
       editModuleFormSubmitError: '',
@@ -100,16 +114,34 @@ export default {
   computed: {
   },
   methods: {
+    getField (type) {
+      for (let i = 0; i < this.fieldsList.length; i++) {
+        if (this.fieldsList[i].type === type) {
+          return this.fieldsList[i].componentOptions
+        }
+      }
+      return ''
+    },
     redirect () {
       this.$router.push({
         path: '/crm/modules',
       })
     },
     async $_initFieldsList () {
+      var capitalize = (s) => {
+        var ucfirst = (s) => {
+          return s.charAt(0).toUpperCase() + s.substring(1)
+        }
+        return s.split('_').map(ucfirst).join('')
+      }
       try {
         this.editModuleError = ''
         this.fieldsList = await this.$crm.fieldList({})
+        this.fieldsList.forEach((field) => {
+          field.componentOptions = 'ModuleField' + capitalize(field.type)
+        })
       } catch (e) {
+        console.error(e)
         this.editModuleError = 'Error when trying to get list of fields.'
       }
     },
