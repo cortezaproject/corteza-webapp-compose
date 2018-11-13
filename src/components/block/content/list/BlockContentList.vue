@@ -1,12 +1,16 @@
 <template>
   <div class="container">
     <filter-bar></filter-bar>
-    <vuetable :api-mode="false" ref="vuetable" :fields="fields" pagination-path="" :css="css.table" :sort-order="sortOrder" :multi-sort="true" detail-row-component="my-detail-row" :append-params="moreParams" @vuetable:cell-clicked="onCellClicked" @vuetable:pagination-data="onPaginationData"></vuetable>
+    <!-- vuetable :api-mode="false" ref="vuetable" :fields="fields" pagination-path="" :css="css.table" :sort-order="sortOrder" :multi-sort="true" detail-row-component="my-detail-row" :append-params="moreParams" @vuetable:cell-clicked="onCellClicked" @vuetable:pagination-data="onPaginationData" -->
+
+      <vuetable ref="vuetable" api-url="https://vuetable.ratiw.net/api/users" :fields="fields" :sort-order="sortOrder" :css="css.table" pagination-path="" :per-page="8" @vuetable:pagination-data="onPaginationData" @vuetable:loading="onLoading" @vuetable:loaded="onLoaded">
+    </vuetable>
     <div class="vuetable-pagination">
       <vuetable-pagination-info ref="paginationInfo" info-class="pagination-info"></vuetable-pagination-info>
       <vuetable-pagination ref="pagination" :css="css.pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
     </div>
   </div>
+ 
 </template>
 
 <script>
@@ -59,15 +63,34 @@ export default {
       },
       sortOrder: [{ field: 'email', sortField: 'email', direction: 'asc' }],
       moreParams: {},
+      fields: [
+        { 
+          name: 'name', 
+          title: '<span class="orange glyphicon glyphicon-user"></span> Full Name',
+          sortField: 'name'
+        }, 
+        {
+          name: 'email',
+          title: 'Email',
+          sortField: 'email'
+        },
+        'birthdate','nickname',
+        {
+          name: 'gender',
+          title: 'Gender',
+          sortField: 'gender'
+        },
+        '__slot:actions'
+      ],
     }
   },
   props: ['list'],
-  computed: {
+  /*computed: {       // This is not working. We need to load the fields here, instead if inserting them directly as above...
     fields () {
-      const result = (this.list && this.list.fields && this.list.fields.length > 0) ? this.list.fields : []
+      const result = this.list
       return result
     },
-  },
+  },*/
   methods: {
     allcap (value) {
       return value.toUpperCase()
@@ -92,6 +115,18 @@ export default {
     },
     onCellClicked (data, field, event) {
       this.$refs.vuetable.toggleDetailRow(data.id)
+    },
+    editRow(rowData){
+      alert("You clicked edit on"+ JSON.stringify(rowData))
+    },
+    deleteRow(rowData){
+      alert("You clicked delete on"+ JSON.stringify(rowData))
+    },
+    onLoading() {
+      console.log('loading... show your spinner here')
+    },
+    onLoaded() {
+      console.log('loaded! .. hide your spinner here')
     },
   },
   events: {
