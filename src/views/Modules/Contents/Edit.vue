@@ -105,7 +105,7 @@ export default {
       }
       var req = {
         moduleID: this.moduleID,
-        fields: formatFields(this.row),
+        fields: formatFields(this.row.fields),
       }
       try {
         if (this.mode === 'create') {
