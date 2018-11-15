@@ -14,11 +14,10 @@
     <h4>No block added yet.</h4>
   </div>
 </template>
-<script>
 
+<script>
 /* eslint-disable-next-line */
 import VueGridLayout from 'vue-grid-layout'
-import { mapState, mapActions } from 'vuex'
 import Block from '@/components/block/Block'
 
 export default {
@@ -26,19 +25,34 @@ export default {
   components: {
     Block,
   },
-  computed: {
-    ...mapState({
-      layout: state => state.builder.layout,
-      draggable: state => state.builder.draggable,
-      resizable: state => state.builder.resizable,
-      index: state => state.builder.index,
-      mobilePreview: state => state.builder.mobilePreview,
-      colNum: state => state.builder.colNum,
-    }),
+  props: {
+    layout: null,
   },
-
+  data () {
+    return {
+      draggable: true,
+      resizable: true,
+      colNum: 2,
+    }
+  },
   methods: {
-    ...mapActions('builder', ['handleEditBlockButtonClick', 'handleRemoveBlockButtonClick']),
+    handleRemoveBlockButtonClick (blockToRemove) {
+      // get index of the block to remove based on the block title
+      var i = 0
+      for (i; i < this.layout.length; i++) {
+        if (this.layout[i].id === blockToRemove.id) {
+          break
+        }
+      }
+
+      // remove block from layout
+      this.layout.splice(i, 1)
+    },
+    handleEditBlockButtonClick (blockToEdit) {
+      this.$emit('editBlock', {
+        blockToEdit: blockToEdit,
+      })
+    },
   },
 }
 </script>
