@@ -1,7 +1,7 @@
 <template>
   <div class="block-selector">
 
-    <select :value="blockType" v-on:change="handleBlockTypeChange" name="block-type" id="block-type">
+    <select :value="blockType" v-on:change="handleBlockTypeChange($event.target.value)" name="block-type" id="block-type">
       <option v-bind:value="''" default selected disabled>-- Select a block type --</option>
       <option v-if="contentFieldsEnabled" v-bind:value="'fields'">Fields</option>
       <option v-if="contentListEnabled" v-bind:value="'list'">List</option>
@@ -48,7 +48,7 @@
           <draggable class="drag-area" :options="{group:'people'}" v-model="contentFieldsAvailable" @start="drag=true" @end="drag=true">
             <div v-for="element in contentFieldsAvailable" :key="element.id">{{element.name}}</div>
           </draggable>
-          <div style="color:red;" v-if="!contentFieldsEnabled">
+          <div style="color:red" v-if="!contentFieldsEnabled">
             Fields are not available here.
             <br>
             <router-link :to="'/crm/pages/' + this.$route.query.pageId + '/edit'" class="actions__action">Set a module with fields</router-link>.
@@ -56,11 +56,11 @@
         </fieldset>
         <fieldset class="form-group" v-if="contentListEnabled">
           <label for="select-content-list">Module</label>
-          <div v-if="modulesListError" style="color:red;">
+          <div v-if="modulesListError" style="color:red">
             {{ modulesListError }}
           </div>
           <!-- B select a module -->
-          <select :value="addBlockFormContentBuilderListModule ? addBlockFormContentBuilderListModule.id : null" required @input="handleSelectContentListModule($event.target.value)" class="form-control" id="select-content-list">
+          <select :value="selectedModule ? selectedModule.id : null" required @input="handleSelectContentListModule($event.target.value)" class="form-control" id="select-content-list">
             <option v-for="module in modulesList" :key="module.id" :value="module.id">{{ module.name }}</option>
           </select>
           <!-- E select a module -->
@@ -89,10 +89,11 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
 import Vue from 'vue'
 import Multiselect from 'vue-multiselect'
 import draggable from 'vuedraggable'
+import SharedService from '@/services/SharedService'
+
 Vue.component('multiselect', Multiselect)
 
 export default {
@@ -100,9 +101,30 @@ export default {
   components: {
     draggable,
   },
+  props: {
+    pageData: null,
+    blockToEdit: null,
+  },
   data () {
     return {
       modulesList: [],
+      mode: 'add',
+      selectedModule: null,
+      contentListEnabled: true,
+      contentFieldsEnabled: false,
+      blockType: null,
+      contentListFieldsAvailable: [],
+      addBlockFormContentBuilderListFields: [],
+      addBlockFormContentFields: [],
+      addBlockFormData: {
+        title: '',
+        description: '',
+        footer: '',
+      },
+      addBlockFormMeta: {
+        fixed: false,
+      },
+      editedBlock: null,
     }
   },
   async created () {
@@ -113,88 +135,85 @@ export default {
       this.modulesListError = 'Error when trying to init modules.'
     }
   },
-  computed: {
-    ...mapState('builder', [
-      'blockType',
-      'mode',
-      'contentFieldsEnabled',
-      'contentListEnabled',
-    ]),
-    addBlockFormData: {
-      get () {
-        return this.$store.state.builder.addBlockFormData
-      },
-      set (newValue) {
-        this.$store.commit('builder/setAddBlockFormData', newValue)
-      },
+  methods: {
+    handleBlockTypeChange (blockType) {
+      this.blockType = blockType
     },
-
-    addBlockFormMeta: {
-      get () {
-        return this.$store.state.builder.addBlockFormMeta
-      },
-      set (newValue) {
-        this.$store.commit('builder/setAddBlockFormMeta', newValue)
-      },
+    handleSelectContentListModule (moduleId) {
+      // find the module that was selected
+      this.selectedModule = this.modulesList.find(x => x.id === moduleId.toString())
+      // populate the available fields
+      this.contentListFieldsAvailable = this.selectedModule.fields
     },
+    handleBlockSelectorFormSubmit () {
+      // emit the event to the parent page
+      if (this.mode === 'add') {
+        // adding a new block
+        this.$emit('addNewBlock', {
+          selectedModule: this.selectedModule,
+          content: {
+            fields: this.addBlockFormContentBuilderListFields,
+            module: this.selectedModule,
+          },
+          blockType: this.blockType,
+          addBlockFormData: this.addBlockFormData,
+          addBlockFormMeta: this.addBlockFormMeta,
+          addBlockFormContentFields: this.addBlockFormContentFields,
+        })
+        // reset the form
+        this.resetForm()
+      } else {
+        // editing an existing block
+        this.editedBlock.content.module = this.selectedModule
+        this.editedBlock.content.fields = this.addBlockFormContentBuilderListFields
+        this.editedBlock.meta = this.addBlockFormMeta
+        this.editedBlock.data = this.addBlockFormData
+        this.editedBlock.blockType = this.blockType
 
-    addBlockFormContentFields: {
-      get () {
-        return this.$store.state.builder.addBlockFormContent.fields
-      },
-      set (newValue) {
-        this.$store.commit('builder/setAddBlockFormContentFields', newValue)
-      },
+        this.$emit('blockHasBeenEdited', {
+          editedBlock: this.editedBlock,
+        })
+        // reset the form
+        this.resetForm()
+      }
     },
-
-    contentFieldsAvailable: {
-      get () {
-        return this.$store.state.builder.contentFieldsAvailable
-      },
-      set (newValue) {
-        this.$store.commit('builder/setContentFieldsAvailable', newValue)
-      },
-    },
-
-    contentListFieldsAvailable: {
-      get () {
-        return this.$store.state.builder.contentListFieldsAvailable
-      },
-      set (newValue) {
-        this.$store.commit('builder/setContentListFieldsAvailable', newValue)
-      },
-    },
-
-    addBlockFormContentBuilderListFields: {
-      get () {
-        return this.$store.state.builder.addBlockFormContent.listBuilder.fields
-      },
-      set (newValue) {
-        this.$store.commit('builder/setAddBlockFormContentBuilderListFields', newValue)
-      },
-    },
-
-    addBlockFormContentBuilderListModule: {
-      get () {
-        return this.$store.state.builder.addBlockFormContent.listBuilder.module
-      },
+    resetForm () {
+      // reset the form
+      this.selectedModule = null
+      this.blockType = null
+      this.contentListFieldsAvailable = []
+      this.addBlockFormContentBuilderListFields = []
+      this.addBlockFormContentFields = []
+      this.addBlockFormData = {
+        title: '',
+        description: '',
+        footer: '',
+      }
     },
   },
-
-  methods: {
-    ...mapActions('builder', [
-      'handleBlockTypeChange',
-      'handleBlockSelectorFormSubmit',
-
-    ]),
-    handleSelectContentListModule (moduleId) {
-      this.$store.dispatch('builder/handleSelectContentListModule', { moduleId, modulesList: this.modulesList })
+  watch: {
+    blockToEdit: {
+      handler: function () {
+        if (this.blockToEdit != null) {
+          this.mode = 'edit'
+          // create a copy of the block to isolate changes
+          this.editedBlock = SharedService.cloneObject(this.blockToEdit)
+          this.blockType = this.editedBlock.blockType
+          this.addBlockFormMeta = this.editedBlock.meta
+          this.addBlockFormData = this.editedBlock.data
+          this.selectedModule = this.editedBlock.content.module
+          this.contentListFieldsAvailable = this.editedBlock.content.module.fields
+        } else {
+          this.mode = 'add'
+        }
+      },
+      deep: true,
     },
   },
 }
 </script>
 <style lang="scss" scoped>
-@import "~vue-multiselect/dist/vue-multiselect.min.css";
+@import '~vue-multiselect/dist/vue-multiselect.min.css';
 
 .block-selector {
   z-index: 999;

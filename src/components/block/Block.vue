@@ -1,5 +1,5 @@
 <template>
-  <div class="block">
+  <div class="block" v-if="block">
     <div class="block-data">
       <div class="block-data__title">{{ block.data.title }}</div>
       <p class="block-data__description">{{ block.data.description }}</p>
@@ -21,7 +21,9 @@ export default {
   components: {
     BlockContent,
   },
-  props: ['block'],
+  props: {
+    block: null,
+  },
 }
 </script>
 <style lang="scss" scoped>
@@ -29,18 +31,15 @@ export default {
   .block-data__title {
     font-size: 15px;
   }
-
   .block-data__description {
     font-size: 10px;
     border-bottom: 1px solid black;
   }
-
   .block-data__content {
     fieldset {
       border: none;
     }
   }
-
   .block-data__footer {
     font-size: 10px;
     position: absolute;
