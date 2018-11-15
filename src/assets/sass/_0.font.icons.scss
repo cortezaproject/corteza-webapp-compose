@@ -1,5 +1,8 @@
+[class^="icon-"] {
+  color: $defaulticoncolor;
+}
 
-[class^="icon-"], [class*=" icon-"] {
+[class*=" icon-"] {
   color: $defaulticoncolor;
 }
 

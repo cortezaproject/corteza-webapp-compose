@@ -39,6 +39,11 @@ li.dropdown:hover > .dropdown-menu {
   display: block;
 }
 
+.vue-grid-item {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .vue-grid-item:not(.vue-grid-placeholder) {
   background: #FFF;
   border: none;
@@ -50,11 +55,7 @@ li.dropdown:hover > .dropdown-menu {
 }
 
 .vue-grid-item.static {
-}
-
-.vue-grid-item {
-  overflow-x: hidden;
-  overflow-y: auto;
+  visibility: visible;
 }
 
 .vue-grid-item .text {
@@ -203,7 +204,8 @@ li.dropdown:hover > .dropdown-menu {
   width: 100%;
 }
 
-.vue-grid-item input[type="radio"], vue-grid-item input[type="checkbox"] {
+.vue-grid-item input[type="radio"],
+.vue-grid-item input[type="checkbox"] {
   background-color: transparent;
   border: 1px solid $appgrey;
   border-radius: 5px;
