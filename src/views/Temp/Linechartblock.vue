@@ -5,8 +5,7 @@
       <div class="gridblock_contents">
         <div class="blockname">Blockname</div>
         <div class="block_header">Block header text</div>
-        <div class="form_row">
-          Here I want to show the chart...
+        <div class="form_row" :id="'chart-'+id">
         </div>
       </div>
       <!-- end CRM page block -->
@@ -22,14 +21,12 @@ export default {
   components: {
     c3,
   },
-  data () {
-    return {
-      chart: '', // I know this is a string, but I need this.chart in line 32 to be an element.
-    }
+  created: function () {
+    this.id = this._uid
   },
   mounted: function () {
     c3.generate({
-      bindto: this.chart, // This need to be an element
+      bindto: '#chart-' + this.id, // This need to be an element
       data: {
         type: 'area',
         x: 'x',
