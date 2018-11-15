@@ -28,6 +28,6 @@ export default {
       .catch(e => {
         this.error = e
       })
-  }
+  },
 }
 </script>

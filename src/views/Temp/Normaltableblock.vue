@@ -18,33 +18,33 @@
 
 import BlockContentFields from '@/components/block/content/list/BlockContentList'
 
-//Sending the fields is not working yet, so they are hard coded directly in the component fo now...
+// Sending the fields is not working yet, so they are hard coded directly in the component fo now...
 export default {
   name: 'App',
   components: {
-    BlockContentFields
+    BlockContentFields,
   },
-  data() {
+  data () {
     return {
-      content: {fields: [
-      { 
-        name: 'name', 
-        title: '<span class="orange glyphicon glyphicon-user"></span> Full Name',
-        sortField: 'name'
-      }, 
-      {
-        name: 'email',
-        title: 'Email',
-        sortField: 'email'
-      },
-      'birthdate','nickname',
-      {
-        name: 'gender',
-        title: 'Gender',
-        sortField: 'gender'
-      },
-      '__slot:actions'
-    ]}
+      content: { fields: [
+        {
+          name: 'name',
+          title: '<span class="orange glyphicon glyphicon-user"></span> Full Name',
+          sortField: 'name',
+        },
+        {
+          name: 'email',
+          title: 'Email',
+          sortField: 'email',
+        },
+        'birthdate', 'nickname',
+        {
+          name: 'gender',
+          title: 'Gender',
+          sortField: 'gender',
+        },
+        '__slot:actions',
+      ] },
     }
   },
   computed: {

@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  mounted() {
+  mounted () {
     let twitterScript = document.createElement('script')
     twitterScript.setAttribute('src', 'https://platform.twitter.com/widgets.js')
     document.head.appendChild(twitterScript)

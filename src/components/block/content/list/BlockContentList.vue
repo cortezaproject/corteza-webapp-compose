@@ -10,7 +10,7 @@
       <vuetable-pagination ref="pagination" :css="css.pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
     </div>
   </div>
- 
+
 </template>
 
 <script>
@@ -64,33 +64,33 @@ export default {
       sortOrder: [{ field: 'email', sortField: 'email', direction: 'asc' }],
       moreParams: {},
       fields: [
-        { 
-          name: 'name', 
+        {
+          name: 'name',
           title: '<span class="orange glyphicon glyphicon-user"></span> Full Name',
-          sortField: 'name'
-        }, 
+          sortField: 'name',
+        },
         {
           name: 'email',
           title: 'Email',
-          sortField: 'email'
+          sortField: 'email',
         },
-        'birthdate','nickname',
+        'birthdate', 'nickname',
         {
           name: 'gender',
           title: 'Gender',
-          sortField: 'gender'
+          sortField: 'gender',
         },
-        '__slot:actions'
+        '__slot:actions',
       ],
     }
   },
   props: ['list'],
-  /*computed: {       // This is not working. We need to load the fields here, instead if inserting them directly as above...
+  /* computed: {       // This is not working. We need to load the fields here, instead if inserting them directly as above...
     fields () {
       const result = this.list
       return result
     },
-  },*/
+  }, */
   methods: {
     allcap (value) {
       return value.toUpperCase()
@@ -116,16 +116,16 @@ export default {
     onCellClicked (data, field, event) {
       this.$refs.vuetable.toggleDetailRow(data.id)
     },
-    editRow(rowData){
-      alert("You clicked edit on"+ JSON.stringify(rowData))
+    editRow (rowData) {
+      alert('You clicked edit on' + JSON.stringify(rowData))
     },
-    deleteRow(rowData){
-      alert("You clicked delete on"+ JSON.stringify(rowData))
+    deleteRow (rowData) {
+      alert('You clicked delete on' + JSON.stringify(rowData))
     },
-    onLoading() {
+    onLoading () {
       console.log('loading... show your spinner here')
     },
-    onLoaded() {
+    onLoaded () {
       console.log('loaded! .. hide your spinner here')
     },
   },
