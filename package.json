@@ -5,11 +5,22 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
+    "lint": "vue-cli-service lint && stylelint '**/*.{vue,scss}' --syntax scss --fix",
     "test:unit": "vue-cli-service test:unit"
   },
   "gitHooks": {
     "pre-commit": "yarn lint"
+  },
+  "stylelint": {
+    "plugins": [
+      "stylelint-scss"
+    ],
+    "extends": "stylelint-config-standard",
+    "rules": {
+      "color-hex-case": null,
+      "color-hex-length": null,
+      "no-empty-source": null
+    }
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -41,6 +52,10 @@
     "chai": "^4.1.2",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
+    "stylelint": "^9.8.0",
+    "stylelint-config-standard": "^18.2.0",
+    "stylelint-scss": "^3.4.0",
+    "stylelint-webpack-plugin": "^0.10.5",
     "vue-template-compiler": "^2.5.17"
   }
 }
