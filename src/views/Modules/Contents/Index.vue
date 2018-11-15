@@ -1,6 +1,6 @@
 <template>
   <section class="container" id="modules-contents-index">
-    <h1>List module content rows</h1>
+    <h1>{{module.name}}</h1>
     <table class="table table-striped">
       <thead>
         <tr>

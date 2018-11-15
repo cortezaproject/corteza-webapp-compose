@@ -7,7 +7,7 @@
       <tbody>
         <template v-for="field in module.fields">
           <tr :key="'modules-contents-edit-fields-' + field.name">
-            <td><b>{{field.title}}</b></td> {{Object.keys($options.components)}} {{getField(field.kind)}}
+            <td><b>{{field.title}}</b></td>
             <td v-if="getField(field.kind) in $options.components" :key="'modules-contents-edit-' + field.id">
               <component :is="getField(field.kind)" :field="field" :row="row.fields"></component>
             </td>
