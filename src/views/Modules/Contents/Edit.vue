@@ -7,9 +7,9 @@
       <tbody>
         <template v-for="field in module.fields">
           <tr :key="'modules-contents-edit-fields-' + field.name">
-            <td><b>{{field.title}}</b></td> {{Object.keys($options.components)}} {{getField(field.kind)}}
+            <td><b>{{field.title}}</b></td>
             <td v-if="getField(field.kind) in $options.components" :key="'modules-contents-edit-' + field.id">
-              <component :is="getField(field.kind)" :field="field" :row="row"></component>
+              <component :is="getField(field.kind)" :field="field" :row="row.fields"></component>
             </td>
             <td v-else>
               <FieldEdit :field="field"></FieldEdit>
@@ -41,7 +41,9 @@ export default {
     var mode = ('contentID' in this.$route.params) ? 'edit' : 'create'
     var moduleID = this.$route.params.moduleID
     return Object.assign({
-      row: {},
+      row: {
+        fields: {},
+      },
       module: {},
       mode: mode,
       links: {
@@ -82,24 +84,42 @@ export default {
           contentID: this.contentID,
         }
         this.row = await this.$crm.moduleContentRead(req)
+        var fields = {}
+        this.row.fields.forEach(({ name, value }) => {
+          fields[name] = value
+        })
+        this.row.fields = fields
       } catch (e) {
         this.errors = [e.message]
         throw e
       }
     },
     async save () {
+      var formatFields = (row) => {
+        var fields = []
+        for (var name in row) {
+          var value = row[name]
+          fields.push({ name, value })
+        }
+        return fields
+      }
       var req = {
         moduleID: this.moduleID,
-        fields: this.row,
+        fields: formatFields(this.row.fields),
       }
-      // @todo: try/catch etc.
-      if (this.mode === 'create') {
-        await this.$crm.moduleContentCreate(req)
-      } else {
-        req.contentID = this.contentID
-        await this.$crm.moduleContentEdit(req)
+      try {
+        if (this.mode === 'create') {
+          await this.$crm.moduleContentCreate(req)
+        } else {
+          req.contentID = this.contentID
+          await this.$crm.moduleContentEdit(req)
+        }
+        this.$router.push({
+          path: this.links.cancel,
+        })
+      } catch (e) {
+        this.errors = [e.message]
       }
-      console.log('TODO')
     },
   },
 }
