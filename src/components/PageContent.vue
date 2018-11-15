@@ -5,7 +5,7 @@
         <Block :block="block"></Block>
       </grid-item>
     </grid-layout>
-    <div style="color:red" v-if="!blocks || blocks.length == 0">
+    <div style="color:red;" v-if="!blocks || blocks.length == 0">
       This page has no blocks
     </div>
   </div>
@@ -71,10 +71,12 @@ export default {
 <style lang="scss" scoped>
 .view-grid {
   width: 100%;
+
   &.mobile {
     width: 320px;
     margin: 0 auto;
   }
+
   .vue-grid-item {
     border: 1px solid #ccc;
     padding: 10px;

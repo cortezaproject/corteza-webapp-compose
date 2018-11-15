@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="vue-grid-item cssTransforms" style="transform: translate3d(10px, 10px, 0px); width: 500px; height: 430px; position: absolute;">
+    <div class="vue-grid-item cssTransforms" style="transform: translate3d(10px, 10px, 0); width: 500px; height: 430px; position: absolute;">
       <!-- start CRM page block -->
       <div class="gridblock_contents">
         <div class="blockname">Twitter Timeline</div>
@@ -17,7 +17,7 @@
       <!-- start CRM page block -->
     </div>
 
-    <div class="vue-grid-item cssTransforms" style="transform: translate3d(520px, 10px, 0px); width: 500px; height: 430px; position: absolute;">
+    <div class="vue-grid-item cssTransforms" style="transform: translate3d(520px, 10px, 0); width: 500px; height: 430px; position: absolute;">
       <!-- start CRM page block -->
       <div class="gridblock_contents">
         <div class="blockname">Twitter keyword</div>

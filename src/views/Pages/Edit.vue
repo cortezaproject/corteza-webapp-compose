@@ -4,7 +4,7 @@
       <div class="col-md-12">
         <div class="well">
           <h2>Edit page</h2>
-          <div v-if="editPageError" style="color:red">
+          <div v-if="editPageError" style="color:red;">
             {{ editPageError }}
           </div>
           <form v-if="!editPageError" @submit.prevent="handleEditPageFormSubmit">
@@ -41,7 +41,7 @@
                 <router-link :to="'/crm/modules'" class="actions__action">Add a module</router-link>
               </div>
               <button type="submit" class="btn btn-primary">Save</button>
-              <div v-if="editPageFormSubmitError" style="color:red">
+              <div v-if="editPageFormSubmitError" style="color:red;">
                 {{ editPageFormSubmitError }}
               </div>
             </form>

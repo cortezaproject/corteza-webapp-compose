@@ -1,6 +1,6 @@
 <template>
    <div class="vue-grid-layout" style="height: 890px;">
-      <div class="vue-grid-item cssTransforms" style="transform: translate3d(10px, 10px, 0px); width: 594px; height: 350px; position: absolute;">
+      <div class="vue-grid-item cssTransforms" style="transform: translate3d(10px, 10px, 0); width: 594px; height: 350px; position: absolute;">
          <div>
            <!-- start CRM page block -->
             <div class="gridblock_contents block_edit_fields">

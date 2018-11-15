@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div style="color:red">
+    <div style="color:red;">
       {{listError}}
     </div>
   </div>

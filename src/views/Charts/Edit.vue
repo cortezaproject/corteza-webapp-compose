@@ -4,7 +4,7 @@
       <div class="col-md-12">
         <div class="well">
           <h2>Edit chart</h2>
-          <div v-if="editChartError" style="color:red">
+          <div v-if="editChartError" style="color:red;">
             {{ editChartError }}
           </div>
           <form v-if="!editChartError" @submit.prevent="FormSubmit">
@@ -85,7 +85,7 @@
               </select>
             </div>
 
-            <div v-if="editChartFormSubmitError" style="color:red">
+            <div v-if="editChartFormSubmitError" style="color:red;">
               {{ editChartFormSubmitError }}
             </div>
           </form>

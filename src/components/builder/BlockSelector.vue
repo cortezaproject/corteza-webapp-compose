@@ -48,7 +48,7 @@
           <draggable class="drag-area" :options="{group:'people'}" v-model="contentFieldsAvailable" @start="drag=true" @end="drag=true">
             <div v-for="element in contentFieldsAvailable" :key="element.id">{{element.name}}</div>
           </draggable>
-          <div style="color:red" v-if="!contentFieldsEnabled">
+          <div style="color:red;" v-if="!contentFieldsEnabled">
             Fields are not available here.
             <br>
             <router-link :to="'/crm/pages/' + this.$route.query.pageId + '/edit'" class="actions__action">Set a module with fields</router-link>.
@@ -56,7 +56,7 @@
         </fieldset>
         <fieldset class="form-group" v-if="contentListEnabled">
           <label for="select-content-list">Module</label>
-          <div v-if="modulesListError" style="color:red">
+          <div v-if="modulesListError" style="color:red;">
             {{ modulesListError }}
           </div>
           <!-- B select a module -->

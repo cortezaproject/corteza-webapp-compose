@@ -10,7 +10,7 @@
               <input required type="text" v-model="addModuleFormData.name" class="form-control" id="name" placeholder="Module name" />
             </div>
             <button type="submit" class="btn btn-primary">Create</button>
-            <div v-if="addModuleFormSubmitError" style="color:red">
+            <div v-if="addModuleFormSubmitError" style="color:red;">
               {{ addModuleFormSubmitError }}
             </div>
           </form>
@@ -20,7 +20,7 @@
     <div class="row">
       <div class="col-md-12">
         <h2>List of modules</h2>
-        <div v-if="deleteModuleError" style="color:red">
+        <div v-if="deleteModuleError" style="color:red;">
           {{ deleteModuleError }}
         </div>
         <table class="table table-striped">
@@ -35,7 +35,7 @@
             </tr>
           </tbody>
         </table>
-        <div v-if="listError" style="color:red">
+        <div v-if="listError" style="color:red;">
           {{ listError }}
         </div>
       </div>

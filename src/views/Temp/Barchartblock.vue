@@ -1,5 +1,5 @@
 <template>
-  <div class="vue-grid-item cssTransforms" style="transform: translate3d(10px, 10px, 0px); width: 1000px; height: 430px; position: absolute;">
+  <div class="vue-grid-item cssTransforms" style="transform: translate3d(10px, 10px, 0); width: 1000px; height: 430px; position: absolute;">
     <div>
       <!-- start CRM page block -->
       <div class="gridblock_contents">

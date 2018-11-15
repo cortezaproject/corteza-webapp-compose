@@ -4,7 +4,7 @@
       <div class="col-md-12">
         <div class="well">
           <h2>Edit module</h2>
-          <div v-if="editModuleError" style="color:red">
+          <div v-if="editModuleError" style="color:red;">
             {{ editModuleError }}
           </div>
           <form v-if="!editModuleError" @submit.prevent="FormSubmit">
@@ -63,7 +63,7 @@
                 <button @click="redirect()" class="btn btn-secondary">Cancel</button>
               </div>
             </div>
-            <div v-if="editModuleFormSubmitError" style="color:red">
+            <div v-if="editModuleFormSubmitError" style="color:red;">
               {{ editModuleFormSubmitError }}
             </div>
           </form>

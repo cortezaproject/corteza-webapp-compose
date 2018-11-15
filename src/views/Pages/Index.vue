@@ -10,7 +10,7 @@
               <input required type="text" v-model="addPageFormData.title" class="form-control" id="title" placeholder="Page title" />
             </div>
             <button type="submit" class="btn btn-primary">Create</button>
-            <div v-if="addPageFormSubmitError" style="color:red">
+            <div v-if="addPageFormSubmitError" style="color:red;">
               {{ addPageFormSubmitError }}
             </div>
           </form>
@@ -20,7 +20,7 @@
     <div class="row">
       <div class="col-md-12">
         <h2>List of pages</h2>
-        <div v-if="deletePageError" style="color:red">
+        <div v-if="deletePageError" style="color:red;">
           {{ deletePageError }}
         </div>
         <ul class="list-group">
@@ -35,7 +35,7 @@
             </div>
           </li>
         </ul>
-        <div v-if="listError" style="color:red">
+        <div v-if="listError" style="color:red;">
           {{ listError }}
         </div>
       </div>
@@ -107,9 +107,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 .actions__action {
-    padding-left: 5px;
-    padding-right: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
+
 .actions__action--disabled {
   cursor: help;
 }
