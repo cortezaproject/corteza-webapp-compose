@@ -4,7 +4,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th v-for="moduleField in module.fields">
+          <th v-for="moduleField in module.fields" :key="'modules-contents-title-' + moduleField.name">
             {{moduleField.title}}
           </th>
           <th class="text-right">Actions</th>
@@ -18,7 +18,7 @@
       <tbody>
         <template v-for="row in list.contents">
           <tr :key="'modules-contents-index-' + row.id">
-            <td v-for="moduleField in module.fields">
+            <td v-for="moduleField in module.fields" :key="'modules-contents-' + row.id + '-' + moduleField.name">
               <span v-if="moduleField.name in row.fields">{{row.fields[moduleField.name]}}</span>
               <span v-else><i>None</i></span>
             </td>
@@ -27,7 +27,7 @@
               &nbsp; <a @click="deleteContent(row.id)" class="btn btn-sm btn-warning">Delete</a>
             </td>
           </tr>
-          <tr v-if="debug">
+          <tr v-if="debug" :key="'modules-contents-index-' + row.id + '-debug'">
             <td :colspan="module.colspan"><pre>{{row}}</pre></td>
           </tr>
         </template>
@@ -74,7 +74,7 @@ export default {
           moduleID: this.moduleID,
           contentID: contentID,
         }
-	await this.$crm.moduleContentDelete(req)
+        await this.$crm.moduleContentDelete(req)
         this.loadPage()
       } catch (e) {
         this.errors = [e.message]
