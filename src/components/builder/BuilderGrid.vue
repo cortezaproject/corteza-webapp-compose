@@ -72,6 +72,7 @@ export default {
     margin: 0 auto;
   }
 }
+
 .vue-grid-item {
   border: 1px solid #ccc;
   padding: 10px;
@@ -80,38 +81,50 @@ export default {
 /* vue-grid-layout CSS
  * ================================================== */
 .layoutJSON {
+  visibility: visible;
 }
 
 .eventsJSON {
+  visibility: visible;
 }
 
 .columns {
+  visibility: visible;
 }
 
 .vue-resizable-handle {
+  visibility: visible;
 }
 
 .vue-grid-item:not(.vue-grid-placeholder) {
+  visibility: visible;
 }
 
 .vue-grid-item.resizing {
+  visibility: visible;
 }
 
 .vue-grid-item.static {
+  visibility: visible;
 }
 
 .vue-grid-item .text {
+  visibility: visible;
 }
 
 .vue-grid-item .no-drag {
+  visibility: visible;
 }
 
 .vue-grid-item .minMax {
+  visibility: visible;
 }
 
 .vue-grid-item .add {
+  visibility: visible;
 }
 
 .vue-draggable-handle {
+  visibility: visible;
 }
 </style>

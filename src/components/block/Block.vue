@@ -31,15 +31,18 @@ export default {
   .block-data__title {
     font-size: 15px;
   }
+
   .block-data__description {
     font-size: 10px;
     border-bottom: 1px solid black;
   }
+
   .block-data__content {
     fieldset {
       border: none;
     }
   }
+
   .block-data__footer {
     font-size: 10px;
     position: absolute;
