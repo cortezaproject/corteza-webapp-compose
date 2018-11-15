@@ -6,9 +6,12 @@
     <table class="table table-striped">
       <tbody>
         <template v-for="field in module.fields">
-          <tr :key="'modules-contents-edit-' + field.name">
-            <td><b>{{field.title}}</b></td>
-            <td>
+          <tr :key="'modules-contents-edit-fields-' + field.name">
+            <td><b>{{field.title}}</b></td> {{Object.keys($options.components)}} {{getField(field.kind)}}
+            <td v-if="getField(field.kind) in $options.components" :key="'modules-contents-edit-' + field.id">
+              <component :is="getField(field.kind)" :field="field" :row="row"></component>
+            </td>
+            <td v-else>
               <FieldEdit :field="field"></FieldEdit>
             </td>
           </tr>
@@ -27,9 +30,12 @@
 <script>
 import FieldEdit from '@/components/FieldEdit.vue'
 
+import FieldTextEdit from '@/components/Field/TextEdit.vue'
+
 export default {
   components: {
     FieldEdit,
+    FieldTextEdit,
   },
   data () {
     var mode = ('contentID' in this.$route.params) ? 'edit' : 'create'
@@ -50,6 +56,9 @@ export default {
     this.loadContent()
   },
   methods: {
+    getField (type) {
+      return 'Field' + type.charAt(0).toUpperCase() + type.substring(1) + 'Edit'
+    },
     async loadModule () {
       try {
         this.errors.splice(0)

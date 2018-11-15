@@ -59,6 +59,17 @@ function crmViews () {
         // { path: '/', component: view('Public/Redirect') },
         { path: '/pages', component: view('Public/Redirect') },
         { path: '/pages/:id', component: view('Public/Pages/View') },
+        { path: '/temp/fieldblock', component: view('Temp/Fieldblock') },
+        { path: '/temp/fieldeditblock', component: view('Temp/Fieldeditblock') },
+        { path: '/temp/normaltableblock', component: view('Temp/Normaltableblock') },
+        { path: '/temp/relatedtableblock', component: view('Temp/Relatedtableblock') },
+        { path: '/temp/textblock', component: view('Temp/Textblock') },
+        { path: '/temp/linechartblock', component: view('Temp/Linechartblock') },
+        { path: '/temp/piechartblock', component: view('Temp/Piechartblock') },
+        { path: '/temp/barchartblock', component: view('Temp/Barchartblock') },
+        { path: '/temp/donutchartblock', component: view('Temp/Donutchartblock') },
+        { path: '/temp/socialblock', component: view('Temp/Socialblock') },
+
       ],
     },
   ]

@@ -36,10 +36,10 @@
                 <option :value="null"></option>
                 <option v-for="(moduleSelectOption, index) in moduleSelectOptions" :value="moduleSelectOption.id" v-bind:index="index" v-bind:key="moduleSelectOption.id">{{ moduleSelectOption.name }}</option>
               </select>
-              <div v-if="moduleSelectError" style="color:red">
+              <div v-if="moduleSelectError" style="color:red;">
                 {{ moduleSelectError }}
               </div>
-              <div v-if="fillFieldSelectsError" style="color:red">
+              <div v-if="fillFieldSelectsError" style="color:red;">
                 {{ fillFieldSelectsError }}
               </div>
             </div>
@@ -87,7 +87,7 @@
               </select>
             </div>
             <button type="submit" class="btn btn-primary">Create</button>
-            <div v-if="addChartFormSubmitError" style="color:red">
+            <div v-if="addChartFormSubmitError" style="color:red;">
               {{ addChartFormSubmitError }}
             </div>
           </form>
@@ -97,7 +97,7 @@
     <div class="row">
       <div class="col-md-12">
         <h2>List of charts</h2>
-        <div v-if="deleteChartError" style="color:red">
+        <div v-if="deleteChartError" style="color:red;">
           {{ deleteChartError }}
         </div>
         <table class="table table-striped">
@@ -112,7 +112,7 @@
             </tr>
           </tbody>
         </table>
-        <div v-if="listError" style="color:red">
+        <div v-if="listError" style="color:red;">
           {{ listError }}
         </div>
       </div>

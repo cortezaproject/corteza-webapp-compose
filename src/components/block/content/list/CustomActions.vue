@@ -29,6 +29,7 @@ export default {
 .custom-actions button.ui.button {
   padding: 8px 8px;
 }
+
 .custom-actions button.ui.button > i.icon {
   margin: auto !important;
 }

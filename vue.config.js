@@ -3,7 +3,7 @@ var exec = require('child_process').execSync
 
 module.exports = {
   baseUrl: process.env['NODE_ENV'] === 'production' ? '/crm/' : '/',
-  lintOnSave: false,
+  lintOnSave: true,
   configureWebpack: {
     // other webpack options to merge in ...
     plugins: [
