@@ -22,7 +22,7 @@ export default {
   },
   mounted () {
     this.$system.authLogout().catch((err) => {
-      console.error(err)
+      this.$logger.error(err)
     }).finally(() => {
       this.$store.commit('auth/clean')
     })
