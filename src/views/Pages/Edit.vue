@@ -21,10 +21,6 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="order">Order (API update neded)</label>
-              <input required type="number" v-model="editPageFormData.order" class="form-control" id="order" placeholder="Order" />
-            </div>
-            <div class="form-group">
               <label for="title">Description</label>
               <textarea v-model="editPageFormData.description" class="form-control" id="description" placeholder="Page description" />
             </div>
@@ -69,7 +65,8 @@ export default {
   async created () {
     try {
       this.editPageError = ''
-      this.editPageFormData = await this.$crm.pageRead({ id: this.$route.params.id })
+      this.editPageFormData = await this.$crm.pageRead({ pageID: this.$route.params.id })
+      console.log(this.editPageFormData.title)
       // Parent pages : not itself
       this.pageList = (await this.$crm.pageList({})).filter((page) => page.id !== this.$route.params.id)
       this.modulesList = await this.$crm.moduleList({})
