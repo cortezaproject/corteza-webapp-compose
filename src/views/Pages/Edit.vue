@@ -66,7 +66,6 @@ export default {
     try {
       this.editPageError = ''
       this.editPageFormData = await this.$crm.pageRead({ pageID: this.$route.params.id })
-      console.log(this.editPageFormData.title)
       // Parent pages : not itself
       this.pageList = (await this.$crm.pageList({})).filter((page) => page.id !== this.$route.params.id)
       this.modulesList = await this.$crm.moduleList({})

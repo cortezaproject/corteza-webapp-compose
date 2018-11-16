@@ -123,10 +123,10 @@ export default {
       alert('You clicked delete on' + JSON.stringify(rowData))
     },
     onLoading () {
-      console.log('loading... show your spinner here')
+      this.$logger.log('loading... show your spinner here')
     },
     onLoaded () {
-      console.log('loaded! .. hide your spinner here')
+      this.$logger.log('loaded! .. hide your spinner here')
     },
   },
   events: {

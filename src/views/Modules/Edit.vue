@@ -141,7 +141,7 @@ export default {
           field.componentOptions = 'ModuleField' + capitalize(field.type)
         })
       } catch (e) {
-        console.error(e)
+        this.$logger.error(e)
         this.editModuleError = 'Error when trying to get list of fields.'
       }
     },
