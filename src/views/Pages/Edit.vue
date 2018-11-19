@@ -77,7 +77,7 @@ export default {
     async handleEditPageFormSubmit () {
       try {
         this.editPageFormSubmitError = ''
-        await this.$crm.pageEdit(this.editPageFormData)
+        await this.$crm.pageEdit({ pageID: this.editPageFormData.id, selfID: this.editPageFormData.selfID, moduleID: this.editPageFormData.moduleID, title: this.editPageFormData.title, description: this.editPageFormData.description, visible: this.editPageFormData.visible, blocks: this.editPageFormData.blocks })
         this.$router.push({ path: '/crm/pages' })
       } catch (e) {
         this.editPageFormSubmitError = 'Error when trying to edit page.'
