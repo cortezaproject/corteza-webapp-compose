@@ -12,11 +12,13 @@
 <script>
 import FieldTextEdit from '@/components/Field/TextEdit.vue'
 import FieldEmailEdit from '@/components/Field/EmailEdit.vue'
+import FieldTextareaEdit from '@/components/Field/TextareaEdit.vue'
 
 export default {
   components: {
     FieldTextEdit,
     FieldEmailEdit,
+    FieldTextareaEdit,
   },
   props: {
     field: Object,
