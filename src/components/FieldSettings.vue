@@ -9,10 +9,12 @@
 
 <script>
 import FieldRelatedSettings from '@/components/Field/RelatedSettings.vue'
+import FieldEnumSettings from '@/components/Field/EnumSettings.vue'
 
 export default {
   components: {
     FieldRelatedSettings,
+    FieldEnumSettings,
   },
   props: {
     field: Object,

@@ -2,7 +2,7 @@
   <div class="row no-gutters">
     <div class="form-group" style="padding-right: 2em;">
       <label class="d-block">Module name</label>
-      <select name="field.name + '_settings[module]'" v-model="settings.module" @change="settings.field = ''" autocomplete="off">
+      <select name="field.name + '_settings[module]'" v-model="settings.module" @change="settings.field = ''" autocomplete="off" class="form-control">
         <option value="">Pick module</option>
         <option v-for="module in modules" :value="module.id" :key="'field-related-settings-' + module.name">{{module.name}}</option>
       </select>
@@ -10,7 +10,7 @@
 
     <div class="form-group" v-if="settings.module != ''">
       <label class="d-block">Field name</label>
-      <select name="field.name + '_settings[field]'" v-model="settings.field" autocomplete="off">
+      <select name="field.name + '_settings[field]'" v-model="settings.field" autocomplete="off" class="form-control">
         <option value="">Pick field</option>
         <option v-for="field in selectedModule.fields" :value="field.name" :key="'field-related-settings-' + settings.module + '-' + field.name">{{field.title}}</option>
       </select>
