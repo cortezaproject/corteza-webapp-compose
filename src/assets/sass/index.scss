@@ -2,6 +2,14 @@
 @import './_0.declare-light';
 @import '~bootstrap/dist/css/bootstrap.min.css';
 
+label {
+  font-weight: bold;
+}
+
+.clear {
+  clear: both;
+}
+
 html, body {
   height: 100%;
   background: $mainbgcolor;

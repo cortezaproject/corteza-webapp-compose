@@ -8,11 +8,8 @@
         <template v-for="field in module.fields">
           <tr :key="'modules-contents-edit-fields-' + field.name">
             <td><b>{{field.title}}</b></td>
-            <td v-if="getField(field.kind) in $options.components" :key="'modules-contents-edit-' + field.id">
-              <component :is="getField(field.kind)" :field="field" :row="row.fields"></component>
-            </td>
-            <td v-else>
-              <FieldEdit :field="field"></FieldEdit>
+            <td>
+              <FieldEdit :field="field" :row="row"></FieldEdit>
             </td>
           </tr>
         </template>
@@ -30,12 +27,9 @@
 <script>
 import FieldEdit from '@/components/FieldEdit.vue'
 
-import FieldTextEdit from '@/components/Field/TextEdit.vue'
-
 export default {
   components: {
     FieldEdit,
-    FieldTextEdit,
   },
   data () {
     var mode = ('contentID' in this.$route.params) ? 'edit' : 'create'
@@ -54,8 +48,8 @@ export default {
     }, this.$route.params)
   },
   async created () {
-    this.loadModule()
-    this.loadContent()
+    await this.loadModule()
+    await this.loadContent()
   },
   methods: {
     getField (type) {
@@ -87,6 +81,12 @@ export default {
         var fields = {}
         this.row.fields.forEach(({ name, value }) => {
           fields[name] = value
+        })
+        this.module.fields.forEach(({ name }) => {
+          if (!(name in fields)) {
+            // @todo: default value
+            fields[name] = ''
+          }
         })
         this.row.fields = fields
       } catch (e) {

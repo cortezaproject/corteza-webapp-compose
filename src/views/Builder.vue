@@ -34,7 +34,7 @@ export default {
         w: 1,
         h: 1,
         y: 0,
-        colNum: 2,
+        colNum: 4,
       },
       addBlockFormData: {},
       addBlockFormMeta: {},
@@ -61,7 +61,7 @@ export default {
       this.pageData = await this.$root.$crm.pageRead({ 'pageID': this.$route.query.pageId })
 
       // check if there are any blocks to add
-      if (this.pageData.blocks) {
+      if (this.pageData.blocks != null && this.pageData.blocks.length > 0) {
         this.layout = SharedService.cloneObject(this.pageData.blocks)
 
         // rebuild the fields that have been added
@@ -84,6 +84,8 @@ export default {
             })
           }
         })
+      } else {
+        this.layout = []
       }
     },
     addNewBlock (value) {

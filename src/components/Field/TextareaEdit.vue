@@ -1,7 +1,7 @@
 <template>
   <div class="form-group">
     <!-- <label :for="field.name">{{field.title}}</label> -->
-    <input type="text" v-model="row.fields[field.name]" class="form-control" />
+    <textarea v-model="row.fields[field.name]" class="form-control" rows="5"></textarea>
   </div>
 </template>
 

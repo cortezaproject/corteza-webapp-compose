@@ -32,7 +32,8 @@ export default {
     return {
       draggable: true,
       resizable: true,
-      colNum: 2,
+      colNum: 12,
+      mobilePreview: false,
     }
   },
   methods: {

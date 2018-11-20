@@ -46,12 +46,7 @@
                         <button @click="RemoveField(field)" type="button" class="btn btn-default">Delete</button>
                       </td>
                     </tr>
-                    <tr v-if="getField(field.kind) in $options.components" :key="'modules-edit-' + field.id + '-options'">
-                      <td>&nbsp;</td>
-                      <td colspan="6">
-                        <component :is="getField(field.kind)" :field="field"></component>
-                      </td>
-                    </tr>
+                    <Field-Settings :field="field" :key="'modules-edit-' + field.id + '-settings'"></Field-Settings>
                   </template>
                 </draggable>
               </table>
@@ -76,14 +71,13 @@
 <script>
 import Vue from 'vue'
 import draggable from 'vuedraggable'
-
-import ModuleFieldRelated from '@/components/Module/Field/Related.vue'
+import FieldSettings from '@/components/FieldSettings.vue'
 
 export default {
   name: 'ModuleEdit',
   components: {
     draggable,
-    ModuleFieldRelated,
+    FieldSettings,
   },
   data () {
     var moduleID = this.$route.params.moduleID
