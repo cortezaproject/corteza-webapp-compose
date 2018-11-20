@@ -5,8 +5,7 @@
       <div class="gridblock_contents">
         <div class="blockname">Blockname</div>
         <div class="block_header">Block header text</div>
-        <div class="form_row" :id="'chart-'+id">
-        </div>
+        <div class="form_row" :ref="'chart_'+_uid"/>
       </div>
       <!-- end CRM page block -->
     </div>
@@ -14,123 +13,51 @@
 </template>
 
 <script>
+import { timeFormat } from 'd3-time-format'
 import c3 from 'c3'
+import 'c3/c3.css'
 
 export default {
-  name: 'Chart', // Can this be named like anything?
+  name: 'LineChart', // Can this be named like anything?
   components: {
     c3,
   },
-  created: function () {
-    this.id = this._uid
+  data () {
+    return {
+      data: null,
+      config: {},
+      parseTime: timeFormat('%b %d, %Y'),
+    }
   },
-  mounted: function () {
-    c3.generate({
-      bindto: '#chart-' + this.id, // This need to be an element
-      data: {
-        type: 'area',
-        x: 'x',
-        xFormat: '%H:%M',
-        columns: [
-          [
-            'x',
-            '12:38',
-            '12:38',
-            '12:38',
-            '12:38',
-            '12:39',
-            '12:39',
-            '12:39',
-            '12:39',
-            '12:40',
-            '12:40',
-            '12:40',
-            '12:41',
-            '12:41',
-            '12:41',
-            '12:41',
-            '12:42',
-            '12:42',
-            '12:42',
-            '12:42',
-            '12:43',
-            '12:43',
-            '12:43',
-            '12:43',
-            '12:44',
-            '12:44',
-          ],
-          [
-            'write',
-            14709198848,
-            14709313536,
-            14709522432,
-            14709633024,
-            14710034432,
-            14710157312,
-            14710341632,
-            14710583296,
-            14710788096,
-            14710931456,
-            14711058432,
-            14711291904,
-            14711508992,
-            14711668736,
-            14711771136,
-            14712008704,
-            14712107008,
-            14712381440,
-            14712586240,
-            14712795136,
-            14712963072,
-            14713077760,
-            14713331712,
-            14713565184,
-            14713729024,
-          ],
-          [
-            'read',
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-            3778094080,
-          ],
-        ],
-      },
-      axis: {
-        x: {
-          type: 'timeseries',
-          tick: {
-            format: function (x) {
-              if (x.getDate() === 1) {
-                return x.toLocaleDateString()
-              }
+  async mounted () {
+    try {
+      this.data = await this.$crm.chartDataGet({
+        moduleID: 0,
+        kind: 'line',
+      })
+      this.config = {
+        bindto: this.$refs['chart_' + this._uid], // This need to be an element
+        data: {
+          type: 'line',
+          x: this.data.data[0][0],
+          columns: this.data.data,
+        },
+        axis: {
+          x: {
+            type: this.data.fields[this.data.data[0][0]].kind === 'datetime' ? 'timeseries' : 'category',
+            tick: {
+              format: (x) =>
+              {
+                return this.parseTime(x)
+              },
             },
           },
         },
-      },
-    })
+      }
+      c3.generate(this.config)
+    } catch (e) {
+      console.log(e)
+    }
   },
 }
 </script>

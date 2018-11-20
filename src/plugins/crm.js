@@ -343,6 +343,22 @@ class CRM {
       }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })
   }
+
+  async chartDataGet ({ moduleID, kind }) {
+    const endpoint = `${this.baseLink}/module/${moduleID}/chart`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {
+          kind: kind,
+        },
+        data: {},
+      }).then(response => resolve(response.data), this.stdReject(reject))
+    })
+  }
 }
 
 export default {

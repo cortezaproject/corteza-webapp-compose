@@ -172,7 +172,7 @@ export default {
           }
         })
       } catch (e) {
-        this.listError = 'Error when trying to get list of charts.'
+        this.listError = 'Error when trying to get list of charts = ' + e.message
       }
     },
     async $_initModulesSelect () {
@@ -180,7 +180,7 @@ export default {
         this.moduleSelectError = ''
         this.moduleSelectOptions = await this.$crm.moduleList({})
       } catch (e) {
-        this.moduleSelectError = 'Error getting modules.'
+        this.moduleSelectError = 'Error getting modules = ' + e.message
       }
     },
     async fillFieldSelects (moduleId) {
@@ -188,18 +188,18 @@ export default {
       try {
         this.fillFieldSelectsError = ''
 
-        // We need to deselect the selected value. Somehow, it doens't happen...
-        /* this.$refs["selectX"].selectedIndex = '0'
+        // We need to deselect the selected value. Somehow, it doesn't happen...
+        /* this.$refs["selectX"].selectedIndex = -1
         this.$refs["selectXMin"].value = ''
         this.$refs["selectXMax"].value = ''
-        this.$refs["selectY"].selectedIndex = '0'
-        this.$refs["selectCount"].selectedIndex = '0'
-        this.$refs["selectGroupBy"].selectedIndex = '0'
-        this.$refs["selectSum"].selectedIndex = '0' */
+        this.$refs["selectY"].selectedIndex = -1
+        this.$refs["selectCount"].selectedIndex = -1
+        this.$refs["selectGroupBy"].selectedIndex = -1
+        this.$refs["selectSum"].selectedIndex = -1 */
 
         this.moduleFieldsSelectOptions = await this.$crm.moduleRead({ moduleID: moduleId })
       } catch (e) {
-        this.fillFieldSelectsError = 'Error loading fields for this module.'
+        this.fillFieldSelectsError = 'Error loading fields for this module = ' + e.message
       }
     },
     async handleAddChartFormSubmit () {
@@ -208,7 +208,7 @@ export default {
         await this.$crm.chartCreate(this.addChartFormData)
         await this.$_initList()
       } catch (e) {
-        this.addChartFormSubmitError = 'Error when trying to create chart.'
+        this.addChartFormSubmitError = 'Error when trying to create chart = ' + e.message
       }
     },
     async handleDeleteChart (id) {
@@ -220,7 +220,7 @@ export default {
         await this.$crm.chartDelete({ id: this.idToDelete })
         await this.$_initList()
       } catch (e) {
-        this.deleteChartError = 'Error when trying to delete chart.'
+        this.deleteChartError = 'Error when trying to delete chart = ' + e.message
       }
       this.$refs.myDeleteModalRef.hide()
     },
