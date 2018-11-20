@@ -1,7 +1,7 @@
 <template>
   <div v-if="layout.length >= 1" v-bind:class="{ 'mobile': mobilePreview }" class="builder-grid">
     <grid-layout :layout="layout" :col-num="colNum" :row-height="90" :is-draggable="draggable" :is-resizable="resizable" :vertical-compact="true" :use-css-transforms="true">
-      <grid-item v-for="block in layout" v-bind:key="block.i" :x="block.x" :y="block.y" :w="block.w" :h="block.h" :i="block.i" v-bind:is-draggable="!block.meta.fixed">
+      <grid-item v-for="block in layout" v-bind:key="block.i" :x="block.x" :y="block.y" :w="block.w" :h="block.h" :i="block.i" v-bind:is-draggable="true">
         <Block :block="block"></Block>
         <div class="actions">
           <button @click="handleEditBlockButtonClick(block)">Edit</button>
