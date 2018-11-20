@@ -26,15 +26,6 @@
             <form @submit.prevent="handleBlockSelectorFormSubmit">
               <fieldset class="form-group">
 
-                <div class="form-group form-check">
-                  <input type="checkbox" id="fixed" class="form-check-input" v-model="addBlockFormMeta.fixed">
-                  <label for="fixed" class="form-check-label">Fixed ?</label>
-                </div>
-
-              </fieldset>
-
-              <fieldset class="form-group">
-
                 <div class="form-group">
                   <label for="title">Title</label>
                   <input v-model="addBlockFormData.title" type="text" class="form-control form-control-sm" id="title" placeholder="Block Title">
@@ -149,9 +140,6 @@ export default {
         title: '',
         description: '',
         footer: '',
-      },
-      addBlockFormMeta: {
-        fixed: false,
       },
       editedBlock: null,
     }
