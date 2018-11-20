@@ -26,7 +26,10 @@
 
         <ul class="list-group">
           <draggable
+                  class="drag-area"
                   @change="handleReorder"
+                  @start="drag=true"
+                  @end="drag=true"
                   v-model="list"
                   :options="draggableOptions">
             <li v-for="(page, index) in list" :key="index" class="list-group-item d-flex justify-content-between">
@@ -76,7 +79,7 @@ export default {
       draggableOptions: {
         group: 'pages',
         handle: '.sort-handle',
-        animation: 150,
+        animation: 50,
       },
     }
   },
@@ -152,10 +155,6 @@ export default {
   .sortable-chosen {
     background-color: $appblue;
     color: white;
-
-    div.actions {
-      display: none !important;
-    }
   }
 
   .sort-handle {
