@@ -22,7 +22,7 @@ function defaultViews () {
     },
     {
       path: '*',
-      redirect: { name: 'root' },
+      redirect: { name: 'modules' },
     },
   ]
 }
@@ -31,11 +31,12 @@ function crmViews () {
   return [
     {
       path: '/crm',
+      name: 'root',
       component: view('IndexNestedProtected'),
       redirect: '/crm/modules',
       children: [
         // list modules (contacts, etc.)
-        { path: '/crm/modules', name: 'root', component: view('Modules/Index') },
+        { path: '/crm/modules', name: 'modules', component: view('Modules/Index') },
         // create individual module structure (fields)
         { path: '/crm/modules/edit', component: view('Modules/Edit') },
         // list module contents (individual contact rows,...)
@@ -50,12 +51,12 @@ function crmViews () {
         // edit an individual row (should display fields configured for the module)
         { path: '/crm/modules/:moduleID/content/:contentID/edit', component: view('Modules/Contents/Edit') },
 
-        { path: '/crm/pages', component: view('Pages/Index') },
+        { path: '/crm/pages', name: 'pages', component: view('Pages/Index') },
         { path: '/crm/pages/:id', component: view('Pages/View') },
         { path: '/crm/pages/:id/edit', component: view('Pages/Edit') },
         { path: '/crm/builder', component: view('Builder') },
-        { path: '/crm/charts', component: view('Charts/Index') },
-        { path: '/crm/configuration', component: view('Configuration/Index') },
+        { path: '/crm/charts', name: 'charts', component: view('Charts/Index') },
+        { path: '/crm/configuration', name: 'configuration', component: view('Configuration/Index') },
         // { path: '/', component: view('Public/Redirect') },
         { path: '/pages', component: view('Public/Redirect') },
         { path: '/pages/:id', component: view('Public/Pages/View') },
