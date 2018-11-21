@@ -43,7 +43,7 @@ function crmViews () {
         {
           path: 'admin',
           name: 'admin',
-          component: view('IndexNestedProtected'),
+          component: view('Admin/Index'),
           children: [
             // list modules (contacts, etc.)
             { path: 'modules', name: 'admin.modules', component: view('Admin/Modules/Index') },
