@@ -9,6 +9,7 @@
           <option v-bind:value="'list'">List</option>
           <option v-bind:value="'chart'">Chart</option>
           <option v-bind:value="'text'">Text</option>
+          <option v-bind:value="'workflow'">Workflow</option>
           <option v-bind:value="'social'">Social media feed</option>
         </select>
       </div>
@@ -87,6 +88,13 @@
                 A text block that allows HTML. Best would be a TinyMCE or similar.
                 <textarea rows="5"></textarea>
               </fieldset>
+              <fieldset class="form-group" v-if="contentWorkflowEnabled">
+
+                <div v-for="wf in workflows" :key="wf.id">
+                  <label> <input type="checkbox" v-model="wf.enabled">{{ wf.name }}</label>
+                </div>
+
+              </fieldset>
               <fieldset class="form-group" v-if="contentSocialEnabled">
                 Social media feed from Twitter.
                 <br />
@@ -131,6 +139,7 @@ export default {
       contentFieldsEnabled: false,
       contentChartEnabled: false,
       contentTextEnabled: false,
+      contentWorkflowEnabled: false,
       contentSocialEnabled: false,
       blockType: null,
       contentListFieldsAvailable: [],
@@ -142,6 +151,14 @@ export default {
         footer: '',
       },
       editedBlock: null,
+
+      workflows: [
+        { name: 'Workflow A', id: '1', enabled: false },
+        { name: 'Workflow B', id: '2', enabled: false },
+        { name: 'Workflow C', id: '3', enabled: false },
+        { name: 'Workflow D', id: '4', enabled: false },
+        { name: 'Workflow E', id: '5', enabled: false },
+      ],
     }
   },
   async created () {
@@ -160,6 +177,7 @@ export default {
       this.contentFieldsEnabled = false
       this.contentChartEnabled = false
       this.contentTextEnabled = false
+      this.contentWorkflowEnabled = false
       this.contentSocialEnabled = false
 
       // Hiding and showing the fieldsets
@@ -175,6 +193,9 @@ export default {
           break
         case 'text':
           this.contentTextEnabled = true
+          break
+        case 'workflow':
+          this.contentWorkflowEnabled = true
           break
         case 'social':
           this.contentSocialEnabled = true
