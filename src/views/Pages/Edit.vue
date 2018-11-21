@@ -14,13 +14,6 @@
               <input required type="text" v-model="editPageFormData.title" class="form-control" id="title" placeholder="Page title" />
             </div>
             <div class="form-group">
-              <label for="selfID">Parent page </label>
-              <select v-model="editPageFormData.selfID" class="form-control" id="selfID">
-                <option :value="null"></option>
-                <option v-for="page in pageList" :key="page.id" :value="page.id">{{ page.title }}</option>
-              </select>
-            </div>
-            <div class="form-group">
               <label for="title">Description</label>
               <textarea v-model="editPageFormData.description" class="form-control" id="description" placeholder="Page description" />
             </div>
