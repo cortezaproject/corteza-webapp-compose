@@ -97,11 +97,15 @@
 
 <script>
 export default {
+  props: {
+    chartID: {
+      type: String,
+    },
+  },
+
   name: 'ChartEdit',
   data () {
-    var chartID = this.$route.params.chartID
     return {
-      chartID: chartID,
       editChartError: '',
       editChartFormSubmitError: '',
       fieldsList: [],
@@ -125,9 +129,7 @@ export default {
   },
   methods: {
     redirect () {
-      this.$router.push({
-        path: '/crm/charts',
-      })
+      this.$router.push({ name: 'admin.charts' })
     },
     async FormSubmit () {
       try {

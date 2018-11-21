@@ -28,6 +28,12 @@ import VueGridLayout from "vue-grid-layout";
 import PageContent from '@/components/PageContent'
 export default {
   name: 'PublicPageView',
+  props: {
+    pageID: {
+      type: String,
+    },
+  },
+
   components: {
     PageContent,
   },
@@ -43,7 +49,7 @@ export default {
     }
   },
   async created () {
-    this.$store.dispatch('pages/initViewPageData', this.$route.params.id)
+    this.$store.dispatch('pages/initViewPageData', this.pageID)
     this.pagesList = await this.$crm.pageList({})
     this.cancelFcn = this.$router.beforeEach((to, from, next) => {
       if (to.fullPath.startsWith('/crm/pages/')) {

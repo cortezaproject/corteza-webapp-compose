@@ -3,6 +3,13 @@
         <template slot-scope="{item}">
             <div class="wrap" v-if="item.id">
                 <div class="title">{{ item.title }}</div>
+                <div class="prop-col">
+                    <span v-if="item.moduleID !== '0'">Module</span>
+                </div>
+                <div class="prop-col">
+                    <span v-if="item.visible">Visible</span>
+                    <span v-else>Hidden</span>
+                </div>
                 <div class="actions">
                     <router-link
                             v-if="item.blocks && item.blocks.length >= 1"
@@ -117,6 +124,13 @@ ul {
       padding: 1px;
       cursor: move;
       cursor: -webkit-grabbing;
+
+      div.prop-col {
+        text-align: left;
+        font-size: 0.8em;
+        margin-right: 10px;
+        width: 70px;
+      }
 
       .title {
         flex: 1;

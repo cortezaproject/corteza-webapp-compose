@@ -20,7 +20,7 @@ export default {
       // List pages without module
       const json = (await this.$crm.pageList({})).filter(page => !page.module)
       if (json.length > 0) {
-        this.$router.push({ path: '/pages/' + json[0].id })
+        this.$router.push({ name: 'public.pages', params: { pageID: json[0].id } })
       } else {
         this.listError = 'No pages foud'
       }

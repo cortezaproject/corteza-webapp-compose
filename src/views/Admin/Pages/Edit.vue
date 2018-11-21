@@ -43,6 +43,13 @@
 <script>
 export default {
   name: 'PageEdit',
+  props: {
+    pageID: {
+      type: String,
+      required: true,
+    },
+  },
+
   data () {
     return {
       editPageError: '',
@@ -52,19 +59,13 @@ export default {
         title: '',
         moduleID: '',
       },
-      pageList: [],
     }
   },
   async created () {
     try {
       this.editPageError = ''
-      this.editPageFormData = await this.$crm.pageRead({
-        pageID: this.$route.params.pageID,
-      })
+      this.editPageFormData = await this.$crm.pageRead({ pageID: this.pageID })
       // Parent pages : not itself
-      this.pageList = (await this.$crm.pageList({})).filter(
-        page => page.id !== this.$route.params.pageID
-      )
       this.modulesList = await this.$crm.moduleList({})
     } catch (e) {
       this.editPageError = 'Error when trying to init page form.'
@@ -74,16 +75,11 @@ export default {
     async handleEditPageFormSubmit () {
       try {
         this.editPageFormSubmitError = ''
-        await this.$crm.pageEdit({
-          pageID: this.editPageFormData.id,
-          selfID: this.editPageFormData.selfID,
-          moduleID: this.editPageFormData.moduleID,
-          title: this.editPageFormData.title,
-          description: this.editPageFormData.description,
-          visible: this.editPageFormData.visible,
-          blocks: this.editPageFormData.blocks,
-        })
-        this.$router.push({ path: '/crm/pages' })
+
+        const payload = Object.assign({}, this.editPageFormData, { pageID: this.editPageFormData.id })
+        delete payload.id
+
+        await this.$crm.pageEdit(payload)
       } catch (e) {
         this.editPageFormSubmitError = 'Error when trying to edit page.'
       }

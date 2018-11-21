@@ -54,17 +54,15 @@
 
 <script>
 export default {
+  props: {
+    moduleID: {
+      type: String,
+    },
+  },
   data () {
-    var moduleID = this.$route.params.moduleID
     return {
       debug: false,
-      moduleID: moduleID,
       module: {},
-      links: {
-        create: `/crm/modules/${moduleID}/content/edit`,
-        edit: `/crm/modules/${moduleID}/edit`,
-        back: `/crm/modules/`,
-      },
       page: 0,
       perPage: 20,
       list: [],

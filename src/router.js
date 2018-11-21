@@ -33,10 +33,10 @@ function crmViews () {
       children: [
         {
           path: 'pages',
-          component: view('IndexNestedProtected'),
+          component: view('Public/Index'),
           children: [
             { path: '', name: 'public.pages', component: view('Public/Redirect') },
-            { path: ':id', name: 'public.page', component: view('Public/Pages/View') },
+            { path: ':pageID', name: 'public.page', component: view('Public/Pages/View') },
 
           ],
         },
@@ -50,24 +50,24 @@ function crmViews () {
             // create individual module structure (fields)
             { path: 'modules/edit', name: 'admin.modules.add', component: view('Admin/Modules/Edit') },
             // list module contents (individual contact rows,...)
-            { path: 'modules/:moduleID', name: 'admin.modules.view', component: view('Admin/Modules/Contents/Index') },
+            { path: 'modules/:moduleID', name: 'admin.modules.view', component: view('Admin/Modules/Contents/Index'), props: true },
             // edit individual module structure (fields)
-            { path: 'modules/:moduleID/edit', name: 'admin.modules.edit', component: view('Admin/Modules/Edit') },
+            { path: 'modules/:moduleID/edit', name: 'admin.modules.edit', component: view('Admin/Modules/Edit'), props: true },
 
             // create an individual row (should display fields configured for the module)
-            { path: 'modules/:moduleID/content/add', name: 'admin.modules.content.add', component: view('Admin/Modules/Contents/Edit') },
+            { path: 'modules/:moduleID/content/add', name: 'admin.modules.content.add', component: view('Admin/Modules/Contents/Edit'), props: true },
             // list an individual row (should display the page configured for the module)
-            { path: 'modules/:moduleID/content/:contentID', name: 'admin.modules.content.view', component: view('Admin/Modules/Contents/Read') },
+            { path: 'modules/:moduleID/content/:contentID', name: 'admin.modules.content.view', component: view('Admin/Modules/Contents/Read'), props: true },
             // edit an individual row (should display fields configured for the module)
-            { path: 'modules/:moduleID/content/:contentID/edit', name: 'admin.modules.content.edit', component: view('Admin/Modules/Contents/Edit') },
+            { path: 'modules/:moduleID/content/:contentID/edit', name: 'admin.modules.content.edit', component: view('Admin/Modules/Contents/Edit'), props: true },
 
             { path: 'pages/', name: 'admin.pages', component: view('Admin/Pages/Index') },
-            { path: 'pages/:pageID', name: 'admin.pages.view', component: view('Admin/Pages/View') },
-            { path: 'pages/:pageID/edit', name: 'admin.pages.edit', component: view('Admin/Pages/Edit') },
+            { path: 'pages/:pageID', name: 'admin.pages.view', component: view('Admin/Pages/View'), props: true },
+            { path: 'pages/:pageID/edit', name: 'admin.pages.edit', component: view('Admin/Pages/Edit'), props: true },
 
             { path: 'builder', name: 'admin.builder', component: view('Admin/Builder') },
             { path: 'charts', name: 'admin.charts', component: view('Admin/Charts/Index') },
-            { path: 'charts/:chartID/edit', name: 'admin.charts.edit', component: view('Admin/Charts/Index') },
+            { path: 'charts/:chartID/edit', name: 'admin.charts.edit', component: view('Admin/Charts/Index'), props: true },
             { path: 'configuration', name: 'admin.configuration', component: view('Admin/Configuration/Index') },
 
             { path: 'temp/fieldblock', component: view('Temp/Fieldblock') },
