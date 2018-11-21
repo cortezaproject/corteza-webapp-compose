@@ -1,18 +1,3 @@
-<template>
-  <div class="signIn login-process centered">
-    <div class="app-form-wrap shaded">
-      <div class="crust-window-header">
-        <div class="crust_main-header_title-wrap">
-          <strong class="crust_main-header_title">Crust</strong>
-          <span class="crust_main-header_title__pf">platform</span>
-        </div>
-      </div>
-      <form class="large-form">
-        Signing out...
-      </form>
-    </div>
-  </div>
-</template>
 <script>
 export default {
   data () {
@@ -25,6 +10,7 @@ export default {
       this.$logger.error(err)
     }).finally(() => {
       this.$store.commit('auth/clean')
+      this.$store.commit('auth/loaded', true)
     })
     this.$router.push({ name: 'signin' })
   },
