@@ -34,7 +34,7 @@ class SAM {
   }
 
   async channelList () {
-    const endpoint = `${this.baseLink}/channel/`
+    const endpoint = `${this.baseLink}/channels/`
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -48,7 +48,7 @@ class SAM {
   }
 
   async channelCreate ({ name, topic, type, members }) {
-    const endpoint = `${this.baseLink}/channel/`
+    const endpoint = `${this.baseLink}/channels/`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -67,7 +67,7 @@ class SAM {
   }
 
   async channelUpdate ({ channelID, name, topic, type, organisationID }) {
-    const endpoint = `${this.baseLink}/channel/${channelID}`
+    const endpoint = `${this.baseLink}/channels/${channelID}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'PUT',
@@ -86,7 +86,7 @@ class SAM {
   }
 
   async channelState ({ channelID, state }) {
-    const endpoint = `${this.baseLink}/channel/${channelID}/state`
+    const endpoint = `${this.baseLink}/channels/${channelID}/state`
     return new Promise((resolve, reject) => {
       axios({
         method: 'PUT',
@@ -102,7 +102,7 @@ class SAM {
   }
 
   async channelRead ({ channelID }) {
-    const endpoint = `${this.baseLink}/channel/${channelID}`
+    const endpoint = `${this.baseLink}/channels/${channelID}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -116,7 +116,7 @@ class SAM {
   }
 
   async channelMembers ({ channelID }) {
-    const endpoint = `${this.baseLink}/channel/${channelID}/members`
+    const endpoint = `${this.baseLink}/channels/${channelID}/members`
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -130,7 +130,7 @@ class SAM {
   }
 
   async channelJoin ({ channelID, userID }) {
-    const endpoint = `${this.baseLink}/channel/${channelID}/members/${userID}`
+    const endpoint = `${this.baseLink}/channels/${channelID}/members/${userID}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'PUT',
@@ -144,7 +144,7 @@ class SAM {
   }
 
   async channelPart ({ channelID, userID }) {
-    const endpoint = `${this.baseLink}/channel/${channelID}/members/${userID}`
+    const endpoint = `${this.baseLink}/channels/${channelID}/members/${userID}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'DELETE',
@@ -158,7 +158,7 @@ class SAM {
   }
 
   async channelInvite ({ channelID, userID }) {
-    const endpoint = `${this.baseLink}/channel/${channelID}/invite`
+    const endpoint = `${this.baseLink}/channels/${channelID}/invite`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -174,7 +174,7 @@ class SAM {
   }
 
   async channelAttach ({ channelID, replyTo, upload }) {
-    const endpoint = `${this.baseLink}/channel/${channelID}/attach`
+    const endpoint = `${this.baseLink}/channels/${channelID}/attach`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -190,8 +190,8 @@ class SAM {
     })
   }
 
-  async messageCreate ({ message }) {
-    const endpoint = `${this.baseLink}/message/`
+  async messageCreate ({ channelID, message }) {
+    const endpoint = `${this.baseLink}/channels/${channelID}/messages/`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -206,8 +206,8 @@ class SAM {
     })
   }
 
-  async messageHistory ({ lastMessageID }) {
-    const endpoint = `${this.baseLink}/message/`
+  async messageHistory ({ channelID, lastMessageID }) {
+    const endpoint = `${this.baseLink}/channels/${channelID}/messages/`
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -222,8 +222,8 @@ class SAM {
     })
   }
 
-  async messageEdit ({ messageID, message }) {
-    const endpoint = `${this.baseLink}/message/${messageID}`
+  async messageEdit ({ channelID, messageID, message }) {
+    const endpoint = `${this.baseLink}/channels/${channelID}/messages/${messageID}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'PUT',
@@ -238,8 +238,8 @@ class SAM {
     })
   }
 
-  async messageDelete ({ messageID }) {
-    const endpoint = `${this.baseLink}/message/${messageID}`
+  async messageDelete ({ channelID, messageID }) {
+    const endpoint = `${this.baseLink}/channels/${channelID}/messages/${messageID}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'DELETE',
@@ -252,8 +252,8 @@ class SAM {
     })
   }
 
-  async messageReplyGet ({ messageID }) {
-    const endpoint = `${this.baseLink}/message/${messageID}/replies`
+  async messageReplyGet ({ channelID, messageID }) {
+    const endpoint = `${this.baseLink}/channels/${channelID}/messages/${messageID}/replies`
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -266,8 +266,8 @@ class SAM {
     })
   }
 
-  async messageReplyCreate ({ messageID, message }) {
-    const endpoint = `${this.baseLink}/message/${messageID}/replies`
+  async messageReplyCreate ({ channelID, messageID, message }) {
+    const endpoint = `${this.baseLink}/channels/${channelID}/messages/${messageID}/replies`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -282,8 +282,8 @@ class SAM {
     })
   }
 
-  async messageMarkAsUnread ({ messageID }) {
-    const endpoint = `${this.baseLink}/message/${messageID}/unread`
+  async messageMarkAsUnread ({ channelID, messageID }) {
+    const endpoint = `${this.baseLink}/channels/${channelID}/messages/${messageID}/unread`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -296,8 +296,8 @@ class SAM {
     })
   }
 
-  async messagePinCreate ({ messageID }) {
-    const endpoint = `${this.baseLink}/message/${messageID}/pin`
+  async messagePinCreate ({ channelID, messageID }) {
+    const endpoint = `${this.baseLink}/channels/${channelID}/messages/${messageID}/pin`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -310,8 +310,8 @@ class SAM {
     })
   }
 
-  async messagePinRemove ({ messageID }) {
-    const endpoint = `${this.baseLink}/message/${messageID}/pin`
+  async messagePinRemove ({ channelID, messageID }) {
+    const endpoint = `${this.baseLink}/channels/${channelID}/messages/${messageID}/pin`
     return new Promise((resolve, reject) => {
       axios({
         method: 'DELETE',
@@ -324,8 +324,8 @@ class SAM {
     })
   }
 
-  async messageBookmarkCreate ({ messageID }) {
-    const endpoint = `${this.baseLink}/message/${messageID}/bookmark`
+  async messageBookmarkCreate ({ channelID, messageID }) {
+    const endpoint = `${this.baseLink}/channels/${channelID}/messages/${messageID}/bookmark`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -338,8 +338,8 @@ class SAM {
     })
   }
 
-  async messageBookmarkRemove ({ messageID }) {
-    const endpoint = `${this.baseLink}/message/${messageID}/bookmark`
+  async messageBookmarkRemove ({ channelID, messageID }) {
+    const endpoint = `${this.baseLink}/channels/${channelID}/messages/${messageID}/bookmark`
     return new Promise((resolve, reject) => {
       axios({
         method: 'DELETE',
@@ -352,8 +352,8 @@ class SAM {
     })
   }
 
-  async messageReactionCreate ({ messageID, reaction }) {
-    const endpoint = `${this.baseLink}/message/${messageID}/reaction/${reaction}`
+  async messageReactionCreate ({ channelID, messageID, reaction }) {
+    const endpoint = `${this.baseLink}/channels/${channelID}/messages/${messageID}/reaction/${reaction}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -366,8 +366,8 @@ class SAM {
     })
   }
 
-  async messageReactionRemove ({ messageID, reaction }) {
-    const endpoint = `${this.baseLink}/message/${messageID}/reaction/${reaction}`
+  async messageReactionRemove ({ channelID, messageID, reaction }) {
+    const endpoint = `${this.baseLink}/channels/${channelID}/messages/${messageID}/reaction/${reaction}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'DELETE',
@@ -380,8 +380,8 @@ class SAM {
     })
   }
 
-  async attachmentOriginal ({ name, download }) {
-    const endpoint = `${this.baseLink}/attachment/original/${name}`
+  async attachmentOriginal ({ attachmentID, name, download }) {
+    const endpoint = `${this.baseLink}/attachment/${attachmentID}/original/${name}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -396,8 +396,8 @@ class SAM {
     })
   }
 
-  async attachmentPreview ({ ext }) {
-    const endpoint = `${this.baseLink}/attachment/preview.${ext}`
+  async attachmentPreview ({ attachmentID, ext }) {
+    const endpoint = `${this.baseLink}/attachment/${attachmentID}/preview.${ext}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -410,7 +410,7 @@ class SAM {
     })
   }
 
-  async searchMessages () {
+  async searchMessages ({ query }) {
     const endpoint = `${this.baseLink}/search/messages`
     return new Promise((resolve, reject) => {
       axios({
@@ -418,7 +418,9 @@ class SAM {
         url: endpoint,
         withCredentials: true,
         headers: this.headers,
-        params: {},
+        params: {
+          'query': query,
+        },
         data: {},
       }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })
