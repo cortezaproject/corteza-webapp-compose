@@ -24,7 +24,7 @@ export default {
   mounted () {
     this.$system.authCheck().then((check) => {
       this.$store.commit('auth/setUser', check.user)
-      this.$router.push({ name: 'modules' })
+      this.$router.push({ name: 'root' })
     }).catch((error) => {
       this.$store.commit('auth/clean')
       this.$logger.error(error)
