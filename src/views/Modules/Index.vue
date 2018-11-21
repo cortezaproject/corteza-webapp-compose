@@ -26,10 +26,14 @@
         <table class="table table-striped">
           <tbody>
             <tr v-for="(module, index) in list" :key="index">
-              <td><router-link :to="module.links.read">{{ module.name }}</router-link></td>
-              <td>(Updated at : {{ module.updatedAt }})</td>
+              <td>
+                <router-link
+                      :to="{name: 'admin.modules.view', params: { moduleID: module.id }}">{{ module.name }}</router-link></td>
+              <td><time :datetime="module.updatedAt" v-if="module.updatedAt">(Updated at : {{ module.updatedAt }})</time></td>
               <td class="text-right actions">
-                <router-link :to="module.links.edit" class="actions__action">Edit data</router-link>
+                <router-link
+                        :to="{name: 'admin.modules.edit', params: { moduleID: module.id }}"
+                        class="actions__action">Edit data</router-link>
                 <button class="btn btn-secondary actions__action" v-on:click="handleDeleteModule(module.id)">Delete</button>
               </td>
             </tr>
@@ -75,12 +79,6 @@ export default {
       try {
         this.listError = ''
         this.list = await this.$crm.moduleList({})
-        this.list.forEach(module => {
-          module.links = {
-            read: `/crm/modules/${module.id}`,
-            edit: `/crm/modules/${module.id}/edit`,
-          }
-        })
       } catch (e) {
         this.listError = 'Error when trying to get list of modules.'
       }

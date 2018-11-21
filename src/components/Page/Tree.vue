@@ -4,11 +4,27 @@
             <div class="wrap" v-if="item.id">
                 <div class="title">{{ item.title }}</div>
                 <div class="actions">
-                    <router-link v-if="item.blocks && item.blocks.length >= 1" :to="'/crm/pages/' + item.id" class="actions__action">View page</router-link>
-                    <div title="You need to build page to view your page !" v-if="!item.blocks || item.blocks.length == 0" class="actions__action--disabled">View page</div>
-                    <router-link :to="'/crm/builder?pageId=' + item.id" class="actions__action">Build page</router-link>
-                    <router-link :to="'/crm/pages/' + item.id + '/edit'" class="actions__action">Edit data</router-link>
-                    <button type="button" class="btn btn-default actions__action" @click="$emit('delete', item.id)">Delete</button>
+                    <router-link
+                            v-if="item.blocks && item.blocks.length >= 1"
+                            :to="{name: 'public.pages', params: { pageID: item.id }}"
+                            class="actions__action">View page</router-link>
+
+                    <div title="You need to build page to view your page !"
+                         v-if="!item.blocks || item.blocks.length === 0"
+                         class="actions__action--disabled">View page</div>
+
+                    <router-link
+                            :to="{name: 'admin.builder', query: { pageId: item.id }}"
+                            class="actions__action">Build page</router-link>
+
+                    <router-link
+                            :to="{name: 'admin.pages.edit', params: { pageID: item.id }}"
+                            class="actions__action">Edit data</router-link>
+
+                    <button
+                            type="button"
+                            class="btn btn-default actions__action"
+                            @click="$emit('delete', item.id)">Delete</button>
                 </div>
             </div>
         </template>

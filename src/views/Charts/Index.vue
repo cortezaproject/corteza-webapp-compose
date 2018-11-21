@@ -106,7 +106,9 @@
               <td>{{ chart.name }}</td>
               <td>(Updated at : {{ chart.updatedAt }})</td>
               <td class="text-right actions">
-                <router-link :to="chart.links.edit" class="actions__action">Edit data</router-link>
+                <router-link
+                        :to="{name: 'chart.links.edit', params: { chartID: chart.id }}"
+                        class="actions__action">Edit data</router-link>
                 <button class="btn btn-secondary actions__action" v-on:click="handleDeleteChart(chart.id)">Delete</button>
               </td>
             </tr>

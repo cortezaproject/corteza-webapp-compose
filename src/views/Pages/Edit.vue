@@ -27,7 +27,7 @@
                   <option :value="null"></option>
                   <option v-for="module in modulesList" :key="module.id" :value="module.id">{{ module.name }}</option>
                 </select>
-                <router-link :to="'/crm/modules'" class="actions__action">Add a module</router-link>
+                <router-link :to="{name: 'admin.modules'}" class="actions__action">Add a module</router-link>
               </div>
               <button type="submit" class="btn btn-primary">Save</button>
               <div v-if="editPageFormSubmitError" style="color:red;">
