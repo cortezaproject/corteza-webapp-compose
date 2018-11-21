@@ -282,6 +282,20 @@ class SAM {
     })
   }
 
+  async messageMarkAsUnread ({ messageID }) {
+    const endpoint = `${this.baseLink}/message/${messageID}/unread`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {},
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
   async messagePinCreate ({ messageID }) {
     const endpoint = `${this.baseLink}/message/${messageID}/pin`
     return new Promise((resolve, reject) => {
