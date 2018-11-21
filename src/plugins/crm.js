@@ -112,6 +112,20 @@ class CRM {
     })
   }
 
+  async pageTree () {
+    const endpoint = `${this.baseLink}/page/tree`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {},
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
   async pageEdit ({ pageID, selfID, moduleID, title, description, visible, blocks }) {
     const endpoint = `${this.baseLink}/page/${pageID}`
     return new Promise((resolve, reject) => {
