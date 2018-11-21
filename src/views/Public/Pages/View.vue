@@ -46,7 +46,7 @@ export default {
     this.$store.dispatch('pages/initViewPageData', this.$route.params.id)
     this.pagesList = await this.$crm.pageList({})
     this.cancelFcn = this.$router.beforeEach((to, from, next) => {
-      if (to.fullPath.startsWith('/pages/')) {
+      if (to.fullPath.startsWith('/crm/pages/')) {
         this.$store.dispatch('pages/initViewPageData', to.params.id)
       }
       next()
