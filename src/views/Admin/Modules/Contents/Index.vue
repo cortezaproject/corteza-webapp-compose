@@ -23,7 +23,7 @@
               <span v-else><i>None</i></span>
             </td>
             <td class="text-right">
-              <a :href="row.links.edit" class="btn btn-sm btn-primary">Edit</a>
+              <router-link :href="{name: 'admin.modules.content.edit', params: { moduleID, contentID: row.id }}" class="btn btn-sm btn-primary">Edit</router-link>
               &nbsp; <a @click="deleteContent(row.id)" class="btn btn-sm btn-warning">Delete</a>
             </td>
           </tr>
@@ -38,25 +38,31 @@
       <p>No content rows added yet.</p>
     </template>
 
-    <a :href="links.create" class="btn btn-primary">Add new entry</a>
-    &nbsp; <a :href="links.edit" class="btn btn-secondary">Edit module</a>
-    &nbsp; <a :href="links.back" class="btn btn-warning">Back to Module list</a>
+    <router-link
+        :to="{name: 'admin.modules.content.add', params: { moduleID }}"
+        class="btn btn-primary">Add new entry</router-link>
+  &nbsp;
+    <router-link
+        :to="{name: 'admin.modules.edit', params: { moduleID }}"
+        class="btn btn-secondary">Edit module</router-link>
+  &nbsp;
+    <router-link
+        :to="{name: 'admin.modules'}"
+        class="btn btn-warning">Back to Module list</router-link>
   </section>
 </template>
 
 <script>
 export default {
+  props: {
+    moduleID: {
+      type: String,
+    },
+  },
   data () {
-    var moduleID = this.$route.params.moduleID
     return {
       debug: false,
-      moduleID: moduleID,
       module: {},
-      links: {
-        create: `/crm/modules/${moduleID}/content/edit`,
-        edit: `/crm/modules/${moduleID}/edit`,
-        back: `/crm/modules/`,
-      },
       page: 0,
       perPage: 20,
       list: [],

@@ -75,15 +75,18 @@ import FieldSettings from '@/components/FieldSettings.vue'
 
 export default {
   name: 'ModuleEdit',
+  props: {
+    moduleID: {
+      type: String,
+    },
+  },
   components: {
     draggable,
     FieldSettings,
   },
   data () {
-    var moduleID = this.$route.params.moduleID
     return {
       components: Vue.options.components,
-      moduleID: moduleID,
       editModuleError: '',
       editModuleFormSubmitError: '',
       fieldsList: [],
@@ -117,9 +120,7 @@ export default {
       return ''
     },
     redirect () {
-      this.$router.push({
-        path: '/crm/modules',
-      })
+      this.$router.push({ name: 'admin.modules' })
     },
     async $_initFieldsList () {
       var capitalize = (s) => {

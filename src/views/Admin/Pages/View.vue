@@ -11,6 +11,11 @@ import SharedService from '@/services/SharedService'
 
 export default {
   name: 'PageView',
+  props: {
+    pageID: {
+      type: String,
+    },
+  },
   components: {
     PageContent,
   },
@@ -27,7 +32,7 @@ export default {
     async fetchPage () {
       // await this.$store.dispatch('builder/fetchPageData', this.$route.query.pageId)
       this.pageData = await this.$root.$crm.pageRead({
-        pageID: this.$route.params.id,
+        pageID: this.pageID,
       })
 
       if (this.pageData.id === '0') {

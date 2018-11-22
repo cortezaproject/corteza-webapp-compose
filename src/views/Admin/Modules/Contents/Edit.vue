@@ -28,24 +28,25 @@
 import FieldEdit from '@/components/FieldEdit.vue'
 
 export default {
+  props: {
+    moduleID: {
+      type: String,
+    },
+  },
+
   components: {
     FieldEdit,
   },
+
   data () {
-    var mode = ('contentID' in this.$route.params) ? 'edit' : 'create'
-    var moduleID = this.$route.params.moduleID
     return Object.assign({
       row: {
         fields: {},
       },
       module: {},
-      mode: mode,
-      links: {
-        create: `/crm/modules/${moduleID}/content/edit`,
-        cancel: `/crm/modules/${moduleID}`,
-      },
+      mode: this.moduleID ? 'edit' : 'create',
       errors: [],
-    }, this.$route.params)
+    }, this)
   },
   async created () {
     await this.loadModule()
@@ -114,9 +115,7 @@ export default {
           req.contentID = this.contentID
           await this.$crm.moduleContentEdit(req)
         }
-        this.$router.push({
-          path: this.links.cancel,
-        })
+        this.$router.push({ name: 'admin.modules', params: { moduleID: this.moduleID } })
       } catch (e) {
         this.errors = [e.message]
       }

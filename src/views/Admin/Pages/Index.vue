@@ -24,24 +24,11 @@
           {{ deletePageError }}
         </div>
 
-        <ul class="list-group">
-          <draggable
-                  @change="handleReorder"
-                  v-model="list"
-                  :options="draggableOptions">
-            <li v-for="(page, index) in list" :key="index" class="list-group-item d-flex justify-content-between">
-              <div>{{ page.title }}</div>
-              <div class="d-flex align-items-center actions">
-                <router-link v-if="page.blocks && page.blocks.length >= 1" :to="'/crm/pages/' + page.id" class="actions__action">View page</router-link>
-                <div title="You need to build page to view your page !" v-if="!page.blocks || page.blocks.length == 0" class="actions__action--disabled">View page</div>
-                <router-link :to="'/crm/builder?pageId=' + page.id" class="actions__action">Build page</router-link>
-                <router-link :to="'/crm/pages/' + page.id + '/edit'" class="actions__action">Edit data</router-link>
-                <button type="button" class="btn btn-default actions__action" @click="handleDeletePage(page.id)">Delete</button>
-                <span class="sort-handle">::</span>
-              </div>
-            </li>
-          </draggable>
-        </ul>
+        <page-tree
+          @delete="handleDeletePage($event)"
+          @reorder="handleReorder"
+          v-model="list"/>
+
         <div v-if="listError" style="color:red;">
           {{ listError }}
         </div>
@@ -59,6 +46,7 @@
 
 <script>
 import draggable from 'vuedraggable'
+import PageTree from '@/components/Page/Tree'
 
 export default {
   idToDelete: '',
@@ -72,12 +60,6 @@ export default {
       addPageFormData: {
         title: '',
       },
-
-      draggableOptions: {
-        group: 'pages',
-        handle: '.sort-handle',
-        animation: 150,
-      },
     }
   },
   async created () {
@@ -87,7 +69,7 @@ export default {
     async $_initList () {
       try {
         this.listError = ''
-        this.list = await this.$crm.pageList({})
+        this.list = await this.$crm.pageTree({})
       } catch (e) {
         this.listError = 'Error when trying to get list of pages.'
       }
@@ -118,49 +100,19 @@ export default {
       this.$refs.myDeleteModalRef.hide()
     },
 
-    handleReorder ($ev) {
-      // This is fired only on an actual change.
-      // @todo selfID=0 assumption
-      this.$crm.pageReorder({ selfID: '0', pageIDs: this.list.map(p => p.id) }).then(() => {
-        this.$_initList()
-      })
+    handleReorder () {
+      this.$_initList()
     },
   },
 
   components: {
     draggable,
+    PageTree,
   },
 }
 </script>
-<style lang="scss" scoped>
-@import "@/assets/sass/_0.declare.scss";
-
-.actions__action {
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.actions__action--disabled {
-  cursor: help;
-}
-
-.list-group {
-  .sortable-ghost {
-    background-color: $appblue;
-  }
-
-  .sortable-chosen {
-    background-color: $appblue;
-    color: white;
-
-    div.actions {
-      display: none !important;
-    }
-  }
-
-  .sort-handle {
-    cursor: move;
-    cursor: -webkit-grabbing;
-  }
+<style scoped lang="scss">
+table {
+  width: 100%;
 }
 </style>

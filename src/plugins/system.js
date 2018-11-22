@@ -62,7 +62,7 @@ class System {
   }
 
   async organisationList ({ query }) {
-    const endpoint = `${this.baseLink}/organisation/`
+    const endpoint = `${this.baseLink}/organisations/`
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -78,7 +78,7 @@ class System {
   }
 
   async organisationCreate ({ name }) {
-    const endpoint = `${this.baseLink}/organisation/`
+    const endpoint = `${this.baseLink}/organisations/`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -94,7 +94,7 @@ class System {
   }
 
   async organisationEdit ({ id, name }) {
-    const endpoint = `${this.baseLink}/organisation/${id}`
+    const endpoint = `${this.baseLink}/organisations/${id}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'PUT',
@@ -110,7 +110,7 @@ class System {
   }
 
   async organisationRemove ({ id }) {
-    const endpoint = `${this.baseLink}/organisation/${id}`
+    const endpoint = `${this.baseLink}/organisations/${id}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'DELETE',
@@ -124,7 +124,7 @@ class System {
   }
 
   async organisationRead ({ id }) {
-    const endpoint = `${this.baseLink}/organisation/${id}`
+    const endpoint = `${this.baseLink}/organisations/${id}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -140,7 +140,7 @@ class System {
   }
 
   async organisationArchive ({ id }) {
-    const endpoint = `${this.baseLink}/organisation/${id}/archive`
+    const endpoint = `${this.baseLink}/organisations/${id}/archive`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -154,7 +154,7 @@ class System {
   }
 
   async teamList ({ query }) {
-    const endpoint = `${this.baseLink}/team/`
+    const endpoint = `${this.baseLink}/teams/`
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -170,7 +170,7 @@ class System {
   }
 
   async teamCreate ({ name, members }) {
-    const endpoint = `${this.baseLink}/team/`
+    const endpoint = `${this.baseLink}/teams/`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -187,7 +187,7 @@ class System {
   }
 
   async teamEdit ({ teamID, name, members }) {
-    const endpoint = `${this.baseLink}/team/${teamID}`
+    const endpoint = `${this.baseLink}/teams/${teamID}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'PUT',
@@ -204,7 +204,7 @@ class System {
   }
 
   async teamRead ({ teamID }) {
-    const endpoint = `${this.baseLink}/team/${teamID}`
+    const endpoint = `${this.baseLink}/teams/${teamID}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -218,7 +218,7 @@ class System {
   }
 
   async teamRemove ({ teamID }) {
-    const endpoint = `${this.baseLink}/team/${teamID}`
+    const endpoint = `${this.baseLink}/teams/${teamID}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'DELETE',
@@ -232,7 +232,7 @@ class System {
   }
 
   async teamArchive ({ teamID }) {
-    const endpoint = `${this.baseLink}/team/${teamID}/archive`
+    const endpoint = `${this.baseLink}/teams/${teamID}/archive`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -246,7 +246,7 @@ class System {
   }
 
   async teamMove ({ teamID, organisationID }) {
-    const endpoint = `${this.baseLink}/team/${teamID}/move`
+    const endpoint = `${this.baseLink}/teams/${teamID}/move`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -262,7 +262,7 @@ class System {
   }
 
   async teamMerge ({ teamID, destination }) {
-    const endpoint = `${this.baseLink}/team/${teamID}/merge`
+    const endpoint = `${this.baseLink}/teams/${teamID}/merge`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -278,7 +278,7 @@ class System {
   }
 
   async userSearch ({ query }) {
-    const endpoint = `${this.baseLink}/user/`
+    const endpoint = `${this.baseLink}/users/`
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',

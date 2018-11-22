@@ -1,11 +1,21 @@
 <template>
-  <div class="view-grid" v-bind:class="{ 'mobile': !wide }">
-    <grid-layout v-if="layout && layout.length > 0" :layout="layout" :col-num="colNum" :row-height="90" :is-draggable="false" :is-resizable="false" :vertical-compact="true" :use-css-transforms="true">
-      <grid-item v-for="block in layout" v-bind:key="block.i" :x="block.x" :y="block.y" :w="block.w" :h="block.h" :i="block.i" v-bind:is-draggable="false">
+  <div class="view-grid">
+    <grid-layout v-if="internalLayout && internalLayout.length > 0"
+      :layout.sync="internalLayout"
+      :col-num="colNum"
+      :row-height="90"
+      :is-draggable="false"
+      :is-resizable="false"
+      :vertical-compact="true"
+      :use-css-transforms="true"
+      :responsive="responsive"
+      :breakpoints="gridBreakPoints"
+      :cols="gridColSizes">
+      <grid-item v-for="block in internalLayout" v-bind:key="block.i" :x="block.x" :y="block.y" :w="block.w" :h="block.h" :i="block.i" v-bind:is-draggable="false">
         <Block :block="block"></Block>
       </grid-item>
     </grid-layout>
-    <div style="color:red;" v-if="!layout || layout.length == 0">
+    <div style="color:red;" v-if="!internalLayout || internalLayout.length == 0">
       This page has no blocks
     </div>
   </div>
@@ -13,7 +23,7 @@
 
 <script>
 /* eslint-disable-next-line */
-import VueGridLayout from "vue-grid-layout";
+import VueGridLayout from 'vue-grid-layout'
 import Block from '@/components/block/Block'
 export default {
   name: 'PageContent',
@@ -21,56 +31,44 @@ export default {
     Block,
   },
   props: {
-    layout: [],
+    layout: Array,
   },
   data () {
     return {
-      wideWidth: 768,
-      wide: false,
       window: {
         width: 0,
         height: 0,
       },
-      draggable: true,
-      resizable: true,
       colNum: 12,
       blocks: null,
+      gridBreakPoints: {
+        lg: 1200,
+        md: 996,
+        sm: 768,
+        xs: 480,
+        xxs: 0,
+      },
+      gridColSizes: {
+        lg: 12,
+        md: 10,
+        sm: 6,
+        xs: 4,
+        xxs: 2,
+      },
+      responsive: true,
+      internalLayout: [],
     }
   },
   created () {
-    window.addEventListener('resize', this.handleResize)
-    this.handleResize()
+    this.internalLayout = this.layout
   },
-  destroyed () {
-    window.removeEventListener('resize', this.handleResize)
-  },
-  methods: {
-    handleResize () {
-      this.window.width = window.innerWidth
-      this.window.height = window.innerHeight
-      if (this.window.width > this.wideWidth) {
-        this.wide = true
-        this.colNum = 12
-      } else {
-        this.wide = false
-        this.colNum = 1
-      }
+  watch: {
+    layout: {
+      handler: function () {
+        this.internalLayout = this.layout
+      },
+      deep: true,
     },
   },
 }
 </script>
-<style lang="scss" scoped>
-.view-grid {
-  width: 100%;
-
-  &.mobile {
-    width: 320px;
-    margin: 0 auto;
-  }
-
-  .vue-grid-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-  }
-}
-</style>

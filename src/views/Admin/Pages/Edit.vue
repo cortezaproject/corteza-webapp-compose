@@ -14,13 +14,6 @@
               <input required type="text" v-model="editPageFormData.title" class="form-control" id="title" placeholder="Page title" />
             </div>
             <div class="form-group">
-              <label for="selfID">Parent page </label>
-              <select v-model="editPageFormData.selfID" class="form-control" id="selfID">
-                <option :value="null"></option>
-                <option v-for="page in pageList" :key="page.id" :value="page.id">{{ page.title }}</option>
-              </select>
-            </div>
-            <div class="form-group">
               <label for="title">Description</label>
               <textarea v-model="editPageFormData.description" class="form-control" id="description" placeholder="Page description" />
             </div>
@@ -34,7 +27,7 @@
                   <option :value="null"></option>
                   <option v-for="module in modulesList" :key="module.id" :value="module.id">{{ module.name }}</option>
                 </select>
-                <router-link :to="'/crm/modules'" class="actions__action">Add a module</router-link>
+                <router-link :to="{name: 'admin.modules'}" class="actions__action">Add a module</router-link>
               </div>
               <button type="submit" class="btn btn-primary">Save</button>
               <div v-if="editPageFormSubmitError" style="color:red;">
@@ -50,6 +43,13 @@
 <script>
 export default {
   name: 'PageEdit',
+  props: {
+    pageID: {
+      type: String,
+      required: true,
+    },
+  },
+
   data () {
     return {
       editPageError: '',
@@ -59,15 +59,13 @@ export default {
         title: '',
         moduleID: '',
       },
-      pageList: [],
     }
   },
   async created () {
     try {
       this.editPageError = ''
-      this.editPageFormData = await this.$crm.pageRead({ pageID: this.$route.params.id })
+      this.editPageFormData = await this.$crm.pageRead({ pageID: this.pageID })
       // Parent pages : not itself
-      this.pageList = (await this.$crm.pageList({})).filter((page) => page.id !== this.$route.params.id)
       this.modulesList = await this.$crm.moduleList({})
     } catch (e) {
       this.editPageError = 'Error when trying to init page form.'
@@ -77,8 +75,11 @@ export default {
     async handleEditPageFormSubmit () {
       try {
         this.editPageFormSubmitError = ''
-        await this.$crm.pageEdit({ pageID: this.editPageFormData.id, selfID: this.editPageFormData.selfID, moduleID: this.editPageFormData.moduleID, title: this.editPageFormData.title, description: this.editPageFormData.description, visible: this.editPageFormData.visible, blocks: this.editPageFormData.blocks })
-        this.$router.push({ path: '/crm/pages' })
+
+        const payload = Object.assign({}, this.editPageFormData, { pageID: this.editPageFormData.id })
+        delete payload.id
+
+        await this.$crm.pageEdit(payload)
       } catch (e) {
         this.editPageFormSubmitError = 'Error when trying to edit page.'
       }

@@ -20,10 +20,6 @@ function defaultViews () {
         { path: 'signout', name: 'signout', component: view('Auth/SignOut') },
       ],
     },
-    {
-      path: '*',
-      redirect: { name: 'modules' },
-    },
   ]
 }
 
@@ -33,44 +29,59 @@ function crmViews () {
       path: '/crm',
       name: 'root',
       component: view('IndexNestedProtected'),
-      redirect: '/crm/modules',
+      redirect: 'pages',
       children: [
-        // list modules (contacts, etc.)
-        { path: '/crm/modules', name: 'modules', component: view('Modules/Index') },
-        // create individual module structure (fields)
-        { path: '/crm/modules/edit', component: view('Modules/Edit') },
-        // list module contents (individual contact rows,...)
-        { path: '/crm/modules/:moduleID', component: view('Modules/Contents/Index') },
-        // edit individual module structure (fields)
-        { path: '/crm/modules/:moduleID/edit', component: view('Modules/Edit') },
+        {
+          path: 'pages',
+          component: view('Public/Index'),
+          children: [
+            { path: '', name: 'public.pages', component: view('Public/Redirect') },
+            { path: ':pageID', name: 'public.page', component: view('Public/Pages/View') },
 
-        // create an individual row (should display fields configured for the module)
-        { path: '/crm/modules/:moduleID/content/edit', component: view('Modules/Contents/Edit') },
-        // list an individual row (should display the page configured for the module)
-        { path: '/crm/modules/:moduleID/content/:contentID', component: view('Modules/Contents/Read') },
-        // edit an individual row (should display fields configured for the module)
-        { path: '/crm/modules/:moduleID/content/:contentID/edit', component: view('Modules/Contents/Edit') },
+          ],
+        },
+        {
+          path: 'admin',
+          name: 'admin',
+          component: view('Admin/Index'),
+          children: [
+            // list modules (contacts, etc.)
+            { path: 'modules', name: 'admin.modules', component: view('Admin/Modules/Index') },
+            // create individual module structure (fields)
+            { path: 'modules/edit', name: 'admin.modules.add', component: view('Admin/Modules/Edit') },
+            // list module contents (individual contact rows,...)
+            { path: 'modules/:moduleID', name: 'admin.modules.view', component: view('Admin/Modules/Contents/Index'), props: true },
+            // edit individual module structure (fields)
+            { path: 'modules/:moduleID/edit', name: 'admin.modules.edit', component: view('Admin/Modules/Edit'), props: true },
 
-        { path: '/crm/pages', name: 'pages', component: view('Pages/Index') },
-        { path: '/crm/pages/:id', component: view('Pages/View') },
-        { path: '/crm/pages/:id/edit', component: view('Pages/Edit') },
-        { path: '/crm/builder', component: view('Builder') },
-        { path: '/crm/charts', name: 'charts', component: view('Charts/Index') },
-        { path: '/crm/configuration', name: 'configuration', component: view('Configuration/Index') },
-        // { path: '/', component: view('Public/Redirect') },
-        { path: '/pages', component: view('Public/Redirect') },
-        { path: '/pages/:id', component: view('Public/Pages/View') },
-        { path: '/temp/fieldblock', component: view('Temp/Fieldblock') },
-        { path: '/temp/fieldeditblock', component: view('Temp/Fieldeditblock') },
-        { path: '/temp/normaltableblock', component: view('Temp/Normaltableblock') },
-        { path: '/temp/relatedtableblock', component: view('Temp/Relatedtableblock') },
-        { path: '/temp/textblock', component: view('Temp/Textblock') },
-        { path: '/temp/linechartblock', component: view('Temp/Linechartblock') },
-        { path: '/temp/piechartblock', component: view('Temp/Piechartblock') },
-        { path: '/temp/barchartblock', component: view('Temp/Barchartblock') },
-        { path: '/temp/donutchartblock', component: view('Temp/Donutchartblock') },
-        { path: '/temp/socialblock', component: view('Temp/Socialblock') },
+            // create an individual row (should display fields configured for the module)
+            { path: 'modules/:moduleID/content/add', name: 'admin.modules.content.add', component: view('Admin/Modules/Contents/Edit'), props: true },
+            // list an individual row (should display the page configured for the module)
+            { path: 'modules/:moduleID/content/:contentID', name: 'admin.modules.content.view', component: view('Admin/Modules/Contents/Read'), props: true },
+            // edit an individual row (should display fields configured for the module)
+            { path: 'modules/:moduleID/content/:contentID/edit', name: 'admin.modules.content.edit', component: view('Admin/Modules/Contents/Edit'), props: true },
 
+            { path: 'pages/', name: 'admin.pages', component: view('Admin/Pages/Index') },
+            { path: 'pages/:pageID', name: 'admin.pages.view', component: view('Admin/Pages/View'), props: true },
+            { path: 'pages/:pageID/edit', name: 'admin.pages.edit', component: view('Admin/Pages/Edit'), props: true },
+
+            { path: 'builder', name: 'admin.builder', component: view('Admin/Builder') },
+            { path: 'charts', name: 'admin.charts', component: view('Admin/Charts/Index') },
+            { path: 'charts/:chartID/edit', name: 'admin.charts.edit', component: view('Admin/Charts/Index'), props: true },
+            { path: 'configuration', name: 'admin.configuration', component: view('Admin/Configuration/Index') },
+
+            { path: 'temp/fieldblock', component: view('Temp/Fieldblock') },
+            { path: 'temp/fieldeditblock', component: view('Temp/Fieldeditblock') },
+            { path: 'temp/normaltableblock', component: view('Temp/Normaltableblock') },
+            { path: 'temp/relatedtableblock', component: view('Temp/Relatedtableblock') },
+            { path: 'temp/textblock', component: view('Temp/Textblock') },
+            { path: 'temp/linechartblock', component: view('Temp/Linechartblock') },
+            { path: 'temp/piechartblock', component: view('Temp/Piechartblock') },
+            { path: 'temp/barchartblock', component: view('Temp/Barchartblock') },
+            { path: 'temp/donutchartblock', component: view('Temp/Donutchartblock') },
+            { path: 'temp/socialblock', component: view('Temp/Socialblock') },
+          ],
+        },
       ],
     },
   ]
@@ -81,5 +92,8 @@ export default new VueRouter({
   routes: [
     ...crmViews(),
     ...defaultViews(),
+
+    // When everything else failes, go to pages
+    { path: '*', redirect: { name: 'public.pages' } },
   ],
 })

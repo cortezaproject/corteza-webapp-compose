@@ -98,10 +98,11 @@ export default {
       var y = this.blockDefaults.y
       var w = this.blockDefaults.w
       const h = this.blockDefaults.h
-      const data = SharedService.cloneObject(value.addBlockFormData)
-      const meta = SharedService.cloneObject(value.addBlockFormMeta)
-      const content = SharedService.cloneObject(value.content)
-      const blockType = SharedService.cloneObject(value.blockType)
+      console.log(value)
+      const data = SharedService.cloneObject(value.addBlockFormData || {})
+      const meta = SharedService.cloneObject(value.addBlockFormMeta || {})
+      const content = SharedService.cloneObject(value.content || {})
+      const blockType = SharedService.cloneObject(value.blockType || {})
 
       if (meta.fixed) {
         y = 0
