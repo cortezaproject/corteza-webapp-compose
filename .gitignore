@@ -22,3 +22,4 @@ yarn-error.log*
 *.iml
 TODO
 .prettierrc
+old.*

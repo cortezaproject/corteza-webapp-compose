@@ -20,4 +20,8 @@ module.exports = {
     disableHostCheck: true,
   },
   runtimeCompiler: true,
+  css:
+  {
+    sourceMap: process.env['NODE_ENV'] === 'development' 
+  }
 }
