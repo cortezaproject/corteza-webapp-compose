@@ -249,3 +249,11 @@ li.dropdown:hover > .dropdown-menu {
 .vue-grid-item .container {
   padding: 0;
 }
+
+.vue-grid-item .filter-bar .form-group label, .vue-grid-item .filter-bar .form-group input, .vue-grid-item .filter-bar .form-group button {
+  margin-right: 4px;
+}
+
+.vue-grid-item .filter-bar input[type="text"] {
+  width: auto;
+}

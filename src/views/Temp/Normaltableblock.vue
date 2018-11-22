@@ -6,10 +6,11 @@
         <div class="blockname">Blockname</div>
         <div class="block_header">Block header text</div>
         <div class="form_row">
+          <button style="float:right; margin:14px 5px 0 0;" type="button" class="btn btn-primary">New {modulename} record</button>
           <BlockContentFields />
         </div>
       </div>
-      <!-- start CRM page block -->
+      <!-- end CRM page block -->
     </div>
   </div>
 </template>
