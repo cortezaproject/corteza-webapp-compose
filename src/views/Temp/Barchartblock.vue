@@ -29,7 +29,7 @@ export default {
   },
   async mounted () {
     try {
-      this.data = await this.$crm.chartDataGet({
+      this.data = await this.$crm.moduleChart({
         moduleID: 0,
         kind: 'bar',
       })

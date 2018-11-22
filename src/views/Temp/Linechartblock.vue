@@ -31,7 +31,7 @@ export default {
   },
   async mounted () {
     try {
-      this.data = await this.$crm.chartDataGet({
+      this.data = await this.$crm.moduleChart({
         moduleID: 0,
         kind: 'line',
       })
@@ -46,8 +46,7 @@ export default {
           x: {
             type: this.data.fields[this.data.data[0][0]].kind === 'datetime' ? 'timeseries' : 'category',
             tick: {
-              format: (x) =>
-              {
+              format: (x) => {
                 return this.parseTime(x)
               },
             },
