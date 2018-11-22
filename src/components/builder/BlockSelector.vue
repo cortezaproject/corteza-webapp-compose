@@ -168,8 +168,51 @@ export default {
     } catch (e) {
       this.modulesListError = 'Error when trying to init modules.'
     }
+
+    // check if page has a module associated with it
+    this.doesPageHaveModule()
   },
   methods: {
+    doesPageHaveModule () {
+      if (this.pageData && this.pageData.moduleID > 0) {
+        this.contentFieldsEnabled = true
+
+        // load the fields from the module
+        this.contentFieldsAvailable = SharedService.cloneObject(this.pageData.module.fields)
+        this.selectedModule = SharedService.cloneObject(this.pageData.module)
+
+        // remove any fields already in blocks of this module type
+        if (this.pageData.blocks) {
+          this.removeFieldsAlreadyInUse(this.pageData.blocks)
+        }
+      }
+    },
+    removeFieldsAlreadyInUse (blocks) {
+      // check for "fields" blocktype and remove any fields contained in there from the available fields
+      var fieldsToRemove = []
+      blocks.forEach(function (block, index) {
+        if (block.blockType === 'fields') {
+          block.content.fieldsID.forEach(function (field, index) {
+            fieldsToRemove.push(field)
+          })
+        }
+      })
+      console.log('Remove these fields')
+      console.log(fieldsToRemove)
+      this.contentFieldsAvailable = this.contentFieldsAvailable.filter(function (field) {
+        console.log('Searching through available fields')
+        console.log(field)
+
+        for (var f of fieldsToRemove) {
+          if (f === field.id) {
+            // field was found so return false to remove it from the list
+            return false
+          }
+        }
+        // if we get here then the field was not used so keep it
+        return true
+      })
+    },
     handleBlockTypeChange (blockType) {
       this.blockType = blockType
 
@@ -186,7 +229,12 @@ export default {
           this.contentListEnabled = true
           break
         case 'fields':
-          this.contentFieldsEnabled = true
+          // this.contentFieldsEnabled = true
+          this.doesPageHaveModule()
+          // remove any fields already in blocks of this module type
+          if (this.pageData.blocks) {
+            this.removeFieldsAlreadyInUse(this.pageData.blocks)
+          }
           break
         case 'chart':
           this.contentChartEnabled = true
@@ -211,11 +259,18 @@ export default {
     handleBlockSelectorFormSubmit () {
       // emit the event to the parent page
       if (this.mode === 'add') {
+        var fieldsToAdd = Array
+        if (this.blockType === 'fields') {
+          fieldsToAdd = SharedService.cloneObject(this.addBlockFormContentFields)
+        } else {
+          fieldsToAdd = SharedService.cloneObject(this.addBlockFormContentBuilderListFields)
+        }
+
         // adding a new block
         this.$emit('addNewBlock', {
           selectedModule: this.selectedModule,
           content: {
-            fields: this.addBlockFormContentBuilderListFields,
+            fields: fieldsToAdd,
             module: this.selectedModule,
           },
           blockType: this.blockType,
@@ -257,6 +312,7 @@ export default {
         description: '',
         footer: '',
       }
+      this.doesPageHaveModule()
     },
   },
   watch: {
@@ -274,6 +330,12 @@ export default {
         } else {
           this.mode = 'add'
         }
+      },
+      deep: true,
+    },
+    pageData: {
+      handler: function () {
+        this.doesPageHaveModule()
       },
       deep: true,
     },

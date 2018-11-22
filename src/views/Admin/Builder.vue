@@ -91,14 +91,12 @@ export default {
     addNewBlock (value) {
       // if not required then we can remove the below push
       this.selectedModules.push(value.selectedModule)
-
       // add block to the page grid
       const i = SharedService.generateUniqID()
       const x = this.blockDefaults.x
       var y = this.blockDefaults.y
       var w = this.blockDefaults.w
       const h = this.blockDefaults.h
-      console.log(value)
       const data = SharedService.cloneObject(value.addBlockFormData || {})
       const meta = SharedService.cloneObject(value.addBlockFormMeta || {})
       const content = SharedService.cloneObject(value.content || {})
@@ -168,6 +166,8 @@ export default {
         visible: this.pageData.visible,
         blocks: pageBlocks,
       })
+
+      // this.pageData.blocks = blocks
 
       alert('Page Layout Saved!')
     },
