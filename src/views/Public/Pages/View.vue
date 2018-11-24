@@ -1,20 +1,5 @@
 <template>
   <div class="view">
-    <b-navbar toggleable="md" type="dark" variant="info">
-      <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-      <b-navbar-brand>CRUST CRM</b-navbar-brand>
-      <b-collapse is-nav id="nav_collapse">
-        <b-navbar-nav>
-          <b-nav-item-dropdown :title="page.description" :text="page.title" v-if="page.children.length > 0" v-bind:class="{ 'active': page.active }" v-for="page in pages" v-bind:key="page.id">
-            <b-dropdown-item :title="page.description" v-bind:class="{ 'active': page.active && viewPageData.id === page.id }" :to="'/pages/' + page.id">{{ page.title }}</b-dropdown-item>
-            <b-dropdown-item :title="pageChild.description" v-bind:class="{ 'active': pageChild.active }" v-for="pageChild in page.children" v-bind:key="pageChild.id" :to="'/pages/' + pageChild.id">{{ pageChild.title }}</b-dropdown-item>
-          </b-nav-item-dropdown>
-          <b-nav-item :title="page.description" v-if="page.children.length == 0" :to="'/pages/' + page.id" v-bind:class="{ 'active': page.active }" v-for="page in pages" v-bind:key="page.id">
-            {{page.title}}
-          </b-nav-item>
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>
     <div class="content">
       <PageContent></PageContent>
     </div>
