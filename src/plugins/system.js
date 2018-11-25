@@ -325,7 +325,7 @@ class System {
     })
   }
 
-  async userCreate ({ email, username, password, name, handle, meta, satosaID, organisationID }) {
+  async userCreate ({ email, username, password, name, handle, kind, meta, satosaID, organisationID }) {
     const endpoint = `${this.baseLink}/users/`
     return new Promise((resolve, reject) => {
       axios({
@@ -340,6 +340,7 @@ class System {
           'password': password,
           'name': name,
           'handle': handle,
+          'kind': kind,
           'meta': meta,
           'satosaID': satosaID,
           'organisationID': organisationID,
@@ -348,7 +349,7 @@ class System {
     })
   }
 
-  async userEdit ({ userID, email, username, password, name, handle, meta, satosaID, organisationID }) {
+  async userEdit ({ userID, email, username, password, name, handle, kind, meta, satosaID, organisationID }) {
     const endpoint = `${this.baseLink}/users/${userID}`
     return new Promise((resolve, reject) => {
       axios({
@@ -363,6 +364,7 @@ class System {
           'password': password,
           'name': name,
           'handle': handle,
+          'kind': kind,
           'meta': meta,
           'satosaID': satosaID,
           'organisationID': organisationID,
