@@ -277,7 +277,39 @@ class System {
     })
   }
 
-  async userSearch ({ query }) {
+  async teamMemberAdd ({ teamID, userID }) {
+    const endpoint = `${this.baseLink}/teams/${teamID}/memberAdd`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {
+          'userID': userID,
+        },
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async teamMemberRemove ({ teamID, userID }) {
+    const endpoint = `${this.baseLink}/teams/${teamID}/memberRemove`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {
+          'userID': userID,
+        },
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async userList ({ query }) {
     const endpoint = `${this.baseLink}/users/`
     return new Promise((resolve, reject) => {
       axios({
@@ -288,6 +320,108 @@ class System {
         params: {
           'query': query,
         },
+        data: {},
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async userCreate ({ email, username, password, name, handle, meta, satosaID, organisationID }) {
+    const endpoint = `${this.baseLink}/users/`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {
+          'email': email,
+          'username': username,
+          'password': password,
+          'name': name,
+          'handle': handle,
+          'meta': meta,
+          'satosaID': satosaID,
+          'organisationID': organisationID,
+        },
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async userEdit ({ userID, email, username, password, name, handle, meta, satosaID, organisationID }) {
+    const endpoint = `${this.baseLink}/users/${userID}`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'PUT',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {
+          'email': email,
+          'username': username,
+          'password': password,
+          'name': name,
+          'handle': handle,
+          'meta': meta,
+          'satosaID': satosaID,
+          'organisationID': organisationID,
+        },
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async userRead ({ userID }) {
+    const endpoint = `${this.baseLink}/users/${userID}`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {},
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async userRemove ({ userID }) {
+    const endpoint = `${this.baseLink}/users/${userID}`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'DELETE',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {},
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async userSuspend ({ userID }) {
+    const endpoint = `${this.baseLink}/users/${userID}/suspend`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {},
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async userUnsuspend ({ userID }) {
+    const endpoint = `${this.baseLink}/users/${userID}/unsuspend`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
         data: {},
       }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })
