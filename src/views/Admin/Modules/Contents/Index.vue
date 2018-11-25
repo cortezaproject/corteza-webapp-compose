@@ -4,7 +4,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th v-for="moduleField in module.fields" :key="'modules-contents-title-' + moduleField.name">
+          <th v-for="moduleField in module.fields" :key="'modules-contents-title-' + moduleField.name" v-if="moduleField.isVisible">
             {{moduleField.title}}
           </th>
           <th class="text-right">Actions</th>
@@ -18,12 +18,12 @@
       <tbody>
         <template v-for="row in list.contents">
           <tr :key="'modules-contents-index-' + row.id">
-            <td v-for="moduleField in module.fields" :key="'modules-contents-' + row.id + '-' + moduleField.name">
+            <td v-for="moduleField in module.fields" :key="'modules-contents-' + row.id + '-' + moduleField.name" v-if="moduleField.isVisible">
               <span v-if="moduleField.name in row.fields">{{row.fields[moduleField.name]}}</span>
               <span v-else><i>None</i></span>
             </td>
             <td class="text-right">
-              <router-link :href="{name: 'admin.modules.content.edit', params: { moduleID, contentID: row.id }}" class="btn btn-sm btn-primary">Edit</router-link>
+              <router-link :to="{name: 'admin.modules.content.edit', params: { moduleID, contentID: row.contentID }}" class="btn btn-sm btn-primary">Edit</router-link>
               &nbsp; <a @click="deleteContent(row.id)" class="btn btn-sm btn-warning">Delete</a>
             </td>
           </tr>
@@ -38,26 +38,18 @@
       <p>No content rows added yet.</p>
     </template>
 
-    <router-link
-        :to="{name: 'admin.modules.content.add', params: { moduleID }}"
-        class="btn btn-primary">Add new entry</router-link>
-  &nbsp;
-    <router-link
-        :to="{name: 'admin.modules.edit', params: { moduleID }}"
-        class="btn btn-secondary">Edit module</router-link>
-  &nbsp;
-    <router-link
-        :to="{name: 'admin.modules'}"
-        class="btn btn-warning">Back to Module list</router-link>
+    <router-link :to="{name: 'admin.modules.content.add', params: { moduleID }}" class="btn btn-primary">Add new entry</router-link>
+    &nbsp;
+    <router-link :to="{name: 'admin.modules.edit', params: { moduleID }}" class="btn btn-secondary">Edit module</router-link>
+    &nbsp;
+    <router-link :to="{name: 'admin.modules'}" class="btn btn-warning">Back to Module list</router-link>
   </section>
 </template>
 
 <script>
 export default {
   props: {
-    moduleID: {
-      type: String,
-    },
+    moduleID: String,
   },
   data () {
     return {
@@ -65,7 +57,9 @@ export default {
       module: {},
       page: 0,
       perPage: 20,
-      list: [],
+      list: {
+        contents: [],
+      },
       errors: [],
     }
   },
@@ -96,7 +90,7 @@ export default {
         this.module = await this.$crm.moduleRead(req)
         this.module.colspan = 1
         this.module.fields.forEach(field => {
-          if (field.show) {
+          if (field.isVisible) {
             this.module.colspan++
           }
         })
