@@ -14,7 +14,6 @@ export default {
   props: {
     ctaClass: { type: String, default: 'danger' },
     disabled: Boolean,
-    error: String,
   },
 
   computed: {
