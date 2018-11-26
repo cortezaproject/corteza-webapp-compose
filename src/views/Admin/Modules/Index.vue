@@ -84,7 +84,9 @@ export default {
     async create () {
       this.addModuleFormSubmitError = ''
       try {
-        await this.$crm.moduleCreate(this.addModuleFormData)
+        this.$crm.moduleCreate(this.addModuleFormData).then((module) => {
+          this.$router.push({ name: 'admin.modules.edit', params: { moduleID: module.moduleID } })
+        })
         await this.$_initList()
       } catch (e) {
         this.addModuleFormSubmitError = 'Error when trying to create module.'
