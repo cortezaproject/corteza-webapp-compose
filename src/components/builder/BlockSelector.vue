@@ -60,8 +60,8 @@
                   {{ modulesListError }}
                 </div>
                 <!-- B select a module -->
-                <select :value="selectedModule ? selectedModule.id : null" required @input="handleSelectContentListModule($event.target.value)" class="form-control" id="select-content-list">
-                  <option v-for="module in modulesList" :key="module.id" :value="module.id">{{ module.name }}</option>
+                <select :value="selectedModule ? selectedModule.moduleID : null" required @input="handleSelectContentListModule($event.target.value)" class="form-control" id="select-content-list">
+                  <option v-for="module in modulesList" :key="module.id" :value="module.moduleID">{{ module.name }}</option>
                 </select>
                 <!-- E select a module -->
 
@@ -181,12 +181,7 @@ export default {
           })
         }
       })
-      console.log('Remove these fields')
-      console.log(fieldsToRemove)
       this.contentFieldsAvailable = this.contentFieldsAvailable.filter(function (field) {
-        console.log('Searching through available fields')
-        console.log(field)
-
         for (var f of fieldsToRemove) {
           if (f === field.id) {
             // field was found so return false to remove it from the list
@@ -232,7 +227,7 @@ export default {
     },
     handleSelectContentListModule (moduleId) {
       // find the module that was selected
-      this.selectedModule = this.modulesList.find(x => x.id === moduleId.toString())
+      this.selectedModule = this.modulesList.find(x => x.moduleID === moduleId.toString())
       // populate the available fields
       this.contentListFieldsAvailable = this.selectedModule.fields
     },
