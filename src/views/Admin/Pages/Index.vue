@@ -111,8 +111,3 @@ export default {
   },
 }
 </script>
-<style scoped lang="scss">
-table {
-  width: 100%;
-}
-</style>

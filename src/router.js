@@ -36,7 +36,7 @@ function crmViews () {
           component: view('Public/Index'),
           children: [
             { path: '', name: 'public.pages', component: view('Public/Redirect') },
-            { path: ':pageID', name: 'public.page', component: view('Public/Pages/View') },
+            { path: ':pageID', name: 'public.page', component: view('Public/Pages/View'), props: true },
 
           ],
         },

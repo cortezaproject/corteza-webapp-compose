@@ -1,7 +1,7 @@
 <template>
     <sortable-tree :data="{children:list}" element="ul" class="list-group" @changePosition="handleChangePosition">
         <template slot-scope="{item}">
-            <div class="wrap" v-if="item.id">
+            <div class="wrap" v-if="item.pageID">
                 <div class="title">{{ item.title }}</div>
                 <div class="prop-col">
                     <span v-if="item.moduleID !== '0'">Module</span>
@@ -13,7 +13,7 @@
                 <div class="actions">
                     <router-link
                             v-if="item.blocks && item.blocks.length >= 1"
-                            :to="{name: 'public.pages', params: { pageID: item.id }}"
+                            :to="{name: 'public.pages', params: { pageID: item.pageID }}"
                             class="actions__action">View page</router-link>
 
                     <div title="You need to build page to view your page !"
@@ -21,17 +21,17 @@
                          class="actions__action--disabled">View page</div>
 
                     <router-link
-                            :to="{name: 'admin.builder', query: { pageId: item.id }}"
+                            :to="{name: 'admin.builder', query: { pageId: item.pageID }}"
                             class="actions__action">Build page</router-link>
 
                     <router-link
-                            :to="{name: 'admin.pages.edit', params: { pageID: item.id }}"
+                            :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
                             class="actions__action">Edit data</router-link>
 
                     <button
                             type="button"
                             class="btn btn-default actions__action"
-                            @click="$emit('delete', item.id)">Delete</button>
+                            @click="$emit('delete', item.pageID)">Delete</button>
                 </div>
             </div>
         </template>
@@ -86,20 +86,16 @@ export default {
 
   methods: {
     async handleChangePosition ({ beforeParent, data, afterParent }) {
-      // This is fired only on an actual change.
-      // @todo selfID=0 assumption
-      console.log({ beforeParent: beforeParent.title, data: data.title, afterParent: afterParent.title })
-
-      if (beforeParent.id !== afterParent.id) {
+      if (beforeParent.pageID !== afterParent.pageID) {
         // Page moved to a different parent
-        data.pageID = data.id
-        data.selfID = afterParent.id
+        data.pageID = data.pageID
+        data.selfID = afterParent.pageID
         await this.$crm.pageEdit(data)
       }
 
-      const pageIDs = afterParent.children.map(p => p.id)
+      const pageIDs = afterParent.children.map(p => p.pageID)
       if (pageIDs.length > 1) {
-        this.$crm.pageReorder({ selfID: afterParent.id, pageIDs: pageIDs }).then(() => {
+        this.$crm.pageReorder({ selfID: afterParent.pageID, pageIDs: pageIDs }).then(() => {
           this.$emit('reorder')
         })
       }
