@@ -4,9 +4,6 @@
             <div class="wrap" v-if="item.pageID">
                 <div class="title">{{ item.title }}</div>
                 <div class="prop-col">
-                    <span v-if="item.moduleID !== '0'">Module</span>
-                </div>
-                <div class="prop-col">
                     <span v-if="item.visible">Visible</span>
                     <span v-else>Hidden</span>
                 </div>
