@@ -24,10 +24,6 @@
       <div class="col-md-12">
         <h2>List of pages</h2>
         <div class="well">
-          <div v-if="deletePageError" style="color:red;">
-            {{ deletePageError }}
-          </div>
-
           <page-tree
             @delete="handleDeletePage($event)"
             @reorder="handleReorder"
@@ -39,16 +35,11 @@
       <div class="col-md-12">
         <h2>List of record pages</h2>
         <div class="well">
-          <record-pages-list v-model="recordPages" />
+          <record-pages-list
+            @delete="handleDeletePage($event)"
+            v-model="recordPages" />
         </div>
       </div>
-      <b-modal ref="myDeleteModalRef" hide-footer title="Confirmation">
-        <div class="d-block text-center">
-          <h3>Do you confirm deletion ?</h3>
-        </div>
-        <b-btn class="mt-3" variant="outline-info" block @click="handleModalConfirmYes()">Yes</b-btn>
-        <b-btn class="mt-3" variant="outline-danger" block @click="handleModalConfirmNo()">No</b-btn>
-      </b-modal>
     </div>
   </div>
 </template>
@@ -111,21 +102,9 @@ export default {
         this.addPageFormSubmitError = 'Error when trying to create page.'
       }
     },
-    async handleDeletePage (id) {
-      this.idToDelete = id
-      this.$refs.myDeleteModalRef.show(id)
-    },
-    async handleModalConfirmYes () {
-      try {
-        await this.$crm.pageDelete({ id: this.idToDelete })
-        await this.$_initList()
-      } catch (e) {
-        this.deletePageError = 'Error when trying to delete page.'
-      }
-      this.$refs.myDeleteModalRef.hide()
-    },
-    handleModalConfirmNo () {
-      this.$refs.myDeleteModalRef.hide()
+    async handleDeletePage (pageID) {
+      await this.$crm.pageDelete({ pageID })
+      await this.$_initList()
     },
 
     handleReorder () {

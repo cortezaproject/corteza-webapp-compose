@@ -29,10 +29,7 @@
                             :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
                             class="actions__action">Edit data</router-link>
 
-                    <button
-                            type="button"
-                            class="btn btn-default actions__action"
-                            @click="$emit('delete', item.pageID)">Delete</button>
+                    <confirmation-toggle @confirmed="$emit('delete', item.pageID)">Delete</confirmation-toggle>
                 </td>
             </tr>
         </tbody>
@@ -40,12 +37,18 @@
 </template>
 
 <script>
+import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
+
 export default {
   props: {
     value: {
       type: Array,
       required: true,
     },
+  },
+
+  components: {
+    ConfirmationToggle,
   },
 }
 </script>

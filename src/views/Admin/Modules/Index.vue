@@ -32,7 +32,7 @@
               <td><time :datetime="module.updatedAt" v-if="module.updatedAt">(Updated at : {{ module.updatedAt }})</time></td>
               <td class="text-right actions">
                 <router-link :to="{name: 'admin.modules.edit', params: { moduleID: module.moduleID }}" class="actions__action">Edit data</router-link>
-                <button class="btn btn-secondary actions__action" v-on:click="remove(module.moduleID)">Delete</button>
+                <confirmation-toggle @confirmed="remove(module.moduleID)">Delete</confirmation-toggle>
               </td>
             </tr>
           </tbody>
@@ -42,17 +42,11 @@
         </div>
       </div>
     </div>
-    <b-modal ref="myDeleteModalRef" hide-footer title="Confirmation">
-      <div class="d-block text-center">
-        <h3>Do you confirm deletion ?</h3>
-      </div>
-      <button class="btn btn-secondary" @click="confirmYes()">Yes</button>
-      <button class="btn btn-secondary" @click="confirmNo()">No</button>
-    </b-modal>
   </div>
 </template>
 
 <script>
+import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 
 export default {
   idToDelete: '',
@@ -81,6 +75,7 @@ export default {
         this.listError = 'Error when trying to get list of modules.'
       }
     },
+
     async create () {
       this.addModuleFormSubmitError = ''
       try {
@@ -92,22 +87,15 @@ export default {
         this.addModuleFormSubmitError = 'Error when trying to create module.'
       }
     },
-    async remove (id) {
-      this.idToDelete = id
-      this.$refs.myDeleteModalRef.show(id)
+
+    async remove (moduleID) {
+      await this.$crm.moduleDelete({ moduleID })
+      await this.$_initList()
     },
-    async confirmYes () {
-      try {
-        await this.$crm.moduleDelete({ moduleID: this.idToDelete })
-        await this.$_initList()
-      } catch (e) {
-        this.deleteModuleError = 'Error when trying to delete module.'
-      }
-      this.$refs.myDeleteModalRef.hide()
-    },
-    confirmNo () {
-      this.$refs.myDeleteModalRef.hide()
-    },
+  },
+
+  components: {
+    ConfirmationToggle,
   },
 }
 </script>
