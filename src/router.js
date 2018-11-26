@@ -64,8 +64,8 @@ function crmViews () {
             { path: 'pages/', name: 'admin.pages', component: view('Admin/Pages/Index') },
             { path: 'pages/:pageID', name: 'admin.pages.view', component: view('Admin/Pages/View'), props: true },
             { path: 'pages/:pageID/edit', name: 'admin.pages.edit', component: view('Admin/Pages/Edit'), props: true },
+            { path: 'pages/:pageID/builder', name: 'admin.pages.builder', component: view('Admin/Pages/Builder'), props: true },
 
-            { path: 'builder', name: 'admin.builder', component: view('Admin/Builder') },
             { path: 'charts', name: 'admin.charts', component: view('Admin/Charts/Index') },
             { path: 'charts/:chartID/edit', name: 'admin.charts.edit', component: view('Admin/Charts/Index'), props: true },
             { path: 'configuration', name: 'admin.configuration', component: view('Admin/Configuration/Index') },

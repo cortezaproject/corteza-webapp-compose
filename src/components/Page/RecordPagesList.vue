@@ -22,7 +22,7 @@
                          class="actions__action--disabled">View page</div>
 
                     <router-link
-                            :to="{name: 'admin.builder', query: { pageId: item.pageID }}"
+                            :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
                             class="actions__action">Build page</router-link>
 
                     <router-link

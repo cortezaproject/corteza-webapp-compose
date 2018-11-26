@@ -16,6 +16,13 @@ import DoneButton from '@/components/builder/DoneButton'
 import SharedService from '@/services/SharedService'
 
 export default {
+  props: {
+    pageID: {
+      type: String,
+      required: true,
+    },
+  },
+
   components: {
     BlockSelector,
     DoneButton,
@@ -57,8 +64,7 @@ export default {
   },
   methods: {
     async fetchPage () {
-      // await this.$store.dispatch('builder/fetchPageData', this.$route.query.pageId)
-      this.pageData = await this.$root.$crm.pageRead({ 'pageID': this.$route.query.pageId })
+      this.pageData = await this.$root.$crm.pageRead({ 'pageID': this.pageID })
 
       // check if there are any blocks to add
       if (this.pageData.blocks != null && this.pageData.blocks.length > 0) {
@@ -160,7 +166,7 @@ export default {
       })
 
       await this.$root.$crm.pageEdit({
-        pageID: this.pageData.id,
+        pageID: this.pageData.pageID,
         selfID: this.pageData.selfID,
         moduleID: this.pageData.module ? this.pageData.module.id : null,
         title: this.pageData.title,
