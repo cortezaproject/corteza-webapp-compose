@@ -4,7 +4,7 @@
       <div class="col-md-12">
         <div class="well">
           <h2>Create a new module</h2>
-          <form @submit.prevent="handleAddModuleFormSubmit">
+          <form @submit.prevent="create">
             <div class="form-group">
               <label for="name">Module name</label>
               <input required type="text" v-model="addModuleFormData.name" class="form-control" id="name" placeholder="Module name" />
@@ -27,14 +27,12 @@
           <tbody>
             <tr v-for="(module, index) in list" :key="index">
               <td>
-                <router-link
-                      :to="{name: 'admin.modules.view', params: { moduleID: module.id }}">{{ module.name }}</router-link></td>
+                <router-link :to="{name: 'admin.modules.view', params: { moduleID: module.moduleID }}">{{ module.name }}</router-link>
+              </td>
               <td><time :datetime="module.updatedAt" v-if="module.updatedAt">(Updated at : {{ module.updatedAt }})</time></td>
               <td class="text-right actions">
-                <router-link
-                        :to="{name: 'admin.modules.edit', params: { moduleID: module.id }}"
-                        class="actions__action">Edit data</router-link>
-                <button class="btn btn-secondary actions__action" v-on:click="handleDeleteModule(module.id)">Delete</button>
+                <router-link :to="{name: 'admin.modules.edit', params: { moduleID: module.moduleID }}" class="actions__action">Edit data</router-link>
+                <confirmation-toggle @confirmed="remove(module.moduleID)">Delete</confirmation-toggle>
               </td>
             </tr>
           </tbody>
@@ -44,17 +42,11 @@
         </div>
       </div>
     </div>
-    <b-modal ref="myDeleteModalRef" hide-footer title="Confirmation">
-      <div class="d-block text-center">
-        <h3>Do you confirm deletion ?</h3>
-      </div>
-      <button class="btn btn-secondary" @click="handleModalConfirmYes()">Yes</button>
-      <button class="btn btn-secondary" @click="handleModalConfirmNo()">No</button>
-    </b-modal>
   </div>
 </template>
 
 <script>
+import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 
 export default {
   idToDelete: '',
@@ -83,31 +75,27 @@ export default {
         this.listError = 'Error when trying to get list of modules.'
       }
     },
-    async handleAddModuleFormSubmit () {
+
+    async create () {
       this.addModuleFormSubmitError = ''
       try {
-        await this.$crm.moduleCreate(this.addModuleFormData)
+        this.$crm.moduleCreate(this.addModuleFormData).then((module) => {
+          this.$router.push({ name: 'admin.modules.edit', params: { moduleID: module.moduleID } })
+        })
         await this.$_initList()
       } catch (e) {
         this.addModuleFormSubmitError = 'Error when trying to create module.'
       }
     },
-    async handleDeleteModule (id) {
-      this.idToDelete = id
-      this.$refs.myDeleteModalRef.show(id)
+
+    async remove (moduleID) {
+      await this.$crm.moduleDelete({ moduleID })
+      await this.$_initList()
     },
-    async handleModalConfirmYes () {
-      try {
-        await this.$crm.moduleDelete({ id: this.idToDelete })
-        await this.$_initList()
-      } catch (e) {
-        this.deleteModuleError = 'Error when trying to delete module.'
-      }
-      this.$refs.myDeleteModalRef.hide()
-    },
-    handleModalConfirmNo () {
-      this.$refs.myDeleteModalRef.hide()
-    },
+  },
+
+  components: {
+    ConfirmationToggle,
   },
 }
 </script>

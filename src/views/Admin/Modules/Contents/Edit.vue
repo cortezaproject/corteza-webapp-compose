@@ -17,7 +17,7 @@
     </table>
 
     <a href="#" @click="save" class="btn btn-primary">Save entry</a>
-    &nbsp; <a :href="links.cancel" class="btn btn-secondary">Cancel</a>
+    &nbsp; <router-link :to="{ name: 'admin.modules.view', params: { moduleID }}" class="btn btn-secondary">Cancel</router-link>
 
     <pre>{{ $data }}</pre>
 
@@ -29,24 +29,20 @@ import FieldEdit from '@/components/FieldEdit.vue'
 
 export default {
   props: {
-    moduleID: {
-      type: String,
-    },
+    moduleID: String,
   },
-
   components: {
     FieldEdit,
   },
-
   data () {
-    return Object.assign({
+    return {
       row: {
         fields: {},
       },
       module: {},
       mode: this.moduleID ? 'edit' : 'create',
       errors: [],
-    }, this)
+    }
   },
   async created () {
     await this.loadModule()

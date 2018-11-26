@@ -2,8 +2,8 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
+        <h2>Create a new page</h2>
         <div class="well">
-          <h2>Create a new page</h2>
           <form @submit.prevent="handleAddPageFormSubmit">
             <div class="form-group">
               <label for="title">Page title</label>
@@ -17,36 +17,37 @@
         </div>
       </div>
     </div>
+    <div v-if="listError" style="color:red;">
+      {{ listError }}
+    </div>
     <div class="row">
       <div class="col-md-12">
         <h2>List of pages</h2>
-        <div v-if="deletePageError" style="color:red;">
-          {{ deletePageError }}
-        </div>
-
-        <page-tree
-          @delete="handleDeletePage($event)"
-          @reorder="handleReorder"
-          v-model="list"/>
-
-        <div v-if="listError" style="color:red;">
-          {{ listError }}
+        <div class="well">
+          <page-tree
+            @delete="handleDeletePage($event)"
+            @reorder="handleReorder"
+            v-model="tree"/>
         </div>
       </div>
     </div>
-    <b-modal ref="myDeleteModalRef" hide-footer title="Confirmation">
-      <div class="d-block text-center">
-        <h3>Do you confirm deletion ?</h3>
+    <div class="row ">
+      <div class="col-md-12">
+        <h2>List of record pages</h2>
+        <div class="well">
+          <record-pages-list
+            @delete="handleDeletePage($event)"
+            v-model="recordPages" />
+        </div>
       </div>
-      <b-btn class="mt-3" variant="outline-info" block @click="handleModalConfirmYes()">Yes</b-btn>
-      <b-btn class="mt-3" variant="outline-danger" block @click="handleModalConfirmNo()">No</b-btn>
-    </b-modal>
+    </div>
   </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
 import PageTree from '@/components/Page/Tree'
+import RecordPagesList from '@/components/Page/RecordPagesList'
 
 export default {
   idToDelete: '',
@@ -56,7 +57,8 @@ export default {
       deletePageError: '',
       listError: '',
       addPageFormSubmitError: '',
-      list: [],
+      tree: [],
+      recordPages: [],
       addPageFormData: {
         title: '',
       },
@@ -69,7 +71,24 @@ export default {
     async $_initList () {
       try {
         this.listError = ''
-        this.list = await this.$crm.pageTree({})
+        this.$crm.pageTree({}).then((tree) => {
+          this.recordPages = []
+          const traverse = (pages) => {
+            return pages.map((p) => {
+              if (p.moduleID !== '0') {
+                this.recordPages.push(p)
+              }
+
+              if (p.children) {
+                p.children = traverse(p.children).filter((p) => p.moduleID === '0')
+              }
+
+              return p
+            })
+          }
+
+          this.tree = traverse(tree)
+        })
       } catch (e) {
         this.listError = 'Error when trying to get list of pages.'
       }
@@ -83,21 +102,9 @@ export default {
         this.addPageFormSubmitError = 'Error when trying to create page.'
       }
     },
-    async handleDeletePage (id) {
-      this.idToDelete = id
-      this.$refs.myDeleteModalRef.show(id)
-    },
-    async handleModalConfirmYes () {
-      try {
-        await this.$crm.pageDelete({ id: this.idToDelete })
-        await this.$_initList()
-      } catch (e) {
-        this.deletePageError = 'Error when trying to delete page.'
-      }
-      this.$refs.myDeleteModalRef.hide()
-    },
-    handleModalConfirmNo () {
-      this.$refs.myDeleteModalRef.hide()
+    async handleDeletePage (pageID) {
+      await this.$crm.pageDelete({ pageID })
+      await this.$_initList()
     },
 
     handleReorder () {
@@ -108,11 +115,7 @@ export default {
   components: {
     draggable,
     PageTree,
+    RecordPagesList,
   },
 }
 </script>
-<style scoped lang="scss">
-table {
-  width: 100%;
-}
-</style>

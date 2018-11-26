@@ -8,7 +8,7 @@
             {{ editPageError }}
           </div>
           <form v-if="!editPageError" @submit.prevent="handleEditPageFormSubmit">
-            <input required type="hidden" v-model="editPageFormData.id" id="id" />
+            <input required type="hidden" v-model="editPageFormData.pageID" id="id" />
             <div class="form-group">
               <label for="title">Page title</label>
               <input required type="text" v-model="editPageFormData.title" class="form-control" id="title" placeholder="Page title" />
@@ -25,7 +25,7 @@
                 <label for="module">Module</label>
                 <select v-model="editPageFormData.moduleID" class="form-control" id="module">
                   <option :value="null"></option>
-                  <option v-for="module in modulesList" :key="module.id" :value="module.id">{{ module.name }}</option>
+                  <option v-for="module in modulesList" :key="module.moduleID" :value="module.moduleID">{{ module.name }}</option>
                 </select>
                 <router-link :to="{name: 'admin.modules'}" class="actions__action">Add a module</router-link>
               </div>
@@ -55,16 +55,14 @@ export default {
       editPageError: '',
       editPageFormSubmitError: '',
       modulesList: [],
-      editPageFormData: {
-        title: '',
-        moduleID: '',
-      },
+      editPageFormData: {},
     }
   },
   async created () {
     try {
       this.editPageError = ''
       this.editPageFormData = await this.$crm.pageRead({ pageID: this.pageID })
+      console.log(this.editPageFormData)
       // Parent pages : not itself
       this.modulesList = await this.$crm.moduleList({})
     } catch (e) {
@@ -75,11 +73,8 @@ export default {
     async handleEditPageFormSubmit () {
       try {
         this.editPageFormSubmitError = ''
-
-        const payload = Object.assign({}, this.editPageFormData, { pageID: this.editPageFormData.id })
-        delete payload.id
-
-        await this.$crm.pageEdit(payload)
+        console.log(this.editPageFormData)
+        await this.$crm.pageEdit(this.editPageFormData)
       } catch (e) {
         this.editPageFormSubmitError = 'Error when trying to edit page.'
       }

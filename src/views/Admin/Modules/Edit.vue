@@ -7,14 +7,14 @@
           <div v-if="editModuleError" style="color:red;">
             {{ editModuleError }}
           </div>
-          <form v-if="!editModuleError" @submit.prevent="FormSubmit">
-            <input required type="hidden" v-model="editModuleFormData.id" id="id" />
+          <form v-if="!editModuleError" @submit.prevent="save">
+            <input required type="hidden" v-model="formData.id" />
             <div class="form-group">
-              <label for="name">Module name</label>
-              <input required type="text" v-model="editModuleFormData.name" class="form-control" id="name" placeholder="Module name" />
+              <label>Module name</label>
+              <input required type="text" v-model="formData.name" class="form-control" placeholder="Module name" />
             </div>
             <div class="form-group">
-              <label for="name">Module fields</label>
+              <label>Manage record fields</label>
               <table class="table" border="1">
                 <thead>
                   <tr>
@@ -22,13 +22,14 @@
                     <th v-b-tooltip.hover title="Must be lower-case a-z, 0-9 and underscore">Name</th>
                     <th v-b-tooltip.hover title="The name displayed in form input / data lists">Title</th>
                     <th>Type</th>
-                    <th>Privacy sensitive data</th>
-                    <th>Show in list</th>
-                    <th></th>
+                    <th class="text-center">Required</th>
+                    <th class="text-center">Privacy sensitive data</th>
+                    <th class="text-center">Show in list</th>
+                    <th class="text-center">Actions</th>
                   </tr>
                 </thead>
-                <draggable v-model="editModuleFormData.fields" :options="{handle:'.handle'}" :element="'tbody'">
-                  <template v-for="field in editModuleFormData.fields">
+                <draggable v-model="formData.fields" :options="{handle:'.handle'}" :element="'tbody'">
+                  <template v-for="field in formData.fields">
                     <tr :key="'modules-edit-' + field.id">
                       <td class="handle text-nowrap">[{{field.id}}]</td>
                       <td><input v-model="field.name" type="text" class="form-control" /></td>
@@ -36,13 +37,16 @@
                       <td><select v-model="field.kind" class="form-control">
                       <option v-for="fieldType in fieldsList" :key="fieldType.type" :value="fieldType.type">{{ _(fieldType.name) }}</option>
                       </select></td>
-                      <td>
-                        <input v-model="field.gdpr" type="checkbox"> Sensitive data
+                      <td class="text-center">
+                        <input v-model="field.isRequired" type="checkbox"/>
                       </td>
-                      <td>
-                        <input v-model="field.show" type="checkbox"> Show
+                      <td class="text-center">
+                        <input v-model="field.isPrivate" type="checkbox"/>
                       </td>
-                      <td>
+                      <td class="text-center">
+                        <input v-model="field.isVisible" type="checkbox"/>
+                      </td>
+                      <td class="text-center">
                         <button @click="RemoveField(field)" type="button" class="btn btn-default">Delete</button>
                       </td>
                     </tr>
@@ -58,8 +62,8 @@
                 <button @click="redirect()" class="btn btn-secondary">Cancel</button>
               </div>
             </div>
-            <div v-if="editModuleFormSubmitError" style="color:red;">
-              {{ editModuleFormSubmitError }}
+            <div v-if="formSubmitError" style="color:red;">
+              {{ formSubmitError }}
             </div>
           </form>
         </div>
@@ -76,9 +80,7 @@ import FieldSettings from '@/components/FieldSettings.vue'
 export default {
   name: 'ModuleEdit',
   props: {
-    moduleID: {
-      type: String,
-    },
+    moduleID: String,
   },
   components: {
     draggable,
@@ -86,11 +88,12 @@ export default {
   },
   data () {
     return {
+      mode: this.moduleID ? 'edit' : 'create',
       components: Vue.options.components,
       editModuleError: '',
-      editModuleFormSubmitError: '',
+      formSubmitError: '',
       fieldsList: [],
-      editModuleFormData: {
+      formData: {
         name: '',
         fields: [],
       },
@@ -103,7 +106,7 @@ export default {
       var req = {
         moduleID: this.moduleID,
       }
-      this.editModuleFormData = await this.$crm.moduleRead(req)
+      this.formData = await this.$crm.moduleRead(req)
     } catch (e) {
       this.editModuleError = 'Error when trying to init module form.'
     }
@@ -160,28 +163,34 @@ export default {
       }
       return potentialId
     },
-    async FormSubmit () {
+    async save () {
       try {
-        this.editModuleFormSubmitError = ''
-        await this.$crm.moduleEdit(this.editModuleFormData)
-        this.redirect()
+        if (this.mode === 'create') {
+          await this.$crm.moduleCreate(this.formData)
+        } else {
+          this.formSubmitError = ''
+          await this.$crm.moduleEdit(this.formData)
+          this.redirect()
+        }
       } catch (e) {
-        this.editModuleFormSubmitError = 'Error when trying to edit module.'
+        this.formSubmitError = 'Error when trying to edit module.'
       }
     },
     AddNewField () {
-      this.editModuleFormData.fields.push({
-        id: this.$_getNewIDForField(this.editModuleFormData.fields),
+      this.formData.fields.push({
+        id: this.$_getNewIDForField(this.formData.fields),
         name: '',
         title: '',
         kind: 'text',
-        gdpr: false,
+        isPrivate: false,
+        isRequired: true,
+        isHidden: false,
       })
     },
     RemoveField (field) {
-      const index = this.editModuleFormData.fields.indexOf(field)
+      const index = this.formData.fields.indexOf(field)
       if (index !== -1) {
-        this.editModuleFormData.fields.splice(index, 1)
+        this.formData.fields.splice(index, 1)
       }
     },
   },
