@@ -98,7 +98,7 @@ export default {
     },
     async confirmYes () {
       try {
-        await this.$crm.moduleDelete({ id: this.idToDelete })
+        await this.$crm.moduleDelete({ moduleID: this.idToDelete })
         await this.$_initList()
       } catch (e) {
         this.deleteModuleError = 'Error when trying to delete module.'
