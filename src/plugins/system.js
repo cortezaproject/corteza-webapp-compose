@@ -47,11 +47,28 @@ class System {
     })
   }
 
-  async authLogout () {
-    const endpoint = `${this.baseLink}/auth/check`
+  async authLogin ({ username, password }) {
+    const endpoint = `${this.baseLink}/auth/login`
     return new Promise((resolve, reject) => {
       axios({
-        method: 'DELETE',
+        method: 'POST',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {
+          'username': username,
+          'password': password,
+        },
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async authLogout () {
+    const endpoint = `${this.baseLink}/auth/logout`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
         url: endpoint,
         withCredentials: true,
         headers: this.headers,
