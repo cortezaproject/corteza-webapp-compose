@@ -10,11 +10,11 @@
           <form v-if="!editModuleError" @submit.prevent="save">
             <input required type="hidden" v-model="formData.id" />
             <div class="form-group">
-              <label for="name">Module name</label>
+              <label>Module name</label>
               <input required type="text" v-model="formData.name" class="form-control" placeholder="Module name" />
             </div>
             <div class="form-group">
-              <label for="name">Module fields</label>
+              <label>Manage record fields</label>
               <table class="table" border="1">
                 <thead>
                   <tr>
