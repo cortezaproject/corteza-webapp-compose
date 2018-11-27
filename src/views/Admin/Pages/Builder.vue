@@ -56,7 +56,9 @@ export default {
 
   mounted () {
     this.$crm.pageRead({ 'pageID': this.pageID }).then(page => {
-      this.blocks = page.blocks.map(b => new Block(b))
+      if (page.blocks && Array.isArray(page.blocks)) {
+        this.blocks = page.blocks.map(b => new Block(b))
+      }
     })
   },
 

@@ -27,6 +27,7 @@ import draggable from 'vuedraggable'
 import { RecordList } from '@/lib/block/RecordList'
 
 export default {
+  name: 'RecordList',
   props: {
     options: {
       type: Object,

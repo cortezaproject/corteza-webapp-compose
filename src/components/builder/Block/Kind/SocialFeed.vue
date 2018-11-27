@@ -9,3 +9,8 @@
         </fieldset>
     </div>
 </template>
+<script>
+export default {
+  name: 'SocialFeed',
+}
+</script>

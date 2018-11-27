@@ -24,7 +24,6 @@ import * as BlockComponents from '@/components/builder/Block/Kind'
 
 export default {
   props: {
-    // Determinates if (editor) modal is opened or not
     block: {
       type: Object,
       required: true,
