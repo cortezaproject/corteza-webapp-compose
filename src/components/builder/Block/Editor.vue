@@ -1,22 +1,33 @@
 <template>
-    <form class="col-12">
-      <fieldset class="form-group">
-        <div class="form-group">
-          <label for="title">Title</label>
-          <input v-model="block.title" type="text" class="form-control form-control-sm" id="title" placeholder="Block Title">
-        </div>
+  <form class="col-12">
+    <fieldset class="form-group">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input
+          v-model="block.title"
+          type="text"
+          class="form-control form-control-sm"
+          id="title"
+          placeholder="Block Title"
+        >
+      </div>
 
-        <div class="form-group">
-          <label for="description">Description</label>
-          <input v-model="block.description" type="text" class="form-control form-control-sm" id="description" placeholder="Block Description">
-        </div>
-      </fieldset>
-      <component :is="block.kind" :options.sync="block.options" />
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input
+          v-model="block.description"
+          type="text"
+          class="form-control form-control-sm"
+          id="description"
+          placeholder="Block Description"
+        >
+      </div>
+    </fieldset>
+    <component :is="block.kind" :modules="modules" :options.sync="block.options"/>
 
-      <hr />
-
-      {{ block }}
-    </form>
+    <hr>
+    {{ block }}
+  </form>
 </template>
 
 <script>
@@ -26,6 +37,10 @@ export default {
   props: {
     block: {
       type: Object,
+      required: true,
+    },
+    modules: {
+      type: Array,
       required: true,
     },
   },

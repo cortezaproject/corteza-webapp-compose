@@ -1,27 +1,28 @@
 <template>
-    <div class="builder">
-        <!--<BlockSelector :page-data=pageData :block-to-edit=blockToEdit v-on:addNewBlock="addNewBlock" v-on:blockHasBeenEdited="blockHasBeenEdited"></BlockSelector>-->
-        <!--<DoneButton :layout=layout v-on:saved="saveButtonClicked"></DoneButton>-->
-        <builder-grid :blocks.sync="blocks" />
+  <div class="builder">
+    <!--<BlockSelector :page-data=pageData :block-to-edit=blockToEdit v-on:addNewBlock="addNewBlock" v-on:blockHasBeenEdited="blockHasBeenEdited"></BlockSelector>-->
+    <!--<DoneButton :layout=layout v-on:saved="saveButtonClicked"></DoneButton>-->
+    <builder-grid :blocks.sync="blocks"/>
 
-        <b-modal id="newBlockSelector" hide-footer>
-            <new-block-selector @select="newBlock=$event;" />
-        </b-modal>
+    <b-modal id="newBlockSelector" hide-footer>
+      <new-block-selector @select="newBlock=$event;"/>
+    </b-modal>
 
-        <b-modal
-                title="Add new block"
-                ok-title="Add block"
-                :visible="!!newBlock"
-                @ok="blocks.push(newBlock)"
-                @hide="newBlock=null">
-            <block-editor v-if="newBlock" :block.sync="newBlock" />
-        </b-modal>
+    <b-modal
+      title="Add new block"
+      ok-title="Add block"
+      :visible="!!newBlock"
+      @ok="blocks.push(newBlock)"
+      @hide="newBlock=null"
+    >
+      <block-editor v-if="newBlock" :modules="modules" :block.sync="newBlock"/>
+    </b-modal>
 
-        <div class="toolbar">
-            <button v-b-modal.newBlockSelector @click="newBlock=null">Add block</button>
-            <button @click.prevent="handleSave">Done (save layouts)</button>
-        </div>
+    <div class="toolbar">
+      <button v-b-modal.newBlockSelector @click="newBlock=null">Add block</button>
+      <button @click.prevent="handleSave">Done (save layouts)</button>
     </div>
+  </div>
 </template>
 
 <script>
@@ -49,9 +50,20 @@ export default {
       // isNewBlockEditorOpen: false,
       newBlock: null,
       blocks: [],
+      modules: Array,
 
       loaded: true,
     }
+  },
+  created () {
+    /// NOTE: Get modules here so only 1 API call is made
+    ///       in place of one everytime a block component
+    ///       is loded in the editor
+    this.$crm.moduleList({}).then(mm => {
+      this.modules = mm
+    }).catch(err => {
+      this.error = err
+    })
   },
 
   mounted () {
@@ -66,6 +78,7 @@ export default {
     handleSave () {
       this.$crm.pageRead({ 'pageID': this.pageID }).then((page) => {
         page.blocks = this.blocks
+        this.page = page
         this.$crm.pageEdit(page).then({})
       })
     },
