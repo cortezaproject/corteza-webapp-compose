@@ -1,67 +1,123 @@
 <template>
-  <div v-if="layout.length >= 1" v-bind:class="{ 'mobile': mobilePreview }" class="builder-grid">
-    <grid-layout :layout="layout" :col-num="colNum" :row-height="90" :is-draggable="draggable" :is-resizable="resizable" :vertical-compact="true" :use-css-transforms="true">
-      <grid-item v-for="block in layout" v-bind:key="block.i" :x="block.x" :y="block.y" :w="block.w" :h="block.h" :i="block.i" v-bind:is-draggable="true">
-        <Block :block="block"></Block>
+  <div v-if="grid.length" v-bind:class="{ 'mobile': mobilePreview }" class="builder-grid">
+    <grid-layout
+        :layout="grid"
+        @layout-updated="handleLayoutUpdate"
+        :col-num="12"
+        :row-height="90"
+        :vertical-compact="true"
+        :resizable="true"
+        :draggable="true"
+        :use-css-transforms="true">
+      <grid-item
+          v-for="(item, i) in grid"
+          :resizable="true"
+          :draggable="true"
+          :key="item.i"
+          :x="item.x"
+          :y="item.y"
+          :w="item.w"
+          :h="item.h"
+          :i="item.i">
+        <!--<Block :block="item.block"></Block>&ndash;&gt;-->
+        {{ item.block }} {{ i }}
         <div class="actions">
-          <button @click="handleEditBlockButtonClick(block)">Edit</button>
-          <button @click="handleRemoveBlockButtonClick(block)">X</button>
+          <button @click="editBlock=item.block">Edit</button>
+          <button @click="grid.splice(i,1);handleLayoutUpdate(grid)">X</button>
         </div>
       </grid-item>
     </grid-layout>
+    <b-modal
+        title="Change existing block"
+        ok-title="Close"
+        ok-only
+        @hide="editBlock=null"
+        :visible="!!editBlock">
+      <block-editor v-if="editBlock" :block="editBlock" @cancel="editBlock=null" />
+    </b-modal>
   </div>
-  <div class="builder-grid" v-else>
+  <div v-else class="builder-grid">
     <h4>No block added yet.</h4>
   </div>
 </template>
 
 <script>
-/* eslint-disable-next-line */
 import VueGridLayout from 'vue-grid-layout'
 import Block from '@/components/block/Block'
+import BlockEditor from '@/components/builder/Block/Editor'
+
+const blocksToGrid = (blocks) => {
+  return blocks.map((block, i) => {
+    return {
+      i,
+
+      x: block.x,
+      y: block.y,
+      w: block.width,
+      h: block.height,
+
+      block,
+    }
+  })
+}
 
 export default {
-  name: 'BuilderGrid',
-  components: {
-    Block,
-  },
   props: {
-    layout: null,
+    blocks: {
+      type: Array,
+      required: true,
+    },
   },
+
   data () {
     return {
-      draggable: true,
-      resizable: true,
-      colNum: 12,
+      // all blocks in vue-grid friendly structure
+      grid: blocksToGrid(this.blocks),
+
+      // Block that is opened in editor
+      editBlock: null,
+
       mobilePreview: false,
     }
   },
-  methods: {
-    handleRemoveBlockButtonClick (blockToRemove) {
-      // get index of the block to remove based on the block title
-      var i = 0
-      for (i; i < this.layout.length; i++) {
-        if (this.layout[i].id === blockToRemove.id) {
-          break
-        }
-      }
 
-      // remove block from layout
-      this.layout.splice(i, 1)
+  watch: {
+    blocks: {
+      handler (blocks) {
+        this.grid = blocksToGrid(blocks)
+      },
+
+      deep: true,
     },
-    handleEditBlockButtonClick (blockToEdit) {
-      this.$emit('editBlock', {
-        blockToEdit: blockToEdit,
-      })
+  },
+
+  methods: {
+    handleLayoutUpdate (grid) {
+      // Emit change back with update: prefix for .sync modifier to kick in.
+      this.$emit('update:blocks', grid.map(({ x, y, w, h, block }) => {
+        block.merge({ x, y, width: w, height: h })
+        return block
+      }))
     },
+  },
+
+  components: {
+    GridLayout: VueGridLayout.GridLayout,
+    GridItem: VueGridLayout.GridItem,
+    Block,
+    BlockEditor,
   },
 }
 </script>
 
 <style lang="scss" scoped>
 .actions {
+  button {
+    font-size: 60%;
+  }
+
   position: absolute;
-  right: 0;
+  right: 2px;
   top: 0;
 }
 
@@ -76,56 +132,7 @@ export default {
 
 .vue-grid-item {
   border: 1px solid #ccc;
-  padding: 10px;
+  padding: 20px 10px 10px 10px;
 }
 
-/* vue-grid-layout CSS
- * ================================================== */
-.layoutJSON {
-  visibility: visible;
-}
-
-.eventsJSON {
-  visibility: visible;
-}
-
-.columns {
-  visibility: visible;
-}
-
-.vue-resizable-handle {
-  visibility: visible;
-}
-
-.vue-grid-item:not(.vue-grid-placeholder) {
-  visibility: visible;
-}
-
-.vue-grid-item.resizing {
-  visibility: visible;
-}
-
-.vue-grid-item.static {
-  visibility: visible;
-}
-
-.vue-grid-item .text {
-  visibility: visible;
-}
-
-.vue-grid-item .no-drag {
-  visibility: visible;
-}
-
-.vue-grid-item .minMax {
-  visibility: visible;
-}
-
-.vue-grid-item .add {
-  visibility: visible;
-}
-
-.vue-draggable-handle {
-  visibility: visible;
-}
 </style>
