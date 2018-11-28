@@ -18,13 +18,14 @@
 
     <div class="toolbar">
       <button v-b-modal.newBlockSelector @click="newBlock=null">Add block</button>
+      <button @click.prevent="$router.push({ name: 'public.page', params: { pageID } })">Preview</button>
       <button @click.prevent="handleSave">Done (save layouts)</button>
     </div>
   </div>
 </template>
 
 <script>
-import NewBlockSelector from '@/components/builder/Block'
+import NewBlockSelector from '@/components/builder/Block/Selector'
 import BlockEditor from '@/components/builder/Block/Editor'
 import BuilderGrid from '@/components/builder/BuilderGrid'
 import Block from '@/lib/block'
