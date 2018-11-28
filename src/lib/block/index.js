@@ -30,6 +30,7 @@ export default class Block {
       }
     } else if (kind) {
       this.kind = kind
+      this.options = new kinds[kind]()
     }
   }
 }

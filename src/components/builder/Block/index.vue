@@ -8,22 +8,21 @@
 </template>
 <script>
 import Block from '@/lib/block'
-import * as kinds from '@/lib/block/kinds'
 
 export default {
   data () {
     return {
       types: [
         { label: 'Record',
-          block: new Block({ options: new kinds.Record() }) },
+          block: new Block({ kind: 'Record' }) },
         { label: 'RecordList',
-          block: new Block({ options: new kinds.RecordList() }) },
+          block: new Block({ kind: 'RecordList' }) },
         { label: 'Chart',
-          block: new Block({ options: new kinds.Chart() }) },
+          block: new Block({ kind: 'Chart' }) },
         { label: 'Content',
-          block: new Block({ options: new kinds.Content() }) },
+          block: new Block({ kind: 'Content' }) },
         { label: 'Social media feed',
-          block: new Block({ options: new kinds.SocialFeed() }) },
+          block: new Block({ kind: 'SocialFeed' }) },
       ],
     }
   },
