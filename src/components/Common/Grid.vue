@@ -33,7 +33,7 @@
         ok-only
         @hide="editBlock=null"
         :visible="!!editBlock">
-      <block-editor v-if="editBlock" :block="editBlock" @cancel="editBlock=null" />
+      <editor v-if="editBlock" :block="editBlock" @cancel="editBlock=null" />
     </b-modal>
   </div>
   <div v-else class="builder-grid">
@@ -44,7 +44,7 @@
 <script>
 import VueGridLayout from 'vue-grid-layout'
 import Block from '@/components/block/Block'
-import BlockEditor from '@/components/builder/Block/Editor'
+import Editor from '@/components/Admin/Page/Builder/Editor'
 
 const blocksToGrid = (blocks) => {
   return blocks.map((block, i) => {
@@ -105,7 +105,7 @@ export default {
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,
     Block,
-    BlockEditor,
+    Editor,
   },
 }
 </script>

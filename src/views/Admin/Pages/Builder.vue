@@ -1,19 +1,18 @@
 <template>
   <div class="builder">
-    <builder-grid :blocks.sync="blocks"/>
+    <grid :blocks.sync="blocks"/>
 
     <b-modal id="newBlockSelector" hide-footer>
       <new-block-selector @select="newBlock=$event;"/>
     </b-modal>
 
     <b-modal
-      title="Add new block"
-      ok-title="Add block"
-      :visible="!!newBlock"
-      @ok="blocks.push(newBlock)"
-      @hide="newBlock=null"
-    >
-      <block-editor v-if="newBlock" :block.sync="newBlock"/>
+        title="Add new block"
+        ok-title="Add block"
+        :visible="!!newBlock"
+        @ok="blocks.push(newBlock)"
+        @hide="newBlock=null">
+      <editor v-if="newBlock" :block.sync="newBlock"/>
     </b-modal>
 
     <div class="toolbar">
@@ -25,9 +24,9 @@
 </template>
 
 <script>
-import NewBlockSelector from '@/components/builder/Block/Selector'
-import BlockEditor from '@/components/builder/Block/Editor'
-import BuilderGrid from '@/components/builder/BuilderGrid'
+import NewBlockSelector from '@/components/Admin/Page/Builder/Selector'
+import Editor from '@/components/Admin/Page/Builder/Editor'
+import Grid from '@/components/Common/Grid'
 import Block from '@/lib/block'
 
 export default {
@@ -39,9 +38,9 @@ export default {
   },
 
   components: {
-    BuilderGrid,
+    Grid,
     NewBlockSelector,
-    BlockEditor,
+    Editor,
   },
 
   data () {

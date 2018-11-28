@@ -8,8 +8,7 @@
           type="text"
           class="form-control form-control-sm"
           id="title"
-          placeholder="Block Title"
-        >
+          placeholder="Block Title" />
       </div>
 
       <div class="form-group">
@@ -19,8 +18,7 @@
           type="text"
           class="form-control form-control-sm"
           id="description"
-          placeholder="Block Description"
-        >
+          placeholder="Block Description" />
       </div>
     </fieldset>
     <component :is="block.kind" :options.sync="block.options"/>
@@ -31,7 +29,7 @@
 </template>
 
 <script>
-import * as BlockComponents from '@/components/builder/Block/Kind'
+import * as BlockComponents from '@/components/Admin/Page/Builder/Kind'
 
 export default {
   props: {
