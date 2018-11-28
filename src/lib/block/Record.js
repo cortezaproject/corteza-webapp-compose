@@ -6,7 +6,8 @@ export class Record extends BlockOptionsInterface {
     this.merge(def)
   }
 
-  merge (def = {}) {
-    // @todo
+  merge ({ moduleID, fields } = {}) {
+    this.moduleID = moduleID || undefined
+    this.fields = fields || []
   }
 }

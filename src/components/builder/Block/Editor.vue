@@ -23,7 +23,7 @@
         >
       </div>
     </fieldset>
-    <component :is="block.kind" :modules="modules" :options.sync="block.options"/>
+    <component :is="block.kind" :options.sync="block.options"/>
 
     <hr>
     {{ block }}
@@ -37,10 +37,6 @@ export default {
   props: {
     block: {
       type: Object,
-      required: true,
-    },
-    modules: {
-      type: Array,
       required: true,
     },
   },

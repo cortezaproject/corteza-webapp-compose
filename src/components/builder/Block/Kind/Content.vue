@@ -6,34 +6,15 @@
     </div>
 </template>
 <script>
-import { Content } from '@/lib/block/Content'
+import optionSyncProp from './mixins/optionSyncProp.js'
 import { quillEditor } from 'vue-quill-editor'
 
 // Quill styles
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
-// import 'quill/dist/quill.bubble.css'
 
 export default {
   name: 'Content',
-  props: {
-    options: {
-      type: Object,
-      default () { return new Content() },
-    },
-  },
-
-  computed: {
-    o: {
-      get () {
-        return this.options
-      },
-
-      set (o) {
-        this.$emit('update:options', o)
-      },
-    },
-  },
 
   data () {
     return {
@@ -77,5 +58,9 @@ export default {
   components: {
     quillEditor,
   },
+
+  mixins: [
+    optionSyncProp,
+  ],
 }
 </script>

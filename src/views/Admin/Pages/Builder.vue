@@ -1,7 +1,5 @@
 <template>
   <div class="builder">
-    <!--<BlockSelector :page-data=pageData :block-to-edit=blockToEdit v-on:addNewBlock="addNewBlock" v-on:blockHasBeenEdited="blockHasBeenEdited"></BlockSelector>-->
-    <!--<DoneButton :layout=layout v-on:saved="saveButtonClicked"></DoneButton>-->
     <builder-grid :blocks.sync="blocks"/>
 
     <b-modal id="newBlockSelector" hide-footer>
@@ -15,7 +13,7 @@
       @ok="blocks.push(newBlock)"
       @hide="newBlock=null"
     >
-      <block-editor v-if="newBlock" :modules="modules" :block.sync="newBlock"/>
+      <block-editor v-if="newBlock" :block.sync="newBlock"/>
     </b-modal>
 
     <div class="toolbar">
@@ -47,23 +45,10 @@ export default {
 
   data () {
     return {
-      // isNewBlockEditorOpen: false,
       newBlock: null,
       blocks: [],
-      modules: Array,
-
       loaded: true,
     }
-  },
-  created () {
-    /// NOTE: Get modules here so only 1 API call is made
-    ///       in place of one everytime a block component
-    ///       is loded in the editor
-    this.$crm.moduleList({}).then(mm => {
-      this.modules = mm
-    }).catch(err => {
-      this.error = err
-    })
   },
 
   mounted () {
