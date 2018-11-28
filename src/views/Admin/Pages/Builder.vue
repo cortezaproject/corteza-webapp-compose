@@ -1,22 +1,39 @@
 <template>
   <div class="builder">
-    <grid :blocks.sync="blocks"/>
+    <grid :blocks.sync="blocks">
+      <template slot-scope="{ block, index }">
+        {{ block }} {{ index }}
+        <div class="actions">
+          <button @click="updateBlock=block">Edit</button>
+          <button @click="blocks.splice(index,1)">X</button>
+        </div>
+      </template>
+    </grid>
 
-    <b-modal id="newBlockSelector" hide-footer>
-      <new-block-selector @select="newBlock=$event;"/>
+    <b-modal id="createBlockSelector" hide-footer>
+      <new-block-selector @select="createBlock=$event;"/>
     </b-modal>
 
     <b-modal
         title="Add new block"
         ok-title="Add block"
-        :visible="!!newBlock"
-        @ok="blocks.push(newBlock)"
-        @hide="newBlock=null">
-      <editor v-if="newBlock" :block.sync="newBlock"/>
+        :visible="!!createBlock"
+        @ok="blocks.push(createBlock)"
+        @hide="createBlock=null">
+      <editor v-if="createBlock" :block.sync="createBlock"/>
+    </b-modal>
+
+    <b-modal
+      title="Change existing block"
+      ok-title="Close"
+      ok-only
+      @hide="updateBlock=null"
+      :visible="!!updateBlock">
+      <editor v-if="updateBlock" :block="updateBlock" @cancel="updateBlock=null" />
     </b-modal>
 
     <div class="toolbar">
-      <button v-b-modal.newBlockSelector @click="newBlock=null">Add block</button>
+      <button v-b-modal.createBlockSelector @click="createBlock=null">Add block</button>
       <button @click.prevent="$router.push({ name: 'public.page', params: { pageID } })">Preview</button>
       <button @click.prevent="handleSave">Done (save layouts)</button>
     </div>
@@ -45,7 +62,9 @@ export default {
 
   data () {
     return {
-      newBlock: null,
+      createBlock: null,
+      // Block that is opened in editor
+      updateBlock: null,
       blocks: [],
       loaded: true,
     }
@@ -86,5 +105,15 @@ export default {
   button {
     margin-right: 10px;
   }
+}
+
+.actions {
+  button {
+    font-size: 60%;
+  }
+
+  position: absolute;
+  right: 2px;
+  top: 0;
 }
 </style>

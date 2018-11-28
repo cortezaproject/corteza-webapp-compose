@@ -10,7 +10,7 @@
         :draggable="true"
         :use-css-transforms="true">
       <grid-item
-          v-for="(item, i) in grid"
+          v-for="(item, index) in grid"
           :resizable="true"
           :draggable="true"
           :key="item.i"
@@ -19,22 +19,9 @@
           :w="item.w"
           :h="item.h"
           :i="item.i">
-        <!--<Block :block="item.block"></Block>&ndash;&gt;-->
-        {{ item.block }} {{ i }}
-        <div class="actions">
-          <button @click="editBlock=item.block">Edit</button>
-          <button @click="grid.splice(i,1);handleLayoutUpdate(grid)">X</button>
-        </div>
+        <slot v-bind:block="item.block" v-bind:index="index"></slot>
       </grid-item>
     </grid-layout>
-    <b-modal
-        title="Change existing block"
-        ok-title="Close"
-        ok-only
-        @hide="editBlock=null"
-        :visible="!!editBlock">
-      <editor v-if="editBlock" :block="editBlock" @cancel="editBlock=null" />
-    </b-modal>
   </div>
   <div v-else class="builder-grid">
     <h4>No block added yet.</h4>
@@ -43,8 +30,6 @@
 
 <script>
 import VueGridLayout from 'vue-grid-layout'
-import Block from '@/components/block/Block'
-import Editor from '@/components/Admin/Page/Builder/Editor'
 
 const blocksToGrid = (blocks) => {
   return blocks.map((block, i) => {
@@ -74,9 +59,6 @@ export default {
       // all blocks in vue-grid friendly structure
       grid: blocksToGrid(this.blocks),
 
-      // Block that is opened in editor
-      editBlock: null,
-
       mobilePreview: false,
     }
   },
@@ -104,23 +86,11 @@ export default {
   components: {
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,
-    Block,
-    Editor,
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.actions {
-  button {
-    font-size: 60%;
-  }
-
-  position: absolute;
-  right: 2px;
-  top: 0;
-}
-
 .builder-grid {
   width: 100%;
 
