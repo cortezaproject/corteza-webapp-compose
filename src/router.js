@@ -62,7 +62,6 @@ function crmViews () {
             { path: 'modules/:moduleID/content/:contentID/edit', name: 'admin.modules.content.edit', component: view('Admin/Modules/Contents/Edit'), props: true },
 
             { path: 'pages/', name: 'admin.pages', component: view('Admin/Pages/Index') },
-            { path: 'pages/:pageID', name: 'admin.pages.view', component: view('Admin/Pages/View'), props: true },
             { path: 'pages/:pageID/edit', name: 'admin.pages.edit', component: view('Admin/Pages/Edit'), props: true },
             { path: 'pages/:pageID/builder', name: 'admin.pages.builder', component: view('Admin/Pages/Builder'), props: true },
 
