@@ -2,11 +2,12 @@
   <div class="builder">
     <grid :blocks.sync="blocks">
       <template slot-scope="{ block, index }">
-        {{ block }} {{ index }}
+        <!-- {{ block }} {{ index }} -->
         <div class="actions">
           <button @click="updateBlock=block">Edit</button>
           <button @click="blocks.splice(index,1)">X</button>
         </div>
+        <BlockComp :block="block"></BlockComp>
       </template>
     </grid>
 
@@ -15,11 +16,12 @@
     </b-modal>
 
     <b-modal
-        title="Add new block"
-        ok-title="Add block"
-        :visible="!!createBlock"
-        @ok="blocks.push(createBlock)"
-        @hide="createBlock=null">
+      title="Add new block"
+      ok-title="Add block"
+      :visible="!!createBlock"
+      @ok="blocks.push(createBlock)"
+      @hide="createBlock=null"
+    >
       <editor v-if="createBlock" :block.sync="createBlock"/>
     </b-modal>
 
@@ -28,8 +30,9 @@
       ok-title="Close"
       ok-only
       @hide="updateBlock=null"
-      :visible="!!updateBlock">
-      <editor v-if="updateBlock" :block="updateBlock" @cancel="updateBlock=null" />
+      :visible="!!updateBlock"
+    >
+      <editor v-if="updateBlock" :block="updateBlock" @cancel="updateBlock=null"/>
     </b-modal>
 
     <div class="toolbar">
@@ -45,6 +48,7 @@ import NewBlockSelector from '@/components/Admin/Page/Builder/Selector'
 import Editor from '@/components/Admin/Page/Builder/Editor'
 import Grid from '@/components/Common/Grid'
 import Block from '@/lib/block'
+import BlockComp from '@/components/block/Block'
 
 export default {
   props: {
@@ -58,6 +62,7 @@ export default {
     Grid,
     NewBlockSelector,
     Editor,
+    BlockComp,
   },
 
   data () {
@@ -71,7 +76,7 @@ export default {
   },
 
   mounted () {
-    this.$crm.pageRead({ 'pageID': this.pageID }).then(page => {
+    this.$crm.pageRead({ pageID: this.pageID }).then(page => {
       if (page.blocks && Array.isArray(page.blocks)) {
         this.blocks = page.blocks.map(b => new Block(b))
       }
@@ -80,7 +85,7 @@ export default {
 
   methods: {
     handleSave () {
-      this.$crm.pageRead({ 'pageID': this.pageID }).then((page) => {
+      this.$crm.pageRead({ pageID: this.pageID }).then(page => {
         page.blocks = this.blocks
         this.page = page
         this.$crm.pageEdit(page).then({})

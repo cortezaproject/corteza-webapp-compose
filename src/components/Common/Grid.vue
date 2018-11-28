@@ -1,24 +1,26 @@
 <template>
   <div v-if="grid.length" v-bind:class="{ 'mobile': mobilePreview }" class="builder-grid">
     <grid-layout
-        :layout="grid"
-        @layout-updated="handleLayoutUpdate"
-        :col-num="12"
-        :row-height="90"
-        :vertical-compact="true"
+      :layout="grid"
+      @layout-updated="handleLayoutUpdate"
+      :col-num="12"
+      :row-height="90"
+      :vertical-compact="true"
+      :resizable="true"
+      :draggable="true"
+      :use-css-transforms="true"
+    >
+      <grid-item
+        v-for="(item, index) in grid"
         :resizable="true"
         :draggable="true"
-        :use-css-transforms="true">
-      <grid-item
-          v-for="(item, index) in grid"
-          :resizable="true"
-          :draggable="true"
-          :key="item.i"
-          :x="item.x"
-          :y="item.y"
-          :w="item.w"
-          :h="item.h"
-          :i="item.i">
+        :key="item.i"
+        :x="item.x"
+        :y="item.y"
+        :w="item.w"
+        :h="item.h"
+        :i="item.i"
+      >
         <slot v-bind:block="item.block" v-bind:index="index"></slot>
       </grid-item>
     </grid-layout>
@@ -31,7 +33,7 @@
 <script>
 import VueGridLayout from 'vue-grid-layout'
 
-const blocksToGrid = (blocks) => {
+const blocksToGrid = blocks => {
   return blocks.map((block, i) => {
     return {
       i,
@@ -76,10 +78,13 @@ export default {
   methods: {
     handleLayoutUpdate (grid) {
       // Emit change back with update: prefix for .sync modifier to kick in.
-      this.$emit('update:blocks', grid.map(({ x, y, w, h, block }) => {
-        block.merge({ x, y, width: w, height: h })
-        return block
-      }))
+      this.$emit(
+        'update:blocks',
+        grid.map(({ x, y, w, h, block }) => {
+          block.merge({ x, y, width: w, height: h })
+          return block
+        })
+      )
     },
   },
 
@@ -104,5 +109,4 @@ export default {
   border: 1px solid #ccc;
   padding: 20px 10px 10px 10px;
 }
-
 </style>

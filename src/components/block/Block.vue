@@ -1,13 +1,13 @@
 <template>
   <div class="block" v-if="block">
     <div class="block-data">
-      <div class="block-data__title">{{ block.data.title }}</div>
-      <p class="block-data__description">{{ block.data.description }}</p>
+      <div class="block-data__title">{{ block.title }}</div>
+      <p class="block-data__description">{{ block.description }}</p>
       <div class="block-data__content">
-        <BlockContent :content="block.content"></BlockContent>
+        <BlockContent :content="block.options"></BlockContent>
       </div>
       <div class="block-data__footer">
-        <p>{{ block.data.footer }}</p>
+        <p>{{ block.footer }}</p>
       </div>
     </div>
   </div>
@@ -17,7 +17,7 @@
 import BlockContent from '@/components/block/content/BlockContent'
 
 export default {
-  name: 'Block',
+  name: 'BlockComp',
   components: {
     BlockContent,
   },
