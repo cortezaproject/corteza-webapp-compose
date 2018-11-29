@@ -54,7 +54,7 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
-import optionsSyncPropMixin from './mixins/optionsSyncProp.js'
+import optionsSyncPropMixin from './mixins/optionsSyncProp'
 import moduleFieldsMixin from './mixins/moduleFields.js'
 import pagesMixin from './mixins/pages.js'
 

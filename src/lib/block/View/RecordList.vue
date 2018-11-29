@@ -26,7 +26,7 @@
   </div>
 </template>
 <script>
-import optionProp from './mixins/optionsProp.js'
+import optionsPropMixin from './mixins/optionsProp'
 import Pagination from 'vue-pagination-2'
 
 export default {
@@ -79,7 +79,7 @@ export default {
   },
 
   mixins: [
-    optionProp,
+    optionsPropMixin,
   ],
 
   components: {

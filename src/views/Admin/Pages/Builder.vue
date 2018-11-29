@@ -7,8 +7,7 @@
           <button @click="blocks.splice(index,1)">X</button>
         </div>
 
-        <i>Here be block preview!</i>
-        <pre>Block type: {{ block.kind }}</pre>
+        <block-preview :block="block"></block-preview>
       </template>
     </grid>
 
@@ -49,6 +48,7 @@ import NewBlockSelector from '@/components/Admin/Page/Builder/Selector'
 import Editor from '@/components/Admin/Page/Builder/Editor'
 import Grid from '@/components/Common/Grid'
 import Block from '@/lib/block'
+import BlockPreview from '@/lib/block/Preview'
 
 export default {
   props: {
@@ -62,6 +62,7 @@ export default {
     Grid,
     NewBlockSelector,
     Editor,
+    BlockPreview,
   },
 
   data () {

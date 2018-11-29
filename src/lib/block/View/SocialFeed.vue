@@ -4,11 +4,11 @@
     </div>
 </template>
 <script>
-import optionProp from './mixins/optionsProp.js'
+import optionsPropMixin from './mixins/optionsProp'
 
 export default {
   mixins: [
-    optionProp,
+    optionsPropMixin,
   ],
 }
 </script>

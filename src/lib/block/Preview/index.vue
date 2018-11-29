@@ -4,14 +4,14 @@
       <div class="block-data__title">{{ block.title }}</div>
       <p class="block-data__description" v-if="block.description">{{ block.description }}</p>
       <div class="block-data__content">
-        <component :is="block.kind" :options="block.options" :record="record" />
+        <component :is="block.kind" :options="block.options" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import * as ViewBlocks from './loader'
+import * as PreviewBlocks from './loader'
 
 export default {
   props: {
@@ -19,15 +19,10 @@ export default {
       type: Object,
       required: true,
     },
-
-    record: {
-      type: Object,
-      required: false,
-    },
   },
 
   components: {
-    ...ViewBlocks,
+    ...PreviewBlocks,
   },
 }
 </script>

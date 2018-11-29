@@ -6,7 +6,7 @@
     </div>
 </template>
 <script>
-import optionsSyncProp from './mixins/optionsSyncProp.js'
+import optionsSyncProp from './mixins/optionsSyncProp'
 import { quillEditor } from 'vue-quill-editor'
 
 // Quill styles

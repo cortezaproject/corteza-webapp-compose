@@ -7,7 +7,7 @@
     </div>
 </template>
 <script>
-import optionsSyncProp from './mixins/optionsSyncProp.js'
+import optionsSyncProp from './mixins/optionsSyncProp'
 
 export default {
   name: 'Chart',
