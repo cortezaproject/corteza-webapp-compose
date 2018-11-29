@@ -6,14 +6,12 @@
       :col-num="12"
       :row-height="90"
       :vertical-compact="true"
-      :resizable="true"
-      :draggable="true"
+      :is-resizable="!!editable"
+      :is-draggable="!!editable"
       :use-css-transforms="true"
     >
       <grid-item
         v-for="(item, index) in grid"
-        :resizable="true"
-        :draggable="true"
         :key="item.i"
         :x="item.x"
         :y="item.y"
@@ -50,6 +48,10 @@ const blocksToGrid = blocks => {
 
 export default {
   props: {
+    editable: {
+      type: Boolean,
+    },
+
     blocks: {
       type: Array,
       required: true,

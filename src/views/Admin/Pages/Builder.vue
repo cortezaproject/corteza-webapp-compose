@@ -1,6 +1,6 @@
 <template>
   <div class="builder">
-    <grid :blocks.sync="blocks">
+    <grid :blocks.sync="blocks" editable>
       <template slot-scope="{ block, index }">
         <div class="actions">
           <button @click="updateBlock=block">Edit</button>
