@@ -39,44 +39,98 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/sass/_0.declare.scss";
 
-// General styling
 ul,li {
   padding: 0;
   margin: 0;
 }
 
-// Root level styling
-ul.root {
+ul {
+  font-size: 15px;
+  white-space: nowrap;
+
+  &.root {
+    li {
+      display: inline-block;
+      cursor: pointer;
+
+      a {
+        padding: 10px 20px;
+      }
+    }
+  }
+
+  &:not(.root) {
+    background: #fff;
+
+    ul:nth-child(2) {
+      left: 100%;
+      top: 0;
+    }
+
+    li {
+      width: 100%;
+      min-width: 150px;
+      display: block;
+
+      a {
+        padding: 5px 20px;
+      }
+
+      :nth-child(2) {
+        margin-top: 0;
+      }
+    }
+  }
+
   li {
-    display: inline-block;
-    margin: 3px 20px;
+    position: relative;
+
+    a {
+      color: $black;
+      display: block;
+
+      &::after {
+        content: "";
+        float: right;
+        position: absolute;
+        bottom: 15px;
+        right: 5px;
+        border-width: 4px;
+        border-style: solid dashed dashed dashed;
+        border-color: $appgrey transparent transparent transparent;
+      }
+
+      &:only-child::after {
+        border: none;
+      }
+    }
+
+    & > ul {
+      margin-top: 3px;
+      display: none;
+      background-color: $appcream;
+      z-index: 10;
+      position: absolute;
+      box-shadow: 0 0 0.2rem 0 rgba(30, 34, 36, 0.1);
+    }
+
+    &:hover > ul,
+    &:active > ul {
+      display: block;
+      min-width: 100%;
+    }
+  }
+
+  &:nth-child(2) {
+    margin-top: 0;
+
+    a {
+      &::after {
+        border-style: dashed dashed dashed solid;
+        border-color: transparent transparent transparent $appgrey;
+      }
+    }
   }
 }
 
-ul:not(.root) {
-  li {
-    min-width: 100px;
-    display: block;
-  }
-}
-
-// Opening
-/* stylelint-disable-next-line */
-li {
-  /* stylelint-disable-next-line */
-  & > ul {
-    margin: 0 0 0 0;
-    padding: 0;
-    display: none;
-    background-color: $appcream;
-    z-index: 10;
-    position: absolute;
-    border: 1px solid white;
-  }
-
-  &:hover > ul,
-  &:active > ul {
-    display: block;
-  }
-}
 </style>
