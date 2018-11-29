@@ -37,7 +37,9 @@ function crmViews () {
           children: [
             { path: '', name: 'public.pages', component: view('Public/Redirect') },
             { path: ':pageID', name: 'public.page', component: view('Public/Pages/View'), props: true },
-            { path: ':pageID/record/:recordID', name: 'public.page.record', component: view('Public/Pages/View'), props: true },
+            { path: ':pageID/record', name: 'public.page.record.new', component: view('Public/Pages/NewRecord'), props: true },
+            { path: ':pageID/record/:recordID', name: 'public.page.record', component: view('Public/Pages/Record'), props: true },
+            { path: ':pageID/record/:recordID/edit', name: 'public.page.record.edit', component: view('Public/Pages/EditRecord'), props: true },
           ],
         },
         {

@@ -14,9 +14,6 @@
           <td>
             <router-link :to="{ name: 'public.page.record', params: { pageID: options.pageID, recordID: row.contentID } }">Open</router-link>
           </td>
-          <td>
-            {{options.pageID}}
-          </td>
         </tr>
       </tbody>
     </table>

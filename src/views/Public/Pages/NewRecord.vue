@@ -1,6 +1,9 @@
 <template>
   <div class="view">
-    <grid :pageID="pageID"/>
+    <div>
+      <button @click.prevent="$router.back()">Back</button>
+    </div>
+    <grid :pageID="pageID" :recordID="recordID" />
   </div>
 </template>
 <script>
@@ -11,6 +14,11 @@ export default {
     pageID: {
       type: String,
       required: true,
+    },
+
+    recordID: {
+      type: String,
+      required: false,
     },
   },
 
