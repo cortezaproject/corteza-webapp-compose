@@ -23,12 +23,12 @@
         >
       </div>
     </fieldset>
-    <block-kind-editor :kind="block.kind" :options.sync="block.options"/>
+    <block-kind-edit :kind="block.kind" :options.sync="block.options"/>
   </form>
 </template>
 
 <script>
-import BlockKindEditor from '@/lib/block/Editor'
+import BlockKindEdit from '@/lib/block/Edit'
 
 export default {
   props: {
@@ -39,7 +39,7 @@ export default {
   },
 
   components: {
-    BlockKindEditor,
+    BlockKindEdit,
   },
 }
 </script>

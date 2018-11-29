@@ -7,7 +7,7 @@
         <div class="block_header">List of related records</div>
         <div class="form_row">
           <button style="float:right; margin:14px 5px 0 0;" type="button" class="btn btn-primary">New {modulename} record (automatically related to the record page id)</button>
-          <BlockContentFields />
+          <!--<BlockContentFields />-->
         </div>
       </div>
       <!-- end CRM page block -->
@@ -17,13 +17,13 @@
 
 <script>
 
-import BlockContentFields from '@/components/block/content/list/BlockContentList'
+// import BlockContentFields from '@/components/block/content/list/BlockContentList'
 
 // Sending the fields is not working yet, so they are hard coded directly in the component fo now...
 export default {
   name: 'App',
   components: {
-    BlockContentFields,
+    // BlockContentFields,
   },
   data () {
     return {

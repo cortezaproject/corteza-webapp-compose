@@ -6,7 +6,9 @@
           <button @click="updateBlock=block">Edit</button>
           <button @click="blocks.splice(index,1)">X</button>
         </div>
-        {{ block }}
+
+        <i>Here be block preview!</i>
+        <pre>Block type: {{ block.kind }}</pre>
       </template>
     </grid>
 

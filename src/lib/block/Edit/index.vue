@@ -6,7 +6,7 @@
 
 <script>
 import * as EditBlocks from './loader'
-import optionSyncProp from './mixins/optionSyncProp.js'
+import optionsSyncProp from './mixins/optionsSyncProp.js'
 
 export default {
   props: {
@@ -17,7 +17,7 @@ export default {
   },
 
   mixins: [
-    optionSyncProp,
+    optionsSyncProp,
   ],
 
   components: {

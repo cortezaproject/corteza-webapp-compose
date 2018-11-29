@@ -34,7 +34,7 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
-import optionSyncProp from './mixins/optionSyncProp.js'
+import optionsSyncProp from './mixins/optionsSyncProp.js'
 import moduleFieldsMixins from './mixins/moduleFields.js'
 
 export default {
@@ -45,7 +45,7 @@ export default {
   },
 
   mixins: [
-    optionSyncProp,
+    optionsSyncProp,
     moduleFieldsMixins,
   ],
 }

@@ -6,7 +6,7 @@
     </div>
 </template>
 <script>
-import optionSyncProp from './mixins/optionSyncProp.js'
+import optionsSyncProp from './mixins/optionsSyncProp.js'
 import { quillEditor } from 'vue-quill-editor'
 
 // Quill styles
@@ -60,7 +60,7 @@ export default {
   },
 
   mixins: [
-    optionSyncProp,
+    optionsSyncProp,
   ],
 }
 </script>

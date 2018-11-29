@@ -4,7 +4,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th v-for="moduleField in module.fields" :key="'modules-contents-title-' + moduleField.name" v-if="moduleField.isVisible">
+          <th v-for="moduleField in module.fields" :key="moduleField.id" v-if="moduleField.isVisible">
             {{moduleField.title}}
           </th>
           <th class="text-right">Actions</th>
@@ -17,7 +17,7 @@
       </thead>
       <tbody>
         <template v-for="row in list.contents">
-          <tr :key="'modules-contents-index-' + row.id">
+          <tr :key="row.contentID">
             <td v-for="moduleField in module.fields" :key="'modules-contents-' + row.id + '-' + moduleField.name" v-if="moduleField.isVisible">
               <span v-if="moduleField.name in row.fields">{{row.fields[moduleField.name]}}</span>
               <span v-else><i>None</i></span>
@@ -26,9 +26,6 @@
               <router-link :to="{name: 'admin.modules.content.edit', params: { moduleID, contentID: row.contentID }}" class="btn btn-sm btn-primary">Edit</router-link>
               &nbsp; <a @click="deleteContent(row.id)" class="btn btn-sm btn-warning">Delete</a>
             </td>
-          </tr>
-          <tr v-if="debug" :key="'modules-contents-index-' + row.id + '-debug'">
-            <td :colspan="module.colspan"><pre>{{row}}</pre></td>
           </tr>
         </template>
       </tbody>

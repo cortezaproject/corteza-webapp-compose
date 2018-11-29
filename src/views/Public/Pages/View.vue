@@ -1,8 +1,8 @@
 <template>
-  <div class="view">
-    <grid :blocks.sync="blocks" :editable="false">
+  <div class="view" v-if="page">
+    <grid :blocks="page.blocks" :editable="false">
       <template slot-scope="{ block, index }">
-        <block-viewer :block="block" />
+        <block-viewer :block="block" :record="record" />
       </template>
     </grid>
   </div>
@@ -19,26 +19,72 @@ export default {
       type: String,
       required: true,
     },
+    recordID: {
+      type: String,
+      required: true,
+    },
+  },
+
+  data () {
+    return {
+      page: null,
+      record: null,
+    }
+  },
+
+  computed: {
+    blocks () {
+      return this.page.blocks.map(b => new Block(b))
+    },
+  },
+
+  watch: {
+    pageID () {
+      this.reload()
+    },
+
+    recordID () {
+      this.reload()
+    },
+  },
+
+  mounted () {
+    this.reload()
+  },
+
+  methods: {
+    reload () {
+      this.loadPage().then(() => { this.loadRecord() })
+    },
+
+    async loadPage () {
+      if (this.page && this.pageID === this.page.pageID) {
+        // Already on the right page, return empty promise
+        return new Promise((resolve) => { resolve() })
+      }
+
+      this.record = null
+      this.page = null
+      return this.$crm.pageRead({ pageID: this.pageID }).then(page => {
+        this.page = page
+      })
+    },
+
+    async loadRecord () {
+      this.record = null
+      if (this.page && this.recordID && this.page.moduleID) {
+        return this.$crm.moduleContentRead({ moduleID: this.page.moduleID, contentID: this.recordID }).then(record => {
+          this.record = record
+        })
+      }
+
+      return new Promise((resolve) => { resolve() })
+    },
   },
 
   components: {
     Grid,
     BlockViewer,
-  },
-
-  data () {
-    return {
-      blocks: [],
-      loaded: true,
-    }
-  },
-
-  mounted () {
-    this.$crm.pageRead({ pageID: this.pageID }).then(page => {
-      if (page.blocks && Array.isArray(page.blocks)) {
-        this.blocks = page.blocks.map(b => new Block(b))
-      }
-    })
   },
 }
 </script>
