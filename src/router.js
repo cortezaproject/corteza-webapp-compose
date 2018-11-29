@@ -37,7 +37,7 @@ function crmViews () {
           children: [
             { path: '', name: 'public.pages', component: view('Public/Redirect') },
             { path: ':pageID', name: 'public.page', component: view('Public/Pages/View'), props: true },
-
+            { path: ':pageID/record/:recordID', name: 'public.page.record', component: view('Public/Pages/View'), props: true },
           ],
         },
         {
@@ -49,11 +49,11 @@ function crmViews () {
             { path: 'modules', name: 'admin.modules', component: view('Admin/Modules/Index') },
             // create individual module structure (fields)
             { path: 'modules/edit', name: 'admin.modules.add', component: view('Admin/Modules/Edit') },
-            // list module contents (individual contact rows,...)
-            { path: 'modules/:moduleID', name: 'admin.modules.view', component: view('Admin/Modules/Contents/Index'), props: true },
             // edit individual module structure (fields)
             { path: 'modules/:moduleID/edit', name: 'admin.modules.edit', component: view('Admin/Modules/Edit'), props: true },
 
+            // list module contents (individual contact rows,...)
+            { path: 'modules/:moduleID/content', name: 'admin.modules.content', component: view('Admin/Modules/Contents/Index'), props: true },
             // create an individual row (should display fields configured for the module)
             { path: 'modules/:moduleID/content/add', name: 'admin.modules.content.add', component: view('Admin/Modules/Contents/Edit'), props: true },
             // list an individual row (should display the page configured for the module)

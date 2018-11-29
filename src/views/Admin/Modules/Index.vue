@@ -27,7 +27,7 @@
           <tbody>
             <tr v-for="(module, index) in list" :key="index">
               <td>
-                <router-link :to="{name: 'admin.modules.view', params: { moduleID: module.moduleID }}">{{ module.name }}</router-link>
+                <router-link :to="{name: 'admin.modules.content', params: { moduleID: module.moduleID }}">{{ module.name }}</router-link>
               </td>
               <td><time :datetime="module.updatedAt" v-if="module.updatedAt">(Updated at : {{ module.updatedAt }})</time></td>
               <td class="text-right actions">

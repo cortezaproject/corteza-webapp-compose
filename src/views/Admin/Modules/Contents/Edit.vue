@@ -17,7 +17,7 @@
     </table>
 
     <a href="#" @click="save" class="btn btn-primary">Save entry</a>
-    &nbsp; <router-link :to="{ name: 'admin.modules.view', params: { moduleID }}" class="btn btn-secondary">Cancel</router-link>
+    &nbsp; <router-link :to="{ name: 'admin.modules.content', params: { moduleID }}" class="btn btn-secondary">Cancel</router-link>
 
     <pre>{{ $data }}</pre>
 
@@ -30,6 +30,7 @@ import FieldEdit from '@/components/FieldEdit.vue'
 export default {
   props: {
     moduleID: String,
+    contentID: String,
   },
   components: {
     FieldEdit,
@@ -40,7 +41,7 @@ export default {
         fields: {},
       },
       module: {},
-      mode: this.moduleID ? 'edit' : 'create',
+      mode: this.contentID ? 'edit' : 'create',
       errors: [],
     }
   },
@@ -111,7 +112,7 @@ export default {
           req.contentID = this.contentID
           await this.$crm.moduleContentEdit(req)
         }
-        this.$router.push({ name: 'admin.modules', params: { moduleID: this.moduleID } })
+        this.$router.push({ name: 'admin.modules.content', params: { moduleID: this.moduleID } })
       } catch (e) {
         this.errors = [e.message]
       }
