@@ -4,7 +4,7 @@
       <div class="block-data__title">{{ block.title }}</div>
       <p class="block-data__description" v-if="block.description">{{ block.description }}</p>
       <div class="block-data__content">
-        <component :is="block.kind" :options="block.options"/>
+        <component :is="block.kind" :options="block.options" :record="record" />
       </div>
     </div>
   </div>
@@ -19,6 +19,11 @@ export default {
       type: Object,
       required: true,
     },
+
+    record: {
+      type: Object,
+      required: false,
+    }
   },
 
   components: {

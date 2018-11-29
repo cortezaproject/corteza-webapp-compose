@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="record">
       <div v-for="field in options.fields" :key="field.id">
         <div class="form-group" v-if="field.kind === 'text'">
           <label>{{field.name}}</label>
@@ -14,7 +14,7 @@
           <label for="visible" class="form-check-label">{{field.name}}</label>
         </div> -->
         <div class="form-group" v-else-if="field.kind === 'bool'">
-          <label for="visible" class="form-check-label">{{field.name}}</label>
+          <label class="form-check-label">{{field.name}}</label>
         </div>
         <div class="form-group" v-else-if="field.kind === 'email'">
           <label>{{field.name}}</label>
@@ -33,13 +33,30 @@
         <div v-else>
           Unknow kind od field.
         </div>
+        {{ recordValue(field) }}
       </div>
+    </div>
+    <div v-else>
+      Can not render this block without a record
     </div>
 </template>
 <script>
 import optionProp from './mixins/optionsProp.js'
 
 export default {
+  props: {
+    record: {
+      type: Object,
+      required: false, // actually true, but we'll going to fail soft here
+    },
+  },
+
+  computed: {
+    recordValue () {
+      return (field) => (this.record.fields.find(f => f.name === field.name) || {}).value
+    },
+  },
+
   mixins: [
     optionProp,
   ],
