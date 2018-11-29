@@ -8,7 +8,7 @@
             {{ editModuleError }}
           </div>
           <form v-if="!editModuleError" @submit.prevent="save">
-            <input required type="hidden" v-model="formData.id" />
+            <input required type="hidden" v-model="formData.moduleID" />
             <div class="form-group">
               <label>Module name</label>
               <input required type="text" v-model="formData.name" class="form-control" placeholder="Module name" />
@@ -29,7 +29,7 @@
                   </tr>
                 </thead>
                 <draggable v-model="formData.fields" :options="{handle:'.handle'}" :element="'tbody'">
-                  <template v-for="field in formData.fields">
+                  <template v-for="field in formData.fields" v-if="field">
                     <tr :key="'modules-edit-' + field.id">
                       <td class="handle text-nowrap">[{{field.id}}]</td>
                       <td><input v-model="field.name" type="text" class="form-control" /></td>

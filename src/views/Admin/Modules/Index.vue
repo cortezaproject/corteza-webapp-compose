@@ -31,7 +31,7 @@
               </td>
               <td><time :datetime="module.updatedAt" v-if="module.updatedAt">(Updated at : {{ module.updatedAt }})</time></td>
               <td class="text-right actions">
-                <router-link :to="{name: 'admin.modules.edit', params: { moduleID: module.moduleID }}" class="actions__action">Edit data</router-link>
+                <router-link :to="{name: 'admin.modules.edit', params: { moduleID: module.moduleID }}" class="actions__action btn btn">Edit</router-link>
                 <confirmation-toggle @confirmed="remove(module.moduleID)">Delete</confirmation-toggle>
               </td>
             </tr>
