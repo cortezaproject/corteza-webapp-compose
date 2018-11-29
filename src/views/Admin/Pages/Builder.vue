@@ -2,7 +2,6 @@
   <div class="builder">
     <grid :blocks.sync="blocks">
       <template slot-scope="{ block, index }">
-        <!-- {{ block }} {{ index }} -->
         <div class="actions">
           <button @click="updateBlock=block">Edit</button>
           <button @click="blocks.splice(index,1)">X</button>
