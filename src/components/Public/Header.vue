@@ -3,7 +3,7 @@
       <b-navbar toggleable type="light" toggle-breakpoint="md">
           <b-navbar-toggle target="nav_text_collapse"></b-navbar-toggle>
           <b-collapse is-nav id="nav_text_collapse">
-              <menu-level :pages="tree"></menu-level>
+            <menu-level :pages="tree"></menu-level>
           </b-collapse>
       </b-navbar>
     </header>

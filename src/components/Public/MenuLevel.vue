@@ -1,7 +1,7 @@
 <template>
   <ul :class="ulClass">
     <li v-for="page in pages" :key="page.pageID" v-if="page.visible">
-      <router-link :to="{ name: 'public.page', params: { pageID: page.pageID }}">{{ page.title }}</router-link>
+      <router-link :to="{ name: 'public.page', params: { pageID: page.pageID }}" class="nav-link">{{ page.title }}</router-link>
       <menu-level :pages="page.children" v-if="hasVisibleChildren(page)" :level="level + 1"></menu-level>
     </li>
   </ul>
@@ -43,6 +43,10 @@ export default {
 ul,li {
   padding: 0;
   margin: 0;
+}
+
+.nav-link {
+  color: $black;
 }
 
 ul {
@@ -87,7 +91,6 @@ ul {
     position: relative;
 
     a {
-      color: $black;
       display: block;
 
       &::after {
