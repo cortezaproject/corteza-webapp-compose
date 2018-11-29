@@ -134,4 +134,33 @@ ul {
   }
 }
 
+@media (max-width: $wideminwidth) {
+  ul {
+    position: relative;
+
+    &.root {
+      /* display: none; */
+      li {
+        display: block;
+      }
+    }
+
+    &:not(.root) {
+      position: relative;
+      padding-left: 25px;
+      box-shadow: none;
+
+      ul:nth-child(2) {
+        left: 0;
+      }
+    }
+
+    li {
+      & > ul {
+        display: block;
+      }
+    }
+  }
+}
+
 </style>

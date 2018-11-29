@@ -6,9 +6,9 @@ This is the place for all block types (kinds), their edit and view components.
 ```
 /...               wrapper block
   /Edit/...        editor components (what we show to admin, when block is edited)
-    /mixin/...     editor component mixins
+    /mixins/...    editor component mixins
 
-  /Preiew/...      previewer components (what we show to the admin)
+  /Preview/...     previewer components (what we show to the admin)
     /mixins/...    previewer component mixins
 
   /View/...        viewer components (what we show to the end-user)
