@@ -6,7 +6,7 @@
           <button @click="updateBlock=block">Edit</button>
           <button @click="blocks.splice(index,1)">X</button>
         </div>
-        <BlockComp :block="block"></BlockComp>
+        {{ block }}
       </template>
     </grid>
 
@@ -47,7 +47,6 @@ import NewBlockSelector from '@/components/Admin/Page/Builder/Selector'
 import Editor from '@/components/Admin/Page/Builder/Editor'
 import Grid from '@/components/Common/Grid'
 import Block from '@/lib/block'
-import BlockComp from '@/components/block/Block'
 
 export default {
   props: {
@@ -61,7 +60,6 @@ export default {
     Grid,
     NewBlockSelector,
     Editor,
-    BlockComp,
   },
 
   data () {

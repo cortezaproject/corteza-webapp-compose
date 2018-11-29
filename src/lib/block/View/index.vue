@@ -1,28 +1,28 @@
 <template>
-  <div class="block" v-if="block">
+  <div class="block">
     <div class="block-data">
       <div class="block-data__title">{{ block.title }}</div>
-      <p class="block-data__description">{{ block.description }}</p>
+      <p class="block-data__description" v-if="block.description">{{ block.description }}</p>
       <div class="block-data__content">
-        <BlockContent :content="block.options"></BlockContent>
-      </div>
-      <div class="block-data__footer">
-        <p>{{ block.footer }}</p>
+        <component :is="block.kind" :options="block.options"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import BlockContent from '@/components/block/content/BlockContent'
+import * as ViewBlocks from './loader'
 
 export default {
-  name: 'BlockComp',
-  components: {
-    BlockContent,
-  },
   props: {
-    block: null,
+    block: {
+      type: Object,
+      required: true,
+    },
+  },
+
+  components: {
+    ...ViewBlocks,
   },
 }
 </script>

@@ -1,7 +1,6 @@
 <template>
-  <div class="block-content-fields">
-    <form class="">
-      <div v-for="field in sortedFields" :key="field.id">
+    <div>
+      <div v-for="field in options.fields" :key="field.id">
         <div class="form-group" v-if="field.kind === 'text'">
           <label>{{field.name}}</label>
           <!-- <input class="form-control" type="text"> -->
@@ -35,20 +34,14 @@
           Unknow kind od field.
         </div>
       </div>
-      <!-- <button disabled type="submit" class="btn btn-primary">Submit</button> -->
-    </form>
-  </div>
+    </div>
 </template>
-
 <script>
+import optionProp from './mixins/optionsProp.js'
+
 export default {
-  name: 'BlockContentFields',
-  props: ['fields'],
-  computed: {
-    sortedFields () {
-      // TODO Sort ?
-      return this.fields.concat()
-    },
-  },
+  mixins: [
+    optionProp,
+  ],
 }
 </script>

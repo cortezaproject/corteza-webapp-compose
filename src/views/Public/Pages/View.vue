@@ -2,18 +2,16 @@
   <div class="view">
     <grid :blocks.sync="blocks" :editable="false">
       <template slot-scope="{ block, index }">
-        <BlockComp :block="block"></BlockComp>
+        <block-viewer :block="block" />
       </template>
     </grid>
   </div>
 </template>
 
 <script>
-import NewBlockSelector from '@/components/Admin/Page/Builder/Selector'
-import Editor from '@/components/Admin/Page/Builder/Editor'
 import Grid from '@/components/Common/Grid'
+import BlockViewer from '@/lib/block/View'
 import Block from '@/lib/block'
-import BlockComp from '@/components/block/Block'
 
 export default {
   props: {
@@ -25,16 +23,11 @@ export default {
 
   components: {
     Grid,
-    NewBlockSelector,
-    Editor,
-    BlockComp,
+    BlockViewer,
   },
 
   data () {
     return {
-      createBlock: null,
-      // Block that is opened in editor
-      updateBlock: null,
       blocks: [],
       loaded: true,
     }
@@ -49,6 +42,3 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-
-</style>

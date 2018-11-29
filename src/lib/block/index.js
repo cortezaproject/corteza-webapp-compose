@@ -1,4 +1,4 @@
-import * as kinds from './kinds'
+import * as kinds from './kind'
 
 export default class Block {
   constructor (def = {}) {
@@ -16,21 +16,9 @@ export default class Block {
     this.kind = this.kind || undefined
     this.options = this.options || undefined
 
-    if (options) {
-      if (typeof options === 'object') {
-        if (options instanceof kinds.BlockOptionsInterface) {
-          this.options = options
-          this.kind = options.constructor.name
-        } else if (kind) {
-          this.options = new kinds[kind](options)
-          this.kind = kind
-        }
-      } else {
-        throw new Error(`Expecting options value to be object`)
-      }
-    } else if (kind) {
+    if (kind) {
       this.kind = kind
-      this.options = new kinds[kind]()
+      this.options = new kinds[kind](options || {})
     }
   }
 }
