@@ -18,11 +18,10 @@
     <b-modal
       title="Add new block"
       ok-title="Add block"
-      :visible="!!createBlock"
       @ok="blocks.push(createBlock)"
       @hide="createBlock=null"
-    >
-      <editor v-if="createBlock" :block.sync="createBlock"/>
+      :visible="!!createBlock">
+      <block-edit v-if="createBlock" :block.sync="createBlock" />
     </b-modal>
 
     <b-modal
@@ -30,9 +29,8 @@
       ok-title="Close"
       ok-only
       @hide="updateBlock=null"
-      :visible="!!updateBlock"
-    >
-      <editor v-if="updateBlock" :block="updateBlock" @cancel="updateBlock=null"/>
+      :visible="!!updateBlock">
+      <block-edit v-if="updateBlock" :block="updateBlock" />
     </b-modal>
 
     <div class="toolbar">
@@ -45,10 +43,10 @@
 
 <script>
 import NewBlockSelector from '@/components/Admin/Page/Builder/Selector'
-import Editor from '@/components/Admin/Page/Builder/Editor'
 import Grid from '@/components/Common/Grid'
 import Block from '@/lib/block'
 import BlockPreview from '@/lib/block/Preview'
+import BlockEdit from '@/lib/block/Edit'
 
 export default {
   props: {
@@ -61,7 +59,7 @@ export default {
   components: {
     Grid,
     NewBlockSelector,
-    Editor,
+    BlockEdit,
     BlockPreview,
   },
 

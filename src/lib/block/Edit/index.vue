@@ -1,24 +1,42 @@
 <template>
-  <div>
-    <component :is="kind" :options.sync="options"/>
-  </div>
+  <form class="col-12">
+    <fieldset class="form-group">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input
+          v-model="block.title"
+          type="text"
+          class="form-control form-control-sm"
+          id="title"
+          placeholder="Block Title"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input
+          v-model="block.description"
+          type="text"
+          class="form-control form-control-sm"
+          id="description"
+          placeholder="Block Description"
+        >
+      </div>
+    </fieldset>
+    <component :is="block.kind" :options.sync="block.options"/>
+  </form>
 </template>
 
 <script>
 import * as EditBlocks from './loader'
-import optionsSyncProp from './mixins/optionsSyncProp'
 
 export default {
   props: {
-    kind: {
-      type: String,
+    block: {
+      type: Object,
       required: true,
     },
   },
-
-  mixins: [
-    optionsSyncProp,
-  ],
 
   components: {
     ...EditBlocks,
