@@ -38,6 +38,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "@/assets/sass/_0.declare.scss";
+/* stylelint-disable no-descending-specificity */
 
 ul,li {
   padding: 0;
