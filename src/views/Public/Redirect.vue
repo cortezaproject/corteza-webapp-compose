@@ -14,22 +14,19 @@ export default {
       listError: '',
     }
   },
-  async created () {
-    // --- B --- redirect to pages/{pageId}
-    try {
-      // List pages without module
-      const json = (await this.$crm.pageList({})).filter(page => !page.module)
-      if (json.length > 0) {
-        this.$router.push({ name: 'public.pages', params: { pageID: json[0].id } })
+
+  beforeMount () {
+    this.$crm.pageList({}).then((pp) => {
+      pp = pp.filter(p => p.moduleID === '0' && p.visible)
+      if (pp.length > 0) {
+        console.log(pp[0])
+        this.$router.push({ name: 'public.page', params: { pageID: pp[0].pageID } })
       } else {
-        this.listError = 'No pages foud'
+        this.listError = 'No pages found'
       }
-    } catch (e) {
-      this.listError = 'Error when trying to get list of pages.'
-    }
-    // --- E --- redirect to pages/{pageId}
+    }).catch(() => {
+      this.listError = 'Unable to fetch pages'
+    })
   },
 }
 </script>
-<style lang="scss" scoped>
-</style>

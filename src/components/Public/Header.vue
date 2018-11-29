@@ -10,7 +10,14 @@
 </template>
 <script>
 import MenuLevel from './MenuLevel'
+
 export default {
+  props: {
+    pageID: {
+      type: String,
+    },
+  },
+
   data () {
     return {
       tree: [],
