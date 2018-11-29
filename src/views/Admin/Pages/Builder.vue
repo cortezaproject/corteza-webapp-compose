@@ -66,11 +66,10 @@ export default {
 
   data () {
     return {
-      createBlock: null,
-      // Block that is opened in editor
-      updateBlock: null,
+      createBlock: null, // holds instance of a block we're adding
+      updateBlock: null, // holds instance of a block we're editing
+
       blocks: [],
-      loaded: true,
     }
   },
 
