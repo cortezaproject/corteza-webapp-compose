@@ -46,8 +46,8 @@
 
 <script>
 import draggable from 'vuedraggable'
-import PageTree from '@/components/Page/Tree'
-import RecordPagesList from '@/components/Page/RecordPagesList'
+import PageTree from '@/components/Admin/Page/Tree'
+import RecordPagesList from '@/components/Admin/Page/RecordPagesList'
 
 export default {
   idToDelete: '',
