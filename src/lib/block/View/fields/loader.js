@@ -1,0 +1,6 @@
+export { default as fieldtext } from './Text'
+export { default as fieldtextarea } from './TextArea'
+export { default as fieldbool } from './Bool'
+export { default as fieldemail } from './Email'
+export { default as fieldenum } from './Enum'
+export { default as fieldstamp } from './Stamp'
