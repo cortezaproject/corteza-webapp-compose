@@ -1,6 +1,6 @@
 <template>
   <div class="view">
-    <grid :pageID="pageID"/>
+    <grid :page="page"/>
   </div>
 </template>
 <script>
@@ -12,6 +12,34 @@ export default {
       type: String,
       required: true,
     },
+  },
+
+  data () {
+    return {
+      page: {},
+    }
+  },
+
+  watch: {
+    pageID () {
+      this.loadPage()
+    },
+  },
+
+  mounted () {
+    this.loadPage()
+  },
+
+  methods: {
+    loadPage () {
+      this.page = {}
+      this.$crm.pageRead({ pageID: this.pageID }).then(page => {
+        this.page = page
+        this.loadRecord()
+      })
+    },
+
+    loadRecord () {}, // Placeholder, *Record components will override this
   },
 
   components: {

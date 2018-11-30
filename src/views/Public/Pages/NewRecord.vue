@@ -1,24 +1,31 @@
 <template>
   <div class="view">
     <div>
-      <button @click.prevent="$router.back()">Back</button>
+      <button class="btn btn-outline" @click="handleSave">Save (todo)</button>
+      <button class="btn btn-outline" @click.prevent="$router.push({ name: 'public.page.record.new' })">New</button>
+      <button class="btn btn-outline" @click.prevent="$router.back()">Back</button>
     </div>
-    <grid :pageID="pageID" :recordID="recordID" edit-mode />
+    <grid :page="page" :record="record" edit-mode />
   </div>
 </template>
 <script>
 import Grid from '@/components/Public/Page/Grid'
+import View from './View'
 
 export default {
-  props: {
-    pageID: {
-      type: String,
-      required: true,
-    },
+  name: 'NewRecord',
+  extends: View,
 
-    recordID: {
-      type: String,
-      required: false,
+  data () {
+    return {
+      record: { fields: [] },
+    }
+  },
+
+  methods: {
+    handleSave () {
+      console.log(this.record)
+      alert('Pending implementation')
     },
   },
 

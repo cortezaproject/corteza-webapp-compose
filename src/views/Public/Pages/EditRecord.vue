@@ -1,32 +1,30 @@
 <template>
   <div class="view">
     <div>
-      <router-link :to="{ name: 'public.page.record.edit' }">Edit (placeholder)</router-link>
-      <router-link :to="{ name: 'public.page.record.new' }">New (placeholder)</router-link>
-      <button>Delete (placeholder)</button>
-      <button @click.prevent="$router.back()">Back</button>
+      <button class="btn btn-outline" @click="handleSave">Save (todo)</button>
+      <button class="btn btn-outline" @click.prevent="$router.push({ name: 'public.page.record.new' })">New</button>
+      <button class="btn btn-outline" @click="handleDelete">Delete (@todo)</button>
+      <button class="btn btn-outline" @click.prevent="$router.back()">Back</button>
     </div>
-    <grid :pageID="pageID" :recordID="recordID" edit-mode />
+    <grid :page="page" :record="record" edit-mode />
   </div>
 </template>
 <script>
 import Grid from '@/components/Public/Page/Grid'
+import Record from './Record'
 
 export default {
-  props: {
-    pageID: {
-      type: String,
-      required: true,
-    },
-
-    recordID: {
-      type: String,
-      required: false,
-    },
-  },
-
+  name: 'EditRecord',
+  extends: Record,
   components: {
     Grid,
+  },
+
+  methods: {
+    handleSave () {
+      console.log(this.record)
+      alert('Pending implementation')
+    },
   },
 }
 </script>
