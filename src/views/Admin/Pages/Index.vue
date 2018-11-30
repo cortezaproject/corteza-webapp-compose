@@ -2,14 +2,14 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <h2>Create a new page</h2>
         <div class="well">
+        <h2>Create a new page</h2>
           <form @submit.prevent="handleAddPageFormSubmit">
             <div class="form-group">
               <label for="title">Page title</label>
               <input required type="text" v-model="addPageFormData.title" class="form-control" id="title" placeholder="Page title" />
             </div>
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-dark">Create</button>
             <div v-if="addPageFormSubmitError" style="color:red;">
               {{ addPageFormSubmitError }}
             </div>
@@ -22,8 +22,8 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <h2>List of pages</h2>
         <div class="well">
+        <h2>List of pages</h2>
           <page-tree
             @delete="handleDeletePage($event)"
             @reorder="handleReorder"
@@ -33,8 +33,8 @@
     </div>
     <div class="row ">
       <div class="col-md-12">
-        <h2>List of record pages</h2>
         <div class="well">
+        <h2>List of record pages</h2>
           <record-pages-list
             @createRecordPage="handleRecordPageCreation($event)"
             :modules="modules" />

@@ -21,22 +21,3 @@ body {
 .float-left {
   float: left;
 }
-
-label {
-  cursor: pointer;
-  font-weight: 300;
-  color: $black;
-  margin-bottom: 0;
-}
-
-.form-control{
-	font-size: 15px;
-	color: $black;
-	&:focus,
-	&:active{
-		color: $black;
-	}
-	&::placeholder{
-		color: $appgrey;
-	}
-}

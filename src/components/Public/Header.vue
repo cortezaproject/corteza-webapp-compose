@@ -118,7 +118,7 @@ nav {
 
   .admin-panel {
     position: relative;
-    padding-left: 20px;
+    padding-left: 15px;
   }
 }
 

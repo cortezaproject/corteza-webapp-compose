@@ -13,11 +13,11 @@
                   <router-link
                     v-if="m.recordPage"
                     :to="{name: 'admin.pages.builder', params: { pageID: m.recordPage.pageID }}"
-                    class="btn btn-outline-primary">Page builder</router-link>
+                    class="btn">Page builder</router-link>
                   <button
                     v-if="!m.recordPage"
                     @click="$emit('createRecordPage', { moduleID: m.moduleID })"
-                    class="btn btn-outline-primary">Page builder</button>
+                    class="btn">Page builder</button>
                 </td>
             </tr>
         </tbody>
@@ -41,6 +41,9 @@ export default {
 }
 </script>
 <style lang="scss">
+@import '@/assets/sass/_0.commons.scss';
+@import "@/assets/sass/btns.scss";
+
 table {
   width: 100%;
 
@@ -50,6 +53,10 @@ table {
         &.actions {
           text-align: right;
           width: 200px;
+        }
+
+        .btn {
+          color: $black;
         }
       }
     }

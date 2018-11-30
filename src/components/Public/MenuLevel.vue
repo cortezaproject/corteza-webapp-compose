@@ -83,7 +83,7 @@ ul {
       cursor: pointer;
 
       a {
-        padding: 10px 20px;
+        padding: 19px 20px;
       }
     }
   }
@@ -174,6 +174,10 @@ ul {
     &.root {
       li {
         display: block;
+
+        a {
+          padding: 10px 15px;
+        }
       }
     }
 
