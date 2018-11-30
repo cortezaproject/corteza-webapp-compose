@@ -6,7 +6,7 @@
       <button>Delete (placeholder)</button>
       <button @click.prevent="$router.back()">Back</button>
     </div>
-    <grid :pageID="pageID" :recordID="recordID" />
+    <grid :pageID="pageID" :recordID="recordID" edit-mode />
   </div>
 </template>
 <script>

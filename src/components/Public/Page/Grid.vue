@@ -2,7 +2,7 @@
   <div class="view" v-if="blocks">
     <grid :blocks="blocks" :editable="false">
       <template slot-scope="{ block, index }">
-        <block-viewer :block="block" :record="record" />
+        <block-viewer :block="block" :record="record" edit-mode />
       </template>
     </grid>
   </div>
@@ -25,6 +25,8 @@ export default {
       type: String,
       required: false,
     },
+
+    editMode: Boolean,
   },
 
   computed: {

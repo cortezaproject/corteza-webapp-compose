@@ -45,8 +45,8 @@
 import NewBlockSelector from '@/components/Admin/Page/Builder/Selector'
 import Grid from '@/components/Common/Grid'
 import Block from '@/lib/block'
-import BlockPreview from '@/lib/block/Preview'
-import BlockEdit from '@/lib/block/Edit'
+import BlockPreview from '@/lib/block/BuilderPreview'
+import BlockEdit from '@/lib/block/BuilderEdit'
 
 export default {
   props: {
