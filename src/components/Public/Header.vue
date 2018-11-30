@@ -6,7 +6,6 @@
             <menu-level :pages="tree" :selectedPath="selectedPath" :pageID="pageID"></menu-level>
           </b-collapse>
       </b-navbar>
-      {{selectedPath}}{{pageID}}
     </header>
 </template>
 <script>
