@@ -1,34 +1,17 @@
 <template>
-  <form class="col-12">
-    <fieldset class="form-group">
-      <div class="form-group">
-        <label for="title">Title</label>
-        <input
-          v-model="block.title"
-          type="text"
-          class="form-control form-control-sm"
-          id="title"
-          placeholder="Block Title"
-        >
+  <div class="block">
+    <div class="block-data">
+      <div class="block-data__title">{{ block.title }}</div>
+      <p class="block-data__description" v-if="block.description">{{ block.description }}</p>
+      <div class="block-data__content">
+        <component :is="block.kind" :options="block.options" :record="record" />
       </div>
-
-      <div class="form-group">
-        <label for="description">Description</label>
-        <input
-          v-model="block.description"
-          type="text"
-          class="form-control form-control-sm"
-          id="description"
-          placeholder="Block Description"
-        >
-      </div>
-    </fieldset>
-    <component :is="block.kind" :options.sync="block.options"/>
-  </form>
+    </div>
+  </div>
 </template>
 
 <script>
-import * as EditBlocks from './loader'
+import * as ViewBlocks from './loader'
 
 export default {
   props: {
@@ -36,10 +19,39 @@ export default {
       type: Object,
       required: true,
     },
+
+    record: {
+      type: Object,
+      required: false,
+    },
   },
 
   components: {
-    ...EditBlocks,
+    ...ViewBlocks,
   },
 }
 </script>
+<style lang="scss" scoped>
+.block-data {
+  .block-data__title {
+    font-size: 15px;
+  }
+
+  .block-data__description {
+    font-size: 10px;
+    border-bottom: 1px solid black;
+  }
+
+  .block-data__content {
+    fieldset {
+      border: none;
+    }
+  }
+
+  .block-data__footer {
+    font-size: 10px;
+    position: absolute;
+    bottom: 0;
+  }
+}
+</style>

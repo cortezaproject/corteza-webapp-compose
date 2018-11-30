@@ -1,35 +1,23 @@
 <template>
     <table>
-        <tbody>
-            <tr v-for="(item) in value" :key="item.pageID">
-                <td class="title">
-                    {{ item.title }}
-
-                </td>
-                <td>
-                    <router-link
-                            :to="{name: 'admin.modules.edit', params: { moduleID: item.moduleID }}"
-                            class="actions__action">module</router-link>
-                </td>
+        <thead>
+            <tr>
+                <th>Module</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="table table-stripped">
+            <tr v-for="(m, index) in modules" :key="index">
+                <td class="title">{{ m.name }}</td>
                 <td class="actions">
-                    <router-link
-                            v-if="item.blocks && item.blocks.length >= 1"
-                            :to="{name: 'public.pages', params: { pageID: item.pageID }}"
-                            class="actions__action">View page</router-link>
-
-                    <div title="You need to build page to view your page !"
-                         v-if="!item.blocks || item.blocks.length === 0"
-                         class="actions__action--disabled">View page</div>
-
-                    <router-link
-                            :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
-                            class="actions__action">Build page</router-link>
-
-                    <router-link
-                            :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
-                            class="actions__action">Edit data</router-link>
-
-                    <confirmation-toggle @confirmed="$emit('delete', item.pageID)">Delete</confirmation-toggle>
+                  <router-link
+                    v-if="m.recordPage"
+                    :to="{name: 'admin.pages.builder', params: { pageID: m.recordPage.pageID }}"
+                    class="btn">Page builder</router-link>
+                  <button
+                    v-if="!m.recordPage"
+                    @click="$emit('createRecordPage', { moduleID: m.moduleID })"
+                    class="btn">Page builder</button>
                 </td>
             </tr>
         </tbody>
@@ -41,7 +29,7 @@ import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 
 export default {
   props: {
-    value: {
+    modules: {
       type: Array,
       required: true,
     },
@@ -53,6 +41,9 @@ export default {
 }
 </script>
 <style lang="scss">
+@import '@/assets/sass/_0.commons.scss';
+@import "@/assets/sass/btns.scss";
+
 table {
   width: 100%;
 
@@ -62,6 +53,10 @@ table {
         &.actions {
           text-align: right;
           width: 200px;
+        }
+
+        .btn {
+          color: $black;
         }
       }
     }

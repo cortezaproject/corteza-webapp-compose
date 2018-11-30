@@ -1,0 +1,167 @@
+/*
+button structure :
+<tag1 class="btn"><tag2 class="btn-txt">button content</tag2></tag1>
+<tag1 class="btn"><tag2 class="btn-txt">button content</tag2></tag1>
+<tag1 class="btn"><i class="btn-i icon-icontag"></i><tag2 class="btn-txt">button content</tag2></tag1>
+*/
+
+@import './_0.declare';
+
+/* stylelint-disable no-descending-specificity */
+
+:focus {
+  outline: none;
+}
+
+.btn {
+  display: inline-block;
+  align-items: flex-start;
+  text-align: center;
+  border: solid 1px $appgrey;
+  color: $appgrey;
+  padding: 0.25em 1em;
+  border-radius: 1.5em;
+  text-decoration: none;
+  transition: color 0.2s, background-color 0.2s;
+  background-color: transparent;
+  margin: 0 0.5em;
+  line-height: normal !important;
+  font-family: $crustregular;
+  cursor: pointer;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &:hover {
+    color: $appwhite;
+    background-color: rgba(0, 0, 0, 0.25);
+
+    .btn-txt, .btn-i {
+      color: $appwhite;
+    }
+  }
+
+  .btn-i {
+    font-size: 1.25em;
+    text-align: center;
+    margin-right: 0.25em;
+    margin-left: -0.5em; // put icon more into the circle
+    text-decoration: none;
+  }
+
+  .btn-i, .btn-txt {
+    background-color: transparent;
+    color: $appgrey;
+    display: inline-block;
+    vertical-align: middle;
+    text-decoration: none;
+  }
+}
+
+.btn-block {
+  display: block;
+  margin: 0;
+
+  .btn-txt {
+    max-width: calc(100% - 3.5em);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+.btn-w75 {
+  width: 75%;
+}
+
+.btn-w50 {
+  width: 50%;
+}
+
+.btn-dark {
+  background-color: $appgrey;
+  color: white;
+
+  .btn-txt, .btn-i {
+    color: white;
+  }
+
+  &:hover {
+    color: $appgrey;
+    background-color: white;
+
+    .btn-txt, .btn-i {
+      color: $appgrey;
+    }
+  }
+}
+
+.btn-success, .btn-green {
+  background-color: $appgreen;
+  border-color: $appgreen;
+  color: white;
+
+  .btn-txt, .btn-i {
+    color: white;
+  }
+
+  &:hover {
+    color: $appgreen;
+    background-color: white;
+
+    .btn-txt, .btn-i {
+      color: $appgreen;
+    }
+  }
+}
+
+.btn-danger, .btn-red {
+  background-color: $appred;
+  border-color: $appred;
+  color: white;
+
+  .btn-txt, .btn-i {
+    color: white;
+  }
+
+  &:hover {
+    color: $appred;
+    background-color: white;
+
+    .btn-txt, .btn-i {
+      color: $appred;
+    }
+  }
+}
+
+.btn-info, .btn-blue {
+  background-color: $appblue;
+  border-color: $appblue;
+  color: white;
+
+  .btn-txt, .btn-i {
+    color: white;
+  }
+
+  &:hover {
+    color: $appblue;
+    background-color: white;
+
+    .btn-txt, .btn-i {
+      color: $appblue;
+    }
+  }
+}
+
+.btn-disabled {
+  cursor: default;
+
+  &:hover {
+    color: $appgrey;
+    background-color: transparent;
+  }
+}

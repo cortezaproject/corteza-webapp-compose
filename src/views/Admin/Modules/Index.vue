@@ -9,7 +9,7 @@
               <label for="name">Module name</label>
               <input required type="text" v-model="addModuleFormData.name" class="form-control" id="name" placeholder="Module name" />
             </div>
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-dark">Create</button>
             <div v-if="addModuleFormSubmitError" style="color:red;">
               {{ addModuleFormSubmitError }}
             </div>
@@ -19,26 +19,29 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <h2>List of modules</h2>
-        <div v-if="deleteModuleError" style="color:red;">
-          {{ deleteModuleError }}
-        </div>
-        <table class="table table-striped">
-          <tbody>
-            <tr v-for="(module, index) in list" :key="index">
-              <td>
-                <router-link :to="{name: 'admin.modules.content', params: { moduleID: module.moduleID }}">{{ module.name }}</router-link>
-              </td>
-              <td><time :datetime="module.updatedAt" v-if="module.updatedAt">(Updated at : {{ module.updatedAt }})</time></td>
-              <td class="text-right actions">
-                <router-link :to="{name: 'admin.modules.edit', params: { moduleID: module.moduleID }}" class="actions__action btn btn">Edit</router-link>
-                <confirmation-toggle @confirmed="remove(module.moduleID)">Delete</confirmation-toggle>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div v-if="listError" style="color:red;">
-          {{ listError }}
+        <div class="well">
+          <h2>List of modules</h2>
+          <div v-if="deleteModuleError" style="color:red;">
+            {{ deleteModuleError }}
+          </div>
+          <table class="table">
+            <tbody>
+              <tr v-for="(module, index) in list" :key="index">
+                <td>
+                  <router-link :to="{name: 'admin.modules.content', params: { moduleID: module.moduleID }}">{{ module.name }}</router-link>
+                </td>
+                <td><time :datetime="module.updatedAt" v-if="module.updatedAt">(Updated at : {{ module.updatedAt }})</time></td>
+                <td class="actions">
+                  <confirmation-toggle @confirmed="remove(module.moduleID)" class="confirmation">Delete</confirmation-toggle>
+                  <router-link :to="{name: 'admin.modules.edit', params: { moduleID: module.moduleID }}" class="action">  <i class="action icon-edit"></i>
+                  </router-link>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div v-if="listError" style="color:red;">
+            {{ listError }}
+          </div>
         </div>
       </div>
     </div>
@@ -101,9 +104,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.actions__action {
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-bottom: 3px;
+.confirmation {
+  display: inline-block;
+  min-width: 110px;
+  text-align: right;
+  margin-left: 10px;
 }
 </style>

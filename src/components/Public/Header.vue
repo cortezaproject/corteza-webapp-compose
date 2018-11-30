@@ -4,9 +4,9 @@
           <b-navbar-toggle target="nav_text_collapse"></b-navbar-toggle>
           <b-collapse is-nav id="nav_text_collapse">
             <menu-level :pages="tree" :selectedPath="selectedPath" :pageID="pageID"></menu-level>
+            <router-link :to="{ name: 'admin' }" class="nav-link admin-panel">Admin panel</router-link>
           </b-collapse>
       </b-navbar>
-      {{selectedPath}}{{pageID}}
     </header>
 </template>
 <script>
@@ -47,7 +47,7 @@ export default {
         return false
       }
 
-      return tt(this.tree, this.pageID)
+      return tt(this.tree, this.pageID) || []
     },
   },
 
@@ -105,9 +105,20 @@ nav {
   }
 }
 
+.admin-panel {
+  position: absolute;
+  right: 0;
+  color: $black;
+}
+
 @media (max-width: $wideminwidth) {
   .navbar-text {
     display: block;
+  }
+
+  .admin-panel {
+    position: relative;
+    padding-left: 15px;
   }
 }
 

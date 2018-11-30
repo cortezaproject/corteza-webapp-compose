@@ -42,4 +42,9 @@ export default {
 </script>
 <style scoped lang="scss">
 @import '@/assets/sass/_0.commons.scss';
+@import "@/assets/sass/btns.scss";
+
+.btn {
+  margin: 0 1px;
+}
 </style>

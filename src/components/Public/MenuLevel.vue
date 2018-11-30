@@ -63,7 +63,14 @@ ul,li {
 }
 
 .selected, .selected-in-path {
-  text-decoration: underline;
+  text-decoration: none;
+  border-bottom: 2px solid $appblue;
+}
+
+.selected {
+  & > a {
+    color: $appblue;
+  }
 }
 
 ul {
@@ -76,7 +83,7 @@ ul {
       cursor: pointer;
 
       a {
-        padding: 10px 20px;
+        padding: 19px 20px;
       }
     }
   }
@@ -93,6 +100,10 @@ ul {
       width: 100%;
       min-width: 150px;
       display: block;
+
+      &.selected, &.selected-in-path {
+        border-bottom: none;
+      }
 
       a {
         padding: 5px 20px;
@@ -112,10 +123,8 @@ ul {
 
       &::after {
         content: "";
-        float: right;
-        position: absolute;
-        bottom: 15px;
-        right: 5px;
+        display: inline-block;
+        margin-left: 10px;
         border-width: 4px;
         border-style: solid dashed dashed dashed;
         border-color: $appgrey transparent transparent transparent;
@@ -149,6 +158,10 @@ ul {
       &::after {
         border-style: dashed dashed dashed solid;
         border-color: transparent transparent transparent $appgrey;
+        float: right;
+        position: absolute;
+        bottom: 15px;
+        right: 5px;
       }
     }
   }
@@ -159,9 +172,12 @@ ul {
     position: relative;
 
     &.root {
-      /* display: none; */
       li {
         display: block;
+
+        a {
+          padding: 10px 15px;
+        }
       }
     }
 

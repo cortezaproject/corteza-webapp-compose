@@ -1,59 +1,64 @@
 <template>
-  <div>
-    <fieldset class="form-group">
-      <label for="select-content-list">Module</label>
-
-      <select v-model="o.moduleID" required class="form-control" id="select-content-list">
-        <option disabled selected>---</option>
-        <option
-          v-for="module in modules"
-          :key="module.id"
-          :value="module.moduleID"
-        >{{ module.name }}</option>
-      </select>
-
-      <div class="list__fields" v-if="o.moduleID">
-        <label>Columns selected</label>
-        <draggable
-          class="drag-area"
-          :list.sync="o.fields"
-          :options="{ group:'fields' }">
-          <div v-for="field in o.fields" :key="field.id">{{field.title}}</div>
-        </draggable>
-        <label>Columns available</label>
-        <draggable
-          class="drag-area"
-          :list.sync="availableFields"
-          :options="{ group:'fields' }">
-          <div v-for="field in availableFields" :key="field.id">{{field.title}}</div>
-        </draggable>
-        <i>Drag fields from available to selected to include them to record info page</i>
+    <div>
+      <div v-for="field in options.fields" :key="field.id">
+        <div class="form-group" v-if="field.kind === 'text'">
+          <label>{{field.name}}</label>
+          <!-- <input class="form-control" type="text"> -->
+        </div>
+        <div class="form-group" v-else-if="field.kind === 'textarea'">
+          <label>{{field.name}}</label>
+          <!-- <textarea class="form-control"></textarea> -->
+        </div>
+        <!-- <div class="form-group form-check" v-else-if="field.kind === 'bool'">
+          <input type="checkbox" id="visible" class="form-check-input">
+          <label for="visible" class="form-check-label">{{field.name}}</label>
+        </div> -->
+        <div class="form-group" v-else-if="field.kind === 'bool'">
+          <label class="form-check-label">{{field.name}}</label>
+        </div>
+        <div class="form-group" v-else-if="field.kind === 'email'">
+          <label>{{field.name}}</label>
+          <!-- <input class="form-control" type="email"> -->
+        </div>
+        <div class="form-group" v-else-if="field.kind === 'stamp'">
+          <label>{{field.name}}</label>
+          <!-- <input class="form-control" type="datetime"> -->
+        </div>
+        <div class="form-group" v-else-if="field.kind === 'enum'">
+          <label>{{field.name}}</label>
+          <!-- <select class="form-control">
+            <option>TODO</option>
+          </select> -->
+        </div>
+        <div v-else>
+          Unknow kind od field.
+        </div>
+        {{ recordValue(field) }}
       </div>
-    </fieldset>
-  </div>
+    </div>
 </template>
 <script>
-import draggable from 'vuedraggable'
-import optionsSyncProp from './mixins/optionsSyncProp'
-import moduleFieldsMixins from './mixins/moduleFields.js'
+import optionsPropMixin from './mixins/optionsProp'
 
 export default {
-  name: 'Record',
+  props: {
+    record: {
+      type: Object,
+      required: false, // actually true, but we'll going to fail soft here
+    },
+  },
 
-  components: {
-    draggable,
+  computed: {
+    recordValue () {
+      return (field) => (this.record.fields.find(f => f.name === field.name) || {}).value
+    },
   },
 
   mixins: [
-    optionsSyncProp,
-    moduleFieldsMixins,
+    optionsPropMixin,
   ],
 }
 </script>
-<style lang="scss" scoped>
-.drag-area {
-  min-height: 100px;
-  border: 1px solid silver;
-  padding: 2px;
-}
+<style scoped lang="scss">
+div { background-color: yellow; }
 </style>
