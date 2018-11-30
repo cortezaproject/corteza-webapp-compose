@@ -123,10 +123,8 @@ ul {
 
       &::after {
         content: "";
-        float: right;
-        position: absolute;
-        bottom: 15px;
-        right: 5px;
+        display: inline-block;
+        margin-left: 10px;
         border-width: 4px;
         border-style: solid dashed dashed dashed;
         border-color: $appgrey transparent transparent transparent;
@@ -160,6 +158,10 @@ ul {
       &::after {
         border-style: dashed dashed dashed solid;
         border-color: transparent transparent transparent $appgrey;
+        float: right;
+        position: absolute;
+        bottom: 15px;
+        right: 5px;
       }
     }
   }

@@ -100,6 +100,7 @@ export default {
 <style lang="scss" scoped>
 .builder-grid {
   width: 100%;
+  padding: 20px;
 
   &.mobile {
     width: 320px;
