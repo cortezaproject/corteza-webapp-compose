@@ -36,8 +36,8 @@
         <h2>List of record pages</h2>
         <div class="well">
           <record-pages-list
-            @delete="handleDeletePage($event)"
-            v-model="recordPages" />
+            @createRecordPage="handleRecordPageCreation($event)"
+            :modules="modules" />
         </div>
       </div>
     </div>
@@ -58,13 +58,24 @@ export default {
       listError: '',
       addPageFormSubmitError: '',
       tree: [],
-      recordPages: [],
       addPageFormData: {
         title: '',
       },
+
+      modules: [],
     }
   },
   async created () {
+    this.$crm.pageList({ selfID: 0 }).then(pp => {
+      // @todo extend API endpoint to support fetching only record pages
+      this.$crm.moduleList({}).then(mm => {
+        this.modules = mm.map(m => {
+          m.recordPage = pp.find(p => p.moduleID === m.moduleID)
+          return m
+        })
+      })
+    })
+
     this.$_initList()
   },
   methods: {
@@ -75,10 +86,6 @@ export default {
           this.recordPages = []
           const traverse = (pages) => {
             return pages.map((p) => {
-              if (p.moduleID !== '0') {
-                this.recordPages.push(p)
-              }
-
               if (p.children) {
                 p.children = traverse(p.children).filter((p) => p.moduleID === '0')
               }
@@ -109,6 +116,21 @@ export default {
 
     handleReorder () {
       this.$_initList()
+    },
+
+    handleRecordPageCreation ({ moduleID }) {
+      // This is called from record pages list as a request to create a (record) page that
+      // with reference to a module
+
+      const module = this.modules.find(m => m.moduleID === moduleID)
+      const payload = {
+        title: `Record page for module "${module.name || moduleID}"`,
+        moduleID,
+      }
+
+      this.$crm.pageCreate(payload).then(page => {
+        this.$router.push({ name: 'admin.pages.builder', param: { pageID: page.pageID } })
+      })
     },
   },
 
