@@ -7,9 +7,11 @@
         <option
           v-for="module in modules"
           :key="module.id"
+          :disabled="!module.recordPage"
           :value="module.moduleID"
         >{{ module.name }}</option>
       </select>
+      <i>Disabled modules on the list do not have <router-link :to="{ name: 'admin.pages'}">record pages</router-link> available.</i>
     </fieldset>
 
     <fieldset class="form-group">
@@ -37,19 +39,6 @@
       </div>
       <i>Drag fields from available to selected to include them to list of record table columns</i>
     </fieldset>
-
-    <fieldset class="form-group">
-      <label for="select-page">Page</label>
-      <select v-model="o.pageID" required class="form-control" id="select-page">
-        <option disabled selected>---</option>
-        <option
-          v-for="page in pages"
-          :key="page.id"
-          :value="page.pageID"
-        >{{ page.title }}</option>
-      </select>
-      <i>Page to be opened for detail record view</i>
-    </fieldset>
   </div>
 </template>
 <script>
@@ -66,9 +55,14 @@ export default {
   },
 
   watch: {
-    'o.moduleID' (o, n) {
-      if (o !== n) {
-        this.o.fields = []
+    'o.moduleID' (newModuleID) {
+      if (newModuleID) {
+        const module = this.modules.find(m => m.moduleID === newModuleID)
+
+        if (module && module.recordPage) {
+          this.o.pageID = module.recordPage.pageID
+          console.debug(`Record page for recordList set to ${module.recordPage.title} (${module.recordPage.pageID})`)
+        }
       }
     },
   },

@@ -11,24 +11,31 @@
           :value="module.moduleID"
         >{{ module.name }}</option>
       </select>
-
-      <div class="list__fields" v-if="o.moduleID">
-        <label>Columns selected</label>
-        <draggable
-          class="drag-area"
-          :list.sync="o.fields"
-          :options="{ group:'fields' }">
-          <div v-for="field in o.fields" :key="field.id">{{field.title}}</div>
-        </draggable>
-        <label>Columns available</label>
-        <draggable
-          class="drag-area"
-          :list.sync="availableFields"
-          :options="{ group:'fields' }">
-          <div v-for="field in availableFields" :key="field.id">{{field.title}}</div>
-        </draggable>
-        <i>Drag fields from available to selected to include them to record info page</i>
+    </fieldset>
+    <fieldset class="form-group">
+      <div class="fields" v-if="o.moduleID">
+        <div>
+          <label>Columns selected</label>
+          <button @click.prevent="o.fields = []" class="all">&raquo;</button>
+          <draggable
+            class="drag-area"
+            :list.sync="o.fields"
+            :options="{ group:'fields' }">
+            <div v-for="field in o.fields" :key="field.id">{{field.title}}</div>
+          </draggable>
+        </div>
+        <div>
+          <label>Columns available </label>
+          <button @click.prevent="o.fields = []; o.fields = availableFields" class="all">&laquo;</button>
+          <draggable
+            class="drag-area"
+            :list.sync="availableFields"
+            :options="{ group:'fields' }">
+            <div v-for="field in availableFields" :key="field.id">{{field.title}}</div>
+          </draggable>
+        </div>
       </div>
+      <i>Drag fields from available to selected to include them to list of record table columns</i>
     </fieldset>
   </div>
 </template>
@@ -51,9 +58,25 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.drag-area {
-  min-height: 100px;
-  border: 1px solid silver;
-  padding: 2px;
-}
+  div.fields {
+    display: flex;
+    flex-flow: row nowrap;
+
+    & > div {
+      flex: 1;
+      margin: 5px;
+
+      button.all {
+        float: right;
+        font-size: 80%;
+      }
+
+      .drag-area {
+        height: 150px;
+        overflow-x: auto;
+        border: 1px solid silver;
+        padding: 2px;
+      }
+    }
+  }
 </style>

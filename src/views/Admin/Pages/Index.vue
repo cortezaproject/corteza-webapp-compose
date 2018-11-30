@@ -94,7 +94,7 @@ export default {
             })
           }
 
-          this.tree = traverse(tree)
+          this.tree = traverse(tree.filter((p) => p.moduleID === '0'))
         })
       } catch (e) {
         this.listError = 'Error when trying to get list of pages.'
@@ -129,7 +129,8 @@ export default {
       }
 
       this.$crm.pageCreate(payload).then(page => {
-        this.$router.push({ name: 'admin.pages.builder', param: { pageID: page.pageID } })
+        console.log(page)
+        this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
       })
     },
   },

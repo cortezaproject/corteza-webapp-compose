@@ -21,14 +21,6 @@
               <input type="checkbox" id="visible" class="form-check-input" v-model="editPageFormData.visible">
                 <label for="visible" class="form-check-label">Visible ?</label>
               </div>
-              <div class="form-group">
-                <label for="module">Module</label>
-                <select v-model="editPageFormData.moduleID" class="form-control" id="module">
-                  <option :value="null"></option>
-                  <option v-for="module in modulesList" :key="module.moduleID" :value="module.moduleID">{{ module.name }}</option>
-                </select>
-                <router-link :to="{name: 'admin.modules'}" class="actions__action">Add a module</router-link>
-              </div>
               <button type="submit" class="btn btn-primary">Save</button>
               <div v-if="editPageFormSubmitError" style="color:red;">
                 {{ editPageFormSubmitError }}
@@ -62,9 +54,11 @@ export default {
     try {
       this.editPageError = ''
       this.editPageFormData = await this.$crm.pageRead({ pageID: this.pageID })
-      console.log(this.editPageFormData)
-      // Parent pages : not itself
-      this.modulesList = await this.$crm.moduleList({})
+
+      if (this.editPageFormData.moduleID !== '0') {
+        // Do not allow to edit record pages, move to builder
+        this.$router.push({ name: 'admin.pages.builder', params: { pageID: this.editPageFormData.pageID } })
+      }
     } catch (e) {
       this.editPageError = 'Error when trying to init page form.'
     }

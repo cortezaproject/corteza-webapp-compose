@@ -19,6 +19,14 @@ export default {
     },
   },
 
+  watch: {
+    'o.moduleID' (o, n) {
+      if (o !== n) {
+        this.o.fields = []
+      }
+    },
+  },
+
   data () {
     return {
       modules: [],
@@ -27,8 +35,16 @@ export default {
   },
 
   created () {
-    this.$crm.moduleList({}).then(mm => {
-      this.modules = mm
+    this.$crm.pageList({ selfID: 0 }).then(pp => {
+      // @todo extend API endpoint to support fetching only record pages
+      this.$crm.moduleList({}).then(mm => {
+        this.modules = mm.map(m => {
+          m.recordPage = pp.find(p => p.moduleID === m.moduleID)
+          return m
+        })
+      }).catch(err => {
+        this.error = err
+      })
     }).catch(err => {
       this.error = err
     })
