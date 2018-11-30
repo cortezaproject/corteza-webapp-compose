@@ -63,7 +63,14 @@ ul,li {
 }
 
 .selected, .selected-in-path {
-  text-decoration: underline;
+  text-decoration: none;
+  border-bottom: 2px solid $appblue;
+}
+
+.selected{
+  & > a{
+    color: $appblue;
+  }
 }
 
 ul {
@@ -93,6 +100,9 @@ ul {
       width: 100%;
       min-width: 150px;
       display: block;
+      &.selected, &.selected-in-path{
+        border-bottom: none;
+      }
 
       a {
         padding: 5px 20px;
@@ -159,7 +169,6 @@ ul {
     position: relative;
 
     &.root {
-      /* display: none; */
       li {
         display: block;
       }
