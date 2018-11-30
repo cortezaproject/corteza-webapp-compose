@@ -85,26 +85,29 @@ ul {
 }
 
 @media (max-width: $wideminwidth) {
-  .navbar-text {
+.navbar{
+  padding: 10px 0;
+}
+.navbar-text {
+  display: block;
+}
+
+ul {
+  position: relative;
+
+  li {
     display: block;
-  }
 
-  ul {
-    position: relative;
-
-    li {
-      display: block;
-
-      a {
-        padding: 10px 20px;
-      }
-    }
-
-    .form-inline {
-      display: block;
-      margin-left: 20px;
+    a {
+      padding: 10px 20px;
     }
   }
+
+  .form-inline {
+    display: block;
+    margin-left: 20px;
+  }
+}
 }
 
 </style>

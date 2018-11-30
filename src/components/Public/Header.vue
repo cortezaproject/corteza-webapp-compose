@@ -112,6 +112,10 @@ nav {
 }
 
 @media (max-width: $wideminwidth) {
+  .navbar{
+    padding: 10px 0;
+  }
+
   .navbar-text {
     display: block;
   }
