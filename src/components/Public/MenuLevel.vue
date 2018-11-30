@@ -67,8 +67,8 @@ ul,li {
   border-bottom: 2px solid $appblue;
 }
 
-.selected{
-  & > a{
+.selected {
+  & > a {
     color: $appblue;
   }
 }
@@ -100,7 +100,8 @@ ul {
       width: 100%;
       min-width: 150px;
       display: block;
-      &.selected, &.selected-in-path{
+
+      &.selected, &.selected-in-path {
         border-bottom: none;
       }
 
