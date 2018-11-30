@@ -29,7 +29,7 @@ export default {
 
   computed: {
     blocks () {
-      return this.page ? this.page.blocks.map(b => new Block(b)) : []
+      return this.page && this.page.blocks && Array.isArray(this.page.blocks) ? this.page.blocks.map(b => new Block(b)) : []
     },
   },
 

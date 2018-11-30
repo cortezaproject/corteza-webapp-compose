@@ -3,9 +3,10 @@
       <b-navbar toggleable type="light" toggle-breakpoint="md">
           <b-navbar-toggle target="nav_text_collapse"></b-navbar-toggle>
           <b-collapse is-nav id="nav_text_collapse">
-            <menu-level :pages="tree"></menu-level>
+            <menu-level :pages="tree" :selectedPath="selectedPath" :pageID="pageID"></menu-level>
           </b-collapse>
       </b-navbar>
+      {{selectedPath}}{{pageID}}
     </header>
 </template>
 <script>
@@ -24,8 +25,56 @@ export default {
     }
   },
 
+  computed: {
+    selectedPath () {
+      const tt = (pp, pageID) => {
+        if (!pp) {
+          return false
+        }
+
+        for (let i = 0; i < pp.length; i++) {
+          if (pp[i].pageID === pageID) {
+            return [pageID]
+          }
+
+          let path = tt(pp[i].children, pageID)
+          if (path) {
+            path.unshift(pp[i].pageID)
+            return path
+          }
+        }
+
+        return false
+      }
+
+      return tt(this.tree, this.pageID)
+    },
+  },
+
   created () {
     this.$crm.pageTree().then((result) => { this.tree = result })
+  },
+
+  methods: {
+    findActive (pp, pageID) {
+      if (!pp) {
+        return false
+      }
+
+      for (let i = 0; i < pp.length; i++) {
+        if (pp[i].pageID === pageID) {
+          return [pageID]
+        }
+
+        let path = this.findActive(pp[i].children, pageID)
+        if (path) {
+          path.unshift(pp[i].pageID)
+          return path
+        }
+      }
+
+      return false
+    },
   },
 
   components: {

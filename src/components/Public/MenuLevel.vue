@@ -1,8 +1,12 @@
 <template>
   <ul :class="ulClass">
-    <li v-for="page in pages" :key="page.pageID" v-if="page.visible">
+    <li v-for="page in pages" :key="page.pageID" v-if="page.visible" :class="{ 'selected-in-path': -1 < selectedPath.findIndex(p => p === page.pageID), 'selected': page.pageID === pageID }">
       <router-link :to="{ name: 'public.page', params: { pageID: page.pageID }}" class="nav-link">{{ page.title }}</router-link>
-      <menu-level :pages="page.children" v-if="hasVisibleChildren(page)" :level="level + 1"></menu-level>
+      <menu-level
+        :pages="page.children" v-if="hasVisibleChildren(page)"
+        :level="level + 1"
+        :selectedPath="selectedPath"
+        :pageID="pageID" />
     </li>
   </ul>
 </template>
@@ -18,6 +22,15 @@ export default {
     level: {
       type: Number,
       default: 0,
+    },
+
+    selectedPath: {
+      type: Array,
+      default () { return [] },
+    },
+
+    pageID: {
+      type: String,
     },
   },
 
@@ -47,6 +60,10 @@ ul,li {
 
 .nav-link {
   color: $black;
+}
+
+.selected, .selected-in-path {
+  text-decoration: underline;
 }
 
 ul {

@@ -31,10 +31,11 @@ function crmViews () {
       component: view('IndexNestedProtected'),
       redirect: 'pages',
       children: [
-        { path: 'pages/', name: 'public.pages', component: view('Public/Redirect') },
+        { path: 'pages/', name: 'public.pages', component: view('Public/Redirect'), props: true },
         {
           path: 'pages/:pageID',
           component: view('Public/Index'),
+          props: true,
           children: [
             { path: '', name: 'public.page', component: view('Public/Pages/View'), props: true },
             { path: 'record', name: 'public.page.record.new', component: view('Public/Pages/NewRecord'), props: true },
