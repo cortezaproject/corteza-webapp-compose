@@ -1,9 +1,15 @@
 <template>
-  <p>Single record block, displaying fields ({{ selectedFields }}) from module <code>{{ module.name || 'Untitled' }}</code></p>
+  <div v-if="options">
+    <div v-for="field in options.fields" :key="field.id">
+      <FieldTypes v-bind:is="mapFieldKind(field.kind)" :field.sync="field"></FieldTypes>
+    </div>
+  </div>
+  <div v-else>Can not render this block without a record</div>
 </template>
 <script>
 import optionsPropMixin from './mixins/optionsProp'
 import moduleLoaderMixin from './mixins/moduleLoader'
+import * as FieldTypes from '../View/fields/loader'
 
 export default {
   computed: {
@@ -12,9 +18,19 @@ export default {
     },
   },
 
+  methods: {
+    mapFieldKind (kind) {
+      return 'field' + kind
+    },
+  },
+
   mixins: [
     optionsPropMixin,
     moduleLoaderMixin,
   ],
+
+  components: {
+    ... FieldTypes,
+  },
 }
 </script>

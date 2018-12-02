@@ -42,7 +42,7 @@
 </template>
 <script>
 import optionsPropMixin from './mixins/optionsProp'
-import FieldTypes from './fields/loader'
+import * as FieldTypes from './fields/loader'
 
 export default {
   props: {
@@ -68,7 +68,7 @@ export default {
   mixins: [optionsPropMixin],
 
   components: {
-    FieldTypes,
+    ... FieldTypes,
   },
 }
 </script>

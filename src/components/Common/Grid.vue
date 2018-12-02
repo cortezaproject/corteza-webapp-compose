@@ -19,6 +19,7 @@
         :h="item.h"
         :i="item.i"
       >
+
         <slot v-bind:block="item.block" v-bind:index="index"></slot>
       </grid-item>
     </grid-layout>
