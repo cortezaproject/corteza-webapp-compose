@@ -6,10 +6,11 @@
       <select v-model="o.moduleID" required class="form-control" id="select-content-list">
         <option disabled selected>---</option>
         <option
-          v-for="module in modules"
+          v-for="module in pageModule"
           :key="module.id"
-          :value="module.moduleID"
-        >{{ module.name }}</option>
+          :value="module.moduleID">
+          {{ module.name }}
+          </option>
       </select>
     </fieldset>
     <fieldset class="form-group">
@@ -51,10 +52,34 @@ export default {
     draggable,
   },
 
+  props: {
+    pageModuleID: 0,
+  },
+
+  data () {
+    return {
+      pageModule: [],
+    }
+  },
+
   mixins: [
     optionsSyncProp,
     moduleFieldsMixins,
   ],
+
+  watch: {
+    modules: {
+      handler () {
+        // on record block only allow the module to ba added which is assigned to the page
+        this.pageModule = []
+        this.modules.map(m => {
+          if (m.moduleID === this.pageModuleID) this.pageModule.push(m)
+        })
+      },
+
+      deep: true,
+    },
+  },
 }
 </script>
 <style lang="scss" scoped>
