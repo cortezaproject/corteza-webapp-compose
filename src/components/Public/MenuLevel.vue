@@ -1,8 +1,12 @@
 <template>
   <ul :class="ulClass">
-    <li v-for="page in pages" :key="page.pageID" v-if="page.visible">
+    <li v-for="page in pages" :key="page.pageID" v-if="page.visible" :class="{ 'selected-in-path': -1 < selectedPath.findIndex(p => p === page.pageID), 'selected': page.pageID === pageID }">
       <router-link :to="{ name: 'public.page', params: { pageID: page.pageID }}" class="nav-link">{{ page.title }}</router-link>
-      <menu-level :pages="page.children" v-if="hasVisibleChildren(page)" :level="level + 1"></menu-level>
+      <menu-level
+        :pages="page.children" v-if="hasVisibleChildren(page)"
+        :level="level + 1"
+        :selectedPath="selectedPath"
+        :pageID="pageID" />
     </li>
   </ul>
 </template>
@@ -18,6 +22,15 @@ export default {
     level: {
       type: Number,
       default: 0,
+    },
+
+    selectedPath: {
+      type: Array,
+      default () { return [] },
+    },
+
+    pageID: {
+      type: String,
     },
   },
 
@@ -49,6 +62,17 @@ ul,li {
   color: $black;
 }
 
+.selected, .selected-in-path {
+  text-decoration: none;
+  border-bottom: 2px solid $appblue;
+}
+
+.selected {
+  & > a {
+    color: $appblue;
+  }
+}
+
 ul {
   font-size: 15px;
   white-space: nowrap;
@@ -59,7 +83,7 @@ ul {
       cursor: pointer;
 
       a {
-        padding: 10px 20px;
+        padding: 19px 20px;
       }
     }
   }
@@ -76,6 +100,10 @@ ul {
       width: 100%;
       min-width: 150px;
       display: block;
+
+      &.selected, &.selected-in-path {
+        border-bottom: none;
+      }
 
       a {
         padding: 5px 20px;
@@ -95,10 +123,8 @@ ul {
 
       &::after {
         content: "";
-        float: right;
-        position: absolute;
-        bottom: 15px;
-        right: 5px;
+        display: inline-block;
+        margin-left: 10px;
         border-width: 4px;
         border-style: solid dashed dashed dashed;
         border-color: $appgrey transparent transparent transparent;
@@ -132,6 +158,10 @@ ul {
       &::after {
         border-style: dashed dashed dashed solid;
         border-color: transparent transparent transparent $appgrey;
+        float: right;
+        position: absolute;
+        bottom: 15px;
+        right: 5px;
       }
     }
   }
@@ -142,9 +172,12 @@ ul {
     position: relative;
 
     &.root {
-      /* display: none; */
       li {
         display: block;
+
+        a {
+          padding: 10px 15px;
+        }
       }
     }
 

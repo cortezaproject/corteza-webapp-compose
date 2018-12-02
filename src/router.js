@@ -31,15 +31,16 @@ function crmViews () {
       component: view('IndexNestedProtected'),
       redirect: 'pages',
       children: [
+        { path: 'pages/', name: 'public.pages', component: view('Public/Redirect'), props: true },
         {
-          path: 'pages',
+          path: 'pages/:pageID',
           component: view('Public/Index'),
+          props: true,
           children: [
-            { path: '', name: 'public.pages', component: view('Public/Redirect') },
-            { path: ':pageID', name: 'public.page', component: view('Public/Pages/View'), props: true },
-            { path: ':pageID/record', name: 'public.page.record.new', component: view('Public/Pages/NewRecord'), props: true },
-            { path: ':pageID/record/:recordID', name: 'public.page.record', component: view('Public/Pages/Record'), props: true },
-            { path: ':pageID/record/:recordID/edit', name: 'public.page.record.edit', component: view('Public/Pages/EditRecord'), props: true },
+            { path: '', name: 'public.page', component: view('Public/Pages/View'), props: true },
+            { path: 'record', name: 'public.page.record.new', component: view('Public/Pages/NewRecord'), props: true },
+            { path: 'record/:recordID', name: 'public.page.record', component: view('Public/Pages/Record'), props: true },
+            { path: 'record/:recordID/edit', name: 'public.page.record.edit', component: view('Public/Pages/EditRecord'), props: true },
           ],
         },
         {

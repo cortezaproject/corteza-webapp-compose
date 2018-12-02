@@ -2,14 +2,14 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <h2>Create a new page</h2>
         <div class="well">
+        <h2>Create a new page</h2>
           <form @submit.prevent="handleAddPageFormSubmit">
             <div class="form-group">
               <label for="title">Page title</label>
               <input required type="text" v-model="addPageFormData.title" class="form-control" id="title" placeholder="Page title" />
             </div>
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-dark">Create</button>
             <div v-if="addPageFormSubmitError" style="color:red;">
               {{ addPageFormSubmitError }}
             </div>
@@ -22,8 +22,8 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <h2>List of pages</h2>
         <div class="well">
+        <h2>List of pages</h2>
           <page-tree
             @delete="handleDeletePage($event)"
             @reorder="handleReorder"
@@ -33,11 +33,11 @@
     </div>
     <div class="row ">
       <div class="col-md-12">
-        <h2>List of record pages</h2>
         <div class="well">
+        <h2>List of record pages</h2>
           <record-pages-list
-            @delete="handleDeletePage($event)"
-            v-model="recordPages" />
+            @createRecordPage="handleRecordPageCreation($event)"
+            :modules="modules" />
         </div>
       </div>
     </div>
@@ -46,8 +46,8 @@
 
 <script>
 import draggable from 'vuedraggable'
-import PageTree from '@/components/Page/Tree'
-import RecordPagesList from '@/components/Page/RecordPagesList'
+import PageTree from '@/components/Admin/Page/Tree'
+import RecordPagesList from '@/components/Admin/Page/RecordPagesList'
 
 export default {
   idToDelete: '',
@@ -58,13 +58,24 @@ export default {
       listError: '',
       addPageFormSubmitError: '',
       tree: [],
-      recordPages: [],
       addPageFormData: {
         title: '',
       },
+
+      modules: [],
     }
   },
   async created () {
+    this.$crm.pageList({ recordPagesOnly: true }).then(pp => {
+      // @todo extend API endpoint to support fetching only record pages
+      this.$crm.moduleList({}).then(mm => {
+        this.modules = mm.map(m => {
+          m.recordPage = pp.find(p => p.moduleID === m.moduleID)
+          return m
+        })
+      })
+    })
+
     this.$_initList()
   },
   methods: {
@@ -72,13 +83,8 @@ export default {
       try {
         this.listError = ''
         this.$crm.pageTree({}).then((tree) => {
-          this.recordPages = []
           const traverse = (pages) => {
             return pages.map((p) => {
-              if (p.moduleID !== '0') {
-                this.recordPages.push(p)
-              }
-
               if (p.children) {
                 p.children = traverse(p.children).filter((p) => p.moduleID === '0')
               }
@@ -87,7 +93,7 @@ export default {
             })
           }
 
-          this.tree = traverse(tree)
+          this.tree = traverse(tree.filter((p) => p.moduleID === '0'))
         })
       } catch (e) {
         this.listError = 'Error when trying to get list of pages.'
@@ -109,6 +115,22 @@ export default {
 
     handleReorder () {
       this.$_initList()
+    },
+
+    handleRecordPageCreation ({ moduleID }) {
+      // This is called from record pages list as a request to create a (record) page that
+      // with reference to a module
+
+      const module = this.modules.find(m => m.moduleID === moduleID)
+      const payload = {
+        title: `Record page for module "${module.name || moduleID}"`,
+        moduleID,
+      }
+
+      this.$crm.pageCreate(payload).then(page => {
+        console.log(page)
+        this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
+      })
     },
   },
 

@@ -1,35 +1,40 @@
 <template>
-    <sortable-tree :data="{children:list}" element="ul" class="list-group" @changePosition="handleChangePosition">
-        <template slot-scope="{item}">
-            <div class="wrap" v-if="item.pageID">
-                <div class="title">{{ item.title }}</div>
-                <div class="prop-col">
-                    <span v-if="item.visible">Visible</span>
-                    <span v-else>Hidden</span>
+  <sortable-tree :data="{children:list}" element="ul" class="list-group" @changePosition="handleChangePosition">
+      <template slot-scope="{item}">
+        <div class="wrap" v-if="item.pageID">
+          <div class="title">{{ item.title }}</div>
+          <div class="prop-col">
+            <span v-if="item.visible">Visible</span>
+            <span v-else>Hidden</span>
+          </div>
+          <div class="actions">
+              <router-link
+                v-if="item.blocks && item.blocks.length >= 1"
+                :to="{name: 'public.pages', params: { pageID: item.pageID }}"
+                class="action">
+                <i class="action icon-zoom"></i>
+              </router-link>
+
+              <div
+                v-else
+                class="action-disabled">
                 </div>
-                <div class="actions">
-                    <router-link
-                            v-if="item.blocks && item.blocks.length >= 1"
-                            :to="{name: 'public.pages', params: { pageID: item.pageID }}"
-                            class="actions__action">View page</router-link>
 
-                    <div title="You need to build page to view your page !"
-                         v-if="!item.blocks || item.blocks.length === 0"
-                         class="actions__action--disabled">View page</div>
+              <router-link
+                :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
+                class="btn">Page builder</router-link>
 
-                    <router-link
-                            :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
-                            class="actions__action">Build page</router-link>
+              <confirmation-toggle @confirmed="$emit('delete', item.pageID)" class="confirmation">Delete</confirmation-toggle>
 
-                    <router-link
-                            :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
-                            class="actions__action">Edit data</router-link>
-
-                    <confirmation-toggle @confirmed="$emit('delete', item.pageID)">Delete</confirmation-toggle>
-                </div>
-            </div>
-        </template>
-    </sortable-tree>
+              <router-link
+                :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
+                class="action">
+                <i class="action icon-edit"></i>
+              </router-link>
+          </div>
+        </div>
+    </template>
+  </sortable-tree>
 </template>
 
 <script>
@@ -120,19 +125,12 @@ ul {
       div.prop-col {
         text-align: left;
         font-size: 0.8em;
-        margin-right: 10px;
         width: 70px;
       }
 
       .title {
         flex: 1;
         margin: 0 10px;
-      }
-
-      .actions {
-        a {
-          padding: 0 5px;
-        }
       }
     }
   }

@@ -86,7 +86,7 @@
                 <option v-for="(moduleFieldSelectOption, index) in moduleFieldsSelectOptions.fields" :value="moduleFieldSelectOption.id" v-bind:index="index" v-bind:key="moduleFieldSelectOption.id">{{ moduleFieldSelectOption.name }}</option>
               </select>
             </div>
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-dark">Create</button>
             <div v-if="addChartFormSubmitError" style="color:red;">
               {{ addChartFormSubmitError }}
             </div>
@@ -108,8 +108,8 @@
               <td class="text-right actions">
                 <router-link
                         :to="{name: 'chart.links.edit', params: { chartID: chart.id }}"
-                        class="actions__action">Edit data</router-link>
-                <button class="btn btn-secondary actions__action" v-on:click="handleDeleteChart(chart.id)">Delete</button>
+                        class="action">Edit data</router-link>
+                <button class="btn btn-secondary action" v-on:click="handleDeleteChart(chart.id)">Delete</button>
               </td>
             </tr>
           </tbody>
@@ -234,7 +234,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.actions__action {
+.action {
   margin-left: 5px;
   margin-right: 5px;
   margin-bottom: 3px;

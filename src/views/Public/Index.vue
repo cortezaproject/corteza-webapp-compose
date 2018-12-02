@@ -1,6 +1,6 @@
 <template>
   <div class="centering-wrap inactive-area">
-    <public-header></public-header>
+    <public-header :pageID="pageID"></public-header>
     <router-view/>
   </div>
 </template>
@@ -9,6 +9,14 @@
 import PublicHeader from '@/components/Public/Header'
 export default {
   name: 'public-root',
+
+  props: {
+    pageID: {
+      type: String,
+      required: true,
+    },
+  },
+
   components: {
     PublicHeader,
   },
