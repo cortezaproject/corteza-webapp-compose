@@ -30,7 +30,7 @@ export default {
   ],
 
   components: {
-    ... FieldTypes,
+    ...FieldTypes,
   },
 }
 </script>
