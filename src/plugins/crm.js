@@ -61,7 +61,7 @@ class CRM {
     })
   }
 
-  async pageList ({ selfID }) {
+  async pageList ({ selfID, recordPagesOnly }) {
     const endpoint = `${this.baseLink}/page/`
     return new Promise((resolve, reject) => {
       axios({
@@ -71,6 +71,7 @@ class CRM {
         headers: this.headers,
         params: {
           'selfID': selfID,
+          recordPagesOnly,
         },
         data: {},
       }).then(this.stdResolve(resolve, reject), this.stdReject(reject))

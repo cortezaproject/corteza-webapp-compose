@@ -66,7 +66,7 @@ export default {
     }
   },
   async created () {
-    this.$crm.pageList({ selfID: 0 }).then(pp => {
+    this.$crm.pageList({ recordPagesOnly: true }).then(pp => {
       // @todo extend API endpoint to support fetching only record pages
       this.$crm.moduleList({}).then(mm => {
         this.modules = mm.map(m => {
@@ -83,7 +83,6 @@ export default {
       try {
         this.listError = ''
         this.$crm.pageTree({}).then((tree) => {
-          this.recordPages = []
           const traverse = (pages) => {
             return pages.map((p) => {
               if (p.children) {
