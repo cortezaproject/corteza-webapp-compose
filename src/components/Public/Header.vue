@@ -112,7 +112,7 @@ nav {
 }
 
 @media (max-width: $wideminwidth) {
-  .navbar{
+  .navbar {
     padding: 10px 0;
   }
 

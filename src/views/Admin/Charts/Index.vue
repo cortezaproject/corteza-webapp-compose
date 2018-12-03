@@ -86,7 +86,7 @@
                 <option v-for="(moduleFieldSelectOption, index) in moduleFieldsSelectOptions.fields" :value="moduleFieldSelectOption.id" v-bind:index="index" v-bind:key="moduleFieldSelectOption.id">{{ moduleFieldSelectOption.name }}</option>
               </select>
             </div>
-            <button type="submit" class="btn btn-dark">Create</button>
+            <button type="submit" class="btn btn-dark large">Create</button>
             <div v-if="addChartFormSubmitError" style="color:red;">
               {{ addChartFormSubmitError }}
             </div>

@@ -18,7 +18,7 @@
             </li>
             <form class="form-inline my-2 my-lg-0">
               <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              <button class="btn" type="submit">Search</button>
             </form>
           </ul>
 
@@ -85,29 +85,30 @@ ul {
 }
 
 @media (max-width: $wideminwidth) {
-.navbar{
-  padding: 10px 0;
-}
-.navbar-text {
-  display: block;
-}
+  .navbar {
+    padding: 10px 0;
+  }
 
-ul {
-  position: relative;
-
-  li {
+  .navbar-text {
     display: block;
+  }
 
-    a {
-      padding: 10px 20px;
+  ul {
+    position: relative;
+
+    li {
+      display: block;
+
+      a {
+        padding: 10px 20px;
+      }
+    }
+
+    .form-inline {
+      display: block;
+      margin-left: 20px;
     }
   }
-
-  .form-inline {
-    display: block;
-    margin-left: 20px;
-  }
-}
 }
 
 </style>
