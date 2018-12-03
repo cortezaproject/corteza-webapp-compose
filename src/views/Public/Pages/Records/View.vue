@@ -1,5 +1,7 @@
 <template>
   <div class="view">
+    <b-alert show variant="warning" dismissible @dismissed="warningAlert=null" v-if="warningAlert">{{ warningAlert }}</b-alert>
+    <b-alert show variant="info" dismissible @dismissed="infoAlert=null" v-if="infoAlert">{{ infoAlert }}</b-alert>
     <div>
       <button class="btn btn-outline" @click.prevent="handleUpdate" v-if="editMode">Save changes</button>
       <button class="btn btn-outline" @click.prevent="$router.push({ name: 'public.page.record.edit' })" v-else>Edit</button>
@@ -36,6 +38,9 @@ export default {
 
   data () {
     return {
+      infoAlert: null,
+      warningAlert: null,
+
       record: {},
 
       // We handle edit mode here because EditRecord components
@@ -60,13 +65,25 @@ export default {
       if (this.page && this.recordID && this.page.moduleID) {
         this.$crm.moduleContentRead({ moduleID: this.page.moduleID, contentID: this.recordID }).then(record => {
           this.record = record
+        }).catch(err => {
+          console.error(err)
+          this.warningAlert = 'Internal error, could not load this record'
         })
       }
     },
 
     handleDelete () {
-      this.$crm.moduleContentDelete({ moduleID: this.record.moduleID, contentID: this.record.contentID })
-      this.$router.push({ name: 'public.page' })
+      this.$crm.moduleContentDelete({ moduleID: this.record.moduleID, contentID: this.record.contentID }).then(rsp => {
+        if (rsp && rsp.success) {
+          this.$router.push({ name: 'public.page' })
+        } else {
+          console.error(rsp)
+          this.warningAlert = rsp.message
+        }
+      }).catch(err => {
+        console.error(err)
+        this.warningAlert = 'Internal error, could not delete this record'
+      })
     },
   },
 
