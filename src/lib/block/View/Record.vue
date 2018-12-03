@@ -53,6 +53,10 @@ export default {
 
   computed: {
     recordValue () {
+      if (!this.record.fields) {
+        return () => undefined
+      }
+
       return (field) => (this.record.fields.find(f => f.name === field.name) || {}).value
     },
   },
