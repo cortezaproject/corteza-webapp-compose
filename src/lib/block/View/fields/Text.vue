@@ -1,14 +1,14 @@
 <template>
   <div class="form-group">
-    <label>{{field.name}}</label>
-    <input class="form-control" type="text">
+    <label>{{field.title}}</label>
+    <input class="form-control" type="text" v-model="recordValue" readonly>
   </div>
 </template>
 <script>
 import fieldPropMixin from './mixins/fieldProp'
 
 export default {
-  name: 'fieldtext',
+  name: 'fieldText',
   computed: {},
 
   mixins: [fieldPropMixin],

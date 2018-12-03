@@ -4,5 +4,9 @@ export default {
       type: Object,
       required: true,
     },
+    recordValue: {
+      type: String,
+      required: false,
+    },
   },
 }

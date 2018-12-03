@@ -1,7 +1,7 @@
 <template>
   <div v-if="options">
     <div v-for="field in options.fields" :key="field.id">
-      <FieldTypes v-bind:is="mapFieldKind(field.kind)" :field.sync="field"></FieldTypes>
+      <FieldTypes v-bind:is="mapFieldKind(field.kind)" :field="field" :recordValue="recordValue(field)"></FieldTypes>
     </div>
   </div>
   <div v-else>Can not render this block without a record</div>
@@ -27,7 +27,7 @@ export default {
 
   methods: {
     mapFieldKind (kind) {
-      return 'field' + kind
+      return 'field' + kind.charAt(0).toUpperCase() + kind.slice(1)
     },
   },
 

@@ -2,16 +2,7 @@
   <div>
     <fieldset class="form-group">
       <label for="select-content-list">Module</label>
-
-      <select v-model="o.moduleID" required class="form-control" id="select-content-list">
-        <option disabled selected>---</option>
-        <option
-          v-for="module in pageModule"
-          :key="module.id"
-          :value="module.moduleID">
-          {{ module.name }}
-          </option>
-      </select>
+      <input v-if="pageModule" class="form-control" type="text" v-model="pageModule.name" readonly>
     </fieldset>
     <fieldset class="form-group">
       <div class="fields" v-if="o.moduleID">
@@ -52,34 +43,10 @@ export default {
     draggable,
   },
 
-  props: {
-    pageModuleID: 0,
-  },
-
-  data () {
-    return {
-      pageModule: [],
-    }
-  },
-
   mixins: [
     optionsSyncProp,
     moduleFieldsMixins,
   ],
-
-  watch: {
-    modules: {
-      handler () {
-        // on record block only allow the module to ba added which is assigned to the page
-        this.pageModule = []
-        this.modules.map(m => {
-          if (m.moduleID === this.pageModuleID) this.pageModule.push(m)
-        })
-      },
-
-      deep: true,
-    },
-  },
 }
 </script>
 <style lang="scss" scoped>
