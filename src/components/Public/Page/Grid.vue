@@ -39,44 +39,6 @@ export default {
     },
   },
 
-  // watch: {
-  //   pageID () {
-  //     this.loadPage()
-  //   },
-  //
-  //   recordID () {
-  //     this.loadRecord()
-  //   },
-  //
-  //   page () {
-  //     this.loadRecord()
-  //   },
-  // },
-  //
-  // mounted () {
-  //   this.loadPage()
-  // },
-
-  // methods: {
-  //   loadPage () {
-  //     this.page = null
-  //     this.record = null
-  //
-  //     this.$crm.pageRead({ pageID: this.pageID }).then(page => {
-  //       this.page = page
-  //     })
-  //   },
-  //
-  //   loadRecord () {
-  //     this.record = null
-  //     if (this.page && this.recordID && this.page.moduleID) {
-  //       this.$crm.moduleContentRead({ moduleID: this.page.moduleID, contentID: this.recordID }).then(record => {
-  //         this.record = record
-  //       })
-  //     }
-  //   },
-  // },
-
   components: {
     Grid,
     BlockViewer,
