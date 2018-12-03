@@ -36,6 +36,10 @@ ul,li {
   margin: 0;
 }
 
+header{
+  margin-bottom: 30px;
+}
+
 .nav-link {
   color: $black;
 
