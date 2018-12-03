@@ -1,8 +1,9 @@
 <template>
-  <div class="view">
+  <div class="view" v-if="!!page">
     <router-view :page="page" v-if="recordID || $route.meta.newRecord" />
-    <grid :page="page" v-else />
+    <grid :page="page" />
   </div>
+  <div class="view" v-else><!-- @todo loader --></div>
 </template>
 <script>
 import Grid from '@/components/Public/Page/Grid'
@@ -20,7 +21,7 @@ export default {
 
   data () {
     return {
-      page: {},
+      page: null,
     }
   },
 
@@ -36,7 +37,7 @@ export default {
 
   methods: {
     loadPage () {
-      this.page = {}
+      this.page = null
       this.$crm.pageRead({ pageID: this.pageID }).then(page => {
         this.page = page
       })
