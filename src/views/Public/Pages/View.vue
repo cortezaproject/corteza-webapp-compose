@@ -1,6 +1,7 @@
 <template>
   <div class="view">
-    <grid :page="page"/>
+    <router-view :page="page" v-if="recordID || $route.meta.newRecord" />
+    <grid :page="page" v-else />
   </div>
 </template>
 <script>
@@ -12,6 +13,9 @@ export default {
       type: String,
       required: true,
     },
+
+    // We're using recordID to check if we need to display router-view or grid component
+    recordID: String,
   },
 
   data () {
@@ -35,11 +39,8 @@ export default {
       this.page = {}
       this.$crm.pageRead({ pageID: this.pageID }).then(page => {
         this.page = page
-        this.loadRecord()
       })
     },
-
-    loadRecord () {}, // Placeholder, *Record components will override this
   },
 
   components: {

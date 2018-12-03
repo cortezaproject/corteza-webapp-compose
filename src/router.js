@@ -37,10 +37,16 @@ function crmViews () {
           component: view('Public/Index'),
           props: true,
           children: [
-            { path: '', name: 'public.page', component: view('Public/Pages/View'), props: true },
-            { path: 'record', name: 'public.page.record.new', component: view('Public/Pages/NewRecord'), props: true },
-            { path: 'record/:recordID', name: 'public.page.record', component: view('Public/Pages/Record'), props: true },
-            { path: 'record/:recordID/edit', name: 'public.page.record.edit', component: view('Public/Pages/EditRecord'), props: true },
+            { path: '',
+              name: 'public.page',
+              component: view('Public/Pages/View'),
+              props: true,
+              children: [
+                { path: 'record/:recordID/edit', name: 'public.page.record.edit', component: view('Public/Pages/Records/Edit'), props: true },
+                { path: 'record/:recordID', name: 'public.page.record', component: view('Public/Pages/Records/View'), props: true },
+                { path: 'record', name: 'public.page.record.create', component: view('Public/Pages/Records/Create'), props: true, meta: { newRecord: true } },
+              ],
+            },
           ],
         },
         {
@@ -59,10 +65,10 @@ function crmViews () {
             { path: 'modules/:moduleID/content', name: 'admin.modules.content', component: view('Admin/Modules/Contents/Index'), props: true },
             // create an individual row (should display fields configured for the module)
             { path: 'modules/:moduleID/content/add', name: 'admin.modules.content.add', component: view('Admin/Modules/Contents/Edit'), props: true },
-            // list an individual row (should display the page configured for the module)
-            { path: 'modules/:moduleID/content/:contentID', name: 'admin.modules.content.view', component: view('Admin/Modules/Contents/Read'), props: true },
             // edit an individual row (should display fields configured for the module)
             { path: 'modules/:moduleID/content/:contentID/edit', name: 'admin.modules.content.edit', component: view('Admin/Modules/Contents/Edit'), props: true },
+            // list an individual row (should display the page configured for the module)
+            { path: 'modules/:moduleID/content/:contentID', name: 'admin.modules.content.view', component: view('Admin/Modules/Contents/Read'), props: true },
 
             { path: 'pages/', name: 'admin.pages', component: view('Admin/Pages/Index') },
             { path: 'pages/:pageID/edit', name: 'admin.pages.edit', component: view('Admin/Pages/Edit'), props: true },
