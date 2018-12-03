@@ -5,12 +5,12 @@
     <table>
       <thead>
         <tr>
-          <th v-for="(field) in options.fields" :key="'header:'+field.id">{{ field.title }}</th>
+          <th v-for="(col) in options.fields" :key="'header:'+col.name">{{ col.title || col.name }}</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(row) in records" :key="row.contentID">
-          <td v-for="(field) in options.fields" :key="row.contentID+':'+field.id">{{ row.data['first_name'] }}</td>
+          <td v-for="(col) in options.fields" :key="row.contentID+':'+col.name">{{ row.data[col.name] }}</td>
           <td>
             <router-link :to="{ name: 'public.page.record', params: { pageID: options.pageID, recordID: row.contentID } }">Open</router-link>
           </td>

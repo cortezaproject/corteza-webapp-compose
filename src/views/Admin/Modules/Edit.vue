@@ -119,7 +119,6 @@ export default {
       if (!this.formData.fields) {
         // Making sure
       }
-
     } catch (e) {
       this.editModuleError = 'Error when trying to init module form.'
     }
@@ -156,7 +155,6 @@ export default {
         this.editModuleError = 'Error when trying to get list of fields.'
       }
     },
-
 
     async save () {
       try {
