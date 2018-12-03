@@ -74,12 +74,7 @@ export default {
 
     handleDelete () {
       this.$crm.moduleContentDelete({ moduleID: this.record.moduleID, contentID: this.record.contentID }).then(rsp => {
-        if (rsp && rsp.success) {
-          this.$router.push({ name: 'public.page' })
-        } else {
-          console.error(rsp)
-          this.warningAlert = rsp.message
-        }
+        this.$router.push({ name: 'public.page' })
       }).catch(err => {
         console.error(err)
         this.warningAlert = 'Internal error, could not delete this record'
