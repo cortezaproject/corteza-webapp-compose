@@ -29,9 +29,9 @@
                   </tr>
                 </thead>
                 <draggable v-model="formData.fields" :options="{handle:'.handle'}" :element="'tbody'">
-                  <template v-for="field in formData.fields" v-if="field">
-                    <tr :key="'modules-edit-' + field.id">
-                      <td class="handle text-nowrap">[{{field.id}}]</td>
+                  <template v-for="(field,index) in formData.fields" v-if="field">
+                    <tr :key="'modules-edit-' + index">
+                      <td class="handle text-nowrap">[{{index}}]</td>
                       <td><input v-model="field.name" type="text" class="form-control" /></td>
                       <td><input v-model="field.title" type="text" class="form-control" /></td>
                       <td><select v-model="field.kind" class="form-control">
@@ -50,7 +50,7 @@
                         <button @click="RemoveField(field)" type="button" class="btn btn-default">Delete</button>
                       </td>
                     </tr>
-                    <Field-Settings :field="field" :key="'modules-edit-' + field.id + '-settings'"></Field-Settings>
+                    <Field-Settings :field="field" :key="'modules-edit-' + index + '-settings'"></Field-Settings>
                   </template>
                 </draggable>
               </table>
@@ -106,7 +106,20 @@ export default {
       var req = {
         moduleID: this.moduleID,
       }
-      this.formData = await this.$crm.moduleRead(req)
+      this.$crm.moduleRead(req).then(rsp => {
+        if (!Array.isArray(rsp.fields)) {
+          // In some cases, empty arrays are unarshaled as an empty object
+          // and draggable component complains
+          rsp.fields = []
+        }
+
+        this.formData = rsp
+      })
+
+      if (!this.formData.fields) {
+        // Making sure
+      }
+
     } catch (e) {
       this.editModuleError = 'Error when trying to init module form.'
     }
@@ -143,26 +156,8 @@ export default {
         this.editModuleError = 'Error when trying to get list of fields.'
       }
     },
-    /**
-     * Get new unique id from fields.
-     * @param {{id}[]} fields
-     * @param {String|null|undefined} potentialId
-     */
-    $_getNewIDForField (fields, potentialId) {
-      if (potentialId == null) {
-        return this.$_getNewIDForField(fields, 1)
-      }
-      let founded = false
-      fields.forEach((value) => {
-        if (value.id === potentialId) {
-          founded = true
-        }
-      })
-      if (founded) {
-        return this.$_getNewIDForField(fields, ++potentialId)
-      }
-      return potentialId
-    },
+
+
     async save () {
       try {
         if (this.mode === 'create') {
@@ -178,7 +173,6 @@ export default {
     },
     AddNewField () {
       this.formData.fields.push({
-        id: this.$_getNewIDForField(this.formData.fields),
         name: '',
         title: '',
         kind: 'text',
