@@ -120,17 +120,17 @@ button structure :
 }
 
 .btn-danger, .btn-red {
-  background-color: $appred;
+  color: $appred;
+  background-color: white;
   border-color: $appred;
-  color: white;
 
   .btn-txt, .btn-i {
     color: white;
   }
 
   &:hover {
-    color: $appred;
-    background-color: white;
+    background-color: $appred;
+    color: white;
 
     .btn-txt, .btn-i {
       color: $appred;
