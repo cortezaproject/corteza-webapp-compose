@@ -2,10 +2,11 @@
   <div v-if="misconfigured">{{ misconfigured }}</div>
   <div v-else>
     <form>here be search</form>
-    <table>
+    <table class="table">
       <thead>
         <tr>
           <th v-for="(col) in options.fields" :key="'header:'+col.name">{{ col.title || col.name }}</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -18,7 +19,12 @@
       </tbody>
     </table>
     <div>
-      <pagination v-model="meta.page" :records="meta.count" :per-page="meta.perPage" @paginate="handlePageChange" />
+      <pagination
+          :records="meta.count"
+          :per-page="meta.perPage"
+          @paginate="handlePageChange"
+          theme="bootstrap4"
+          v-model="meta.page" />
     </div>
   </div>
 </template>
@@ -84,3 +90,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+  table {
+    width: 100%;
+  }
+</style>

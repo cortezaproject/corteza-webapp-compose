@@ -18,7 +18,7 @@
             </li>
             <form class="form-inline my-2 my-lg-0">
               <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              <button class="btn" type="submit">Search</button>
             </form>
           </ul>
 
@@ -28,26 +28,8 @@
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/_0.declare.scss";
+@import "@/assets/sass/components/header.scss";
 /* stylelint-disable no-descending-specificity */
-
-ul,li {
-  padding: 0;
-  margin: 0;
-}
-
-.nav-link {
-  color: $black;
-
-  &.router-link-active {
-    border-bottom: 2px solid $appblue;
-    color: $appblue;
-  }
-}
-
-nav {
-  box-shadow: 0 0.1rem 0.2rem 0 rgba(30, 34, 36, 0.1);
-}
 
 ul {
   font-size: 15px;
@@ -69,26 +51,7 @@ ul {
   margin-left: 50px;
 }
 
-.navbar {
-  padding: 0;
-}
-
-.navbar-toggler {
-  margin: 5px 5px 5px 10px;
-  font-size: 12px;
-  padding: 5px 10px;
-
-  &:focus,
-  &:hover {
-    outline: none;
-  }
-}
-
 @media (max-width: $wideminwidth) {
-  .navbar-text {
-    display: block;
-  }
-
   ul {
     position: relative;
 

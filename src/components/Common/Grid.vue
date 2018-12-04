@@ -103,7 +103,7 @@ export default {
 <style lang="scss" scoped>
 .builder-grid {
   width: 100%;
-  padding: 20px;
+  padding: 0 10px;
 
   &.mobile {
     width: 320px;
@@ -113,6 +113,5 @@ export default {
 
 .vue-grid-item {
   border: 1px solid #ccc;
-  padding: 20px 10px 10px 10px;
 }
 </style>

@@ -1,0 +1,34 @@
+.VuePagination {
+  text-align: center;
+
+  .pagination {
+    justify-content: center;
+
+    .disabled {
+      .page-link {
+        color: $appgrey;
+      }
+    }
+
+    .page-item {
+      .page-link {
+        color: $appblue;
+        outline: none;
+        box-shadow: none;
+      }
+
+      &.active {
+        .page-link {
+          background: $appblue;
+          border-color: $appblue;
+          color: $white;
+        }
+      }
+    }
+
+    .VuePagination__pagination-item-prev-chunk,
+    .VuePagination__pagination-item-next-chunk {
+      display: none;
+    }
+  }
+}

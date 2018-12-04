@@ -9,7 +9,7 @@
               <label for="name">Module name</label>
               <input required type="text" v-model="addModuleFormData.name" class="form-control" id="name" placeholder="Module name" />
             </div>
-            <button type="submit" class="btn btn-dark">Create</button>
+            <button type="submit" class="btn btn-dark large">Create</button>
             <div v-if="addModuleFormSubmitError" style="color:red;">
               {{ addModuleFormSubmitError }}
             </div>

@@ -9,7 +9,7 @@
               <label for="title">Page title</label>
               <input required type="text" v-model="addPageFormData.title" class="form-control" id="title" placeholder="Page title" />
             </div>
-            <button type="submit" class="btn btn-dark">Create</button>
+            <button type="submit" class="btn btn-dark large">Create</button>
             <div v-if="addPageFormSubmitError" style="color:red;">
               {{ addPageFormSubmitError }}
             </div>

@@ -12,7 +12,10 @@
                 v-if="item.blocks && item.blocks.length >= 1"
                 :to="{name: 'public.pages', params: { pageID: item.pageID }}"
                 class="action">
-                <i class="action icon-zoom"></i>
+                <font-awesome-icon
+                  :icon="['far', 'eye']"
+                  title="View"
+                ></font-awesome-icon>
               </router-link>
 
               <div
@@ -121,7 +124,7 @@ ul {
       div.prop-col {
         text-align: left;
         font-size: 0.8em;
-        width: 70px;
+        width: 60px;
       }
 
       .title {

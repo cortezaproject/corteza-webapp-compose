@@ -1,7 +1,7 @@
 <template>
-  <section class="container" id="modules-contents-index">
-    <h1>{{module.name}}</h1>
-    <table class="table table-striped">
+  <section class="container well" id="modules-contents-index">
+    <h2>{{module.name}}</h2>
+    <table class="table">
       <thead>
         <tr>
           <th v-for="moduleField in module.fields" :key="moduleField.id" v-if="moduleField.isVisible">
@@ -22,9 +22,11 @@
               <span v-if="moduleField.name in row.fields">{{row.fields[moduleField.name]}}</span>
               <span v-else><i>None</i></span>
             </td>
-            <td class="text-right">
-              <router-link :to="{name: 'admin.modules.content.edit', params: { moduleID, contentID: row.contentID }}" class="btn btn-sm btn-primary">Edit</router-link>
-              &nbsp; <a @click="deleteContent(row.id)" class="btn btn-sm btn-warning">Delete</a>
+            <td class="text-right actions">
+              <button @click="deleteContent(row.id)" class="btn btn-danger">Delete</button>
+              <router-link :to="{name: 'admin.modules.content.edit', params: { moduleID, contentID: row.contentID }}">
+                <i class="action icon-edit"></i>
+              </router-link>
             </td>
           </tr>
         </template>
@@ -123,3 +125,15 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+@import "@/assets/sass/_0.declare.scss";
+@import "@/assets/sass/btns.scss";
+
+table {
+  td {
+    max-width: 300px;
+  }
+}
+
+</style>

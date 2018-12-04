@@ -1,0 +1,35 @@
+.actions {
+  a {
+    color: $black;
+    vertical-align: middle;
+
+    i {
+      color: $black;
+    }
+
+    &.action {
+      padding: 0 10px;
+    }
+
+    &:hover {
+      text-decoration: none;
+
+      i {
+        color: $appblue;
+      }
+    }
+  }
+
+  .confirmation {
+    display: inline-block;
+    min-width: 110px;
+    text-align: right;
+  }
+
+  .action {
+    &-disabled {
+      display: inline-block;
+      width: 35px;
+    }
+  }
+}
