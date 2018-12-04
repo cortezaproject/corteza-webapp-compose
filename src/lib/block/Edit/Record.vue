@@ -1,7 +1,12 @@
 <template>
-  <dl>
-    <component :is="'fieldText'" v-for="field in options.fields" :key="field.id" />
-  </dl>
+  <div>
+    <component
+      v-for="field in options.fields"
+      :is="kind(field)"
+      :record.sync="record"
+      :key="field.id"
+      :field="field" />
+  </div>
 </template>
 <script>
 import optionsPropMixin from './mixins/optionsProp'
@@ -15,9 +20,9 @@ export default {
     },
   },
 
-  computed: {
-    recordValue () {
-      return (field) => (this.record.fields.find(f => f.name === field.name) || {}).value
+  methods: {
+    kind (field) {
+      return 'field-' + field.kind
     },
   },
 
@@ -31,5 +36,4 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-div { background-color: yellow; }
 </style>

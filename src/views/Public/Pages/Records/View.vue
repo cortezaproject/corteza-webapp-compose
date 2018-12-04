@@ -9,7 +9,7 @@
       <button class="btn btn-outline" v-b-modal.deleteRecord>Delete</button>
       <button class="btn btn-outline" @click.prevent="$router.back()">Back</button>
     </div>
-    <grid :page="page" :record="record" :edit-mode="editMode" />
+    <grid :page="page" :record="record" :edit-mode="editMode" v-if="record" />
     <b-modal id="deleteRecord" title="Delete record" @ok="handleDelete" ok-title="Delete" ok-variant="danger">
       <div class="d-block text-center">
         <h3>Are you sure you want to delete this record?</h3>
