@@ -105,7 +105,7 @@ export default new VueRouter({
     ...crmViews(),
     ...defaultViews(),
 
-    // When everything else failes, go to pages
+    // When everything else fails, go to pages
     { path: '*', redirect: { name: 'public.pages' } },
   ],
 })

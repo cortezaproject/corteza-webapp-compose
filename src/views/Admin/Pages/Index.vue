@@ -25,7 +25,6 @@
         <div class="well">
         <h2>List of pages</h2>
           <page-tree
-            @delete="handleDeletePage($event)"
             @reorder="handleReorder"
             v-model="tree"/>
         </div>
@@ -107,10 +106,6 @@ export default {
       } catch (e) {
         this.addPageFormSubmitError = 'Error when trying to create page.'
       }
-    },
-    async handleDeletePage (pageID) {
-      await this.$crm.pageDelete({ pageID })
-      await this.$_initList()
     },
 
     handleReorder () {

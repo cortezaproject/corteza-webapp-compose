@@ -7,6 +7,9 @@
           <div v-if="editPageError" style="color:red;">
             {{ editPageError }}
           </div>
+          <div v-if="editPageFormSubmitError" style="color:red;">
+            {{ editPageFormSubmitError }}
+          </div>
           <form v-if="!editPageError" @submit.prevent="handleEditPageFormSubmit">
             <input required type="hidden" v-model="editPageFormData.pageID" id="id" />
             <div class="form-group">
@@ -19,20 +22,25 @@
             </div>
             <div class="form-group form-check">
               <input type="checkbox" id="visible" class="form-check-input" v-model="editPageFormData.visible">
-                <label for="visible" class="form-check-label">Visible ?</label>
-              </div>
+              <label for="visible" class="form-check-label">Visible ?</label>
+            </div>
+
+            <div>
+              <router-link :to="{name: 'admin.pages'}">Cancel</router-link>
+              <router-link :to="{name: 'admin.pages.builder'}">Builder</router-link>
+              <confirmation-toggle @confirmed="handleDeletePage" class="confirmation">Delete</confirmation-toggle>
               <button type="submit" class="btn btn-primary">Save</button>
-              <div v-if="editPageFormSubmitError" style="color:red;">
-                {{ editPageFormSubmitError }}
-              </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
+import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
+
 export default {
   name: 'PageEdit',
   props: {
@@ -67,12 +75,21 @@ export default {
     async handleEditPageFormSubmit () {
       try {
         this.editPageFormSubmitError = ''
-        console.log(this.editPageFormData)
         await this.$crm.pageEdit(this.editPageFormData)
       } catch (e) {
         this.editPageFormSubmitError = 'Error when trying to edit page.'
       }
     },
+
+    handleDeletePage () {
+      this.$crm.pageDelete({ pageID: this.pageID }).then(() => {
+        this.$router.push({ name: 'admin.pages' })
+      })
+    },
+  },
+
+  components: {
+    ConfirmationToggle,
   },
 }
 </script>

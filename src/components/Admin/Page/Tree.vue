@@ -21,16 +21,14 @@
                 </div>
 
               <router-link
-                :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
-                class="btn">Page builder</router-link>
-
-              <confirmation-toggle @confirmed="$emit('delete', item.pageID)" class="confirmation">Delete</confirmation-toggle>
-
-              <router-link
                 :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
                 class="action">
                 <i class="action icon-edit"></i>
               </router-link>
+
+              <router-link
+                :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
+                class="btn">Page builder</router-link>
           </div>
         </div>
     </template>
@@ -39,7 +37,6 @@
 
 <script>
 import SortableTree from 'vue-sortable-tree'
-import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 
 export default {
   name: 'page-tree',
@@ -104,7 +101,6 @@ export default {
 
   components: {
     SortableTree,
-    ConfirmationToggle,
   },
 }
 </script>
