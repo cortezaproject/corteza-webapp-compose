@@ -22,6 +22,13 @@
           placeholder="Block Description"
         >
       </div>
+     <div class="form-group">
+       <label for="color">Header style</label>
+       <b-form-select v-model="block.theme" :options="options" class="mb-3" />
+       <div :class="'theme-'+block.theme">
+         <h2>Preview of your header</h2>
+       </div>
+     </div>
     </fieldset>
     <component :is="block.kind" :moduleID="moduleID" :options.sync="block.options"/>
   </form>
@@ -39,8 +46,37 @@ export default {
     moduleID: 0,
   },
 
+  data () {
+    return {
+      options: [
+        { value: '', text: 'White with dark text - default' },
+        { value: 'red-light', text: 'Red with white text' },
+        { value: 'red-dark', text: 'Red with dark text' },
+        { value: 'green-light', text: 'Green with white text' },
+        { value: 'green-dark', text: 'Green with dark text' },
+        { value: 'blue-light', text: 'Blue with white text' },
+        { value: 'blue-dark', text: 'Blue with dark text' },
+        { value: 'grey-light', text: 'Grey with white text' },
+        { value: 'grey-dark', text: 'Grey with dark text' },
+      ],
+    }
+  },
+
   components: {
     ...EditBlocks,
   },
 }
 </script>
+
+<style lang="scss" scoped>
+@import "@/assets/sass/components/blocks.scss";
+
+h2 {
+  font-size: 15px;
+  font-weight: 900;
+  padding: 5px 10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border: 1px solid #ccc;
+}
+</style>
