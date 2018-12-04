@@ -21,7 +21,7 @@
       @ok="blocks.push(createBlock)"
       @hide="createBlock=null"
       :visible="!!createBlock">
-      <block-edit v-if="createBlock" :pageModuleID="pageModuleID" :block.sync="createBlock" />
+      <block-edit v-if="createBlock" :moduleID="moduleID" :block.sync="createBlock" />
     </b-modal>
 
     <b-modal
@@ -30,7 +30,7 @@
       ok-only
       @hide="updateBlock=null"
       :visible="!!updateBlock">
-      <block-edit v-if="updateBlock" :pageModuleID="pageModuleID" :block="updateBlock" />
+      <block-edit v-if="updateBlock" :moduleID="moduleID" :block.sync="updateBlock" />
     </b-modal>
 
     <div class="toolbar">
@@ -67,17 +67,16 @@ export default {
     return {
       createBlock: null, // holds instance of a block we're adding
       updateBlock: null, // holds instance of a block we're editing
-      pageModuleID: 0,
-
       blocks: [],
+      moduleID: null,
     }
   },
 
   mounted () {
     this.$crm.pageRead({ pageID: this.pageID }).then(page => {
-      this.pageModuleID = page.moduleID
       if (page.blocks && Array.isArray(page.blocks)) {
         this.blocks = page.blocks.map(b => new Block(b))
+        this.moduleID = page.moduleID
       }
     })
   },

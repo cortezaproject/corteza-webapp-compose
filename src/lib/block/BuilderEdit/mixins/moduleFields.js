@@ -1,4 +1,15 @@
 export default {
+  props: {
+    moduleID: 0,
+  },
+
+  data () {
+    return {
+      modules: [],
+      error: null,
+    }
+  },
+
   computed: {
     availableFields () {
       const module = this.modules.find(m => m.moduleID === this.o.moduleID)
@@ -19,38 +30,23 @@ export default {
     },
   },
 
-  props: {
-    pageModuleID: 0,
-  },
-
   watch: {
     'o.moduleID' (o, n) {
       if (o !== n) {
         this.o.fields = []
       }
     },
+
     modules: {
       handler () {
         // on record block only allow the module to ba added which is assigned to the page
-        if (this.pageModuleID > 0) {
-          this.pageModule = null
-          this.modules.map(m => {
-            if (m.moduleID === this.pageModuleID) this.pageModule = m
-          })
-          this.o.moduleID = this.pageModuleID
+        if (this.moduleID > 0) {
+          this.o.moduleID = this.moduleID
         }
       },
 
       deep: true,
     },
-  },
-
-  data () {
-    return {
-      modules: [],
-      error: null,
-      pageModule: null,
-    }
   },
 
   created () {

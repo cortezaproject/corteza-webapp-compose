@@ -23,7 +23,7 @@
         >
       </div>
     </fieldset>
-    <component :is="block.kind" :pageModuleID="pageModuleID" :options.sync="block.options"/>
+    <component :is="block.kind" :moduleID="moduleID" :options.sync="block.options"/>
   </form>
 </template>
 
@@ -36,7 +36,7 @@ export default {
       type: Object,
       required: true,
     },
-    pageModuleID: 0,
+    moduleID: 0,
   },
 
   components: {

@@ -1,8 +1,8 @@
 <template>
   <div>
     <fieldset class="form-group">
-      <label for="select-content-list">Module</label>
-      <input v-if="pageModule" class="form-control" type="text" v-model="pageModule.name" readonly>
+      <label>Module</label>
+      <input v-if="module" class="form-control" type="text" v-model="module.name" readonly>
     </fieldset>
     <fieldset class="form-group">
       <div class="fields" v-if="o.moduleID">
@@ -41,6 +41,12 @@ export default {
 
   components: {
     draggable,
+  },
+
+  computed: {
+    module () {
+      return this.modules.find(m => m.moduleID === this.o.moduleID)
+    },
   },
 
   mixins: [
