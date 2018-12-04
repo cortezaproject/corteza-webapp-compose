@@ -1,0 +1,26 @@
+@import "@/assets/sass/_0.declare.scss";
+
+.block-data {
+  .block-data-title {
+    font-size: 15px;
+    font-weight: 900;
+  }
+
+  .block-data-description {
+    font-size: 10px;
+    border-bottom: 1px solid $appgrey;
+    min-height: 15px;
+  }
+
+  .block-data-content {
+    fieldset {
+      border: none;
+    }
+  }
+
+  .block-data-footer {
+    font-size: 10px;
+    position: absolute;
+    bottom: 0;
+  }
+}

@@ -6,6 +6,7 @@
       <thead>
         <tr>
           <th v-for="(col) in options.fields" :key="'header:'+col.name">{{ col.title || col.name }}</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>

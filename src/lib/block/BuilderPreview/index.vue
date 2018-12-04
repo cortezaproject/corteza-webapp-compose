@@ -27,26 +27,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.block-data {
-  .block-data-title {
-    font-size: 15px;
-  }
+@import "@/assets/sass/components/blocks.scss";
 
-  .block-data-description {
-    font-size: 10px;
-    border-bottom: 1px solid black;
-  }
-
-  .block-data-content {
-    fieldset {
-      border: none;
-    }
-  }
-
-  .block-data-footer {
-    font-size: 10px;
-    position: absolute;
-    bottom: 0;
-  }
-}
 </style>
