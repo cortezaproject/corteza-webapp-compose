@@ -96,26 +96,28 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <h2>List of charts</h2>
-        <div v-if="deleteChartError" style="color:red;">
-          {{ deleteChartError }}
-        </div>
-        <table class="table table-striped">
-          <tbody>
-            <tr v-for="(chart, index) in list" :key="index">
-              <td>{{ chart.name }}</td>
-              <td>(Updated at : {{ chart.updatedAt }})</td>
-              <td class="text-right actions">
-                <router-link
-                        :to="{name: 'chart.links.edit', params: { chartID: chart.id }}"
-                        class="action">Edit data</router-link>
-                <button class="btn btn-secondary action" v-on:click="handleDeleteChart(chart.id)">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div v-if="listError" style="color:red;">
-          {{ listError }}
+        <div class="well">
+          <h2>List of charts</h2>
+          <div v-if="deleteChartError" style="color:red;">
+            {{ deleteChartError }}
+          </div>
+          <table class="table table-striped">
+            <tbody>
+              <tr v-for="(chart, index) in list" :key="index">
+                <td>{{ chart.name }}</td>
+                <td>(Updated at : {{ chart.updatedAt }})</td>
+                <td class="text-right actions">
+                  <router-link
+                          :to="{name: 'chart.links.edit', params: { chartID: chart.id }}"
+                          class="action">Edit data</router-link>
+                  <button class="btn btn-secondary action" v-on:click="handleDeleteChart(chart.id)">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div v-if="listError" style="color:red;">
+            {{ listError }}
+          </div>
         </div>
       </div>
     </div>

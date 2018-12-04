@@ -50,7 +50,6 @@ a:hover {
 }
 
 label {
-  cursor: pointer;
   font-weight: 300;
   color: $black;
   margin-bottom: 0;
@@ -63,6 +62,8 @@ label {
   &:focus,
   &:active {
     color: $black;
+    border-color: $appblue;
+    box-shadow: none;
   }
 
   &::placeholder {
@@ -317,6 +318,47 @@ li.dropdown:hover > .dropdown-menu {
     &-disabled {
       display: inline-block;
       width: 35px;
+    }
+  }
+}
+
+table {
+  td {
+    word-break: break-word;
+  }
+}
+
+.VuePagination {
+  text-align: center;
+
+  .pagination {
+    justify-content: center;
+
+    .page-item {
+      &.active {
+        .page-link {
+          background: $appblue;
+          border-color: $appblue;
+          color: $white;
+        }
+      }
+
+      .page-link {
+        color: $appblue;
+        outline: none;
+        box-shadow: none;
+      }
+    }
+
+    .disabled {
+      .page-link {
+        color: $appgrey;
+      }
+    }
+
+    .VuePagination__pagination-item-prev-chunk,
+    .VuePagination__pagination-item-next-chunk {
+      display: none;
     }
   }
 }

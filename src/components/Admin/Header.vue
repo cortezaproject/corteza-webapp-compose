@@ -36,8 +36,8 @@ ul,li {
   margin: 0;
 }
 
-header{
-  margin-bottom: 30px;
+header {
+  margin-bottom: 10px;
 }
 
 .nav-link {

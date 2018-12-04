@@ -1,13 +1,13 @@
 <template>
-  <section class="container" id="modules-contents-edit">
-    <h1 v-if="mode === 'create'">{{module.name}}: create entry</h1>
-    <h1 v-if="mode === 'edit'">{{module.name}}: edit entry</h1>
+  <section class="container well" id="modules-contents-edit">
+    <h2 v-if="mode === 'create'">{{module.name}}: create entry</h2>
+    <h2 v-if="mode === 'edit'">{{module.name}}: edit entry</h2>
 
-    <table class="table table-striped">
+    <table class="table">
       <tbody>
         <template v-for="field in module.fields">
           <tr :key="'modules-contents-edit-fields-' + field.name">
-            <td><b>{{field.title}}</b></td>
+            <td><label>{{field.title}}</label></td>
             <td>
               <FieldEdit :field="field" :row="row"></FieldEdit>
             </td>
@@ -16,11 +16,8 @@
       </tbody>
     </table>
 
-    <a href="#" @click="save" class="btn btn-primary">Save entry</a>
-    &nbsp; <router-link :to="{ name: 'admin.modules.content', params: { moduleID }}" class="btn btn-secondary">Cancel</router-link>
-
-    <pre>{{ $data }}</pre>
-
+    <button @click="save" class="btn btn-dark large">Save entry</button>
+    <router-link :to="{ name: 'admin.modules.content', params: { moduleID }}" class="btn large">Cancel</router-link>
   </section>
 </template>
 
@@ -120,3 +117,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+@import "@/assets/sass/_0.declare.scss";
+@import "@/assets/sass/btns.scss";
+
+</style>

@@ -1,6 +1,6 @@
 <template>
   <section class="container well" id="modules-contents-index">
-    <h1>{{module.name}}</h1>
+    <h2>{{module.name}}</h2>
     <table class="table">
       <thead>
         <tr>
@@ -129,5 +129,11 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/sass/_0.declare.scss";
 @import "@/assets/sass/btns.scss";
+
+table {
+  td {
+    max-width: 300px;
+  }
+}
 
 </style>
