@@ -95,8 +95,4 @@ export default {
   table {
     width: 100%;
   }
-
-  .pagination {
-    justify-content: center;
-  }
 </style>
