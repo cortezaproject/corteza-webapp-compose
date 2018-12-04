@@ -1,15 +1,15 @@
 <template>
   <tr v-if="getField(field.kind) in $options.components" :key="'field-' + field.id + '-settings'">
-    <td>&nbsp;</td>
-    <td colspan="6">
+    <th></th>
+    <td colspan="7">
       <component :is="getField(field.kind)" :field="field"></component>
     </td>
   </tr>
 </template>
 
 <script>
-import FieldRelatedSettings from '@/components/Field/RelatedSettings.vue'
-import FieldEnumSettings from '@/components/Field/EnumSettings.vue'
+import FieldRelatedSettings from '@/lib/module/field/Settings/RelatedSettings.vue'
+import FieldEnumSettings from '@/lib/module/field/Settings/EnumSettings.vue'
 
 export default {
   components: {

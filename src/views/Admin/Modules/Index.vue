@@ -21,9 +21,6 @@
       <div class="col-md-12">
         <div class="well">
           <h2>List of modules</h2>
-          <div v-if="deleteModuleError" style="color:red;">
-            {{ deleteModuleError }}
-          </div>
           <table class="table">
             <tbody>
               <tr v-for="(module, index) in list" :key="index">
@@ -32,8 +29,8 @@
                 </td>
                 <td><time :datetime="module.updatedAt" v-if="module.updatedAt">(Updated at : {{ module.updatedAt }})</time></td>
                 <td class="actions">
-                  <confirmation-toggle @confirmed="remove(module.moduleID)" class="confirmation">Delete</confirmation-toggle>
-                  <router-link :to="{name: 'admin.modules.edit', params: { moduleID: module.moduleID }}" class="action">  <i class="action icon-edit"></i>
+                  <router-link :to="{name: 'admin.modules.edit', params: { moduleID: module.moduleID }}" class="action">
+                    <i class="action icon-edit"></i>
                   </router-link>
                 </td>
               </tr>
@@ -49,7 +46,6 @@
 </template>
 
 <script>
-import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 
 export default {
   idToDelete: '',
@@ -90,24 +86,11 @@ export default {
         this.addModuleFormSubmitError = 'Error when trying to create module.'
       }
     },
-
-    async remove (moduleID) {
-      await this.$crm.moduleDelete({ moduleID })
-      await this.$_initList()
-    },
-  },
-
-  components: {
-    ConfirmationToggle,
   },
 }
 </script>
-
 <style lang="scss" scoped>
-.confirmation {
-  display: inline-block;
-  min-width: 110px;
+.actions {
   text-align: right;
-  margin-left: 10px;
 }
 </style>

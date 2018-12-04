@@ -73,17 +73,6 @@ export default {
     },
   },
 
-  data () {
-    return {
-      draggableOptions: {
-        group: `pages`,
-        draggable: '.list-group-item',
-        handle: '.sort-handle',
-        animation: 50,
-      },
-    }
-  },
-
   methods: {
     async handleChangePosition ({ beforeParent, data, afterParent }) {
       if (beforeParent.pageID !== afterParent.pageID) {
