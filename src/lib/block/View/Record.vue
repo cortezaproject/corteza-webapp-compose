@@ -1,14 +1,17 @@
 <template>
-  <div v-if="options">
-    <div v-for="field in options.fields" :key="field.id">
-      <FieldTypes v-bind:is="mapFieldKind(field.kind)" :field="field" :recordValue="recordValue(field)"></FieldTypes>
-    </div>
+  <div v-if="record && options" >
+    <component
+      :is="kind(field)"
+      v-for="field in options.fields"
+      :value="value(field)"
+      :key="field.id"
+      :field="field" />
   </div>
   <div v-else>Can not render this block without a record</div>
 </template>
 <script>
 import optionsPropMixin from './mixins/optionsProp'
-import * as FieldTypes from './fields/loader'
+import * as Fields from './Field/loader'
 
 export default {
   props: {
@@ -18,26 +21,26 @@ export default {
     },
   },
 
-  computed: {
-    recordValue () {
-      if (!this.record.fields) {
-        return () => undefined
+  methods: {
+    kind (field) {
+      return 'field-' + field.kind
+    },
+
+    value (field) {
+      if (!this.record || !this.record.fields) {
+        return undefined
       }
 
-      return (field) => (this.record.fields.find(f => f.name === field.name) || {}).value
+      return (this.record.fields.find(f => f.name === field.name) || {}).value
     },
   },
 
-  methods: {
-    mapFieldKind (kind) {
-      return 'field' + kind.charAt(0).toUpperCase() + kind.slice(1)
-    },
-  },
-
-  mixins: [optionsPropMixin],
+  mixins: [
+    optionsPropMixin,
+  ],
 
   components: {
-    ...FieldTypes,
+    ...Fields,
   },
 }
 </script>
