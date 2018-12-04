@@ -2,15 +2,7 @@
   <div>
     <fieldset class="form-group">
       <label for="select-content-list">Module</label>
-
-      <select v-model="o.moduleID" required class="form-control" id="select-content-list">
-        <option disabled selected>---</option>
-        <option
-          v-for="module in modules"
-          :key="module.id"
-          :value="module.moduleID"
-        >{{ module.name }}</option>
-      </select>
+      <input v-if="pageModule" class="form-control" type="text" v-model="pageModule.name" readonly>
     </fieldset>
     <fieldset class="form-group">
       <div class="fields" v-if="o.moduleID">
