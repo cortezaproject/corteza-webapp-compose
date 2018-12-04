@@ -31,7 +31,7 @@ export default {
     return {
       misconfigured: null,
 
-      meta: { count: 0, page: 1, perPage: 10 },
+      meta: { count: 0, page: 0, perPage: 20 },
       records: [],
 
       query: '',
