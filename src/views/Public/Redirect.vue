@@ -19,7 +19,6 @@ export default {
     this.$crm.pageList({}).then((pp) => {
       pp = pp.filter(p => p.moduleID === '0' && p.visible)
       if (pp.length > 0) {
-        console.log(pp[0])
         this.$router.push({ name: 'public.page', params: { pageID: pp[0].pageID } })
       } else {
         this.listError = 'No pages found'
