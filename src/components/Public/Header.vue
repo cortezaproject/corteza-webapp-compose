@@ -84,50 +84,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/_0.declare.scss";
-
-nav {
-  box-shadow: 0 0.1rem 0.2rem 0 rgba(30, 34, 36, 0.1);
-}
-
-header {
-  margin-bottom: 10px;
-}
-
-.navbar {
-  padding: 0;
-}
-
-.navbar-toggler {
-  margin: 5px 5px 5px 10px;
-  font-size: 12px;
-  padding: 5px 10px;
-
-  &:focus,
-  &:hover {
-    outline: none;
-  }
-}
-
-.admin-panel {
-  position: absolute;
-  right: 0;
-  color: $black;
-}
-
-@media (max-width: $wideminwidth) {
-  .navbar {
-    padding: 10px 0;
-  }
-
-  .navbar-text {
-    display: block;
-  }
-
-  .admin-panel {
-    position: relative;
-    padding-left: 15px;
-  }
-}
+@import "@/assets/sass/components/header.scss";
 
 </style>
