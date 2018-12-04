@@ -92,6 +92,10 @@ function crmViews () {
         },
       ],
     },
+    {
+      path: '/crm/storybook/field-types',
+      component: view('Storybook/FieldTypes'),
+    },
   ]
 }
 
