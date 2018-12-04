@@ -31,6 +31,7 @@
 
 <script>
 import VueGridLayout from 'vue-grid-layout'
+import Block from '@/lib/block'
 
 const blocksToGrid = blocks => {
   return blocks.map((block, i) => {
@@ -84,8 +85,9 @@ export default {
       this.$emit(
         'update:blocks',
         grid.map(({ x, y, w, h, block }) => {
-          block.merge({ x, y, width: w, height: h })
-          return block
+          const b = new Block(block)
+          b.merge({ x, y, width: w, height: h })
+          return b
         })
       )
     },

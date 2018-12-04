@@ -12,7 +12,7 @@
     </grid>
 
     <b-modal id="createBlockSelector" hide-footer>
-      <new-block-selector @select="createBlock=$event;"/>
+      <new-block-selector @select="createBlock=Object.assign({}, $event);"/>
     </b-modal>
 
     <b-modal
@@ -86,8 +86,7 @@ export default {
     handleSave () {
       this.$crm.pageRead({ pageID: this.pageID }).then(page => {
         page.blocks = this.blocks
-        this.page = page
-        this.$crm.pageEdit(page).then({})
+        this.$crm.pageEdit(page)
       })
     },
   },
