@@ -2,7 +2,7 @@
   <div v-if="misconfigured">{{ misconfigured }}</div>
   <div v-else>
     <form>here be search</form>
-    <table class="table">
+    <table class="table sticky-header">
       <thead>
         <tr>
           <th v-for="(col) in columns" :key="'header:'+col.name">{{ col.label || col.name }}</th>
@@ -118,12 +118,5 @@ export default {
 
 table {
   width: 100%;
-}
-
-th {
-  position: sticky;
-  top: -1px;
-  background: $white;
-  box-shadow: 0 1px #dee2e6;
 }
 </style>

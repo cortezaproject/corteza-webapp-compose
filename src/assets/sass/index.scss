@@ -209,6 +209,14 @@ table {
   td {
     word-break: break-word;
   }
+  &.sticky-header{
+    th {
+      position: sticky;
+      top: -1px;
+      background: $white;
+      box-shadow: 0 1px #dee2e6;
+    }
+  }
 }
 
 .ql-editor {

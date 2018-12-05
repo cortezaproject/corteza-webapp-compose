@@ -1,7 +1,11 @@
 <template>
   <section class="container well" id="modules-contents-index">
+    <h5><router-link :to="{name: 'admin.modules'}">Back to Module list</router-link></h5>
     <h2>{{module.name}}</h2>
-    <table class="table">
+    <router-link :to="{name: 'admin.modules.edit', params: { moduleID }}" class="edit-module">
+    <i class="icon-edit"></i>
+    </router-link>
+    <table class="table sticky-header">
       <thead>
         <tr>
           <th v-for="moduleField in module.fields" :key="moduleField.id" v-if="moduleField.isVisible">
@@ -23,9 +27,11 @@
               <span v-else><i>None</i></span>
             </td>
             <td class="text-right actions">
-              <button @click="deleteContent(row.id)" class="btn btn-danger">Delete</button>
+              <a @click="deleteContent(row.id)" class="action">
+                <i class="action icon-trash"></i>
+              </a>
               <router-link :to="{name: 'admin.modules.content.edit', params: { moduleID, contentID: row.contentID }}">
-                <i class="action icon-edit"></i>
+                <i class="icon-edit"></i>
               </router-link>
             </td>
           </tr>
@@ -38,10 +44,6 @@
     </template>
 
     <router-link :to="{name: 'admin.modules.content.add', params: { moduleID }}" class="btn btn-primary">Add new entry</router-link>
-    &nbsp;
-    <router-link :to="{name: 'admin.modules.edit', params: { moduleID }}" class="btn btn-secondary">Edit module</router-link>
-    &nbsp;
-    <router-link :to="{name: 'admin.modules'}" class="btn btn-warning">Back to Module list</router-link>
   </section>
 </template>
 
@@ -129,10 +131,43 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/sass/_0.declare.scss";
 @import "@/assets/sass/btns.scss";
+@import "@/assets/sass/components/blocks.scss";
+
+h2 {
+  display: inline-block;
+}
+
+h5{
+  margin-bottom: 20px;
+  text-decoration: underline;
+}
 
 table {
   td {
     max-width: 300px;
+  }
+}
+a {
+  .icon-trash {
+    color: $appred;
+  }
+  &:hover {
+    .icon-trash {
+      color: $appred;
+    }
+  }
+  &.edit-module{
+    &:hover{
+      text-decoration: none;
+    }
+  }
+}
+
+.edit-module {
+  i {
+    margin-left: 10px;
+    font-size: 20px;
+    color: black;
   }
 }
 
