@@ -16,10 +16,6 @@
             <li>
               <router-link :to="{name: 'admin.configuration'}" class="nav-link">Configuration</router-link>
             </li>
-            <form class="form-inline my-2 my-lg-0">
-              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn" type="submit">Search</button>
-            </form>
           </ul>
 
         </b-collapse>
