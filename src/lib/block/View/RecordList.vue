@@ -114,7 +114,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  table {
-    width: 100%;
-  }
+@import "@/assets/sass/_0.declare.scss";
+
+table {
+  width: 100%;
+}
+
+th {
+  position: sticky;
+  top: -1px;
+  background: $white;
+  box-shadow: 0 1px #dee2e6;
+}
 </style>

@@ -93,16 +93,18 @@ export default {
   text-align: right;
 }
 
-label{
+label {
   margin: 10px 0 5px;
 }
+
 .form-inline {
-  .form-control{
+  .form-control {
     margin-right: 10px;
     width: calc(100% - 72px);
   }
 }
-.form-group{
+
+.form-group {
   margin-bottom: 0;
 }
 </style>
