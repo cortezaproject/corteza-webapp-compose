@@ -1,7 +1,7 @@
 <template>
   <div class="block">
     <div class="block-data">
-      <div class="block-data-title">{{ block.title }}</div>
+      <h2>{{ block.title }}</h2>
       <p class="block-data-description" v-if="block.description">{{ block.description }}</p>
       <div class="block-data-content">
         <component :is="block.kind" :options="block.options" :module="module" :record="record" />
@@ -37,6 +37,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import "@/assets/sass/components/blocks.scss";
+
 .block-data {
   .block-data-title {
     font-size: 15px;
