@@ -109,6 +109,10 @@ export default {
   }
 }
 
+.builder {
+  margin-bottom: 80px;
+}
+
 .actions {
   button {
     font-size: 60%;
