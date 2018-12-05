@@ -47,6 +47,8 @@
 
 <script>
 
+import Field from '@/lib/field'
+
 export default {
   idToDelete: '',
   name: 'ModuleList',
@@ -78,6 +80,10 @@ export default {
     async create () {
       this.addModuleFormSubmitError = ''
       try {
+        this.addModuleFormData.fields = [
+          new Field({ name: 'sample', kind: 'text' }),
+        ]
+
         this.$crm.moduleCreate(this.addModuleFormData).then((module) => {
           this.$router.push({ name: 'admin.modules.edit', params: { moduleID: module.moduleID } })
         })
