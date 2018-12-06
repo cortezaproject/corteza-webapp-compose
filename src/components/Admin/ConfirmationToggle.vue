@@ -1,11 +1,11 @@
 <template>
   <span>
     <span v-if="!inConfirmation">
-      <button class="btn" :class="btnClass" @click="inConfirmation=true" :disabled="disabled"><slot></slot></button>
+      <button type="button" class="btn" :class="btnClass" @click.prevent="inConfirmation=true" :disabled="disabled"><slot></slot></button>
     </span>
     <span v-if="inConfirmation">
-      <button class="btn" :class="confirmationClass" @click="onConfirmation()">Yes</button>
-      <button class="btn" @click="inConfirmation=false">Cancel</button>
+      <button type="button" class="btn" :class="confirmationClass" @click.prevent="onConfirmation()">Yes</button>
+      <button type="button" class="btn" @click.prevent="inConfirmation=false">Cancel</button>
     </span>
   </span>
 </template>
