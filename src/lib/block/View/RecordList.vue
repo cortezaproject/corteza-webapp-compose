@@ -1,7 +1,7 @@
 <template>
   <div v-if="error">{{ error }}</div>
   <div v-else-if="module">
-    <input @keypress.enter.prevent="handleQuery($event.target.value)" />
+    <input @keypress.enter.prevent="handleQuery($event.target.value)" placeholder="Search" />
     <table class="table sticky-header">
       <thead>
         <tr>
@@ -16,7 +16,7 @@
           <td v-for="(col) in columns" :key="row.contentID+':'+col.name">
             <field-viewer :field="col" value-only :record="row"></field-viewer>
           </td>
-          <td>
+          <td class="text-right">
             <router-link
               :to="{ name: 'public.page.record', params: { pageID: options.pageID, recordID: row.contentID } }">
               <i class="action icon-search"></i></router-link>
@@ -129,5 +129,21 @@ export default {
 
 table {
   width: 100%;
+}
+
+input {
+  border: 1px solid $appgrey;
+  border-radius: 5px;
+  font-size: 14px;
+  padding: 3px 10px;
+  float: right;
+  margin-bottom: 5px;
+  width: 200px;
+  max-width: 100%;
+
+  &:focus {
+    border: 1px solid $appblue;
+    outline: none;
+  }
 }
 </style>
