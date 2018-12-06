@@ -58,6 +58,7 @@ export default {
         { value: 'blue-dark', text: 'Blue with dark text' },
         { value: 'grey-light', text: 'Grey with white text' },
         { value: 'grey-dark', text: 'Grey with dark text' },
+        { value: 'yellow-dark', text: 'Yellow with dark text' },
       ],
     }
   },

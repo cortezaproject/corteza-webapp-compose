@@ -3,23 +3,6 @@
     <div class="row">
       <div class="col-md-12">
         <div class="well">
-          <h2>Create a new module</h2>
-          <form @submit.prevent="create">
-            <div class="form-group">
-              <label for="name">Module name</label>
-              <input required type="text" v-model="addModuleFormData.name" class="form-control" id="name" placeholder="Module name" />
-            </div>
-            <button type="submit" class="btn btn-dark large">Create</button>
-            <div v-if="addModuleFormSubmitError" style="color:red;">
-              {{ addModuleFormSubmitError }}
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="well">
           <h2>List of modules</h2>
           <table class="table">
             <tbody>
@@ -28,7 +11,7 @@
                   <router-link :to="{name: 'admin.modules.content', params: { moduleID: module.moduleID }}">{{ module.name }}</router-link>
                 </td>
                 <td><time :datetime="module.updatedAt" v-if="module.updatedAt">(Updated at : {{ module.updatedAt }})</time></td>
-                <td class="actions">
+                <td class="actions text-right">
                   <router-link :to="{name: 'admin.modules.edit', params: { moduleID: module.moduleID }}" class="action">
                     <i class="action icon-edit"></i>
                   </router-link>
@@ -39,6 +22,16 @@
           <div v-if="listError" style="color:red;">
             {{ listError }}
           </div>
+          <form @submit.prevent="create">
+            <div class="form-group form-inline">
+            <label for="name">Create a new module:</label>
+              <input required type="text" v-model="addModuleFormData.name" class="form-control" id="name" placeholder="Module name" />
+              <button type="submit" class="btn btn-dark">Create</button>
+            </div>
+            <div v-if="addModuleFormSubmitError" style="color:red;">
+              {{ addModuleFormSubmitError }}
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -96,7 +89,20 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.actions {
-  text-align: right;
+@import "@/assets/sass/btns.scss";
+
+label {
+  margin: 10px 0 5px;
+}
+
+.form-inline {
+  .form-control {
+    margin-right: 10px;
+    width: calc(100% - 80px);
+  }
+}
+
+.form-group {
+  margin-bottom: 0;
 }
 </style>

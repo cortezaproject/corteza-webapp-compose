@@ -3,8 +3,12 @@
     <grid :blocks.sync="blocks" editable>
       <template slot-scope="{ block, index }">
         <div class="actions">
-          <button @click="updateBlock=block">Edit</button>
-          <button @click="blocks.splice(index,1)">X</button>
+          <a class="action" @click="updateBlock=block">
+            <i class="icon-edit"></i>
+          </a>
+          <a class="action"  @click="blocks.splice(index,1)">
+            <i class="icon-x"></i>
+          </a>
         </div>
 
         <block-preview :block="block"></block-preview>
@@ -26,17 +30,20 @@
 
     <b-modal
       title="Change existing block"
-      ok-title="Close"
+      header-class="test"
+      ok-title="Save and close"
+      ok-variant="dark"
       ok-only
+      centered
       @hide="updateBlock=null"
       :visible="!!updateBlock">
       <block-edit v-if="updateBlock" :moduleID="moduleID" :block.sync="updateBlock" />
     </b-modal>
 
     <div class="toolbar">
-      <button v-b-modal.createBlockSelector @click="createBlock=null">Add block</button>
-      <button @click.prevent="$router.push({ name: 'public.page', params: { pageID } })">Preview</button>
-      <button @click.prevent="handleSave">Done (save layouts)</button>
+      <button v-b-modal.createBlockSelector @click="createBlock=null" class="btn large">+ Add block</button>
+      <button @click.prevent="$router.push({ name: 'public.page', params: { pageID } })" class="btn large">Preview</button>
+      <button @click.prevent="handleSave" class="btn btn-blue large">Done (save layouts)</button>
     </div>
   </div>
 </template>
@@ -94,6 +101,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/sass/_0.declare.scss";
+@import "@/assets/sass/btns.scss";
 
 .toolbar {
   position: fixed;
@@ -109,13 +117,35 @@ export default {
   }
 }
 
-.actions {
-  button {
-    font-size: 60%;
-  }
+.btn {
+  margin: 0 auto;
+}
 
+.builder {
+  margin-bottom: 80px;
+}
+
+.actions {
   position: absolute;
   right: 2px;
-  top: 0;
+  top: 2px;
+
+  a {
+    i {
+      font-weight: 900;
+    }
+
+    &:hover {
+      i {
+        color: $black;
+        opacity: 0.8;
+      }
+    }
+
+    &.action {
+      padding: 0 5px;
+    }
+  }
 }
+
 </style>

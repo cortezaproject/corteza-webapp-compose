@@ -25,7 +25,6 @@ button structure :
   transition: color 0.2s, background-color 0.2s;
   background-color: transparent;
   margin: 0 0.5em;
-  line-height: normal !important;
   font-family: $crustregular;
   cursor: pointer;
 
@@ -43,6 +42,18 @@ button structure :
 
     .btn-txt, .btn-i {
       color: $appwhite;
+    }
+  }
+
+  &.btn-url {
+    color: $black;
+    border: none;
+    text-decoration: underline;
+    padding-left: 0;
+
+    &:hover {
+      background-color: transparent;
+      color: $appblue;
     }
   }
 

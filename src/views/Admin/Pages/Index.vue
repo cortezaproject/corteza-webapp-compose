@@ -1,32 +1,25 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="well">
-        <h2>Create a new page</h2>
-          <form @submit.prevent="handleAddPageFormSubmit">
-            <div class="form-group">
-              <label for="title">Page title</label>
-              <input required type="text" v-model="addPageFormData.title" class="form-control" id="title" placeholder="Page title" />
-            </div>
-            <button type="submit" class="btn btn-dark large">Create</button>
-            <div v-if="addPageFormSubmitError" style="color:red;">
-              {{ addPageFormSubmitError }}
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
     <div v-if="listError" style="color:red;">
       {{ listError }}
     </div>
     <div class="row">
       <div class="col-md-12">
         <div class="well">
-        <h2>List of pages</h2>
+          <h2>List of pages</h2>
           <page-tree
             @reorder="handleReorder"
             v-model="tree"/>
+          <form @submit.prevent="handleAddPageFormSubmit">
+            <div class="form-group form-inline">
+              <label for="title">Create a new page:</label>
+              <input required type="text" v-model="addPageFormData.title" class="form-control" id="title" placeholder="Page title" />
+              <button type="submit" class="btn btn-dark">Create</button>
+            </div>
+            <div v-if="addPageFormSubmitError" style="color:red;">
+              {{ addPageFormSubmitError }}
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -136,3 +129,25 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+@import "@/assets/sass/btns.scss";
+
+table {
+  width: 100%;
+}
+
+label {
+  margin: 20px 0 5px;
+}
+
+.form-inline {
+  .form-control {
+    margin-right: 10px;
+    width: calc(100% - 80px);
+  }
+}
+
+.form-group {
+  margin-bottom: 0;
+}
+</style>

@@ -2,7 +2,7 @@
   <div v-if="misconfigured">{{ misconfigured }}</div>
   <div v-else>
     <form>here be search</form>
-    <table class="table">
+    <table class="table sticky-header">
       <thead>
         <tr>
           <th v-for="(col) in columns" :key="'header:'+col.name">{{ col.label || col.name }}</th>
@@ -114,7 +114,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  table {
-    width: 100%;
-  }
+@import "@/assets/sass/_0.declare.scss";
+
+table {
+  width: 100%;
+}
 </style>

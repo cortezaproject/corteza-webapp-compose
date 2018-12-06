@@ -22,12 +22,12 @@
             </div>
             <div class="form-group form-check">
               <input type="checkbox" id="visible" class="form-check-input" v-model="editPageFormData.visible">
-              <label for="visible" class="form-check-label">Visible ?</label>
+              <label for="visible" class="form-check-label">Page visible?</label>
             </div>
 
             <div>
-              <router-link :to="{name: 'admin.pages'}">Cancel</router-link>
-              <router-link :to="{name: 'admin.pages.builder'}">Builder</router-link>
+              <router-link :to="{name: 'admin.pages'}" class="btn">Cancel</router-link>
+              <router-link :to="{name: 'admin.pages.builder'}" class="btn">Page builder</router-link>
               <confirmation-toggle @confirmed="handleDeletePage" class="confirmation">Delete</confirmation-toggle>
               <button type="submit" class="btn btn-primary">Save</button>
             </div>
@@ -93,3 +93,16 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+@import "@/assets/sass/btns.scss";
+
+textarea {
+  &.form-control {
+    min-height: 200px;
+  }
+}
+
+.confirmation {
+  float: right;
+}
+</style>

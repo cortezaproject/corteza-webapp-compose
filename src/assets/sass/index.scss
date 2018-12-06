@@ -209,4 +209,40 @@ table {
   td {
     word-break: break-word;
   }
+
+  &.sticky-header {
+    th {
+      position: sticky;
+      top: -1px;
+      background: $white;
+      box-shadow: 0 1px #dee2e6;
+    }
+  }
+}
+
+.ql-editor {
+  min-height: 150px;
+}
+
+.modal-title {
+  font-weight: 900;
+}
+
+.modal-body {
+  textarea {
+    display: block;
+    width: 100%;
+  }
+}
+
+.modal-footer {
+  .btn {
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: $wideminwidth) {
+  .modal-dialog {
+    min-width: 700px;
+  }
 }

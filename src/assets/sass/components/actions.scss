@@ -1,7 +1,10 @@
 .actions {
+  text-align: right;
+
   a {
     color: $black;
     vertical-align: middle;
+    cursor: pointer;
 
     i {
       color: $black;
