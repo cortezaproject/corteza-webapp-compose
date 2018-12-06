@@ -4,6 +4,7 @@
       <div class="col-md-12">
         <div class="well">
           <h2>Edit page</h2>
+          <router-link :to="{name: 'admin.pages.builder'}" class="btn-url">Page builder</router-link>
           <div v-if="editPageError" style="color:red;">
             {{ editPageError }}
           </div>
@@ -27,7 +28,6 @@
 
             <div>
               <router-link :to="{name: 'admin.pages'}" class="btn">Cancel</router-link>
-              <router-link :to="{name: 'admin.pages.builder'}" class="btn">Page builder</router-link>
               <confirmation-toggle @confirmed="handleDeletePage" class="confirmation">Delete</confirmation-toggle>
               <button type="submit" class="btn btn-primary">Save</button>
             </div>

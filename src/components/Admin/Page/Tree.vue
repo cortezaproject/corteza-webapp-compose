@@ -31,7 +31,7 @@
 
               <router-link
                 :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
-                class="btn btn-url">Page builder</router-link>
+                class="btn-url">Page builder</router-link>
           </div>
         </div>
     </template>
@@ -123,5 +123,9 @@ ul {
       }
     }
   }
+}
+
+.btn-url{
+  margin-left: 5px;
 }
 </style>
