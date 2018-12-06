@@ -1,11 +1,13 @@
 <template>
   <div v-if="error">{{ error }}</div>
   <div v-else-if="module">
-    <form>here be search</form>
+    <input @keypress.enter.prevent="handleQuery($event.target.value)" />
     <table class="table sticky-header">
       <thead>
         <tr>
-          <th v-for="(col) in columns" :key="'header:'+col.name">{{ col.label || col.name }}</th>
+          <th v-for="(col) in columns" :key="'header:'+col.name" @click="handleSort(col.name)">
+            {{ col.label || col.name }}
+          </th>
           <th></th>
         </tr>
       </thead>
@@ -28,7 +30,7 @@
           :per-page="meta.perPage"
           @paginate="handlePageChange"
           theme="bootstrap4"
-          v-model="meta.page" />
+          :page="meta.page + 1" />
     </div>
   </div>
   <div v-else>Loading...</div>
@@ -42,15 +44,21 @@ import Module from '@/lib/module'
 export default {
   data () {
     return {
+      meta: {
+        count: 0,
+        page: 0,
+        perPage: 20,
+        sort: '',
+        query: '',
+      },
+
       error: null,
 
       // We'll be loading module dynamicly here
       // depending on block settings
       module: null,
 
-      meta: { count: 0, page: 1, perPage: 20 },
       records: [],
-      query: '',
     }
   },
 
@@ -77,19 +85,31 @@ export default {
   },
 
   methods: {
-    fetch ({ page = this.meta.page, perPage = this.meta.perPage } = {}) {
-      const moduleID = this.options.moduleID
-      const query = this.query
+    fetch ({ page, perPage, sort, query } = this.meta) {
+      const params = { page, perPage, sort, query }
 
-      this.$crm.moduleContentList({ moduleID, page: page - 1, perPage, query }).then((result) => {
+      this.$router.push({ query: params })
+
+      params.moduleID = this.module.moduleID
+
+      return this.$crm.moduleContentList(params).then((result) => {
         this.meta = result.meta
-        this.meta.page++
         this.records = result.contents
+      }).catch(({ message }) => {
+        this.error = [message]
       })
     },
 
+    handleQuery (query) {
+      this.fetch({ ...this.meta, query })
+    },
+
+    handleSort (fieldName) {
+      this.fetch({ ...this.meta, sort: this.meta.sort === fieldName ? fieldName + ' DESC' : fieldName })
+    },
+
     handlePageChange (page) {
-      this.fetch({ page })
+      this.fetch({ ...this.meta, page: page - 1 })
     },
   },
 

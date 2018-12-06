@@ -5,10 +5,12 @@
     <router-link :to="{name: 'admin.modules.edit', params: { moduleID }}" class="edit-module">
     <i class="icon-edit"></i>
     </router-link>
+    <hr />
+    <input @keypress.enter.prevent="handleQuery($event.target.value)" />
     <table class="table sticky-header">
       <thead>
         <tr>
-          <th v-for="col in columns" :key="col.name">
+          <th v-for="col in columns" :key="col.name" @click="handleSort(col.name)">
             {{col.label || col.name}}
           </th>
           <th class="text-right"></th>
@@ -38,7 +40,7 @@
         :per-page="meta.perPage"
         @paginate="handlePageChange"
         theme="bootstrap4"
-        v-model="meta.page" />
+        :page="meta.page + 1" />
     </div>
 
     <template v-if="!records.length">
@@ -61,7 +63,14 @@ export default {
   },
   data () {
     return {
-      meta: { count: 0, page: 1, perPage: 20 },
+      meta: {
+        count: 0,
+        page: 0,
+        perPage: 20,
+        sort: '',
+        query: '',
+      },
+
       module: null,
       records: [],
 
@@ -86,21 +95,31 @@ export default {
   },
 
   methods: {
-    fetch ({ page = this.meta.page, perPage = this.meta.perPage } = {}) {
-      const moduleID = this.module.moduleID
-      const query = this.query
+    fetch ({ page, perPage, sort, query } = this.meta) {
+      const params = { page, perPage, sort, query }
 
-      return this.$crm.moduleContentList({ moduleID, page: page - 1, perPage, query }).then((result) => {
+      this.$router.push({ query: params })
+
+      params.moduleID = this.module.moduleID
+
+      return this.$crm.moduleContentList(params).then((result) => {
         this.meta = result.meta
-        this.meta.page++
         this.records = result.contents
       }).catch(({ message }) => {
         this.error = [message]
       })
     },
 
+    handleQuery (query) {
+      this.fetch({ ...this.meta, query })
+    },
+
+    handleSort (fieldName) {
+      this.fetch({ ...this.meta, sort: this.meta.sort === fieldName ? fieldName + ' DESC' : fieldName })
+    },
+
     handlePageChange (page) {
-      this.fetch({ page })
+      this.fetch({ ...this.meta, page: page - 1 })
     },
 
     handleDelete (recordID) {

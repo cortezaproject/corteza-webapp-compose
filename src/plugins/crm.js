@@ -281,7 +281,7 @@ class CRM {
     })
   }
 
-  async moduleContentList ({ moduleID, query, page, perPage }) {
+  async moduleContentList ({ moduleID, query, page, perPage, sort }) {
     const endpoint = `${this.baseLink}/module/${moduleID}/content`
     return new Promise((resolve, reject) => {
       axios({
@@ -293,6 +293,7 @@ class CRM {
           'query': query,
           'page': page,
           'perPage': perPage,
+          sort,
         },
         data: {},
       }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
