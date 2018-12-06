@@ -70,6 +70,9 @@ export default {
   },
 
   watch: {
+    grid () {
+      console.log('grid', this.grid)
+    },
     blocks: {
       handler (blocks) {
         this.grid = blocksToGrid(blocks)
@@ -81,7 +84,7 @@ export default {
 
   methods: {
     handleLayoutUpdate (grid) {
-      // Emit change back with update: prefix for .sync modifier to kick in.
+      // Emit change back with 'update:' prefix for .sync modifier to kick in.
       this.$emit(
         'update:blocks',
         grid.map(({ x, y, w, h, block }) => {

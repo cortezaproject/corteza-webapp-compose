@@ -1,17 +1,16 @@
 <template>
   <div v-if="record && options" >
-    <component
-      :is="kind(field)"
+    <field-viewer
       v-for="field in options.fields"
-      :value="value(field)"
-      :key="field.id"
-      :field="field" />
+      :key="field.name"
+      :field="field"
+      :record="record || {}"></field-viewer>
   </div>
   <div v-else>Can not render this block without a record</div>
 </template>
 <script>
 import optionsPropMixin from './mixins/optionsProp'
-import * as Fields from './Field/loader'
+import FieldViewer from '@/lib/field/Viewer'
 
 export default {
   props: {
@@ -21,26 +20,12 @@ export default {
     },
   },
 
-  methods: {
-    kind (field) {
-      return 'field-' + field.kind
-    },
-
-    value (field) {
-      if (!this.record || !this.record.fields) {
-        return undefined
-      }
-
-      return (this.record.fields.find(f => f.name === field.name) || {}).value
-    },
-  },
-
   mixins: [
     optionsPropMixin,
   ],
 
   components: {
-    ...Fields,
+    FieldViewer,
   },
 }
 </script>

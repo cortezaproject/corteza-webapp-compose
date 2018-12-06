@@ -1,8 +1,9 @@
 <template>
   <div class="form-group">
-    {{ field.title || field.name }}
-    <b-form-select
-      v-model="value" />
+    {{ field.label || field.name }}
+    <b-form-input
+      type="url"
+      v-model="value"></b-form-input>
   </div>
 </template>
 <script>

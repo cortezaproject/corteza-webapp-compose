@@ -3,9 +3,9 @@
     <div class="form-group col-6">
       <div>Options to select from</div>
       <table>
-        <tr v-for="(option, index) in o.options" :key="index">
-          <td><input v-model="o.options[index]" /></td>
-          <td><button @click.prevent="o.options.splice(index, 1)">-</button></td>
+        <tr v-for="(option, index) in f.options.options" :key="index">
+          <td><input v-model="f.options.options[index]" /></td>
+          <td><button @click.prevent="f.options.options.splice(index, 1)">-</button></td>
         </tr>
         <tr>
           <td><input v-model="newOption" @keypress.enter.prevent="handleAddOption" /></td>
@@ -17,12 +17,10 @@
 </template>
 
 <script>
-import optionsSyncProp from './mixins/optionsSyncProp'
+import base from './base'
 
 export default {
-  mixins: [
-    optionsSyncProp,
-  ],
+  extends: base,
 
   data () {
     return {
@@ -32,16 +30,16 @@ export default {
 
   created () {
     if (!this.o) {
-      this.o = { options: [] }
-    } else if (!this.o.options) {
-      this.o.options = []
+      this.f.options = { options: [] }
+    } else if (!this.f.options.options) {
+      this.f.options.options = []
     }
   },
 
   methods: {
     handleAddOption () {
       if (this.newOption.length > 0) {
-        this.o.options.push(this.newOption)
+        this.f.options.options.push(this.newOption)
         this.newOption = ''
       }
     },

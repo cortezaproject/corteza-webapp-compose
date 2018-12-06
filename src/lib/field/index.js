@@ -21,7 +21,8 @@ export default class Field {
       const klc = kind.toLowerCase()
       const supported = Object.keys(kinds)
       const old = {
-        'textarea': 'Text',
+        'textarea': 'String',
+        'text': 'String',
         'enum': 'Select',
         'stamp': 'DateTime',
       }

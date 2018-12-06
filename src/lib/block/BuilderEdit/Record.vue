@@ -23,7 +23,7 @@
             class="drag-area"
             :list.sync="availableFields"
             :options="{ group:'fields' }">
-            <div v-for="field in availableFields" :key="field.id">{{field.title}}</div>
+            <div v-for="field in availableFields" :key="field.id">{{field.label || field.name}}</div>
           </draggable>
         </div>
       </div>

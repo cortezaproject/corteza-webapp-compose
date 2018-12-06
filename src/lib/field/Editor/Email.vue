@@ -1,8 +1,8 @@
 <template>
   <div class="form-group">
-    {{ field.title || field.name }}
-    <b-form-textarea
-      :rows="3"
+    {{ field.label || field.name }}
+    <b-form-input
+      type="email"
       v-model="value" />
   </div>
 </template>

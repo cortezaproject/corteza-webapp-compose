@@ -4,7 +4,7 @@
         :value="true"
         :unchecked-value="false"
         v-model="value">
-      {{ field.title || field.name }}
+      {{ field.label || field.name }}
     </b-form-checkbox>
   </div>
 </template>

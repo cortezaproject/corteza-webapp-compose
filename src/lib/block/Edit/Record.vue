@@ -1,8 +1,7 @@
 <template>
   <div>
-    <component
+    <field-editor
       v-for="field in options.fields"
-      :is="kind(field)"
       :record.sync="record"
       :key="field.id"
       :field="field" />
@@ -10,7 +9,7 @@
 </template>
 <script>
 import optionsPropMixin from './mixins/optionsProp'
-import * as Fields from './Field/loader'
+import FieldEditor from '@/lib/field/Editor'
 
 export default {
   props: {
@@ -20,18 +19,12 @@ export default {
     },
   },
 
-  methods: {
-    kind (field) {
-      return 'field-' + field.kind
-    },
-  },
-
   mixins: [
     optionsPropMixin,
   ],
 
   components: {
-    ...Fields,
+    FieldEditor,
   },
 }
 </script>

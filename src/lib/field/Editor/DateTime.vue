@@ -1,7 +1,8 @@
 <template>
   <div class="form-group">
-    {{ field.title || field.name }}
+    {{ field.label || field.name }}
     <b-form-input
+      type="date"
       v-model="value" />
   </div>
 </template>

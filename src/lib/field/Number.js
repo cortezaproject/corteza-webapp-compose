@@ -1,6 +1,13 @@
-// @todo option to allow multiple entries
-// @todo option to allow duplicates
-// @todo option to define precision
-// @todo option to define min value
-// @todo option to define max value
-export class Number {}
+export class Number {
+  constructor (def = {}) {
+    this.merge(def)
+  }
+
+  merge ({ format, prefix, suffix, precision } = {}) {
+    this.format = format || ''
+    this.prefix = prefix || ''
+    this.suffix = suffix || ''
+
+    return this
+  }
+}

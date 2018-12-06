@@ -32,7 +32,7 @@
                 <tr v-for="(field, index) in module.fields" v-if="field" :key="index">
                   <td class="handle"><font-awesome-icon :icon="['fas', 'sort']" title="Reorder fields"></font-awesome-icon></td>
                   <td><input v-model="field.name" type="text" class="form-control" /></td>
-                  <td><input v-model="field.title" type="text" class="form-control" /></td>
+                  <td><input v-model="field.label" type="text" class="form-control" /></td>
                   <td class="type">
                     <select v-model="field.kind" class="form-control">
                       <option v-for="fieldType in fieldsList" :key="fieldType.kind" :value="fieldType.kind">{{ fieldType.label||fieldType.kind }}</option>

@@ -20,9 +20,12 @@
 </template>
 
 <script>
-import optionsSyncProp from './mixins/optionsSyncProp'
+import base from './base'
 
+// @todo rename to Record and make appropriate changes...
 export default {
+  extends: base,
+
   props: {
     'field': Object,
   },
@@ -61,9 +64,5 @@ export default {
         this.error = e
       })
   },
-
-  mixins: [
-    optionsSyncProp,
-  ],
 }
 </script>

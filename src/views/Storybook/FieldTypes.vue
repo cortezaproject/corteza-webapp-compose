@@ -1,94 +1,81 @@
 <template>
   <div class="storybook">
     <h1>Crust CRM Storybook</h1>
-    <grid :blocks="blocks">
-      <template slot-scope="{ block, index }">
-        <block-editor :block="block" :record="record" v-if="block.title==='Editor'" />
-        <block-viewer :block="block" :record="record" v-else />
-      </template>
-    </grid>
-    <div class="debug">
-      <code>Record: {{ record }}</code>
-    </div>
+    <table border="1">
+      <tr>
+        <th></th>
+        <td>Configuration options</td>
+        <td>Input component for end-user</td>
+        <td>Raw data</td>
+        <td>Output component for end-user</td>
+      </tr>
+      <tr v-for="({ kind, field }, index) in kinds" :key="index">
+        <th><b>{{ kind }}</b></th>
+        <td>
+          <field-configurator :field.sync="field" />
+
+          <hr /><pre>{{ field.options }}</pre>
+        </td>
+        <td>
+          <field-editor :field.sync="field" :record.sync="record" />
+
+        </td>
+        <td>
+          <pre>{{ recordValue(field) }}</pre>
+        </td>
+        <td>
+          <field-viewer :field="field" :record="record" />
+        </td>
+      </tr>
+    </table>
   </div>
 </template>
 <script>
-import Grid from '@/components/Common/Grid'
-import BlockViewer from '@/lib/block/View'
-import BlockEditor from '@/lib/block/Edit'
+import fieldKinds from '@/lib/field/list'
+import Field from '@/lib/field'
+import FieldConfigurator from '@/lib/field/Configurator'
+import FieldEditor from '@/lib/field/Editor'
+import FieldViewer from '@/lib/field/Viewer'
 
 export default {
   data () {
-    const f = (kind) => {
-      return {
-        kind: kind,
-        name: 'field_' + kind,
-        title: 'Field (' + kind + ')',
-      }
-    }
-
     return {
-      blocks: [
-        {
-          x: 0,
-          y: 0,
-          width: 6,
-          height: 8,
+      kinds: fieldKinds.map(k => {
+        k.field = new Field({ kind: k.kind, name: k.kind, label: k.kind + ' label' })
+        return k
+      }),
 
-          title: 'Editor',
-          kind: 'Record',
-          options: {
-            fields: [
-              f('text'),
-              f('textarea'),
-              f('bool'),
-              f('email'),
-              f('stamp'),
-            ],
-          },
-        },
-        {
-          x: 6,
-          y: 0,
-          width: 6,
-          height: 8,
-
-          title: 'Viewer',
-          kind: 'Record',
-          options: {
-            fields: [
-              f('text'),
-              f('textarea'),
-              f('bool'),
-              f('email'),
-              f('stamp'),
-            ],
-          },
-        },
-      ],
-
-      record: {
-        fields: [
-          { name: 'field_bool', value: false },
-        ],
-      },
+      record: { fields: [] },
     }
   },
 
+  methods: {
+    recordValue (field) {
+      const rv = this.record.fields.find(f => f.name === field.name)
+      if (!rv) return '[undefined]'
+      return rv.value
+    },
+  },
+
   components: {
-    Grid,
-    BlockViewer,
-    BlockEditor,
+    FieldConfigurator,
+    FieldEditor,
+    FieldViewer,
   },
 }
 </script>
 <style scoped="scoped" lang="scss">
-.debug {
-  display: flex;
-  margin: 0 30px;
+table {
+  width: 100%;
 
-  pre {
-    flex: 1;
+  th {
+    width: 100px;
+    vertical-align: top;
+  }
+
+  td {
+    width: 250px;
+    vertical-align: top;
   }
 }
 </style>

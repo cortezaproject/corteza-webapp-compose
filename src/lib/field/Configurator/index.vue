@@ -1,36 +1,24 @@
-<template>
-  <div>
-    {{ field }}
-    <component
-      v-if="hasConfigurator"
-      :is="configurator" :options.sync="field.options" />
-  </div>
-</template>
-
 <script>
+import base from './base'
 import * as Configurators from './loader'
 
 export default {
-  props: {
-    field: {
-      type: Object,
-      required: true,
-    },
-  },
+  extends: base,
 
-  computed: {
-    hasConfigurator () {
-      if (!this.field || !this.configurator) {
-        return false
-      }
+  render (createElement) {
+    const kind = this.field.kind.toLocaleLowerCase()
+    const keys = Object.keys(this.$options.components)
+    const i = keys.map(c => c.toLocaleLowerCase()).findIndex(c => c === kind)
 
-      const kind = this.configurator.toLocaleLowerCase()
-      return Object.keys(this.$options.components).map(c => c.toLocaleLowerCase()).findIndex(c => c === kind) >= 0
-    },
-
-    configurator () {
-      return this.field.kind
-    },
+    if (i >= 0) {
+      return createElement(this.$options.components[keys[i]], {
+        props: {
+          field: this.field,
+        },
+      })
+    } else {
+      // It's ok if field does not have a configurator, no biggie
+    }
   },
 
   components: {

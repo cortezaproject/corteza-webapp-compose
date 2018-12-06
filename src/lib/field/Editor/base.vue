@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <label>{{ field.title || field.name }}</label>
+    <label>{{ field.label || field.name }}</label>
     <div>{{ value }}</div>
   </div>
 </template>
@@ -22,6 +22,7 @@ export default {
   computed: {
     value: {
       get () {
+        // @todo handle multiple values
         if (this.record && this.record.fields) {
           return (this.record.fields.find(f => f.name === this.field.name) || {}).value
         } else {
@@ -30,6 +31,7 @@ export default {
       },
 
       set (value) {
+        // @todo handle multiple values
         if (!this.record) {
           this.record = {}
         }
