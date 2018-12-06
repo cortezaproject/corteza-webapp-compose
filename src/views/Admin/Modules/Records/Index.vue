@@ -1,6 +1,6 @@
 <template>
   <section class="container well" id="modules-contents-index" v-if="module">
-    <router-link :to="{name: 'admin.modules'}" class="btn btn-url">Back to Module list</router-link><br>
+    <router-link :to="{name: 'admin.modules'}" class="btn btn-url">Back to module list</router-link><br>
     <h2>{{module.name}}</h2>
     <router-link :to="{name: 'admin.modules.edit', params: { moduleID }}" class="edit-module">
     <i class="icon-edit"></i>
@@ -23,7 +23,7 @@
               <field-viewer :field="col" :record="row" value-only />
             </td>
             <td class="text-right actions">
-              <confirmation-toggle @confirmed="handleDelete(row.contentID)" class="confirmation" cta-class="btn-url">
+              <confirmation-toggle @confirmed="handleDelete(row.contentID)" class="confirmation-small" cta-class="btn-url">
                 <i class="action icon-trash"></i>
               </confirmation-toggle>
               <router-link :to="{name: 'admin.modules.records.edit', params: { moduleID, recordID: row.contentID }}">
@@ -35,6 +35,7 @@
       </tbody>
     </table>
     <div>
+    <router-link :to="{name: 'admin.modules.records.add', params: { moduleID }}" class="btn-url add-new">Add new entry</router-link>
       <pagination
         :records="meta.count"
         :per-page="meta.perPage"
@@ -47,7 +48,6 @@
       <p>No content rows added yet.</p>
     </template>
 
-    <router-link :to="{name: 'admin.modules.records.add', params: { moduleID }}" class="btn btn-primary">Add new entry</router-link>
   </section>
 </template>
 
@@ -191,9 +191,17 @@ a {
   &::before {
     content: "< ";
   }
+
+  &.add-new {
+    margin-left: 10px;
+
+    &::before {
+      content: "+ ";
+    }
+  }
 }
 
-.confirmation{
+.confirmation-small {
   margin-right: 5px;
 }
 

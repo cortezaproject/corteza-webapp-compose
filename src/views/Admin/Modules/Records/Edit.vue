@@ -9,8 +9,8 @@
                     :key="index"
                     :field="field"
                     :record="record" />
-      <button type="submit" class="btn btn-dark large">Save entry</button>
-      <router-link :to="{ name: 'admin.modules.records', params: { moduleID }}" class="btn large">Cancel</router-link>
+      <button type="submit" class="btn btn-dark">Save entry</button>
+      <router-link :to="{ name: 'admin.modules.records', params: { moduleID }}" class="btn">Cancel</router-link>
     </form>
   </section>
 </template>
@@ -86,6 +86,14 @@ export default {
 table {
   td {
     vertical-align: middle;
+  }
+}
+
+.btn-url {
+  margin-bottom: 20px;
+
+  &::before {
+    content: "< ";
   }
 }
 </style>

@@ -22,9 +22,9 @@
                 <th v-b-tooltip.hover.topright title="Must be lower-case a-z, 0-9 and underscore" class="info">Name</th>
                 <th v-b-tooltip.hover.topright title="The name displayed in form input / data lists" class="info">Title</th>
                 <th>Type</th>
-                <th v-b-tooltip.hover title="Required field" class="info" style="width: 50px;">Required</th>
-                <th v-b-tooltip.hover title="Privacy sensitive data" class="info" style="width: 50px;">Sensitive</th>
-                <th v-b-tooltip.hover title="Use this column in admin data list" class="info"  style="width: 50px;">Visible</th>
+                <th v-b-tooltip.hover title="Required field" class="info">Required</th>
+                <th v-b-tooltip.hover title="Privacy sensitive data" class="info">Sensitive</th>
+                <th v-b-tooltip.hover title="Use this column in admin data list" class="info">Visible</th>
                 <th class="text-center"></th>
               </tr>
               </thead>
@@ -52,7 +52,7 @@
                     <input v-model="field.isVisible" type="checkbox"/>
                   </td>
                   <td class="text-center">
-                    <confirmation-toggle @confirmed="module.fields.splice(index, 1)" class="confirmation" cta-class="btn-url">
+                    <confirmation-toggle @confirmed="module.fields.splice(index, 1)" class="confirmation-small" cta-class="btn-url">
                       <i class="action icon-trash"></i>
                     </confirmation-toggle>
                   </td>
@@ -193,6 +193,8 @@ table {
     cursor: default;
 
     &.info {
+      min-width: 50px;
+
       &::after {
         font-family: "Font Awesome 5 Free";
         content: "\f059";

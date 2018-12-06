@@ -19,9 +19,13 @@ html body {
   font-size: $defaultbodysize;
 }
 
-a,
-a:hover {
+a {
   color: $defaultlinkcolor;
+
+  &:hover {
+    color: $defaultlinkcolor;
+    text-decoration: none;
+  }
 }
 
 .well {
