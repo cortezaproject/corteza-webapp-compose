@@ -4,7 +4,7 @@
       <button class="btn" :class="btnClass" @click="inConfirmation=true" :disabled="disabled"><slot></slot></button>
     </span>
     <span v-if="inConfirmation">
-      <button class="btn" :class="btnClass" @click="onConfirmation()">Yes</button>
+      <button class="btn" :class="confirmationClass" @click="onConfirmation()">Yes</button>
       <button class="btn" @click="inConfirmation=false">Cancel</button>
     </span>
   </span>
@@ -12,7 +12,8 @@
 <script>
 export default {
   props: {
-    ctaClass: { type: String, default: 'danger' },
+    ctaClass: { type: String, default: 'btn-danger' },
+    confirmationClass: { default: 'btn-danger' },
     disabled: Boolean,
   },
 
@@ -22,7 +23,7 @@ export default {
         return 'btn-disabled'
       }
 
-      return `btn-${this.ctaClass}`
+      return this.ctaClass
     },
   },
 
