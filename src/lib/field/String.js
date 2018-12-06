@@ -3,7 +3,7 @@ export class String {
     this.merge(def)
   }
 
-  merge ({ multiLine, useRichTextEditor, multiValue, allowDuplicates } = {}) {
+  merge ({ multiLine, useRichTextEditor } = {}) {
     this.multiLine = !!multiLine
     this.useRichTextEditor = !!useRichTextEditor
 

@@ -34,7 +34,7 @@
                   <td><input v-model="field.name" type="text" class="form-control" /></td>
                   <td><input v-model="field.label" type="text" class="form-control" /></td>
                   <td class="type">
-                    <select v-model="field.kind" class="form-control">
+                    <select v-model="field.kind" class="form-control" @change="handleKindChange(field)">
                       <option v-for="fieldType in fieldsList" :key="fieldType.kind" :value="fieldType.kind">{{ fieldType.label||fieldType.kind }}</option>
                     </select>
                     <button
@@ -124,15 +124,19 @@ export default {
       this.module.fields.push(new Field())
     },
 
+    handleKindChange (field) {
+      field.merge({ kind: field.kind })
+    },
+
     handleFieldEdit (field) {
       this.updateField = new Field(field)
-      this.updateField.name = this.updateField.name + '!!!'
     },
 
     handleFieldSave (field) {
       const i = this.module.fields.findIndex(f => f.name === field.name)
+      console.debug('Updating field options', field, i)
       if (i > -1) {
-        this.fields.splice(i, 1, field)
+        this.module.fields.splice(i, 1, field)
       }
     },
 

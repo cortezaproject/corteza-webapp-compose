@@ -29,7 +29,7 @@ export default {
   },
 
   created () {
-    if (!this.o) {
+    if (!this.f) {
       this.f.options = { options: [] }
     } else if (!this.f.options.options) {
       this.f.options.options = []

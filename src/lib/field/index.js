@@ -26,6 +26,7 @@ export default class Field {
         'enum': 'Select',
         'stamp': 'DateTime',
         'related': 'Record',
+        'related_multi': 'Record',
       }
 
       if (old[klc]) {
