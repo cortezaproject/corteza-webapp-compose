@@ -125,7 +125,7 @@ ul {
   }
 }
 
-.btn-url{
+.btn-url {
   margin-left: 5px;
 }
 </style>
