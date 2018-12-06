@@ -193,4 +193,8 @@ a {
   }
 }
 
+.confirmation{
+  margin-right: 5px;
+}
+
 </style>

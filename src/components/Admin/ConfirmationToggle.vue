@@ -49,12 +49,14 @@ export default {
   margin: 0 1px;
 }
 
-.btn-url{
+.btn-url {
   color: $appred;
   text-decoration: none;
-  &:hover{
+
+  &:hover {
     color: $appred;
-    .icon-trash{
+
+    .icon-trash {
       font-weight: 900;
     }
   }

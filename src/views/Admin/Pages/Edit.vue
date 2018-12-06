@@ -102,11 +102,11 @@ textarea {
   }
 }
 
-h2{
+h2 {
   display: inline-block;
 }
 
-.form-check-label{
+.form-check-label {
   line-height: 24px;
   margin-left: 5px;
 }

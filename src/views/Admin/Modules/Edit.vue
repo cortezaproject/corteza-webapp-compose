@@ -218,19 +218,20 @@ table {
   }
 }
 
-.btn-url{
+.btn-url {
   margin-left: 10px;
-  &.add-new{
+
+  &.add-new {
     display: block;
     margin: -10px 35px 20px;
   }
 }
 
-.confirmation{
+.confirmation {
   float: right;
 }
 
-h5{
+h5 {
   margin-top: 40px;
 }
 </style>
