@@ -1,5 +1,5 @@
 <template>
-  <section class="container well" id="modules-contents-index">
+  <section class="container well" id="modules-contents-index" v-if="module">
     <router-link :to="{name: 'admin.modules'}" class="btn btn-url">Back to Module list</router-link><br>
     <h2>{{module.name}}</h2>
     <router-link :to="{name: 'admin.modules.edit', params: { moduleID }}" class="edit-module">
@@ -24,7 +24,7 @@
               <confirmation-toggle @confirmed="handleDelete(row.contentID)" class="confirmation" cta-class="btn-url">
                 <i class="action icon-trash"></i>
               </confirmation-toggle>
-              <router-link :to="{name: 'admin.modules.records.edit', params: { moduleID, contentID: row.contentID }}">
+              <router-link :to="{name: 'admin.modules.records.edit', params: { moduleID, recordID: row.contentID }}">
                 <i class="icon-edit"></i>
               </router-link>
             </td>
@@ -85,10 +85,6 @@ export default {
     })
   },
 
-  async created () {
-    this.loadModule()
-    this.loadPage()
-  },
   methods: {
     fetch ({ page = this.meta.page, perPage = this.meta.perPage } = {}) {
       const moduleID = this.module.moduleID

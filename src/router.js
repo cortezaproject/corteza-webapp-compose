@@ -62,11 +62,11 @@ function crmViews () {
             { path: 'modules/:moduleID/edit', name: 'admin.modules.edit', component: view('Admin/Modules/Edit'), props: true },
 
             // list module records (individual contact rows,...)
-            { path: 'modules/:moduleID/records', name: 'admin.modules.records', component: view('Admin/Modules/Record/Index'), props: true },
+            { path: 'modules/:moduleID/records', name: 'admin.modules.records', component: view('Admin/Modules/Records/Index'), props: true },
             // create an individual row (should display fields configured for the module)
-            { path: 'modules/:moduleID/records/add', name: 'admin.modules.records.add', component: view('Admin/Modules/Record/Edit'), props: true },
+            { path: 'modules/:moduleID/records/add', name: 'admin.modules.records.add', component: view('Admin/Modules/Records/Edit'), props: true },
             // edit an individual row (should display fields configured for the module)
-            { path: 'modules/:moduleID/records/:recordsID/edit', name: 'admin.modules.records.edit', component: view('Admin/Modules/Record/Edit'), props: true },
+            { path: 'modules/:moduleID/records/:recordID/edit', name: 'admin.modules.records.edit', component: view('Admin/Modules/Records/Edit'), props: true },
 
             { path: 'pages/', name: 'admin.pages', component: view('Admin/Pages/Index') },
             { path: 'pages/:pageID/edit', name: 'admin.pages.edit', component: view('Admin/Pages/Edit'), props: true },

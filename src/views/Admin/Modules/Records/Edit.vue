@@ -1,7 +1,7 @@
 <template>
   <section class="container well" v-if="module">
     <router-link :to="{name: 'admin.modules.records'}" class="btn btn-url">Back to record list</router-link><br>
-    <h2 v-if="!contentID">{{module.name}}: create entry</h2>
+    <h2 v-if="!recordID">{{module.name}}: create entry</h2>
     <h2 v-else>{{module.name}}: edit entry</h2>
 
     <form @submit.prevent="handleSave">
@@ -26,7 +26,7 @@ export default {
       required: true,
     },
 
-    contentID: {
+    recordID: {
       type: String,
       required: false,
     },
@@ -44,10 +44,10 @@ export default {
     this.$crm.moduleRead({ moduleID: this.moduleID }).then(m => {
       this.module = new Module(m)
 
-      if (this.contentID) {
+      if (this.recordID) {
         return this.$crm.moduleContentRead({
           moduleID: this.moduleID,
-          contentID: this.contentID,
+          contentID: this.recordID,
         }).then(record => {
           this.record = record
         })
