@@ -1,9 +1,5 @@
 .VuePagination {
   .pagination {
-    position: sticky;
-    top: -1px;
-    background: $white;
-    box-shadow: 0 1px #dee2e6;
     float: right;
 
     .page-item {
@@ -32,10 +28,11 @@
     .VuePagination__pagination-item-next-chunk {
       display: none;
     }
+  }
 
-    .VuePagination__count {
-      margin-left: 10px;
-    }
+  .VuePagination__count {
+    margin: 10px;
+    display: inline-block;
   }
 }
 

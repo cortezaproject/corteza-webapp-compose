@@ -7,6 +7,7 @@
         <tr>
           <th v-for="(col) in columns" :key="'header:'+col.name" @click="handleSort(col.name)">
             {{ col.label || col.name }}
+            <font-awesome-icon :icon="['fas', 'sort']"></font-awesome-icon>
           </th>
           <th></th>
         </tr>
@@ -129,6 +130,14 @@ export default {
 
 table {
   width: 100%;
+
+  th {
+    cursor: pointer;
+
+    .fa-sort {
+      margin-left: 10px;
+    }
+  }
 }
 
 input {
