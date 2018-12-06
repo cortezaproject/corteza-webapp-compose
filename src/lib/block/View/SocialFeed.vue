@@ -1,7 +1,7 @@
 <template>
     <div>
       <div v-if="twitterHandle">
-        <Timeline :id="twitterHandle" :sourceType="'profile'" :options="{ tweetLimit: '3' }">
+        <Timeline :id="twitterHandle" sourceType="profile" :options="{ tweetLimit: '3' }">
           <div class="spinner"></div>
         </Timeline>
       </div>
