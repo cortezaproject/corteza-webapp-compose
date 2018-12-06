@@ -1,6 +1,6 @@
 <template>
-  <div v-if="misconfigured">{{ misconfigured }}</div>
-  <div v-else>
+  <div v-if="error">{{ error }}</div>
+  <div v-else-if="module">
     <form>here be search</form>
     <table class="table sticky-header">
       <thead>
@@ -31,45 +31,49 @@
           v-model="meta.page" />
     </div>
   </div>
+  <div v-else>Loading...</div>
 </template>
 <script>
 import FieldViewer from '@/lib/field/Viewer'
 import optionsPropMixin from './mixins/optionsProp'
 import Pagination from 'vue-pagination-2'
+import Module from '@/lib/module'
 
 export default {
-  props: {
-    module: {
-      type: Object,
-      required: true,
-    },
-  },
-
   data () {
     return {
-      misconfigured: null,
+      error: null,
+
+      // We'll be loading module dynamicly here
+      // depending on block settings
+      module: null,
 
       meta: { count: 0, page: 1, perPage: 20 },
       records: [],
-
       query: '',
     }
   },
 
   computed: {
     columns () {
+      console.log(this.options.fields.length, this.module.fields.length)
       return this.module.filterFields(this.options.fields)
     },
   },
 
   mounted () {
     if (!this.options.moduleID) {
-      this.misconfigured = 'Block render error: moduleID not set.'
+      this.error = 'Block render error: moduleID not set.'
     } else if (!this.options.pageID) {
-      this.misconfigured = 'Block render error: pageID not set.'
+      this.error = 'Block render error: pageID not set.'
     }
 
-    this.fetch()
+    this.$crm.moduleRead({ moduleID: this.options.moduleID }).then((m) => {
+      this.module = new Module(m)
+      this.fetch()
+    }).catch(({ message }) => {
+      this.error = message
+    })
   },
 
   methods: {
