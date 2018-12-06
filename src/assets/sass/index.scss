@@ -209,7 +209,8 @@ table {
   td {
     word-break: break-word;
   }
-  &.sticky-header{
+
+  &.sticky-header {
     th {
       position: sticky;
       top: -1px;

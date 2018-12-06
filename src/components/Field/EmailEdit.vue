@@ -13,3 +13,8 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+.form-group {
+  margin-bottom: 0;
+}
+</style>

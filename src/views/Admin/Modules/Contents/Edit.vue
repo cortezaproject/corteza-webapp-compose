@@ -122,4 +122,9 @@ export default {
 @import "@/assets/sass/_0.declare.scss";
 @import "@/assets/sass/btns.scss";
 
+table {
+  td {
+    vertical-align: middle;
+  }
+}
 </style>

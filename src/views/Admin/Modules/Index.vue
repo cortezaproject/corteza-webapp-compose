@@ -11,7 +11,7 @@
                   <router-link :to="{name: 'admin.modules.content', params: { moduleID: module.moduleID }}">{{ module.name }}</router-link>
                 </td>
                 <td><time :datetime="module.updatedAt" v-if="module.updatedAt">(Updated at : {{ module.updatedAt }})</time></td>
-                <td class="actions">
+                <td class="actions text-right">
                   <router-link :to="{name: 'admin.modules.edit', params: { moduleID: module.moduleID }}" class="action">
                     <i class="action icon-edit"></i>
                   </router-link>
@@ -89,9 +89,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.actions {
-  text-align: right;
-}
+@import "@/assets/sass/btns.scss";
 
 label {
   margin: 10px 0 5px;
@@ -100,7 +98,7 @@ label {
 .form-inline {
   .form-control {
     margin-right: 10px;
-    width: calc(100% - 72px);
+    width: calc(100% - 80px);
   }
 }
 

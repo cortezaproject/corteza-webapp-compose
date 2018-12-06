@@ -130,18 +130,24 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  label {
-    margin: 20px 0 5px;
-  }
+@import "@/assets/sass/btns.scss";
 
-  .form-inline {
-    .form-control {
-      margin-right: 10px;
-      width: calc(100% - 72px);
-    }
-  }
+table {
+  width: 100%;
+}
 
-  .form-group {
-    margin-bottom: 0;
+label {
+  margin: 20px 0 5px;
+}
+
+.form-inline {
+  .form-control {
+    margin-right: 10px;
+    width: calc(100% - 80px);
   }
+}
+
+.form-group {
+  margin-bottom: 0;
+}
 </style>

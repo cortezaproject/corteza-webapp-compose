@@ -94,12 +94,15 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  textarea {
-    &.form-control {
-      min-height: 200px;
-    }
+@import "@/assets/sass/btns.scss";
+
+textarea {
+  &.form-control {
+    min-height: 200px;
   }
-  .confirmation{
-    float: right;
-  }
+}
+
+.confirmation {
+  float: right;
+}
 </style>

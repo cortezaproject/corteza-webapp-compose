@@ -1,6 +1,6 @@
 <template>
   <section class="container well" id="modules-contents-index">
-    <h5><router-link :to="{name: 'admin.modules'}">Back to Module list</router-link></h5>
+    <router-link :to="{name: 'admin.modules'}" class="btn btn-url">Back to Module list</router-link><br>
     <h2>{{module.name}}</h2>
     <router-link :to="{name: 'admin.modules.edit', params: { moduleID }}" class="edit-module">
     <i class="icon-edit"></i>
@@ -137,7 +137,7 @@ h2 {
   display: inline-block;
 }
 
-h5{
+h5 {
   margin-bottom: 20px;
   text-decoration: underline;
 }
@@ -147,17 +147,20 @@ table {
     max-width: 300px;
   }
 }
+
 a {
   .icon-trash {
     color: $appred;
   }
+
   &:hover {
     .icon-trash {
       color: $appred;
     }
   }
-  &.edit-module{
-    &:hover{
+
+  &.edit-module {
+    &:hover {
       text-decoration: none;
     }
   }
@@ -168,6 +171,14 @@ a {
     margin-left: 10px;
     font-size: 20px;
     color: black;
+  }
+}
+
+.btn-url {
+  margin-bottom: 20px;
+
+  &::before {
+    content: "< ";
   }
 }
 

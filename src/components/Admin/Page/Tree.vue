@@ -31,7 +31,7 @@
 
               <router-link
                 :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
-                class="btn">Page builder</router-link>
+                class="btn btn-url">Page builder</router-link>
           </div>
         </div>
     </template>
@@ -98,6 +98,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "@/assets/sass/_0.declare.scss";
+@import "@/assets/sass/btns.scss";
 
 ul {
   li {
