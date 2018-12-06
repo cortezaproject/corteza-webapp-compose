@@ -14,6 +14,7 @@ export default {
         props: {
           field: this.field,
           record: this.record,
+          valueOnly: this.valueOnly,
         },
       })
     } else {

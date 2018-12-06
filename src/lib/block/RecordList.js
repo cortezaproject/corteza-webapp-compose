@@ -1,8 +1,5 @@
-import BlockOptionsInterface from './BlockOptionsInterface'
-
-export class RecordList extends BlockOptionsInterface {
+export class RecordList {
   constructor (def = {}) {
-    super()
     this.merge(def)
   }
 
@@ -10,5 +7,6 @@ export class RecordList extends BlockOptionsInterface {
     this.pageID = pageID || undefined
     this.moduleID = moduleID || undefined
     this.fields = fields || []
+    return this
   }
 }

@@ -8,6 +8,7 @@
 <script>
 import Grid from '@/components/Public/Page/Grid'
 import Field from '@/lib/field'
+import Module from '@/lib/module'
 
 export default {
   props: {
@@ -43,6 +44,7 @@ export default {
         this.page = page
 
         this.page.module.fields = this.page.module.fields.map(f => new Field(f))
+        this.page.module = new Module(this.page.module)
       })
     },
   },

@@ -23,7 +23,7 @@ export default {
 
       if (this.options.fields) {
         // Remove selected fields
-        return fields.filter(a => { return this.options.fields.findIndex(f => a.id === f.id) === -1 })
+        return fields.filter(a => { return this.options.fields.findIndex(f => a.name === f.name) === -1 })
       }
 
       return fields

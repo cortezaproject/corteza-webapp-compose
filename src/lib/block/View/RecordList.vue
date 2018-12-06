@@ -5,15 +5,18 @@
     <table class="table">
       <thead>
         <tr>
-          <th v-for="(col) in options.fields" :key="'header:'+col.name">{{ col.title || col.name }}</th>
+          <th v-for="(col) in columns" :key="'header:'+col.name">{{ col.label || col.name }}</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(row) in records" :key="row.contentID">
-          <td v-for="(col) in options.fields" :key="row.contentID+':'+col.name">{{ row.data[col.name] }}</td>
+          <td v-for="(col) in columns" :key="row.contentID+':'+col.name">
+            <field-viewer :field="col" value-only :record="row"></field-viewer>
+          </td>
           <td>
-            <router-link :to="{ name: 'public.page.record', params: { pageID: options.pageID, recordID: row.contentID } }">Open</router-link>
+            <router-link
+              :to="{ name: 'public.page.record', params: { pageID: options.pageID, recordID: row.contentID } }">Open</router-link>
           </td>
         </tr>
       </tbody>
@@ -29,10 +32,18 @@
   </div>
 </template>
 <script>
+import FieldViewer from '@/lib/field/Viewer'
 import optionsPropMixin from './mixins/optionsProp'
 import Pagination from 'vue-pagination-2'
 
 export default {
+  props: {
+    module: {
+      type: Object,
+      required: true,
+    }
+  },
+
   data () {
     return {
       misconfigured: null,
@@ -44,9 +55,17 @@ export default {
     }
   },
 
+  computed: {
+    columns () {
+      return this.module.filterFields(this.options.fields)
+    },
+  },
+
   mounted () {
     if (!this.options.moduleID) {
       this.misconfigured = 'Block render error: moduleID not set.'
+    } else if (!this.options.pageID) {
+      this.misconfigured = 'Block render error: pageID not set.'
     }
 
     this.fetch()
@@ -61,7 +80,7 @@ export default {
       const moduleID = this.options.moduleID
       const query = this.query
 
-      let fields = {}
+      const fields = {}
       this.options.fields.forEach(f => {
         fields[f.name] = null
       })
@@ -87,6 +106,7 @@ export default {
 
   components: {
     Pagination,
+    FieldViewer,
   },
 }
 </script>

@@ -1,20 +1,15 @@
-# CMS admin & end user blocks
+# CRM admin & end user blocks
 
 This is the place for all block types (kinds), their edit and view components.
 
 ## File structure
 ```
-/...                       wrapper block
+/*.js                classes for all known kinds
   /BuilderEdit/...         editor components (what we show to admin, when block is edited)
-    /mixins/...            editor component mixins
-
   /BuilderPreview/...      previewer components (what we show to the admin)
-    /mixins/...            previewer component mixins
+  /Edit/...                edit mode blocks (what we show to the end-user)
+  /View/...                view mode blocks (what we show to the end-user)
 
-  /View/...                viewer components (what we show to the end-user)
-    /mixins/...            viewer component mixins
-
-  /kind/...                classes for all known kinds
 ```
 
 ## Entry points

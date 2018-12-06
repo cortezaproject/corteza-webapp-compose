@@ -25,6 +25,7 @@ export default class Field {
         'text': 'String',
         'enum': 'Select',
         'stamp': 'DateTime',
+        'related': 'Record',
       }
 
       if (old[klc]) {

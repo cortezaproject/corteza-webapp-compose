@@ -70,9 +70,6 @@ export default {
   },
 
   watch: {
-    grid () {
-      console.log('grid', this.grid)
-    },
     blocks: {
       handler (blocks) {
         this.grid = blocksToGrid(blocks)

@@ -1,4 +1,4 @@
-import * as kinds from './kind'
+import * as kinds from './loader'
 
 export default class Block {
   constructor (def = {}) {

@@ -1,4 +1,3 @@
-export { default as BlockOptionsInterface } from './BlockOptionsInterface'
 export { Record } from './Record'
 export { RecordList } from './RecordList'
 export { Chart } from './Chart'

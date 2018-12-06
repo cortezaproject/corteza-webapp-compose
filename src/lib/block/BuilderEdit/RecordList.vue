@@ -16,28 +16,35 @@
 
     <fieldset class="form-group">
       <div class="fields" v-if="o.moduleID">
-        <div>
+        <div class="selected">
           <label>Columns selected</label>
           <button @click.prevent="o.fields = []" class="all">&raquo;</button>
           <draggable
             class="drag-area"
             :list.sync="o.fields"
             :options="{ group:'fields' }">
-            <div v-for="field in o.fields" :key="field.id">{{field.label || field.name}}</div>
+            <div v-for="(field, index) in o.fields"
+                 @dblclick="o.fields.splice(index,1)"
+                 class="field"
+                 :key="field.name">{{field.label || field.name}}</div>
           </draggable>
         </div>
-        <div>
+        <div class="available">
           <label>Columns available </label>
           <button @click.prevent="o.fields = []; o.fields = availableFields" class="all">&laquo;</button>
           <draggable
             class="drag-area"
             :list.sync="availableFields"
             :options="{ group:'fields' }">
-            <div v-for="field in availableFields" :key="field.id">{{field.label || field.name}}</div>
+            <div v-for="field in availableFields"
+                 @dblclick="o.fields.push(field)"
+                 class="field"
+                 :key="field.name">{{field.label || field.name}}</div>
           </draggable>
         </div>
       </div>
-      <i>Drag fields from available to selected to include them to list of record table columns</i>
+      <i>Drag fields to reaorder them or to to include them to list of record table columns and vice versa.
+        You can also double-click on a field to add/remove it.</i>
     </fieldset>
   </div>
 </template>
@@ -78,6 +85,14 @@ export default {
 div.fields {
   display: flex;
   flex-flow: row nowrap;
+
+  .selected .field {
+    cursor: e-resize;
+  }
+
+  .available .field {
+    cursor: w-resize;
+  }
 
   & > div {
     flex: 1;
