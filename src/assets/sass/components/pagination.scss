@@ -1,6 +1,8 @@
 .VuePagination {
   .pagination {
     float: right;
+    margin: 0;
+    padding: 0;
 
     .page-item {
       .page-link {
@@ -31,7 +33,7 @@
   }
 
   .VuePagination__count {
-    margin: 10px;
+    margin: 10px 10px 0;
     display: inline-block;
   }
 }
@@ -41,6 +43,6 @@
   background: white;
   position: sticky;
   bottom: 0;
-  padding-top: 10px;
+  padding-top: 5px;
   box-shadow: 0 -1px #dee2e6;
 }

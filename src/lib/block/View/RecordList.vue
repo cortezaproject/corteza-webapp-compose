@@ -25,7 +25,7 @@
         </tr>
       </tbody>
     </table>
-    <div>
+    <div class="sticky-footer">
       <pagination
           :records="meta.count"
           :per-page="meta.perPage"

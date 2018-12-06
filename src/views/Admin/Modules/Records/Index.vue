@@ -6,7 +6,7 @@
     <i class="icon-edit"></i>
     </router-link>
     <hr />
-    <input @keypress.enter.prevent="handleQuery($event.target.value)" />
+    <input @keypress.enter.prevent="handleQuery($event.target.value)" placeholder="Search" />
     <table class="table sticky-header">
       <thead>
         <tr>
@@ -34,8 +34,8 @@
         </template>
       </tbody>
     </table>
-    <div>
     <router-link :to="{name: 'admin.modules.records.add', params: { moduleID }}" class="btn-url add-new">Add new entry</router-link>
+    <div class="sticky-footer">
       <pagination
         :records="meta.count"
         :per-page="meta.perPage"
@@ -143,6 +143,9 @@ export default {
 @import "@/assets/sass/_0.declare.scss";
 @import "@/assets/sass/btns.scss";
 @import "@/assets/sass/components/blocks.scss";
+.well{
+  padding-bottom: 0;
+}
 
 h2 {
   display: inline-block;
@@ -194,6 +197,8 @@ a {
 
   &.add-new {
     margin-left: 10px;
+    display: block;
+    margin-bottom: 20px;
 
     &::before {
       content: "+ ";
@@ -203,6 +208,24 @@ a {
 
 .confirmation-small {
   margin-right: 5px;
+}
+
+input {
+  border: 1px solid $appgrey;
+  border-radius: 5px;
+  font-size: 14px;
+  padding: 3px 10px;
+  float: right;
+  margin-bottom: 5px;
+  max-width: 100%;
+  position: sticky;
+  top: 5px;
+  z-index: 1;
+
+  &:focus {
+    border: 1px solid $appblue;
+    outline: none;
+  }
 }
 
 </style>
