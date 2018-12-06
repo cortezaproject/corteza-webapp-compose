@@ -140,6 +140,9 @@ input {
   margin-bottom: 5px;
   width: 200px;
   max-width: 100%;
+  position: sticky;
+  top: 5px;
+  z-index: 1;
 
   &:focus {
     border: 1px solid $appblue;

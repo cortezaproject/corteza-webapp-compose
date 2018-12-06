@@ -32,17 +32,18 @@
     .VuePagination__pagination-item-next-chunk {
       display: none;
     }
+
     .VuePagination__count {
       margin-left: 10px;
     }
   }
 }
 
-.sticky-footer{
+.sticky-footer {
   height: 40px;
   background: white;
   position: sticky;
-  bottom: 0px;
+  bottom: 0;
   padding-top: 10px;
   box-shadow: 0 -1px #dee2e6;
 }
