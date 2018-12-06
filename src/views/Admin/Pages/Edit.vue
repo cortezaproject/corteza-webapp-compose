@@ -4,7 +4,7 @@
       <div class="col-md-12">
         <div class="well">
           <h2>Edit page</h2>
-          <router-link :to="{name: 'admin.pages.builder'}" class="btn-url">Page builder</router-link>
+          <router-link :to="{name: 'admin.pages.builder'}" class="btn-url float-right">Page builder</router-link>
           <div v-if="editPageError" style="color:red;">
             {{ editPageError }}
           </div>
@@ -27,9 +27,9 @@
             </div>
 
             <div>
+              <button type="submit" class="btn btn-dark">Save</button>
               <router-link :to="{name: 'admin.pages'}" class="btn">Cancel</router-link>
-              <confirmation-toggle @confirmed="handleDeletePage" class="confirmation">Delete</confirmation-toggle>
-              <button type="submit" class="btn btn-primary">Save</button>
+              <confirmation-toggle @confirmed="handleDeletePage" class="confirmation">Delete page</confirmation-toggle>
             </div>
           </form>
         </div>
@@ -100,6 +100,15 @@ textarea {
   &.form-control {
     min-height: 200px;
   }
+}
+
+h2{
+  display: inline-block;
+}
+
+.form-check-label{
+  line-height: 24px;
+  margin-left: 5px;
 }
 
 .confirmation {

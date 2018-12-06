@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <form @submit.prevent="handleUpdate" class="container-fluid">
+    <form @submit.prevent="handleUpdate" class="container">
       <div class="row">
         <div class="col-md-12 well">
         <h2>Edit module</h2>
@@ -14,7 +14,7 @@
             <input required type="text" v-model="module.name" class="form-control" placeholder="Module name" />
           </div>
           <div class="form-group">
-            <h3>Manage record fields</h3>
+            <h5>Manage record fields</h5>
             <table class="table">
               <thead>
               <tr>
@@ -37,11 +37,10 @@
                     <select v-model="field.kind" class="form-control" @change="handleKindChange(field)">
                       <option v-for="fieldType in fieldsList" :key="fieldType.kind" :value="fieldType.kind">{{ fieldType.label||fieldType.kind }}</option>
                     </select>
-                    <button
+                    <a
                       :disabled="!field.isConfigurable()"
-                      type="button"
                       @click.prevent="handleFieldEdit(field)"
-                      class="btn"><font-awesome-icon :icon="['fas', 'wrench']"></font-awesome-icon></button>
+                      class="btn-url"><font-awesome-icon :icon="['fas', 'wrench']"></font-awesome-icon></a>
                   </td>
                   <td class="text-center">
                     <input v-model="field.isRequired" type="checkbox"/>
@@ -53,16 +52,18 @@
                     <input v-model="field.isVisible" type="checkbox"/>
                   </td>
                   <td class="text-center">
-                    <confirmation-toggle @confirmed="module.fields.splice(index, 1)" class="confirmation">Delete</confirmation-toggle>
+                    <confirmation-toggle @confirmed="module.fields.splice(index, 1)" class="confirmation" cta-class="btn-url">
+                      <i class="action icon-trash"></i>
+                    </confirmation-toggle>
                   </td>
                 </tr>
               </draggable>
             </table>
           </div>
-          <button @click="handleNewField" type="button" class="btn btn-secondary">Add new field</button>
+          <button @click="handleNewField" type="button" class="btn-url add-new">+ Add new field</button>
+          <button type="submit" class="btn btn-dark">Save</button>
           <button @click="redirect()" type="button" class="btn">Cancel</button>
           <confirmation-toggle @confirmed="handleDelete" class="confirmation">Delete module</confirmation-toggle>
-          <button type="submit" class="btn btn-primary">Save</button>&nbsp;
         </div>
       </div>
     </form>
@@ -169,14 +170,9 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/sass/_0.declare.scss";
-
-/* @import "@/assets/sass/btns.scss"; */
+@import "@/assets/sass/btns.scss";
 
 /* stylelint-disable font-family-no-missing-generic-family-keyword */
-
-.container-fluid {
-  padding: 0 50px;
-}
 
 table {
   th, td, tr {
@@ -220,5 +216,21 @@ table {
       }
     }
   }
+}
+
+.btn-url{
+  margin-left: 10px;
+  &.add-new{
+    display: block;
+    margin: -10px 35px 20px;
+  }
+}
+
+.confirmation{
+  float: right;
+}
+
+h5{
+  margin-top: 40px;
 }
 </style>

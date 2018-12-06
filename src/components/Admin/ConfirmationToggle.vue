@@ -48,4 +48,15 @@ export default {
 .btn {
   margin: 0 1px;
 }
+
+.btn-url{
+  color: $appred;
+  text-decoration: none;
+  &:hover{
+    color: $appred;
+    .icon-trash{
+      font-weight: 900;
+    }
+  }
+}
 </style>

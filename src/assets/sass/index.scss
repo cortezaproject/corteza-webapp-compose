@@ -243,18 +243,11 @@ table {
 
 .tooltip {
   font-size: 14px;
-  border-color: $appgrey;
-  float: left;
 }
 
-/* .tooltip-inner {
-background-color: red !important;
-color: #fff;
+input[type='checkbox']{
+  font-size: 16px;
 }
-.bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^="top"]
-.arrow::before {
-border-top-color: red;
-} */
 
 @media (min-width: $wideminwidth) {
   .modal-dialog {
