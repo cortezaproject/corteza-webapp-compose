@@ -73,32 +73,19 @@ export default {
   },
 
   methods: {
-    handlePageChange (page) {
-      this.fetch({ page })
-    },
-
     fetch ({ page = this.meta.page, perPage = this.meta.perPage } = {}) {
       const moduleID = this.options.moduleID
       const query = this.query
 
-      const fields = {}
-      this.options.fields.forEach(f => {
-        fields[f.name] = null
-      })
-
       this.$crm.moduleContentList({ moduleID, page: page - 1, perPage, query }).then((result) => {
         this.meta = result.meta
         this.meta.page++
-        this.records = result.contents.map((row) => {
-          let data = {}
-          row.fields.forEach(f => {
-            data[f.name] = f.value
-          })
-
-          row.data = Object.assign({}, fields, data)
-          return row
-        })
+        this.records = result.contents
       })
+    },
+
+    handlePageChange (page) {
+      this.fetch({ page })
     },
   },
 

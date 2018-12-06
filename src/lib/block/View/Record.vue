@@ -52,12 +52,14 @@ export default {
 .record {
   .field {
     margin-bottom: 5px;
+
     label {
       color: $appgrey;
       font-weight: normal;
       width: 150px;
       display: inline-block;
     }
+
     div {
       min-width: 200px;
       display: inline-block;
