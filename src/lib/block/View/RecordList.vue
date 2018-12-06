@@ -6,7 +6,7 @@
       <thead>
         <tr>
           <th v-for="(col) in columns" :key="'header:'+col.name">{{ col.label || col.name }}</th>
-          <th>Actions</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -16,7 +16,8 @@
           </td>
           <td>
             <router-link
-              :to="{ name: 'public.page.record', params: { pageID: options.pageID, recordID: row.contentID } }">Open</router-link>
+              :to="{ name: 'public.page.record', params: { pageID: options.pageID, recordID: row.contentID } }">
+              <i class="action icon-search"></i></router-link>
           </td>
         </tr>
       </tbody>
@@ -41,14 +42,14 @@ export default {
     module: {
       type: Object,
       required: true,
-    }
+    },
   },
 
   data () {
     return {
       misconfigured: null,
 
-      meta: { count: 0, page: 0, perPage: 20 },
+      meta: { count: 0, page: 1, perPage: 20 },
       records: [],
 
       query: '',
@@ -85,8 +86,9 @@ export default {
         fields[f.name] = null
       })
 
-      this.$crm.moduleContentList({ moduleID, page, perPage, query }).then((result) => {
+      this.$crm.moduleContentList({ moduleID, page: page - 1, perPage, query }).then((result) => {
         this.meta = result.meta
+        this.meta.page++
         this.records = result.contents.map((row) => {
           let data = {}
           row.fields.forEach(f => {
