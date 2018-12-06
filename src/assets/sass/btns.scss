@@ -92,6 +92,10 @@ button structure :
     background-color: transparent;
     color: $appblue;
   }
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .btn-w75 {
@@ -174,6 +178,21 @@ button structure :
     .btn-txt, .btn-i {
       color: $appblue;
     }
+  }
+}
+
+.btn-white {
+  background-color: transparent;
+  border-color: $white;
+  color: white;
+
+  .btn-txt, .btn-i {
+    color: white;
+  }
+
+  &:hover {
+    color: $black;
+    background-color: white;
   }
 }
 

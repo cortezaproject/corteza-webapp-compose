@@ -143,7 +143,8 @@ export default {
 @import "@/assets/sass/_0.declare.scss";
 @import "@/assets/sass/btns.scss";
 @import "@/assets/sass/components/blocks.scss";
-.well{
+
+.well {
   padding-bottom: 0;
 }
 

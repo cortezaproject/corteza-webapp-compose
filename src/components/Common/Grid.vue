@@ -24,7 +24,7 @@
       </grid-item>
     </grid-layout>
   </div>
-  <div v-else class="builder-grid">
+  <div v-else class="no-builder-grid">
     <h4>No block added yet.</h4>
   </div>
 </template>
@@ -103,7 +103,7 @@ export default {
 <style lang="scss" scoped>
 .builder-grid {
   width: 100%;
-  padding: 0 10px;
+  padding: 0 10px 70px;
 
   &.mobile {
     width: 320px;
