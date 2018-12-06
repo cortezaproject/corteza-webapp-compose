@@ -1,8 +1,8 @@
 <template>
   <div v-if="record && options" >
     <field-viewer
-      v-for="field in options.fields"
-      :key="field.name"
+      v-for="(field, index) in fields"
+      :key="index"
       :field="field"
       :record="record || {}"></field-viewer>
   </div>
@@ -14,9 +14,21 @@ import FieldViewer from '@/lib/field/Viewer'
 
 export default {
   props: {
+    module: {
+      type: Object,
+      required: true,
+    },
+
     record: {
       type: Object,
       required: false, // actually true, but we'll going to fail soft here
+    },
+  },
+
+  computed: {
+    fields () {
+      const whitelist = this.options.fields.map(f => f.name)
+      return this.module.fields.filter(f => whitelist.indexOf(f.name) > -1)
     },
   },
 

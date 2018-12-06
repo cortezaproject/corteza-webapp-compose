@@ -4,7 +4,7 @@
       <h2>{{ block.title }}</h2>
       <p class="block-data-description" v-if="block.description">{{ block.description }}</p>
       <div class="block-data-content">
-        <component :is="block.kind" :options="block.options" :record="record" />
+        <component :is="block.kind" :options="block.options" :module="module" :record="record" />
       </div>
     </div>
   </div>
@@ -16,6 +16,11 @@ import * as ViewBlocks from './loader'
 export default {
   props: {
     block: {
+      type: Object,
+      required: true,
+    },
+
+    module: {
       type: Object,
       required: true,
     },
