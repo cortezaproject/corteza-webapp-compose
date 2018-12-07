@@ -15,8 +15,8 @@
       </template>
     </grid>
 
-    <b-modal id="createBlockSelector" hide-footer>
-      <new-block-selector @select="createBlock=Object.assign({}, $event);"/>
+    <b-modal id="createBlockSelector" hide-footer title="Select type of the new block">
+      <new-block-selector :record-page="!!module" @select="createBlock=Object.assign({}, $event);"/>
     </b-modal>
 
     <b-modal
@@ -25,7 +25,7 @@
       @ok="blocks.push(createBlock)"
       @hide="createBlock=null"
       :visible="!!createBlock">
-      <block-edit v-if="createBlock" :moduleID="moduleID" :block.sync="createBlock" />
+      <block-edit v-if="createBlock" :module="module" :page="page" :block.sync="createBlock" />
     </b-modal>
 
     <b-modal
@@ -37,7 +37,7 @@
       centered
       @hide="updateBlock=null"
       :visible="!!updateBlock">
-      <block-edit v-if="updateBlock" :moduleID="moduleID" :block.sync="updateBlock" />
+      <block-edit v-if="updateBlock" :module="module" :page="page" :block.sync="updateBlock" />
     </b-modal>
 
     <div class="toolbar">
@@ -63,27 +63,29 @@ export default {
     },
   },
 
-  components: {
-    Grid,
-    NewBlockSelector,
-    BlockEdit,
-    BlockPreview,
-  },
-
   data () {
     return {
       createBlock: null, // holds instance of a block we're adding
       updateBlock: null, // holds instance of a block we're editing
       blocks: [],
-      moduleID: null,
+      page: null,
+      module: null,
     }
   },
 
   mounted () {
     this.$crm.pageRead({ pageID: this.pageID }).then(page => {
+      this.page = page
+      if (page.moduleID !== '0') {
+        console.log(page.moduleID)
+        this.$crm.moduleRead({ moduleID: page.moduleID }).then(m => {
+          console.log(m)
+          this.module = m
+        })
+      }
+
       if (page.blocks && Array.isArray(page.blocks)) {
         this.blocks = page.blocks.map(b => new Block(b))
-        this.moduleID = page.moduleID
       }
     })
   },
@@ -95,6 +97,13 @@ export default {
         this.$crm.pageEdit(page)
       })
     },
+  },
+
+  components: {
+    Grid,
+    NewBlockSelector,
+    BlockEdit,
+    BlockPreview,
   },
 }
 </script>

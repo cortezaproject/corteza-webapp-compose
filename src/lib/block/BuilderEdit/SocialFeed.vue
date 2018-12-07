@@ -10,13 +10,10 @@
     </div>
 </template>
 <script>
-import optionsSyncProp from './mixins/optionsSyncProp'
+import base from './base'
 
 export default {
+  extends: base,
   name: 'SocialFeed',
-
-  mixins: [
-    optionsSyncProp,
-  ],
 }
 </script>

@@ -1,5 +1,16 @@
+<script>
 export default {
   props: {
+    page: {
+      type: Object,
+      required: true,
+    },
+
+    module: {
+      type: Object,
+      required: false,
+    },
+
     options: {
       type: Object,
       required: true,
@@ -18,3 +29,4 @@ export default {
     },
   },
 }
+</script>

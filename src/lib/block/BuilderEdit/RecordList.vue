@@ -14,51 +14,28 @@
       <i>Disabled modules on the list do not have <router-link :to="{ name: 'admin.pages'}">record pages</router-link> available.</i>
     </fieldset>
 
-    <fieldset class="form-group">
-      <div class="fields" v-if="o.moduleID">
-        <div class="selected">
-          <label>Columns selected</label>
-          <button @click.prevent="o.fields = []" class="all">&raquo;</button>
-          <draggable
-            class="drag-area"
-            :list.sync="o.fields"
-            :options="{ group:'fields' }">
-            <div v-for="(field, index) in o.fields"
-                 @dblclick="o.fields.splice(index,1)"
-                 class="field"
-                 :key="field.name">{{field.label || field.name}}</div>
-          </draggable>
-        </div>
-        <div class="available">
-          <label>Columns available </label>
-          <button @click.prevent="o.fields = []; o.fields = availableFields" class="all">&laquo;</button>
-          <draggable
-            class="drag-area"
-            :list.sync="availableFields"
-            :options="{ group:'fields' }">
-            <div v-for="field in availableFields"
-                 @dblclick="o.fields.push(field)"
-                 class="field"
-                 :key="field.name">{{field.label || field.name}}</div>
-          </draggable>
-        </div>
-      </div>
-      <i>Drag fields to reaorder them or to to include them to list of record table columns and vice versa.
-        You can also double-click on a field to add/remove it.</i>
-    </fieldset>
+    <field-selector v-if="selectedModule" :module="selectedModule" :fields="o.fields" />
   </div>
 </template>
 <script>
-import draggable from 'vuedraggable'
-import optionsSyncPropMixin from './mixins/optionsSyncProp'
-import moduleFieldsMixin from './mixins/moduleFields.js'
-import pagesMixin from './mixins/pages.js'
+import base from './base'
+import pagesMixin from './mixins/pages'
+import FieldSelector from './inc/FieldSelector'
 
 export default {
+  extends: base,
   name: 'RecordList',
 
-  components: {
-    draggable,
+  data () {
+    return {
+      modules: [],
+    }
+  },
+
+  computed: {
+    selectedModule () {
+      return this.modules.find(m => m.moduleID === this.o.moduleID)
+    },
   },
 
   watch: {
@@ -74,41 +51,30 @@ export default {
     },
   },
 
+  created () {
+    this.$crm.pageList({ recordPagesOnly: true }).then(pp => {
+      // @todo extend API endpoint to support fetching only record pages
+      this.$crm.moduleList({}).then(mm => {
+        this.modules = mm.map(m => {
+          m.recordPage = pp.find(p => p.moduleID === m.moduleID)
+          return m
+        })
+      }).catch(err => {
+        console.error(err)
+        this.error = err
+      })
+    }).catch(err => {
+      console.error(err)
+      this.error = err
+    })
+  },
+
   mixins: [
-    optionsSyncPropMixin,
-    moduleFieldsMixin,
     pagesMixin,
   ],
+
+  components: {
+    FieldSelector,
+  },
 }
 </script>
-<style lang="scss" scoped>
-div.fields {
-  display: flex;
-  flex-flow: row nowrap;
-
-  .selected .field {
-    cursor: e-resize;
-  }
-
-  .available .field {
-    cursor: w-resize;
-  }
-
-  & > div {
-    flex: 1;
-    margin: 5px;
-
-    button.all {
-      float: right;
-      font-size: 80%;
-    }
-
-    .drag-area {
-      height: 150px;
-      overflow-x: auto;
-      border: 1px solid silver;
-      padding: 2px;
-    }
-  }
-}
-</style>
