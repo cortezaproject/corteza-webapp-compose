@@ -9,7 +9,9 @@
                     :key="index"
                     :field="field"
                     :record="record" />
-      <button type="submit" class="btn btn-dark">Save entry</button>
+
+      <button type="submit" class="btn btn-dark">Save</button>
+      <button type="button" class="btn btn-dark" @click.prevent="handleSave({ closeOnSuccess: true })">Save and close</button>
       <router-link :to="{ name: 'admin.modules.records', params: { moduleID }}" class="btn">Cancel</router-link>
     </form>
   </section>
@@ -58,7 +60,7 @@ export default {
   },
 
   methods: {
-    handleSave () {
+    handleSave ({ closeOnSuccess = false } = {}) {
       let p
 
       if (this.record.contentID) {
@@ -67,7 +69,11 @@ export default {
         p = this.$crm.moduleContentCreate({ ...this.record, moduleID: this.moduleID })
       }
 
-      p.catch(({ message }) => {
+      p.then(() => {
+        if (closeOnSuccess) {
+          this.$router.push({ name: 'admin.modules.records' })
+        }
+      }).catch(({ message }) => {
         this.errors = [message]
       })
     },

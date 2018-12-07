@@ -62,6 +62,7 @@
           </div>
           <button @click="handleNewField" type="button" class="btn-url add-new">+ Add new field</button>
           <button type="submit" class="btn btn-dark">Save</button>
+          <button type="button" @click.prevent="handleUpdate({ closeOnSuccess: true })" class="btn btn-dark">Save and close</button>
           <button @click="redirect()" type="button" class="btn">Cancel</button>
           <confirmation-toggle @confirmed="handleDelete" class="confirmation">Delete module</confirmation-toggle>
         </div>
@@ -141,9 +142,11 @@ export default {
       }
     },
 
-    handleUpdate () {
+    handleUpdate ({ closeOnSuccess = false } = {}) {
       this.$crm.moduleEdit(this.module).then(() => {
-        this.redirect()
+        if (closeOnSuccess) {
+          this.redirect()
+        }
       }).catch(() => {
         this.error = 'Error when trying to edit module.'
       })

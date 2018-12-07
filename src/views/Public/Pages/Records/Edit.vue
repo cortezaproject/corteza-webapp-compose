@@ -21,7 +21,7 @@ export default {
       }
 
       this.$crm.moduleContentEdit(payload).then((rsp) => {
-        this.$router.push({ name: 'public.page.record.edit' })
+        this.$router.push({ name: 'public.page.record' })
       }).catch(err => {
         console.error(err)
         this.warningAlert = 'Internal error, could not update this record'

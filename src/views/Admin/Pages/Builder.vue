@@ -43,7 +43,8 @@
     <div class="toolbar">
       <button v-b-modal.createBlockSelector @click="createBlock=null" class="btn large">+ Add block</button>
       <button @click.prevent="$router.push({ name: 'public.page', params: { pageID } })" class="btn large">Preview</button>
-      <button @click.prevent="handleSave" class="btn btn-blue large">Done (save layouts)</button>
+      <button @click.prevent="handleSave()" class="btn btn-blue large">Save</button>
+      <button @click.prevent="handleSave({ closeOnSucess: true })" class="btn btn-blue large">Save and close</button>
     </div>
   </div>
 </template>
@@ -91,10 +92,14 @@ export default {
   },
 
   methods: {
-    handleSave () {
+    handleSave ({ closeOnSucess = false } = {}) {
       this.$crm.pageRead({ pageID: this.pageID }).then(page => {
         page.blocks = this.blocks
         this.$crm.pageEdit(page)
+
+        if (closeOnSucess) {
+          this.$router.push({ name: 'admin.pages' })
+        }
       })
     },
   },
