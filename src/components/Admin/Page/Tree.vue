@@ -10,7 +10,7 @@
           <div class="actions">
               <router-link
                 v-if="item.blocks && item.blocks.length >= 1"
-                :to="{name: 'public.pages', params: { pageID: item.pageID }}"
+                :to="{name: 'public.page', params: { pageID: item.pageID }}"
                 class="action">
                 <font-awesome-icon
                   :icon="['far', 'eye']"

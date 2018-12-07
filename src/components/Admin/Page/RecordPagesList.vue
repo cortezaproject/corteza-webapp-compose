@@ -6,18 +6,27 @@
                 <th></th>
             </tr>
         </thead>
-        <tbody class="table table-stripped">
+        <tbody class="table">
             <tr v-for="(m, index) in modules" :key="index">
                 <td class="title">{{ m.name }}</td>
                 <td class="actions">
                   <router-link
+                    v-if="m.recordPage && m.recordPage.blocks && m.recordPage.blocks.length >= 1"
+                    :to="{name: 'public.page', params: { pageID: m.recordPage.pageID }}"
+                    class="action">
+                    <font-awesome-icon
+                      :icon="['far', 'eye']"
+                      title="View"
+                    ></font-awesome-icon>
+                  </router-link>
+                  <router-link
                     v-if="m.recordPage"
                     :to="{name: 'admin.pages.builder', params: { pageID: m.recordPage.pageID }}"
                     class="btn-url">Page builder</router-link>
-                  <button
+                  <a href="#"
                     v-if="!m.recordPage"
                     @click="$emit('createRecordPage', { moduleID: m.moduleID })"
-                    class="btn-url">Page builder</button>
+                    class="btn-url">Page builder</a>
                 </td>
             </tr>
         </tbody>
