@@ -45,18 +45,6 @@ button structure :
     }
   }
 
-  &.btn-url {
-    color: $black;
-    border: none;
-    text-decoration: underline;
-    padding-left: 0;
-
-    &:hover {
-      background-color: transparent;
-      color: $appblue;
-    }
-  }
-
   &.large {
     padding: 5px 30px;
     font-size: 15px;
@@ -87,6 +75,26 @@ button structure :
     max-width: calc(100% - 3.5em);
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+}
+
+.btn-url {
+  color: $black;
+  border: none;
+  text-decoration: underline;
+  padding: 0;
+  background: transparent;
+  transition: color 0.2s, background-color 0.2s;
+  font-size: 13px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: transparent;
+    color: $appblue;
+  }
+
+  &:focus {
+    outline: none;
   }
 }
 
@@ -170,6 +178,21 @@ button structure :
     .btn-txt, .btn-i {
       color: $appblue;
     }
+  }
+}
+
+.btn-white {
+  background-color: transparent;
+  border-color: $white;
+  color: white;
+
+  .btn-txt, .btn-i {
+    color: white;
+  }
+
+  &:hover {
+    color: $black;
+    background-color: white;
   }
 }
 

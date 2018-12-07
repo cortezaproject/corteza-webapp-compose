@@ -1,20 +1,20 @@
 .VuePagination {
-  text-align: center;
-
   .pagination {
-    justify-content: center;
-
-    .disabled {
-      .page-link {
-        color: $appgrey;
-      }
-    }
+    float: right;
+    margin: 0;
+    padding: 0;
 
     .page-item {
       .page-link {
         color: $appblue;
         outline: none;
         box-shadow: none;
+      }
+
+      &.disabled {
+        .page-link {
+          color: $appgrey;
+        }
       }
 
       &.active {
@@ -31,4 +31,18 @@
       display: none;
     }
   }
+
+  .VuePagination__count {
+    margin: 10px 10px 0;
+    display: inline-block;
+  }
+}
+
+.sticky-footer {
+  height: 40px;
+  background: white;
+  position: sticky;
+  bottom: 0;
+  padding-top: 5px;
+  box-shadow: 0 -1px #dee2e6;
 }

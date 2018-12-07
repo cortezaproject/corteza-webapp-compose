@@ -54,9 +54,8 @@ export default {
     margin-bottom: 5px;
 
     label {
-      color: $appgrey;
-      font-weight: normal;
-      width: 150px;
+      min-width: 150px;
+      font-weight: 900;
       display: inline-block;
     }
 

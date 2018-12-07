@@ -13,11 +13,11 @@
                   <router-link
                     v-if="m.recordPage"
                     :to="{name: 'admin.pages.builder', params: { pageID: m.recordPage.pageID }}"
-                    class="btn btn-url">Page builder</router-link>
+                    class="btn-url">Page builder</router-link>
                   <button
                     v-if="!m.recordPage"
                     @click="$emit('createRecordPage', { moduleID: m.moduleID })"
-                    class="btn btn-url">Page builder</button>
+                    class="btn-url">Page builder</button>
                 </td>
             </tr>
         </tbody>
@@ -40,3 +40,7 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+@import "@/assets/sass/btns.scss";
+
+</style>

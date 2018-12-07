@@ -236,6 +236,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/sass/btns.scss";
+
 .action {
   margin-left: 5px;
   margin-right: 5px;

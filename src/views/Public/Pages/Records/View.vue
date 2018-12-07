@@ -2,12 +2,13 @@
   <div class="view">
     <b-alert show variant="warning" dismissible @dismissed="warningAlert=null" v-if="warningAlert">{{ warningAlert }}</b-alert>
     <b-alert show variant="info" dismissible @dismissed="infoAlert=null" v-if="infoAlert">{{ infoAlert }}</b-alert>
-    <div>
-      <button class="btn btn-outline" @click.prevent="handleUpdate" v-if="editMode">Save changes</button>
-      <button class="btn btn-outline" @click.prevent="$router.push({ name: 'public.page.record.edit' })" v-else>Edit</button>
-      <button class="btn btn-outline" @click.prevent="$router.push({ name: 'public.page.record.create' })">New</button>
-      <button class="btn btn-outline" v-b-modal.deleteRecord>Delete</button>
-      <button class="btn btn-outline" @click.prevent="$router.back()">Back</button>
+    <div class="editor">
+      <button class="btn-url" @click.prevent="$router.back()">Back</button>
+      <confirmation-toggle @confirmed="deleteRecord" class="confirmation">Delete</confirmation-toggle>
+      <button class="btn" @click.prevent="$router.push({ name: 'public.page.record.create' })">Add new</button>
+      <button class="btn btn-blue" @click.prevent="handleUpdate" v-if="editMode">Save changes</button>
+      <button class="btn" @click.prevent="$router.push({ name: 'public.page.record.edit' })" v-else>Edit</button>
+
     </div>
     <grid :page="page" :record="record" :edit-mode="editMode" v-if="record" />
     <b-modal id="deleteRecord" title="Delete record" @ok="handleDelete" ok-title="Delete" ok-variant="danger">
@@ -19,6 +20,7 @@
 </template>
 <script>
 import Grid from '@/components/Public/Page/Grid'
+import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 
 export default {
   name: 'ViewRecord',
@@ -84,6 +86,36 @@ export default {
 
   components: {
     Grid,
+    ConfirmationToggle,
   },
 }
 </script>
+<style lang="scss" scoped>
+@import "@/assets/sass/btns.scss";
+@import "@/assets/sass/_0.declare.scss";
+
+.editor {
+  background: $white;
+  padding: 15px;
+  text-align: right;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  z-index: 3;
+  border-top: 3px solid $appblue;
+
+  .btn-url {
+    margin-left: 10px;
+    float: left;
+
+    &::before {
+      content: "< ";
+    }
+  }
+
+  .btn {
+    margin-right: 0;
+  }
+}
+
+</style>

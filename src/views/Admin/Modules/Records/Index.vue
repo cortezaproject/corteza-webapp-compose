@@ -1,12 +1,12 @@
 <template>
   <section class="container well" id="modules-contents-index" v-if="module">
-    <router-link :to="{name: 'admin.modules'}" class="btn btn-url">Back to Module list</router-link><br>
+    <router-link :to="{name: 'admin.modules'}" class="btn btn-url">Back to module list</router-link><br>
     <h2>{{module.name}}</h2>
     <router-link :to="{name: 'admin.modules.edit', params: { moduleID }}" class="edit-module">
     <i class="icon-edit"></i>
     </router-link>
     <hr />
-    <input @keypress.enter.prevent="handleQuery($event.target.value)" />
+    <input @keypress.enter.prevent="handleQuery($event.target.value)" placeholder="Search" />
     <table class="table sticky-header">
       <thead>
         <tr>
@@ -23,7 +23,7 @@
               <field-viewer :field="col" :record="row" value-only />
             </td>
             <td class="text-right actions">
-              <confirmation-toggle @confirmed="handleDelete(row.contentID)" class="confirmation" cta-class="btn-url">
+              <confirmation-toggle @confirmed="handleDelete(row.contentID)" class="confirmation-small" cta-class="btn-url">
                 <i class="action icon-trash"></i>
               </confirmation-toggle>
               <router-link :to="{name: 'admin.modules.records.edit', params: { moduleID, recordID: row.contentID }}">
@@ -34,7 +34,8 @@
         </template>
       </tbody>
     </table>
-    <div>
+    <router-link :to="{name: 'admin.modules.records.add', params: { moduleID }}" class="btn-url add-new">Add new entry</router-link>
+    <div class="sticky-footer">
       <pagination
         :records="meta.count"
         :per-page="meta.perPage"
@@ -47,7 +48,6 @@
       <p>No content rows added yet.</p>
     </template>
 
-    <router-link :to="{name: 'admin.modules.records.add', params: { moduleID }}" class="btn btn-primary">Add new entry</router-link>
   </section>
 </template>
 
@@ -144,6 +144,10 @@ export default {
 @import "@/assets/sass/btns.scss";
 @import "@/assets/sass/components/blocks.scss";
 
+.well {
+  padding-bottom: 0;
+}
+
 h2 {
   display: inline-block;
 }
@@ -190,6 +194,38 @@ a {
 
   &::before {
     content: "< ";
+  }
+
+  &.add-new {
+    margin-left: 10px;
+    display: block;
+    margin-bottom: 20px;
+
+    &::before {
+      content: "+ ";
+    }
+  }
+}
+
+.confirmation-small {
+  margin-right: 5px;
+}
+
+input {
+  border: 1px solid $appgrey;
+  border-radius: 5px;
+  font-size: 14px;
+  padding: 3px 10px;
+  float: right;
+  margin-bottom: 5px;
+  max-width: 100%;
+  position: sticky;
+  top: 5px;
+  z-index: 1;
+
+  &:focus {
+    border: 1px solid $appblue;
+    outline: none;
   }
 }
 

@@ -19,9 +19,13 @@ html body {
   font-size: $defaultbodysize;
 }
 
-a,
-a:hover {
+a {
   color: $defaultlinkcolor;
+
+  &:hover {
+    color: $defaultlinkcolor;
+    text-decoration: none;
+  }
 }
 
 .well {
@@ -239,6 +243,14 @@ table {
   .btn {
     margin: 0 auto;
   }
+}
+
+.tooltip {
+  font-size: 14px;
+}
+
+input[type='checkbox'] {
+  font-size: 16px;
 }
 
 @media (min-width: $wideminwidth) {

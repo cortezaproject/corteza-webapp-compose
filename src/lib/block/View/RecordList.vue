@@ -1,12 +1,13 @@
 <template>
   <div v-if="error">{{ error }}</div>
   <div v-else-if="module">
-    <input @keypress.enter.prevent="handleQuery($event.target.value)" />
+    <input @keypress.enter.prevent="handleQuery($event.target.value)" placeholder="Search" />
     <table class="table sticky-header">
       <thead>
         <tr>
           <th v-for="(col) in columns" :key="'header:'+col.name" @click="handleSort(col.name)">
             {{ col.label || col.name }}
+            <font-awesome-icon :icon="['fas', 'sort']"></font-awesome-icon>
           </th>
           <th></th>
         </tr>
@@ -16,7 +17,7 @@
           <td v-for="(col) in columns" :key="row.contentID+':'+col.name">
             <field-viewer :field="col" value-only :record="row"></field-viewer>
           </td>
-          <td>
+          <td class="text-right">
             <router-link
               :to="{ name: 'public.page.record', params: { pageID: options.pageID, recordID: row.contentID } }">
               <i class="action icon-search"></i></router-link>
@@ -24,7 +25,7 @@
         </tr>
       </tbody>
     </table>
-    <div>
+    <div class="sticky-footer">
       <pagination
           :records="meta.count"
           :per-page="meta.perPage"
@@ -129,5 +130,32 @@ export default {
 
 table {
   width: 100%;
+
+  th {
+    cursor: pointer;
+
+    .fa-sort {
+      margin-left: 10px;
+    }
+  }
+}
+
+input {
+  border: 1px solid $appgrey;
+  border-radius: 5px;
+  font-size: 14px;
+  padding: 3px 10px;
+  float: right;
+  margin-bottom: 5px;
+  width: 200px;
+  max-width: 100%;
+  position: sticky;
+  top: 5px;
+  z-index: 1;
+
+  &:focus {
+    border: 1px solid $appblue;
+    outline: none;
+  }
 }
 </style>
