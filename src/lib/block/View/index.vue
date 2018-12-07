@@ -4,7 +4,7 @@
       <h2>{{ block.title }}</h2>
       <p class="block-data-description" v-if="block.description">{{ block.description }}</p>
       <div class="block-data-content">
-        <component :is="block.kind" :options="block.options" :module="module" :record="record" />
+        <component :is="block.kind" :options="block.options" :module="module" :page="page" :record="record" />
       </div>
     </div>
   </div>
@@ -20,9 +20,14 @@ export default {
       required: true,
     },
 
-    module: {
+    page: {
       type: Object,
       required: true,
+    },
+
+    module: {
+      type: Object,
+      required: false,
     },
 
     record: {

@@ -1,6 +1,6 @@
 <template>
   <div v-if="error">{{ error }}</div>
-  <div v-else-if="module">
+  <div v-else-if="recordListModule">
     <input @keypress.enter.prevent="handleQuery($event.target.value)" placeholder="Search" />
     <table class="table sticky-header">
       <thead>
@@ -19,7 +19,7 @@
           </td>
           <td class="text-right">
             <router-link
-              :to="{ name: 'public.page.record', params: { pageID: options.pageID, recordID: row.contentID } }">
+              :to="{ name: 'public.page.record', params: { pageID: options.pageID, recordID: row.contentID }, query: null }">
               <i class="action icon-search"></i></router-link>
           </td>
         </tr>
@@ -37,12 +37,14 @@
   <div v-else>Loading...</div>
 </template>
 <script>
+import base from './base'
 import FieldViewer from '@/lib/field/Viewer'
-import optionsPropMixin from './mixins/optionsProp'
 import Pagination from 'vue-pagination-2'
 import Module from '@/lib/module'
 
 export default {
+  extends: base,
+
   data () {
     return {
       meta: {
@@ -55,22 +57,25 @@ export default {
 
       error: null,
 
-      // We'll be loading module dynamicly here
-      // depending on block settings
-      module: null,
-
+      recordListModule: this.module,
       records: [],
     }
   },
 
   computed: {
     columns () {
-      console.log(this.options.fields.length, this.module.fields.length)
-      return this.module.filterFields(this.options.fields)
+      console.log(this.options.fields.length, this.recordListModule.fields.length)
+      return this.recordListModule.filterFields(this.options.fields)
     },
   },
 
   mounted () {
+    if (this.recordListModule && this.recordListModule.moduleID === this.options.moduleID) {
+      console.debug(`Module "${this.recordListModule.name}" preloaded (via page)`)
+      this.fetch()
+      return
+    }
+
     if (!this.options.moduleID) {
       this.error = 'Block render error: moduleID not set.'
     } else if (!this.options.pageID) {
@@ -78,7 +83,7 @@ export default {
     }
 
     this.$crm.moduleRead({ moduleID: this.options.moduleID }).then((m) => {
-      this.module = new Module(m)
+      this.recordListModule = new Module(m)
       this.fetch()
     }).catch(({ message }) => {
       this.error = message
@@ -89,9 +94,10 @@ export default {
     fetch ({ page, perPage, sort, query } = this.meta) {
       const params = { page, perPage, sort, query }
 
-      this.$router.push({ query: params })
+      // This has some undesired effects on record pages, disable it for now...
+      // this.$router.push({ query: params })
 
-      params.moduleID = this.module.moduleID
+      params.moduleID = this.recordListModule.moduleID
 
       return this.$crm.moduleContentList(params).then((result) => {
         this.meta = result.meta
@@ -113,10 +119,6 @@ export default {
       this.fetch({ ...this.meta, page: page - 1 })
     },
   },
-
-  mixins: [
-    optionsPropMixin,
-  ],
 
   components: {
     Pagination,

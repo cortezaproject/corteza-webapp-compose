@@ -27,6 +27,10 @@ export default {
         this.warningAlert = 'Internal error, could not update this record'
       })
     },
+
+    handleBack () {
+      this.$router.push({ name: 'public.page.record' })
+    },
   },
 
   components: {

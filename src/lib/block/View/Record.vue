@@ -15,31 +15,17 @@
   <div v-else>Can not render this block without a record</div>
 </template>
 <script>
-import optionsPropMixin from './mixins/optionsProp'
+import base from './base'
 import FieldViewer from '@/lib/field/Viewer'
 
 export default {
-  props: {
-    module: {
-      type: Object,
-      required: true,
-    },
-
-    record: {
-      type: Object,
-      required: false, // actually true, but we'll going to fail soft here
-    },
-  },
+  extends: base,
 
   computed: {
     fields () {
       return this.module.filterFields(this.options.fields)
     },
   },
-
-  mixins: [
-    optionsPropMixin,
-  ],
 
   components: {
     FieldViewer,

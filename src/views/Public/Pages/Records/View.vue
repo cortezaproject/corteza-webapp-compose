@@ -3,12 +3,11 @@
     <b-alert show variant="warning" dismissible @dismissed="warningAlert=null" v-if="warningAlert">{{ warningAlert }}</b-alert>
     <b-alert show variant="info" dismissible @dismissed="infoAlert=null" v-if="infoAlert">{{ infoAlert }}</b-alert>
     <div class="editor">
-      <button class="btn-url" @click.prevent="$router.back()">Back</button>
-      <confirmation-toggle @confirmed="deleteRecord" class="confirmation">Delete</confirmation-toggle>
+      <button class="btn-url" @click.prevent="handleBack">Back</button>
+      <confirmation-toggle @confirmed="handleDelete" class="confirmation">Delete</confirmation-toggle>
       <button class="btn" @click.prevent="$router.push({ name: 'public.page.record.create' })">Add new</button>
       <button class="btn btn-blue" @click.prevent="handleUpdate" v-if="editMode">Save changes</button>
       <button class="btn" @click.prevent="$router.push({ name: 'public.page.record.edit' })" v-else>Edit</button>
-
     </div>
     <grid :page="page" :record="record" :edit-mode="editMode" v-if="record" />
     <b-modal id="deleteRecord" title="Delete record" @ok="handleDelete" ok-title="Delete" ok-variant="danger">
@@ -81,6 +80,10 @@ export default {
         console.error(err)
         this.warningAlert = 'Internal error, could not delete this record'
       })
+    },
+
+    handleBack () {
+      this.$router.back()
     },
   },
 

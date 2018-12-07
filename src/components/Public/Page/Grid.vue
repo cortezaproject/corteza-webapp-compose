@@ -2,8 +2,8 @@
   <div class="view" v-if="blocks">
     <grid :blocks="blocks" :editable="false">
       <template slot-scope="{ block, index }">
-        <block-editor :block="block" :module="page.module" :record="record" v-if="editMode" />
-        <block-viewer :block="block" :module="page.module" :record="record" v-else />
+        <block-editor :block="block" :page="page" :module="page.module" :record="record" v-if="editMode" />
+        <block-viewer :block="block" :page="page" :module="page.module" :record="record" v-else />
       </template>
     </grid>
   </div>
