@@ -1,8 +1,11 @@
 <template>
   <section class="container well" v-if="module">
     <router-link :to="{name: 'admin.modules.records'}" class="btn btn-url">Back to record list</router-link><br>
-    <h2 v-if="!recordID">{{module.name}}: create entry</h2>
-    <h2 v-else>{{module.name}}: edit entry</h2>
+    <h2 v-if="!recordID">{{module.name}}: add new record</h2>
+    <h2 v-else>{{module.name}}: edit existing record</h2>
+
+    <b-alert show variant="warning" dismissible @dismissed="warningAlert=null" v-if="warningAlert">{{ warningAlert }}</b-alert>
+    <b-alert show variant="info" dismissible @dismissed="infoAlert=null" v-if="infoAlert">{{ infoAlert }}</b-alert>
 
     <form @submit.prevent="handleSave">
       <field-editor v-for="(field,index) in module.fields"
@@ -37,8 +40,10 @@ export default {
   data () {
     return {
       module: null,
-      record: {},
-      errors: [],
+      record: { fields: [] },
+
+      warningAlert: null,
+      infoAlert: null,
     }
   },
 
@@ -55,7 +60,7 @@ export default {
         })
       }
     }).catch(({ message }) => {
-      this.errors = [message]
+      this.warningAlert = message
     })
   },
 
@@ -74,7 +79,7 @@ export default {
           this.$router.push({ name: 'admin.modules.records' })
         }
       }).catch(({ message }) => {
-        this.errors = [message]
+        this.warningAlert = `Failed to save record: ${message}`
       })
     },
   },
