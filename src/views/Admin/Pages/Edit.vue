@@ -11,7 +11,7 @@
           <div v-if="editPageFormSubmitError" style="color:red;">
             {{ editPageFormSubmitError }}
           </div>
-          <form v-if="!editPageError" @submit.prevent="handleEditPageFormSubmit">
+          <form v-if="!editPageError" @submit.prevent="handleSave()">
             <input required type="hidden" v-model="editPageFormData.pageID" id="id" />
             <div class="form-group">
               <label for="title">Page title</label>
@@ -28,6 +28,7 @@
 
             <div>
               <button type="submit" class="btn btn-dark">Save</button>
+              <button type="button" @click.prevent="handleSave({ closeOnSuccess: true })" class="btn btn-dark">Save and close</button>
               <router-link :to="{name: 'admin.pages'}" class="btn">Cancel</router-link>
               <confirmation-toggle @confirmed="handleDeletePage" class="confirmation">Delete page</confirmation-toggle>
             </div>
@@ -72,13 +73,15 @@ export default {
     }
   },
   methods: {
-    async handleEditPageFormSubmit () {
-      try {
-        this.editPageFormSubmitError = ''
-        await this.$crm.pageEdit(this.editPageFormData)
-      } catch (e) {
+    handleSave ({ closeOnSuccess = false } = {}) {
+      this.editPageFormSubmitError = ''
+      this.$crm.pageEdit(this.editPageFormData).then(() => {
+        if (closeOnSuccess) {
+          this.$router.push({ name: 'admin.pages' })
+        }
+      }).catch((e) => {
         this.editPageFormSubmitError = 'Error when trying to edit page.'
-      }
+      })
     },
 
     handleDeletePage () {
