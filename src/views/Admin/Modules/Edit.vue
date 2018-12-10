@@ -195,10 +195,11 @@ table {
       min-width: 50px;
 
       &::after {
-        font-family: "Font Awesome 5 Free";
-        content: "\f059";
+        font-family: $icomoon-font-family;
+        content: "\ea0c";
         padding-left: 3px;
         font-weight: 300;
+        color: $appgrey;
       }
     }
   }
