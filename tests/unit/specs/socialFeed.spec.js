@@ -2,7 +2,7 @@
 /* ESLint didn't like some expects */
 
 import { expect } from 'chai'
-import { extractSocialUrl, getTwitterHandle } from '@/lib/block/kind/SocialFeed'
+import { extractSocialUrl, getTwitterHandle } from '@/lib/block/SocialFeed'
 
 var should = require('chai').should()
 
