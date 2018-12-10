@@ -22,6 +22,8 @@
     <b-modal
       title="Add new block"
       ok-title="Add block"
+      ok-variant="dark"
+      ok-only
       @ok="blocks.push(createBlock)"
       @hide="createBlock=null"
       :visible="!!createBlock">
