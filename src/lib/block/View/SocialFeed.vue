@@ -26,7 +26,7 @@ export default {
   computed: {
     social () {
       if (this.options) {
-        var result = this.extractSocialUrl(this.options)
+        var result = this.extractSocialUrl(this.options.profileSourceField, this.options.profileUrl, this.record)
         return {
           url: result.url,
           twitterHandle: result.twitterHandle,
@@ -36,17 +36,9 @@ export default {
       return {}
     },
   },
-  data () {
-    return {
-      url: '',
-      twitterHandle: '',
-      socialNetwork: '',
-      socialFeed: null,
-    }
-  },
   methods: {
-    extractSocialUrl (o) {
-      return extractSocialUrl(o)
+    extractSocialUrl (profileSourceField, profileUrl, record) {
+      return extractSocialUrl(profileSourceField, profileUrl, record)
     },
   },
 }
