@@ -103,6 +103,10 @@ table {
   }
 }
 
+.well{
+ margin-bottom: 80px;
+}
+
 .alert {
   position: absolute;
   z-index: 1;

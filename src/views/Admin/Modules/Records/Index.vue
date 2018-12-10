@@ -1,6 +1,6 @@
 <template>
   <section class="container well" id="modules-contents-index" v-if="module">
-    <router-link :to="{name: 'admin.modules'}" class="btn btn-url">Back to module list</router-link><br>
+    <router-link :to="{name: 'admin.modules'}" class="btn btn-url">&#171; Back to module list</router-link><br>
     <h2>{{module.name}}</h2>
     <router-link :to="{name: 'admin.modules.edit', params: { moduleID }}" class="edit-module">
     <i class="icon-edit"></i>
@@ -34,7 +34,7 @@
         </template>
       </tbody>
     </table>
-    <router-link :to="{name: 'admin.modules.records.add', params: { moduleID }}" class="btn-url add-new">Add new entry</router-link>
+    <router-link :to="{name: 'admin.modules.records.add', params: { moduleID }}" class="btn-url add-new">&#43; Add new entry</router-link>
     <div class="sticky-footer">
       <pagination
         :records="meta.count"
@@ -192,18 +192,10 @@ a {
 .btn-url {
   margin-bottom: 20px;
 
-  &::before {
-    content: "< ";
-  }
-
   &.add-new {
     margin-left: 10px;
     display: block;
     margin-bottom: 20px;
-
-    &::before {
-      content: "+ ";
-    }
   }
 }
 

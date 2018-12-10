@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="editor">
+      <a href="/crm/admin/pages" class="btn-url">&#171; Back to pages list</a>
       <confirmation-toggle @confirmed="handleDeletePage" class="confirmation">Delete page</confirmation-toggle>
       <router-link :to="{name: 'admin.pages'}" class="btn">Cancel</router-link>
       <button type="submit" class="btn btn-blue">Save</button>
