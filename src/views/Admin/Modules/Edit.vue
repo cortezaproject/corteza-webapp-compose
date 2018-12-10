@@ -23,7 +23,7 @@
                 <th v-b-tooltip.hover.topright title="The name displayed in form input / data lists" class="info">Title</th>
                 <th>Type</th>
                 <th v-b-tooltip.hover title="Required field" class="info">Required</th>
-                <th v-b-tooltip.hover title="Privacy sensitive data" class="info">Sensitive</th>
+                <th v-b-tooltip.hover title="Sensitive data" class="info">Sensitive</th>
                 <th class="text-center"></th>
               </tr>
               </thead>
@@ -36,10 +36,10 @@
                     <select v-model="field.kind" class="form-control" @change="handleKindChange(field)">
                       <option v-for="fieldType in fieldsList" :key="fieldType.kind" :value="fieldType.kind">{{ fieldType.label||fieldType.kind }}</option>
                     </select>
-                    <a
+                    <button
                       :disabled="!field.isConfigurable()"
                       @click.prevent="handleFieldEdit(field)"
-                      class="btn-url"><font-awesome-icon :icon="['fas', 'wrench']"></font-awesome-icon></a>
+                      class="btn-url"><font-awesome-icon :icon="['fas', 'wrench']"></font-awesome-icon></button>
                   </td>
                   <td class="text-center">
                     <input v-model="field.isRequired" type="checkbox"/>
@@ -213,7 +213,8 @@ table {
       }
 
       button:disabled {
-        color: silver;
+        color: $appgrey;
+        cursor: auto;
       }
     }
   }
