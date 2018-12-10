@@ -1,7 +1,7 @@
 <template>
     <div>
-      <div v-if="twitterHandle">
-        <Timeline :id="twitterHandle" sourceType="profile" :options="{ tweetLimit: '3' }">
+      <div v-if="social.twitterHandle">
+        <Timeline :id="social.twitterHandle" sourceType="profile" :options="{ tweetLimit: '3' }">
           <div class="spinner"></div>
         </Timeline>
       </div>
@@ -15,13 +15,26 @@
 <script>
 import base from './base'
 import Timeline from 'vue-tweet-embed/timeline'
-import { extractSocialUrl } from '../kind/SocialFeed'
+import { extractSocialUrl } from '../SocialFeed'
 
 export default {
   extends: base,
 
   components: {
     Timeline,
+  },
+  computed: {
+    social () {
+      if (this.options) {
+        var result = this.extractSocialUrl(this.options)
+        return {
+          url: result.url,
+          twitterHandle: result.twitterHandle,
+          socialNetwork: result.socialNetwork,
+        }
+      }
+      return {}
+    },
   },
   data () {
     return {
@@ -34,28 +47,6 @@ export default {
   methods: {
     extractSocialUrl (o) {
       return extractSocialUrl(o)
-    },
-  },
-  created () {
-    if (this.options) {
-      var result = this.extractSocialUrl(this.options)
-      this.url = result.url
-      this.twitterHandle = result.twitterHandle
-      this.socialNetwork = result.socialNetwork
-    }
-  },
-  watch: {
-    options: {
-      handler () {
-        if (this.options) {
-          var result = this.extractSocialUrl(this.options)
-          this.url = result.url
-          this.twitterHandle = result.twitterHandle
-          this.socialNetwork = result.socialNetwork
-        }
-      },
-
-      deep: true,
     },
   },
 }

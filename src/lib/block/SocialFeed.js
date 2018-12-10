@@ -3,8 +3,11 @@ export class SocialFeed {
     this.merge(def)
   }
 
-  merge (def = {}) {
-    // @todo
+  merge ({ moduleID, fields, profileSourceField, profileUrl } = {}) {
+    this.moduleID = moduleID || undefined
+    this.fields = fields || []
+    this.profileSourceField = profileSourceField || undefined
+    this.profileUrl = profileUrl || undefined
     return this
   }
 }
@@ -20,22 +23,22 @@ export function getTwitterHandle (url) {
   }
 }
 
-export function extractSocialUrl (o) {
+export function extractSocialUrl (profileSourceField, profileUrl, record = null) {
   var url = ''
   var socialNetwork = ''
   var twitterHandle = ''
   // check if we have a profileSourceField
-  if (o.profileSourceField && o.profileSourceField.length > 0) {
-    url = o.profileSourceField
+  if (profileSourceField && profileSourceField.length > 0) {
+    url = (record.fields.find(f => f.name === profileSourceField) || {}).value
   } else {
     // see if we can fail back to profileUrl
-    if (o.profileUrl && o.profileUrl.length > 0) {
-      url = o.profileUrl
+    if (profileUrl && profileUrl.length > 0) {
+      url = profileUrl
     }
   }
 
   // is this a twitter url?
-  if (url.indexOf('twitter.com')) {
+  if (url && url.indexOf('twitter.com')) {
     twitterHandle = getTwitterHandle(url)
     if (twitterHandle === '') {
       // failed to get twitter handle from the url
