@@ -107,4 +107,11 @@ table {
     content: "< ";
   }
 }
+
+.alert {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  box-shadow: 0 0 2px 0 rgba($appgrey, 0.75);
+}
 </style>
