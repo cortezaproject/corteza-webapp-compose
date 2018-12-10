@@ -6,14 +6,28 @@ import { extractSocialUrl, getTwitterHandle } from '@/lib/block/SocialFeed'
 
 var should = require('chai').should()
 
+var testRecord = {
+  fields: [
+    {
+      name: 'FirstName',
+      value: 'Bob',
+    },
+    {
+      name: 'LastName',
+      value: 'Stintsky',
+    },
+    {
+      name: 'TwitterProfile',
+      value: 'https://twitter.com/zorosa',
+    },
+  ]
+}
+
 describe('SocialFeed.js', () => {
 
   // Basic tests for missing Urls
   it('Should not find anything from blank profileSourceField and profileUrl', function () {
-    var result = extractSocialUrl({
-      profileUrl: '',
-      profileSourceField: '',
-    })
+    var result = extractSocialUrl('', '', testRecord)
 
     result.should.have.property('url').equal('')
     result.should.have.property('socialNetwork').equal('')
@@ -21,10 +35,7 @@ describe('SocialFeed.js', () => {
   })
 
   it('Should not find anything from null profileSourceField and profileUrl', function () {
-    var result = extractSocialUrl({
-      profileUrl: null,
-      profileSourceField: null,
-    })
+    var result = extractSocialUrl(null, null, testRecord)
 
     result.should.have.property('url').equal('')
     result.should.have.property('socialNetwork').equal('')
@@ -37,10 +48,7 @@ describe('SocialFeed.js', () => {
   })
 
   it('Should find Twitter handle zorosa from profileUrl', function () {
-    var result = extractSocialUrl({
-      profileUrl: 'https://twitter.com/zorosa',
-      profileSourceField: null,
-    })
+    var result = extractSocialUrl('', 'https://twitter.com/zorosa', testRecord)
 
     result.should.have.property('url').equal('https://twitter.com/zorosa')
     result.should.have.property('socialNetwork').equal('Twitter')
@@ -48,10 +56,7 @@ describe('SocialFeed.js', () => {
   })
 
   it('Should find Twitter handle zorosa from profileSourceField', function () {
-    var result = extractSocialUrl({
-      profileUrl: null,
-      profileSourceField: 'https://twitter.com/zorosa',
-    })
+    var result = extractSocialUrl('TwitterProfile', null, testRecord)
 
     result.should.have.property('url').equal('https://twitter.com/zorosa')
     result.should.have.property('socialNetwork').equal('Twitter')
@@ -59,10 +64,7 @@ describe('SocialFeed.js', () => {
   })
 
   it('Should not find a Twitter handle from profileSourceField - malformed url', function () {
-    var result = extractSocialUrl({
-      profileUrl: null,
-      profileSourceField: 'https://twitter.com/profile/zorosa',
-    })
+    var result = extractSocialUrl(null, 'https://twitter.com/profile/zorosa', testRecord)
 
     result.should.have.property('url').equal('https://twitter.com/profile/zorosa')
     result.should.have.property('socialNetwork').equal('')
