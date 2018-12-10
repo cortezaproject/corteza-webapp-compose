@@ -26,7 +26,7 @@
               <label for="visible" class="form-check-label">Page visible?</label>
             </div>
 
-            <div>
+            <div class="editor">
               <button type="submit" class="btn btn-dark">Save</button>
               <button type="button" @click.prevent="handleSave({ closeOnSuccess: true })" class="btn btn-dark">Save and close</button>
               <router-link :to="{name: 'admin.pages'}" class="btn">Cancel</router-link>

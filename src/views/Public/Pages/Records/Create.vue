@@ -55,4 +55,9 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/sass/btns.scss";
 
+.editor {
+  .btn {
+    margin-right: 0;
+  }
+}
 </style>

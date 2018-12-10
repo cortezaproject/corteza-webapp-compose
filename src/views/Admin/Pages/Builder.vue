@@ -145,8 +145,8 @@ export default {
   }
 }
 
-.editor{
-  .btn{
+.editor {
+  .btn {
     margin-right: 0;
   }
 }
