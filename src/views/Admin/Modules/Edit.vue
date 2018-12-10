@@ -1,6 +1,11 @@
 <template>
   <div>
-
+    <div class="editor">
+      <confirmation-toggle @confirmed="handleDelete" class="confirmation">Delete module</confirmation-toggle>
+      <button @click="redirect()" type="button" class="btn">Cancel</button>
+      <button type="submit" class="btn btn-blue">Save</button>
+      <button type="button" @click.prevent="handleUpdate({ closeOnSuccess: true })" class="btn btn-blue">Save and close</button>
+    </div>
     <form @submit.prevent="handleUpdate" class="container">
       <div class="row">
         <div class="col-md-12 well">
@@ -57,10 +62,6 @@
             </table>
           </div>
           <button @click="handleNewField" type="button" class="btn-url add-new">+ Add new field</button>
-          <button type="submit" class="btn btn-dark">Save</button>
-          <button type="button" @click.prevent="handleUpdate({ closeOnSuccess: true })" class="btn btn-dark">Save and close</button>
-          <button @click="redirect()" type="button" class="btn">Cancel</button>
-          <confirmation-toggle @confirmed="handleDelete" class="confirmation">Delete module</confirmation-toggle>
         </div>
       </div>
     </form>
@@ -233,7 +234,7 @@ table {
 }
 
 .confirmation {
-  float: right;
+  margin-right: 0.5em;
 }
 
 h5 {

@@ -145,10 +145,4 @@ export default {
   }
 }
 
-.editor {
-  .btn {
-    margin-right: 0;
-  }
-}
-
 </style>
