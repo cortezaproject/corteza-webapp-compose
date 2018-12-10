@@ -1,23 +1,26 @@
 <template>
-  <section class="container well" v-if="module">
-    <router-link :to="{name: 'admin.modules.records'}" class="btn btn-url">Back to record list</router-link><br>
-    <h2 v-if="!recordID">{{module.name}}: add new record</h2>
-    <h2 v-else>{{module.name}}: edit existing record</h2>
-
-    <b-alert show variant="warning" dismissible @dismissed="warningAlert=null" v-if="warningAlert">{{ warningAlert }}</b-alert>
-    <b-alert show variant="info" dismissible @dismissed="infoAlert=null" v-if="infoAlert">{{ infoAlert }}</b-alert>
-
-    <form @submit.prevent="handleSave">
-      <field-editor v-for="(field,index) in module.fields"
-                    :key="index"
-                    :field="field"
-                    :record="record" />
-
-      <button type="submit" class="btn btn-dark">Save</button>
-      <button type="button" class="btn btn-dark" @click.prevent="handleSave({ closeOnSuccess: true })">Save and close</button>
+  <div>
+    <div class="editor">
+      <router-link :to="{name: 'admin.modules.records'}" class="btn btn-url">&#171; Back to record list</router-link>
       <router-link :to="{ name: 'admin.modules.records', params: { moduleID }}" class="btn">Cancel</router-link>
-    </form>
-  </section>
+      <button type="submit" class="btn btn-blue">Save</button>
+      <button type="button" class="btn btn-blue" @click.prevent="handleSave({ closeOnSuccess: true })">Save and close</button>
+    </div>
+    <section class="container well" v-if="module">
+      <h2 v-if="!recordID">{{module.name}}: add new record</h2>
+      <h2 v-else>{{module.name}}: edit existing record</h2>
+
+      <b-alert show variant="warning" dismissible @dismissed="warningAlert=null" v-if="warningAlert">{{ warningAlert }}</b-alert>
+      <b-alert show variant="info" dismissible @dismissed="infoAlert=null" v-if="infoAlert">{{ infoAlert }}</b-alert>
+
+      <form @submit.prevent="handleSave">
+        <field-editor v-for="(field,index) in module.fields"
+                      :key="index"
+                      :field="field"
+                      :record="record" />
+      </form>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -97,14 +100,6 @@ export default {
 table {
   td {
     vertical-align: middle;
-  }
-}
-
-.btn-url {
-  margin-bottom: 20px;
-
-  &::before {
-    content: "< ";
   }
 }
 
