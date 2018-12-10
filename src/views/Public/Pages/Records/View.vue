@@ -95,26 +95,5 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "@/assets/sass/btns.scss";
-@import "@/assets/sass/_0.declare.scss";
-
-.editor {
-  background: $white;
-  padding: 15px;
-  text-align: right;
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  z-index: 3;
-  border-top: 5px solid $appred;
-  box-shadow: 0px 0px 8px 0px rgba($appgrey, 0.75);
-
-  .btn-url {
-    float: left;
-  }
-
-  .btn {
-    margin-right: 0;
-  }
-}
 
 </style>

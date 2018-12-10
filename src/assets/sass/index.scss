@@ -249,6 +249,26 @@ table {
   font-size: 14px;
 }
 
+.editor {
+  background: $white;
+  padding: 15px;
+  text-align: right;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  z-index: 3;
+  border-top: 5px solid $appred;
+  box-shadow: 0 0 8px 0 rgba($appgrey, 0.75);
+
+  .btn-url {
+    float: left;
+  }
+
+  .btn {
+    margin-right: 0;
+  }
+}
+
 input[type='checkbox'] {
   font-size: 16px;
 }
