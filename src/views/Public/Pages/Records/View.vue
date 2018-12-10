@@ -3,9 +3,9 @@
     <b-alert show variant="warning" dismissible @dismissed="warningAlert=null" v-if="warningAlert">{{ warningAlert }}</b-alert>
     <b-alert show variant="info" dismissible @dismissed="infoAlert=null" v-if="infoAlert">{{ infoAlert }}</b-alert>
     <div class="editor">
-      <button class="btn-url" @click.prevent="handleBack">Back</button>
+      <button class="btn-url" @click.prevent="handleBack">&#171; Back</button>
       <confirmation-toggle @confirmed="handleDelete" class="confirmation">Delete</confirmation-toggle>
-      <button class="btn" @click.prevent="$router.push({ name: 'public.page.record.create' })">Add new</button>
+      <button class="btn" @click.prevent="$router.push({ name: 'public.page.record.create' })">+ Add new</button>
       <button class="btn btn-blue" @click.prevent="handleUpdate" v-if="editMode">Save changes</button>
       <button class="btn" @click.prevent="$router.push({ name: 'public.page.record.edit' })" v-else>Edit</button>
     </div>
@@ -105,15 +105,11 @@ export default {
   width: 100%;
   bottom: 0;
   z-index: 3;
-  border-top: 3px solid $appblue;
+  border-top: 5px solid $appred;
+  box-shadow: 0px 0px 8px 0px rgba($appgrey, 0.75);
 
   .btn-url {
-    margin-left: 10px;
     float: left;
-
-    &::before {
-      content: "< ";
-    }
   }
 
   .btn {
