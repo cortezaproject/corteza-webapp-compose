@@ -1,8 +1,8 @@
 /* Import bootstrap styles from npm package */
+@import '~bootstrap/dist/css/bootstrap.min.css';
 @import './_0.declare-light';
 @import './components/pagination';
 @import './components/actions';
-@import '~bootstrap/dist/css/bootstrap.min.css';
 /* stylelint-disable no-descending-specificity */
 
 .clear {
@@ -237,11 +237,29 @@ table {
     display: block;
     width: 100%;
   }
+
+  .form-control {
+    margin-bottom: 10px;
+  }
 }
 
 .modal-footer {
   .btn {
-    margin: 0 auto;
+    border: solid 1px $appgrey;
+    padding: 0.25em 1em;
+    border-radius: 1.5em;
+    transition: color 0.2s, background-color 0.2s;
+    background-color: transparent;
+  }
+
+  .btn-dark {
+    background-color: $appgrey;
+    color: white;
+
+    &:hover {
+      color: $appgrey;
+      background-color: white;
+    }
   }
 }
 

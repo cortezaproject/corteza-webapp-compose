@@ -68,7 +68,9 @@
     <b-modal
       v-if="updateField"
       title="Module field settings"
-      ok-title="Close"
+      ok-title="Save and close"
+      ok-variant="dark"
+      ok-only
       @ok="handleFieldSave(updateField)"
       @hide="updateField=null"
       :visible="!!updateField">
