@@ -17,23 +17,35 @@ export class Url {
 }
 
 export function trimUrlFragment (url) {
-  return url.split('#')[0]
+  if (url && url.length > 4) {
+    return url.split('#')[0]
+  }
+  return url
 }
 
 export function trimUrlQuery (url) {
-  return url.split('?')[0]
+  if (url && url.length > 4) {
+    return url.split('?')[0]
+  }
+  return url
 }
 
 export function trimUrlPath (url) {
-  var urlComponents = url.split('/')
+  if (url && url.length > 4) {
+    var urlComponents = url.split('/')
 
-  return urlComponents[0] + '//' + urlComponents[2]
+    return urlComponents[0] + '//' + urlComponents[2]
+  }
+  return url
 }
 
 export function onlySecureUrl (url) {
-  if (url.charAt(4).toLowerCase() === 's') {
-    return url
-  }
+  if (url && url.length > 4) {
+    if (url.charAt(4).toLowerCase() === 's') {
+      return url
+    }
 
-  return url.slice(0, 4) + 's' + url.slice(4)
+    return url.slice(0, 4) + 's' + url.slice(4)
+  }
+  return url
 }

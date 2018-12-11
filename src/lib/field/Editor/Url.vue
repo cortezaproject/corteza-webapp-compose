@@ -30,16 +30,16 @@ export default {
   methods: {
     fixUrl (value) {
       // run through all the attributes
-      if (this.trimFragment) {
+      if (this.field.options.trimFragment) {
         value = trimUrlFragment(value)
       }
-      if (this.trimQuery) {
+      if (this.field.options.trimQuery) {
         value = trimUrlQuery(value)
       }
-      if (this.trimPath) {
+      if (this.field.options.trimPath) {
         value = trimUrlPath(value)
       }
-      if (this.onlySecure) {
+      if (this.field.options.onlySecure) {
         value = onlySecureUrl(value)
       }
 
