@@ -6,13 +6,22 @@
           <h2>List of modules</h2>
           <table class="table">
             <tbody>
-              <tr v-for="(module, index) in list" :key="index">
+              <tr v-for="(m, index) in modules" :key="index">
                 <td>
-                  <router-link :to="{name: 'admin.modules.records', params: { moduleID: module.moduleID }}" class="btn-url">{{ module.name }}</router-link>
+                  <router-link :to="{name: 'admin.modules.records', params: { moduleID: m.moduleID }}" class="btn-url">{{ m.name }}</router-link>
                 </td>
-                <td><time :datetime="module.updatedAt" v-if="module.updatedAt">(Updated at : {{ module.updatedAt }})</time></td>
+                <td><time :datetime="m.updatedAt" v-if="m.updatedAt">(Updated at : {{ m.updatedAt }})</time></td>
                 <td class="actions text-right">
-                  <router-link :to="{name: 'admin.modules.edit', params: { moduleID: module.moduleID }}" class="action">
+                  <router-link
+                    v-if="m.recordPage"
+                    :to="{name: 'admin.pages.builder', params: { pageID: m.recordPage.pageID }}"
+                    class="btn-url">Page builder</router-link>
+                  <a href="#"
+                     v-if="!m.recordPage"
+                     @click="handleRecordPageCreation({ moduleID: m.moduleID })"
+                     class="btn-url">Page builder</a>
+
+                  <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="action">
                     <i class="action icon-edit"></i>
                   </router-link>
                 </td>
@@ -50,24 +59,37 @@ export default {
       deleteModuleError: '',
       listError: '',
       addModuleFormSubmitError: '',
-      list: [],
+      modules: [],
       addModuleFormData: {
         name: '',
         fields: [],
       },
     }
   },
-  async created () {
-    this.$_initList()
+
+  created () {
+    this.fetch()
   },
+
   methods: {
-    async $_initList () {
-      try {
-        this.listError = ''
-        this.list = await this.$crm.moduleList({})
-      } catch (e) {
-        this.listError = 'Error when trying to get list of modules.'
-      }
+    // async $_initList () {
+    //   try {
+    //     this.listError = ''
+    //     this.list = await this.$crm.moduleList({})
+    //   } catch (e) {
+    //     this.listError = 'Error when trying to get list of modules.'
+    //   }
+    // },
+
+    fetch () {
+      this.$crm.pageList({ recordPagesOnly: true }).then(pp => {
+        this.$crm.moduleList({}).then(mm => {
+          this.modules = mm.map(m => {
+            m.recordPage = pp.find(p => p.moduleID === m.moduleID)
+            return m
+          })
+        })
+      })
     },
 
     async create () {
@@ -80,10 +102,24 @@ export default {
         this.$crm.moduleCreate(this.addModuleFormData).then((module) => {
           this.$router.push({ name: 'admin.modules.edit', params: { moduleID: module.moduleID } })
         })
-        await this.$_initList()
       } catch (e) {
         this.addModuleFormSubmitError = 'Error when trying to create module.'
       }
+    },
+
+    handleRecordPageCreation ({ moduleID }) {
+      // This is called from record pages list as a request to create a (record) page that
+      // with reference to a module
+
+      const module = this.modules.find(m => m.moduleID === moduleID)
+      const payload = {
+        title: `Record page for module "${module.name || moduleID}"`,
+        moduleID,
+      }
+
+      this.$crm.pageCreate(payload).then(page => {
+        this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
+      })
     },
   },
 }

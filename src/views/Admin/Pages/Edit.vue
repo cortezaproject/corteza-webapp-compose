@@ -68,7 +68,7 @@ export default {
 
       if (this.editPageFormData.moduleID !== '0') {
         // Do not allow to edit record pages, move to builder
-        this.$router.push({ name: 'admin.pages.builder', params: { pageID: this.editPageFormData.pageID } })
+        this.$router.replace({ name: 'admin.pages.builder', params: { pageID: this.editPageFormData.pageID } })
       }
     } catch (e) {
       this.editPageError = 'Error when trying to init page form.'

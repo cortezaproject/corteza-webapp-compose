@@ -4,8 +4,8 @@
         <div class="wrap" v-if="item.pageID">
           <div class="title">{{ item.title }}</div>
           <div class="prop-col">
-            <span v-if="item.visible">Visible</span>
-            <span v-else>Hidden</span>
+            <span v-if="item.moduleID !== '0'">Record page</span>
+            <span v-else-if="item.visible">Visible</span>
           </div>
           <div class="actions">
               <router-link
@@ -23,15 +23,13 @@
                 class="action-disabled">
                 </div>
 
-              <router-link
-                :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
-                class="action">
-                <i class="action icon-edit"></i>
-              </router-link>
+              <router-link :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
+                           class="btn-url">Page builder</router-link>
 
-              <router-link
-                :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
-                class="btn-url">Page builder</router-link>
+              <router-link :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
+                           class="edit action">
+                <i class="action icon-edit" v-if="item.moduleID !== '0'"></i>
+              </router-link>
           </div>
         </div>
     </template>
@@ -77,7 +75,6 @@ export default {
     async handleChangePosition ({ beforeParent, data, afterParent }) {
       if (beforeParent.pageID !== afterParent.pageID) {
         // Page moved to a different parent
-        data.pageID = data.pageID
         data.selfID = afterParent.pageID
         await this.$crm.pageEdit(data)
       }
@@ -114,12 +111,17 @@ ul {
       div.prop-col {
         text-align: left;
         font-size: 0.8em;
-        width: 60px;
+        width: 100px;
       }
 
       .title {
         flex: 1;
         margin: 0 10px;
+      }
+
+      .edit {
+        width: 30px;
+        display: inline-block;
       }
     }
   }

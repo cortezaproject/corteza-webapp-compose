@@ -23,23 +23,12 @@
         </div>
       </div>
     </div>
-    <div class="row ">
-      <div class="col-md-12">
-        <div class="well">
-        <h2>List of record pages</h2>
-          <record-pages-list
-            @createRecordPage="handleRecordPageCreation($event)"
-            :modules="modules" />
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
 import PageTree from '@/components/Admin/Page/Tree'
-import RecordPagesList from '@/components/Admin/Page/RecordPagesList'
 
 export default {
   idToDelete: '',
@@ -75,17 +64,7 @@ export default {
       try {
         this.listError = ''
         this.$crm.pageTree({}).then((tree) => {
-          const traverse = (pages) => {
-            return pages.map((p) => {
-              if (p.children) {
-                p.children = traverse(p.children).filter((p) => p.moduleID === '0')
-              }
-
-              return p
-            })
-          }
-
-          this.tree = traverse(tree.filter((p) => p.moduleID === '0'))
+          this.tree = tree
         })
       } catch (e) {
         this.listError = 'Error when trying to get list of pages.'
@@ -125,7 +104,6 @@ export default {
   components: {
     draggable,
     PageTree,
-    RecordPagesList,
   },
 }
 </script>
