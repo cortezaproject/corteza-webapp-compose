@@ -55,28 +55,6 @@ export default {
     this.$crm.pageTree().then((result) => { this.tree = result })
   },
 
-  methods: {
-    findActive (pp, pageID) {
-      if (!pp) {
-        return false
-      }
-
-      for (let i = 0; i < pp.length; i++) {
-        if (pp[i].pageID === pageID) {
-          return [pageID]
-        }
-
-        let path = this.findActive(pp[i].children, pageID)
-        if (path) {
-          path.unshift(pp[i].pageID)
-          return path
-        }
-      }
-
-      return false
-    },
-  },
-
   components: {
     MenuLevel,
   },

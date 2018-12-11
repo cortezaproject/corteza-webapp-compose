@@ -1,6 +1,6 @@
 <template>
   <ul :class="ulClass">
-    <li v-for="page in pages" :key="page.pageID" v-if="page.visible" :class="{ 'selected-in-path': -1 < selectedPath.findIndex(p => p === page.pageID), 'selected': page.pageID === pageID }">
+    <li v-for="page in pages" :key="page.pageID" v-if="showInNav(page)" :class="{ 'selected-in-path': -1 < selectedPath.findIndex(p => p === page.pageID), 'selected': page.pageID === pageID }">
       <router-link :to="{ name: 'public.page', params: { pageID: page.pageID }}" class="nav-link">{{ page.title }}</router-link>
       <menu-level
         :pages="page.children" v-if="hasVisibleChildren(page)"
@@ -44,7 +44,12 @@ export default {
 
   methods: {
     hasVisibleChildren (p) {
-      return p.children && p.children.filter(p => p.visible).length > 0
+      return p.children && p.children.filter(p => this.showInNav(p)).length > 0
+    },
+
+    // Page is visible ( when visible flag is true & it is not a record
+    showInNav (p) {
+      return p.visible && p.moduleID === '0'
     },
   },
 }

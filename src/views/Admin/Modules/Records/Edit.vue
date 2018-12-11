@@ -103,8 +103,8 @@ table {
   }
 }
 
-.well{
- margin-bottom: 80px;
+.well {
+  margin-bottom: 80px;
 }
 
 .alert {
