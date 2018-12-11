@@ -18,13 +18,13 @@
 
     <fieldset class="">
       <b-form-checkbox
-        :value="tue"
+        :value="true"
         :unchecked-value="false"
         v-model="o.hideAddButton">
         Hide add record button
       </b-form-checkbox>
       <b-form-checkbox
-        :value="tue"
+        :value="true"
         :unchecked-value="false"
         v-model="o.hideSearch">
         Hide search box

@@ -58,6 +58,7 @@ button {
   border: 2px solid $appblue;
   font-size: 14px;
   box-shadow: 0 0 3px 0 rgba($appgrey, 0.75);
+  background: $white;
 
   &:disabled {
     border-color: $appgrey;
