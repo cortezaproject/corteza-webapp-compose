@@ -49,7 +49,6 @@ export default {
 
     // Page is visible ( when visible flag is true & it is not a record
     showInNav (p) {
-      console.log(p)
       return p.visible && p.moduleID === '0' && p.blocks.length > 0
     },
   },

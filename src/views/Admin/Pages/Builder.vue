@@ -81,9 +81,7 @@ export default {
     this.$crm.pageRead({ pageID: this.pageID }).then(page => {
       this.page = page
       if (page.moduleID !== '0') {
-        console.log(page.moduleID)
         this.$crm.moduleRead({ moduleID: page.moduleID }).then(m => {
-          console.log(m)
           this.module = m
         })
       }

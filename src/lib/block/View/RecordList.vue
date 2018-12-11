@@ -68,7 +68,6 @@ export default {
 
   computed: {
     columns () {
-      console.log(this.options.fields.length, this.recordListModule.fields.length)
       return this.recordListModule.filterFields(this.options.fields)
     },
   },

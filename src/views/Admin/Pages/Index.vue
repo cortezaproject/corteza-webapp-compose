@@ -95,7 +95,6 @@ export default {
       }
 
       this.$crm.pageCreate(payload).then(page => {
-        console.log(page)
         this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
       })
     },
