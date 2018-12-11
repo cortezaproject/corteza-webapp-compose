@@ -36,16 +36,16 @@ export default {
 
     let c = new Chart(ctx, opt)
 
-    this.$crm.moduleList({}).then((mm) => {
-      mm.forEach((m) => {
-        this.$crm.moduleContentList({ moduleID: m.moduleID, perPage: 1 }).then(r => {
-          if (r.meta.count) {
-            opt.data.labels.push(m.name)
-            opt.data.datasets[0].data[opt.data.labels.length - 1] = r.meta.count
-            c.update()
-          }
-        })
-      })
+    const req = {
+      moduleID: '62513226545365001',
+      metrics: 'count:email;',
+      dimensions: 'label:created_at|month',
+    }
+
+    this.$crm.moduleContentReport(req).then((rep) => {
+      opt.data.labels = rep.map(i => i.label)
+      opt.data.datasets[0].data = rep.map(i => i.count)
+      c.update()
     })
   },
 }

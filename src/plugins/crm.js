@@ -300,6 +300,23 @@ class CRM {
     })
   }
 
+  async moduleContentReport ({ moduleID, metrics, dimensions }) {
+    const endpoint = `${this.baseLink}/module/${moduleID}/report`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {
+          'metrics': metrics,
+          'dimensions': dimensions,
+        },
+        data: {},
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
   async moduleContentCreate ({ moduleID, fields }) {
     const endpoint = `${this.baseLink}/module/${moduleID}/content`
     return new Promise((resolve, reject) => {
