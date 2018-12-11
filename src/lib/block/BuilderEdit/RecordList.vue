@@ -14,17 +14,17 @@
       <i>Disabled modules on the list do not have <router-link :to="{ name: 'admin.pages'}">record pages</router-link> available.</i>
     </fieldset>
 
-    <field-selector v-if="selectedModule" :module="selectedModule" :fields="o.fields" />
+    <field-selector v-if="selectedModule" :module="selectedModule" :fields.sync="o.fields" />
 
     <fieldset class="">
       <b-form-checkbox
-        :value="tue"
+        :value="true"
         :unchecked-value="false"
         v-model="o.hideAddButton">
         Hide add record button
       </b-form-checkbox>
       <b-form-checkbox
-        :value="tue"
+        :value="true"
         :unchecked-value="false"
         v-model="o.hideSearch">
         Hide search box

@@ -4,7 +4,7 @@
       <label>Module</label>
       <input v-if="module" class="form-control" type="text" v-model="module.name" readonly>
     </fieldset>
-    <field-selector v-if="module" :module="module" :fields="o.fields" />
+    <field-selector v-if="module" :module="module" :fields.sync="o.fields" />
   </div>
 </template>
 <script>

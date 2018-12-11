@@ -3,7 +3,7 @@
       <div class="fields">
         <div class="available">
           <label>Columns available </label>
-          <button @click.prevent="selectedFields = []; selectedFields = availableFields" class="all">&raquo;</button>
+          <button @click.prevent="selectedFields = [...allFields]" class="all">&raquo;</button>
           <draggable
             class="drag-area"
             :list.sync="availableFields"
@@ -16,7 +16,7 @@
         </div>
         <div class="selected">
           <label>Columns selected</label>
-          <button @click.prevent="selectedFields = []" class="all">&laquo;</button>
+          <button @click.prevent="selectedFields.splice(0)" class="all">&laquo;</button>
           <draggable
             class="drag-area"
             :list.sync="selectedFields"
@@ -60,14 +60,18 @@ export default {
       },
 
       set (f) {
-        this.$emit('update:field', f)
+        this.$emit('update:fields', f)
       },
+    },
+
+    allFields () {
+      return this.module.fields
     },
 
     availableFields () {
       const fields = this.module.fields
 
-      if (this.fields) {
+      if (this.fields.length > 0) {
         // Remove selected fields
         return fields.filter(a => { return this.fields.findIndex(f => a.name === f.name) === -1 })
       }
