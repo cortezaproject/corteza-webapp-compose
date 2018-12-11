@@ -15,6 +15,21 @@
     </fieldset>
 
     <field-selector v-if="selectedModule" :module="selectedModule" :fields="o.fields" />
+
+    <fieldset class="">
+      <b-form-checkbox
+        :value="tue"
+        :unchecked-value="false"
+        v-model="o.hideAddButton">
+        Hide add record button
+      </b-form-checkbox>
+      <b-form-checkbox
+        :value="tue"
+        :unchecked-value="false"
+        v-model="o.hideSearch">
+        Hide search box
+      </b-form-checkbox>
+    </fieldset>
   </div>
 </template>
 <script>
