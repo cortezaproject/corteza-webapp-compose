@@ -22,6 +22,8 @@
     <b-modal
       title="Add new block"
       ok-title="Add block"
+      ok-variant="dark"
+      ok-only
       @ok="blocks.push(createBlock)"
       @hide="createBlock=null"
       :visible="!!createBlock">
@@ -40,11 +42,12 @@
       <block-edit v-if="updateBlock" :module="module" :page="page" :block.sync="updateBlock" />
     </b-modal>
 
-    <div class="toolbar">
-      <button v-b-modal.createBlockSelector @click="createBlock=null" class="btn large">+ Add block</button>
-      <button @click.prevent="$router.push({ name: 'public.page', params: { pageID } })" class="btn large">Preview</button>
-      <button @click.prevent="handleSave()" class="btn btn-blue large">Save</button>
-      <button @click.prevent="handleSave({ closeOnSuccess: true })" class="btn btn-blue large">Save and close</button>
+    <div class="editor">
+      <a href="/crm/admin/pages" class="btn-url">&#171; Back to pages list</a>
+      <button v-b-modal.createBlockSelector @click="createBlock=null" class="btn">+ Add block</button>
+      <button @click.prevent="$router.push({ name: 'public.page', params: { pageID } })" class="btn">Preview</button>
+      <button @click.prevent="handleSave()" class="btn btn-blue">Save</button>
+      <button @click.prevent="handleSave({ closeOnSuccess: true })" class="btn btn-blue">Save and close</button>
     </div>
   </div>
 </template>
@@ -116,24 +119,6 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/sass/_0.declare.scss";
 @import "@/assets/sass/btns.scss";
-
-.toolbar {
-  position: fixed;
-  background-color: $appwhite;
-  border-top: 1px solid $appgrey;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 15px;
-
-  button {
-    margin-right: 10px;
-  }
-}
-
-.btn {
-  margin: 0 auto;
-}
 
 .builder {
   margin-bottom: 80px;

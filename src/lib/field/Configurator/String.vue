@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div><b-form-checkbox v-model="f.options.multiLine">Multiline</b-form-checkbox></div>
-    <div><b-form-checkbox v-model="f.options.useRichTextEditor">Use RTE</b-form-checkbox></div>
+    <div><b-form-checkbox plain v-model="f.options.multiLine">Multiline</b-form-checkbox></div>
+    <div><b-form-checkbox plain v-model="f.options.useRichTextEditor">Use Rich Text Editor</b-form-checkbox></div>
   </div>
 </template>
 

@@ -1,38 +1,40 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="well">
-          <h2>Edit page</h2>
-          <router-link :to="{name: 'admin.pages.builder'}" class="btn-url float-right">Page builder</router-link>
-          <div v-if="editPageError" style="color:red;">
-            {{ editPageError }}
+  <div>
+    <div class="editor">
+      <a href="/crm/admin/pages" class="btn-url">&#171; Back to pages list</a>
+      <confirmation-toggle @confirmed="handleDeletePage" class="confirmation">Delete page</confirmation-toggle>
+      <router-link :to="{name: 'admin.pages'}" class="btn">Cancel</router-link>
+      <button type="submit" class="btn btn-blue">Save</button>
+      <button type="button" @click.prevent="handleSave({ closeOnSuccess: true })" class="btn btn-blue">Save and close</button>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="well">
+            <h2>Edit page</h2>
+            <router-link :to="{name: 'admin.pages.builder'}" class="btn-url float-right">Page builder</router-link>
+            <div v-if="editPageError" style="color:red;">
+              {{ editPageError }}
+            </div>
+            <div v-if="editPageFormSubmitError" style="color:red;">
+              {{ editPageFormSubmitError }}
+            </div>
+            <form v-if="!editPageError" @submit.prevent="handleSave()">
+              <input required type="hidden" v-model="editPageFormData.pageID" id="id" />
+              <div class="form-group">
+                <label for="title">Page title</label>
+                <input required type="text" v-model="editPageFormData.title" class="form-control" id="title" placeholder="Page title" />
+              </div>
+              <div class="form-group">
+                <label for="title">Description</label>
+                <textarea v-model="editPageFormData.description" class="form-control" id="description" placeholder="Page description" />
+              </div>
+              <div class="form-group form-check">
+                <input type="checkbox" id="visible" class="form-check-input" v-model="editPageFormData.visible">
+                <label for="visible" class="form-check-label">Page visible?</label>
+              </div>
+            </form>
           </div>
-          <div v-if="editPageFormSubmitError" style="color:red;">
-            {{ editPageFormSubmitError }}
-          </div>
-          <form v-if="!editPageError" @submit.prevent="handleSave()">
-            <input required type="hidden" v-model="editPageFormData.pageID" id="id" />
-            <div class="form-group">
-              <label for="title">Page title</label>
-              <input required type="text" v-model="editPageFormData.title" class="form-control" id="title" placeholder="Page title" />
-            </div>
-            <div class="form-group">
-              <label for="title">Description</label>
-              <textarea v-model="editPageFormData.description" class="form-control" id="description" placeholder="Page description" />
-            </div>
-            <div class="form-group form-check">
-              <input type="checkbox" id="visible" class="form-check-input" v-model="editPageFormData.visible">
-              <label for="visible" class="form-check-label">Page visible?</label>
-            </div>
-
-            <div>
-              <button type="submit" class="btn btn-dark">Save</button>
-              <button type="button" @click.prevent="handleSave({ closeOnSuccess: true })" class="btn btn-dark">Save and close</button>
-              <router-link :to="{name: 'admin.pages'}" class="btn">Cancel</router-link>
-              <confirmation-toggle @confirmed="handleDeletePage" class="confirmation">Delete page</confirmation-toggle>
-            </div>
-          </form>
         </div>
       </div>
     </div>
@@ -109,12 +111,16 @@ h2 {
   display: inline-block;
 }
 
-.form-check-label {
-  line-height: 24px;
-  margin-left: 5px;
+.form-check {
+  display: inline-block;
+
+  &-label {
+    line-height: 24px;
+    margin-left: 5px;
+  }
 }
 
 .confirmation {
-  float: right;
+  margin-right: 0.5em;
 }
 </style>

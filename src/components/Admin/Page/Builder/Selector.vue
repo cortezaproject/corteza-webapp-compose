@@ -1,7 +1,7 @@
 <template>
     <div>
         <button
-            class="btn btn-outline-primary"
+            class="btn btn-outline"
             @click="$emit('select', type.block)"
             v-for="(type) in types"
             :disabled="!recordPage && type.recordPageOnly"
@@ -46,9 +46,21 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+@import "@/assets/sass/_0.declare.scss";
+
 button {
   height: 100px;
   margin: 20px;
   width: 160px;
+}
+
+.btn-outline {
+  border: 2px solid $appblue;
+  font-size: 14px;
+  box-shadow: 0 0 3px 0 rgba($appgrey, 0.75);
+
+  &:disabled {
+    border-color: $appgrey;
+  }
 }
 </style>

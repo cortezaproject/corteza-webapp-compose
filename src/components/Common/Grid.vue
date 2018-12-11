@@ -24,7 +24,7 @@
       </grid-item>
     </grid-layout>
   </div>
-  <div v-else class="no-builder-grid">
+  <div v-else class="no-builder-grid container well text-center">
     <h4>No block added yet.</h4>
   </div>
 </template>

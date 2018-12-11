@@ -1,6 +1,11 @@
 <template>
   <div>
-
+    <div class="editor">
+      <confirmation-toggle @confirmed="handleDelete" class="confirmation">Delete module</confirmation-toggle>
+      <button @click="redirect()" type="button" class="btn">Cancel</button>
+      <button type="submit" class="btn btn-blue">Save</button>
+      <button type="button" @click.prevent="handleUpdate({ closeOnSuccess: true })" class="btn btn-blue">Save and close</button>
+    </div>
     <form @submit.prevent="handleUpdate" class="container">
       <div class="row">
         <div class="col-md-12 well">
@@ -23,8 +28,7 @@
                 <th v-b-tooltip.hover.topright title="The name displayed in form input / data lists" class="info">Title</th>
                 <th>Type</th>
                 <th v-b-tooltip.hover title="Required field" class="info">Required</th>
-                <th v-b-tooltip.hover title="Privacy sensitive data" class="info">Sensitive</th>
-                <th v-b-tooltip.hover title="Use this column in admin data list" class="info">Visible</th>
+                <th v-b-tooltip.hover title="Sensitive data" class="info">Sensitive</th>
                 <th class="text-center"></th>
               </tr>
               </thead>
@@ -37,19 +41,16 @@
                     <select v-model="field.kind" class="form-control" @change="handleKindChange(field)">
                       <option v-for="fieldType in fieldsList" :key="fieldType.kind" :value="fieldType.kind">{{ fieldType.label||fieldType.kind }}</option>
                     </select>
-                    <a
+                    <button
                       :disabled="!field.isConfigurable()"
                       @click.prevent="handleFieldEdit(field)"
-                      class="btn-url"><font-awesome-icon :icon="['fas', 'wrench']"></font-awesome-icon></a>
+                      class="btn-url"><font-awesome-icon :icon="['fas', 'wrench']"></font-awesome-icon></button>
                   </td>
                   <td class="text-center">
                     <input v-model="field.isRequired" type="checkbox"/>
                   </td>
                   <td class="text-center">
                     <input v-model="field.isPrivate" type="checkbox"/>
-                  </td>
-                  <td class="text-center">
-                    <input v-model="field.isVisible" type="checkbox"/>
                   </td>
                   <td class="text-center">
                     <confirmation-toggle @confirmed="module.fields.splice(index, 1)" class="confirmation-small" cta-class="btn-url">
@@ -61,10 +62,6 @@
             </table>
           </div>
           <button @click="handleNewField" type="button" class="btn-url add-new">+ Add new field</button>
-          <button type="submit" class="btn btn-dark">Save</button>
-          <button type="button" @click.prevent="handleUpdate({ closeOnSuccess: true })" class="btn btn-dark">Save and close</button>
-          <button @click="redirect()" type="button" class="btn">Cancel</button>
-          <confirmation-toggle @confirmed="handleDelete" class="confirmation">Delete module</confirmation-toggle>
         </div>
       </div>
     </form>
@@ -72,7 +69,9 @@
     <b-modal
       v-if="updateField"
       title="Module field settings"
-      ok-title="Close"
+      ok-title="Save and close"
+      ok-variant="dark"
+      ok-only
       @ok="handleFieldSave(updateField)"
       @hide="updateField=null"
       :visible="!!updateField">
@@ -199,10 +198,11 @@ table {
       min-width: 50px;
 
       &::after {
-        font-family: "Font Awesome 5 Free";
-        content: "\f059";
+        font-family: $icomoon-font-family;
+        content: "\ea0c";
         padding-left: 3px;
         font-weight: 300;
+        color: $appgrey;
       }
     }
   }
@@ -217,7 +217,8 @@ table {
       }
 
       button:disabled {
-        color: silver;
+        color: $appgrey;
+        cursor: auto;
       }
     }
   }
@@ -233,7 +234,7 @@ table {
 }
 
 .confirmation {
-  float: right;
+  margin-right: 0.5em;
 }
 
 h5 {
