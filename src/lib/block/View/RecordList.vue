@@ -1,6 +1,7 @@
 <template>
   <div v-if="error">{{ error }}</div>
   <div v-else-if="recordListModule">
+    <router-link :to="{ name: 'public.page.record.create', params: { pageID: options.pageID }, query: null }">Add new record</router-link>
     <input @keypress.enter.prevent="handleQuery($event.target.value)" placeholder="Search" />
     <table class="table sticky-header">
       <thead>
