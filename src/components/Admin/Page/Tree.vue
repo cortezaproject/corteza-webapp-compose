@@ -28,7 +28,7 @@
 
               <router-link :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
                            class="edit action">
-                <i class="action icon-edit" v-if="item.moduleID !== '0'"></i>
+                <i class="action icon-edit" v-if="item.moduleID === '0'"></i>
               </router-link>
           </div>
         </div>
