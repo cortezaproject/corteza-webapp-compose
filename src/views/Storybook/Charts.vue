@@ -20,7 +20,7 @@
             </b-form-group>
             <b-form-group horizontal label="Function">
               <b-form-select v-model="m.function"
-                             :disabled="!m.field"
+                             :disabled="!m.field || m.field === 'count'"
                              :options="metricFunctions"></b-form-select>
             </b-form-group>
             <b-form-group horizontal label="Output">
@@ -48,7 +48,7 @@
             </b-form-group>
             <b-form-group horizontal label="Function">
               <b-form-select v-model="d.modifier"
-                             :disabled="!d.field"
+                             :disabled="!d.field || !isTemporalField(d.field)"
                              :options="dimensionModifiers"></b-form-select>
             </b-form-group>
           </fieldset>
@@ -75,10 +75,10 @@ export default {
       chartTypes: ['line', 'bar'],
 
       modules: [],
-      selectedModule: '67165067287724058',
+      selectedModule: null,
 
-      metrics: [{}],
-      dimensions: [{}],
+      metrics: [{ field: 'count' }],
+      dimensions: [{ field: 'created_at', modifier: 'MONTH' }],
 
       chartOpt: {
         type: 'bar',
@@ -108,7 +108,7 @@ export default {
     },
 
     metricFields () {
-      return this.module.fields.filter(f => f.kind === 'Number')
+      return [{ name: 'count' }, ...this.module.fields.filter(f => f.kind === 'Number')]
     },
 
     dimensionFields () {
@@ -134,6 +134,14 @@ export default {
   },
 
   methods: {
+    isTemporalField (name) {
+      if (name === 'created_at') {
+        return true
+      }
+
+      return !!this.module.fields.find(f => f.name === name && f.kind === 'DateTime')
+    },
+
     render () {
       if (this.dimensions.length === 0 || this.metrics.length === 0) {
         return
@@ -146,17 +154,21 @@ export default {
 
       const req = {
         moduleID: this.selectedModule,
-        metrics: this.metrics.map(m => `${m.function}(${m.field})`).join(','),
-        dimensions: this.dimensions.map(d => `${d.field}|${d.modifier}`)[0],
+
+        // Remove count (we'll get it anyway) and construct FUNC(ARG) params
+        metrics: this.metrics.filter(f => f.field !== 'count').map(m => `${m.function}(${m.field})`).join(','),
+
+        // Construct dimensions \w modifiers...
+        dimensions: this.dimensions.map(d => d.modifier ? `${d.field}|${d.modifier}` : d.field)[0],
       }
 
       this.$crm.moduleContentReport(req).then((rep) => {
-        this.chartOpt.data.datasets = this.metrics.map(({ label, type, backgroundColor }, index) => {
+        this.chartOpt.data.datasets = this.metrics.map(({ field, label, type, backgroundColor }, index) => {
           return {
             label,
             type,
             backgroundColor,
-            data: rep.map(r => r[`metric_${index}`]),
+            data: rep.map(r => r[field === 'count' ? field : `metric_${index}`]),
           }
         })
 
