@@ -68,6 +68,8 @@ function crmViews () {
             // edit an individual row (should display fields configured for the module)
             { path: 'modules/:moduleID/records/:recordID/edit', name: 'admin.modules.records.edit', component: view('Admin/Modules/Records/Edit'), props: true },
 
+            { path: 'modules/:moduleID/generator', name: 'admin.modules.generator', component: view('Admin/Modules/Records/Generator'), props: true },
+
             { path: 'pages/', name: 'admin.pages', component: view('Admin/Pages/Index') },
             { path: 'pages/:pageID/edit', name: 'admin.pages.edit', component: view('Admin/Pages/Edit'), props: true },
             { path: 'pages/:pageID/builder', name: 'admin.pages.builder', component: view('Admin/Pages/Builder'), props: true },
@@ -91,8 +93,13 @@ function crmViews () {
       ],
     },
     {
-      path: '/crm/storybook/field-types',
-      component: view('Storybook/FieldTypes'),
+      path: '/crm/storybook',
+      redirect: '/crm/storybook/field-types',
+      component: view('IndexNestedProtected'),
+      children: [
+        { path: 'field-types', name: 'storybook.field-types', component: view('Storybook/FieldTypes') },
+        { path: 'charts', name: 'storybook.charts', component: view('Storybook/Charts') },
+      ],
     },
   ]
 }
