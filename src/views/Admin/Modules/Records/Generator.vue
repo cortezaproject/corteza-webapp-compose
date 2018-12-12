@@ -130,7 +130,6 @@ export default {
           return (Math.round(Math.random() * 100000) / 100).toString()
         case f.kind === 'DateTime':
           return this.faker.date.past(5).toISOString()
-
       }
     },
   },

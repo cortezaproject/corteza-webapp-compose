@@ -3,7 +3,7 @@
     <div class="editor">
       <router-link :to="{name: 'admin.modules.records'}" class="btn btn-url">&#171; Back to record list</router-link>
       <router-link :to="{ name: 'admin.modules.records', params: { moduleID }}" class="btn">Cancel</router-link>
-      <button type="submit" class="btn btn-blue">Save</button>
+      <button type="submit" class="btn btn-blue" @click.prevent="handleSave()">Save</button>
       <button type="button" class="btn btn-blue" @click.prevent="handleSave({ closeOnSuccess: true })">Save and close</button>
     </div>
     <section class="container well" v-if="module">

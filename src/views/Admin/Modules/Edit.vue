@@ -3,10 +3,10 @@
     <div class="editor">
       <confirmation-toggle @confirmed="handleDelete" class="confirmation">Delete module</confirmation-toggle>
       <button @click="redirect()" type="button" class="btn">Cancel</button>
-      <button type="submit" class="btn btn-blue">Save</button>
-      <button type="button" @click.prevent="handleUpdate({ closeOnSuccess: true })" class="btn btn-blue">Save and close</button>
+      <button type="submit" @click.prevent="handleSave" class="btn btn-blue">Save</button>
+      <button type="button" @click.prevent="handleSave({ closeOnSuccess: true })" class="btn btn-blue">Save and close</button>
     </div>
-    <form @submit.prevent="handleUpdate" class="container">
+    <form @submit.prevent="handleSave" class="container">
       <div class="row">
         <div class="col-md-12 well">
         <h2>Edit module</h2>
@@ -141,7 +141,7 @@ export default {
       }
     },
 
-    handleUpdate ({ closeOnSuccess = false } = {}) {
+    handleSave ({ closeOnSuccess = false } = {}) {
       this.$crm.moduleEdit(this.module).then(() => {
         if (closeOnSuccess) {
           this.redirect()

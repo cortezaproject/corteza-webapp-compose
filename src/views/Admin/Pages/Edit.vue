@@ -4,7 +4,7 @@
       <a href="/crm/admin/pages" class="btn-url">&#171; Back to pages list</a>
       <confirmation-toggle @confirmed="handleDeletePage" class="confirmation">Delete page</confirmation-toggle>
       <router-link :to="{name: 'admin.pages'}" class="btn">Cancel</router-link>
-      <button type="submit" class="btn btn-blue">Save</button>
+      <button type="submit" @click.prevent="handleSave()" class="btn btn-blue">Save</button>
       <button type="button" @click.prevent="handleSave({ closeOnSuccess: true })" class="btn btn-blue">Save and close</button>
     </div>
     <div class="container">

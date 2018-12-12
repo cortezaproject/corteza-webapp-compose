@@ -37,8 +37,6 @@
               </b-row>
             </b-form-group>
 
-
-
             <b-button v-if="i>0" @click.prevent="metrics.splice(i)" class="float-right">Remove</b-button>
           </fieldset>
           <b-button @click.prevent="metrics.push({})">Add metrics</b-button>
