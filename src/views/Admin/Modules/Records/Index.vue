@@ -1,5 +1,5 @@
 <template>
-  <section class="container well" id="modules-contents-index" v-if="module">
+  <section class="container well" id="modules-content-index" v-if="module">
     <router-link :to="{name: 'admin.modules'}" class="btn btn-url">&#171; Back to module list</router-link><br>
     <h2>{{module.name}}</h2>
     <router-link :to="{name: 'admin.modules.edit', params: { moduleID }}" class="edit-module">
@@ -148,6 +148,10 @@ h2 {
 h5 {
   margin-bottom: 20px;
   text-decoration: underline;
+}
+
+#modules-content-index {
+  overflow-y: scroll;
 }
 
 table {
