@@ -1,9 +1,9 @@
 export class SocialFeed {
-  constructor(def = {}) {
+  constructor (def = {}) {
     this.merge(def)
   }
 
-  merge({ moduleID, fields, profileSourceField, profileUrl } = {}) {
+  merge ({ moduleID, fields, profileSourceField, profileUrl } = {}) {
     this.moduleID = moduleID || undefined
     this.fields = fields || []
     this.profileSourceField = profileSourceField || undefined
@@ -12,7 +12,7 @@ export class SocialFeed {
   }
 }
 
-export function getTwitterHandle(url) {
+export function getTwitterHandle (url) {
   var twitterUnpacked = url.split('/')
   // the fourth item should be the handle
   if (twitterUnpacked.length === 4) {
@@ -23,12 +23,12 @@ export function getTwitterHandle(url) {
   }
 }
 
-export function extractSocialUrl(profileSourceField, profileUrl, record = null) {
+export function extractSocialUrl (profileSourceField, profileUrl, record = null) {
   var url = ''
   var socialNetwork = ''
   var twitterHandle = ''
   // check if we have a profileSourceField
-  if (profileSourceField && profileSourceField.length > 0 && record) {
+  if (profileSourceField && profileSourceField.length > 0 && record && record.fields) {
     url = (record.fields.find(f => f.name === profileSourceField) || {}).value
   } else {
     // see if we can fail back to profileUrl
