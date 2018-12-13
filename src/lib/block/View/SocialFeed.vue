@@ -1,15 +1,11 @@
 <template>
-    <div>
-      <div v-if="social.twitterHandle">
-        <Timeline :id="social.twitterHandle" sourceType="profile" :options="{ tweetLimit: '3' }">
-          <div class="spinner"></div>
-        </Timeline>
-      </div>
-      <div v-else>
-        <div v-if="socialNetwork === ''">
-          <p>No input for displaying social feed...</p>
-        </div>
-      </div>
+    <div v-if="profile">
+      <Timeline v-if="isTwitter" :id="profile.twitterHandle" sourceType="profile" :options="{ tweetLimit: '3' }">
+        <div class="spinner"></div>
+      </Timeline>
+    </div>
+    <div v-else>
+      <p>No input for displaying social feed...</p>
     </div>
 </template>
 <script>
@@ -20,26 +16,18 @@ import { extractSocialUrl } from '../SocialFeed'
 export default {
   extends: base,
 
+  computed: {
+    profile () {
+      return extractSocialUrl(this.options.profileSourceField, this.options.profileUrl, this.record)
+    },
+
+    isTwitter () {
+      return this.profile.socialNetwork === 'Twitter'
+    },
+  },
+
   components: {
     Timeline,
-  },
-  computed: {
-    social () {
-      if (this.options) {
-        var result = this.extractSocialUrl(this.options.profileSourceField, this.options.profileUrl, this.record)
-        return {
-          url: result.url,
-          twitterHandle: result.twitterHandle,
-          socialNetwork: result.socialNetwork,
-        }
-      }
-      return {}
-    },
-  },
-  methods: {
-    extractSocialUrl (profileSourceField, profileUrl, record) {
-      return extractSocialUrl(profileSourceField, profileUrl, record)
-    },
   },
 }
 </script>
