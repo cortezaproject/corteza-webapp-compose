@@ -1,6 +1,6 @@
 <template>
   <div class="small">
-    <canvas ref="blockChart" width="200" height="200"></canvas>
+    <canvas ref="blockChart" width="200" height="150"></canvas>
   </div>
 </template>
 <script>
@@ -14,12 +14,32 @@ export default {
     const ctx = this.$refs.blockChart.getContext('2d')
 
     const opt = {
-      type: 'bar',
+      type: 'polarArea',
       data: {
-        labels: [],
+        labels: [
+          'A',
+          'B',
+          'C',
+          'D',
+          'E',
+        ],
         datasets: [{
-          label: '@todo',
-          data: [],
+          label: 'Important facts',
+          data: [
+            Math.floor(Math.random() * 1000),
+            Math.floor(Math.random() * 1000),
+            Math.floor(Math.random() * 1000),
+            Math.floor(Math.random() * 1000),
+            Math.floor(Math.random() * 1000),
+          ],
+          backgroundColor: [
+            '#FFCC32',
+            '#E85568',
+            '#2FBC95',
+            '#1397CB',
+            '#00D53E',
+            '#F3F3F5',
+          ],
           borderWidth: 1,
         }],
       },
