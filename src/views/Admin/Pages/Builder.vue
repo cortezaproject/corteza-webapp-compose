@@ -96,11 +96,13 @@ export default {
     handleSave ({ closeOnSuccess = false } = {}) {
       this.$crm.pageRead({ pageID: this.pageID }).then(page => {
         page.blocks = this.blocks
-        this.$crm.pageEdit(page)
 
-        if (closeOnSuccess) {
-          this.$router.push({ name: 'admin.pages' })
-        }
+        this.$crm.pageEdit(page).then(() => {
+          this.raiseSuccessAlert('Page saved')
+          if (closeOnSuccess) {
+            this.$router.push({ name: 'admin.pages' })
+          }
+        }).catch(this.defaultErrorHandler('Could not save this page'))
       })
     },
   },

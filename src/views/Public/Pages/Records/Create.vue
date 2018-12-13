@@ -38,11 +38,9 @@ export default {
       }
 
       this.$crm.moduleContentCreate(payload).then((rsp) => {
+        this.raiseSuccessAlert('Record saved')
         this.$router.push({ name: 'public.page.record.edit', params: { recordID: rsp.contentID } })
-      }).catch(err => {
-        console.error(err)
-        this.warningAlert = 'Internal error, could not store this record'
-      })
+      }).catch(this.defaultErrorHandler('Could not save this record'))
     },
   },
 

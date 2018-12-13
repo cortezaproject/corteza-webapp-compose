@@ -74,7 +74,6 @@ export default {
 
   mounted () {
     if (this.recordListModule && this.recordListModule.moduleID === this.options.moduleID) {
-      console.debug(`Module "${this.recordListModule.name}" preloaded (via page)`)
       this.fetch()
       return
     }
@@ -88,9 +87,7 @@ export default {
     this.$crm.moduleRead({ moduleID: this.options.moduleID }).then((m) => {
       this.recordListModule = new Module(m)
       this.fetch()
-    }).catch(({ message }) => {
-      this.error = message
-    })
+    }).catch(this.defaultErrorHandler('Could not load record\' module'))
   },
 
   methods: {
@@ -105,9 +102,7 @@ export default {
       return this.$crm.moduleContentList(params).then((result) => {
         this.meta = result.meta
         this.records = result.contents
-      }).catch(({ message }) => {
-        this.error = [message]
-      })
+      }).catch(this.defaultErrorHandler('Could not load record list'))
     },
 
     handleQuery (query) {

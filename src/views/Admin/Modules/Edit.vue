@@ -10,9 +10,6 @@
       <div class="row">
         <div class="col-md-12 well">
         <h2>Edit module</h2>
-          <div v-if="error" style="color:red;">
-            {{ error }}
-          </div>
           <input required type="hidden" v-model="module.moduleID" />
           <div class="form-group">
             <label>Module name</label>
@@ -97,7 +94,6 @@ export default {
 
   data () {
     return {
-      error: '',
       module: {},
       updateField: null,
       fieldsList: fieldList,
@@ -115,9 +111,7 @@ export default {
       }
 
       this.module = rsp
-    }).catch(() => {
-      this.error = 'Error when trying to init module form.'
-    })
+    }).catch(this.defaultErrorHandler('Could not load this module'))
   },
 
   methods: {
@@ -143,18 +137,18 @@ export default {
 
     handleSave ({ closeOnSuccess = false } = {}) {
       this.$crm.moduleEdit(this.module).then(() => {
+        this.raiseSuccessAlert('Module saved')
         if (closeOnSuccess) {
           this.redirect()
         }
-      }).catch(() => {
-        this.error = 'Error when trying to edit module.'
-      })
+      }).catch(this.defaultErrorHandler('Could not save this module'))
     },
 
     handleDelete () {
       this.$crm.moduleDelete({ moduleID: this.moduleID }).then(() => {
+        this.raiseSuccessAlert('Module deleted')
         this.$router.push({ name: 'admin.modules' })
-      })
+      }).catch(this.defaultErrorHandler('Could not delete this module'))
     },
 
     redirect () {

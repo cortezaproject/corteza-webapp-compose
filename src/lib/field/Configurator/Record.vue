@@ -27,13 +27,9 @@ export default {
   created () {
     this.f.options = new Record(this.f.options)
 
-    this.$crm.moduleList({})
-      .then((mm) => {
-        this.modules = mm.map(m => new Module(m))
-      })
-      .catch(e => {
-        this.error = e
-      })
+    this.$crm.moduleList({}).then((mm) => {
+      this.modules = mm.map(m => new Module(m))
+    }).catch(this.defaultErrorHandler('Could not load module list'))
   },
 }
 </script>

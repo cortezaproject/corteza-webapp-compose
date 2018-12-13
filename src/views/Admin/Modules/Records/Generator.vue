@@ -71,9 +71,7 @@ export default {
     this.$crm.moduleRead({ moduleID: this.moduleID }).then(m => {
       this.module = new Module(m)
       this.demo = this.recordFaker()
-    }).catch(({ message }) => {
-      this.warningAlert = message
-    })
+    }).catch(this.defaultErrorHandler('Could not load module'))
   },
 
   methods: {

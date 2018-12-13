@@ -9,6 +9,7 @@
 import AdminHeader from '@/components/Admin/Header'
 export default {
   name: 'admin-root',
+
   components: {
     AdminHeader,
   },

@@ -73,8 +73,6 @@ export default {
 
       module: null,
       records: [],
-
-      errors: [],
     }
   },
 
@@ -89,9 +87,7 @@ export default {
     this.$crm.moduleRead({ moduleID: this.moduleID }).then(m => {
       this.module = new Module(m)
       return this.fetch()
-    }).catch(({ message }) => {
-      this.errors = [message]
-    })
+    }).catch(this.defaultErrorHandler('Could not load record\'s module'))
   },
 
   methods: {
@@ -105,9 +101,7 @@ export default {
       return this.$crm.moduleContentList(params).then((result) => {
         this.meta = result.meta
         this.records = result.contents
-      }).catch(({ message }) => {
-        this.error = [message]
-      })
+      }).catch(this.defaultErrorHandler('Could not load this record'))
     },
 
     handleQuery (query) {
@@ -124,10 +118,9 @@ export default {
 
     handleDelete (recordID) {
       this.$crm.moduleContentDelete({ moduleID: this.moduleID, contentID: recordID }).then(r => {
+        this.raiseSuccessAlert('Record deleted')
         this.fetch()
-      }).catch(({ message }) => {
-        this.error = [message]
-      })
+      }).catch(this.defaultErrorHandler('Could not delete this record'))
     },
   },
 

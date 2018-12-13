@@ -72,18 +72,25 @@ export default {
   },
 
   methods: {
-    async handleChangePosition ({ beforeParent, data, afterParent }) {
+    handleChangePosition ({ beforeParent, data, afterParent }) {
+      const reorder = () => {
+        const pageIDs = afterParent.children.map(p => p.pageID)
+        if (pageIDs.length > 1) {
+          this.$crm.pageReorder({ selfID: afterParent.pageID, pageIDs: pageIDs }).then(() => {
+            this.raiseSuccessAlert('Page reordered')
+            this.$emit('reorder')
+          }).catch(this.defaultErrorHandler('Could not move this page'))
+        }
+      }
+
       if (beforeParent.pageID !== afterParent.pageID) {
         // Page moved to a different parent
         data.selfID = afterParent.pageID
-        await this.$crm.pageEdit(data)
-      }
-
-      const pageIDs = afterParent.children.map(p => p.pageID)
-      if (pageIDs.length > 1) {
-        this.$crm.pageReorder({ selfID: afterParent.pageID, pageIDs: pageIDs }).then(() => {
-          this.$emit('reorder')
-        })
+        this.$crm.pageEdit(data).then(() => {
+          reorder()
+        }).catch(this.defaultErrorHandler('Could not move this page'))
+      } else {
+        reorder()
       }
     },
   },

@@ -1,7 +1,5 @@
 <template>
   <div class="view">
-    <b-alert show variant="warning" dismissible @dismissed="warningAlert=null" v-if="warningAlert">{{ warningAlert }}</b-alert>
-    <b-alert show variant="info" dismissible @dismissed="infoAlert=null" v-if="infoAlert">{{ infoAlert }}</b-alert>
     <div class="editor">
       <button class="btn-url" @click.prevent="handleBack">&#171; Back</button>
       <confirmation-toggle @confirmed="handleDelete" class="confirmation">Delete</confirmation-toggle>
@@ -39,9 +37,6 @@ export default {
 
   data () {
     return {
-      infoAlert: null,
-      warningAlert: null,
-
       record: {},
 
       // We handle edit mode here because EditRecord components
@@ -66,20 +61,14 @@ export default {
       if (this.page && this.recordID && this.page.moduleID) {
         this.$crm.moduleContentRead({ moduleID: this.page.moduleID, contentID: this.recordID }).then(record => {
           this.record = record
-        }).catch(err => {
-          console.error(err)
-          this.warningAlert = 'Internal error, could not load this record'
-        })
+        }).catch(this.defaultErrorHandler('Could not load this record'))
       }
     },
 
     handleDelete () {
       this.$crm.moduleContentDelete({ moduleID: this.record.moduleID, contentID: this.record.contentID }).then(rsp => {
         this.$router.push({ name: 'public.page' })
-      }).catch(err => {
-        console.error(err)
-        this.warningAlert = 'Internal error, could not delete this record'
-      })
+      }).catch(this.defaultErrorHandler('Could not delete this record'))
     },
 
     handleBack () {
@@ -96,13 +85,6 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/sass/btns.scss";
 @import "@/assets/sass/_0.declare.scss";
-
-.alert {
-  position: absolute;
-  z-index: 1;
-  width: 100%;
-  box-shadow: 0 0 2px 0 rgba($appgrey, 0.75);
-}
 
 .confirmation {
   margin-right: 0.5em;

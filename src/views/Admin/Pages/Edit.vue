@@ -13,13 +13,7 @@
           <div class="well">
             <h2>Edit page</h2>
             <router-link :to="{name: 'admin.pages.builder'}" class="btn-url float-right">Page builder</router-link>
-            <div v-if="editPageError" style="color:red;">
-              {{ editPageError }}
-            </div>
-            <div v-if="editPageFormSubmitError" style="color:red;">
-              {{ editPageFormSubmitError }}
-            </div>
-            <form v-if="!editPageError" @submit.prevent="handleSave()">
+            <form @submit.prevent="handleSave()">
               <input required type="hidden" v-model="editPageFormData.pageID" id="id" />
               <div class="form-group">
                 <label for="title">Page title</label>
@@ -55,41 +49,35 @@ export default {
 
   data () {
     return {
-      editPageError: '',
-      editPageFormSubmitError: '',
       modulesList: [],
       editPageFormData: {},
     }
   },
-  async created () {
-    try {
-      this.editPageError = ''
-      this.editPageFormData = await this.$crm.pageRead({ pageID: this.pageID })
 
+  created () {
+    this.$crm.pageRead({ pageID: this.pageID }).then((page) => {
       if (this.editPageFormData.moduleID !== '0') {
         // Do not allow to edit record pages, move to builder
         this.$router.replace({ name: 'admin.pages.builder', params: { pageID: this.editPageFormData.pageID } })
       }
-    } catch (e) {
-      this.editPageError = 'Error when trying to init page form.'
-    }
+
+      this.editPageFormData = page
+    }).catch(this.defaultErrorHandler('Could not load page'))
   },
   methods: {
     handleSave ({ closeOnSuccess = false } = {}) {
-      this.editPageFormSubmitError = ''
       this.$crm.pageEdit(this.editPageFormData).then(() => {
+        this.raiseSuccessAlert('Page saved')
         if (closeOnSuccess) {
           this.$router.push({ name: 'admin.pages' })
         }
-      }).catch((e) => {
-        this.editPageFormSubmitError = 'Error when trying to edit page.'
-      })
+      }).catch(this.defaultErrorHandler('Could not save this page'))
     },
 
     handleDeletePage () {
       this.$crm.pageDelete({ pageID: this.pageID }).then(() => {
         this.$router.push({ name: 'admin.pages' })
-      })
+      }).catch(this.defaultErrorHandler('Could not delete this page'))
     },
   },
 

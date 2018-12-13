@@ -74,14 +74,8 @@ export default {
           m.recordPage = pp.find(p => p.moduleID === m.moduleID)
           return m
         })
-      }).catch(err => {
-        console.error(err)
-        this.error = err
-      })
-    }).catch(err => {
-      console.error(err)
-      this.error = err
-    })
+      }).catch(this.defaultErrorHandler('Could not load pages'))
+    }).catch(this.defaultErrorHandler('Could not load modules'))
   },
 
   mixins: [

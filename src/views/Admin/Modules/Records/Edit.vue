@@ -10,9 +10,6 @@
       <h2 v-if="!recordID">{{module.name}}: add new record</h2>
       <h2 v-else>{{module.name}}: edit existing record</h2>
 
-      <b-alert show variant="warning" dismissible @dismissed="warningAlert=null" v-if="warningAlert">{{ warningAlert }}</b-alert>
-      <b-alert show variant="info" dismissible @dismissed="infoAlert=null" v-if="infoAlert">{{ infoAlert }}</b-alert>
-
       <form @submit.prevent="handleSave">
         <field-editor v-for="(field,index) in module.fields"
                       :key="index"
@@ -44,9 +41,6 @@ export default {
     return {
       module: null,
       record: { fields: [] },
-
-      warningAlert: null,
-      infoAlert: null,
     }
   },
 
@@ -60,11 +54,9 @@ export default {
           contentID: this.recordID,
         }).then(record => {
           this.record = record
-        })
+        }).catch(this.defaultErrorHandler('Could not load this record'))
       }
-    }).catch(({ message }) => {
-      this.warningAlert = message
-    })
+    }).catch(this.defaultErrorHandler('Could not load record\'s module'))
   },
 
   methods: {
@@ -78,12 +70,11 @@ export default {
       }
 
       p.then(() => {
+        this.raiseSuccessAlert('Record saved')
         if (closeOnSuccess) {
           this.$router.push({ name: 'admin.modules.records' })
         }
-      }).catch(({ message }) => {
-        this.warningAlert = `Failed to save record: ${message}`
-      })
+      }).catch(this.defaultErrorHandler('Could not save this record'))
     },
   },
 
@@ -105,12 +96,5 @@ table {
 
 .well {
   margin-bottom: 80px;
-}
-
-.alert {
-  position: absolute;
-  z-index: 1;
-  width: 100%;
-  box-shadow: 0 0 2px 0 rgba($appgrey, 0.75);
 }
 </style>

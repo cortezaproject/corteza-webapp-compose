@@ -28,17 +28,11 @@
               </tr>
             </tbody>
           </table>
-          <div v-if="listError" style="color:red;">
-            {{ listError }}
-          </div>
           <form @submit.prevent="create">
             <div class="form-group form-inline">
             <label for="name">Create a new module:</label>
               <input required type="text" v-model="addModuleFormData.name" class="form-control" id="name" placeholder="Module name" />
               <button type="submit" class="btn btn-dark">Create</button>
-            </div>
-            <div v-if="addModuleFormSubmitError" style="color:red;">
-              {{ addModuleFormSubmitError }}
             </div>
           </form>
         </div>
@@ -56,9 +50,6 @@ export default {
   name: 'ModuleList',
   data () {
     return {
-      deleteModuleError: '',
-      listError: '',
-      addModuleFormSubmitError: '',
       modules: [],
       addModuleFormData: {
         name: '',
@@ -72,15 +63,6 @@ export default {
   },
 
   methods: {
-    // async $_initList () {
-    //   try {
-    //     this.listError = ''
-    //     this.list = await this.$crm.moduleList({})
-    //   } catch (e) {
-    //     this.listError = 'Error when trying to get list of modules.'
-    //   }
-    // },
-
     fetch () {
       this.$crm.pageList({ recordPagesOnly: true }).then(pp => {
         this.$crm.moduleList({}).then(mm => {
@@ -88,23 +70,18 @@ export default {
             m.recordPage = pp.find(p => p.moduleID === m.moduleID)
             return m
           })
-        })
-      })
+        }).catch(this.defaultErrorHandler('Could not load module list'))
+      }).catch(this.defaultErrorHandler('Could not load page list'))
     },
 
-    async create () {
-      this.addModuleFormSubmitError = ''
-      try {
-        this.addModuleFormData.fields = [
-          new Field({ name: 'sample', kind: 'text' }),
-        ]
+    create () {
+      this.addModuleFormData.fields = [
+        new Field({ name: 'sample', kind: 'text' }),
+      ]
 
-        this.$crm.moduleCreate(this.addModuleFormData).then((module) => {
-          this.$router.push({ name: 'admin.modules.edit', params: { moduleID: module.moduleID } })
-        })
-      } catch (e) {
-        this.addModuleFormSubmitError = 'Error when trying to create module.'
-      }
+      this.$crm.moduleCreate(this.addModuleFormData).then((module) => {
+        this.$router.push({ name: 'admin.modules.edit', params: { moduleID: module.moduleID } })
+      }).catch(this.defaultErrorHandler('Could not create a module'))
     },
 
     handleRecordPageCreation ({ moduleID }) {
@@ -119,7 +96,7 @@ export default {
 
       this.$crm.pageCreate(payload).then(page => {
         this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
-      })
+      }).catch(this.defaultErrorHandler('Could not create a page'))
     },
   },
 }

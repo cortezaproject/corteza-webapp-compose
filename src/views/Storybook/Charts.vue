@@ -128,9 +128,7 @@ export default {
         m.fields = m.fields.map(f => new Field(f))
         return m
       })
-    }).catch((e) => {
-      console.error(e)
-    })
+    }).catch(this.defaultErrorHandler('Could not load module list'))
   },
 
   methods: {

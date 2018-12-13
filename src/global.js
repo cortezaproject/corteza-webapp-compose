@@ -1,5 +1,6 @@
 // Global Axios defaults
 import axios from 'axios'
+import alertMixin from '@/mixins/alert'
 import BootstrapVue from 'bootstrap-vue'
 import VTooltip from 'v-tooltip'
 import Vue from 'vue'
@@ -26,26 +27,4 @@ Vue.config.productionTip = false
 
 Vue.use(VTooltip)
 Vue.use(BootstrapVue)
-
-Vue.mixin({
-  data () {
-    return {
-      error: '',
-    }
-  },
-  methods: {
-    // @todo: placeholder translation method with a "gettext" signature (underscore fn)
-    _: function (key, params) {
-      if (typeof params !== 'undefined') {
-        return String.format(key, ...params)
-      }
-      return key
-    },
-    clearError: function () {
-      this.error = ''
-    },
-    showError: function (error) {
-      this.error = error.toString()
-    },
-  },
-})
+Vue.mixin(alertMixin)

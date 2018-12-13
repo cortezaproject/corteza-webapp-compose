@@ -1,8 +1,5 @@
 <template>
   <div class="container">
-    <div v-if="listError" style="color:red;">
-      {{ listError }}
-    </div>
     <div class="row">
       <div class="col-md-12">
         <div class="well">
@@ -15,9 +12,6 @@
               <label for="title">Create a new page:</label>
               <input required type="text" v-model="addPageFormData.title" class="form-control" id="title" placeholder="Page title" />
               <button type="submit" class="btn btn-dark">Create</button>
-            </div>
-            <div v-if="addPageFormSubmitError" style="color:red;">
-              {{ addPageFormSubmitError }}
             </div>
           </form>
         </div>
@@ -35,9 +29,6 @@ export default {
   name: 'PageList',
   data () {
     return {
-      deletePageError: '',
-      listError: '',
-      addPageFormSubmitError: '',
       tree: [],
       addPageFormData: {
         title: '',
@@ -46,7 +37,8 @@ export default {
       modules: [],
     }
   },
-  async created () {
+
+  created () {
     this.$crm.pageList({ recordPagesOnly: true }).then(pp => {
       // @todo extend API endpoint to support fetching only record pages
       this.$crm.moduleList({}).then(mm => {
@@ -57,31 +49,24 @@ export default {
       })
     })
 
-    this.$_initList()
+    this.loadTree()
   },
+
   methods: {
-    async $_initList () {
-      try {
-        this.listError = ''
-        this.$crm.pageTree({}).then((tree) => {
-          this.tree = tree
-        })
-      } catch (e) {
-        this.listError = 'Error when trying to get list of pages.'
-      }
+    loadTree () {
+      this.$crm.pageTree({}).then((tree) => {
+        this.tree = tree
+      }).catch(this.defaultErrorHandler('Could not load the page tree'))
     },
-    async handleAddPageFormSubmit () {
-      this.addPageFormSubmitError = ''
-      try {
-        await this.$crm.pageCreate(this.addPageFormData)
-        await this.$_initList()
-      } catch (e) {
-        this.addPageFormSubmitError = 'Error when trying to create page.'
-      }
+
+    handleAddPageFormSubmit () {
+      this.$crm.pageCreate(this.addPageFormData).then(() => {
+        this.loadTree()
+      }).catch(this.defaultErrorHandler('Could not save this page'))
     },
 
     handleReorder () {
-      this.$_initList()
+      this.loadTree()
     },
 
     handleRecordPageCreation ({ moduleID }) {
@@ -96,7 +81,7 @@ export default {
 
       this.$crm.pageCreate(payload).then(page => {
         this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
-      })
+      }).catch(this.defaultErrorHandler('Could not save this page'))
     },
   },
 
