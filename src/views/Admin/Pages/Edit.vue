@@ -14,17 +14,17 @@
             <h2>Edit page</h2>
             <router-link :to="{name: 'admin.pages.builder'}" class="btn-url float-right">Page builder</router-link>
             <form @submit.prevent="handleSave()">
-              <input required type="hidden" v-model="editPageFormData.pageID" id="id" />
+              <input required type="hidden" v-model="page.pageID" id="id" />
               <div class="form-group">
                 <label for="title">Page title</label>
-                <input required type="text" v-model="editPageFormData.title" class="form-control" id="title" placeholder="Page title" />
+                <input required type="text" v-model="page.title" class="form-control" id="title" placeholder="Page title" />
               </div>
               <div class="form-group">
                 <label for="title">Description</label>
-                <textarea v-model="editPageFormData.description" class="form-control" id="description" placeholder="Page description" />
+                <textarea v-model="page.description" class="form-control" id="description" placeholder="Page description" />
               </div>
               <div class="form-group form-check">
-                <input type="checkbox" id="visible" class="form-check-input" v-model="editPageFormData.visible">
+                <input type="checkbox" id="visible" class="form-check-input" v-model="page.visible">
                 <label for="visible" class="form-check-label">Page visible?</label>
               </div>
             </form>
@@ -50,23 +50,23 @@ export default {
   data () {
     return {
       modulesList: [],
-      editPageFormData: {},
+      page: {},
     }
   },
 
   created () {
     this.$crm.pageRead({ pageID: this.pageID }).then((page) => {
-      if (this.editPageFormData.moduleID !== '0') {
+      if (page.moduleID !== '0') {
         // Do not allow to edit record pages, move to builder
-        this.$router.replace({ name: 'admin.pages.builder', params: { pageID: this.editPageFormData.pageID } })
+        this.$router.replace({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
       }
 
-      this.editPageFormData = page
+      this.page = page
     }).catch(this.defaultErrorHandler('Could not load page'))
   },
   methods: {
     handleSave ({ closeOnSuccess = false } = {}) {
-      this.$crm.pageEdit(this.editPageFormData).then(() => {
+      this.$crm.pageEdit(this.page).then(() => {
         this.raiseSuccessAlert('Page saved')
         if (closeOnSuccess) {
           this.$router.push({ name: 'admin.pages' })
