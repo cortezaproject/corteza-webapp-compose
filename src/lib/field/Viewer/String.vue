@@ -1,8 +1,8 @@
 <template>
   <div>
     <div v-if="field.options.useRichTextEditor"><span v-html="formatted"></span></div>
-    <div v-if="fiel.options.multiLine" class="note">{{ formatted }}</div>
-    <div v-if="!fiel.options.multiLine && !field.options.useRichTextEditor">{{ formatted }}</div>
+    <div v-else-if="field.options.multiLine" class="note">{{ formatted }}</div>
+    <div v-else>{{ formatted }}</div>
   </div>
 </template>
 <script>
