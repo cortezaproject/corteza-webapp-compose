@@ -11,6 +11,7 @@ button structure :
 
 :focus {
   outline: none;
+  box-shadow: none;
 }
 
 .btn {
@@ -88,13 +89,16 @@ button structure :
   font-size: 13px;
   cursor: pointer;
 
-  &:hover {
+  &:hover,
+  &:active {
     background-color: transparent;
     color: $appblue;
   }
 
   &:focus {
     outline: none;
+    box-shadow: none;
+    color: $black;
   }
 }
 

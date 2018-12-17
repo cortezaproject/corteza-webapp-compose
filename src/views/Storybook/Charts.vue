@@ -4,10 +4,15 @@
 
     <section>
       <form>
-        <fieldset v-if="modules">
-          <legend>Pick a module</legend>
-          <b-form-select v-model="selectedModule" :options="modules" text-field="name" value-field="moduleID" ></b-form-select>
-        </fieldset>
+          <fieldset v-if="modules">
+            <b-form-group
+              horizontal
+              :label-cols="2"
+              breakpoint="md"
+              label="Pick a module">
+              <b-form-select v-model="selectedModule" :options="modules" text-field="name" value-field="moduleID" ></b-form-select>
+            </b-form-group>
+          </fieldset>
         <hr />
         <div v-if="!!module">
           <fieldset v-for="(m,i) in metrics" :key="'m'+i">

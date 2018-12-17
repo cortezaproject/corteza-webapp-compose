@@ -1,153 +1,161 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="well">
-          <h2>Edit chart</h2>
-          <div v-if="editChartError" style="color:red;">
-            {{ editChartError }}
-          </div>
-          <form v-if="!editChartError" @submit.prevent="FormSubmit">
-            <input required type="hidden" v-model="editChartFormData.id" id="id" />
-            <div class="form-group">
-              <label for="name">Chart name</label>
-              <input required type="text" v-model="addChartFormData.name" class="form-control" id="name" placeholder="Chart name" />
-            </div>
-            <div class="form-group">
-              <label for="title">Description</label>
-              <textarea v-model="addChartFormData.description" class="form-control" id="description" placeholder="Chart description" />
-            </div>
-            <div class="form-group">
-              <label for="module">Chart type</label>
-              <select v-model="addChartFormData.type" class="form-control" id="type">
-                <option value=""></option>
-                <option value="line">Line</option>
-                <option value="spline">Spline</option>
-                <option value="step">Step</option>
-                <option value="area">Area</option>
-                <option value="area-spline">Area-spline</option>
-                <option value="area-step">Area-step</option>
-                <option value="bar">Bar</option>
-                <option value="scatter">Scatter</option>
-                <option value="pie">Pie</option>
-                <option value="donut">Donut</option>
-                <option value="gauge">Gauge</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="module">Module</label>
-              <select v-model="addChartFormData.moduleID" class="form-control" id="module">
-                <option :value="null"></option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="x">X-Axis</label>
-              <select v-model="addChartFormData.x" class="form-control" id="x">
-                <option :value="null"></option>
-              </select>
-            </div>
-            <div class="form-group">
-              <div class="row">
-                <div class="col-md-6">
-                  <label for="x">X-Axis</label>
-                  <select v-model="addChartFormData.x" class="form-control" id="x">
-                    <option :value="null"></option>
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  <label for="xmin">X-Axis Min</label>: <input type="text" v-model="addChartFormData.xMin" class="form-control" id="xmin" placeholder="Min" /><br>
-                  <label for="xmax">X-Axis Max</label>: <input type="text" v-model="addChartFormData.xMax" class="form-control" id="xmax" placeholder="Max" />
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="y">Y-Axis</label>
-              <select v-model="addChartFormData.y" class="form-control" id="y">
-                <option :value="null"></option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="groupby">Group by</label>
-              <select v-model="addChartFormData.groupBy" class="form-control" id="groupby">
-                <option :value="null"></option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="sum">Sum</label>
-              <select v-model="addChartFormData.sum" class="form-control" id="sum">
-                <option :value="null"></option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="count">Count</label>
-              <select v-model="addChartFormData.count" class="form-control" id="count">
-                <option :value="null"></option>
-              </select>
-            </div>
+  <div>
+    <div class="editor">
+      <confirmation-toggle @confirmed="handleDelete" class="confirmation">Delete chart</confirmation-toggle>
+      <button @click="redirect()" type="button" class="btn">Cancel</button>
+      <button type="submit" @click.prevent="handleSave" class="btn btn-blue">Save</button>
+      <button type="button" @click.prevent="handleSave({ closeOnSuccess: true })" class="btn btn-blue">Save and close</button>
+    </div>
 
-            <div v-if="editChartFormSubmitError" style="color:red;">
-              {{ editChartFormSubmitError }}
-            </div>
-          </form>
+    <form @submit.prevent="handleSave" class="container">
+      <div class="row">
+        <div class="col-md-12 well">
+          <h2>Chart builder</h2>
+
+          <fieldset v-if="modules">
+            <b-form-input v-model="chart.name" placeholder="Chart name"></b-form-input>
+          </fieldset>
         </div>
       </div>
-    </div>
+      <div class="row">
+        <report v-for="(report, index) in chart.config.reports"
+                :report.sync="report"
+                :modules="modules"
+                :key="'report_'+index"></report>
+      </div>
+      <!-- not supporting multiple reports for now
+      <b-button @click.prevent="chart.config.reports.push(defaultReport)"
+                v-if="false"
+                class="float-right">+ Add report</b-button>
+      -->
+    </form>
+    <section class="chart">
+      <b-button @click.prevent="render" class="float-right">Render</b-button>
+      <canvas ref="chart" width="200" height="200"></canvas>
+      <pre>{{ chart }}</pre>
+    </section>
   </div>
 </template>
-
 <script>
+import draggable from 'vuedraggable'
+import Report from '@/components/Admin/Chart/Editor/Report'
+import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
+import Field from '@/lib/field'
+import Chart from '@/lib/chart.js'
+import ChartJS from 'chart.js'
+
+const defaultReport = {
+  moduleID: undefined,
+  metrics: [{ field: 'count' }],
+  dimensions: [{ field: 'created_at', modifier: 'MONTH' }],
+}
+
+let chartRenderer = null
+
 export default {
   props: {
     chartID: {
       type: String,
+      required: true,
     },
   },
 
-  name: 'ChartEdit',
   data () {
     return {
-      editChartError: '',
-      editChartFormSubmitError: '',
-      fieldsList: [],
-      editChartFormData: {
-        name: '',
-      },
+      chart: new Chart(),
+
+      modules: [],
     }
   },
-  async created () {
-    try {
-      this.editChartError = ''
-      var req = {
-        chartID: this.chartID,
-      }
-      this.editChartFormData = await this.$crm.chartRead(req)
-    } catch (e) {
-      this.editChartError = 'Error when trying to init chart form.'
-    }
-  },
+
   computed: {
+    defaultReport () {
+      return Object.assign({}, defaultReport)
+    },
   },
+
+  mounted () {
+    this.$crm.chartRead({ chartID: this.chartID }).then((chart) => {
+      this.chart = new Chart(chart)
+    }).catch(this.defaultErrorHandler('Could not load chart'))
+
+    this.$crm.moduleList({}).then(mm => {
+      this.modules = mm.map(m => {
+        if (!Array.isArray(m.fields)) {
+          // In some cases, empty arrays are unmarshal as an empty object
+          // and draggable component complains
+          m.fields = []
+        }
+
+        m.fields = m.fields.map(f => new Field(f))
+        return m
+      })
+    }).catch(this.defaultErrorHandler('Could not load module list'))
+  },
+
   methods: {
+    async render () {
+      if (this.chart.config.reports.length === 0) {
+        return
+      }
+
+      if (!chartRenderer) {
+        const { type, options } = this.chart.config.renderer
+        chartRenderer = new ChartJS(this.$refs.chart.getContext('2d'), { type, options })
+      }
+
+      this.chart.fetchReports({ reporter: (r) => this.$crm.moduleContentReport(r) }).then((data) => {
+        chartRenderer.options = this.chart.config.renderer.options
+        chartRenderer.data.labels = data.labels
+        chartRenderer.data.datasets = data.datasets
+        chartRenderer.update()
+      })
+    },
+
+    handleSave ({ closeOnSuccess = false } = {}) {
+      let c = Object.assign({}, this.chart)
+      delete (c.config.renderer.data)
+
+      this.$crm.chartEdit(c).then(() => {
+        this.raiseSuccessAlert('Chart saved')
+        if (closeOnSuccess) {
+          this.redirect()
+        }
+      }).catch(this.defaultErrorHandler('Could not save this chart'))
+    },
+
+    handleDelete () {
+      this.$crm.chartDelete({ chartID: this.chartID }).then(() => {
+        this.raiseSuccessAlert('Module deleted')
+        this.$router.push({ name: 'admin.charts' })
+      }).catch(this.defaultErrorHandler('Could not delete this chart'))
+    },
+
     redirect () {
       this.$router.push({ name: 'admin.charts' })
     },
-    async FormSubmit () {
-      try {
-        this.editChartFormSubmitError = ''
-        await this.$crm.chartEdit(this.editChartFormData)
-        this.redirect()
-      } catch (e) {
-        this.editChartFormSubmitError = 'Error when trying to edit chart.'
-      }
-    },
+  },
+
+  components: {
+    Report,
+    ConfirmationToggle,
+    draggable,
   },
 }
 </script>
-
 <style lang="scss" scoped>
-.table th,
-.table td,
-.table tr {
-  padding: 3px;
+@import "@/assets/sass/_0.declare.scss";
+@import "@/assets/sass/btns.scss";
+
+.confirmation {
+  margin-right: 5px;
+}
+
+.btn-url {
+  margin-left: 20px;
+}
+
+section.chart {
+  margin: 50px;
 }
 </style>

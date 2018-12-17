@@ -225,31 +225,6 @@ class CRM {
     })
   }
 
-  async moduleChart ({ moduleID, name, description, xAxis, xMin, xMax, yAxis, groupBy, sum, count, kind }) {
-    const endpoint = `${this.baseLink}/module/${moduleID}/chart`
-    return new Promise((resolve, reject) => {
-      axios({
-        method: 'GET',
-        url: endpoint,
-        withCredentials: true,
-        headers: this.headers,
-        params: {
-          'name': name,
-          'description': description,
-          'xAxis': xAxis,
-          'xMin': xMin,
-          'xMax': xMax,
-          'yAxis': yAxis,
-          'groupBy': groupBy,
-          'sum': sum,
-          'count': count,
-          'kind': kind,
-        },
-        data: {},
-      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
-    })
-  }
-
   async moduleEdit ({ moduleID, name, fields }) {
     const endpoint = `${this.baseLink}/module/${moduleID}`
     return new Promise((resolve, reject) => {
@@ -365,6 +340,82 @@ class CRM {
 
   async moduleContentDelete ({ moduleID, contentID }) {
     const endpoint = `${this.baseLink}/module/${moduleID}/content/${contentID}`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'DELETE',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {},
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async chartList () {
+    const endpoint = `${this.baseLink}/chart/`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {},
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async chartCreate ({ name, fields }) {
+    const endpoint = `${this.baseLink}/chart/`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {
+          'name': name,
+          'fields': fields,
+        },
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async chartRead ({ chartID }) {
+    const endpoint = `${this.baseLink}/chart/${chartID}`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'GET',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {},
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async chartEdit ({ chartID, name, config }) {
+    const endpoint = `${this.baseLink}/chart/${chartID}`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'POST',
+        url: endpoint,
+        withCredentials: true,
+        headers: this.headers,
+        params: {},
+        data: {
+          name,
+          config,
+        },
+      }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
+    })
+  }
+
+  async chartDelete ({ chartID }) {
+    const endpoint = `${this.baseLink}/chart/${chartID}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'DELETE',
