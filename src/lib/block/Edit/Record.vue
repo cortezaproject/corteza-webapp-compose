@@ -26,8 +26,7 @@ export default {
 
   computed: {
     fields () {
-      const whitelist = this.options.fields.map(f => f.name)
-      return this.module.fields.filter(f => whitelist.indexOf(f.name) > -1)
+      return this.module.filterFields(this.options.fields)
     },
   },
 
