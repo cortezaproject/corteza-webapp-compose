@@ -54,16 +54,14 @@ export default {
 @import "@/assets/sass/btns.scss";
 @import "@/assets/sass/_0.declare.scss";
 
-.editor {
-  .btn {
-    margin-right: 0;
-  }
-}
-
 .alert {
   position: absolute;
   z-index: 1;
   width: 100%;
   box-shadow: 0 0 2px 0 rgba($appgrey, 0.75);
+}
+
+.btn {
+  margin-right: 0.5em;
 }
 </style>

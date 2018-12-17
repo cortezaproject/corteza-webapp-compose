@@ -20,12 +20,14 @@
       <b-form-checkbox
         :value="true"
         :unchecked-value="false"
+        plain
         v-model="o.hideAddButton">
         Hide add record button
       </b-form-checkbox>
       <b-form-checkbox
         :value="true"
         :unchecked-value="false"
+        plain
         v-model="o.hideSearch">
         Hide search box
       </b-form-checkbox>

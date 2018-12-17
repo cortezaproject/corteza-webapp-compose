@@ -3,7 +3,7 @@
       <div class="fields">
         <div class="available">
           <label>Columns available </label>
-          <button @click.prevent="selectedFields = [...allFields]" class="all">&raquo;</button>
+          <button @click.prevent="selectedFields = [...allFields]" class="btn-url">Select all</button>
           <draggable
             class="drag-area"
             :list.sync="availableFields"
@@ -16,7 +16,7 @@
         </div>
         <div class="selected">
           <label>Columns selected</label>
-          <button @click.prevent="selectedFields.splice(0)" class="all">&laquo;</button>
+          <button @click.prevent="selectedFields.splice(0)" class="btn-url">Unselect all</button>
           <draggable
             class="drag-area"
             :list.sync="selectedFields"
@@ -28,7 +28,7 @@
           </draggable>
         </div>
       </div>
-      <i>Add fields by dragging or double-clicking on them. Available fields can also be reordered</i>
+      <i>Add fields by dragging or double-clicking on them. Selected fields can also be reordered</i>
     </fieldset>
 </template>
 <script>
@@ -94,6 +94,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import "@/assets/sass/btns.scss";
+@import "@/assets/sass/_0.declare.scss";
+
 div.fields {
   display: flex;
   flex-flow: row nowrap;
@@ -110,15 +113,16 @@ div.fields {
     flex: 1;
     margin: 5px;
 
-    button.all {
-      float: right;
-      font-size: 80%;
+    button.btn-url {
+      font-size: 90%;
+      display: block;
+      margin-top: 5px;
     }
 
     .drag-area {
       height: 150px;
       overflow-x: auto;
-      border: 1px solid silver;
+      border: 1px solid $appgrey;
       padding: 2px;
     }
   }
