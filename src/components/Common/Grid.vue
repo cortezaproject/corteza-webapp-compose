@@ -9,6 +9,9 @@
       :is-resizable="!!editable"
       :is-draggable="!!editable"
       :use-css-transforms="true"
+      :responsive="true"
+      :breakpoints="breakpoints"
+      :cols="columns"
     >
       <grid-item
         v-for="(item, index) in grid"
@@ -64,6 +67,9 @@ export default {
     return {
       // all blocks in vue-grid friendly structure
       grid: blocksToGrid(this.blocks),
+
+      columns: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+      breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
 
       mobilePreview: false,
     }
