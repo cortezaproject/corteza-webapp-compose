@@ -2,11 +2,12 @@
   <div class="form-group">
     {{ field.label || field.name }}
     <b-form-input
-    v-if="!field.options.onlyTime"
+      v-if="!field.options.onlyTime"
       type="date"
       v-b-tooltip.hover :title="dateRule"
       v-model="date" />
     <b-form-input
+      v-if="!field.options.onlyDate"
       type="time"
       v-model="time" />
   </div>
