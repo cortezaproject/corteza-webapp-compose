@@ -30,6 +30,15 @@ module.exports = {
       },
     },
   },
+
+  // Do not copy config files (deployment procedure will do that)
+  chainWebpack: config => {
+    config.plugin('copy').tap(options => {
+      options[0][0].ignore.push('config*js')
+      return options
+    })
+  },
+
   // devServer Options don't belong into `configureWebpack`
   devServer: {
     host: '0.0.0.0',
