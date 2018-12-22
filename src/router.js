@@ -3,10 +3,8 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-function view (name, resolve) {
-  return function (resolve) {
-    return require([`./views/${name}.vue`], resolve)
-  }
+function view (name) {
+  return () => import(`./views/${name}.vue`)
 }
 
 function defaultViews () {
