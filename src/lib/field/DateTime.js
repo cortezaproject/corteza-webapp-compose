@@ -8,14 +8,31 @@ export class DateTime {
     this.merge(def)
   }
 
-  merge ({ onlyDate, onlyTime, onlyPastValues, onlyFutureValues, outputRelative } = {}) {
-    this.onlyDate = onlyDate || false
-    this.onlyTime = onlyTime || false
-    this.onlyPastValues = onlyPastValues || false
-    this.onlyFutureValues = onlyFutureValues || false
-    this.outputRelative = outputRelative || false
+  merge ({ format, onlyDate, onlyTime, onlyPastValues, onlyFutureValues, outputRelative } = {}) {
+    this.format = format || ''
+    this.onlyDate = !!onlyDate
+    this.onlyTime = !!onlyTime
+    this.onlyPastValues = !!onlyPastValues
+    this.onlyFutureValues = !!onlyFutureValues
+    this.outputRelative = !!outputRelative
 
     return this
+  }
+
+  formatValue (value) {
+    const m = moment(value)
+
+    if (this.outputRelative) {
+      return m.fromNow()
+    } else if (this.format.length > 0) {
+      return m.format(this.format)
+    } else if (this.onlyTime) {
+      return m.format('HH:mm')
+    } else if (this.onlyDate) {
+      return m.format('YYYY-MM-DD')
+    } else {
+      return m.format('YYYY-MM-DD HH:mm')
+    }
   }
 }
 
@@ -49,51 +66,4 @@ export function checkFuturePast (value, onlyFuture, onlyPast, onlyDate, onlyTime
   }
 
   return value
-}
-
-export function getRelativeDateTime (end, start, onlyDate, onlyTime) {
-  var diff = start.diff(end, 'milliseconds')
-  var duration = moment.duration(diff)
-  var result = ''
-  if (duration.years() !== 0 && !onlyTime) {
-    result = duration.years()
-    if (duration.years() > 1) {
-      result += ' years '
-    } else {
-      result += ' year '
-    }
-  }
-  if (duration.months() !== 0 && !onlyTime) {
-    result += duration.months()
-    if (duration.months() > 1) {
-      result += ' months '
-    } else {
-      result += ' month '
-    }
-  }
-  if (duration.days() !== 0 && !onlyTime) {
-    result += duration.days()
-    if (duration.days() > 1) {
-      result += ' days '
-    } else {
-      result += ' day '
-    }
-  }
-  if (duration.hours() !== 0 && !onlyDate) {
-    result += duration.hours()
-    if (duration.hours() > 1) {
-      result += ' hours '
-    } else {
-      result += ' hour '
-    }
-  }
-  if (duration.minutes() !== 0 && !onlyDate) {
-    result += duration.minutes()
-    if (duration.minutes() > 1) {
-      result += ' minutes '
-    } else {
-      result += ' minute '
-    }
-  }
-  return result
 }
