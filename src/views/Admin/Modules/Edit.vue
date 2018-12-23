@@ -129,7 +129,6 @@ export default {
 
     handleFieldSave (field) {
       const i = this.module.fields.findIndex(f => f.name === field.name)
-      console.debug('Updating field options', field, i)
       if (i > -1) {
         this.module.fields.splice(i, 1, field)
       }

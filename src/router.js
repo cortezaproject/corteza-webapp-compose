@@ -3,10 +3,8 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-function view (name, resolve) {
-  return function (resolve) {
-    return require([`./views/${name}.vue`], resolve)
-  }
+function view (name) {
+  return () => import(`./views/${name}.vue`)
 }
 
 function defaultViews () {
@@ -26,7 +24,7 @@ function defaultViews () {
 function crmViews () {
   return [
     {
-      path: '/crm',
+      path: '',
       name: 'root',
       component: view('IndexNestedProtected'),
       redirect: 'pages',
@@ -93,8 +91,8 @@ function crmViews () {
       ],
     },
     {
-      path: '/crm/storybook',
-      redirect: '/crm/storybook/field-types',
+      path: 'storybook',
+      redirect: 'field-types',
       component: view('IndexNestedProtected'),
       children: [
         { path: 'field-types', name: 'storybook.field-types', component: view('Storybook/FieldTypes') },
@@ -105,6 +103,7 @@ function crmViews () {
 }
 
 export default new VueRouter({
+  base: '/crm',
   mode: 'history',
   routes: [
     ...crmViews(),

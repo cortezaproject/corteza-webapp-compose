@@ -62,7 +62,6 @@ export default {
 
         if (module && module.recordPage) {
           this.o.pageID = module.recordPage.pageID
-          console.debug(`Record page for recordList set to ${module.recordPage.title} (${module.recordPage.pageID})`)
         }
       }
     },

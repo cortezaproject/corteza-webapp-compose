@@ -60,9 +60,10 @@ export default {
 
   created () {
     try {
-      // Check for faker lib and fail softly
       this.faker = require('faker')
+      // Check for faker lib and fail softly
     } catch (e) {
+      /* eslint-disable no-console */
       console.error(e)
     }
   },

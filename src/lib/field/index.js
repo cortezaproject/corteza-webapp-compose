@@ -41,7 +41,6 @@ export default class Field {
       }
 
       if (!kinds[kind]) {
-        console.debug(`Field kind ${kind} is not supported. Supported field kinds: %o`, supported)
         throw Error(`Unsupported field kind ${kind}`)
       }
 
