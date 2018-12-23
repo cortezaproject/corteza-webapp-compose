@@ -3,6 +3,25 @@ var exec = require('child_process').execSync
 
 const baseUrl = process.env.NODE_ENV === 'production' ? '/crm' : '/'
 
+let optimization
+if (process.env.NODE_ENV !== 'test') {
+  // Enabling optimization when running unit testing confuses
+  // mocha (it does not find any tests)
+  optimization = {
+    usedExports: true,
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
+  }
+}
+
 module.exports = {
   baseUrl,
   lintOnSave: true,
@@ -15,21 +34,7 @@ module.exports = {
       }),
     ],
 
-    mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-
-    optimization: {
-      usedExports: true,
-      runtimeChunk: 'single',
-      splitChunks: {
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-          },
-        },
-      },
-    },
+    optimization,
   },
 
   // Do not copy config files (deployment procedure will do that)
