@@ -6,8 +6,7 @@ import { trimUrlFragment, trimUrlQuery, trimUrlPath, onlySecureUrl } from '@/lib
 
 var should = require('chai').should()
 
-describe('field/Url.js', () => {
-
+describe('lib/field/Url.js', () => {
   // Test trimUrlFragment
   it('trimUrlFragment - Should remove # from the url', function () {
     var result = trimUrlFragment('http://www.crust.tech/basic.html#testAnchor')

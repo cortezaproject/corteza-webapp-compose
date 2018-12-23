@@ -23,8 +23,7 @@ var testRecord = {
   ]
 }
 
-describe('SocialFeed.js', () => {
-
+describe('lib/block/SocialFeed.js', () => {
   // Basic tests for missing Urls
   it('Should not find anything from blank profileSourceField and profileUrl', function () {
     var result = extractSocialUrl('', '', testRecord)
