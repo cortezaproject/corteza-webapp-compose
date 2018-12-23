@@ -14,6 +14,21 @@ module.exports = {
         CRUST_BUILD_TIME: JSON.stringify((new Date()).toISOString()),
       }),
     ],
+
+    mode: process.env['NODE_ENV'],
+    optimization: {
+      usedExports: true,
+      runtimeChunk: 'single',
+      splitChunks: {
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+        },
+      },
+    },
   },
   // devServer Options don't belong into `configureWebpack`
   devServer: {
