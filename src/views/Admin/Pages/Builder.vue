@@ -43,7 +43,7 @@
     </b-modal>
 
     <div class="editor">
-      <a href="/crm/admin/pages" class="btn-url">&#171; Back to pages list</a>
+      <router-link :to="{name: 'admin.pages'}" class="btn-url">&#171; Back to pages list</router-link>
       <button v-b-modal.createBlockSelector @click="createBlock=null" class="btn">+ Add block</button>
       <button @click.prevent="$router.push({ name: 'public.page', params: { pageID } })" class="btn">Preview</button>
       <button @click.prevent="handleSave()" class="btn btn-blue">Save</button>

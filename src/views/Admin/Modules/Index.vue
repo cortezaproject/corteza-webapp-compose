@@ -16,10 +16,10 @@
                     v-if="m.recordPage"
                     :to="{name: 'admin.pages.builder', params: { pageID: m.recordPage.pageID }}"
                     class="btn-url">Page builder</router-link>
-                  <a href="#"
+                  <button
                      v-if="!m.recordPage"
                      @click="handleRecordPageCreation({ moduleID: m.moduleID })"
-                     class="btn-url">Page builder</a>
+                     class="btn-url">Page builder</button>
 
                   <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="action">
                     <i class="action icon-edit"></i>
