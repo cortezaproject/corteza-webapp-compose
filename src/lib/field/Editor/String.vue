@@ -1,18 +1,13 @@
 <template>
   <div class="form-group">
     {{ field.label || field.name }}
-
+    <quill-editor
+      v-if="field.options.useRichTextEditor"
+      v-model="value"
+      ref="myQuillEditor"></quill-editor>
     <b-form-textarea
-      v-if="field.options.multiLine && !field.options.useRichTextEditor"
+      v-else-if="field.options.multiLine"
       v-model="value"></b-form-textarea>
-    <quill-editor v-model="value"
-                ref="myQuillEditor"
-                v-else-if="field.options.useRichTextEditor"
-                :options="editorOption"
-                @blur="onEditorBlur($event)"
-                @focus="onEditorFocus($event)"
-                @ready="onEditorReady($event)">
-    </quill-editor>
     <b-form-input
       v-else
       v-model="value"></b-form-input>
