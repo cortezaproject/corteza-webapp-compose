@@ -30,7 +30,10 @@
       -->
     </form>
     <section class="chart">
-      <b-button @click.prevent="render" class="float-right">Render</b-button>
+      <b-button @click.prevent="render"
+                :disabled="!chart.isValid()"
+                class="float-right"
+                variant="success">Render</b-button>
       <canvas ref="chart" width="200" height="200"></canvas>
       <pre>{{ chart }}</pre>
     </section>

@@ -15,12 +15,25 @@
         <fieldset v-for="(d,i) in dimensions" :key="'d'+i">
           <h5>Dimensions (datetime & select fields)</h5>
           <b-form-group horizontal :label-cols="2" breakpoint="md" label="Field">
-            <b-form-select v-model="d.field" :options="dimensionFields" text-field="name" value-field="name"></b-form-select>
+            <b-form-select v-model="d.field" :options="dimensionFields" text-field="name" value-field="name">
+              <template slot="first">
+                <option disabled :value="undefined">Select a dimension field</option>
+              </template>
+            </b-form-select>
           </b-form-group>
           <b-form-group horizontal :label-cols="2" breakpoint="md" label="Function">
             <b-form-select v-model="d.modifier"
                            :disabled="!d.field || !isTemporalField(d.field)"
-                           :options="dimensionModifiers"></b-form-select>
+                           :options="dimensionModifiers">
+              <template slot="first">
+                <option disabled :value="undefined">Select dimension modifier (bucket size)</option>
+              </template>
+            </b-form-select>
+          </b-form-group>
+
+          <b-form-group horizontal v-if="d.field && isTemporalField(d.field)">
+            <b-form-input type="date" v-model="d.conditions.min"></b-form-input>
+            <b-form-input type="date" v-model="d.conditions.max"></b-form-input>
           </b-form-group>
         </fieldset>
       </div>
@@ -38,19 +51,31 @@
             <b-form-input v-model="m.label" placeholder="Total"></b-form-input>
           </b-form-group>
           <b-form-group horizontal :label-cols="2" breakpoint="md" label="Field">
-            <b-form-select v-model="m.field" :options="metricFields" text-field="name" value-field="name"></b-form-select>
+            <b-form-select v-model="m.field" :options="metricFields" text-field="name" value-field="name">
+              <template slot="first">
+                <option disabled :value="undefined">Select metric field</option>
+              </template>
+            </b-form-select>
           </b-form-group>
           <b-form-group horizontal :label-cols="2" breakpoint="md" label="Function">
             <b-form-select v-model="m.aggregate"
                            :disabled="!m.field || m.field === 'count'"
-                           :options="metricAggregates"></b-form-select>
+                           :options="metricAggregates">
+              <template slot="first">
+                <option disabled :value="undefined">Select metric aggregate function</option>
+              </template>
+            </b-form-select>
           </b-form-group>
           <b-form-group horizontal :label-cols="2" breakpoint="md" label="Output">
             <b-form-select v-model="m.type"
                            :disabled="!m.field"
-                           :options="chartTypes"></b-form-select>
+                           :options="chartTypes">
+              <template slot="first">
+                <option disabled :value="undefined">Select metric output</option>
+              </template>
+            </b-form-select>
             <b-form-checkbox v-model="m.fill" :value="true" :unchecked-value="false"
-                             v-show="m.chartType === 'line'">Fill area below the line</b-form-checkbox>
+                             v-show="m.type === 'line'">Fill area below the line</b-form-checkbox>
           </b-form-group>
         </fieldset>
         <b-button @click.prevent="metrics.push({})" variant="primary" class="btn-url">+ Add metric</b-button>

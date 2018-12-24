@@ -1,20 +1,11 @@
 import _ from 'lodash'
 
 const defConfig = {
-  reports: [{ moduleID: null, dimensions: [{}], metrics: [{}] }],
+  reports: [{ moduleID: null, dimensions: [{ conditions: {} }], metrics: [{}] }],
   renderer: {
     version: 'chart.js',
     type: 'bar',
     options: {},
-    // options: {
-    //   scales: {
-    //     yAxes: [{
-    //       ticks: {
-    //         beginAtZero: true,
-    //       },
-    //     }],
-    //   },
-    // },
   },
 }
 
@@ -47,6 +38,39 @@ export default class Chart {
     this.config = (config ? _.merge(defConfig, config) : false) || this.config || Object.assign({}, defConfig)
   }
 
+  // Static validation of reports (metrics, dimensions, fields set)
+  isValid () {
+    if (this.config.reports.length === 0) {
+      return false
+    }
+
+    const stdListCheck = (list) => {
+      return list.length > 0 && list.every(i => !!i)
+    }
+
+    const dimCheck = ({ field }) => !!field
+
+    const mtrCheck = ({ field, aggregate }) => (!!field && (field === 'count' || !!aggregate))
+
+    return stdListCheck(this.config.reports.map(({ moduleID, dimensions, metrics }) => {
+      if (!moduleID) {
+        return false
+      }
+
+      // Expecting all dimensions to have defined fields
+      if (!stdListCheck(dimensions.map(dimCheck))) {
+        return false
+      }
+
+      // Expecting all metrics to have defined fields
+      if (!stdListCheck(metrics.map(mtrCheck))) {
+        return false
+      }
+
+      return true
+    }))
+  }
+
   async fetchReports ({ reporter }) {
     var data = []
 
@@ -76,7 +100,7 @@ export default class Chart {
       moduleID,
 
       // Remove count (we'll get it anyway) and construct FUNC(ARG) params
-      metrics: metrics.filter((f) => f.field !== 'count').map((m, i) => `${m.aggregate || 'none'}_${m.field}:${m.function}(${m.field})`).join(','),
+      metrics: metrics.filter((f) => f.field !== 'count').map((m, i) => `${m.aggregate || 'none'}_${m.field}:${m.aggregate}(${m.field})`).join(','),
 
       // Construct dimensions \w modifiers...
       dimensions: dimensions.map(d => d.modifier ? `${d.field}|${d.modifier}` : d.field)[0],
