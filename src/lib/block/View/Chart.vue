@@ -6,14 +6,13 @@ import base from './base'
 import ChartJS from 'chart.js'
 import Chart from '@/lib/chart'
 
-let chartRenderer = null
-
 export default {
   extends: base,
 
   data () {
     return {
       chart: new Chart(),
+      renderer: null,
     }
   },
 
@@ -23,14 +22,12 @@ export default {
 
       const { type, options } = this.chart.config.renderer
 
-      chartRenderer = new ChartJS(this.$refs.chartCanvas.getContext('2d'), { type, options })
+      this.renderer = new ChartJS(this.$refs.chartCanvas.getContext('2d'), { type, options })
 
       this.chart.fetchReports({ reporter: (r) => this.$crm.moduleContentReport(r) }).then((data) => {
-        chartRenderer.data.labels = data.labels
-        chartRenderer.data.datasets = data.datasets
-        chartRenderer.update()
-
-        console.log(JSON.parse(JSON.stringify(chartRenderer.options)))
+        this.renderer.data.labels = data.labels
+        this.renderer.data.datasets = data.datasets
+        this.renderer.update()
       })
     }).catch(this.defaultErrorHandler('Could not load chart'))
   },
