@@ -1,73 +1,38 @@
 <template>
-  <div class="small">
-    <canvas ref="blockChart" width="200" height="150"></canvas>
-  </div>
+  <canvas ref="chartCanvas"></canvas>
 </template>
 <script>
 import base from './base'
-import Chart from 'chart.js'
+import ChartJS from 'chart.js'
+import Chart from '@/lib/chart'
+
+let chartRenderer = null
 
 export default {
   extends: base,
 
-  mounted () {
-    const ctx = this.$refs.blockChart.getContext('2d')
-
-    const opt = {
-      type: 'polarArea',
-      data: {
-        labels: [
-          'A',
-          'B',
-          'C',
-          'D',
-          'E',
-        ],
-        datasets: [{
-          label: 'Important facts',
-          data: [
-            Math.floor(Math.random() * 1000),
-            Math.floor(Math.random() * 1000),
-            Math.floor(Math.random() * 1000),
-            Math.floor(Math.random() * 1000),
-            Math.floor(Math.random() * 1000),
-          ],
-          backgroundColor: [
-            '#FFCC32',
-            '#E85568',
-            '#2FBC95',
-            '#1397CB',
-            '#00D53E',
-            '#F3F3F5',
-          ],
-          borderWidth: 1,
-        }],
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true,
-            },
-          }],
-        },
-      },
+  data () {
+    return {
+      chart: new Chart(),
     }
+  },
 
-    let c = new Chart(ctx, opt)
-    c.update()
+  mounted () {
+    this.$crm.chartRead({ chartID: this.options.chartID }).then((chart) => {
+      this.chart = new Chart(chart)
 
-    // const req = {
-    //   moduleID: '62513226545365001',
-    //   metrics: 'count:email;',
-    //   dimensions: 'label:created_at|month',
-    // }
+      const { type, options } = this.chart.config.renderer
 
-    // this.$crm.moduleContentReport(req).then((rep) => {
-    //   opt.data.labels = rep.map(i => i.label)
-    //   opt.data.datasets[0].data = rep.map(i => i.count)
-    //   c.update()
-    // })
+      chartRenderer = new ChartJS(this.$refs.chartCanvas.getContext('2d'), { type, options })
+
+      this.chart.fetchReports({ reporter: (r) => this.$crm.moduleContentReport(r) }).then((data) => {
+        chartRenderer.data.labels = data.labels
+        chartRenderer.data.datasets = data.datasets
+        chartRenderer.update()
+
+        console.log(JSON.parse(JSON.stringify(chartRenderer.options)))
+      })
+    }).catch(this.defaultErrorHandler('Could not load chart'))
   },
 }
 </script>

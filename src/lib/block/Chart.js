@@ -3,8 +3,8 @@ export class Chart {
     this.merge(def)
   }
 
-  merge (def = {}) {
-    // @todo
+  merge ({ chartID } = {}) {
+    this.chartID = chartID
     return this
   }
 }

@@ -1,3 +1,13 @@
 <template>
-    <img src="http://sungsoo.github.io/images/lineGraph.png" style="width: 100%;" />
+  <div>Chart preview (ID <code>{{ options.chartID }}</code>)</div>
 </template>
+<script>
+import optionsPropMixin from './mixins/optionsProp'
+
+export default {
+  mixins: [
+    optionsPropMixin,
+  ],
+}
+</script>
+ e
