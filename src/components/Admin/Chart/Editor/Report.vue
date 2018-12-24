@@ -24,7 +24,7 @@
           </b-form-group>
         </fieldset>
       </div>
-      <div class="metrics">
+      <draggable class="metrics" :list.sync="metrics" :options="{ group: 'metrics_'+moduleID, sort: true }">
         <fieldset v-for="(m,i) in metrics" :key="'m'+i" class="main-fieldset">
           <h5>Metrics (numeric fields) </h5>
           <b-button v-if="metrics.length>1" @click.prevent="metrics.splice(i)" variant="danger"><i class="action icon-trash"></i></b-button>
@@ -54,11 +54,13 @@
           </b-form-group>
         </fieldset>
         <b-button @click.prevent="metrics.push({})" variant="primary" class="btn-url">+ Add metric</b-button>
-      </div>
+      </draggable>
     </div>
   </div>
 </template>
 <script>
+import draggable from 'vuedraggable'
+
 export default {
   name: 'Report',
 
@@ -137,6 +139,10 @@ export default {
 
       return !!this.module.fields.find(f => f.name === name && f.kind === 'DateTime')
     },
+  },
+
+  components: {
+    draggable,
   },
 }
 </script>
