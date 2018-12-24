@@ -165,7 +165,7 @@ export default {
         dimensions: this.dimensions.map(d => d.modifier ? `${d.field}|${d.modifier}` : d.field)[0],
       }
 
-      this.$crm.moduleContentReport(req).then((rep) => {
+      this.$crm.moduleRecordReport(req).then((rep) => {
         this.chartOpt.data.datasets = this.metrics.map(({ field, label, type, backgroundColor }, index) => {
           return {
             label,

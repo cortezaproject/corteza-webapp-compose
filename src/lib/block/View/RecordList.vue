@@ -17,13 +17,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(row) in records" :key="row.contentID">
-          <td v-for="(col) in columns" :key="row.contentID+':'+col.name">
+        <tr v-for="(row) in records" :key="row.recordID">
+          <td v-for="(col) in columns" :key="row.recordID+':'+col.name">
             <field-viewer :field="col" value-only :record="row"></field-viewer>
           </td>
           <td class="text-right">
             <router-link
-              :to="{ name: 'public.page.record', params: { pageID: options.pageID, recordID: row.contentID }, query: null }">
+              :to="{ name: 'public.page.record', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
               <i class="action icon-search"></i></router-link>
           </td>
         </tr>
@@ -99,9 +99,9 @@ export default {
 
       params.moduleID = this.recordListModule.moduleID
 
-      return this.$crm.moduleContentList(params).then((result) => {
-        this.meta = result.meta
-        this.records = result.contents
+      return this.$crm.moduleRecordList(params).then(({ meta, records }) => {
+        this.meta = meta
+        this.records = records
       }).catch(this.defaultErrorHandler('Could not load record list'))
     },
 

@@ -256,8 +256,8 @@ class CRM {
     })
   }
 
-  async moduleContentList ({ moduleID, query, page, perPage, sort }) {
-    const endpoint = `${this.baseLink}/module/${moduleID}/content`
+  async moduleRecordList ({ moduleID, query, page, perPage, sort }) {
+    const endpoint = `${this.baseLink}/module/${moduleID}/record`
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -275,7 +275,7 @@ class CRM {
     })
   }
 
-  async moduleContentReport ({ moduleID, metrics, dimensions }) {
+  async moduleRecordReport ({ moduleID, metrics, dimensions }) {
     const endpoint = `${this.baseLink}/module/${moduleID}/report`
     return new Promise((resolve, reject) => {
       axios({
@@ -292,8 +292,8 @@ class CRM {
     })
   }
 
-  async moduleContentCreate ({ moduleID, fields }) {
-    const endpoint = `${this.baseLink}/module/${moduleID}/content`
+  async moduleRecordCreate ({ moduleID, fields }) {
+    const endpoint = `${this.baseLink}/module/${moduleID}/record`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -308,8 +308,8 @@ class CRM {
     })
   }
 
-  async moduleContentRead ({ moduleID, contentID }) {
-    const endpoint = `${this.baseLink}/module/${moduleID}/content/${contentID}`
+  async moduleRecordRead ({ moduleID, recordID }) {
+    const endpoint = `${this.baseLink}/module/${moduleID}/record/${recordID}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'GET',
@@ -322,8 +322,8 @@ class CRM {
     })
   }
 
-  async moduleContentEdit ({ moduleID, contentID, fields }) {
-    const endpoint = `${this.baseLink}/module/${moduleID}/content/${contentID}`
+  async moduleRecordEdit ({ moduleID, recordID, fields }) {
+    const endpoint = `${this.baseLink}/module/${moduleID}/record/${recordID}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'POST',
@@ -338,8 +338,8 @@ class CRM {
     })
   }
 
-  async moduleContentDelete ({ moduleID, contentID }) {
-    const endpoint = `${this.baseLink}/module/${moduleID}/content/${contentID}`
+  async moduleRecordDelete ({ moduleID, recordID }) {
+    const endpoint = `${this.baseLink}/module/${moduleID}/record/${recordID}`
     return new Promise((resolve, reject) => {
       axios({
         method: 'DELETE',

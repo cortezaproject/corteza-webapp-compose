@@ -107,7 +107,7 @@ export default {
         chartRenderer = new ChartJS(this.$refs.chart.getContext('2d'), { type, options })
       }
 
-      this.chart.fetchReports({ reporter: (r) => this.$crm.moduleContentReport(r) }).then((data) => {
+      this.chart.fetchReports({ reporter: (r) => this.$crm.moduleRecordReport(r) }).then((data) => {
         chartRenderer.options = this.chart.config.renderer.options
         chartRenderer.data.labels = data.labels
         chartRenderer.data.datasets = data.datasets

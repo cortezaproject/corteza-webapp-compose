@@ -18,15 +18,15 @@
       </thead>
       <tbody>
         <template v-for="row in records">
-          <tr :key="row.contentID">
+          <tr :key="row.recordID">
             <td v-for="col in module.fields" :key="'modules-contents-' + row.id + '-' + col.name">
               <field-viewer :field="col" :record="row" value-only />
             </td>
             <td class="text-right actions">
-              <confirmation-toggle @confirmed="handleDelete(row.contentID)" class="confirmation-small" cta-class="btn-url">
+              <confirmation-toggle @confirmed="handleDelete(row.recordID)" class="confirmation-small" cta-class="btn-url">
                 <i class="action icon-trash"></i>
               </confirmation-toggle>
-              <router-link :to="{name: 'admin.modules.records.edit', params: { moduleID, recordID: row.contentID }}">
+              <router-link :to="{name: 'admin.modules.records.edit', params: { moduleID, recordID: row.recordID }}">
                 <i class="icon-edit"></i>
               </router-link>
             </td>
@@ -98,9 +98,9 @@ export default {
 
       params.moduleID = this.module.moduleID
 
-      return this.$crm.moduleContentList(params).then((result) => {
-        this.meta = result.meta
-        this.records = result.contents
+      return this.$crm.moduleRecordList(params).then(({ meta, records }) => {
+        this.meta = meta
+        this.records = records
       }).catch(this.defaultErrorHandler('Could not load this record'))
     },
 
@@ -117,7 +117,7 @@ export default {
     },
 
     handleDelete (recordID) {
-      this.$crm.moduleContentDelete({ moduleID: this.moduleID, contentID: recordID }).then(r => {
+      this.$crm.moduleRecordDelete({ moduleID: this.moduleID, recordID: recordID }).then(r => {
         this.raiseSuccessAlert('Record deleted')
         this.fetch()
       }).catch(this.defaultErrorHandler('Could not delete this record'))

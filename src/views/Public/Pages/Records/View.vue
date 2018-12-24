@@ -59,14 +59,14 @@ export default {
     loadRecord () {
       this.record = null
       if (this.page && this.recordID && this.page.moduleID) {
-        this.$crm.moduleContentRead({ moduleID: this.page.moduleID, contentID: this.recordID }).then(record => {
+        this.$crm.moduleRecordRead({ moduleID: this.page.moduleID, recordID: this.recordID }).then(record => {
           this.record = record
         }).catch(this.defaultErrorHandler('Could not load this record'))
       }
     },
 
     handleDelete () {
-      this.$crm.moduleContentDelete({ moduleID: this.record.moduleID, contentID: this.record.contentID }).then(rsp => {
+      this.$crm.moduleRecordDelete({ moduleID: this.record.moduleID, recordID: this.record.recordID }).then(rsp => {
         this.$router.push({ name: 'public.page' })
       }).catch(this.defaultErrorHandler('Could not delete this record'))
     },

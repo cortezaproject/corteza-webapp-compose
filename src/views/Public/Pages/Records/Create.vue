@@ -37,9 +37,9 @@ export default {
         fields: this.record.fields,
       }
 
-      this.$crm.moduleContentCreate(payload).then((rsp) => {
+      this.$crm.moduleRecordCreate(payload).then((rsp) => {
         this.raiseSuccessAlert('Record saved')
-        this.$router.push({ name: 'public.page.record.edit', params: { recordID: rsp.contentID } })
+        this.$router.push({ name: 'public.page.record.edit', params: { recordID: rsp.recordID } })
       }).catch(this.defaultErrorHandler('Could not save this record'))
     },
   },

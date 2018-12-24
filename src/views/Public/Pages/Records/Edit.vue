@@ -16,11 +16,11 @@ export default {
     handleUpdate () {
       const payload = {
         moduleID: this.record.moduleID,
-        contentID: this.record.contentID,
+        recordID: this.record.recordID,
         fields: this.record.fields,
       }
 
-      this.$crm.moduleContentEdit(payload).then((rsp) => {
+      this.$crm.moduleRecordEdit(payload).then((rsp) => {
         this.raiseSuccessAlert('Record saved')
         this.$router.push({ name: 'public.page.record' })
       }).catch(this.defaultErrorHandler('Could not update this record'))

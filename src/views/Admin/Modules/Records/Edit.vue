@@ -49,9 +49,9 @@ export default {
       this.module = new Module(m)
 
       if (this.recordID) {
-        return this.$crm.moduleContentRead({
+        return this.$crm.moduleRecordRead({
           moduleID: this.moduleID,
-          contentID: this.recordID,
+          recordID: this.recordID,
         }).then(record => {
           this.record = record
         }).catch(this.defaultErrorHandler('Could not load this record'))
@@ -63,10 +63,10 @@ export default {
     handleSave ({ closeOnSuccess = false } = {}) {
       let p
 
-      if (this.record.contentID) {
-        p = this.$crm.moduleContentEdit(this.record)
+      if (this.record.recordID) {
+        p = this.$crm.moduleRecordEdit(this.record)
       } else {
-        p = this.$crm.moduleContentCreate({ ...this.record, moduleID: this.moduleID })
+        p = this.$crm.moduleRecordCreate({ ...this.record, moduleID: this.moduleID })
       }
 
       p.then(() => {
