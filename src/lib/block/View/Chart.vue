@@ -24,7 +24,8 @@ export default {
 
       this.renderer = new ChartJS(this.$refs.chartCanvas.getContext('2d'), { type, options })
 
-      this.chart.fetchReports({ reporter: (r) => this.$crm.moduleRecordReport(r) }).then((data) => {
+      this.chart.fetchReports({ reporter: (r) => this.$crm.moduleRecordReport(r) }).then(({ data, options }) => {
+        this.renderer.options = options
         this.renderer.data.labels = data.labels
         this.renderer.data.datasets = data.datasets
         this.renderer.update()

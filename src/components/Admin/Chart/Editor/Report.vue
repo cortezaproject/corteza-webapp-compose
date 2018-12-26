@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-12 well">
+  <div class="col-md-6 well">
     <fieldset v-if="modules">
       <b-form-group>
         <b-form-select v-model="moduleID" :options="modules" text-field="name" value-field="moduleID">
@@ -31,22 +31,20 @@
             </b-form-select>
           </b-form-group>
 
-          <b-form-group horizontal v-if="d.field && isTemporalField(d.field)">
-            <b-form-input type="date" v-model="d.conditions.min"></b-form-input>
-            <b-form-input type="date" v-model="d.conditions.max"></b-form-input>
-          </b-form-group>
+          <!--<b-form-group horizontal v-if="d.field && isTemporalField(d.field)">-->
+            <!--<b-form-input type="date" v-model="d.conditions.min"></b-form-input>-->
+            <!--<b-form-input type="date" v-model="d.conditions.max"></b-form-input>-->
+          <!--</b-form-group>-->
         </fieldset>
       </div>
       <draggable class="metrics" :list.sync="metrics" :options="{ group: 'metrics_'+moduleID, sort: true }">
         <fieldset v-for="(m,i) in metrics" :key="'m'+i" class="main-fieldset">
           <h5>Metrics (numeric fields) </h5>
           <b-button v-if="metrics.length>1" @click.prevent="metrics.splice(i)" variant="danger"><i class="action icon-trash"></i></b-button>
-          <b-form-group horizontal class="color-picker">
-            <b-row align-h="end">
-              <p>Chart background color:</p>
+          <b-form-group horizontal class="color-picker" label="">
               <b-form-input v-model="m.backgroundColor" type="color" ></b-form-input>
-            </b-row>
           </b-form-group>
+
           <b-form-group horizontal :label-cols="2" breakpoint="md" label="Label">
             <b-form-input v-model="m.label" placeholder="Total"></b-form-input>
           </b-form-group>
@@ -57,6 +55,7 @@
               </template>
             </b-form-select>
           </b-form-group>
+
           <b-form-group horizontal :label-cols="2" breakpoint="md" label="Function">
             <b-form-select v-model="m.aggregate"
                            :disabled="!m.field || m.field === 'count'"
@@ -66,6 +65,7 @@
               </template>
             </b-form-select>
           </b-form-group>
+
           <b-form-group horizontal :label-cols="2" breakpoint="md" label="Output">
             <b-form-select v-model="m.type"
                            :disabled="!m.field"
@@ -74,17 +74,22 @@
                 <option disabled :value="undefined">Select metric output</option>
               </template>
             </b-form-select>
+          </b-form-group>
+          <b-form-group horizontal :label-cols="2" breakpoint="md" label="">
             <b-form-checkbox v-model="m.fill" :value="true" :unchecked-value="false"
                              v-show="m.type === 'line'">Fill area below the line</b-form-checkbox>
+            <b-form-checkbox v-model="m.axisType" value="logarithmic" unchecked-value="linear">Logarithmic scale</b-form-checkbox>
+            <b-form-checkbox v-model="m.axisPosition" value="right" unchecked-value="left">Place axis on the right side</b-form-checkbox>
           </b-form-group>
         </fieldset>
-        <b-button @click.prevent="metrics.push({})" variant="primary" class="btn-url">+ Add metric</b-button>
       </draggable>
     </div>
+    <b-button @click.prevent="metrics.push({})" variant="primary" class="btn-url float-right">+ Add metric</b-button>
   </div>
 </template>
 <script>
 import draggable from 'vuedraggable'
+import { dimensionFunctions } from '@/lib/chart'
 
 export default {
   name: 'Report',
@@ -151,7 +156,7 @@ export default {
   data () {
     return {
       metricAggregates: ['COUNTD', 'SUM', 'MAX', 'MIN', 'AVG', 'STD'],
-      dimensionModifiers: ['', 'WEEKDAY', 'DATE', 'WEEK', 'MONTH', 'QUARTER', 'YEAR'],
+      dimensionModifiers: dimensionFunctions.map(df => df.label),
       chartTypes: ['line', 'bar'],
     }
   },
@@ -184,11 +189,8 @@ export default {
     background: $appcream;
     margin: 2px;
     padding: 15px 0;
-    flex: 1;
 
     .form-group {
-      display: inline-block;
-      width: 50%;
       padding-right: 30px;
     }
   }

@@ -22,21 +22,22 @@
                 :report.sync="report"
                 :modules="modules"
                 :key="'report_'+index"></report>
+
+        <section class="chart col-md-6">
+          <b-button @click.prevent="render"
+                    :disabled="!chart.isValid()"
+                    class="float-right"
+                    variant="success">Render</b-button>
+          <canvas ref="chart" width="200" height="200"></canvas>
+        </section>
       </div>
       <!-- not supporting multiple reports for now
       <b-button @click.prevent="chart.config.reports.push(defaultReport)"
                 v-if="false"
                 class="float-right">+ Add report</b-button>
       -->
-    </form>
-    <section class="chart">
-      <b-button @click.prevent="render"
-                :disabled="!chart.isValid()"
-                class="float-right"
-                variant="success">Render</b-button>
-      <canvas ref="chart" width="200" height="200"></canvas>
       <pre>{{ chart }}</pre>
-    </section>
+    </form>
   </div>
 </template>
 <script>
@@ -107,8 +108,8 @@ export default {
         chartRenderer = new ChartJS(this.$refs.chart.getContext('2d'), { type, options })
       }
 
-      this.chart.fetchReports({ reporter: (r) => this.$crm.moduleRecordReport(r) }).then((data) => {
-        chartRenderer.options = this.chart.config.renderer.options
+      this.chart.fetchReports({ reporter: (r) => this.$crm.moduleRecordReport(r) }).then(({ options, data }) => {
+        chartRenderer.options = options
         chartRenderer.data.labels = data.labels
         chartRenderer.data.datasets = data.datasets
         chartRenderer.update()
@@ -158,7 +159,4 @@ export default {
   margin-left: 20px;
 }
 
-section.chart {
-  margin: 50px;
-}
 </style>
