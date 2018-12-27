@@ -229,6 +229,10 @@ table {
   }
 }
 
+.table-responsive {
+  overflow-x: unset;
+}
+
 .ql-editor {
   min-height: 150px;
 }
@@ -296,6 +300,7 @@ input[type='checkbox'] {
   .modal-dialog {
     min-width: 700px;
   }
+
   .well {
     padding: 15px;
   }
