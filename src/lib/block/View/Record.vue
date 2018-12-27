@@ -37,12 +37,12 @@ export default {
 
 .record {
   .field {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 
     label {
-      min-width: 150px;
       font-weight: 900;
-      display: inline-block;
+      display: block;
+      font-size: 12px;
     }
 
     div {
