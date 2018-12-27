@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <div class="well">
+        <div class="well table-responsive">
           <h2>List of charts</h2>
           <table class="table">
             <tbody>
@@ -84,5 +84,11 @@ label {
 
 .form-group {
   margin-bottom: 0;
+}
+
+table {
+  td {
+    min-width: 100px;
+  }
 }
 </style>

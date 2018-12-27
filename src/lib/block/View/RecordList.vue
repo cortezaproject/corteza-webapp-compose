@@ -2,33 +2,36 @@
   <div v-if="error">{{ error }}</div>
   <div v-else-if="recordListModule">
     <router-link v-if="!this.options.hideAddButton"
-                 :to="{ name: 'public.page.record.create', params: { pageID: options.pageID }, query: null }">Add new record</router-link>
+                 class="btn-url"
+                 :to="{ name: 'public.page.record.create', params: { pageID: options.pageID }, query: null }">+ Add new record</router-link>
     <input v-if="!this.options.hideSearch"
            @keypress.enter.prevent="handleQuery($event.target.value)"
            placeholder="Search" />
-    <table class="table sticky-header">
-      <thead>
-        <tr>
-          <th v-for="(col) in columns" :key="'header:'+col.name" @click="handleSort(col.name)">
-            {{ col.label || col.name }}
-            <font-awesome-icon :icon="['fas', 'sort']"></font-awesome-icon>
-          </th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(row) in records" :key="row.recordID">
-          <td v-for="(col) in columns" :key="row.recordID+':'+col.name">
-            <field-viewer :field="col" value-only :record="row"></field-viewer>
-          </td>
-          <td class="text-right">
-            <router-link
-              :to="{ name: 'public.page.record', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
-              <i class="action icon-search"></i></router-link>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="table sticky-header">
+        <thead>
+          <tr>
+            <th v-for="(col) in columns" :key="'header:'+col.name" @click="handleSort(col.name)">
+              {{ col.label || col.name }}
+              <font-awesome-icon :icon="['fas', 'sort']"></font-awesome-icon>
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(row) in records" :key="row.recordID">
+            <td v-for="(col) in columns" :key="row.recordID+':'+col.name">
+              <field-viewer :field="col" value-only :record="row"></field-viewer>
+            </td>
+            <td class="text-right">
+              <router-link
+                :to="{ name: 'public.page.record', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
+                <i class="action icon-search"></i></router-link>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div class="sticky-footer">
       <pagination
           :records="meta.count"
@@ -127,12 +130,15 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/sass/_0.declare.scss";
+@import "@/assets/sass/btns.scss";
 
 table {
   width: 100%;
+  margin-bottom: 0;
 
   th {
     cursor: pointer;
+    white-space: nowrap;
 
     .fa-sort {
       margin-left: 10px;
@@ -141,21 +147,21 @@ table {
 }
 
 input {
-  border: 1px solid $appgrey;
-  border-radius: 5px;
-  font-size: 14px;
   padding: 3px 10px;
   float: right;
   margin-bottom: 5px;
   width: 200px;
   max-width: 100%;
-  position: sticky;
-  top: 5px;
-  z-index: 1;
 
   &:focus {
     border: 1px solid $appblue;
     outline: none;
   }
 }
+
+.btn-url {
+  margin-top: 5px;
+  display: inline-block;
+}
+
 </style>

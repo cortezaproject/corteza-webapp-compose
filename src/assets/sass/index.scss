@@ -30,7 +30,7 @@ a {
 
 .well {
   min-height: 20px;
-  padding: 19px;
+  padding: 5px;
   margin-bottom: 20px;
   background-color: $appwhite;
   border-radius: 4px;
@@ -198,7 +198,6 @@ li.dropdown:hover > .dropdown-menu {
   input[type="radio"],
   input[type="checkbox"] {
     background-color: transparent;
-    border: 1px solid $appgrey;
     border-radius: 5px;
     box-sizing: border-box;
     color: $defaulttextcolor;
@@ -207,6 +206,12 @@ li.dropdown:hover > .dropdown-menu {
     margin: 2px 0 8px;
     padding: 6px;
   }
+}
+
+input {
+  border-radius: 5px;
+  border: 1px solid $appgrey;
+  font-size: 14px;
 }
 
 table {
@@ -222,6 +227,10 @@ table {
       box-shadow: 0 1px #dee2e6;
     }
   }
+}
+
+.table-responsive {
+  overflow-x: unset;
 }
 
 .ql-editor {
@@ -290,5 +299,9 @@ input[type='checkbox'] {
 @media (min-width: $wideminwidth) {
   .modal-dialog {
     min-width: 700px;
+  }
+
+  .well {
+    padding: 15px;
   }
 }

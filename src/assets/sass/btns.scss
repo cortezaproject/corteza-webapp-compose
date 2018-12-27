@@ -208,3 +208,15 @@ button structure :
     background-color: transparent;
   }
 }
+
+.disabled {
+  cursor: not-allowed;
+  background: transparent;
+  border-color: $appgrey;
+  color: $appgrey;
+
+  &:hover {
+    color: $appgrey;
+    background-color: transparent;
+  }
+}
