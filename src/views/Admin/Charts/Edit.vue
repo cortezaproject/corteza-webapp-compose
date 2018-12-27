@@ -27,7 +27,7 @@
           <b-button @click.prevent="render"
                     :disabled="!chart.isValid()"
                     class="float-right"
-                    variant="success">Render</b-button>
+                    variant="success">Load data</b-button>
           <canvas ref="chart" width="200" height="200"></canvas>
         </section>
       </div>
@@ -72,6 +72,15 @@ export default {
     }
   },
 
+  watch: {
+    'chart.config': {
+      deep: true,
+      handler: function () {
+        this.updateRenderer()
+      },
+    },
+  },
+
   computed: {
     defaultReport () {
       return Object.assign({}, defaultReport)
@@ -99,21 +108,66 @@ export default {
 
   methods: {
     async render () {
-      if (this.chart.config.reports.length === 0) {
+      this.updateRenderer({ forceFetch: true })
+
+      // Update chart data
+      this.chart.fetchReports({ reporter: (r) => this.$crm.moduleRecordReport(r) }).then(({ labels, metrics }) => {
+        if (labels) {
+          chartRenderer.data.labels = labels
+        }
+
+        metrics.forEach((metric, index) => {
+          chartRenderer.data.datasets[index].data = metric
+        })
+
+        chartRenderer.update()
+      })
+    },
+
+    updateRenderer ({ forceFetch = false } = {}) {
+      if (!this.chart.isValid()) {
         return
       }
 
-      if (!chartRenderer) {
-        const { type, options } = this.chart.config.renderer
-        chartRenderer = new ChartJS(this.$refs.chart.getContext('2d'), { type, options })
+      const opt = this.chart.buildOptions()
+
+      if (!opt) {
+        this.raiseWarningAlert('Could not build chart options')
       }
 
-      this.chart.fetchReports({ reporter: (r) => this.$crm.moduleRecordReport(r) }).then(({ options, data }) => {
-        chartRenderer.options = options
-        chartRenderer.data.labels = data.labels
-        chartRenderer.data.datasets = data.datasets
-        chartRenderer.update()
-      })
+      let refetch = !chartRenderer || forceFetch
+
+      if (chartRenderer) {
+        // Verify if we need to reinitialize chart renderer
+        if (chartRenderer.data.datasets.length !== opt.data.datasets.length) {
+          chartRenderer = undefined
+        }
+      }
+
+      if (!chartRenderer) {
+        refetch = true
+        chartRenderer = new ChartJS(this.$refs.chart.getContext('2d'), opt)
+      } else {
+        chartRenderer.options = opt.options
+        opt.data.datasets.forEach((dataset, index) => {
+          Object.assign(chartRenderer.data.datasets[index], dataset)
+        })
+      }
+
+      if (refetch) {
+        // Update chart data
+        this.chart.fetchReports({ reporter: (r) => this.$crm.moduleRecordReport(r) }).then(({ labels, metrics }) => {
+          if (labels) {
+            chartRenderer.data.labels = labels
+          }
+
+          metrics.forEach((metric, index) => {
+            chartRenderer.data.datasets[index].data = metric
+          })
+        })
+      }
+
+      chartRenderer.update()
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {

@@ -20,14 +20,23 @@ export default {
     this.$crm.chartRead({ chartID: this.options.chartID }).then((chart) => {
       this.chart = new Chart(chart)
 
-      const { type, options } = this.chart.config.renderer
+      const opt = this.chart.buildOptions()
 
-      this.renderer = new ChartJS(this.$refs.chartCanvas.getContext('2d'), { type, options })
+      if (!opt) {
+        return
+      }
 
-      this.chart.fetchReports({ reporter: (r) => this.$crm.moduleRecordReport(r) }).then(({ data, options }) => {
-        this.renderer.options = options
-        this.renderer.data.labels = data.labels
-        this.renderer.data.datasets = data.datasets
+      this.renderer = new ChartJS(this.$refs.chartCanvas.getContext('2d'), opt)
+
+      this.chart.fetchReports({ reporter: (r) => this.$crm.moduleRecordReport(r) }).then(({ labels, metrics }) => {
+        if (labels) {
+          this.renderer.data.labels = labels
+        }
+
+        metrics.forEach((metric, index) => {
+          this.renderer.data.datasets[index].data = metric
+        })
+
         this.renderer.update()
       })
     }).catch(this.defaultErrorHandler('Could not load chart'))

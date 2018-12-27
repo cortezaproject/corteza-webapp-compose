@@ -15,7 +15,10 @@
         <fieldset v-for="(d,i) in dimensions" :key="'d'+i">
           <h5>Dimensions (datetime & select fields)</h5>
           <b-form-group horizontal :label-cols="2" breakpoint="md" label="Field">
-            <b-form-select v-model="d.field" :options="dimensionFields" text-field="name" value-field="name">
+            <b-form-select v-model="d.field"
+                           :options="dimensionFields"
+                           text-field="name"
+                           value-field="name">
               <template slot="first">
                 <option disabled :value="undefined">Select a dimension field</option>
               </template>

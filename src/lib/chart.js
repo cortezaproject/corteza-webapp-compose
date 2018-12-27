@@ -14,32 +14,39 @@ const defConfig = () => Object.assign({}, {
   reports: [defReport()],
   renderer: {
     version: 'chart.js',
-    type: 'bar',
-    options: {
-      animation: false,
-    },
   },
 })
 
 export const dimensionFunctions = [
   { label: '',
     convert: (f) => f,
-    time: false },
+    time: false,
+  },
+
   { label: 'DATE',
     convert: (f) => `DATE(${f})`,
-    time: 'date' },
+    time: { unit: 'date', minUnit: 'day', round: true },
+  },
+
   { label: 'WEEK',
     convert: (f) => `DATE(${f})`,
-    time: 'week' },
+    time: { unit: 'week', minUnit: 'week', round: true, isoWeekday: true },
+  },
+
   { label: 'MONTH',
     convert: (f) => `DATE_FORMAT(${f}, '%Y-%m-01')`,
-    time: 'month' },
+    time: { unit: 'month', minUnit: 'month', round: true },
+  },
+
   { label: 'QUARTER', // fetch monthly aggregation but tell renderer to group by quarter
     convert: (f) => `DATE_FORMAT(${f}, '%Y-%m-01')`,
-    time: 'quarter' },
+    time: { unit: 'quarter', minUnit: 'quarter', round: true },
+  },
+
   { label: 'YEAR',
     convert: (f) => `DATE_FORMAT(${f}, '%Y-01-01')`,
-    time: 'year' },
+    time: { unit: 'year', minUnit: 'year', round: true },
+  },
 ]
 
 dimensionFunctions.lookup = (d) => dimensionFunctions.find(f => d.modifier === f.label)
@@ -79,30 +86,25 @@ export default class Chart {
 
   // Static validation of reports (metrics, dimensions, fields set)
   isValid () {
-    if (this.config.reports.length === 0) {
-      return false
-    }
-
-    const stdListCheck = (list) => {
-      return list.length > 0 && list.every(i => !!i)
-    }
-
+    const stdListCheck = (list) => list.length > 0 && list.every(i => !!i)
     const dimCheck = ({ field }) => !!field
-
     const mtrCheck = ({ field, aggregate }) => (!!field && (field === 'count' || !!aggregate))
 
     return stdListCheck(this.config.reports.map(({ moduleID, dimensions, metrics }) => {
       if (!moduleID) {
+        console.warn('Invalid chart config: moduleID not set')
         return false
       }
 
       // Expecting all dimensions to have defined fields
       if (!stdListCheck(dimensions.map(dimCheck))) {
+        console.warn('Invalid chart config: no dimensions')
         return false
       }
 
       // Expecting all metrics to have defined fields
       if (!stdListCheck(metrics.map(mtrCheck))) {
+        console.warn('Invalid chart config: no metrics')
         return false
       }
 
@@ -110,8 +112,63 @@ export default class Chart {
     }))
   }
 
+  // Builds renderer (only ChartJS supported) options
+  buildOptions () {
+    let options = {
+      animation: false,
+    }
+
+    let datasets = []
+
+    this.config.reports.forEach(r => {
+      if (!options.scales) options.scales = { xAxes: [], yAxes: [] }
+      const timeDimensionUnit = (dimensionFunctions.lookup(r.dimensions[0]) || {}).time
+      if (timeDimensionUnit) {
+        options.scales.xAxes = [{
+          type: 'time',
+          time: timeDimensionUnit,
+        }]
+      }
+
+      options.scales.yAxes = r.metrics.map((m, i) => {
+        return {
+          id: `y-axis-metric-${makeAlias(m)}`,
+          type: m.axisType || 'linear',
+          position: m.axisPosition || 'left',
+          scaleLabel: {
+            display: true,
+            labelString: m.label || m.field,
+          },
+        }
+      })
+
+      datasets.push(...r.metrics.map(({ field, fill, aggregate, label, type, backgroundColor }) => {
+        const alias = makeAlias({ field, aggregate })
+
+        if (typeof backgroundColor === 'string') {
+          const c = backgroundColor
+          const o = 0.7
+          backgroundColor = 'rgba(' + parseInt(c.slice(-6, -4), 16) + ',' + parseInt(c.slice(-4, -2), 16) + ',' + parseInt(c.slice(-2), 16) + ',' + o + ')'
+        }
+
+        fill = !!fill
+        if (!label) label = field
+
+        return {
+          yAxisID: `y-axis-metric-${alias}`,
+          label,
+          type,
+          fill,
+          backgroundColor,
+        }
+      }))
+    })
+
+    return { type: 'bar', options, data: { datasets } }
+  }
+
   async fetchReports ({ reporter }) {
-    var data = []
+    var out = []
 
     const reports = this.config.reports
       // Prepare params & filter out invalid combos (formatReporterParams will return null on invalid params)
@@ -121,37 +178,16 @@ export default class Chart {
       .map(params => reporter(params))
 
       // Process each result
-      .map((p, index) => p.then((results) => { data[index] = this.processReporterResults(results, this.config.reports[index]) }))
+      .map((p, index) => p.then((results) => { out[index] = this.processReporterResults(results, this.config.reports[index]) }))
 
     // Wait for all requests to finish
     await Promise.all(reports)
 
     // Then return a new promise, with results
     return new Promise(resolve => {
-      let options = this.config.renderer.options
-      this.config.reports.forEach(r => {
-        if (!options.scales) options.scales = { xAxes: [], yAxes: [] }
-        const timeDimensionUnit = (dimensionFunctions.lookup(r.dimensions[0]) || {}).time
-        if (timeDimensionUnit) {
-          options.scales.xAxes = [{ type: 'time', time: { unit: timeDimensionUnit } }]
-        }
-
-        options.scales.yAxes = r.metrics.map((m, i) => {
-          return {
-            id: `y-axis-metric-${makeAlias(m)}`,
-            type: m.axisType || 'linear',
-            position: m.axisPosition || 'left',
-            scaleLabel: {
-              display: true,
-              labelString: m.label,
-            },
-          }
-        })
-      })
-
-      // @todo this does not really support multiple reports per chart (hence the data[0]
-      //       if we want to support that, label&data sync across all reports needs to be done
-      resolve({ data: data[0], options })
+      // @todo this does not really support multiple reports per chart (hence the out[0]
+      //       if we want to support that, label & data sync across all reports needs to be done
+      resolve(out[0])
     })
   }
 
@@ -168,49 +204,29 @@ export default class Chart {
   }
 
   processReporterResults (results, report) {
-    const isTimeDimension = !!(dimensionFunctions.lookup(report.dimensions[0]) || {}).time
     let labels = []
+    const isTimeDimension = !!(dimensionFunctions.lookup(report.dimensions[0]) || {}).time
 
     if (!isTimeDimension) {
+      // Not a time timensions, build set of labels
       labels = results.map(r => r['dimension_0'])
     }
 
-    return {
-      // Map dimension data to labels
-      labels,
-
-      // ... and metrics to datasets
-      datasets: this.generateDataSets(results, report),
-    }
-  }
-
-  generateDataSets (results, report) {
-    const isTimeDimension = !!(dimensionFunctions.lookup(report.dimensions[0]) || {}).time
-
-    return report.metrics.map(({ field, fill, aggregate, label, type, backgroundColor }, index) => {
+    let metrics = report.metrics.map(({ field, fill, aggregate, label, type, backgroundColor }) => {
       const alias = makeAlias({ field, aggregate })
 
-      if (typeof backgroundColor === 'string') {
-        const c = backgroundColor
-        const o = 0.7
-        backgroundColor = 'rgba(' + parseInt(c.slice(-6, -4), 16) + ',' + parseInt(c.slice(-4, -2), 16) + ',' + parseInt(c.slice(-2), 16) + ',' + o + ')'
-      }
+      return results.map(r => {
+        const y = r[field === 'count' ? field : alias]
+        if (!isTimeDimension) {
+          // Return a set of integers
+          return y
+        }
 
-      fill = !!fill
+        // Return objects {y,t}
+        return { y, t: moment(r['dimension_0']).toDate() }
+      })
+    }) || []
 
-      return {
-        yAxisID: `y-axis-metric-${alias}`,
-
-        label,
-        type,
-        fill,
-        backgroundColor,
-        data: results.map(r => {
-          let d = { y: r[field === 'count' ? field : alias] }
-          if (isTimeDimension) d.t = moment(r['dimension_0']).toDate()
-          return d
-        }),
-      }
-    })
+    return { labels, metrics }
   }
 }
