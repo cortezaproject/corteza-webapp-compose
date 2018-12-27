@@ -48,6 +48,7 @@
     "vue-pagination-2": "^2.0.3",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.0.1",
+    "vue-select": "^2.5.1",
     "vue-sortable-tree": "^1.2.2",
     "vue-tweet-embed": "^2.1.2",
     "vuedraggable": "^2.16.0",
