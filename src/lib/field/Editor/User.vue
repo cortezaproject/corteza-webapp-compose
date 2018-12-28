@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    {{ field.label || field.name }} @todo
+    {{ field.label || field.name }}
     <vue-select :options="users"
                   @search="search"
                   option-value="userID"

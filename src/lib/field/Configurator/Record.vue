@@ -1,11 +1,34 @@
 <template>
   <div>
-    <label class="d-block">Module name</label>
-    <select v-model="f.options.moduleID" class="form-control">
-      <option value="">Pick module</option>
-      <option v-for="module in modules" :value="module.moduleID" :key="module.moduleID">{{module.name}}</option>
-    </select>
-    {{ field }}
+    <div class="form-group">
+      <label class="d-block">Module name</label>
+      <b-form-select v-model="f.options.moduleID"
+                     :options="modules"
+                     text-field="name"
+                     value-field="moduleID"
+                     class="form-control">
+        <template slot="first"><option disabled>Pick module</option></template>
+      </b-form-select>
+    </div>
+
+    <div class="form-group">
+      <label class="d-block">Record label from field</label>
+      <b-form-select v-model="f.options.labelField"
+                     class="form-control"
+                     :options="fields"
+                     :disabled="!module">
+        <template slot="first"><option disabled>Pick field</option></template>
+      </b-form-select>
+    </div>
+    <div class="form-group">
+      <label class="d-block">Query fields on search</label>
+      <b-form-select v-model="f.options.queryFields"
+                     class="form-control"
+                     :options="fields"
+                     multiple
+                     :disabled="!module">
+      </b-form-select>
+    </div>
   </div>
 </template>
 
@@ -22,6 +45,16 @@ export default {
     return {
       modules: [],
     }
+  },
+
+  computed: {
+    module () {
+      return this.modules.find(m => m.moduleID === this.f.options.moduleID)
+    },
+
+    fields () {
+      return this.module ? this.module.fields.map(f => { return { value: f.name, text: f.label || f.name } }) : []
+    },
   },
 
   created () {
