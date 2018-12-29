@@ -84,7 +84,6 @@ function crmViews () {
           component: view('Admin/Index'),
           children: [
             { path: 'field-types', name: 'storybook.field-types', component: view('Storybook/FieldTypes') },
-            { path: 'charts', name: 'storybook.charts', component: view('Storybook/Charts') },
           ],
         },
       ],
