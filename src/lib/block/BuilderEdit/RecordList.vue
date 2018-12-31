@@ -16,22 +16,45 @@
 
     <field-selector v-if="selectedModule" :module="selectedModule" :fields.sync="o.fields" />
 
-    <fieldset class="">
-      <b-form-checkbox
-        :value="true"
-        :unchecked-value="false"
-        plain
-        v-model="o.hideAddButton">
-        Hide add record button
-      </b-form-checkbox>
-      <b-form-checkbox
-        :value="true"
-        :unchecked-value="false"
-        plain
-        v-model="o.hideSearch">
-        Hide search box
-      </b-form-checkbox>
-    </fieldset>
+    <b-form-group horizontal :label-cols="3" breakpoint="md" label="New records">
+        <b-form-checkbox :value="true"
+                         :unchecked-value="false"
+                         plain
+                         v-model="o.hideAddButton">Hide add record button</b-form-checkbox>
+    </b-form-group>
+    <b-form-group horizontal :label-cols="3" breakpoint="md" label="Prefilter records">
+      <b-form-textarea :value="true"
+                       placeholder="field1 = 1 AND field2 = 232"
+                       v-model="o.prefilter"></b-form-textarea>
+        <b-form-text>
+          Simplified SQL condition (WHERE ...) syntax is suppoeted.
+          Variables like <code>${recordID}</code>, <code>${ownerID}</code> and
+          <code>${userID}</code> are evaluated (when available).
+        </b-form-text>
+      <b-form-checkbox :value="true"
+                       :unchecked-value="false"
+                       plain
+                       v-model="o.hideSearch">Hide search box</b-form-checkbox>
+    </b-form-group>
+    <b-form-group horizontal :label-cols="3" breakpoint="md" label="Presort records">
+      <b-form-textarea :value="true"
+                       placeholder="field1 DESC, field2 ASC"
+                       v-model="o.presort"></b-form-textarea>
+      <b-form-text>
+        Simplified SQL condition (ORDER BY ...) syntax is suppoeted.
+      </b-form-text>
+      <b-form-checkbox :value="true"
+                       :unchecked-value="false"
+                       plain
+                       v-model="o.hideSorting">Hide sorting</b-form-checkbox>
+    </b-form-group>
+    <b-form-group horizontal :label-cols="3" breakpoint="md" label="Records per page">
+      <b-form-input type="number" v-model.number="o.perPage"></b-form-input>
+      <b-form-checkbox :value="true"
+                       :unchecked-value="false"
+                       plain
+                       v-model="o.hidePaging">Hide paging</b-form-checkbox>
+    </b-form-group>
   </div>
 </template>
 <script>

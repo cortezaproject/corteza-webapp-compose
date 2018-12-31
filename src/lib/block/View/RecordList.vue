@@ -1,19 +1,20 @@
 <template>
   <div v-if="error">{{ error }}</div>
   <div v-else-if="recordListModule">
-    <router-link v-if="!this.options.hideAddButton"
+    <router-link v-if="!options.hideAddButton"
                  class="btn-url"
                  :to="{ name: 'public.page.record.create', params: { pageID: options.pageID }, query: null }">+ Add new record</router-link>
-    <input v-if="!this.options.hideSearch"
+    <input v-if="!options.hideSearch"
            @keypress.enter.prevent="handleQuery($event.target.value)"
+           @keypress="handleQueryThrottled($event.target.value)"
            placeholder="Search" />
     <div class="table-responsive">
-      <table class="table sticky-header">
-        <thead>
-          <tr>
+      <table class="table sticky-header" :class="{sortable: !options.hideSorting}">
+        <thead v-if="!options.hideHeader">
+          <tr >
             <th v-for="(col) in columns" :key="'header:'+col.name" @click="handleSort(col.name)">
               {{ col.label || col.name }}
-              <font-awesome-icon :icon="['fas', 'sort']"></font-awesome-icon>
+              <font-awesome-icon :icon="['fas', 'sort']" v-if="!options.hideSorting"></font-awesome-icon>
             </th>
             <th></th>
           </tr>
@@ -32,7 +33,7 @@
         </tbody>
       </table>
     </div>
-    <div class="sticky-footer">
+    <div class="sticky-footer" v-if="options.hidePaging">
       <pagination
           :records="meta.count"
           :per-page="meta.perPage"
@@ -44,22 +45,27 @@
   <div v-else>Loading...</div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import base from './base'
 import FieldViewer from '@/lib/field/Viewer'
 import Pagination from 'vue-pagination-2'
 import Module from '@/lib/module'
+import _ from 'lodash'
 
 export default {
   extends: base,
 
   data () {
     return {
+      prefilter: null,
+      sortColumn: null,
+
       meta: {
         count: 0,
         page: 0,
         perPage: 20,
         sort: '',
-        query: '',
+        filter: '',
       },
 
       error: null,
@@ -70,12 +76,36 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      currentUser: 'auth/user',
+    }),
+
     columns () {
       return this.recordListModule.filterFields(this.options.fields)
     },
   },
 
   mounted () {
+    this.meta.sort = this.options.presort
+    this.meta.filter = this.options.prefilter
+    this.meta.perPage = this.options.perPage
+
+    if (this.options.prefilter) {
+      // Create a sandbox for evaling prefilter as a template
+      // This will allow us to pass ${recordID}, ${ownerID}, ${userID} etc
+      // as parameters
+      this.prefilter = (function (prefilter, { recordID, ownerID, userID }) {
+        // eslint-disable-next-line
+        return eval('`' + prefilter + '`')
+      })(this.options.prefilter, {
+        recordID: this.record.recordID,
+        ownerID: this.record.userID,
+        userID: this.currentUser.userID,
+      })
+
+      this.meta.filter = this.prefilter
+    }
+
     if (this.recordListModule && this.recordListModule.moduleID === this.options.moduleID) {
       this.fetch()
       return
@@ -94,13 +124,8 @@ export default {
   },
 
   methods: {
-    fetch ({ page, perPage, sort, query } = this.meta) {
-      const params = { page, perPage, sort, query }
-
-      // This has some undesired effects on record pages, disable it for now...
-      // this.$router.push({ query: params })
-
-      params.moduleID = this.recordListModule.moduleID
+    fetch (params = this.meta) {
+      params.moduleID = this.options.moduleID
 
       return this.$crm.moduleRecordList(params).then(({ meta, records }) => {
         this.meta = meta
@@ -108,12 +133,53 @@ export default {
       }).catch(this.defaultErrorHandler('Could not load record list'))
     },
 
+    handleQueryThrottled: _.throttle(function (e) { this.handleQuery(e) }, 500),
+    // handleQuery takes prefilter and merges it query expression over all columns we're showing
+    // ie: Return records that have strings in columns (fields) we're showing that start with <query> in case
+    //     of text or are exactly the same in case of numbers
     handleQuery (query) {
-      this.fetch({ ...this.meta, query })
+      let filter = this.prefilter
+
+      if (query.trim().length > 0) {
+        // Is this number we're searching?
+        const numQuery = Number.parseFloat(query)
+
+        // Replace * wildcard with SQL's % and append on at the end to enable
+        // fixed-prefix search by default
+        const strQuery = query.replace('*', '%') + '%'
+
+        // When searching, always reset filter with prefilter + query
+        filter = this.recordListModule.filterFields(this.options.fields).map(qf => {
+          if (qf.kind === 'Number' && !numQuery.isNaN()) {
+            return `${qf.name} = ${numQuery}`
+          }
+
+          if (['String', 'DateTime', 'Select', 'Url', 'Email'].includes(qf.kind)) {
+            return `${qf.name} LIKE '${strQuery}'`
+          }
+        }).filter(q => !!q).join(' OR ')
+
+        if (this.prefilter) {
+          filter = `${this.prefilter} AND ${filter}`
+        }
+      }
+
+      this.fetch({ ...this.meta, filter })
     },
 
     handleSort (fieldName) {
-      this.fetch({ ...this.meta, sort: this.meta.sort === fieldName ? fieldName + ' DESC' : fieldName })
+      if (this.options.hideSorting) {
+        return
+      }
+
+      let sort = this.options.presort
+      this.sortColumn = this.sortColumn === fieldName ? fieldName + ' DESC' : fieldName
+
+      if (sort) {
+        sort = sort + ', ' + this.sortColumn
+      }
+
+      this.fetch({ ...this.meta, sort })
     },
 
     handlePageChange (page) {
@@ -137,12 +203,15 @@ table {
   margin-bottom: 0;
 
   th {
-    cursor: pointer;
     white-space: nowrap;
 
     .fa-sort {
       margin-left: 10px;
     }
+  }
+
+  &.sortable thead th {
+    cursor: pointer;
   }
 }
 

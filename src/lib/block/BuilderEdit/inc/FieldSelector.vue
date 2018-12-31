@@ -11,7 +11,7 @@
             <div v-for="field in availableFields"
                  @dblclick="selectedFields.push(field)"
                  class="field"
-                 :key="field.name">{{field.label || field.name}}</div>
+                 :key="field.name"><span v-if="field.label">{{field.label}} ({{field.name}})</span><span v-else>{{field.name}}</span></div>
           </draggable>
         </div>
         <div class="selected">
@@ -24,7 +24,7 @@
             <div v-for="(field, index) in selectedFields"
                  @dblclick="selectedFields.splice(index,1)"
                  class="field"
-                 :key="field.name">{{field.label || field.name}}</div>
+                 :key="field.name"><span v-if="field.label">{{field.label}} ({{field.name}})</span><span v-else>{{field.name}}</span></div>
           </draggable>
         </div>
       </div>
