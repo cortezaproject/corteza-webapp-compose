@@ -275,7 +275,7 @@ class CRM {
     })
   }
 
-  async moduleRecordReport ({ moduleID, metrics, dimensions }) {
+  async moduleRecordReport ({ moduleID, metrics, dimensions, filter }) {
     const endpoint = `${this.baseLink}/module/${moduleID}/report`
     return new Promise((resolve, reject) => {
       axios({
@@ -286,6 +286,7 @@ class CRM {
         params: {
           'metrics': metrics,
           'dimensions': dimensions,
+          filter,
         },
         data: {},
       }).then(this.stdResolve(resolve, reject), this.stdReject(reject))

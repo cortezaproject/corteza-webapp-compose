@@ -6,6 +6,7 @@ const defMetrics = () => Object.assign({}, {})
 
 const defReport = () => Object.assign({}, {
   moduleID: null,
+  filter: null,
   dimensions: [defDimension()],
   metrics: [defMetrics()],
 })
@@ -48,6 +49,30 @@ export const dimensionFunctions = [
     time: { unit: 'year', minUnit: 'year', round: true },
   },
 ]
+
+export const predefinedFilters = [
+  { value: `YEAR(created_at) = YEAR(NOW())`,
+    text: `Records created this year` },
+  { value: `YEAR(created_at) = YEAR(NOW()) - 1`,
+    text: `Records created last year` },
+
+  { value: `YEAR(created_at) = YEAR(NOW()) AND QUARTER(created_at) = QUARTER(NOW())`,
+    text: `Records created this quarter` },
+  { value: `YEAR(created_at) = YEAR(NOW()) - 1 AND QUARTER(created_at) = QUARTER(DATE_SUB(NOW(), INTERVAL 3 MONTH)`,
+    text: `Records created last quarter` },
+
+  { value: `DATE_FORMAT(created_at, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')`,
+    text: `Records created this month` },
+  { value: `DATE_FORMAT(created_at, '%Y-%m') = DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 YEAR), '%Y-%m')`,
+    text: `Records created last month` },
+]
+
+// message: "Can not execute report query (
+// SELECT (COUNT(*)) AS count, (CAST(STD(JSON_UNQUOTE(JSON_EXTRACT(json, REPLACE(JSON_UNQUOTE(JSON_SEARCH(json, 'one', ?)), '.name', '.value')))) AS DECIMAL(14,2))) AS STD_value,
+//                             (DATE_FORMAT(JSON_UNQUOTE(JSON_EXTRACT(json, REPLACE(JSON_UNQUOTE(JSON_SEARCH(json, 'one', ?)), '.name', '.value'))), ?)) AS dimension_0
+//                        FROM crm_record WHERE module_id = ?
+//                          AND YEAR(created_at) = YEAR(NOW()) - 1
+//                          AND QUARTER(created_at) = QUARTER(DATE_SUB(NOW(), JSON_UNQUOTE(JSON_EXTRACT(json, REPLACE(JSON_UNQUOTE(JSON_SEARCH(json, 'one', ?)), '.name', '.value'))), 3, JSON_UNQUOTE(JSON_EXTRACT(json, REPLACE(JSON_UNQUOTE(JSON_SEARCH(json, 'one', ?)), '.name', '.value'))))) GROUP BY dimension_0 ORDER BY dimension_0): Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'JSON_UNQUOTE(JSON_EXTRACT(json, REPLACE(JSON_UNQUOTE(JSON_SEARCH(json, 'one', ?)' at line 1"
 
 dimensionFunctions.lookup = (d) => dimensionFunctions.find(f => d.modifier === f.label)
 dimensionFunctions.convert = (d) => (dimensionFunctions.lookup(d) || {}).convert(d.field)
@@ -191,9 +216,11 @@ export default class Chart {
     })
   }
 
-  formatReporterParams ({ moduleID, metrics, dimensions }) {
+  formatReporterParams ({ moduleID, metrics, dimensions, filter }) {
+    console.log('Filter', filter)
     return {
       moduleID,
+      filter,
 
       // Remove count (we'll get it anyway) and construct FUNC(ARG) params
       metrics: metrics.filter((f) => f.field !== 'count').map((m, i) => `${m.aggregate}(${m.field}) AS ${makeAlias(m)}`).join(','),
@@ -208,7 +235,7 @@ export default class Chart {
     const isTimeDimension = !!(dimensionFunctions.lookup(report.dimensions[0]) || {}).time
 
     if (!isTimeDimension) {
-      // Not a time timensions, build set of labels
+      // Not a time dimensions, build set of labels
       labels = results.map(r => r['dimension_0'])
     }
 

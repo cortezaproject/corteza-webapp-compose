@@ -11,6 +11,25 @@
     </fieldset>
 
     <div v-if="!!module" class="report-config">
+      <div class="filter">
+        <b-form-group horizontal :label-cols="2" breakpoint="md" label="Field">
+          <b-form-select v-model="report.filter"
+                         :disabled="customFilter"
+                         :options="predefinedFilters">
+            <template slot="first">
+              <option value="">(no filter)</option>
+            </template>
+          </b-form-select>
+          <b-form-checkbox v-model="customFilter">Customize filter</b-form-checkbox>
+          <b-form-textarea v-if="customFilter"
+                        v-model="report.filter"
+                        placeholder="a = 1 AND b > 2"></b-form-textarea>
+
+        </b-form-group>
+      </div>
+    </div>
+
+    <div v-if="!!module" class="report-config">
       <div class="dimensions">
         <fieldset v-for="(d,i) in dimensions" :key="'d'+i">
           <h5>Dimensions (datetime & select fields)</h5>
@@ -92,7 +111,8 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
-import { dimensionFunctions } from '@/lib/chart'
+import { VueSelect } from 'vue-select'
+import { dimensionFunctions, predefinedFilters } from '@/lib/chart'
 
 export default {
   name: 'Report',
@@ -158,8 +178,11 @@ export default {
 
   data () {
     return {
+      customFilter: false,
+
       metricAggregates: ['COUNTD', 'SUM', 'MAX', 'MIN', 'AVG', 'STD'],
       dimensionModifiers: dimensionFunctions.map(df => df.label),
+      predefinedFilters: predefinedFilters,
       chartTypes: ['line', 'bar'],
     }
   },
@@ -176,6 +199,7 @@ export default {
 
   components: {
     draggable,
+    VueSelect,
   },
 }
 </script>
