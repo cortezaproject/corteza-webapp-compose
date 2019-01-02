@@ -5,8 +5,9 @@
                  class="btn-url"
                  :to="{ name: 'public.page.record.create', params: { pageID: options.pageID }, query: null }">+ Add new record</router-link>
     <input v-if="!options.hideSearch"
-           @keypress.enter.prevent="handleQuery($event.target.value)"
-           @keypress="handleQueryThrottled($event.target.value)"
+           @keyup.enter.prevent="handleQuery"
+           @keyup="handleQueryThrottled"
+           v-model="query"
            placeholder="Search" />
     <div class="table-responsive">
       <table class="table sticky-header" :class="{sortable: !options.hideSorting}">
@@ -59,6 +60,7 @@ export default {
     return {
       prefilter: null,
       sortColumn: null,
+      query: null,
 
       meta: {
         count: 0,
@@ -137,16 +139,16 @@ export default {
     // handleQuery takes prefilter and merges it query expression over all columns we're showing
     // ie: Return records that have strings in columns (fields) we're showing that start with <query> in case
     //     of text or are exactly the same in case of numbers
-    handleQuery (query) {
+    handleQuery () {
       let filter = this.prefilter
 
-      if (query.trim().length > 0) {
+      if (this.query.trim().length > 0) {
         // Is this number we're searching?
-        const numQuery = Number.parseFloat(query)
+        const numQuery = Number.parseFloat(this.query)
 
         // Replace * wildcard with SQL's % and append on at the end to enable
         // fixed-prefix search by default
-        const strQuery = query.replace('*', '%') + '%'
+        const strQuery = this.query.replace('*', '%') + '%'
 
         // When searching, always reset filter with prefilter + query
         filter = this.recordListModule.filterFields(this.options.fields).map(qf => {

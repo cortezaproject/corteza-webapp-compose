@@ -6,7 +6,10 @@
     <i class="icon-edit"></i>
     </router-link>
     <hr />
-    <input @keypress.enter.prevent="handleQuery($event.target.value)" placeholder="Search" />
+    <input @keyup.enter.prevent="handleQuery"
+           @keyup="handleQueryThrottled"
+           v-model="query"
+           placeholder="Search" />
     <table class="table sticky-header">
       <thead>
         <tr>
@@ -72,6 +75,7 @@ import FieldViewer from '@/lib/field/Viewer'
 import Module from '@/lib/module'
 import Pagination from 'vue-pagination-2'
 import FieldSelector from '@/lib/block/BuilderEdit/inc/FieldSelector'
+import _ from 'lodash'
 
 export default {
   props: {
@@ -80,6 +84,8 @@ export default {
   data () {
     return {
       adminRecordListSettingsModal: false,
+
+      query: null,
 
       meta: {
         count: 0,
@@ -113,16 +119,18 @@ export default {
       }).catch(this.defaultErrorHandler('Could not load this record'))
     },
 
-    handleQuery (query) {
+    handleQueryThrottled: _.throttle(function (e) { this.handleQuery(e) }, 500),
+
+    handleQuery () {
       let filter
 
-      if (query.trim().length > 0) {
+      if (this.query.trim().length > 0) {
         // Is this number we're searching?
-        const numQuery = Number.parseFloat(query)
+        const numQuery = Number.parseFloat(this.query)
 
         // Replace * wildcard with SQL's % and append on at the end to enable
         // fixed-prefix search by default
-        const strQuery = query.replace('*', '%') + '%'
+        const strQuery = this.query.replace('*', '%') + '%'
 
         filter = this.module.fields.map(qf => {
           if (qf.kind === 'Number' && !numQuery.isNaN()) {
