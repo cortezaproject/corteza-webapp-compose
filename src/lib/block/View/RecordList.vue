@@ -172,11 +172,11 @@ export default {
         return
       }
 
-      let sort = this.options.presort
-      this.sortColumn = this.sortColumn === fieldName ? fieldName + ' DESC' : fieldName
+      let sort = this.sortColumn === fieldName ? fieldName + ' DESC' : fieldName
+      this.sortColumn = sort
 
-      if (sort) {
-        sort = sort + ', ' + this.sortColumn
+      if (this.options.presort) {
+        sort = this.options.presort + ', ' + sort
       }
 
       this.fetch({ ...this.meta, sort })
