@@ -32,7 +32,11 @@
               <draggable v-model="module.fields" :options="{handle:'.handle'}" element="tbody">
                 <tr v-for="(field, index) in module.fields" v-if="field" :key="index">
                   <td v-b-tooltip.hover title="Drag and drop to change order" class="handle"><font-awesome-icon :icon="['fas', 'sort']" title="Reorder fields"></font-awesome-icon></td>
-                  <td><input v-model="field.name" type="text" class="form-control" /></td>
+                  <td><b-form-input v-model="field.name"
+                                    required
+                                    :state="checkFieldNameState(field)"
+                                    type="text"
+                                    class="form-control" /></td>
                   <td><input v-model="field.label" type="text" class="form-control" /></td>
                   <td class="type">
                     <select v-model="field.kind" class="form-control" @change="handleKindChange(field)">
@@ -84,6 +88,8 @@ import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 import Field from '@/lib/field'
 import fieldList from '@/lib/field/list'
 
+const fieldNameCheck = new RegExp('^[a-zA-Z_][a-zA-Z0-9_]*$')
+
 export default {
   props: {
     moduleID: {
@@ -115,6 +121,10 @@ export default {
   },
 
   methods: {
+    checkFieldNameState (field) {
+      return field.name.length > 1 && fieldNameCheck.test(field.name) ? null : false
+    },
+
     handleNewField () {
       this.module.fields.push(new Field())
     },
