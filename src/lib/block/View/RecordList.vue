@@ -98,8 +98,8 @@ export default {
         // eslint-disable-next-line
         return eval('`' + prefilter + '`')
       })(this.options.prefilter, {
-        recordID: this.record.recordID,
-        ownerID: this.record.userID,
+        recordID: (this.record || {}).recordID,
+        ownerID: (this.record || {}).userID,
         userID: this.currentUser.userID,
       })
 
