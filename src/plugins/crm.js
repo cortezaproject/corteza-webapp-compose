@@ -225,7 +225,7 @@ class CRM {
     })
   }
 
-  async moduleEdit ({ moduleID, name, fields }) {
+  async moduleEdit ({ moduleID, name, fields, meta }) {
     const endpoint = `${this.baseLink}/module/${moduleID}`
     return new Promise((resolve, reject) => {
       axios({
@@ -237,6 +237,7 @@ class CRM {
         data: {
           'name': name,
           'fields': fields,
+          meta,
         },
       }).then(this.stdResolve(resolve, reject), this.stdReject(reject))
     })

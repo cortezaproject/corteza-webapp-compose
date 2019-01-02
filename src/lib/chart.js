@@ -217,7 +217,6 @@ export default class Chart {
   }
 
   formatReporterParams ({ moduleID, metrics, dimensions, filter }) {
-    console.log('Filter', filter)
     return {
       moduleID,
       filter,

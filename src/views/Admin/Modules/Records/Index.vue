@@ -10,16 +10,19 @@
     <table class="table sticky-header">
       <thead>
         <tr>
-          <th v-for="col in columns" :key="col.name" @click="handleSort(col.name)">
+          <th v-for="col in module.meta.admin.recordList.columns" :key="col.name" @click="handleSort(col.name)">
             {{col.label || col.name}}
           </th>
-          <th class="text-right"></th>
+          <th class="text-right">
+            <button @click.prevent="adminRecordListSettingsModal=true"
+                    class="btn-url"><font-awesome-icon :icon="['fas', 'wrench']"></font-awesome-icon></button>
+          </th>
         </tr>
       </thead>
       <tbody>
         <template v-for="row in records">
           <tr :key="row.recordID">
-            <td v-for="col in module.fields" :key="'modules-contents-' + row.id + '-' + col.name">
+            <td v-for="col in module.meta.admin.recordList.columns" :key="'modules-contents-' + row.recordID + '-' + col.name">
               <field-viewer :field="col" :record="row" value-only />
             </td>
             <td class="text-right actions">
@@ -48,6 +51,18 @@
       <p>No content rows added yet.</p>
     </template>
 
+    <b-modal
+      v-if="module.meta.admin.recordList.columns"
+      title="Admin record list settings"
+      ok-title="Save and close"
+      ok-variant="dark"
+      ok-only
+      @ok="handleModuleUpdate()"
+      @hide="adminRecordListSettingsModal=false"
+      :visible="adminRecordListSettingsModal">
+      <field-selector :module="module"
+                      :fields.sync="module.meta.admin.recordList.columns"></field-selector>
+    </b-modal>
   </section>
 </template>
 
@@ -56,6 +71,7 @@ import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 import FieldViewer from '@/lib/field/Viewer'
 import Module from '@/lib/module'
 import Pagination from 'vue-pagination-2'
+import FieldSelector from '@/lib/block/BuilderEdit/inc/FieldSelector'
 
 export default {
   props: {
@@ -63,6 +79,8 @@ export default {
   },
   data () {
     return {
+      adminRecordListSettingsModal: false,
+
       meta: {
         count: 0,
         page: 0,
@@ -76,13 +94,6 @@ export default {
     }
   },
 
-  computed: {
-    columns () {
-      // @filter out the fields we want to see here
-      return this.module.fields
-    },
-  },
-
   mounted () {
     this.$crm.moduleRead({ moduleID: this.moduleID }).then(m => {
       this.module = new Module(m)
@@ -91,9 +102,7 @@ export default {
   },
 
   methods: {
-    fetch ({ page, perPage, sort, query } = this.meta) {
-      const params = { page, perPage, sort, query }
-
+    fetch (params = this.meta) {
       this.$router.push({ query: params })
 
       params.moduleID = this.module.moduleID
@@ -105,7 +114,28 @@ export default {
     },
 
     handleQuery (query) {
-      this.fetch({ ...this.meta, query })
+      let filter
+
+      if (query.trim().length > 0) {
+        // Is this number we're searching?
+        const numQuery = Number.parseFloat(query)
+
+        // Replace * wildcard with SQL's % and append on at the end to enable
+        // fixed-prefix search by default
+        const strQuery = query.replace('*', '%') + '%'
+
+        filter = this.module.fields.map(qf => {
+          if (qf.kind === 'Number' && !numQuery.isNaN()) {
+            return `${qf.name} = ${numQuery}`
+          }
+
+          if (['String', 'DateTime', 'Select', 'Url', 'Email'].includes(qf.kind)) {
+            return `${qf.name} LIKE '${strQuery}'`
+          }
+        }).filter(q => !!q).join(' OR ')
+      }
+
+      this.fetch({ ...this.meta, filter })
     },
 
     handleSort (fieldName) {
@@ -122,12 +152,19 @@ export default {
         this.fetch()
       }).catch(this.defaultErrorHandler('Could not delete this record'))
     },
+
+    handleModuleUpdate () {
+      this.$crm.moduleEdit(this.module).then(() => {
+        this.raiseSuccessAlert('Module saved')
+      }).catch(this.defaultErrorHandler('Could not save changes'))
+    },
   },
 
   components: {
     Pagination,
     FieldViewer,
     ConfirmationToggle,
+    FieldSelector,
   },
 }
 </script>
@@ -187,8 +224,6 @@ a {
 }
 
 .btn-url {
-  margin-bottom: 20px;
-
   &.add-new {
     margin-left: 10px;
     display: block;
