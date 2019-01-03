@@ -213,9 +213,15 @@ input {
   border: 1px solid $appgrey;
   font-size: 14px;
 
-  &:invalid,
   &:focus:invalid {
     border-color: $appred;
+  }
+
+  &[type='url'],
+  &[type='email'] {
+    &:invalid {
+      border-color: $appred;
+    }
   }
 }
 
@@ -295,6 +301,12 @@ table {
   .btn-url {
     float: left;
   }
+}
+
+.navbar-collapse {
+  max-width: calc(100vw - 120px);
+  overflow: hidden;
+  display: block;
 }
 
 input[type='checkbox'] {
