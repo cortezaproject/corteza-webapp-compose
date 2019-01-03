@@ -9,9 +9,13 @@ button structure :
 
 /* stylelint-disable no-descending-specificity */
 
-:focus {
+*:focus {
   outline: none;
   box-shadow: none;
+}
+
+*:active {
+  background: transparent;
 }
 
 .btn {
@@ -135,6 +139,11 @@ button structure :
 
   .btn-txt, .btn-i {
     color: white;
+  }
+
+  &:active {
+    background-color: $appgreen;
+    border-color: $appgreen;
   }
 
   &:hover {

@@ -27,7 +27,7 @@
           <b-button @click.prevent="render"
                     :disabled="!chart.isValid()"
                     class="float-right"
-                    variant="success">Load data</b-button>
+                    variant="green">Load data</b-button>
           <canvas ref="chart" width="200" height="200"></canvas>
         </section>
       </div>

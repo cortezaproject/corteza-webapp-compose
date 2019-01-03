@@ -212,6 +212,11 @@ input {
   border-radius: 5px;
   border: 1px solid $appgrey;
   font-size: 14px;
+
+  &:invalid,
+  &:focus:invalid {
+    border-color: $appred;
+  }
 }
 
 table {
