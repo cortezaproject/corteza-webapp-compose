@@ -122,7 +122,7 @@ export default {
     this.$crm.moduleRead({ moduleID: this.options.moduleID }).then((m) => {
       this.recordListModule = new Module(m)
       this.fetch()
-    }).catch(this.defaultErrorHandler('Could not load record\' module'))
+    }).catch(this.defaultErrorHandler('Could not load record\'s module'))
   },
 
   methods: {
