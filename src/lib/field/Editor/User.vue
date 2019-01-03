@@ -5,7 +5,7 @@
                   @search="search"
                   option-value="userID"
                   option-text="label"
-                  placeholder="Search for users by email or name"
+                  placeholder="Start typing to search for users by email or name"
                   v-model="selected">
     </vue-select>
   </div>

@@ -6,7 +6,7 @@
                 @search="search"
                 option-value="recordID"
                 option-text="label"
-                placeholder="Search for records"
+                placeholder="Start typing to search for records"
                 v-model="selected">
     </vue-select>
   </div>

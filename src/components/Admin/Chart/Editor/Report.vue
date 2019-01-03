@@ -63,9 +63,9 @@
         <fieldset v-for="(m,i) in metrics" :key="'m'+i" class="main-fieldset">
           <h5>Metrics (numeric fields) </h5>
           <b-button v-if="metrics.length>1" @click.prevent="metrics.splice(i)" variant="danger"><i class="action icon-trash"></i></b-button>
-          <b-form-group horizontal class="color-picker" label="">
+          <b-form horizontal class="color-picker" label="">
               <b-form-input v-model="m.backgroundColor" type="color" ></b-form-input>
-          </b-form-group>
+          </b-form>
 
           <b-form-group horizontal :label-cols="2" breakpoint="md" label="Label">
             <b-form-input v-model="m.label" placeholder="Total"></b-form-input>
@@ -97,16 +97,16 @@
               </template>
             </b-form-select>
           </b-form-group>
-          <b-form-group horizontal :label-cols="2" breakpoint="md" label="">
-            <b-form-checkbox v-model="m.fill" :value="true" :unchecked-value="false"
+          <b-form-group stacked :label-cols="2" breakpoint="md" label="">
+            <b-form-checkbox plain v-model="m.fill" :value="true" :unchecked-value="false"
                              v-show="m.type === 'line'">Fill area below the line</b-form-checkbox>
-            <b-form-checkbox v-model="m.axisType" value="logarithmic" unchecked-value="linear">Logarithmic scale</b-form-checkbox>
-            <b-form-checkbox v-model="m.axisPosition" value="right" unchecked-value="left">Place axis on the right side</b-form-checkbox>
+            <b-form-checkbox plain v-model="m.axisType" value="logarithmic" unchecked-value="linear">Logarithmic scale</b-form-checkbox>
+            <b-form-checkbox plain v-model="m.axisPosition" value="right" unchecked-value="left">Place axis on the right side</b-form-checkbox>
           </b-form-group>
         </fieldset>
       </draggable>
     </div>
-    <b-button @click.prevent="metrics.push({})" variant="primary" class="btn-url float-right">+ Add metric</b-button>
+    <b-button @click.prevent="metrics.push({})" variant="url" class="float-right">+ Add metric</b-button>
   </div>
 </template>
 <script>
@@ -218,7 +218,7 @@ export default {
     padding: 15px 0;
 
     .form-group {
-      padding-right: 30px;
+      padding-right: 15px;
     }
   }
 

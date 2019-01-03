@@ -84,7 +84,6 @@ ul {
 
   &.root {
     max-width: calc(100vw - 120px);
-    overflow: hidden;
 
     li {
       display: inline-block;
