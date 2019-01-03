@@ -195,6 +195,10 @@ li.dropdown:hover > .dropdown-menu {
     }
   }
 
+  input[type] {
+    font-weight: 300;
+  }
+
   input[type="radio"],
   input[type="checkbox"] {
     background-color: transparent;
@@ -306,6 +310,7 @@ table {
 .v-select {
   .open-indicator {
     display: none;
+
     &::before {
       display: none;
     }
