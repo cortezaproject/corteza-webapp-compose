@@ -84,6 +84,7 @@ ul {
 
   &.root {
     max-width: calc(100vw - 120px);
+
     li {
       display: inline-block;
       cursor: pointer;

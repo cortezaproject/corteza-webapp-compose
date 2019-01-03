@@ -303,6 +303,20 @@ table {
   }
 }
 
+.v-select {
+  .open-indicator {
+    &::before {
+      display: none;
+    }
+  }
+
+  .dropdown-toggle {
+    &::after {
+      display: none;
+    }
+  }
+}
+
 .navbar-collapse {
   max-width: calc(100vw - 120px);
   overflow: hidden;
