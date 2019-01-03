@@ -1,9 +1,21 @@
 <template>
   <div>
-    <div><b-form-input v-model="f.options.prefix" placeholder="Prefix"></b-form-input></div>
-    <div><b-form-input v-model="f.options.suffix" placeholder="Suffix"></b-form-input></div>
-    <div><b-form-input v-model="f.options.precision" placeholder="Precision" type="number" min="0" max="6"></b-form-input></div>
-    <div><b-form-input v-model="f.options.format" placeholder="Format"></b-form-input></div>
+    <div class="form-group">
+      <label class="d-block">Prefix</label>
+      <b-form-input v-model="f.options.prefix" placeholder="Prefix"></b-form-input>
+    </div>
+    <div class="form-group">
+      <label class="d-block">Suffix</label>
+      <b-form-input v-model="f.options.suffix" placeholder="Suffix"></b-form-input>
+    </div>
+    <div class="form-group">
+      <label class="d-block">Precision</label>
+      <b-form-input v-model="f.options.precision" placeholder="Precision" type="number" min="0" max="6"></b-form-input>
+    </div>
+    <div class="form-group">
+      <label class="d-block">Format</label>
+      <b-form-input v-model="f.options.format" placeholder="Format"></b-form-input>
+    </div>
     <div>
       <p>Format Examples:</p>
       <table style="width:100%;">
