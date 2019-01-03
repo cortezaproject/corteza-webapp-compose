@@ -305,6 +305,7 @@ table {
 
 .v-select {
   .open-indicator {
+    display: none;
     &::before {
       display: none;
     }
