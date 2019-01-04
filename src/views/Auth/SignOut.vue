@@ -2,7 +2,7 @@
 export default {
   data () {
     return {
-      oidc: this.$system.baseURL() + '/oidc',
+      oidc: this.$system.baseURL + '/oidc',
     }
   },
   mounted () {

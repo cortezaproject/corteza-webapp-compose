@@ -2906,6 +2906,12 @@ cross-spawn@^6.0.0:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
+crust-api-client@crusttech/crust-api-client.js.git#master:
+  version "0.0.0"
+  resolved "https://codeload.github.com/crusttech/crust-api-client.js/tar.gz/a28b999341afd128faa607a434ec564866435c72"
+  dependencies:
+    axios "^0.18.0"
+
 crypto-browserify@^3.11.0:
   version "3.12.0"
   resolved "https://registry.yarnpkg.com/crypto-browserify/-/crypto-browserify-3.12.0.tgz#396cf9f3137f03e4b8e532c58f698254e00f80ec"
