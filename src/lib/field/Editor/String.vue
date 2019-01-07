@@ -4,6 +4,7 @@
     <quill-editor
       v-if="field.options.useRichTextEditor"
       v-model="value"
+      :options="quillOptions"
       ref="myQuillEditor"></quill-editor>
     <b-form-textarea
       v-else-if="field.options.multiLine"
@@ -28,5 +29,26 @@ export default {
   components: {
     quillEditor,
   },
+
+  data () {
+    return {
+      quillOptions: {
+        modules: {
+          toolbar: [
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            ['blockquote', 'code-block'],
+            [{ 'color': [] }, { 'background': [] }],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            [{ 'indent': '-1' }, { 'indent': '+1' }],
+            [{ 'align': [] }],
+            ['link'],
+            ['clean'],
+          ],
+        },
+      },
+    }
+  },
 }
+
 </script>
