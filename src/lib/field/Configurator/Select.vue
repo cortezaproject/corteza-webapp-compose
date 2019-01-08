@@ -6,7 +6,7 @@
         <b-form-input plain v-model="f.options.options[index]" size="sm"></b-form-input>
         <button @click.prevent="f.options.options.splice(index, 1)" class="btn-url">Remove</button>
       </div>
-      <b-form-input plain v-model="newOption" @keypress.enter.prevent="handleAddOption" size="sm"></b-form-input>
+      <b-form-input plain v-model="newOption" @keypress.enter.prevent="handleAddOption" size="sm" placeholder="Add more"></b-form-input>
       <button @click.prevent="handleAddOption" :disabled="newOption.length === 0" class="btn-url">+ Add</button>
     </div>
   </div>
