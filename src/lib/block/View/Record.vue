@@ -43,6 +43,7 @@ export default {
       font-weight: 900;
       display: block;
       font-size: 12px;
+      font-family: $crustheavy;
     }
 
     div {
