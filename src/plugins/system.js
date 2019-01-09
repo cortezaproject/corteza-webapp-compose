@@ -1,8 +1,7 @@
-import { System } from 'crust-api-client'
+import System from '@/api/system'
 
 export default {
   install (Vue) {
-    const client = new System({ baseURL: window.CrustConfig.system.baseUrl })
-    Vue.prototype.$system = client
+    Vue.prototype.$system = System
   },
 }

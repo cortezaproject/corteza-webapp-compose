@@ -1,8 +1,7 @@
-import { CRM } from 'crust-api-client'
+import CRM from '@/api/crm'
 
 export default {
   install (Vue) {
-    const client = new CRM({ baseURL: window.CrustConfig.crm.baseUrl })
-    Vue.prototype.$crm = client
+    Vue.prototype.$crm = CRM
   },
 }
