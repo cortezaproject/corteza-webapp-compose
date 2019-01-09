@@ -14,10 +14,6 @@ button structure :
   box-shadow: none;
 }
 
-*:active {
-  background: transparent;
-}
-
 .btn {
   display: inline-block;
   align-items: flex-start;
@@ -48,6 +44,10 @@ button structure :
     .btn-txt, .btn-i {
       color: $appwhite;
     }
+  }
+
+  &:active {
+    background: transparent;
   }
 
   &.large {

@@ -325,8 +325,11 @@ table {
 
 .navbar-collapse {
   max-width: calc(100vw - 120px);
-  overflow: hidden;
   display: block;
+}
+
+.ql-toolbar.ql-snow .ql-picker-label {
+  margin-top: -5px;
 }
 
 input[type='checkbox'] {

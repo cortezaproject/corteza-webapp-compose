@@ -62,6 +62,10 @@
 }
 
 .block-data {
+  .block-data-title {
+    font-size: 15px;
+  }
+
   h2 {
     font-size: 15px;
     font-weight: 900;
@@ -70,8 +74,8 @@
   }
 
   .block-data-description {
-    font-size: 12px;
-    border-bottom: 1px solid $appgrey;
+    font-size: 10px;
+    border-bottom: 1px solid $black;
     min-height: 15px;
     padding: 5px 10px;
     margin-bottom: 0;

@@ -1,17 +1,13 @@
 <template>
   <div class="row no-gutters">
-    <div class="form-group col-6">
+    <div class="form-group col-10">
       <div>Options to select from</div>
-      <table>
-        <tr v-for="(option, index) in f.options.options" :key="index">
-          <td><input v-model="f.options.options[index]" /></td>
-          <td><button @click.prevent="f.options.options.splice(index, 1)">-</button></td>
-        </tr>
-        <tr>
-          <td><input v-model="newOption" @keypress.enter.prevent="handleAddOption" /></td>
-          <td><button @click.prevent="handleAddOption" :disabled="newOption.length === 0">+</button></td>
-        </tr>
-      </table>
+      <div v-for="(option, index) in f.options.options" :key="index">
+        <b-form-input plain v-model="f.options.options[index]" size="sm"></b-form-input>
+        <button @click.prevent="f.options.options.splice(index, 1)" class="btn-url">Remove</button>
+      </div>
+      <b-form-input plain v-model="newOption" @keypress.enter.prevent="handleAddOption" size="sm" placeholder="Add more"></b-form-input>
+      <button @click.prevent="handleAddOption" :disabled="newOption.length === 0" class="btn-url">+ Add</button>
     </div>
   </div>
 </template>
@@ -46,3 +42,13 @@ export default {
   },
 }
 </script>
+
+<style scoped lang="scss">
+@import "@/assets/sass/btns.scss";
+
+input {
+  display: inline;
+  width: calc(100% - 60px);
+  margin-right: 10px;
+}
+</style>
