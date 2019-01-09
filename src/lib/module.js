@@ -17,6 +17,12 @@ export default class Module {
     this.moduleID = typeof moduleID === 'string' ? moduleID : this.moduleID || ''
     this.name = typeof name === 'string' ? name : this.name || ''
     this.fields = Array.isArray(fields) ? fields.map(f => new Field(f)) : []
+
+    // Properly convert old meta data that contained fields:
+    if (Array.isArray(meta)) {
+      meta = defMeta()
+    }
+
     this.meta = Object.assign(defMeta(), (typeof meta === 'object' ? meta : this.meta) || {})
 
     if ((this.meta.admin.recordList.columns || {}).length === 0) {

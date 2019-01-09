@@ -22,33 +22,11 @@ export default {
   computed: {
     value: {
       get () {
-        // @todo handle multiple values
-        if (this.record && this.record.fields) {
-          return (this.record.fields.find(f => f.name === this.field.name) || {}).value
-        } else {
-          return undefined
-        }
+        return this.record.values[this.field.name]
       },
 
       set (value) {
-        // @todo handle multiple values
-        if (!this.record) {
-          this.record = {}
-        }
-
-        if (!this.record.fields) {
-          this.record.fields = []
-        }
-
-        if (!this.record.fields.find(f => f.name === this.field.name)) {
-          this.record.fields.push({
-            name: this.field.name,
-            value: value,
-          })
-        } else {
-          this.record.fields.find(f => f.name === this.field.name).value = value
-        }
-
+        this.record.values[this.field.name] = value
         this.$emit('update:record', this.record)
       },
     },

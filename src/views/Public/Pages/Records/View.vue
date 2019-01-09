@@ -37,7 +37,7 @@ export default {
 
   data () {
     return {
-      record: {},
+      record: undefined,
 
       // We handle edit mode here because EditRecord components
       // is extending us
@@ -60,7 +60,7 @@ export default {
       this.record = null
       if (this.page && this.recordID && this.page.moduleID) {
         this.$crm.moduleRecordRead({ moduleID: this.page.moduleID, recordID: this.recordID }).then(record => {
-          this.record = record
+          this.record = new Record(this.page.module, record)
         }).catch(this.defaultErrorHandler('Could not load this record'))
       }
     },

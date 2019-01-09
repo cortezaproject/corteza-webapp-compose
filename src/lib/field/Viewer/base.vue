@@ -28,15 +28,8 @@ export default {
   },
 
   computed: {
-    value: {
-      get () {
-        // @todo handle multiple values
-        if (this.record && this.record.fields) {
-          return (this.record.fields.find(f => f.name === this.field.name) || {}).value
-        } else {
-          return undefined
-        }
-      },
+    value () {
+      return this.record ? this.record.values[this.field.name] : undefined
     },
 
     formatted () {

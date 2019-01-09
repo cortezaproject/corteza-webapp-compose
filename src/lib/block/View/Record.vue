@@ -8,7 +8,7 @@
         <field-viewer
           :field="field"
           value-only
-          :record="record || {}"></field-viewer>
+          :record="record"></field-viewer>
       </div>
     </div>
   </div>

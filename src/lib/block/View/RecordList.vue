@@ -52,6 +52,7 @@ import FieldViewer from '@/lib/field/Viewer'
 import Pagination from 'vue-pagination-2'
 import Module from '@/lib/module'
 import _ from 'lodash'
+import Record from '@/lib/record'
 
 export default {
   extends: base,
@@ -131,7 +132,7 @@ export default {
 
       return this.$crm.moduleRecordList(params).then(({ meta, records }) => {
         this.meta = meta
-        this.records = records
+        this.records = records.map(r => new Record(this.recordListModule, r))
       }).catch(this.defaultErrorHandler('Could not load record list'))
     },
 

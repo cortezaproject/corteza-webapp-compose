@@ -1,6 +1,7 @@
 <script>
 import Grid from '@/components/Public/Page/Grid'
 import ViewRecord from './View'
+import Record from '@/lib/record'
 
 export default {
   name: 'EditRecord',

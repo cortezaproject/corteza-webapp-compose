@@ -1,13 +1,11 @@
 <template>
   <div class="view">
-    <b-alert show variant="warning" dismissible @dismissed="warningAlert=null" v-if="warningAlert">{{ warningAlert }}</b-alert>
-    <b-alert show variant="info" dismissible @dismissed="infoAlert=null" v-if="infoAlert">{{ infoAlert }}</b-alert>
     <div class="editor">
       <button class="btn-url" @click.prevent="$router.back()">&#171; Back</button>
       <button class="btn" @click.prevent="$router.push({ name: 'public.page.record.create' })">+ Add new</button>
       <button class="btn btn-blue" @click="handleCreate">Save changes</button>
     </div>
-    <grid :page="page" :record="record" edit-mode />
+    <grid :page="page" :record="record" v-if="record" edit-mode />
   </div>
 </template>
 <script>
@@ -26,8 +24,12 @@ export default {
 
   data () {
     return {
-      record: { fields: [] },
+      record: null,
     }
+  },
+
+  created () {
+    this.record = new Record(this.page.module, {})
   },
 
   methods: {
