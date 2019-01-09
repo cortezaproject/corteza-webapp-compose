@@ -184,7 +184,7 @@ export default {
 
     handleDelete () {
       this.$crm.chartDelete({ chartID: this.chartID }).then(() => {
-        this.raiseSuccessAlert('Module deleted')
+        this.raiseSuccessAlert('Chart deleted')
         this.$router.push({ name: 'admin.charts' })
       }).catch(this.defaultErrorHandler('Could not delete this chart'))
     },

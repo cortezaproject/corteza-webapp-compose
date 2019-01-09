@@ -14,10 +14,12 @@
               <router-link :to="{name: 'admin.charts'}" class="nav-link">Charts</router-link>
             </li>
             <li>
+              <router-link :to="{name: 'admin.automation'}" class="nav-link">Automation</router-link>
+            </li>
+            <li>
               <router-link :to="{name: 'admin.configuration'}" class="nav-link">Configuration</router-link>
             </li>
           </ul>
-
         </b-collapse>
     </b-navbar>
   </header>

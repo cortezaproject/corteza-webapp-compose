@@ -9,7 +9,10 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import Grid from '@/components/Public/Page/Grid'
+import runner from '@/lib/trigger_runner'
+import Record from '@/lib/record'
 
 export default {
   name: 'CreateRecord',
@@ -20,6 +23,12 @@ export default {
       type: Object,
       required: true,
     },
+  },
+
+  computed: {
+    ...mapGetters({
+      triggers: 'trigger/set',
+    }),
   },
 
   data () {
@@ -34,15 +43,20 @@ export default {
 
   methods: {
     handleCreate () {
-      const payload = {
-        moduleID: this.page.moduleID,
-        fields: this.record.fields,
+      const runnerCtx = {
+        module: this.page.module,
+        record: this.record,
       }
 
-      this.$crm.moduleRecordCreate(payload).then((rsp) => {
-        this.raiseSuccessAlert('Record saved')
-        this.$router.push({ name: 'public.page.record.edit', params: { recordID: rsp.recordID } })
-      }).catch(this.defaultErrorHandler('Could not save this record'))
+      if (runner(this.triggers, 'beforeCreate', runnerCtx)) {
+        this.$crm.moduleRecordCreate(this.record).then((r) => {
+          this.record = new Record(this.page.module, r)
+          this.raiseSuccessAlert('Record saved')
+          this.$router.push({ name: 'public.page.record.edit', params: { recordID: this.record.recordID } })
+
+          runner(this.triggers, 'afterCreate', runnerCtx)
+        }).catch(this.defaultErrorHandler('Could not save this record'))
+      }
     },
   },
 
