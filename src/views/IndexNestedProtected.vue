@@ -36,7 +36,7 @@ export default {
   .alert-holder {
     position: absolute;
     width: 100%;
-    top: 62px;
+    top: 55px;
 
     .alert {
       z-index: 1;

@@ -33,9 +33,6 @@ a {
   padding: 5px;
   margin-bottom: 20px;
   background-color: $appwhite;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0.1rem 0.2rem 0 rgba(30, 34, 36, 0.1);
-  box-shadow: 0 0.1rem 0.2rem 0 rgba(30, 34, 36, 0.1);
 
   h2 {
     padding-bottom: 10px;
@@ -298,8 +295,7 @@ table {
   width: 100%;
   bottom: 0;
   z-index: 3;
-  border-top: 5px solid $appred;
-  box-shadow: 0 0 8px 0 rgba($appgrey, 0.75);
+  border-top: 1px solid $appblue;
 
   .btn-url {
     float: left;

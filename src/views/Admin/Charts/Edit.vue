@@ -213,4 +213,8 @@ export default {
   margin-left: 20px;
 }
 
+.well {
+  margin-top: 60px;
+}
+
 </style>

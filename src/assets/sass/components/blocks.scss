@@ -1,6 +1,10 @@
 @import "@/assets/sass/_0.declare.scss";
 
 .theme- {
+  h2 {
+    border-bottom: 1px solid $appgrey;
+  }
+
   &red-dark {
     h2 {
       background: rgba($appred, 0.9);
