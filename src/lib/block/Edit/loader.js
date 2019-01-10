@@ -1,3 +1,4 @@
+export { default as Automation } from './../View/Automation'
 export { default as Record } from './Record'
 export { default as RecordList } from './../View/RecordList'
 export { default as Chart } from './../View/Chart'

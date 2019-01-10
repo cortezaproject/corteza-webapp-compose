@@ -49,6 +49,7 @@
             <b-button-group label="f">
               <b-button variant="link" @click="insertSample('SimpleFieldValueCheck')">Value check</b-button>
               <b-button variant="link" @click="insertSample('MakeNewRecord')">New record</b-button>
+              <b-button variant="link" @click="insertSample('SimpleNotification')">UI Notification</b-button>
             </b-button-group>
           </b-form-group>
 
@@ -60,7 +61,7 @@
                            required
                            value-field="moduleID"
                            class="form-control">
-              <template slot="first"><option value="">(no primary module)</option></template>
+              <template slot="first"><option :value="null">(no primary module)</option></template>
             </b-form-select>
           </b-form-group>
 
@@ -78,7 +79,6 @@
           </b-form-group>
         </div>
       </div>
-      {{ trigger }}
     </form>
   </div>
 </template>

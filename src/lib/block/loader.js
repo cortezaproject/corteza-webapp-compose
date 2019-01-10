@@ -1,3 +1,4 @@
+export { Automation } from './Automation'
 export { Record } from './Record'
 export { RecordList } from './RecordList'
 export { Chart } from './Chart'

@@ -22,26 +22,26 @@ export default class Trigger {
   // Is trigger runnable?
   runnable ({ module, action }) {
     if (!this.enabled) {
-      console.debug('Trigger [%s] "%s" not runnable: disabled', this.triggerID, this.name)
+      // console.debug('Trigger [%s] "%s" not runnable: disabled', this.triggerID, this.name)
       return false
     }
 
     if (module.moduleID !== this.moduleID) {
-      console.debug('Trigger [%s] "%s" not runnable: module mismatch', this.triggerID, this.name, module.moduleID, this.moduleID)
+      // console.debug('Trigger [%s] "%s" not runnable: module mismatch', this.triggerID, this.name, module.moduleID, this.moduleID)
       return false
     }
 
-    if (this.actions.find(a => action) === undefined) {
-      console.debug('Trigger [%s] "%s" not runnable: action (%s) mismatch [%o]', this.triggerID, this.name, action, this.actions)
+    if (this.actions.find(a => a === action) === undefined) {
+      // console.debug('Trigger [%s] "%s" not runnable: action (%s) mismatch [%o]', this.triggerID, this.name, action, this.actions)
       return false
     }
 
     if (this.source.trim().length === 0) {
-      console.debug('Trigger [%s] "%s" not runnable: no code', this.triggerID, this.name)
+      // console.debug('Trigger [%s] "%s" not runnable: no code', this.triggerID, this.name)
       return false
     }
 
-    console.debug('Trigger [%s] "%s" is runnable', this.triggerID, this.name)
+    // console.debug('Trigger [%s] "%s" is runnable', this.triggerID, this.name)
     return true
   }
 
@@ -53,9 +53,9 @@ export default class Trigger {
     // Wrap into self-executing function and
     const source = `(function() {${this.source};\n return true;})()`
 
-    console.debug('Running trigger [%s] "%s": %s', this.triggerID, this.name, source)
+    // console.debug('Running trigger [%s] "%s": %s', this.triggerID, this.name, source)
     const rval = safeEval(source, ctx)
-    console.debug('Trigger [%s] "%s" returned: %o', this.triggerID, this.name, rval)
+    // console.debug('Trigger [%s] "%s" returned: %o', this.triggerID, this.name, rval)
     return rval
   }
 }

@@ -51,3 +51,8 @@ if (!crust.api.record.save(crust.helpers.record.new('Account', record.values))))
   return false
 }
 `.trimLeft()
+
+export const SimpleNotification = `
+crust.helpers.ui.alert.success('This is a notification')
+// crust.helpers.ui.alert.error('This is an error')
+`.trimLeft()

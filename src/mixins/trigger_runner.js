@@ -44,10 +44,14 @@ export default {
       }
     },
 
-    manualTrigger (module, record) {
+    async runTrigger (triggerID, module, record) {
       let ctx = { module, record }
 
-      this.runTriggers('manual', ctx)
+      const trigger = (await this.getTriggers()).find(t => t.triggerID === triggerID)
+
+      if (trigger !== undefined && trigger.enabled) {
+        trigger.run(this.triggerContext({ ...ctx, action: 'manual' }))
+      }
     },
 
     async getTriggers () {
@@ -55,13 +59,26 @@ export default {
     },
 
     async runTriggers (action, ctx) {
+      ctx = this.triggerContext({ ...ctx, action })
+
+      const set = (await this.getTriggers()).filter(t => t.runnable({ module, action }))
+
+      for (let i = 0; i < set.length; i++) {
+        if (!set[i].run(ctx)) {
+          return false
+        }
+      }
+
+      return true
+    },
+
+    triggerContext (ctx) {
       const $crm = this.$crm
       let { module } = ctx
 
       ctx.modules = [ module ]
 
-      ctx = {
-        action,
+      return {
         ...ctx,
 
         crust: {
@@ -116,31 +133,21 @@ export default {
                 return record
               },
             },
-          },
 
-          send: {
-            email: () => {},
-            message: () => {},
-          },
+            send: {
+              email: () => {},
+              message: () => {},
+            },
 
-          ui: {
-            alert: {
-              success: (text) => this.raiseSuccessAlert(text),
-              error: (text) => this.raiseErrorAlert(text),
+            ui: {
+              alert: {
+                success: (text) => this.raiseSuccessAlert(text),
+                error: (text) => this.raiseErrorAlert(text),
+              },
             },
           },
         },
       }
-
-      const set = (await this.getTriggers()).filter(t => t.runnable({ module, action }))
-
-      for (let i = 0; i < set.length; i++) {
-        if (!set[i].run(ctx)) {
-          return false
-        }
-      }
-
-      return true
     },
   },
 }

@@ -40,6 +40,9 @@ export default {
         { label: 'RecordList',
           recordPageOnly: false,
           block: new Block({ kind: 'RecordList' }) },
+        { label: 'Automation',
+          recordPageOnly: false,
+          block: new Block({ kind: 'Automation' }) },
       ],
     }
   },
