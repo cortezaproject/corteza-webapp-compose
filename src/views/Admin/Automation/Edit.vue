@@ -32,10 +32,10 @@
                        :showGutter="true"
                        :highlightActiveLine="true"
                        :enableBasicAutocompletion="true"
-                       :minLines="5"
-                       :maxLines="15"
+                       :minLines="10"
+                       :maxLines="30"
                        width="100%"
-                       :editorProps="{$blockScrolling: true, enableSnippets: true}"
+                       :editorProps="{$blockScrolling: true}"
                        :onChange="onSourceEditorChange"
                        :onBeforeLoad="onBeforeSourceEditorLoad"
                        :onLoad="onSourceEditorLoad"
@@ -44,10 +44,11 @@
                        ref="sourceEditor"
                        name="editor" />
 
-            <b-button-group>
-              <b-button variant="link" @click="insertSample('Sample1')">Snippet1</b-button>
-              <b-button variant="link" @click="insertSample('Sample2')">Snippet2</b-button>
-              <b-button variant="link" @click="insertSample('Sample3')">Snippet3</b-button>
+            <br>
+            Sample code:
+            <b-button-group label="f">
+              <b-button variant="link" @click="insertSample('SimpleFieldValueCheck')">Value check</b-button>
+              <b-button variant="link" @click="insertSample('MakeNewRecord')">New record</b-button>
             </b-button-group>
           </b-form-group>
 
@@ -90,8 +91,6 @@ import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 import { Ace as AceEditor } from 'vue2-brace-editor'
 import 'brace/mode/javascript'
 import 'brace/theme/monokai'
-
-console.log(TriggerCodeSamples)
 
 export default {
   props: {
@@ -149,7 +148,6 @@ export default {
     },
 
     onBeforeSourceEditorLoad (brace) {
-      console.log(brace)
       // const langTools = brace.acequire('ace/ext/language_tools')
       //
       // langTools.addCompleter({
@@ -160,17 +158,16 @@ export default {
     },
 
     onSourceEditorLoad (brace) {
+      // Disable linting, we do not care about missing end semicolon warnings
       brace.session.$worker.send('changeOptions', [{ asi: true }])
 
+      // Link brace to component's data so we have access to it later
       this.editor = brace
 
-      // const langTools = brace.acequire('ace/ext/language_tools')
-      //
-      // langTools.addCompleter({
-      //   getCompletions: (editor, session, pos, prefix, callback) => {
-      //     console.log(editor, session, pos, prefix, callback)
-      //   },
-      // })
+      // Add default sample to unconfigured triggers
+      if (!this.trigger.moduleID && !this.trigger.source) {
+        this.insertSample('Default')
+      }
     },
 
     insertSample (key) {

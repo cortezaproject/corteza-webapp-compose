@@ -16,11 +16,10 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex'
 import Grid from '@/components/Public/Page/Grid'
 import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 import Record from '@/lib/record'
-import runner from '@/lib/trigger_runner'
+import triggerRunner from '@/mixins/trigger_runner'
 
 export default {
   name: 'ViewRecord',
@@ -36,12 +35,6 @@ export default {
       type: String,
       required: false,
     },
-  },
-
-  computed: {
-    ...mapGetters({
-      triggers: 'trigger/set',
-    }),
   },
 
   data () {
@@ -60,19 +53,11 @@ export default {
     },
   },
 
-  created () {
-    this.loadTriggers()
-  },
-
   mounted () {
     this.loadRecord()
   },
 
   methods: {
-    ...mapActions({
-      loadTriggers: 'trigger/load',
-    }),
-
     loadRecord () {
       this.record = null
       if (this.page && this.recordID && this.page.moduleID) {
@@ -83,19 +68,7 @@ export default {
     },
 
     handleDelete () {
-      const runnerCtx = {
-        module: this.page.module,
-        record: this.record,
-      }
-
-      if (runner(this.triggers, 'beforeDelete', runnerCtx)) {
-        this.$crm.moduleRecordDelete({ moduleID: this.record.moduleID, recordID: this.record.recordID }).then(rsp => {
-          this.raiseSuccessAlert('Record deleted')
-          this.$router.push({ name: 'public.page' })
-
-          runner(this.triggers, 'afterDelete', runnerCtx)
-        }).catch(this.defaultErrorHandler('Could not delete this record'))
-      }
+      this.deleteRecord(this.page.module, this.record)
     },
 
     handleBack () {
@@ -107,6 +80,10 @@ export default {
     Grid,
     ConfirmationToggle,
   },
+
+  mixins: [
+    triggerRunner,
+  ],
 }
 </script>
 <style lang="scss" scoped>
