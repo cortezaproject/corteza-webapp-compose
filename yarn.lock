@@ -1920,6 +1920,11 @@ brace-expansion@^1.1.7:
     balanced-match "^1.0.0"
     concat-map "0.0.1"
 
+brace@^0.11.0:
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/brace/-/brace-0.11.1.tgz#4896fcc9d544eef45f4bb7660db320d3b379fe58"
+  integrity sha1-SJb8ydVE7vRfS7dmDbMg07N5/lg=
+
 braces@^1.8.2:
   version "1.8.5"
   resolved "https://registry.yarnpkg.com/braces/-/braces-1.8.5.tgz#ba77962e12dff969d6b76711e914b737857bf6a7"
@@ -2913,7 +2918,7 @@ cross-spawn@^6.0.0:
 
 crust-api-client@crusttech/crust-api-client.js.git#master:
   version "0.0.0"
-  resolved "https://codeload.github.com/crusttech/crust-api-client.js/tar.gz/a28b999341afd128faa607a434ec564866435c72"
+  resolved "https://codeload.github.com/crusttech/crust-api-client.js/tar.gz/debc8b09df58000a0b685a26c51ddf8dfc764791"
   dependencies:
     axios "^0.18.0"
 
@@ -11273,6 +11278,13 @@ vue-tweet-embed@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/vue-tweet-embed/-/vue-tweet-embed-2.1.2.tgz#2933d76971fc0488453325f55b9e60414eac1219"
   integrity sha512-8CLOxKQqot2Kg+uGIBcaR0o7xu8bh6VY7rva/03DI/cByBangOiY2W+c884i4Z8wocngljy/a9eIrJzsfj0PcQ==
+
+vue2-brace-editor@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/vue2-brace-editor/-/vue2-brace-editor-2.0.2.tgz#d9cd06f201c3e7af8382fd14a3eb8c2c49971436"
+  integrity sha512-ADJo1dccmIjq3ZejUNFJT/GpTQV5+TPOkC7xArBbVooVSjL8NOgRbqQ1Ix1LEW2S0hgy1y2ac8VHpZZdV4hjug==
+  dependencies:
+    brace "^0.11.0"
 
 vue@>=2.0.0, vue@^2.5.17:
   version "2.5.17"

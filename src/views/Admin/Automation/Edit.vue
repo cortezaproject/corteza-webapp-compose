@@ -26,11 +26,29 @@
 
           <b-form-group horizontal
                         label="Code">
-            <b-form-textarea v-model="trigger.source"
-                             :rows="10"
-                             class="form-control">
-              <template slot="first"><option disabled>Pick module</option></template>
-            </b-form-textarea>
+            <AceEditor :value="trigger.source"
+                       :fontSize="14"
+                       :showPrintMargin="false"
+                       :showGutter="true"
+                       :highlightActiveLine="true"
+                       :enableBasicAutocompletion="true"
+                       :minLines="5"
+                       :maxLines="15"
+                       width="100%"
+                       :editorProps="{$blockScrolling: true, enableSnippets: true}"
+                       :onChange="onSourceEditorChange"
+                       :onBeforeLoad="onBeforeSourceEditorLoad"
+                       :onLoad="onSourceEditorLoad"
+                       mode="javascript"
+                       theme="monokai"
+                       ref="sourceEditor"
+                       name="editor" />
+
+            <b-button-group>
+              <b-button variant="link" @click="insertSample('Sample1')">Snippet1</b-button>
+              <b-button variant="link" @click="insertSample('Sample2')">Snippet2</b-button>
+              <b-button variant="link" @click="insertSample('Sample3')">Snippet3</b-button>
+            </b-button-group>
           </b-form-group>
 
           <b-form-group horizontal
@@ -59,6 +77,7 @@
           </b-form-group>
         </div>
       </div>
+      {{ trigger }}
     </form>
   </div>
 </template>
@@ -66,8 +85,13 @@
 import { mapActions } from 'vuex'
 import Module from '@/lib/module'
 import Trigger from '@/lib/trigger'
-import draggable from 'vuedraggable'
+import * as TriggerCodeSamples from '@/assets/triggers/samples'
 import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
+import { Ace as AceEditor } from 'vue2-brace-editor'
+import 'brace/mode/javascript'
+import 'brace/theme/monokai'
+
+console.log(TriggerCodeSamples)
 
 export default {
   props: {
@@ -79,6 +103,7 @@ export default {
 
   data () {
     return {
+      editor: null,
       trigger: null,
       modules: [],
     }
@@ -119,6 +144,39 @@ export default {
       }).catch(this.defaultErrorHandler('Could not delete this trigger'))
     },
 
+    onSourceEditorChange (value) {
+      this.trigger.source = value
+    },
+
+    onBeforeSourceEditorLoad (brace) {
+      console.log(brace)
+      // const langTools = brace.acequire('ace/ext/language_tools')
+      //
+      // langTools.addCompleter({
+      //   getCompletions: (editor, session, pos, prefix, callback) => {
+      //     console.log(editor, session, pos, prefix, callback)
+      //   },
+      // })
+    },
+
+    onSourceEditorLoad (brace) {
+      brace.session.$worker.send('changeOptions', [{ asi: true }])
+
+      this.editor = brace
+
+      // const langTools = brace.acequire('ace/ext/language_tools')
+      //
+      // langTools.addCompleter({
+      //   getCompletions: (editor, session, pos, prefix, callback) => {
+      //     console.log(editor, session, pos, prefix, callback)
+      //   },
+      // })
+    },
+
+    insertSample (key) {
+      this.editor.session.insert(this.editor.getCursorPosition(), TriggerCodeSamples[key])
+    },
+
     redirect () {
       this.$router.push({ name: 'admin.automation' })
     },
@@ -126,7 +184,7 @@ export default {
 
   components: {
     ConfirmationToggle,
-    draggable,
+    AceEditor,
   },
 }
 </script>

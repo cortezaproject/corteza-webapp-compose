@@ -53,6 +53,7 @@
     "vue-select": "^2.5.1",
     "vue-sortable-tree": "^1.2.2",
     "vue-tweet-embed": "^2.1.2",
+    "vue2-brace-editor": "^2.0.2",
     "vuedraggable": "^2.16.0",
     "vuetable-2": "^1.7.5",
     "vuex": "^3.0.1",
