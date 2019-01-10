@@ -83,10 +83,6 @@ export default {
 
 h2 {
   font-size: 15px;
-  font-weight: 900;
   padding: 5px 10px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  border: 1px solid #ccc;
 }
 </style>
