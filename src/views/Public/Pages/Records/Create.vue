@@ -1,6 +1,8 @@
 <template>
   <div class="view">
-    <div class="editor">
+    <b-alert show variant="warning" dismissible @dismissed="warningAlert=null" v-if="warningAlert">{{ warningAlert }}</b-alert>
+    <b-alert show variant="info" dismissible @dismissed="infoAlert=null" v-if="infoAlert">{{ infoAlert }}</b-alert>
+    <div class="toolbar">
       <button class="btn-url" @click.prevent="$router.back()">&#171; Back</button>
       <button class="btn" @click.prevent="$router.push({ name: 'public.page.record.create' })">+ Add new</button>
       <button class="btn btn-blue" @click="handleCreate">Save changes</button>

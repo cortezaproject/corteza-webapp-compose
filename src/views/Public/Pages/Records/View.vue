@@ -1,6 +1,6 @@
 <template>
   <div class="view">
-    <div class="editor">
+    <div class="toolbar">
       <button class="btn-url" @click.prevent="handleBack">&#171; Back</button>
       <confirmation-toggle @confirmed="handleDelete" class="confirmation">Delete</confirmation-toggle>
       <button class="btn" @click.prevent="$router.push({ name: 'public.page.record.create' })">+ Add new</button>

@@ -42,7 +42,7 @@
       <block-edit v-if="updateBlock" :module="module" :page="page" :block.sync="updateBlock" />
     </b-modal>
 
-    <div class="editor">
+    <div class="toolbar">
       <router-link :to="{name: 'admin.pages'}" class="btn-url">&#171; Back to pages list</router-link>
       <button v-b-modal.createBlockSelector @click="createBlock=null" class="btn">+ Add block</button>
       <button @click.prevent="$router.push({ name: 'public.page', params: { pageID } })" class="btn">Preview</button>

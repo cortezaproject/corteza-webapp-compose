@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="editor">
+    <div class="toolbar">
       <confirmation-toggle @confirmed="handleDelete" class="confirmation">Delete module</confirmation-toggle>
       <button @click="redirect()" type="button" class="btn">Cancel</button>
       <button type="submit" @click.prevent="handleSave" class="btn btn-blue">Save</button>

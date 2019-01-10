@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="editor">
+    <div class="toolbar">
       <router-link :to="{name: 'admin.pages'}" class="btn-url">&#171; Back to pages list</router-link>
       <confirmation-toggle @confirmed="handleDeletePage" class="confirmation">Delete page</confirmation-toggle>
       <router-link :to="{name: 'admin.pages'}" class="btn">Cancel</router-link>
