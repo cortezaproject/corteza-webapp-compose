@@ -7,10 +7,9 @@
           <table class="table">
             <tbody>
             <tr v-for="(t, index) in triggers" :key="index">
-              <td>
-                {{ t.name }}
-              </td>
-              <td><time :datetime="t.updatedAt" v-if="t.updatedAt">(Updated at : {{ t.updatedAt }})</time></td>
+              <td>{{ t.name }}</td>
+              <td>{{ t.enabled ? '' : 'disabled' }}</td>
+              <td width="300"><small>{{ t.actions.join(', ') }}</small></td>
               <td class="actions text-right">
                 <router-link :to="{name: 'admin.automation.edit', params: { triggerID: t.triggerID }}" class="action">
                   <i class="action icon-edit"></i>
@@ -20,11 +19,14 @@
             </tbody>
           </table>
           <form @submit.prevent="create">
-            <div class="form-group form-inline">
-              <label for="name">Create a new automation:</label>
-              <input required type="text" v-model="newTrigger.name" class="form-control" id="name" placeholder="Automation name" />
-              <button type="submit" class="btn btn-dark">Create</button>
-            </div>
+            <b-form-group label="Create a new trigger">
+              <b-input-group>
+                <input required type="text" v-model="newTrigger.name" class="form-control" id="name" placeholder="Trigger name" />
+                <b-input-group-append>
+                  <button type="submit" class="btn btn-dark">Create</button>
+                </b-input-group-append>
+              </b-input-group>
+            </b-form-group>
           </form>
         </div>
       </div>
