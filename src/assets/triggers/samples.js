@@ -33,6 +33,10 @@ export const Default = `
 // the default action (in case of "before..." trigger actions) by returning false boolean value
 // from your code.
 
+// Manipulating record values
+// record.values.fname = 'some-value'
+// record.values = { fname: 'some-value' }
+
 // Above comments are safe to delete. Crust CRM will add it on every new trigger.
 `.trimLeft()
 

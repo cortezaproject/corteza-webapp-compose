@@ -1,5 +1,7 @@
 import Module from './module'
 
+const RecordValues = Symbol('values')
+
 // Record class
 export default class Record {
   constructor (module, def = {}) {
@@ -15,25 +17,41 @@ export default class Record {
   }
 
   setup () {
-    this.values = {}
+    this[RecordValues] = {}
+
     this.module.fields.forEach(modField => {
-      Object.defineProperty(this.values, modField.name, {
+      Object.defineProperty(this[RecordValues], modField.name, {
         configurable: false,
         enumerable: true,
-        get: () => {
-          return (this.fields.find(recField => recField.name === modField.name) || {}).value || undefined
-        },
-
-        set: (value) => {
-          const ex = this.fields.find(recField => recField.name === modField.name)
-          if (ex) {
-            ex.value = value
-          } else {
-            this.fields.push({ name: modField.name, value })
-          }
-        },
+        get: () => this.getValue(modField.name),
+        set: (value) => this.setValue(modField.name, value),
       })
     })
+  }
+
+  getValue (name) {
+    return (this.fields.find(recField => recField.name === name) || {}).value || undefined
+  }
+
+  setValue (name, value) {
+    const ex = this.fields.find(recField => recField.name === name)
+    if (ex) {
+      ex.value = value
+    } else {
+      this.fields.push({ name: name, value })
+    }
+  }
+
+  get values () {
+    return this[RecordValues]
+  }
+
+  set values (kv) {
+    if (typeof kv === 'object') {
+      for (let k in kv) {
+        this.setValue(k, kv[k])
+      }
+    }
   }
 
   merge ({ recordID, fields, createdAt, updatedAt, userID }) {
