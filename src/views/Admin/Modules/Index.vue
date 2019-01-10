@@ -8,7 +8,7 @@
             <tbody>
               <tr v-for="(m, index) in modules" :key="index">
                 <td>
-                  <router-link :to="{name: 'admin.modules.records', params: { moduleID: m.moduleID }}" class="btn-url">{{ m.name }}</router-link>
+                  <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="btn-url">{{ m.name }}</router-link>
                 </td>
                 <td><time :datetime="m.updatedAt" v-if="m.updatedAt">(Updated at : {{ m.updatedAt }})</time></td>
                 <td class="actions text-right">
