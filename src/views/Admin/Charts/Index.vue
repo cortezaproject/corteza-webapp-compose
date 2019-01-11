@@ -10,7 +10,7 @@
               <td>
                 {{ m.name }}
               </td>
-              <td><time :datetime="m.updatedAt" v-if="m.updatedAt">(Updated at : {{ m.updatedAt }})</time></td>
+              <td><time :datetime="m.updatedAt" v-if="m.updatedAt">{{ prettyDate(m.updatedAt || m.createdAt) }}</time></td>
               <td class="actions text-right">
                 <router-link :to="{name: 'admin.charts.edit', params: { chartID: m.chartID }}" class="action">
                   <i class="action icon-edit"></i>

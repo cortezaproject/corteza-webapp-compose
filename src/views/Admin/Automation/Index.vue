@@ -10,6 +10,7 @@
               <td>{{ t.name }}</td>
               <td>{{ t.enabled ? '' : 'disabled' }}</td>
               <td width="300"><small>{{ t.actions.join(', ') }}</small></td>
+              <td><time :datetime="t.updatedAt || t.createdAt" v-if="t.updatedAt || t.createdAt">{{ prettyDate(t.updatedAt || t.createdAt) }}</time></td>
               <td class="actions text-right">
                 <router-link :to="{name: 'admin.automation.edit', params: { triggerID: t.triggerID }}" class="action">
                   <i class="action icon-edit"></i>

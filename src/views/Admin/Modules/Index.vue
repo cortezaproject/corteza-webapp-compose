@@ -10,7 +10,7 @@
                 <td>
                   <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="btn-url">{{ m.name }}</router-link>
                 </td>
-                <td><time :datetime="m.updatedAt" v-if="m.updatedAt">(Updated at : {{ m.updatedAt }})</time></td>
+                <td><time :datetime="m.updatedAt" v-if="m.updatedAt">{{ prettyDate(m.updatedAt || m.createdAt) }}</time></td>
                 <td class="actions text-right">
                   <router-link
                     v-if="m.recordPage"
