@@ -28,15 +28,20 @@ export default {
 .toolbar {
   background: $white;
   padding: 15px;
-  text-align: right;
   position: fixed;
   width: 100%;
   bottom: 0;
   z-index: 5;
   border-top: 1px solid $appblue;
+  text-align: center;
 
   .btn-url {
     float: left;
+  }
+
+  .btn-blue {
+    float: right;
+    margin-left: 0.5em;
   }
 }
 
