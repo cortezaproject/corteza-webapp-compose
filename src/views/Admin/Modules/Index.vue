@@ -54,6 +54,7 @@ export default {
       addModuleFormData: {
         name: '',
         fields: [],
+        meta: {},
       },
     }
   },
