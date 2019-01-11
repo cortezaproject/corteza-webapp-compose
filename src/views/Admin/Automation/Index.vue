@@ -4,7 +4,7 @@
       <div class="col-md-12">
         <div class="well table-responsive">
           <h2>List of triggers</h2>
-          <table class="table">
+          <table class="table table-striped">
             <tbody>
             <tr v-for="(t, index) in triggers" :key="index">
               <td>{{ t.name }}</td>
@@ -77,9 +77,10 @@ export default {
   border-radius: 0;
 }
 
-table {
+.table {
   td {
     min-width: 100px;
+    border-top: 0;
   }
 }
 </style>

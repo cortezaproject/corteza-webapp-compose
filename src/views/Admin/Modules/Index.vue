@@ -111,9 +111,10 @@ export default {
   border-radius: 0;
 }
 
-table {
+.table {
   td {
     min-width: 100px;
+    border-top: 0;
   }
 }
 </style>

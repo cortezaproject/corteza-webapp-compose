@@ -194,4 +194,10 @@ label {
   margin-left: 5px;
 }
 
+.table {
+  td {
+    border-top: 0;
+  }
+}
+
 </style>

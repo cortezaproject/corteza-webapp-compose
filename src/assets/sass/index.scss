@@ -60,6 +60,7 @@ label {
 .form-control {
   font-size: 14px;
   color: $black;
+  border-radius: 0;
 
   &:focus,
   &:active {
