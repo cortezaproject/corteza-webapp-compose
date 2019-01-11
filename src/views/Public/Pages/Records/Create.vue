@@ -1,7 +1,5 @@
 <template>
   <div class="view">
-    <b-alert show variant="warning" dismissible @dismissed="warningAlert=null" v-if="warningAlert">{{ warningAlert }}</b-alert>
-    <b-alert show variant="info" dismissible @dismissed="infoAlert=null" v-if="infoAlert">{{ infoAlert }}</b-alert>
     <toolbar :back-link="{name: 'admin.pages'}"
              :hide-delete="true">
       <button class="btn btn-blue" @click.prevent="handleCreate">Save</button>
