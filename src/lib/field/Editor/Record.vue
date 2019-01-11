@@ -36,7 +36,8 @@ export default {
         return this.convert(this.valueRecord)
       },
 
-      set ({ value } = {}) {
+      set (v) {
+        let { value } = v || {}
         if (value && value !== this.value) {
           // Set selected to value
           this.value = value
@@ -72,7 +73,7 @@ export default {
       if (moduleID && query.length > 0) {
         // Prepare query
         const filter = (this.field.options.queryFields || [this.field.options.labelField]).map(qf => {
-          return `${qf} LIKE '${query}%'`
+          return `${qf} LIKE '%${query}%'`
         }).join(' OR ')
 
         const sort = this.field.options.labelField || 'created_at DESC'
