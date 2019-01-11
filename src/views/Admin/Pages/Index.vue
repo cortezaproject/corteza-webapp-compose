@@ -25,7 +25,6 @@ import draggable from 'vuedraggable'
 import PageTree from '@/components/Admin/Page/Tree'
 
 export default {
-  idToDelete: '',
   name: 'PageList',
   data () {
     return {

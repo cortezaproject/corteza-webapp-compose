@@ -37,7 +37,6 @@
 import Field from '@/lib/field'
 
 export default {
-  idToDelete: '',
   name: 'ChartList',
   data () {
     return {

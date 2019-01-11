@@ -46,7 +46,6 @@
 import Field from '@/lib/field'
 
 export default {
-  idToDelete: '',
   name: 'ModuleList',
   data () {
     return {
