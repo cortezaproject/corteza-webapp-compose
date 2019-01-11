@@ -73,19 +73,8 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/sass/btns.scss";
 
-label {
-  margin: 10px 0 5px;
-}
-
-.form-inline {
-  .form-control {
-    margin-right: 10px;
-    width: calc(100% - 80px);
-  }
-}
-
-.form-group {
-  margin-bottom: 0;
+.btn {
+  border-radius: 0;
 }
 
 table {

@@ -20,11 +20,14 @@
             </tbody>
           </table>
           <form @submit.prevent="create">
-            <div class="form-group form-inline">
-              <label for="name">Create a new chart:</label>
-              <input required type="text" v-model="addChartFormData.name" class="form-control" id="name" placeholder="Chart name" />
-              <button type="submit" class="btn btn-dark">Create</button>
-            </div>
+            <b-form-group label="Create a new chart:">
+              <b-input-group>
+                <input required type="text" v-model="addChartFormData.name" class="form-control" id="name" placeholder="Chart name" />
+                <b-input-group-append>
+                  <button type="submit" class="btn btn-dark">Create</button>
+                </b-input-group-append>
+              </b-input-group>
+            </b-form-group>
           </form>
         </div>
       </div>
@@ -71,19 +74,8 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/sass/btns.scss";
 
-label {
-  margin: 10px 0 5px;
-}
-
-.form-inline {
-  .form-control {
-    margin-right: 10px;
-    width: calc(100% - 80px);
-  }
-}
-
-.form-group {
-  margin-bottom: 0;
+.btn {
+  border-radius: 0;
 }
 
 table {
