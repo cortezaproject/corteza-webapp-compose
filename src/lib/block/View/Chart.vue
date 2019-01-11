@@ -17,6 +17,10 @@ export default {
   },
 
   mounted () {
+    if (!this.options.chartID) {
+      return
+    }
+
     this.$crm.chartRead({ chartID: this.options.chartID }).then((chart) => {
       this.chart = new Chart(chart)
 
