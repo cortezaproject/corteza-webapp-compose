@@ -32,6 +32,7 @@ export default {
       tree: [],
       addPageFormData: {
         title: '',
+        blocks: [],
       },
 
       modules: [],
@@ -60,8 +61,8 @@ export default {
     },
 
     handleAddPageFormSubmit () {
-      this.$crm.pageCreate(this.addPageFormData).then(() => {
-        this.loadTree()
+      this.$crm.pageCreate(this.addPageFormData).then((page) => {
+        this.$router.push({ name: 'admin.pages.edit', params: { pageID: page.pageID } })
       }).catch(this.defaultErrorHandler('Could not save this page'))
     },
 
