@@ -58,7 +58,7 @@ label {
 }
 
 .form-control {
-  font-size: 15px;
+  font-size: 14px;
   color: $black;
 
   &:focus,
@@ -71,6 +71,10 @@ label {
   &::placeholder {
     color: $appgrey;
   }
+}
+
+.custom-select {
+  border-radius: 0;
 }
 
 li.dropdown:hover > .dropdown-menu {

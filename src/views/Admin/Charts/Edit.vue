@@ -7,9 +7,9 @@
       <button type="button" @click.prevent="handleSave({ closeOnSuccess: true })" class="btn btn-blue">Save and close</button>
     </div>
 
-    <form @submit.prevent="handleSave" class="container">
+    <form @submit.prevent="handleSave" class="container well">
       <div class="row">
-        <div class="col-md-12 well">
+        <div class="col-md-12">
           <h2>Chart builder</h2>
 
           <fieldset v-if="modules">
@@ -27,7 +27,7 @@
           <b-button @click.prevent="render"
                     :disabled="!chart.isValid()"
                     class="float-right"
-                    variant="green">Load data</b-button>
+                    variant="blue">Load data</b-button>
           <canvas ref="chart" width="200" height="200"></canvas>
         </section>
       </div>
@@ -36,7 +36,6 @@
                 v-if="false"
                 class="float-right">+ Add report</b-button>
       -->
-      <pre>{{ chart }}</pre>
     </form>
   </div>
 </template>
@@ -213,8 +212,8 @@ export default {
   margin-left: 20px;
 }
 
-.well {
-  margin-top: 60px;
+.chart {
+  margin-top: 10px;
 }
 
 </style>

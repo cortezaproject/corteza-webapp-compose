@@ -4,7 +4,7 @@
       <b-form-group>
         <b-form-select v-model="moduleID" :options="modules" text-field="name" value-field="moduleID">
           <template slot="first">
-            <option disabled>Pick a module</option>
+            <option :value="null" disabled>Pick a module</option>
           </template>
         </b-form-select>
       </b-form-group>
@@ -12,15 +12,16 @@
 
     <div v-if="!!module" class="report-config">
       <div class="filter">
-        <b-form-group horizontal :label-cols="2" breakpoint="md" label="Field">
+        <h5>Filters</h5>
+        <b-form-group>
           <b-form-select v-model="report.filter"
                          :disabled="customFilter"
                          :options="predefinedFilters">
             <template slot="first">
-              <option value="">(no filter)</option>
+              <option :value="null" disabled>(no filter)</option>
             </template>
           </b-form-select>
-          <b-form-checkbox v-model="customFilter">Customize filter</b-form-checkbox>
+          <b-form-checkbox plain v-model="customFilter">Customize filter</b-form-checkbox>
           <b-form-textarea v-if="customFilter"
                         v-model="report.filter"
                         placeholder="a = 1 AND b > 2"></b-form-textarea>
@@ -61,8 +62,9 @@
       </div>
       <draggable class="metrics" :list.sync="metrics" :options="{ group: 'metrics_'+moduleID, sort: true }">
         <fieldset v-for="(m,i) in metrics" :key="'m'+i" class="main-fieldset">
+          <font-awesome-icon v-if="metrics.length>1" :icon="['fas', 'grip-vertical']"></font-awesome-icon>
           <h5>Metrics (numeric fields) </h5>
-          <b-button v-if="metrics.length>1" @click.prevent="metrics.splice(i)" variant="danger"><i class="action icon-trash"></i></b-button>
+          <b-button v-if="metrics.length>1" @click.prevent="metrics.splice(i)" variant="url"><i class="action icon-trash"></i></b-button>
           <b-form horizontal class="color-picker" label="">
               <b-form-input v-model="m.backgroundColor" type="color" ></b-form-input>
           </b-form>
@@ -208,14 +210,14 @@ export default {
 @import "@/assets/sass/btns.scss";
 
 .report-config {
-  /*  display: flex;
-  flex-flow: row nowrap; */
   margin-top: 5px;
 
-  .metrics, .dimensions {
-    background: $appcream;
+  .filter,
+  .metrics,
+  .dimensions {
     margin: 2px;
-    padding: 15px 0;
+    padding: 15px 20px;
+    border: 1px solid $appcream;
 
     .form-group {
       padding-right: 15px;
@@ -238,8 +240,7 @@ export default {
   }
 
   .dimensions {
-    padding-left: 20px;
-    margin-bottom: 10px;
+    margin: 10px 0;
   }
 
   input.form-control[type="color"] {
@@ -256,9 +257,8 @@ export default {
   }
 
   .main-fieldset {
-    border-top: 1px solid $appwhite;
+    border-top: 1px solid $appcream;
     padding-top: 15px;
-    padding-left: 20px;
     margin-top: 10px;
 
     &:first-child {
@@ -266,14 +266,19 @@ export default {
       padding-top: 0;
     }
 
-    .btn-danger {
-      border: none;
-      background: transparent;
+    .btn-url {
+      color: $appred;
+      text-decoration: none;
+      margin-left: 5px;
+    }
 
-      &:active {
-        background: transparent;
-        border: none;
-      }
+    .fa-grip-vertical {
+      position: absolute;
+      left: 25px;
+      color: $appgrey;
+      cursor: move;
+      margin-top: 4px;
+      font-size: 12px;
     }
   }
 }
