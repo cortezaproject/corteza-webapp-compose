@@ -5,25 +5,28 @@ ul,li {
   margin: 0;
 }
 
-nav {
-  box-shadow: 0 0.1rem 0.2rem 0 rgba(30, 34, 36, 0.1);
-}
-
 header {
   margin-bottom: 10px;
 }
 
+nav {
+  box-shadow: 0 0.1rem 0.2rem 0 rgba(30, 34, 36, 0.1);
+}
+
 .nav-link {
   color: $black;
+  border-bottom: 2px solid $white;
 
   &.router-link-active {
-    border-bottom: 2px solid $appblue;
+    border-color: $appblue;
     color: $appblue;
   }
 }
 
 .navbar {
   padding: 0;
+  background: $white;
+  height: 50px;
 }
 
 .navbar-toggler {

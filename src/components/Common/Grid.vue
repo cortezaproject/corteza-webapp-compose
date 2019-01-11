@@ -117,7 +117,4 @@ export default {
   }
 }
 
-.vue-grid-item {
-  border: 1px solid #ccc;
-}
 </style>

@@ -31,11 +31,8 @@ a {
 .well {
   min-height: 20px;
   padding: 5px;
-  margin-bottom: 20px;
+  margin-bottom: 70px;
   background-color: $appwhite;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0.1rem 0.2rem 0 rgba(30, 34, 36, 0.1);
-  box-shadow: 0 0.1rem 0.2rem 0 rgba(30, 34, 36, 0.1);
 
   h2 {
     padding-bottom: 10px;
@@ -61,7 +58,7 @@ label {
 }
 
 .form-control {
-  font-size: 15px;
+  font-size: 14px;
   color: $black;
 
   &:focus,
@@ -76,6 +73,10 @@ label {
   }
 }
 
+.custom-select {
+  border-radius: 0;
+}
+
 li.dropdown:hover > .dropdown-menu {
   display: block;
 }
@@ -86,7 +87,6 @@ li.dropdown:hover > .dropdown-menu {
 
   &:not(.vue-grid-placeholder) {
     background: #FFF;
-    border-radius: 5px;
   }
 
   &.resizing {
@@ -289,22 +289,6 @@ table {
 
 .tooltip {
   font-size: 14px;
-}
-
-.editor {
-  background: $white;
-  padding: 15px;
-  text-align: right;
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  z-index: 3;
-  border-top: 5px solid $appred;
-  box-shadow: 0 0 8px 0 rgba($appgrey, 0.75);
-
-  .btn-url {
-    float: left;
-  }
 }
 
 .v-select {

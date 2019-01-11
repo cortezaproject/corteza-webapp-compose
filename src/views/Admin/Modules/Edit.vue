@@ -1,11 +1,10 @@
 <template>
   <div>
-    <div class="editor">
-      <confirmation-toggle @confirmed="handleDelete" class="confirmation">Delete module</confirmation-toggle>
-      <button @click="redirect()" type="button" class="btn">Cancel</button>
-      <button type="submit" @click.prevent="handleSave" class="btn btn-blue">Save</button>
-      <button type="button" @click.prevent="handleSave({ closeOnSuccess: true })" class="btn btn-blue">Save and close</button>
-    </div>
+    <editor-toolbar :back-link="{name: 'admin.modules'}"
+                    @delete="handleDelete"
+                    @save="handleSave()"
+                    @saveAndClose="handleSave({ closeOnSuccess: true })">
+    </editor-toolbar>
     <form @submit.prevent="handleSave" class="container">
       <div class="row">
         <div class="col-md-12 well">
@@ -87,6 +86,7 @@ import FieldConfigurator from '@/lib/field/Configurator'
 import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 import Field from '@/lib/field'
 import fieldList from '@/lib/field/list'
+import EditorToolbar from '@/components/Admin/EditorToolbar'
 
 const fieldNameCheck = new RegExp('^[a-zA-Z_][a-zA-Z0-9_]*$')
 
@@ -169,6 +169,7 @@ export default {
     ConfirmationToggle,
     draggable,
     FieldConfigurator,
+    EditorToolbar,
   },
 }
 </script>
@@ -234,10 +235,6 @@ table {
     display: block;
     margin: -10px 35px 20px;
   }
-}
-
-.confirmation {
-  margin-right: 0.5em;
 }
 
 h5 {

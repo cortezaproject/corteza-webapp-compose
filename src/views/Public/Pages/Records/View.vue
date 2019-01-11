@@ -1,12 +1,12 @@
 <template>
   <div class="view">
-    <div class="editor">
-      <button class="btn-url" @click.prevent="handleBack">&#171; Back</button>
-      <confirmation-toggle @confirmed="handleDelete" class="confirmation">Delete</confirmation-toggle>
+    <toolbar :back-link="{name: 'admin.pages'}"
+                    @delete="handleDelete"
+                    @save="handleUpdate()">
       <button class="btn" @click.prevent="$router.push({ name: 'public.page.record.create' })">+ Add new</button>
-      <button class="btn btn-blue" @click.prevent="handleUpdate" v-if="editMode">Save changes</button>
+      <button class="btn btn-blue" @click.prevent="handleUpdate" v-if="editMode">Save</button>
       <button class="btn" @click.prevent="$router.push({ name: 'public.page.record.edit' })" v-else>Edit</button>
-    </div>
+    </toolbar>
     <grid :page="page" :record="record" :edit-mode="editMode" v-if="record" />
     <b-modal id="deleteRecord" title="Delete record" @ok="handleDelete" ok-title="Delete" ok-variant="danger">
       <div class="d-block text-center">
@@ -20,6 +20,7 @@ import Grid from '@/components/Public/Page/Grid'
 import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 import Record from '@/lib/record'
 import triggerRunner from '@/mixins/trigger_runner'
+import Toolbar from '@/components/Public/Page/Toolbar'
 
 export default {
   name: 'ViewRecord',
@@ -79,6 +80,7 @@ export default {
   components: {
     Grid,
     ConfirmationToggle,
+    Toolbar,
   },
 
   mixins: [

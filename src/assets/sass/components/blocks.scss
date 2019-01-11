@@ -1,6 +1,10 @@
 @import "@/assets/sass/_0.declare.scss";
 
 .theme- {
+  h2 {
+    border-bottom: 1px solid $appgrey;
+  }
+
   &red-dark {
     h2 {
       background: rgba($appred, 0.9);
@@ -68,9 +72,9 @@
 
   h2 {
     font-size: 15px;
-    font-weight: 900;
     padding: 5px 10px;
     margin-bottom: 0;
+    font-weight: 300;
   }
 
   .block-data-description {

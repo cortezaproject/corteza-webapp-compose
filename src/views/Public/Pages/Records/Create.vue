@@ -1,10 +1,11 @@
 <template>
   <div class="view">
-    <div class="editor">
-      <button class="btn-url" @click.prevent="$router.back()">&#171; Back</button>
-      <button class="btn" @click.prevent="$router.push({ name: 'public.page.record.create' })">+ Add new</button>
-      <button class="btn btn-blue" @click="handleCreate">Save changes</button>
-    </div>
+    <b-alert show variant="warning" dismissible @dismissed="warningAlert=null" v-if="warningAlert">{{ warningAlert }}</b-alert>
+    <b-alert show variant="info" dismissible @dismissed="infoAlert=null" v-if="infoAlert">{{ infoAlert }}</b-alert>
+    <toolbar :back-link="{name: 'admin.pages'}"
+             :hide-delete="true">
+      <button class="btn btn-blue" @click.prevent="handleCreate">Save</button>
+    </toolbar>
     <grid :page="page" :record="record" v-if="record" edit-mode />
   </div>
 </template>
@@ -12,6 +13,7 @@
 import Grid from '@/components/Public/Page/Grid'
 import triggerRunner from '@/mixins/trigger_runner'
 import Record from '@/lib/record'
+import Toolbar from '@/components/Public/Page/Toolbar'
 
 export default {
   name: 'CreateRecord',
@@ -42,6 +44,7 @@ export default {
 
   components: {
     Grid,
+    Toolbar,
   },
 
   mixins: [

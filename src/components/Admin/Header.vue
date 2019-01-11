@@ -38,7 +38,7 @@ ul {
     cursor: pointer;
 
     a {
-      padding: 19px 20px;
+      padding: 13px 15px;
       display: block;
     }
   }

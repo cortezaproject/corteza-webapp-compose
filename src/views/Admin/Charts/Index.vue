@@ -45,6 +45,7 @@ export default {
       addChartFormData: {
         name: '',
         fields: [],
+        config: {},
       },
     }
   },

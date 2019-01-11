@@ -1,12 +1,10 @@
 <template>
   <div>
-    <div class="editor">
-      <router-link :to="{name: 'admin.pages'}" class="btn-url">&#171; Back to pages list</router-link>
-      <confirmation-toggle @confirmed="handleDeletePage" class="confirmation">Delete page</confirmation-toggle>
-      <router-link :to="{name: 'admin.pages'}" class="btn">Cancel</router-link>
-      <button type="submit" @click.prevent="handleSave()" class="btn btn-blue">Save</button>
-      <button type="button" @click.prevent="handleSave({ closeOnSuccess: true })" class="btn btn-blue">Save and close</button>
-    </div>
+    <editor-toolbar :back-link="{name: 'admin.pages'}"
+                    @delete="handleDeletePage"
+                    @save="handleSave()"
+                    @saveAndClose="handleSave({ closeOnSuccess: true })">
+    </editor-toolbar>
     <div class="container">
       <div class="row">
         <div class="col-md-12">
@@ -37,6 +35,7 @@
 
 <script>
 import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
+import EditorToolbar from '@/components/Admin/EditorToolbar'
 
 export default {
   name: 'PageEdit',
@@ -83,6 +82,7 @@ export default {
 
   components: {
     ConfirmationToggle,
+    EditorToolbar,
   },
 }
 </script>
@@ -106,9 +106,5 @@ h2 {
     line-height: 24px;
     margin-left: 5px;
   }
-}
-
-.confirmation {
-  margin-right: 0.5em;
 }
 </style>
