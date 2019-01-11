@@ -1,8 +1,8 @@
 <template>
     <div v-if="profile">
-      <Timeline v-if="isTwitter" :id="profile.twitterHandle" sourceType="profile" :options="{ tweetLimit: '3' }">
+      <timeline v-if="isTwitter" :id="profile.twitterHandle" sourceType="profile" :options="{ tweetLimit: 9 }">
         <div class="spinner"></div>
-      </Timeline>
+      </timeline>
     </div>
     <div v-else>
       <p>No input for displaying social feed...</p>
