@@ -1,12 +1,10 @@
 <template>
   <div>
-    <div class="editor">
-      <confirmation-toggle @confirmed="handleDelete" class="confirmation">Delete automation</confirmation-toggle>
-      <button @click="redirect()" type="button" class="btn">Cancel</button>
-      <button type="submit" @click.prevent="handleSave" class="btn btn-blue">Save</button>
-      <button type="button" @click.prevent="handleSave({ closeOnSuccess: true })" class="btn btn-blue">Save and close</button>
-    </div>
-
+    <editor-toolbar :back-link="{name: 'admin.automation'}"
+                    @delete="handleDelete"
+                    @save="handleSave()"
+                    @saveAndClose="handleSave({ closeOnSuccess: true })">
+    </editor-toolbar>
     <form @submit.prevent="handleSave" class="container" v-if="trigger">
       <div class="row">
         <div class="col-md-12 well">
@@ -21,6 +19,7 @@
           <b-form-group horizontal>
             <b-form-checkbox v-model="trigger.enabled"
                              :value="true"
+                             plain
                              :unchecked-value="false">Enabled</b-form-checkbox>
           </b-form-group>
 
@@ -67,7 +66,7 @@
 
           <b-form-group horizontal
                         label="Actions that trigger the automation ...">
-            <b-form-checkbox-group v-model="trigger.actions" stacked>
+            <b-form-checkbox-group plain v-model="trigger.actions" stacked>
               <b-form-checkbox value="manual">manually, when user clicks a button on a page</b-form-checkbox>
               <b-form-checkbox value="beforeCreate">before record is created</b-form-checkbox>
               <b-form-checkbox value="afterCreate">after record is created</b-form-checkbox>
@@ -91,6 +90,7 @@ import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 import { Ace as AceEditor } from 'vue2-brace-editor'
 import 'brace/mode/javascript'
 import 'brace/theme/monokai'
+import EditorToolbar from '@/components/Admin/EditorToolbar'
 
 export default {
   props: {
@@ -182,6 +182,7 @@ export default {
   components: {
     ConfirmationToggle,
     AceEditor,
+    EditorToolbar,
   },
 }
 </script>
@@ -189,12 +190,8 @@ export default {
 @import "@/assets/sass/_0.declare.scss";
 @import "@/assets/sass/btns.scss";
 
-.confirmation {
-  margin-right: 5px;
-}
-
-.btn-url {
-  margin-left: 20px;
+label {
+  margin-left: 5px;
 }
 
 </style>

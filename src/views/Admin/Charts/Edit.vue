@@ -1,12 +1,10 @@
 <template>
   <div>
-    <div class="toolbar">
-      <confirmation-toggle @confirmed="handleDelete" class="confirmation">Delete chart</confirmation-toggle>
-      <button @click="redirect()" type="button" class="btn">Cancel</button>
-      <button type="submit" @click.prevent="handleSave" class="btn btn-blue">Save</button>
-      <button type="button" @click.prevent="handleSave({ closeOnSuccess: true })" class="btn btn-blue">Save and close</button>
-    </div>
-
+    <editor-toolbar :back-link="{name: 'admin.charts'}"
+                    @delete="handleDelete"
+                    @save="handleSave()"
+                    @saveAndClose="handleSave({ closeOnSuccess: true })">
+    </editor-toolbar>
     <form @submit.prevent="handleSave" class="container well">
       <div class="row">
         <div class="col-md-12">
@@ -46,6 +44,7 @@ import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 import Field from '@/lib/field'
 import Chart from '@/lib/chart.js'
 import ChartJS from 'chart.js'
+import EditorToolbar from '@/components/Admin/EditorToolbar'
 
 const defaultReport = {
   moduleID: undefined,
@@ -197,20 +196,13 @@ export default {
     Report,
     ConfirmationToggle,
     draggable,
+    EditorToolbar,
   },
 }
 </script>
 <style lang="scss" scoped>
 @import "@/assets/sass/_0.declare.scss";
 @import "@/assets/sass/btns.scss";
-
-.confirmation {
-  margin-right: 5px;
-}
-
-.btn-url {
-  margin-left: 20px;
-}
 
 .chart {
   margin-top: 10px;

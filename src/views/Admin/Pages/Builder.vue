@@ -42,13 +42,13 @@
       <block-edit v-if="updateBlock" :module="module" :page="page" :block.sync="updateBlock" />
     </b-modal>
 
-    <div class="toolbar">
-      <router-link :to="{name: 'admin.pages'}" class="btn-url">&#171; Back to pages list</router-link>
+    <editor-toolbar :back-link="{name: 'admin.pages'}"
+                    :hide-delete="true"
+                    @save="handleSave()"
+                    @saveAndClose="handleSave({ closeOnSuccess: true })">
       <button v-b-modal.createBlockSelector @click="createBlock=null" class="btn">+ Add block</button>
       <button @click.prevent="$router.push({ name: 'public.page', params: { pageID } })" class="btn">Preview</button>
-      <button @click.prevent="handleSave()" class="btn btn-blue">Save</button>
-      <button @click.prevent="handleSave({ closeOnSuccess: true })" class="btn btn-blue">Save and close</button>
-    </div>
+    </editor-toolbar>
   </div>
 </template>
 
@@ -58,6 +58,7 @@ import Grid from '@/components/Common/Grid'
 import Block from '@/lib/block'
 import BlockPreview from '@/lib/block/BuilderPreview'
 import BlockEdit from '@/lib/block/BuilderEdit'
+import EditorToolbar from '@/components/Admin/EditorToolbar'
 
 export default {
   props: {
@@ -112,6 +113,7 @@ export default {
     NewBlockSelector,
     BlockEdit,
     BlockPreview,
+    EditorToolbar,
   },
 }
 </script>
