@@ -101,11 +101,11 @@ table {
   width: 100%;
 }
 
-.form-group {
-  margin-top: 1rem;
-}
-
 .btn {
   border-radius: 0;
+}
+
+form {
+  margin-top: 50px;
 }
 </style>

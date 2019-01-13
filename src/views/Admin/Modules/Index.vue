@@ -117,4 +117,8 @@ export default {
     border-top: 0;
   }
 }
+
+form {
+  margin-top: 50px;
+}
 </style>
