@@ -21,12 +21,14 @@ export default {
     return {
       valueRecord: {},
       records: [],
+      latest: [], // set of 20 latest records for default list
+      query: null,
     }
   },
 
   computed: {
     options () {
-      return this.records.map(this.convert)
+      return (this.query ? this.records : this.latest).map(this.convert)
     },
 
     selected: {
@@ -48,6 +50,19 @@ export default {
     },
   },
 
+  watch: {
+    'field.options': {
+      deep: true,
+      handler () {
+        this.loadLatest()
+      },
+    },
+  },
+
+  created () {
+    this.loadLatest()
+  },
+
   methods: {
     convert (r) {
       if (!r.fields) {
@@ -67,6 +82,7 @@ export default {
     },
 
     search (query) {
+      this.query = query
       const moduleID = this.field.options.moduleID
 
       if (moduleID && query.length > 0) {
@@ -75,10 +91,21 @@ export default {
           return `${qf} LIKE '%${query}%'`
         }).join(' OR ')
 
-        const sort = this.field.options.labelField || 'created_at DESC'
+        const sort = [this.field.options.labelField, 'updated_at DESC', 'created_at DESC'].join(', ')
 
         this.$crm.moduleRecordList({ moduleID, filter, sort }).then(({ records }) => {
           this.records = records
+        })
+      }
+    },
+
+    loadLatest () {
+      const moduleID = this.field.options.moduleID
+      if (moduleID) {
+        const sort = [this.field.options.labelField, 'updated_at DESC', 'created_at DESC'].join(', ')
+
+        this.$crm.moduleRecordList({ moduleID, sort }).then(({ records }) => {
+          this.latest = records
         })
       }
     },

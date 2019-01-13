@@ -7,8 +7,8 @@ export class Record {
   }
 
   merge ({ moduleID, labelField, queryFields } = {}) {
-    this.moduleID = moduleID ? typeof moduleID === 'string' ? moduleID : undefined : this.moduleID
-    this.labelField = labelField || this.labelField
+    this.moduleID = moduleID ? (typeof moduleID === 'string' ? moduleID : undefined) : this.moduleID
+    this.labelField = labelField || this.labelField || undefined
     this.queryFields = queryFields || this.queryFields || []
 
     return this

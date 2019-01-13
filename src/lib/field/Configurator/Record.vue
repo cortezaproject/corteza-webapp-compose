@@ -7,7 +7,7 @@
                      text-field="name"
                      value-field="moduleID"
                      class="form-control">
-        <template slot="first"><option disabled>Pick module</option></template>
+        <template slot="first"><option disabled :value="undefined">Pick module</option></template>
       </b-form-select>
     </div>
 
@@ -17,7 +17,7 @@
                      class="form-control"
                      :options="fields"
                      :disabled="!module">
-        <template slot="first"><option disabled>Pick field</option></template>
+        <template slot="first"><option disabled :value="undefined">Pick field</option></template>
       </b-form-select>
     </div>
     <div class="form-group">
