@@ -1,6 +1,7 @@
 // Global Axios defaults
 import axios from 'axios'
 import alertMixin from '@/mixins/alert'
+import prettyMixin from '@/mixins/pretty'
 import BootstrapVue from 'bootstrap-vue'
 import VTooltip from 'v-tooltip'
 import Vue from 'vue'
@@ -28,3 +29,4 @@ Vue.config.productionTip = false
 Vue.use(VTooltip)
 Vue.use(BootstrapVue)
 Vue.mixin(alertMixin)
+Vue.mixin(prettyMixin)

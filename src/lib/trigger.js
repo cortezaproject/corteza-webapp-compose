@@ -11,8 +11,8 @@ export default class Trigger {
     this.name = (typeof name === 'string' ? name : this.name) || ''
     this.source = (typeof source === 'string' ? source : this.source) || ''
     this.enabled = !!(typeof enabled === 'boolean' ? enabled : this.enabled)
-    this.createdAt = createdAt ? Date.parse(createdAt) : this.createdAt
-    this.updatedAt = updatedAt ? Date.parse(updatedAt) : this.updatedAt
+    this.createdAt = createdAt || this.createdAt
+    this.updatedAt = updatedAt || this.updatedAt
 
     if (Array.isArray(actions)) {
       this.actions = actions.filter(a => !!a)

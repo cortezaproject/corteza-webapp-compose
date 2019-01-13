@@ -8,11 +8,14 @@
             @reorder="handleReorder"
             v-model="tree"/>
           <form @submit.prevent="handleAddPageFormSubmit">
-            <div class="form-group form-inline">
-              <label for="title">Create a new page:</label>
-              <input required type="text" v-model="addPageFormData.title" class="form-control" id="title" placeholder="Page title" />
-              <button type="submit" class="btn btn-dark">Create</button>
-            </div>
+            <b-form-group label="Create a new page:">
+              <b-input-group>
+                <input required type="text" v-model="addPageFormData.title" class="form-control" id="name" placeholder="Page title" />
+                <b-input-group-append>
+                  <button type="submit" class="btn btn-dark">Create</button>
+                </b-input-group-append>
+              </b-input-group>
+            </b-form-group>
           </form>
         </div>
       </div>
@@ -25,7 +28,6 @@ import draggable from 'vuedraggable'
 import PageTree from '@/components/Admin/Page/Tree'
 
 export default {
-  idToDelete: '',
   name: 'PageList',
   data () {
     return {
@@ -99,18 +101,11 @@ table {
   width: 100%;
 }
 
-label {
-  margin: 20px 0 5px;
+.btn {
+  border-radius: 0;
 }
 
-.form-inline {
-  .form-control {
-    margin-right: 10px;
-    width: calc(100% - 80px);
-  }
-}
-
-.form-group {
-  margin-bottom: 0;
+form {
+  margin-top: 50px;
 }
 </style>

@@ -9,8 +9,8 @@
         <td>Raw data</td>
         <td>Output component for end-user</td>
       </tr>
-      <tr v-for="({ kind, field }, index) in kinds" :key="index">
-        <th><b>{{ kind }}</b></th>
+      <tr v-for="(field, index) in module.fields" :key="index">
+        <th><b>{{ field.kind }}</b></th>
         <td>
           <field-configurator :field.sync="field" />
 
@@ -33,19 +33,22 @@
 <script>
 import fieldKinds from '@/lib/field/list'
 import Field from '@/lib/field'
+import Module from '@/lib/module'
+import Record from '@/lib/record'
 import FieldConfigurator from '@/lib/field/Configurator'
 import FieldEditor from '@/lib/field/Editor'
 import FieldViewer from '@/lib/field/Viewer'
 
 export default {
   data () {
-    return {
-      kinds: fieldKinds.map(k => {
-        k.field = new Field({ kind: k.kind, name: k.kind, label: k.kind + ' label' })
-        return k
-      }),
+    let module = new Module({
+      name: 'StoryBook mock',
+      fields: fieldKinds.map(k => new Field({ kind: k.kind, name: k.kind, label: k.kind + ' label' })),
+    })
 
-      record: { fields: [] },
+    return {
+      module,
+      record: new Record(module),
     }
   },
 

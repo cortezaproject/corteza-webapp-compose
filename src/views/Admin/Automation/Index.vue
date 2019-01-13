@@ -4,12 +4,13 @@
       <div class="col-md-12">
         <div class="well table-responsive">
           <h2>List of triggers</h2>
-          <table class="table">
+          <table class="table table-striped">
             <tbody>
             <tr v-for="(t, index) in triggers" :key="index">
               <td>{{ t.name }}</td>
               <td>{{ t.enabled ? '' : 'disabled' }}</td>
               <td width="300"><small>{{ t.actions.join(', ') }}</small></td>
+              <td><time :datetime="t.updatedAt || t.createdAt" v-if="t.updatedAt || t.createdAt">{{ prettyDate(t.updatedAt || t.createdAt) }}</time></td>
               <td class="actions text-right">
                 <router-link :to="{name: 'admin.automation.edit', params: { triggerID: t.triggerID }}" class="action">
                   <i class="action icon-edit"></i>
@@ -72,24 +73,18 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/sass/btns.scss";
 
-label {
-  margin: 10px 0 5px;
+.btn {
+  border-radius: 0;
 }
 
-.form-inline {
-  .form-control {
-    margin-right: 10px;
-    width: calc(100% - 80px);
-  }
-}
-
-.form-group {
-  margin-bottom: 0;
-}
-
-table {
+.table {
   td {
     min-width: 100px;
+    border-top: 0;
   }
+}
+
+form {
+  margin-top: 50px;
 }
 </style>

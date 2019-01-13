@@ -19,6 +19,13 @@ logger.log(
 if (window.CrustConfig === undefined) {
   alert('Unexisting or invalid configuration. Make sure there is a public/config.js configuration file.')
 } else {
+  // Set some defaults
+  if (!window.CrustConfig.crm) window.CrustConfig.crm = {}
+  if (!window.CrustConfig.crm.formatting) window.CrustConfig.crm.formatting = {}
+
+  // For now, we default to German date style.
+  window.CrustConfig.crm.formatting.date = window.CrustConfig.crm.formatting.date || 'DD/MM/YYYY'
+
   new Vue({
     name: 'crust-crm',
     router,

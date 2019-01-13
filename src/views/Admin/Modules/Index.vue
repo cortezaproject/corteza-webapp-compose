@@ -4,13 +4,13 @@
       <div class="col-md-12">
         <div class="well table-responsive">
           <h2>List of modules</h2>
-          <table class="table">
+          <table class="table table-striped">
             <tbody>
               <tr v-for="(m, index) in modules" :key="index">
                 <td>
                   <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="btn-url">{{ m.name }}</router-link>
                 </td>
-                <td><time :datetime="m.updatedAt" v-if="m.updatedAt">(Updated at : {{ m.updatedAt }})</time></td>
+                <td><time :datetime="m.updatedAt" v-if="m.updatedAt">{{ prettyDate(m.updatedAt || m.createdAt) }}</time></td>
                 <td class="actions text-right">
                   <router-link
                     v-if="m.recordPage"
@@ -29,11 +29,14 @@
             </tbody>
           </table>
           <form @submit.prevent="create">
-            <div class="form-group form-inline">
-            <label for="name">Create a new module:</label>
-              <input required type="text" v-model="addModuleFormData.name" class="form-control" id="name" placeholder="Module name" />
-              <button type="submit" class="btn btn-dark">Create</button>
-            </div>
+            <b-form-group label="Create a new module:">
+              <b-input-group>
+                <input required type="text" v-model="addModuleFormData.name" class="form-control" id="name" placeholder="Module name" />
+                <b-input-group-append>
+                  <button type="submit" class="btn btn-dark">Create</button>
+                </b-input-group-append>
+              </b-input-group>
+            </b-form-group>
           </form>
         </div>
       </div>
@@ -46,7 +49,6 @@
 import Field from '@/lib/field'
 
 export default {
-  idToDelete: '',
   name: 'ModuleList',
   data () {
     return {
@@ -105,24 +107,18 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/sass/btns.scss";
 
-label {
-  margin: 10px 0 5px;
+.btn {
+  border-radius: 0;
 }
 
-.form-inline {
-  .form-control {
-    margin-right: 10px;
-    width: calc(100% - 80px);
-  }
-}
-
-.form-group {
-  margin-bottom: 0;
-}
-
-table {
+.table {
   td {
     min-width: 100px;
+    border-top: 0;
   }
+}
+
+form {
+  margin-top: 50px;
 }
 </style>

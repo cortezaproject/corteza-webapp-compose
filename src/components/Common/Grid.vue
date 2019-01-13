@@ -1,28 +1,21 @@
 <template>
   <div v-if="grid.length" v-bind:class="{ 'mobile': mobilePreview }" class="builder-grid">
-    <grid-layout
-      :layout="grid"
-      @layout-updated="handleLayoutUpdate"
-      :col-num="12"
-      :row-height="90"
-      :vertical-compact="true"
-      :is-resizable="!!editable"
-      :is-draggable="!!editable"
-      :use-css-transforms="true"
-      :responsive="true"
-      :breakpoints="breakpoints"
-      :cols="columns"
-    >
-      <grid-item
-        v-for="(item, index) in grid"
-        :key="item.i"
-        :x="item.x"
-        :y="item.y"
-        :w="item.w"
-        :h="item.h"
-        :i="item.i"
-      >
-
+    <grid-layout :layout.sync="grid"
+                 @layout-updated="handleLayoutUpdate"
+                 :col-num="12"
+                 :row-height="190"
+                 :vertical-compact="true"
+                 :is-resizable="!!editable"
+                 :is-draggable="!!editable"
+                 :use-css-transforms="true"
+                 :responsive="true">
+      <grid-item v-for="(item, index) in grid"
+                 :key="item.i"
+                 :x="item.x"
+                 :y="item.y"
+                 :w="item.w"
+                 :h="item.h"
+                 :i="item.i">
         <slot v-bind:block="item.block" v-bind:index="index"></slot>
       </grid-item>
     </grid-layout>
@@ -67,9 +60,6 @@ export default {
     return {
       // all blocks in vue-grid friendly structure
       grid: blocksToGrid(this.blocks),
-
-      columns: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-      breakpoints: { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 },
 
       mobilePreview: false,
     }

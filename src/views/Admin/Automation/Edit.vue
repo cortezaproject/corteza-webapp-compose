@@ -194,4 +194,14 @@ label {
   margin-left: 5px;
 }
 
+.table {
+  td {
+    border-top: 0;
+  }
+}
+
+.btn {
+  border-radius: 0;
+}
+
 </style>

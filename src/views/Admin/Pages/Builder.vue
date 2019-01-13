@@ -47,7 +47,7 @@
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
       <button v-b-modal.createBlockSelector @click="createBlock=null" class="btn">+ Add block</button>
-      <button @click.prevent="$router.push({ name: 'public.page', params: { pageID } })" class="btn">Preview</button>
+      <button @click.prevent="handleSave({ previewOnSuccess: true })" class="btn">Save and Preview</button>
     </editor-toolbar>
   </div>
 </template>
@@ -94,7 +94,7 @@ export default {
   },
 
   methods: {
-    handleSave ({ closeOnSuccess = false } = {}) {
+    handleSave ({ closeOnSuccess = false, previewOnSuccess = false } = {}) {
       this.$crm.pageRead({ pageID: this.pageID }).then(page => {
         page.blocks = this.blocks
 
@@ -102,6 +102,8 @@ export default {
           this.raiseSuccessAlert('Page saved')
           if (closeOnSuccess) {
             this.$router.push({ name: 'admin.pages' })
+          } else if (previewOnSuccess) {
+            this.$router.push({ name: 'public.page' })
           }
         }).catch(this.defaultErrorHandler('Could not save this page'))
       })

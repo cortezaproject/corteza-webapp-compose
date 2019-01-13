@@ -5,7 +5,7 @@ export default {
   extends: base,
   computed: {
     formatted () {
-      return this.field.options.formatValue(this.value)
+      return this.value ? this.field.options.formatValue(this.value) : null
     },
   },
 }
