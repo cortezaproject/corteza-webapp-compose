@@ -8,7 +8,7 @@
           </template>
         </b-form-select>
         <b-input-group-append>
-          <b-button @click.prevent="handleAddButton" variant="secondary">Add</b-button>
+          <b-button @click.prevent="handleAddButton" variant="dark">Add</b-button>
         </b-input-group-append>
       </b-input-group>
     </b-form-group>
@@ -19,10 +19,11 @@
         <b-input-group v-for="(b,i) in o.buttons" :key="b.triggerID">
           <b-form-input v-model="b.label" placeholder="button label"></b-form-input>
           <b-input-group-append is-text>
+            <font-awesome-icon :icon="['fas', 'grip-vertical']"></font-awesome-icon>
             Trigger "{{ (findTriggerByID(b.triggerID) || {}).name }}"
           </b-input-group-append>
           <b-input-group-append>
-            <b-button @click.prevent="o.buttons.splice(i,1)" variant="secondary">x</b-button>
+            <b-button @click.prevent="o.buttons.splice(i,1)" variant="dark">x</b-button>
           </b-input-group-append>
         </b-input-group>
       </draggable>
@@ -100,3 +101,28 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+@import "@/assets/sass/btns.scss";
+
+.modal-body {
+  .form-control {
+    margin-bottom: 0;
+  }
+}
+
+.btn {
+  border-radius: 0;
+}
+
+.fa-grip-vertical {
+  color: $appgrey;
+  cursor: move;
+  margin-right: 5px;
+  font-size: 11px;
+}
+
+.input-group {
+  margin-bottom: 2px;
+}
+</style>
