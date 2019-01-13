@@ -10,7 +10,7 @@
            v-model="query"
            placeholder="Search" />
     <div class="table-responsive">
-      <table class="table sticky-header" :class="{sortable: !options.hideSorting}">
+      <table class="table sticky-header table-hover" :class="{sortable: !options.hideSorting}">
         <thead v-if="!options.hideHeader">
           <tr >
             <th v-for="(col) in columns" :key="'header:'+col.name" @click="handleSort(col.name)">

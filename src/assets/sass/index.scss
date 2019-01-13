@@ -239,9 +239,11 @@ input {
   padding-bottom: 0;
 }
 
-table {
+.table {
   td {
     word-break: break-word;
+    padding: 5px;
+    vertical-align: middle;
   }
 
   &.sticky-header {
