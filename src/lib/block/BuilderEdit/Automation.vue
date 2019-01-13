@@ -17,13 +17,17 @@
         :list.sync="o.buttons"
         :options="{ group: 'fields' }">
         <b-input-group v-for="(b,i) in o.buttons" :key="b.triggerID">
+          <b-input-group-prepend is-text>
+            <font-awesome-icon :icon="['fas', 'grip-vertical']"></font-awesome-icon>
+          </b-input-group-prepend>
           <b-form-input v-model="b.label" placeholder="button label"></b-form-input>
           <b-input-group-append is-text>
-            <font-awesome-icon :icon="['fas', 'grip-vertical']"></font-awesome-icon>
             Trigger "{{ (findTriggerByID(b.triggerID) || {}).name }}"
           </b-input-group-append>
           <b-input-group-append>
-            <b-button @click.prevent="o.buttons.splice(i,1)" variant="dark">x</b-button>
+            <b-button @click.prevent="o.buttons.splice(i,1)" variant="dark">
+              <i class="action icon-trash"></i>
+            </b-button>
           </b-input-group-append>
         </b-input-group>
       </draggable>
@@ -93,6 +97,8 @@ export default {
         triggerID: t.triggerID,
         label: t.name,
       })
+
+      this.selectedTriggerID = null
     },
   },
 
@@ -111,15 +117,14 @@ export default {
   }
 }
 
-.btn {
+.btn,
+.input-group-text {
   border-radius: 0;
 }
 
 .fa-grip-vertical {
   color: $appgrey;
   cursor: move;
-  margin-right: 5px;
-  font-size: 11px;
 }
 
 .input-group {

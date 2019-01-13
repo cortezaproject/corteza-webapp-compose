@@ -1,7 +1,9 @@
 <template>
     <div>
       <b-button v-for="(b) in options.buttons"
-                :key="b.triggerID" @click.prevent="runTrigger(b.triggerID, module, record)">{{ b.label }}</b-button>
+                :key="b.triggerID"
+                variant="dark"
+                @click.prevent="runTrigger(b.triggerID, module, record)">{{ b.label }}</b-button>
     </div>
 </template>
 <script>
@@ -16,3 +18,13 @@ export default {
   ],
 }
 </script>
+
+<style lang="scss" scoped>
+@import "@/assets/sass/btns.scss";
+
+.btn {
+  border-radius: 0;
+  margin-bottom: 5px;
+}
+
+</style>
