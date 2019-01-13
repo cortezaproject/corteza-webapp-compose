@@ -1,9 +1,6 @@
 <template>
-  <div class="form-group">
-
     <span v-if="field.options.outputPlain">{{ urlValue }}</span>
     <span v-else><a :href="urlValue" target="_blank">{{ urlValue }}</a></span>
-  </div>
 </template>
 <script>
 import base from './base'
