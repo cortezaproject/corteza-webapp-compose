@@ -45,11 +45,13 @@
 
             <br>
             Sample code:
-            <b-button-group label="f">
+            <b-button-group>
               <b-button variant="link" @click="insertSample('SimpleFieldValueCheck')">Value check</b-button>
               <b-button variant="link" @click="insertSample('MakeNewRecord')">New record</b-button>
               <b-button variant="link" @click="insertSample('SimpleNotification')">UI Notification</b-button>
+              <b-button variant="link" @click="insertSample('SimpleEmailNotification')">Email notification</b-button>
             </b-button-group>
+            <b-button class="float-right" variant="link" @click="insertSample('Default', true)">Reset</b-button>
           </b-form-group>
 
           <b-form-group horizontal
@@ -170,8 +172,12 @@ export default {
       }
     },
 
-    insertSample (key) {
-      this.editor.session.insert(this.editor.getCursorPosition(), TriggerCodeSamples[key])
+    insertSample (key, reset = false) {
+      if (reset) {
+        this.editor.session.setValue(TriggerCodeSamples[key])
+      } else {
+        this.editor.session.insert(this.editor.getCursorPosition(), TriggerCodeSamples[key])
+      }
     },
 
     redirect () {

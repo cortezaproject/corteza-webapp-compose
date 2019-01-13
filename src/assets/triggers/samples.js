@@ -20,13 +20,20 @@ export const Default = `
 // API:
 // crust.api.record.save(record)
 // crust.api.record.delete(record)
+
+// Helpers:
 // crust.helpers.record.new(module[, initial-values])
 //   Create a new record, you can use \`record.values\` to copy values from an existing record
 //   (where field name matches)
-// crust.helpers.send.email({ to, from, subject, body }) @todo
-// crust.helpers.send.message({ channel, direct, message }) @todo
-// crust.helpers.ui.alert.success(text) shows success text to CRM user
-// crust.helpers.ui.alert.error(text) shows error text to CRM user
+
+// Formatters
+// crust.fmt.record.toHTML(record)
+
+// Notifications:
+// crust.notify.send.email({ to, from, subject, message })
+// crust.notify.send.message({ channelID }, message) @todo
+// crust.notify.ui.alert.success(text) shows success text to CRM user
+// crust.notify.ui.alert.error(text) shows error text to CRM user
 
 // Returning from trigger
 // When one or more trigger is ran, you can break execution of any additional triggers or
@@ -57,6 +64,14 @@ if (!crust.api.record.save(crust.helpers.record.new('Account', record.values))))
 `.trimLeft()
 
 export const SimpleNotification = `
-crust.helpers.ui.alert.success('This is a notification')
-// crust.helpers.ui.alert.error('This is an error')
+crust.notify.ui.alert.success('This is a notification')
+// crust.notify.ui.alert.error('This is an error')
+`.trimLeft()
+
+export const SimpleEmailNotification = `
+crust.notify.send.email({
+  to: 'sample@domain.tld First LastName',
+  subject: \`Lead updated: \${record.recordID}\`,
+  html: \`<h1>New values:</h1><hr>\${crust.fmt.record.toHTML(record)}\`
+})
 `.trimLeft()

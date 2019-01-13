@@ -1,5 +1,6 @@
 import Record from '@/lib/record'
 import Module from '@/lib/module'
+import Messaging from '@/api/messaging'
 
 export default {
   methods: {
@@ -133,10 +134,39 @@ export default {
                 return record
               },
             },
+          },
 
+          fmt: {
+            record: {
+              toHTML: (record) => {
+                let rows = record.module.fields.map(f => {
+                  const v = record.values[f.name]
+                  return `<tr><td>${f.label || f.name}</td><td>${v || ''}</td></tr>`
+                })
+
+                return `<table>${rows.join('')}</table>`
+              },
+            },
+          },
+
+          notify: {
             send: {
-              email: () => {},
-              message: () => {},
+              email: ({ to, cc = [], subject, html }) => {
+                $crm.notificationEmailSend({
+                  to: Array.isArray(to) ? to : [to],
+                  cc: Array.isArray(cc) ? cc : [cc],
+                  subject,
+                  content: { html },
+                }).then((m) => {
+                  this.raiseSuccessAlert(m)
+                }).catch((m) => {
+                  this.raiseWarningAlert(m)
+                })
+              },
+              message: ({ channelID }, message) => {
+                console.log({ channelID, message })
+                Messaging.messageCreate({ channelID, message })
+              },
             },
 
             ui: {
