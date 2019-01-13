@@ -58,6 +58,13 @@ export default {
     },
   },
 
+  watch: {
+    'f.options.moduleID' () {
+      this.f.options.labelField = undefined
+      this.f.options.queryFields = []
+    },
+  },
+
   created () {
     this.f.options = new Record(this.f.options)
 

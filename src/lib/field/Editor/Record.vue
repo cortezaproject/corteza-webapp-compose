@@ -13,12 +13,16 @@
 <script>
 import base from './base'
 import { VueSelect } from 'vue-select'
+import Record from '@/lib/record'
+import Module from '@/lib//module'
+import _ from 'lodash'
 
 export default {
   extends: base,
 
   data () {
     return {
+      module: null,
       valueRecord: {},
       records: [],
       latest: [], // set of 20 latest records for default list
@@ -54,28 +58,30 @@ export default {
     'field.options': {
       deep: true,
       handler () {
-        this.loadLatest()
+        // We need to daly loading for abit
+        _.throttle((e) => {
+          this.loadLatest()
+          this.loadModule()
+        }, 500)()
       },
     },
   },
 
   created () {
     this.loadLatest()
+    this.loadModule()
   },
 
   methods: {
     convert (r) {
-      if (!r.fields) {
+      if (!r.values) {
         return null
       }
 
       const value = r.recordID
       let label = value
       if (this.field.options.labelField) {
-        const recordField = r.fields.find(f => f.name === this.field.options.labelField)
-        if (recordField && recordField.value) {
-          label = recordField.value
-        }
+        label = r.values[this.field.options.labelField]
       }
 
       return { value, label }
@@ -91,10 +97,8 @@ export default {
           return `${qf} LIKE '%${query}%'`
         }).join(' OR ')
 
-        const sort = [this.field.options.labelField, 'updated_at DESC', 'created_at DESC'].join(', ')
-
-        this.$crm.moduleRecordList({ moduleID, filter, sort }).then(({ records }) => {
-          this.records = records
+        this.$crm.moduleRecordList({ moduleID, filter, sort: this.sortString() }).then(({ records }) => {
+          this.records = records.map(r => new Record(this.module, r))
         })
       }
     },
@@ -102,20 +106,31 @@ export default {
     loadLatest () {
       const moduleID = this.field.options.moduleID
       if (moduleID) {
-        const sort = [this.field.options.labelField, 'updated_at DESC', 'created_at DESC'].join(', ')
-
-        this.$crm.moduleRecordList({ moduleID, sort }).then(({ records }) => {
-          this.latest = records
+        this.$crm.moduleRecordList({ moduleID, sort: this.sortString() }).then(({ records }) => {
+          this.latest = records.map(r => new Record(this.module, r))
         })
       }
+    },
+
+    sortString () {
+      return [this.field.options.labelField, 'updated_at DESC', 'created_at DESC'].filter(f => !!f).join(', ')
     },
 
     // Fetches record if not already present
     findByID (recordID) {
       const moduleID = this.field.options.moduleID
       if (moduleID && recordID && (this.valueRecord || {}).recordID !== recordID) {
-        this.$crm.moduleRecordRead({ moduleID, recordID }).then(record => {
-          this.valueRecord = record
+        this.$crm.moduleRecordRead({ moduleID, recordID }).then(r => {
+          this.valueRecord = new Record(this.module, r)
+        })
+      }
+    },
+
+    loadModule () {
+      const moduleID = this.field.options.moduleID
+      if (moduleID && (!this.module || this.module.moduleID !== moduleID)) {
+        this.$crm.moduleRead({ moduleID }).then(m => {
+          this.module = new Module(m)
         })
       }
     },

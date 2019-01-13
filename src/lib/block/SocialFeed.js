@@ -28,8 +28,8 @@ export function extractSocialUrl (profileSourceField, profileUrl, record = null)
   var socialNetwork = ''
   var twitterHandle = ''
   // check if we have a profileSourceField
-  if (profileSourceField && profileSourceField.length > 0 && record && record.fields) {
-    url = (record.fields.find(f => f.name === profileSourceField) || {}).value
+  if (profileSourceField && profileSourceField.length > 0 && record) {
+    url = record.values[profileSourceField]
   } else {
     // see if we can fail back to profileUrl
     if (profileUrl && profileUrl.length > 0) {

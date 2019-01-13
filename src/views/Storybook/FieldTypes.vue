@@ -21,7 +21,7 @@
 
         </td>
         <td>
-          <pre>{{ recordValue(field) }}</pre>
+          <pre>{{ record.values[field.name] || '[undefined]' }}</pre>
         </td>
         <td>
           <field-viewer :field="field" :record="record" />
@@ -50,14 +50,6 @@ export default {
       module,
       record: new Record(module),
     }
-  },
-
-  methods: {
-    recordValue (field) {
-      const rv = this.record.fields.find(f => f.name === field.name)
-      if (!rv) return '[undefined]'
-      return rv.value
-    },
   },
 
   components: {

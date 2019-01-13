@@ -3,7 +3,7 @@
   <div v-else-if="recordListModule">
     <router-link v-if="!options.hideAddButton"
                  class="btn-url"
-                 :to="{ name: 'public.page.record.create', params: { pageID: options.pageID }, query: null }">+ Add new record</router-link>
+                 :to="{ name: 'public.page.record.create', params: { pageID: options.pageID, refRecord: record }, query: null }">+ Add new record</router-link>
     <input v-if="!options.hideSearch"
            @keyup.enter.prevent="handleQuery"
            @keyup="handleQueryThrottled"

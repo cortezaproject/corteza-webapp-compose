@@ -28,10 +28,7 @@ export default {
     formatted () {
       if (this.relRecord) {
         if (this.field.options.labelField) {
-          const recordField = this.relRecord.fields.find(f => f.name === this.field.options.labelField)
-          if (recordField && recordField.value) {
-            return recordField.value
-          }
+          return this.relRecord.values[this.field.options.labelField]
         }
 
         return this.relRecord.recordID

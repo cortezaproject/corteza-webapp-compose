@@ -22,6 +22,11 @@ export default {
       type: Object,
       required: true,
     },
+
+    refRecord: {
+      type: Object,
+      required: false,
+    },
   },
 
   data () {
@@ -32,6 +37,15 @@ export default {
 
   created () {
     this.record = new Record(this.page.module, {})
+
+    if (this.refRecord) {
+      // Record create form called from a related records block,
+      // we'll try to find an appropriate field and cross-link this new record to ref
+      const recRefField = this.page.module.fields.find(f => f.kind === 'Record' && f.options.moduleID === this.refRecord.moduleID)
+      if (recRefField) {
+        this.record.values[recRefField.name] = this.refRecord.recordID
+      }
+    }
   },
 
   methods: {

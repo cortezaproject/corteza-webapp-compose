@@ -24,11 +24,11 @@ export default {
   computed: {
     value: {
       get () {
-        return this.record.values[this.field.name]
+        return this.record.getValue(this.field.name)
       },
 
       set (value) {
-        this.record.values[this.field.name] = value
+        this.record.setValue(this.field.name, value)
         this.$emit('update:record', this.record)
       },
     },
