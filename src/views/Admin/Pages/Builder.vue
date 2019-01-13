@@ -3,7 +3,7 @@
     <grid :blocks.sync="blocks" editable>
       <template slot-scope="{ block, index }">
         <div class="actions">
-          <a class="action" @click="updateBlock=block">
+          <a class="action" @click="openUpdateDialog(index)">
             <i class="icon-edit"></i>
           </a>
           <a class="action"  @click="blocks.splice(index,1)">
@@ -37,9 +37,10 @@
       ok-variant="dark"
       ok-only
       centered
-      @hide="updateBlock=null"
+      @ok="blocks.splice(updateBlockIndex, 1, updateBlock);"
+      @hide="updateBlock=null; updateBlockIndex=null;"
       :visible="!!updateBlock">
-      <block-edit v-if="updateBlock" :module="module" :page="page" :block.sync="updateBlock" />
+      <block-edit v-if="updateBlock && updateBlockIndex" :module="module" :page="page" :block.sync="updateBlock" />
     </b-modal>
 
     <editor-toolbar :back-link="{name: 'admin.pages'}"
@@ -71,7 +72,8 @@ export default {
   data () {
     return {
       createBlock: null, // holds instance of a block we're adding
-      updateBlock: null, // holds instance of a block we're editing
+      updateBlock: null, // holds instance of a block (copy) we're editing
+      updateBlockIndex: -1, // holds pointer of a block we're editing
       blocks: [],
       page: null,
       module: null,
@@ -94,6 +96,11 @@ export default {
   },
 
   methods: {
+    openUpdateDialog (index) {
+      this.updateBlockIndex = index
+      this.updateBlock = new Block(this.page.blocks[index])
+    },
+
     handleSave ({ closeOnSuccess = false, previewOnSuccess = false } = {}) {
       this.$crm.pageRead({ pageID: this.pageID }).then(page => {
         page.blocks = this.blocks
