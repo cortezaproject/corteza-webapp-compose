@@ -16,7 +16,7 @@
             <li>
               <router-link :to="{name: 'admin.automation'}" class="nav-link">Automation</router-link>
             </li>
-            <li>
+            <li v-if="false">
               <router-link :to="{name: 'admin.configuration'}" class="nav-link">Configuration</router-link>
             </li>
           </ul>
