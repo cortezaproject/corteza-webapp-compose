@@ -59,7 +59,7 @@ if (record.values.field1 === 'a' && record.values.field2 === 'b') {
 export const MakeNewRecord = `
 // Whenever this code is triggered, create a new record from another module
 // eg: Make account record from a lead record
-if (!crust.api.record.save(crust.helpers.record.new('Account', record.values)))) {
+if (!crust.api.record.save(crust.helpers.record.new('Account', record.values))) {
   return false
 }
 `.trimLeft()
