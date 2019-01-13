@@ -1,16 +1,13 @@
 <template>
-  <div class="form-group">
-    {{ field.label || field.name }}
-    <b-form-input
-      v-if="!field.options.onlyTime"
-      type="date"
-      v-b-tooltip.hover :title="dateRule"
-      v-model="date" />
-    <b-form-input
-      v-if="!field.options.onlyDate"
-      type="time"
-      v-model="time" />
-  </div>
+  <b-form-group :label="field.label || field.name">
+    <b-form-input v-if="!field.options.onlyTime"
+                  type="date"
+                  v-b-tooltip.hover :title="dateRule"
+                  v-model="date" />
+    <b-form-input v-if="!field.options.onlyDate"
+                  type="time"
+                  v-model="time" />
+  </b-form-group>
 </template>
 <script>
 import base from './base'
@@ -85,3 +82,18 @@ export default {
   },
 }
 </script>
+
+<style scoped lang="scss">
+
+input[type='date'] {
+  width: calc(((100% / 3) *2) - 10px);
+  display: inline-block;
+  margin-right: 10px;
+}
+
+input[type='time'] {
+  width: calc(100% / 3);
+  display: inline-block;
+}
+
+</style>

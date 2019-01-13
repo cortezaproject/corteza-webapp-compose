@@ -1,6 +1,5 @@
 <template>
-  <div class="form-group">
-    {{ field.label || field.name }}
+  <b-form-group :label="field.label || field.name">
     <vue-select :options="users"
                   @search="search"
                   option-value="userID"
@@ -8,7 +7,7 @@
                   placeholder="Start typing to search for users by email or name"
                   v-model="selected">
     </vue-select>
-  </div>
+  </b-form-group>
 </template>
 <script>
 import { mapGetters } from 'vuex'

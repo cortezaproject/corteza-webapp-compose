@@ -1,6 +1,5 @@
 <template>
-  <div class="form-group">
-    {{ field.label || field.name }}
+  <b-form-group :label="field.label || field.name">
     <quill-editor
       v-if="field.options.useRichTextEditor"
       v-model="value"
@@ -12,7 +11,7 @@
     <b-form-input
       v-else
       v-model="value"></b-form-input>
-  </div>
+  </b-form-group>
 </template>
 <script>
 // require styles

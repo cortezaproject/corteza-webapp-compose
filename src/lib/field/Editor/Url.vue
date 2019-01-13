@@ -1,10 +1,9 @@
 <template>
-  <div class="form-group">
-    {{ field.label || field.name }}
+  <b-form-group :label="field.label || field.name">
     <b-form-input
       type="url"
       v-model="urlValue"></b-form-input>
-  </div>
+  </b-form-group>
 </template>
 <script>
 import base from './base'

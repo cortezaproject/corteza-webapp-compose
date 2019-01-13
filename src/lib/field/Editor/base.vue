@@ -1,7 +1,9 @@
 <template>
-  <div class="form-group">
-    <label>{{ field.label || field.name }}</label>
-    <div>{{ value }}</div>
+  <div>
+    <fieldset class="form-group">
+      <label>{{ field.label || field.name }}</label>
+      <div>{{ value }}</div>
+    </fieldset>
   </div>
 </template>
 <script>

@@ -1,10 +1,7 @@
 <template>
-  <div class="form-group">
-    {{ field.label || field.name }}
-    <b-form-input
-      type="email"
-      v-model="value" />
-  </div>
+  <b-form-group :label="field.label || field.name">
+    <b-form-input type="email" v-model="value"></b-form-input>
+  </b-form-group>
 </template>
 <script>
 import base from './base'

@@ -1,6 +1,5 @@
 <template>
-  <div class="form-group">
-    {{ field.label || field.name }}
+  <b-form-group :label="field.label || field.name">
     <vue-select :options="options"
                 :disabled="!this.field.options.moduleID"
                 @search="search"
@@ -9,7 +8,7 @@
                 placeholder="Start typing to search for records"
                 v-model="selected">
     </vue-select>
-  </div>
+  </b-form-group>
 </template>
 <script>
 import base from './base'

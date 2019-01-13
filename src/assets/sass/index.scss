@@ -78,7 +78,8 @@ label {
   }
 }
 
-.custom-select {
+.custom-select,
+.input-group-text {
   border-radius: 0;
 }
 
@@ -183,9 +184,9 @@ li.dropdown:hover > .dropdown-menu {
   input[type],
   textarea,
   select {
-    background-color: transparent;
+    /*    background-color: transparent;
     border: 1px solid $appgrey;
-    border-radius: 5px;
+    border-radius: 0;
     box-sizing: border-box;
     color: $defaulttextcolor;
     display: block;
@@ -193,7 +194,7 @@ li.dropdown:hover > .dropdown-menu {
     font-weight: 700;
     margin: 2px 0 8px;
     padding: 6px;
-    width: 100%;
+    width: 100%; */
 
     &:focus {
       border: 1px solid $appblue;
@@ -206,19 +207,19 @@ li.dropdown:hover > .dropdown-menu {
 
   input[type="radio"],
   input[type="checkbox"] {
-    background-color: transparent;
+    /*    background-color: transparent;
     border-radius: 5px;
     box-sizing: border-box;
     color: $defaulttextcolor;
     font-size: 1em;
     font-weight: 700;
     margin: 2px 0 8px;
-    padding: 6px;
+    padding: 6px; */
   }
 }
 
 input {
-  border-radius: 5px;
+  border-radius: 0;
   border: 1px solid $appgrey;
   font-size: 14px;
 
@@ -232,6 +233,10 @@ input {
       border-color: $appred;
     }
   }
+}
+
+.col-form-label {
+  padding-bottom: 0;
 }
 
 table {
@@ -306,6 +311,10 @@ table {
   }
 
   .dropdown-toggle {
+    border-radius: 0 !important;
+    max-height: 29px;
+    border: 1px solid $appgrey;
+
     &::after {
       display: none;
     }
