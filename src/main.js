@@ -21,6 +21,7 @@ if (window.CrustConfig === undefined) {
 } else {
   // Set some defaults
   if (!window.CrustConfig.crm) window.CrustConfig.crm = {}
+  if (!window.CrustConfig.sam) window.CrustConfig.sam = {}
   if (!window.CrustConfig.crm.formatting) window.CrustConfig.crm.formatting = {}
 
   // For now, we default to German date style.

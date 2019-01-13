@@ -1,6 +1,5 @@
 import Record from '@/lib/record'
 import Module from '@/lib/module'
-import Messaging from '@/api/messaging'
 
 export default {
   methods: {
@@ -75,6 +74,7 @@ export default {
 
     triggerContext (ctx) {
       const $crm = this.$crm
+      const $messaging = this.$messaging
       let { module } = ctx
 
       ctx.modules = [ module ]
@@ -164,8 +164,7 @@ export default {
                 })
               },
               message: ({ channelID }, message) => {
-                console.log({ channelID, message })
-                Messaging.messageCreate({ channelID, message })
+                $messaging.messageCreate({ channelID, message })
               },
             },
 
