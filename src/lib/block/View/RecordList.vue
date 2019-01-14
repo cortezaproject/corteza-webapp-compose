@@ -201,9 +201,21 @@ export default {
 @import "@/assets/sass/_0.declare.scss";
 @import "@/assets/sass/btns.scss";
 
+.action {
+  visibility: hidden;
+}
+
 table {
   width: 100%;
   margin-bottom: 0;
+
+  tr {
+    &:hover {
+      .action {
+        visibility: visible;
+      }
+    }
+  }
 
   th {
     white-space: nowrap;

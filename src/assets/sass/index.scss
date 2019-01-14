@@ -1,15 +1,16 @@
 /* Import bootstrap styles from npm package */
-@import '~bootstrap/dist/css/bootstrap.min.css';
-@import './_0.declare-light';
-@import './components/pagination';
-@import './components/actions';
+@import "~bootstrap/dist/css/bootstrap.min.css";
+@import "./_0.declare-light";
+@import "./components/pagination";
+@import "./components/actions";
 /* stylelint-disable no-descending-specificity */
 
 .clear {
   clear: both;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   background: $mainbgcolor;
 }
@@ -92,7 +93,7 @@ li.dropdown:hover > .dropdown-menu {
   overflow-y: auto;
 
   &:not(.vue-grid-placeholder) {
-    background: #FFF;
+    background: #fff;
   }
 
   &.resizing {
@@ -227,8 +228,8 @@ input {
     border-color: $appred;
   }
 
-  &[type='url'],
-  &[type='email'] {
+  &[type="url"],
+  &[type="email"] {
     &:invalid {
       border-color: $appred;
     }
@@ -244,20 +245,25 @@ input {
     word-break: break-word;
     padding: 5px;
     vertical-align: middle;
+    border: none;
   }
 
+  thead {
+    th {
+      border-bottom: 1px solid $appcream;
+    }
+  }
+}
+
+table {
   &.sticky-header {
     th {
       position: sticky;
       top: -1px;
       background: $white;
-      box-shadow: 0 1px #dee2e6;
+      box-shadow: 0 1px $appcream;
     }
   }
-}
-
-.table-responsive {
-  overflow-x: unset;
 }
 
 .ql-editor {
@@ -332,7 +338,7 @@ input {
   margin-top: -5px;
 }
 
-input[type='checkbox'] {
+input[type="checkbox"] {
   font-size: 16px;
 }
 
