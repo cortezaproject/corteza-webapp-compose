@@ -26,11 +26,10 @@ nav {
 .navbar {
   padding: 0;
   background: $white;
-  height: 50px;
 }
 
 .navbar-toggler {
-  margin: 5px 5px 5px 10px;
+  margin: 0 5px 0 10px;
   font-size: 12px;
   padding: 5px 10px;
 
@@ -46,6 +45,13 @@ nav {
   color: $black;
 }
 
+.navbar-collapse {
+  width: 100%;
+  display: block;
+  background: $appwhite;
+  z-index: 1;
+}
+
 @media (max-width: $wideminwidth) {
   .navbar {
     padding: 10px 0;
@@ -58,5 +64,11 @@ nav {
   .admin-panel {
     position: relative;
     padding-left: 15px;
+  }
+}
+
+@media (min-width: $wideminwidth) {
+  .navbar-collapse {
+    max-width: calc(100vw - 120px);
   }
 }
