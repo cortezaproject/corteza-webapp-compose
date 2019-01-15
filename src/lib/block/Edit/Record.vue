@@ -8,11 +8,17 @@
   </div>
 </template>
 <script>
-import optionsPropMixin from './mixins/optionsProp'
 import FieldEditor from '@/lib/field/Editor'
 
 export default {
   props: {
+    props: {
+      options: {
+        type: Object,
+        required: true,
+      },
+    },
+
     module: {
       type: Object,
       required: true,
@@ -29,10 +35,6 @@ export default {
       return this.module.filterFields(this.options.fields)
     },
   },
-
-  mixins: [
-    optionsPropMixin,
-  ],
 
   components: {
     FieldEditor,

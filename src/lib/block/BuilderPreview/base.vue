@@ -1,3 +1,4 @@
+<script>
 export default {
   props: {
     options: {
@@ -6,3 +7,4 @@ export default {
     },
   },
 }
+</script>

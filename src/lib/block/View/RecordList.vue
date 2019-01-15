@@ -50,7 +50,6 @@ import { mapGetters } from 'vuex'
 import base from './base'
 import FieldViewer from '@/lib/field/Viewer'
 import Pagination from 'vue-pagination-2'
-import Module from '@/lib/module'
 import _ from 'lodash'
 import Record from '@/lib/record'
 
@@ -73,7 +72,6 @@ export default {
 
       error: null,
 
-      recordListModule: this.module,
       records: [],
     }
   },
@@ -81,7 +79,17 @@ export default {
   computed: {
     ...mapGetters({
       currentUser: 'auth/user',
+      getModuleByID: 'module/getByID',
     }),
+
+    // Returns module, configured for this record list
+    recordListModule () {
+      if (this.options.moduleID) {
+        return this.getModuleByID(this.options.moduleID)
+      } else {
+        return undefined
+      }
+    },
 
     columns () {
       return this.recordListModule.filterFields(this.options.fields)
@@ -94,9 +102,9 @@ export default {
     this.meta.perPage = this.options.perPage
 
     if (this.options.prefilter) {
-      // Create a sandbox for evaling prefilter as a template
-      // This will allow us to pass ${recordID}, ${ownerID}, ${userID} etc
-      // as parameters
+      // Little magic here: prefilter is wraped with backticks and evaluated
+      // this allows us to us ${recordID}, ${ownerID}, ${userID} in prefilter string;
+      // hence the /hanging/ recordID, ownerID and userID variables
       this.prefilter = (function (prefilter, { recordID, ownerID, userID }) {
         // eslint-disable-next-line
         return eval('`' + prefilter + '`')
@@ -109,21 +117,17 @@ export default {
       this.meta.filter = this.prefilter
     }
 
-    if (this.recordListModule && this.recordListModule.moduleID === this.options.moduleID) {
+    if (this.recordListModule) {
       this.fetch()
-      return
-    }
+    } else {
+      if (!this.options.moduleID) {
+        this.raiseWarningAlert('RecordList block render error: moduleID not set.')
+      }
 
-    if (!this.options.moduleID) {
-      this.error = 'Block render error: moduleID not set.'
-    } else if (!this.options.pageID) {
-      this.error = 'Block render error: pageID not set.'
+      if (!this.options.pageID) {
+        this.raiseWarningAlert('RecordList block render error: pageID not set.')
+      }
     }
-
-    this.$crm.moduleRead({ moduleID: this.options.moduleID }).then((m) => {
-      this.recordListModule = new Module(m)
-      this.fetch()
-    }).catch(this.defaultErrorHandler('Could not load record\'s module'))
   },
 
   methods: {

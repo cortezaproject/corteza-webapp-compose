@@ -13,11 +13,11 @@
                 <td><time :datetime="m.updatedAt" v-if="m.updatedAt">{{ prettyDate(m.updatedAt || m.createdAt) }}</time></td>
                 <td class="actions text-right">
                   <router-link
-                    v-if="m.recordPage"
-                    :to="{name: 'admin.pages.builder', params: { pageID: m.recordPage.pageID }}"
+                    v-if="recordPage(m.moduleID)"
+                    :to="{name: 'admin.pages.builder', params: { pageID: recordPage(m.moduleID).pageID }}"
                     class="btn-url">Page builder</router-link>
                   <button
-                     v-if="!m.recordPage"
+                     v-else
                      @click="handleRecordPageCreation({ moduleID: m.moduleID })"
                      class="btn-url">Page builder</button>
 
@@ -31,7 +31,7 @@
           <form @submit.prevent="create">
             <b-form-group label="Create a new module:">
               <b-input-group>
-                <input required type="text" v-model="addModuleFormData.name" class="form-control" id="name" placeholder="Module name" />
+                <input required type="text" v-model="newModule.name" class="form-control" id="name" placeholder="Module name" />
                 <b-input-group-append>
                   <button type="submit" class="btn btn-dark">Create</button>
                 </b-input-group-append>
@@ -45,20 +45,27 @@
 </template>
 
 <script>
-
+import { mapGetters, mapActions } from 'vuex'
 import Field from '@/lib/field'
+import Module from '@/lib/module'
 
 export default {
   name: 'ModuleList',
   data () {
     return {
-      modules: [],
-      addModuleFormData: {
-        name: '',
-        fields: [],
-        meta: {},
-      },
+      pages: [],
+      newModule: new Module({ fields: [new Field({ name: 'sample', kind: 'text' })] }),
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      modules: 'module/set',
+    }),
+
+    recordPage () {
+      return (moduleID) => this.pages.find(p => p.moduleID === moduleID)
+    },
   },
 
   created () {
@@ -66,23 +73,18 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      createModule: 'module/create',
+    }),
+
     fetch () {
       this.$crm.pageList({ recordPagesOnly: true }).then(pp => {
-        this.$crm.moduleList({}).then(mm => {
-          this.modules = mm.map(m => {
-            m.recordPage = pp.find(p => p.moduleID === m.moduleID)
-            return m
-          })
-        }).catch(this.defaultErrorHandler('Could not load module list'))
+        this.pages = pp
       }).catch(this.defaultErrorHandler('Could not load page list'))
     },
 
     create () {
-      this.addModuleFormData.fields = [
-        new Field({ name: 'sample', kind: 'text' }),
-      ]
-
-      this.$crm.moduleCreate(this.addModuleFormData).then((module) => {
+      this.createModule(this.newModule).then((module) => {
         this.$router.push({ name: 'admin.modules.edit', params: { moduleID: module.moduleID } })
       }).catch(this.defaultErrorHandler('Could not create a module'))
     },
@@ -95,6 +97,7 @@ export default {
       const payload = {
         title: `Record page for module "${module.name || moduleID}"`,
         moduleID,
+        blocks: [],
       }
 
       this.$crm.pageCreate(payload).then(page => {

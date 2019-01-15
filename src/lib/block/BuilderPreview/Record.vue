@@ -5,25 +5,18 @@
   <div v-else>Can not render this block without a record</div>
 </template>
 <script>
-import optionsPropMixin from './mixins/optionsProp'
-import moduleLoaderMixin from './mixins/moduleLoader'
+import base from './base'
 
 export default {
+  extends: base,
   computed: {
+    module () {
+      return this.$store.getters['module/getByID'](this.options.moduleID)
+    },
+
     selectedFields () {
       return this.options.fields.filter(f => !!f).map(f => f.name).join(', ')
     },
   },
-
-  methods: {
-    mapFieldKind (kind) {
-      return 'field' + kind
-    },
-  },
-
-  mixins: [
-    optionsPropMixin,
-    moduleLoaderMixin,
-  ],
 }
 </script>

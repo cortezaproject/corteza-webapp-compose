@@ -6,15 +6,15 @@
         <option disabled selected>---</option>
         <option
           v-for="module in modules"
-          :key="module.id"
-          :disabled="!module.recordPage"
+          :key="module.moduleID"
+          :disabled="!modulePageID[module.moduleID]"
           :value="module.moduleID"
         >{{ module.name }}</option>
       </select>
       <i>Disabled modules on the list do not have <router-link :to="{ name: 'admin.pages'}">record pages</router-link> available.</i>
     </fieldset>
 
-    <field-selector v-if="selectedModule" :module="selectedModule" :fields.sync="o.fields" />
+    <field-selector v-if="recordListModule" :module="recordListModule" :fields.sync="o.fields" />
 
     <b-form-group horizontal :label-cols="3" breakpoint="md" label="New records">
         <b-form-checkbox :value="true"
@@ -58,6 +58,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import base from './base'
 import pagesMixin from './mixins/pages'
 import FieldSelector from './inc/FieldSelector'
@@ -68,38 +69,39 @@ export default {
 
   data () {
     return {
-      modules: [],
+      modulePageID: [], // Record pages
     }
   },
 
   computed: {
-    selectedModule () {
-      return this.modules.find(m => m.moduleID === this.o.moduleID)
+    ...mapGetters({
+      modules: 'module/set',
+    }),
+
+    recordListModule () {
+      if (this.o.moduleID !== '0') {
+        return this.$store.getters['module/getByID'](this.o.moduleID)
+      } else {
+        return undefined
+      }
     },
   },
 
   watch: {
     'o.moduleID' (newModuleID) {
-      if (newModuleID) {
-        const module = this.modules.find(m => m.moduleID === newModuleID)
-
-        if (module && module.recordPage) {
-          this.o.pageID = module.recordPage.pageID
-        }
-      }
+      // Everytime moduleID changes, do a lookup among module-page pairs and
+      // reset the pageID
+      this.o.pageID = this.modulePageID[newModuleID] || undefined
+      this.o.fields = []
     },
   },
 
   created () {
     this.$crm.pageList({ recordPagesOnly: true }).then(pp => {
-      // @todo extend API endpoint to support fetching only record pages
-      this.$crm.moduleList({}).then(mm => {
-        this.modules = mm.map(m => {
-          m.recordPage = pp.find(p => p.moduleID === m.moduleID)
-          return m
-        })
-      }).catch(this.defaultErrorHandler('Could not load pages'))
-    }).catch(this.defaultErrorHandler('Could not load modules'))
+      this.modulePageID = []
+      pp.filter(({ moduleID }) => moduleID !== '0')
+        .forEach(({ pageID, moduleID }) => { this.modulePageID[moduleID] = pageID })
+    }).catch(this.defaultErrorHandler('Could not load pages'))
   },
 
   mixins: [

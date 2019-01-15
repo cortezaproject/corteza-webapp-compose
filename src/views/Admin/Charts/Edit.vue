@@ -38,10 +38,10 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import draggable from 'vuedraggable'
 import Report from '@/components/Admin/Chart/Editor/Report'
 import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
-import Field from '@/lib/field'
 import Chart from '@/lib/chart.js'
 import ChartJS from 'chart.js'
 import EditorToolbar from '@/components/Admin/EditorToolbar'
@@ -65,8 +65,6 @@ export default {
   data () {
     return {
       chart: new Chart(),
-
-      modules: [],
     }
   },
 
@@ -80,6 +78,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      modules: 'module/set',
+    }),
+
     defaultReport () {
       return Object.assign({}, defaultReport)
     },
@@ -89,19 +91,6 @@ export default {
     this.$crm.chartRead({ chartID: this.chartID }).then((chart) => {
       this.chart = new Chart(chart)
     }).catch(this.defaultErrorHandler('Could not load chart'))
-
-    this.$crm.moduleList({}).then(mm => {
-      this.modules = mm.map(m => {
-        if (!Array.isArray(m.fields)) {
-          // In some cases, empty arrays are unmarshal as an empty object
-          // and draggable component complains
-          m.fields = []
-        }
-
-        m.fields = m.fields.map(f => new Field(f))
-        return m
-      })
-    }).catch(this.defaultErrorHandler('Could not load module list'))
   },
 
   methods: {

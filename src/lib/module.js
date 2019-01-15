@@ -13,10 +13,12 @@ export default class Module {
     this.merge(def)
   }
 
-  merge ({ moduleID, name, fields, meta }) {
+  merge ({ moduleID, name, fields, meta, createdAt, updatedAt }) {
     this.moduleID = typeof moduleID === 'string' ? moduleID : this.moduleID || ''
     this.name = typeof name === 'string' ? name : this.name || ''
     this.fields = Array.isArray(fields) ? fields.map(f => new Field(f)) : []
+    this.createdAt = createdAt || this.createdAt
+    this.updatedAt = updatedAt || this.updatedAt
 
     // Properly convert old meta data that contained fields:
     if (Array.isArray(meta)) {

@@ -33,9 +33,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import base from './base'
 import { Record } from '@/lib/field/Record'
-import Module from '@/lib/module'
 
 // @todo rename to Record and make appropriate changes...
 export default {
@@ -43,14 +43,21 @@ export default {
 
   data () {
     return {
-      modules: [],
       selected: null,
     }
   },
 
   computed: {
+    ...mapGetters({
+      modules: 'module/set',
+    }),
+
     module () {
-      return this.modules.find(m => m.moduleID === this.f.options.moduleID)
+      if (this.f.options.moduleID !== '0') {
+        return this.$store.getters['module/getByID'](this.f.options.moduleID)
+      } else {
+        return undefined
+      }
     },
 
     fields () {
@@ -67,10 +74,6 @@ export default {
 
   created () {
     this.f.options = new Record(this.f.options)
-
-    this.$crm.moduleList({}).then((mm) => {
-      this.modules = mm.map(m => new Module(m))
-    }).catch(this.defaultErrorHandler('Could not load module list'))
   },
 }
 </script>

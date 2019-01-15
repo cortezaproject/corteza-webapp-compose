@@ -34,20 +34,19 @@
   <div v-else>Block with table of records, module not selected.</div>
 </template>
 <script>
-import optionsPropMixin from './mixins/optionsProp'
-import moduleLoaderMixin from './mixins/moduleLoader'
+import base from './base'
 
 export default {
+  extends: base,
   computed: {
+    module () {
+      return this.$store.getters['module/getByID'](this.options.moduleID)
+    },
+
     selectedFields () {
       return this.options.fields.filter(f => !!f).map(f => f.name).join(', ')
     },
   },
-
-  mixins: [
-    optionsPropMixin,
-    moduleLoaderMixin,
-  ],
 }
 </script>
 <style lang="scss">

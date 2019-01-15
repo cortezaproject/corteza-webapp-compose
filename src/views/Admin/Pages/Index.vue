@@ -36,22 +36,10 @@ export default {
         title: '',
         blocks: [],
       },
-
-      modules: [],
     }
   },
 
   created () {
-    this.$crm.pageList({ recordPagesOnly: true }).then(pp => {
-      // @todo extend API endpoint to support fetching only record pages
-      this.$crm.moduleList({}).then(mm => {
-        this.modules = mm.map(m => {
-          m.recordPage = pp.find(p => p.moduleID === m.moduleID)
-          return m
-        })
-      })
-    })
-
     this.loadTree()
   },
 
@@ -70,21 +58,6 @@ export default {
 
     handleReorder () {
       this.loadTree()
-    },
-
-    handleRecordPageCreation ({ moduleID }) {
-      // This is called from record pages list as a request to create a (record) page that
-      // with reference to a module
-
-      const module = this.modules.find(m => m.moduleID === moduleID)
-      const payload = {
-        title: `Record page for module "${module.name || moduleID}"`,
-        moduleID,
-      }
-
-      this.$crm.pageCreate(payload).then(page => {
-        this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
-      }).catch(this.defaultErrorHandler('Could not save this page'))
     },
   },
 

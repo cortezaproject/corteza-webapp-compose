@@ -24,6 +24,10 @@ export default {
 
   created () {
     this.handleAlert((alert) => this.alerts.push(alert))
+
+    // Preload all elements we need.
+    this.$store.dispatch('module/load')
+    this.$store.dispatch('trigger/load')
   },
 
   mixins: [auth],

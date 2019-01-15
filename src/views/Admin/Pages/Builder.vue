@@ -76,18 +76,22 @@ export default {
       updateBlockIndex: -1, // holds pointer of a block we're editing
       blocks: [],
       page: null,
-      module: null,
     }
+  },
+
+  computed: {
+    module () {
+      if (this.page && this.page.moduleID !== '0') {
+        return this.$store.getters['module/getByID'](this.page.moduleID)
+      } else {
+        return undefined
+      }
+    },
   },
 
   mounted () {
     this.$crm.pageRead({ pageID: this.pageID }).then(page => {
       this.page = page
-      if (page.moduleID !== '0') {
-        this.$crm.moduleRead({ moduleID: page.moduleID }).then(m => {
-          this.module = m
-        })
-      }
 
       if (page.blocks && Array.isArray(page.blocks)) {
         this.blocks = page.blocks.map(b => new Block(b))

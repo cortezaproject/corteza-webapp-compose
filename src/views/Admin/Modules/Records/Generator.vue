@@ -19,7 +19,6 @@
         <b-progress height="20px" class="mt-2" :max="parseInt(totalRecordsToCreate)" show-progress>
           <b-progress-bar :value="recordsCreated/parseInt(totalRecordsToCreate)*100" variant="success"></b-progress-bar>
         </b-progress>
-        <router-link :to="{name: 'admin.modules.records'}" class="btn-url">List of records</router-link>
       </form>
 
       <hr />
@@ -36,7 +35,6 @@
 
 <script>
 import FieldEditor from '@/lib/field/Editor'
-import Module from '@/lib/module'
 
 export default {
   props: {
@@ -48,7 +46,6 @@ export default {
 
   data () {
     return {
-      module: null,
       faker: null,
 
       demo: [],
@@ -56,6 +53,12 @@ export default {
       totalRecordsToCreate: 10,
       recordsCreated: 0,
     }
+  },
+
+  computed: {
+    module () {
+      return this.$store.getters['module/getByID'](this.moduleID)
+    },
   },
 
   created () {
@@ -66,13 +69,6 @@ export default {
       /* eslint-disable no-console */
       console.error(e)
     }
-  },
-
-  mounted () {
-    this.$crm.moduleRead({ moduleID: this.moduleID }).then(m => {
-      this.module = new Module(m)
-      this.demo = this.recordFaker()
-    }).catch(this.defaultErrorHandler('Could not load module'))
   },
 
   methods: {

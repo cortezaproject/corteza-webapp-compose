@@ -5,11 +5,10 @@
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
     </editor-toolbar>
-    <form @submit.prevent="handleSave" class="container">
+    <form @submit.prevent="handleSave" class="container" v-if="module">
       <div class="row">
         <div class="col-md-12 well">
         <h2>Edit module</h2>
-          <input required type="hidden" v-model="module.moduleID" />
           <div class="form-group">
             <label>Module name</label>
             <input required type="text" v-model="module.name" class="form-control" placeholder="Module name" />
@@ -81,10 +80,12 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import draggable from 'vuedraggable'
 import FieldConfigurator from '@/lib/field/Configurator'
 import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 import Field from '@/lib/field'
+import Module from '@/lib/module'
 import fieldList from '@/lib/field/list'
 import EditorToolbar from '@/components/Admin/EditorToolbar'
 
@@ -100,27 +101,26 @@ export default {
 
   data () {
     return {
-      module: {},
       updateField: null,
+      module: null,
       fieldsList: fieldList,
     }
   },
 
-  mounted () {
-    this.$crm.moduleRead({ moduleID: this.moduleID }).then(rsp => {
-      if (!Array.isArray(rsp.fields)) {
-        // In some cases, empty arrays are unmarshal as an empty object
-        // and draggable component complains
-        rsp.fields = []
-      } else {
-        rsp.fields = rsp.fields.map(f => new Field(f))
-      }
-
-      this.module = rsp
-    }).catch(this.defaultErrorHandler('Could not load this module'))
+  created () {
+    this.findModuleByID({ moduleID: this.moduleID }).then((module) => {
+      // Make a copy so that we do not change store item by ref
+      this.module = new Module({ ...module })
+    })
   },
 
   methods: {
+    ...mapActions({
+      findModuleByID: 'module/findByID',
+      updateModule: 'module/update',
+      deleteModule: 'module/delete',
+    }),
+
     checkFieldNameState (field) {
       return field.name.length > 1 && fieldNameCheck.test(field.name) ? null : false
     },
@@ -145,7 +145,7 @@ export default {
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {
-      this.$crm.moduleUpdate(this.module).then(() => {
+      this.updateModule(this.module).then(() => {
         this.raiseSuccessAlert('Module saved')
         if (closeOnSuccess) {
           this.redirect()
@@ -154,7 +154,7 @@ export default {
     },
 
     handleDelete () {
-      this.$crm.moduleDelete({ moduleID: this.moduleID }).then(() => {
+      this.deleteModule({ moduleID: this.moduleID }).then(() => {
         this.raiseSuccessAlert('Module deleted')
         this.$router.push({ name: 'admin.modules' })
       }).catch(this.defaultErrorHandler('Could not delete this module'))

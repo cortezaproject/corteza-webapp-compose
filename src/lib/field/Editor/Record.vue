@@ -1,7 +1,7 @@
 <template>
   <b-form-group :label="field.label || field.name">
     <vue-select :options="options"
-                :disabled="!this.field.options.moduleID"
+                :disabled="!module"
                 @search="search"
                 option-value="recordID"
                 option-text="label"
@@ -14,7 +14,6 @@
 import base from './base'
 import { VueSelect } from 'vue-select'
 import Record from '@/lib/record'
-import Module from '@/lib//module'
 import _ from 'lodash'
 
 export default {
@@ -22,7 +21,6 @@ export default {
 
   data () {
     return {
-      module: null,
       valueRecord: {},
       records: [],
       latest: [], // set of 20 latest records for default list
@@ -33,6 +31,14 @@ export default {
   computed: {
     options () {
       return (this.query ? this.records : this.latest).map(this.convert)
+    },
+
+    module () {
+      if (this.field.options.moduleID !== '0') {
+        return this.$store.getters['module/getByID'](this.field.options.moduleID)
+      } else {
+        return undefined
+      }
     },
 
     selected: {
@@ -61,7 +67,6 @@ export default {
         // We need to daly loading for abit
         _.throttle((e) => {
           this.loadLatest()
-          this.loadModule()
         }, 500)()
       },
     },
@@ -69,7 +74,6 @@ export default {
 
   created () {
     this.loadLatest()
-    this.loadModule()
   },
 
   methods: {
@@ -122,15 +126,6 @@ export default {
       if (moduleID && recordID && (this.valueRecord || {}).recordID !== recordID) {
         this.$crm.moduleRecordRead({ moduleID, recordID }).then(r => {
           this.valueRecord = new Record(this.module, r)
-        })
-      }
-    },
-
-    loadModule () {
-      const moduleID = this.field.options.moduleID
-      if (moduleID && (!this.module || this.module.moduleID !== moduleID)) {
-        this.$crm.moduleRead({ moduleID }).then(m => {
-          this.module = new Module(m)
         })
       }
     },

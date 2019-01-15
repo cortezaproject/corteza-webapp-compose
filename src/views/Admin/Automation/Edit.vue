@@ -84,8 +84,7 @@
   </div>
 </template>
 <script>
-import { mapActions } from 'vuex'
-import Module from '@/lib/module'
+import { mapGetters, mapActions } from 'vuex'
 import Trigger from '@/lib/trigger'
 import * as TriggerCodeSamples from '@/assets/triggers/samples'
 import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
@@ -106,20 +105,19 @@ export default {
     return {
       editor: null,
       trigger: null,
-      modules: [],
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      modules: 'module/set',
+    }),
   },
 
   created () {
     this.findTriggerByID({ triggerID: this.triggerID }).then((t) => {
       this.trigger = new Trigger(t)
     })
-  },
-
-  mounted () {
-    this.$crm.moduleList({}).then((mm) => {
-      this.modules = mm.map(m => new Module(m))
-    }).catch(this.defaultErrorHandler('Could not load module list'))
   },
 
   methods: {

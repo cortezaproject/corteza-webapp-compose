@@ -8,12 +8,10 @@
   </div>
 </template>
 <script>
-import optionsPropMixin from './mixins/optionsProp'
+import base from './base'
 
 export default {
-  mixins: [
-    optionsPropMixin,
-  ],
+  extends: base,
 }
 </script>
 
