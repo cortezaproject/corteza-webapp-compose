@@ -86,7 +86,7 @@ export default {
       if (beforeParent.pageID !== afterParent.pageID) {
         // Page moved to a different parent
         data.selfID = afterParent.pageID
-        this.$crm.pageEdit(data).then(() => {
+        this.$crm.pageUpdate(data).then(() => {
           reorder()
         }).catch(this.defaultErrorHandler('Could not move this page'))
       } else {

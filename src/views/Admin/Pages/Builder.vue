@@ -105,7 +105,7 @@ export default {
       this.$crm.pageRead({ pageID: this.pageID }).then(page => {
         page.blocks = this.blocks
 
-        this.$crm.pageEdit(page).then(() => {
+        this.$crm.pageUpdate(page).then(() => {
           this.raiseSuccessAlert('Page saved')
           if (closeOnSuccess) {
             this.$router.push({ name: 'admin.pages' })

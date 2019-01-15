@@ -74,7 +74,7 @@ const actions = {
 
   async update ({ commit }, item) {
     commit(types.pending)
-    return CRM.triggerEdit(item).then(raw => {
+    return CRM.triggerUpdate(item).then(raw => {
       let trigger = new Trigger(raw)
       commit(types.updateSet, [trigger])
       commit(types.completed)

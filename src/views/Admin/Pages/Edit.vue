@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     handleSave ({ closeOnSuccess = false } = {}) {
-      this.$crm.pageEdit(this.page).then(() => {
+      this.$crm.pageUpdate(this.page).then(() => {
         this.raiseSuccessAlert('Page saved')
         if (closeOnSuccess) {
           this.$router.push({ name: 'admin.pages' })

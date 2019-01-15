@@ -21,7 +21,7 @@ export default {
       let ctx = { module, record }
 
       if (this.runTriggers('beforeUpdate', ctx)) {
-        this.$crm.moduleRecordEdit(this.record).then((r) => {
+        this.$crm.moduleRecordUpdate(this.record).then((r) => {
           this.record = new Record(this.page.module, r)
           this.raiseSuccessAlert('Record saved')
           this.$router.push({ name: 'public.page.record' })
@@ -93,7 +93,7 @@ export default {
                 if (record.recordID === '') {
                   record = await $crm.moduleRecordCreate(record)
                 } else {
-                  record = await $crm.moduleRecordEdit(record)
+                  record = await $crm.moduleRecordUpdate(record)
                 }
 
                 return record

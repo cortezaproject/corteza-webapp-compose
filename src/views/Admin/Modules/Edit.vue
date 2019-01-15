@@ -145,7 +145,7 @@ export default {
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {
-      this.$crm.moduleEdit(this.module).then(() => {
+      this.$crm.moduleUpdate(this.module).then(() => {
         this.raiseSuccessAlert('Module saved')
         if (closeOnSuccess) {
           this.redirect()

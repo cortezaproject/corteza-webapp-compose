@@ -172,7 +172,7 @@ export default {
       let c = Object.assign({}, this.chart)
       delete (c.config.renderer.data)
 
-      this.$crm.chartEdit(c).then(() => {
+      this.$crm.chartUpdate(c).then(() => {
         this.raiseSuccessAlert('Chart saved')
         if (closeOnSuccess) {
           this.redirect()
