@@ -1,6 +1,6 @@
 <template>
   <div class="view" v-if="page.blocks">
-    <grid :blocks="page.blocks" :editable="false">
+    <grid :blocks="page.blocks" :editable="false" :key="page.pageID">
       <template slot-scope="{ block, index }">
         <block-editor :block="block" :page="page" :module="module" :record="record" v-if="editMode" />
         <block-viewer :block="block" :page="page" :module="module" :record="record" v-else />

@@ -88,7 +88,13 @@ li.dropdown:hover > .dropdown-menu {
   display: block;
 }
 
+.vue-grid-layout {
+  transition: none !important;
+}
+
 .vue-grid-item {
+  transition: none !important;
+
   overflow-x: hidden;
   overflow-y: auto;
 

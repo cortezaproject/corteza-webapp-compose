@@ -10,7 +10,7 @@
                @dismissed="alerts.splice(i, 0)">{{ a.message }}</b-alert>
     </div>
     <router-view v-if="loaded" />
-    <div class="loader">
+    <div class="loader" v-else>
       <img :src="logo" />
     </div>
   </div>
@@ -61,9 +61,9 @@ export default {
   }
 
   @keyframes flickerAnimation {
-    0%   { opacity:.6; }
-    50%  { opacity:.1; }
-    100% { opacity:.6; }
+    0% { opacity: 0.6; }
+    50% { opacity: 0.1; }
+    100% { opacity: 0.6; }
   }
 
   .loader {
@@ -71,9 +71,10 @@ export default {
     align-items: center;
     justify-content: center;
     height: 100vh;
+
     img {
       align-self: center;
-      opacity:.7;
+      opacity: 0.7;
       animation: flickerAnimation 3s infinite;
     }
   }
