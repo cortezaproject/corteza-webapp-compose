@@ -11,7 +11,7 @@ const store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
   modules: {
     auth,
-    trigger,
+    trigger: trigger(CRM),
     module: module(CRM),
   },
   // plugins: [createLogger()],
