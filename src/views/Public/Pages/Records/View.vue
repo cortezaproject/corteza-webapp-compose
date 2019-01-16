@@ -1,5 +1,5 @@
 <template>
-  <div class="view">
+  <div :class="[editMode ? 'edit': 'view']">
     <toolbar :back-link="{name: 'admin.pages'}"
                     @delete="handleDelete"
                     @save="handleUpdate()">

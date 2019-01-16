@@ -1,9 +1,9 @@
 <template>
-  <div class="view" v-if="!!page">
+  <div v-if="!!page">
     <router-view :page="page" v-if="recordID || $route.meta.newRecord" />
     <grid :page="page" v-else />
   </div>
-  <div class="view" v-else><!-- @todo loader --></div>
+  <div v-else><!-- @todo loader --></div>
 </template>
 <script>
 import Grid from '@/components/Public/Page/Grid'

@@ -1,12 +1,13 @@
 <template>
-  <div class="view" v-if="page.blocks">
-    <grid :blocks="page.blocks" :editable="false" :key="page.pageID">
-      <template slot-scope="{ block, index }">
-        <block-editor :block="block" :page="page" :module="module" :record="record" v-if="editMode" />
-        <block-viewer :block="block" :page="page" :module="module" :record="record" v-else />
-      </template>
-    </grid>
-  </div>
+  <grid v-if="page.blocks"
+        :blocks="page.blocks"
+        :editable="false"
+        :key="page.pageID">
+    <template slot-scope="{ block, index }">
+      <block-editor :block="block" :page="page" :module="module" :record="record" v-if="editMode" />
+      <block-viewer :block="block" :page="page" :module="module" :record="record" v-else />
+    </template>
+  </grid>
 </template>
 <script>
 import Grid from '@/components/Common/Grid'
@@ -29,6 +30,12 @@ export default {
 
     editMode: {
       type: Boolean,
+    },
+  },
+
+  watch: {
+    'page' () {
+      console.log('Page change', this.page.title)
     },
   },
 

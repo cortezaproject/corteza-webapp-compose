@@ -1,5 +1,5 @@
 <template>
-  <div class="block" :class="'theme-'+block.theme">
+  <div :class="blockClass">
     <div class="block-data">
       <h2>{{ block.title }}</h2>
       <p class="block-data-description" v-if="block.description">{{ block.description }}</p>
@@ -18,6 +18,18 @@ export default {
     block: {
       type: Object,
       required: true,
+    },
+  },
+
+  computed: {
+    blockClass () {
+      let c = ['block', this.block.kind]
+
+      if (this.block.theme) {
+        c.push('theme-' + this.block.theme)
+      }
+
+      return c
     },
   },
 

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="grid.length" v-bind:class="{ 'mobile': mobilePreview }" class="builder-grid">
+  <div v-if="grid.length" class="builder-grid">
     <grid-layout :layout.sync="grid"
                  @layout-updated="handleLayoutUpdate"
                  :col-num="12"
@@ -46,6 +46,8 @@ const blocksToGrid = blocks => {
 
 export default {
   props: {
+    gclass: {},
+
     editable: {
       type: Boolean,
     },
@@ -60,8 +62,6 @@ export default {
     return {
       // all blocks in vue-grid friendly structure
       grid: blocksToGrid(this.blocks),
-
-      mobilePreview: false,
     }
   },
 
