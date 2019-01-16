@@ -10,14 +10,19 @@
                @dismissed="alerts.splice(i, 0)">{{ a.message }}</b-alert>
     </div>
     <router-view v-if="loaded" />
+    <div class="loader">
+      <img :src="logo" />
+    </div>
   </div>
 </template>
 
 <script>
 import auth from '@/mixins/auth'
+
 export default {
   data () {
     return {
+      logo: require('@/assets/images/crust-logo-with-tagline.png'),
       loaded: false,
       alerts: [], // { variant: 'info', message: 'foo' },
     }
@@ -52,6 +57,24 @@ export default {
     .alert {
       z-index: 1;
       box-shadow: 0 0 2px 0 rgba($appgrey, 0.75);
+    }
+  }
+
+  @keyframes flickerAnimation {
+    0%   { opacity:.6; }
+    50%  { opacity:.1; }
+    100% { opacity:.6; }
+  }
+
+  .loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    img {
+      align-self: center;
+      opacity:.7;
+      animation: flickerAnimation 3s infinite;
     }
   }
 </style>
