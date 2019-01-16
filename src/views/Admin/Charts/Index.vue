@@ -6,13 +6,13 @@
           <h2>List of charts</h2>
           <table class="table table-striped">
             <tbody>
-            <tr v-for="(m, index) in charts" :key="index">
+            <tr v-for="(chart) in charts" :key="chart.chartID">
               <td>
-                {{ m.name }}
+                {{ chart.name }}
               </td>
-              <td><time :datetime="m.updatedAt" v-if="m.updatedAt">{{ prettyDate(m.updatedAt || m.createdAt) }}</time></td>
+              <td><time :datetime="chart.updatedAt" v-if="chart.updatedAt">{{ prettyDate(chart.updatedAt || chart.createdAt) }}</time></td>
               <td class="actions text-right">
-                <router-link :to="{name: 'admin.charts.edit', params: { chartID: m.chartID }}" class="action">
+                <router-link :to="{name: 'admin.charts.edit', params: { chartID: chart.chartID }}" class="action">
                   <i class="action icon-edit"></i>
                 </router-link>
               </td>
@@ -22,7 +22,7 @@
           <form @submit.prevent="create">
             <b-form-group label="Create a new chart:">
               <b-input-group>
-                <input required type="text" v-model="addChartFormData.name" class="form-control" id="name" placeholder="Chart name" />
+                <input required type="text" v-model="newChart.name" class="form-control" id="name" placeholder="Chart name" />
                 <b-input-group-append>
                   <button type="submit" class="btn btn-dark">Create</button>
                 </b-input-group-append>
@@ -34,37 +34,31 @@
     </div>
   </div>
 </template>
-
 <script>
-
-import Field from '@/lib/field'
+import { mapGetters, mapActions } from 'vuex'
+import Chart from '@/lib/chart'
 
 export default {
   name: 'ChartList',
   data () {
     return {
-      charts: [],
-      addChartFormData: {
-        name: '',
-        fields: [],
-        config: {},
-      },
+      newChart: new Chart(),
     }
   },
 
-  created () {
-    this.$crm.chartList({}).then(cc => {
-      this.charts = cc
-    }).catch(this.defaultErrorHandler('Could not load chart list'))
+  computed: {
+    ...mapGetters({
+      charts: 'chart/set',
+    }),
   },
 
   methods: {
-    create () {
-      this.addChartFormData.fields = [
-        new Field({ name: 'sample', kind: 'text' }),
-      ]
+    ...mapActions({
+      createChart: 'chart/create',
+    }),
 
-      this.$crm.chartCreate(this.addChartFormData).then((chart) => {
+    create () {
+      this.createChart(this.newChart).then((chart) => {
         this.$router.push({ name: 'admin.charts.edit', params: { chartID: chart.chartID } })
       }).catch(this.defaultErrorHandler('Could not create a chart'))
     },

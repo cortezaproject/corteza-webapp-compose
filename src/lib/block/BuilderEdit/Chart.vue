@@ -11,22 +11,17 @@
   </fieldset>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import base from './base'
 
 export default {
   extends: base,
   name: 'Chart',
 
-  data () {
-    return {
-      charts: [],
-    }
-  },
-
-  beforeMount () {
-    this.$crm.chartList({}).then(cc => {
-      this.charts = cc
-    }).catch(this.defaultErrorHandler('Could not load chart list'))
+  computed: {
+    ...mapGetters({
+      charts: 'chart/set',
+    }),
   },
 }
 </script>

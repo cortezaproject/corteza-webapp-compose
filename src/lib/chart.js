@@ -117,19 +117,19 @@ export default class Chart {
 
     return stdListCheck(this.config.reports.map(({ moduleID, dimensions, metrics }) => {
       if (!moduleID) {
-        console.warn('Invalid chart config: moduleID not set')
+        console.debug('Invalid chart config: moduleID not set')
         return false
       }
 
       // Expecting all dimensions to have defined fields
       if (!stdListCheck(dimensions.map(dimCheck))) {
-        console.warn('Invalid chart config: no dimensions')
+        console.debug('Invalid chart config: no dimensions')
         return false
       }
 
       // Expecting all metrics to have defined fields
       if (!stdListCheck(metrics.map(mtrCheck))) {
-        console.warn('Invalid chart config: no metrics')
+        console.debug('Invalid chart config: no metrics')
         return false
       }
 

@@ -28,6 +28,7 @@ export default {
     // Preload all elements we need.
     this.$store.dispatch('module/load')
     this.$store.dispatch('trigger/load')
+    this.$store.dispatch('chart/load')
   },
 
   mixins: [auth],

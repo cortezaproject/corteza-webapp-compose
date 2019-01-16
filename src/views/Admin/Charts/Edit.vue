@@ -38,7 +38,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import draggable from 'vuedraggable'
 import Report from '@/components/Admin/Chart/Editor/Report'
 import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
@@ -88,12 +88,19 @@ export default {
   },
 
   mounted () {
-    this.$crm.chartRead({ chartID: this.chartID }).then((chart) => {
-      this.chart = new Chart(chart)
+    this.findChartByID({ chartID: this.chartID }).then((chart) => {
+      // Make a copy so that we do not change store item by ref
+      this.chart = new Chart({ ...chart })
     }).catch(this.defaultErrorHandler('Could not load chart'))
   },
 
   methods: {
+    ...mapActions({
+      findChartByID: 'chart/findByID',
+      updateChart: 'chart/update',
+      deleteChart: 'chart/delete',
+    }),
+
     async render () {
       this.updateRenderer({ forceFetch: true })
 
@@ -161,7 +168,7 @@ export default {
       let c = Object.assign({}, this.chart)
       delete (c.config.renderer.data)
 
-      this.$crm.chartUpdate(c).then(() => {
+      this.updateChart(c).then(() => {
         this.raiseSuccessAlert('Chart saved')
         if (closeOnSuccess) {
           this.redirect()
@@ -170,7 +177,7 @@ export default {
     },
 
     handleDelete () {
-      this.$crm.chartDelete({ chartID: this.chartID }).then(() => {
+      this.deleteChart({ chartID: this.chartID }).then(() => {
         this.raiseSuccessAlert('Chart deleted')
         this.$router.push({ name: 'admin.charts' })
       }).catch(this.defaultErrorHandler('Could not delete this chart'))

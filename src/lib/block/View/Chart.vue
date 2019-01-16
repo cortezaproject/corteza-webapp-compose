@@ -2,6 +2,7 @@
   <canvas ref="chartCanvas"></canvas>
 </template>
 <script>
+import { mapActions } from 'vuex'
 import base from './base'
 import ChartJS from 'chart.js'
 import Chart from '@/lib/chart'
@@ -21,8 +22,8 @@ export default {
       return
     }
 
-    this.$crm.chartRead({ chartID: this.options.chartID }).then((chart) => {
-      this.chart = new Chart(chart)
+    this.findChartByID({ chartID: this.options.chartID }).then((chart) => {
+      this.chart = chart
 
       if (!this.chart.isValid()) {
         return
@@ -50,6 +51,12 @@ export default {
         })
       })
     }).catch(this.defaultErrorHandler('Could not load chart'))
+  },
+
+  methods: {
+    ...mapActions({
+      findChartByID: 'chart/findByID',
+    }),
   },
 }
 </script>
