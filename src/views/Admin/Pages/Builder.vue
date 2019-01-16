@@ -1,22 +1,21 @@
 <template>
-  <div class="builder">
-    <grid :blocks.sync="blocks" editable>
+  <div class="builder" v-if="page">
+    <grid :blocks.sync="page.blocks" editable>
       <template slot-scope="{ block, index }">
         <div class="actions">
-          <a class="action" @click="openUpdateDialog(index)">
+          <a class="action" @click="editBlock(block, index)">
             <i class="icon-edit"></i>
           </a>
           <a class="action"  @click="blocks.splice(index,1)">
             <i class="icon-x"></i>
           </a>
         </div>
-
         <block-preview :block="block"></block-preview>
       </template>
     </grid>
 
     <b-modal id="createBlockSelector" hide-footer title="Select type of the new block">
-      <new-block-selector :record-page="!!module" @select="createBlock=Object.assign({}, $event);"/>
+      <new-block-selector :record-page="!!module" @select="editBlock($event)"/>
     </b-modal>
 
     <b-modal
@@ -24,10 +23,13 @@
       ok-title="Add block"
       ok-variant="dark"
       ok-only
-      @ok="blocks.push(createBlock)"
-      @hide="createBlock=null"
-      :visible="!!createBlock">
-      <block-edit v-if="createBlock" :module="module" :page="page" :block.sync="createBlock" />
+      @ok="updateBlocks"
+      @hide="editor=null"
+      :visible="showCreator">
+      <block-edit v-if="showCreator"
+                  :module="module"
+                  :page="page"
+                  :block.sync="editor.block" />
     </b-modal>
 
     <b-modal
@@ -37,29 +39,34 @@
       ok-variant="dark"
       ok-only
       centered
-      @ok="blocks.splice(updateBlockIndex, 1, updateBlock);"
-      @hide="updateBlock=null; updateBlockIndex=null;"
-      :visible="!!updateBlock">
-      <block-edit v-if="updateBlock && updateBlockIndex" :module="module" :page="page" :block.sync="updateBlock" />
+      @ok="updateBlocks"
+      @hide="editor=null"
+      :visible="showEditor">
+      <block-edit v-if="showEditor"
+                  :module="module"
+                  :page="page"
+                  :block.sync="editor.block" />
     </b-modal>
 
     <editor-toolbar :back-link="{name: 'admin.pages'}"
                     :hide-delete="true"
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
-      <button v-b-modal.createBlockSelector @click="createBlock=null" class="btn">+ Add block</button>
+      <button v-b-modal.createBlockSelector class="btn">+ Add block</button>
       <button @click.prevent="handleSave({ previewOnSuccess: true })" class="btn">Save and Preview</button>
     </editor-toolbar>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import NewBlockSelector from '@/components/Admin/Page/Builder/Selector'
 import Grid from '@/components/Common/Grid'
 import Block from '@/lib/block'
 import BlockPreview from '@/lib/block/BuilderPreview'
 import BlockEdit from '@/lib/block/BuilderEdit'
 import EditorToolbar from '@/components/Admin/EditorToolbar'
+import Page from '@/lib/page'
 
 export default {
   props: {
@@ -71,15 +78,20 @@ export default {
 
   data () {
     return {
-      createBlock: null, // holds instance of a block we're adding
-      updateBlock: null, // holds instance of a block (copy) we're editing
-      updateBlockIndex: -1, // holds pointer of a block we're editing
-      blocks: [],
+      editor: null,
       page: null,
     }
   },
 
   computed: {
+    showEditor () {
+      return this.editor && this.editor.index !== undefined
+    },
+
+    showCreator () {
+      return this.editor && this.editor.index === undefined
+    },
+
     module () {
       if (this.page && this.page.moduleID !== '0') {
         return this.$store.getters['module/getByID'](this.page.moduleID)
@@ -90,32 +102,50 @@ export default {
   },
 
   mounted () {
-    this.$crm.pageRead({ pageID: this.pageID }).then(page => {
-      this.page = page
-
-      if (page.blocks && Array.isArray(page.blocks)) {
-        this.blocks = page.blocks.map(b => new Block(b))
-      }
+    this.findPageByID({ pageID: this.pageID, force: true }).then(page => {
+      this.page = new Page(page)
     })
   },
 
   methods: {
-    openUpdateDialog (index) {
-      this.updateBlockIndex = index
-      this.updateBlock = new Block(this.page.blocks[index])
+    ...mapActions({
+      findPageByID: 'page/findByID',
+      updatePage: 'page/update',
+    }),
+
+    editBlock (block, index = undefined) {
+      this.editor = { index, block: new Block({ ...block }) }
+    },
+
+    updateBlocks () {
+      let block = new Block(this.editor.block) // make sure we get rid of the references
+      // console.log(block, this.editor.index)
+      if (this.editor.index !== undefined) {
+        this.page.blocks.splice(this.editor.index, 1, block)
+      } else {
+        this.page.blocks.push(block)
+      }
+      // console.log(this.page)
+
+      this.editor = null
     },
 
     handleSave ({ closeOnSuccess = false, previewOnSuccess = false } = {}) {
-      this.$crm.pageRead({ pageID: this.pageID }).then(page => {
-        page.blocks = this.blocks
+      this.findPageByID({ pageID: this.pageID, force: true }).then(page => {
+        // Merge changes
+        console.table(this.page.blocks)
+        this.page = new Page({ ...page, blocks: this.page.blocks })
+        console.table(this.page.blocks)
 
-        this.$crm.pageUpdate(page).then(() => {
+        this.updatePage(this.page).then((page) => {
           this.raiseSuccessAlert('Page saved')
           if (closeOnSuccess) {
             this.$router.push({ name: 'admin.pages' })
           } else if (previewOnSuccess) {
             this.$router.push({ name: 'public.page' })
           }
+
+          this.page = new Page(page)
         }).catch(this.defaultErrorHandler('Could not save this page'))
       })
     },

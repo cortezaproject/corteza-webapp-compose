@@ -11,7 +11,7 @@ export default class Page {
     this.moduleID = (typeof moduleID === 'string' && moduleID !== '0' ? moduleID : this.moduleID) || null
     this.title = typeof title === 'string' ? title : this.title || ''
     this.description = typeof description === 'string' ? description : this.description || ''
-    this.blocks = Array.isArray(blocks) ? blocks.map(f => new Block(f)) : []
+    this.blocks = (Array.isArray(blocks) ? blocks.map(b => new Block(b)) : this.blocks) || []
     this.visible = typeof visible === 'boolean' ? visible : this.visible
     this.createdAt = createdAt || this.createdAt
     this.updatedAt = updatedAt || this.updatedAt

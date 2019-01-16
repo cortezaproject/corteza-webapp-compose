@@ -3,7 +3,7 @@
     <grid-layout :layout.sync="grid"
                  @layout-updated="handleLayoutUpdate"
                  :col-num="12"
-                 :row-height="190"
+                 :row-height="30"
                  :vertical-compact="true"
                  :is-resizable="!!editable"
                  :is-draggable="!!editable"
@@ -16,7 +16,7 @@
                  :w="item.w"
                  :h="item.h"
                  :i="item.i">
-        <slot v-bind:block="item.block" v-bind:index="index"></slot>
+        <slot :block="item.block" :index="index"></slot>
       </grid-item>
     </grid-layout>
   </div>
@@ -46,8 +46,6 @@ const blocksToGrid = blocks => {
 
 export default {
   props: {
-    gclass: {},
-
     editable: {
       type: Boolean,
     },
