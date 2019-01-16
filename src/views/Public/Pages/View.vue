@@ -7,7 +7,6 @@
 </template>
 <script>
 import Grid from '@/components/Public/Page/Grid'
-import Module from '@/lib/module'
 
 export default {
   props: {
@@ -20,29 +19,9 @@ export default {
     recordID: String,
   },
 
-  data () {
-    return {
-      page: null,
-    }
-  },
-
-  watch: {
-    pageID () {
-      this.loadPage()
-    },
-  },
-
-  mounted () {
-    this.loadPage()
-  },
-
-  methods: {
-    loadPage () {
-      this.page = null
-      this.$crm.pageRead({ pageID: this.pageID }).then(page => {
-        this.page = page
-        this.page.module = new Module(this.page.module)
-      })
+  computed: {
+    page () {
+      return this.$store.getters['page/getByID'](this.pageID)
     },
   },
 

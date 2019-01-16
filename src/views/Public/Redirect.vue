@@ -1,18 +1,26 @@
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'PublicRedirect',
 
   render (h) { return null },
 
-  created () {
-    this.$crm.pageList({}).then((pp) => {
-      pp = pp.filter(p => p.moduleID === '0' && p.visible)
-      if (pp.length > 0) {
-        this.$router.push({ name: 'public.page', params: { pageID: pp[0].pageID } })
-      } else {
-        this.raiseWarningAlert('No pages found')
-      }
-    }).catch(this.defaultErrorHandler('Could not load pages'))
+  computed: {
+    ...mapGetters({
+      pages: 'page/set',
+    }),
+  },
+
+  beforeMount () {
+    // This has to happen beforeMount() as because pages are loaded on created()
+    const firstVisibleNonRecordPage = this.pages.find(p => !p.moduleID && p.visible)
+
+    if (firstVisibleNonRecordPage) {
+      this.$router.push({ name: 'public.page', params: { pageID: firstVisibleNonRecordPage.pageID } })
+    } else {
+      this.raiseWarningAlert('No pages found')
+    }
   },
 }
 </script>

@@ -35,13 +35,21 @@ export default {
     }
   },
 
+  computed: {
+    module () {
+      if (this.page.moduleID) {
+        return this.$store.getters['module/getByID'](this.page.moduleID)
+      }
+    },
+  },
+
   created () {
-    this.record = new Record(this.page.module, {})
+    this.record = new Record(this.module, {})
 
     if (this.refRecord) {
       // Record create form called from a related records block,
       // we'll try to find an appropriate field and cross-link this new record to ref
-      const recRefField = this.page.module.fields.find(f => f.kind === 'Record' && f.options.moduleID === this.refRecord.moduleID)
+      const recRefField = this.module.fields.find(f => f.kind === 'Record' && f.options.moduleID === this.refRecord.moduleID)
       if (recRefField) {
         this.record.values[recRefField.name] = this.refRecord.recordID
       }
@@ -50,7 +58,7 @@ export default {
 
   methods: {
     handleCreate () {
-      this.createRecord(this.page.module, this.record)
+      this.createRecord(this.module, this.record)
     },
   },
 

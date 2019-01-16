@@ -3,18 +3,21 @@
       <b-navbar toggleable type="light" toggle-breakpoint="md">
           <b-navbar-toggle target="nav_text_collapse"></b-navbar-toggle>
           <b-collapse is-nav id="nav_text_collapse">
-            <menu-level :pages="tree" :selectedPath="selectedPath" :pageID="pageID"></menu-level>
+            <menu-level :pages="pages"
+                        :selectedPath="selectedPath"
+                        :currentPageID="currentPageID"></menu-level>
             <router-link :to="{ name: 'admin' }" class="nav-link admin-panel">Admin panel</router-link>
           </b-collapse>
       </b-navbar>
     </header>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import MenuLevel from './MenuLevel'
 
 export default {
   props: {
-    pageID: {
+    currentPageID: {
       type: String,
     },
   },
@@ -26,6 +29,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      pages: 'page/set',
+    }),
+
     selectedPath () {
       const tt = (pp, pageID) => {
         if (!pp) {

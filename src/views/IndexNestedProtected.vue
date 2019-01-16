@@ -9,7 +9,7 @@
                @dismiss-count-down="a.countdown=$event"
                @dismissed="alerts.splice(i, 0)">{{ a.message }}</b-alert>
     </div>
-    <router-view/>
+    <router-view v-if="loaded" />
   </div>
 </template>
 
@@ -18,6 +18,7 @@ import auth from '@/mixins/auth'
 export default {
   data () {
     return {
+      loaded: false,
       alerts: [], // { variant: 'info', message: 'foo' },
     }
   },
@@ -25,10 +26,15 @@ export default {
   created () {
     this.handleAlert((alert) => this.alerts.push(alert))
 
-    // Preload all elements we need.
-    this.$store.dispatch('module/load')
-    this.$store.dispatch('trigger/load')
-    this.$store.dispatch('chart/load')
+    Promise.all([
+      // Preload all data we need.
+      this.$store.dispatch('module/load'),
+      this.$store.dispatch('chart/load'),
+      this.$store.dispatch('page/load'),
+      this.$store.dispatch('trigger/load'),
+    ]).then(() => {
+      this.loaded = true
+    })
   },
 
   mixins: [auth],

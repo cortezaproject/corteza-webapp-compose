@@ -2,14 +2,15 @@
 /* ESLint didn't like some expects */
 
 import { expect } from 'chai'
-import { shallowMount } from '@vue/test-utils'
+import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Create from '@/views/Public/Pages/Records/Create'
 import Module from '@/lib/module'
-import Field from '@/lib/field'
 import Record from '@/lib/record'
+import Page from '@/lib/page'
+import Vuex from 'vuex'
 
-
-// var should = require('chai').should()
+const localVue = createLocalVue()
+localVue.use(Vuex)
 
 describe('Create', () => {
 
@@ -17,18 +18,27 @@ describe('Create', () => {
     const refRecModule = new Module({moduleID: '2002'})
     const refRecord = new Record(refRecModule, { recordID: '1000' })
 
-    const cmp = shallowMount(Create, {
-      propsData: {
-        page: {
-          module: new Module({
+    const store = new Vuex.Store({ modules: { module: {
+      namespaced: true,
+      state: {},
+      getters: {
+        getByID: () => (moduleID) => {
+          return new Module({
             moduleID: '2001',
             fields: [
-              new Field({ name: 'ref', kind: 'Record', options: { moduleID: refRecModule.moduleID }}),
+              {name: 'ref', kind: 'Record', options: {moduleID: refRecModule.moduleID}},
             ],
           })
-        },
+        }
+      }
+    }}})
 
-        refRecord
+    const cmp = shallowMount(Create, {
+      store,
+      localVue,
+      propsData: {
+        refRecord,
+        page: new Page({ moduleID: "2001"})
       }
     })
 

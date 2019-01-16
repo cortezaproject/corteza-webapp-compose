@@ -12,11 +12,9 @@ import FieldEditor from '@/lib/field/Editor'
 
 export default {
   props: {
-    props: {
-      options: {
-        type: Object,
-        required: true,
-      },
+    options: {
+      type: Object,
+      required: true,
     },
 
     module: {

@@ -1,6 +1,6 @@
 <template>
   <div class="centering-wrap inactive-area">
-    <public-header :pageID="pageID"></public-header>
+    <public-header :currentPageID="pageID"></public-header>
     <router-view/>
   </div>
 </template>

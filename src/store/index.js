@@ -5,6 +5,7 @@ import auth from './auth'
 import trigger from './trigger'
 import module from './module'
 import chart from './chart'
+import page from './page'
 
 Vue.use(Vuex)
 
@@ -15,6 +16,7 @@ const store = new Vuex.Store({
     trigger: trigger(CRM),
     module: module(CRM),
     chart: chart(CRM),
+    page: page(CRM),
   },
   // plugins: [createLogger()],
 })

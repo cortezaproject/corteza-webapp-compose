@@ -15,7 +15,7 @@ export default {
 
   methods: {
     handleUpdate () {
-      this.updateRecord(this.page.module, this.record)
+      this.updateRecord(this.module, this.record)
     },
 
     handleBack () {

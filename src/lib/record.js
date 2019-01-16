@@ -20,6 +20,8 @@ export default class Record {
       this.module.fields.forEach(({ name, isMulti, kind }) => {
         this[fields][name] = { isMulti, kind }
       })
+    } else if (module === undefined) {
+      throw new Error(`Record module not defined`)
     } else {
       throw new Error(`Unexpected value for record module (${typeof module})`)
     }

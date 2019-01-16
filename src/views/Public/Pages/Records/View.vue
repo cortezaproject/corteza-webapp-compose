@@ -54,6 +54,14 @@ export default {
     },
   },
 
+  computed: {
+    module () {
+      if (this.page.moduleID) {
+        return this.$store.getters['module/getByID'](this.page.moduleID)
+      }
+    },
+  },
+
   mounted () {
     this.loadRecord()
   },
@@ -63,13 +71,13 @@ export default {
       this.record = null
       if (this.page && this.recordID && this.page.moduleID) {
         this.$crm.moduleRecordRead({ moduleID: this.page.moduleID, recordID: this.recordID }).then(record => {
-          this.record = new Record(this.page.module, record)
+          this.record = new Record(this.module, record)
         }).catch(this.defaultErrorHandler('Could not load this record'))
       }
     },
 
     handleDelete () {
-      this.deleteRecord(this.page.module, this.record)
+      this.deleteRecord(this.module, this.record)
     },
 
     handleBack () {

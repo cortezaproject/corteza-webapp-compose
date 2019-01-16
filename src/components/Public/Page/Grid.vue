@@ -1,9 +1,9 @@
 <template>
-  <div class="view" v-if="blocks">
-    <grid :blocks="blocks" :editable="false">
+  <div class="view" v-if="page.blocks">
+    <grid :blocks="page.blocks" :editable="false">
       <template slot-scope="{ block, index }">
-        <block-editor :block="block" :page="page" :module="page.module" :record="record" v-if="editMode" />
-        <block-viewer :block="block" :page="page" :module="page.module" :record="record" v-else />
+        <block-editor :block="block" :page="page" :module="module" :record="record" v-if="editMode" />
+        <block-viewer :block="block" :page="page" :module="module" :record="record" v-else />
       </template>
     </grid>
   </div>
@@ -12,7 +12,6 @@
 import Grid from '@/components/Common/Grid'
 import BlockViewer from '@/lib/block/View'
 import BlockEditor from '@/lib/block/Edit'
-import Block from '@/lib/block'
 
 export default {
   name: 'public-grid',
@@ -34,8 +33,10 @@ export default {
   },
 
   computed: {
-    blocks () {
-      return this.page && this.page.blocks && Array.isArray(this.page.blocks) ? this.page.blocks.map(b => new Block(b)) : []
+    module () {
+      if (this.page.moduleID) {
+        return this.$store.getters['module/getByID'](this.page.moduleID)
+      }
     },
   },
 

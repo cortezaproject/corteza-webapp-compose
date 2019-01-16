@@ -21,8 +21,8 @@ export default {
   computed: {
     selectOptions () {
       var options = []
-      if (this.page.module) {
-        this.page.module.fields.forEach(function (element) {
+      if (this.module) {
+        this.module.fields.forEach(function (element) {
           options.push(element.name)
         })
       }

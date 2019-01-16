@@ -1,12 +1,16 @@
 <template>
   <ul :class="ulClass">
-    <li v-for="page in pages" :key="page.pageID" v-if="showInNav(page)" :class="{ 'selected-in-path': -1 < selectedPath.findIndex(p => p === page.pageID), 'selected': page.pageID === pageID }">
-      <router-link :to="{ name: 'public.page', params: { pageID: page.pageID }}" class="nav-link">{{ page.title }}</router-link>
-      <menu-level
-        :pages="page.children" v-if="hasVisibleChildren(page)"
-        :level="level + 1"
-        :selectedPath="selectedPath"
-        :pageID="pageID" />
+    <li v-for="child in children"
+        :key="child.pageID"
+        v-if="showInNav(child)"
+        :class="liClass(child)">
+      <router-link :to="{ name: 'public.page', params: { pageID: child.pageID }}" class="nav-link">{{ child.title }}</router-link>
+      <menu-level v-if="hasChildren(child)"
+                  :pages="pages"
+                  :level="level + 1"
+                  :parentPageID="child.pageID"
+                  :selectedPath="selectedPath"
+                  :currentPageID="currentPageID" />
     </li>
   </ul>
 </template>
@@ -29,27 +33,44 @@ export default {
       default () { return [] },
     },
 
-    pageID: {
+    parentPageID: {
+      type: String,
+    },
+
+    currentPageID: {
       type: String,
     },
   },
 
   computed: {
+    children () {
+      return this.pages.filter(p => this.showInNav(p) && p.selfID === (this.parentPageID || null)) || []
+    },
+
     ulClass () {
       let cc = {}
       cc['root'] = this.level === 0
       return cc
     },
+
+    liClass () {
+      return ({ pageID }) => {
+        return {
+          'selected-in-path': this.selectedPath.findIndex(p => p === pageID) > -1,
+          'selected': pageID === this.currentPageID,
+        }
+      }
+    },
   },
 
   methods: {
-    hasVisibleChildren (p) {
-      return p.children && p.children.filter(p => this.showInNav(p)).length > 0
+    // Page is visible ( when visible flag is true & it is not a record
+    showInNav (page) {
+      return page.visible && !page.moduleID && page.blocks.length > 0
     },
 
-    // Page is visible ( when visible flag is true & it is not a record
-    showInNav (p) {
-      return p.visible && p.moduleID === '0' && p.blocks.length > 0
+    hasChildren ({ pageID }) {
+      return !!this.pages.find(c => c.selfID === pageID && this.showInNav(c))
     },
   },
 }

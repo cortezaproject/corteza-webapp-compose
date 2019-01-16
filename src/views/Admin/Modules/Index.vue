@@ -53,7 +53,6 @@ export default {
   name: 'ModuleList',
   data () {
     return {
-      pages: [],
       newModule: new Module({ fields: [new Field({ name: 'sample', kind: 'text' })] }),
     }
   },
@@ -61,6 +60,7 @@ export default {
   computed: {
     ...mapGetters({
       modules: 'module/set',
+      pages: 'page/set',
     }),
 
     recordPage () {
@@ -68,20 +68,11 @@ export default {
     },
   },
 
-  created () {
-    this.fetch()
-  },
-
   methods: {
     ...mapActions({
       createModule: 'module/create',
+      createPage: 'page/create',
     }),
-
-    fetch () {
-      this.$crm.pageList({ recordPagesOnly: true }).then(pp => {
-        this.pages = pp
-      }).catch(this.defaultErrorHandler('Could not load page list'))
-    },
 
     create () {
       this.createModule(this.newModule).then((module) => {
@@ -100,7 +91,7 @@ export default {
         blocks: [],
       }
 
-      this.$crm.pageCreate(payload).then(page => {
+      this.createPage(payload).then(page => {
         this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
       }).catch(this.defaultErrorHandler('Could not create a page'))
     },

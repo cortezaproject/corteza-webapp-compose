@@ -60,22 +60,16 @@
 <script>
 import { mapGetters } from 'vuex'
 import base from './base'
-import pagesMixin from './mixins/pages'
 import FieldSelector from './inc/FieldSelector'
 
 export default {
   extends: base,
   name: 'RecordList',
 
-  data () {
-    return {
-      modulePageID: [], // Record pages
-    }
-  },
-
   computed: {
     ...mapGetters({
       modules: 'module/set',
+      pages: 'page/set',
     }),
 
     recordListModule () {
@@ -84,6 +78,12 @@ export default {
       } else {
         return undefined
       }
+    },
+
+    modulePageID () {
+      let modulePageID = []
+      this.pages.filter(p => !!p.moduleID).forEach(({ pageID, moduleID }) => { modulePageID[moduleID] = pageID })
+      return modulePageID
     },
   },
 
@@ -95,18 +95,6 @@ export default {
       this.o.fields = []
     },
   },
-
-  created () {
-    this.$crm.pageList({ recordPagesOnly: true }).then(pp => {
-      this.modulePageID = []
-      pp.filter(({ moduleID }) => moduleID !== '0')
-        .forEach(({ pageID, moduleID }) => { this.modulePageID[moduleID] = pageID })
-    }).catch(this.defaultErrorHandler('Could not load pages'))
-  },
-
-  mixins: [
-    pagesMixin,
-  ],
 
   components: {
     FieldSelector,

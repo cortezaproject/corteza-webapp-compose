@@ -7,10 +7,10 @@ export default {
       let ctx = { module, record }
 
       if (this.runTriggers('beforeCreate', ctx)) {
-        this.$crm.moduleRecordCreate(this.record).then((r) => {
-          this.record = new Record(this.page.module, r)
+        this.$crm.moduleRecordCreate(record).then((r) => {
+          record = new Record(module, r)
           this.raiseSuccessAlert('Record saved')
-          this.$router.push({ name: 'public.page.record.edit', params: { recordID: this.record.recordID } })
+          this.$router.push({ name: 'public.page.record.edit', params: { recordID: record.recordID } })
 
           this.runTriggers('afterCreate', ctx)
         }).catch(this.defaultErrorHandler('Could not save this record'))
@@ -21,8 +21,8 @@ export default {
       let ctx = { module, record }
 
       if (this.runTriggers('beforeUpdate', ctx)) {
-        this.$crm.moduleRecordUpdate(this.record).then((r) => {
-          this.record = new Record(this.page.module, r)
+        this.$crm.moduleRecordUpdate(record).then((r) => {
+          record = new Record(module, r)
           this.raiseSuccessAlert('Record saved')
           this.$router.push({ name: 'public.page.record' })
 
@@ -35,7 +35,7 @@ export default {
       let ctx = { module, record }
 
       if (this.runTriggers('beforeDelete', ctx)) {
-        this.$crm.moduleRecordDelete({ moduleID: this.record.moduleID, recordID: this.record.recordID }).then(rsp => {
+        this.$crm.moduleRecordDelete({ moduleID: module.moduleID, recordID: record.recordID }).then(rsp => {
           this.raiseSuccessAlert('Record deleted')
           this.$router.push({ name: 'public.page' })
 
