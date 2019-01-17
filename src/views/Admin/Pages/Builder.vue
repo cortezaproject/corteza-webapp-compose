@@ -6,7 +6,7 @@
           <a class="action" @click="editBlock(block, index)">
             <i class="icon-edit"></i>
           </a>
-          <a class="action"  @click="blocks.splice(index,1)">
+          <a class="action"  @click="page.blocks.splice(index,1)">
             <i class="icon-x"></i>
           </a>
         </div>
