@@ -19,14 +19,14 @@ const defConfig = () => Object.assign({}, {
 })
 
 export const dimensionFunctions = [
-  { label: '',
+  { label: '(no grouping / buckets)',
     convert: (f) => f,
     time: false,
   },
 
   { label: 'DATE',
     convert: (f) => `DATE(${f})`,
-    time: { unit: 'date', minUnit: 'day', round: true },
+    time: { unit: 'day', minUnit: 'day', round: true },
   },
 
   { label: 'WEEK',
@@ -66,13 +66,6 @@ export const predefinedFilters = [
   { value: `DATE_FORMAT(created_at, '%Y-%m') = DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 YEAR), '%Y-%m')`,
     text: `Records created last month` },
 ]
-
-// message: "Can not execute report query (
-// SELECT (COUNT(*)) AS count, (CAST(STD(JSON_UNQUOTE(JSON_EXTRACT(json, REPLACE(JSON_UNQUOTE(JSON_SEARCH(json, 'one', ?)), '.name', '.value')))) AS DECIMAL(14,2))) AS STD_value,
-//                             (DATE_FORMAT(JSON_UNQUOTE(JSON_EXTRACT(json, REPLACE(JSON_UNQUOTE(JSON_SEARCH(json, 'one', ?)), '.name', '.value'))), ?)) AS dimension_0
-//                        FROM crm_record WHERE module_id = ?
-//                          AND YEAR(created_at) = YEAR(NOW()) - 1
-//                          AND QUARTER(created_at) = QUARTER(DATE_SUB(NOW(), JSON_UNQUOTE(JSON_EXTRACT(json, REPLACE(JSON_UNQUOTE(JSON_SEARCH(json, 'one', ?)), '.name', '.value'))), 3, JSON_UNQUOTE(JSON_EXTRACT(json, REPLACE(JSON_UNQUOTE(JSON_SEARCH(json, 'one', ?)), '.name', '.value'))))) GROUP BY dimension_0 ORDER BY dimension_0): Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'JSON_UNQUOTE(JSON_EXTRACT(json, REPLACE(JSON_UNQUOTE(JSON_SEARCH(json, 'one', ?)' at line 1"
 
 dimensionFunctions.lookup = (d) => dimensionFunctions.find(f => d.modifier === f.label)
 dimensionFunctions.convert = (d) => (dimensionFunctions.lookup(d) || {}).convert(d.field)
@@ -205,15 +198,12 @@ export default class Chart {
       // Process each result
       .map((p, index) => p.then((results) => { out[index] = this.processReporterResults(results, this.config.reports[index]) }))
 
-    // Wait for all requests to finish
-    await Promise.all(reports)
-
-    // Then return a new promise, with results
-    return new Promise(resolve => {
+    // Wait for all requests to finish and return new promise, with results
+    return Promise.all(reports).then(() => new Promise(resolve => {
       // @todo this does not really support multiple reports per chart (hence the out[0]
-      //       if we want to support that, label & data sync across all reports needs to be done
+      //       if we want to support that, label & data sync across all reports needs to be
       resolve(out[0])
-    })
+    }))
   }
 
   formatReporterParams ({ moduleID, metrics, dimensions, filter }) {

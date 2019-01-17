@@ -18,7 +18,7 @@
                          :disabled="customFilter"
                          :options="predefinedFilters">
             <template slot="first">
-              <option :value="null" disabled>(no filter)</option>
+              <option :value="null">(no filter)</option>
             </template>
           </b-form-select>
           <b-form-checkbox plain v-model="customFilter">Customize filter</b-form-checkbox>
