@@ -33,12 +33,6 @@ export default {
     },
   },
 
-  watch: {
-    'page' () {
-      console.log('Page change', this.page.title)
-    },
-  },
-
   computed: {
     module () {
       if (this.page.moduleID) {
