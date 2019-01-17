@@ -39,7 +39,10 @@ export default function (CRM) {
 
         commit(types.pending)
         return CRM.triggerList({ moduleID }).then(tt => {
-          commit(types.updateSet, tt.map(t => new Trigger(t)))
+          if (tt && tt.length > 0) {
+            commit(types.updateSet, tt.map(t => new Trigger(t)))
+          }
+
           commit(types.completed)
           return getters.set
         })

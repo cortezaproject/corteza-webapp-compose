@@ -38,8 +38,11 @@ export default function (CRM) {
         }
 
         commit(types.pending)
-        return CRM.chartList({ chartID }).then(tt => {
-          commit(types.updateSet, tt.map(t => new Chart(t)))
+        return CRM.chartList({ chartID }).then(cc => {
+          if (cc && cc.length > 0) {
+            commit(types.updateSet, cc.map(c => new Chart(c)))
+          }
+
           commit(types.completed)
           return getters.set
         })

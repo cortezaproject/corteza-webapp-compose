@@ -38,8 +38,11 @@ export default function (CRM) {
         }
 
         commit(types.pending)
-        return CRM.moduleList({ moduleID }).then(tt => {
-          commit(types.updateSet, tt.map(t => new Module(t)))
+        return CRM.moduleList({ moduleID }).then(mm => {
+          if (mm && mm.length > 0) {
+            commit(types.updateSet, mm.map(m => new Module(m)))
+          }
+
           commit(types.completed)
           return getters.set
         })
