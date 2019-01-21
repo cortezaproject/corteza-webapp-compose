@@ -24,6 +24,28 @@
           </b-form-group>
 
           <b-form-group horizontal
+                        label="Primary module">
+            <b-form-select v-model="trigger.moduleID"
+                           :options="modules"
+                           text-field="name"
+                           required
+                           value-field="moduleID"
+                           class="form-control">
+              <template slot="first"><option :value="null">(no primary module)</option></template>
+            </b-form-select>
+          </b-form-group>
+
+          <b-form-group horizontal>
+            <b-button-group>
+              <b-button variant="link" @click="insertSample('SimpleFieldValueCheck')">Value check</b-button>
+              <b-button variant="link" @click="insertSample('MakeNewRecord')">New record</b-button>
+              <b-button variant="link" @click="insertSample('SimpleNotification')">UI Notification</b-button>
+              <b-button variant="link" @click="insertSample('SimpleEmailNotification')">Email notification</b-button>
+            </b-button-group>
+            <b-button class="float-right" variant="link" @click="insertSample('Default', true)">Reset</b-button>
+          </b-form-group>
+
+          <b-form-group horizontal
                         label="Code">
             <AceEditor :value="trigger.source"
                        :fontSize="14"
@@ -42,28 +64,6 @@
                        theme="monokai"
                        ref="sourceEditor"
                        name="editor" />
-
-            <br>
-            Sample code:
-            <b-button-group>
-              <b-button variant="link" @click="insertSample('SimpleFieldValueCheck')">Value check</b-button>
-              <b-button variant="link" @click="insertSample('MakeNewRecord')">New record</b-button>
-              <b-button variant="link" @click="insertSample('SimpleNotification')">UI Notification</b-button>
-              <b-button variant="link" @click="insertSample('SimpleEmailNotification')">Email notification</b-button>
-            </b-button-group>
-            <b-button class="float-right" variant="link" @click="insertSample('Default', true)">Reset</b-button>
-          </b-form-group>
-
-          <b-form-group horizontal
-                        label="Primary module">
-            <b-form-select v-model="trigger.moduleID"
-                           :options="modules"
-                           text-field="name"
-                           required
-                           value-field="moduleID"
-                           class="form-control">
-              <template slot="first"><option :value="null">(no primary module)</option></template>
-            </b-form-select>
           </b-form-group>
 
           <b-form-group horizontal

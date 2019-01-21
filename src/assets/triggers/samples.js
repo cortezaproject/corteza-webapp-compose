@@ -31,7 +31,6 @@ export const Default = `
 
 // Notifications:
 // crust.notify.send.email({ to, from, subject, message })
-// crust.notify.send.message({ channelID }, message) @todo
 // crust.notify.send.message({ channelID }, message)
 // crust.notify.ui.alert.success(text) shows success text to CRM user
 // crust.notify.ui.alert.error(text) shows error text to CRM user
