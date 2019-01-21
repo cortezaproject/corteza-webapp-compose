@@ -157,6 +157,9 @@ export default class Chart {
             display: true,
             labelString: m.label || m.field,
           },
+          ticks: {
+            beginAtZero: !!m.beginAtZero,
+          },
         }
       })
 

@@ -99,11 +99,12 @@
               </template>
             </b-form-select>
           </b-form-group>
-          <b-form-group stacked :label-cols="2" breakpoint="md" label="">
+          <b-form-group horizontal :label-cols="2" breakpoint="md" label="">
+            <b-form-checkbox plain v-model="m.axisType" value="logarithmic" unchecked-value="linear">Logarithmic scale</b-form-checkbox><br />
+            <b-form-checkbox plain v-model="m.axisPosition" value="right" unchecked-value="left">Place axis on the right side</b-form-checkbox><br />
+            <b-form-checkbox plain v-model="m.beginAtZero" :value="true" :unchecked-value="false" checked>Always begin axis scale at zero</b-form-checkbox><br />
             <b-form-checkbox plain v-model="m.fill" :value="true" :unchecked-value="false"
                              v-show="m.type === 'line'">Fill area below the line</b-form-checkbox>
-            <b-form-checkbox plain v-model="m.axisType" value="logarithmic" unchecked-value="linear">Logarithmic scale</b-form-checkbox>
-            <b-form-checkbox plain v-model="m.axisPosition" value="right" unchecked-value="left">Place axis on the right side</b-form-checkbox>
           </b-form-group>
         </fieldset>
       </draggable>
