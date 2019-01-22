@@ -78,6 +78,10 @@ export default {
 
     handleDelete () {
       this.deleteRecord(this.module, this.record)
+        .then(() => {
+          this.$router.push({ name: 'public.page', params: { pageID: this.page.pageID } })
+        })
+        .catch(this.defaultErrorHandler('Could not delete this record'))
     },
 
     handleBack () {

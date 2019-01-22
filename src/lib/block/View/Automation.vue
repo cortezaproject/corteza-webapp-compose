@@ -3,7 +3,7 @@
       <b-button v-for="(b) in options.buttons"
                 :key="b.triggerID"
                 variant="dark"
-                @click.prevent="runTrigger(b.triggerID, module, record)">{{ b.label }}</b-button>
+                @click.prevent="runTriggers({ triggerID: b.triggerID, module, record })">{{ b.label }}</b-button>
     </div>
 </template>
 <script>

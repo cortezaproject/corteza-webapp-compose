@@ -1,5 +1,3 @@
-import safeEval from 'safe-eval'
-
 export default class Trigger {
   constructor (def = {}) {
     this.merge(def)
@@ -22,13 +20,17 @@ export default class Trigger {
   }
 
   // Is trigger runnable?
-  runnable ({ module, action }) {
+  runnable ({ triggerID, module, action }) {
     if (!this.enabled) {
       // console.debug('Trigger [%s] "%s" not runnable: disabled', this.triggerID, this.name)
       return false
     }
 
-    if (module.moduleID !== this.moduleID) {
+    if (triggerID && triggerID !== this.triggerID) {
+      return false
+    }
+
+    if (module && module.moduleID !== this.moduleID) {
       // console.debug('Trigger [%s] "%s" not runnable: module mismatch', this.triggerID, this.name, module.moduleID, this.moduleID)
       return false
     }
@@ -47,17 +49,22 @@ export default class Trigger {
     return true
   }
 
-  run (ctx) {
+  async run ({ crust, module, record, action }) {
     if (this.source.trim().length === 0) {
-      return undefined
+      return Promise.resolve()
     }
 
-    // Wrap into self-executing function and
-    const source = `(function() {${this.source};\n return true;})()`
+    const source = `(async function() {\n${this.source};\n return true;})()`
 
-    // console.debug('Running trigger [%s] "%s": %s', this.triggerID, this.name, source)
-    const rval = safeEval(source, ctx)
-    // console.debug('Trigger [%s] "%s" returned: %o', this.triggerID, this.name, rval)
-    return rval
+    try {
+      /* eslint-disable no-eval */
+      if (await eval(source)) {
+        return Promise.resolve(true)
+      } else {
+        return Promise.reject(new Error('Trigger failed to execute successfully'))
+      }
+    } catch (e) {
+      return Promise.reject(e)
+    }
   }
 }

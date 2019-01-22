@@ -16,6 +16,10 @@ export default {
   methods: {
     handleUpdate () {
       this.updateRecord(this.module, this.record)
+        .then((record) => {
+          this.$router.push({ name: 'public.page.record' })
+        })
+        .catch(this.defaultErrorHandler('Could not update this record'))
     },
 
     handleBack () {

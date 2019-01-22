@@ -59,6 +59,10 @@ export default {
   methods: {
     handleCreate () {
       this.createRecord(this.module, this.record)
+        .then((record) => {
+          this.$router.push({ name: 'public.page.record.edit', params: { recordID: record.recordID } })
+        })
+        .catch(this.defaultErrorHandler('Could not create this record'))
     },
   },
 
