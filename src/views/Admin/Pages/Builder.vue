@@ -10,7 +10,7 @@
             <i class="icon-x"></i>
           </a>
         </div>
-        <block-preview :block="block"></block-preview>
+        <block-preview :block="block" :module="module"></block-preview>
       </template>
     </grid>
 

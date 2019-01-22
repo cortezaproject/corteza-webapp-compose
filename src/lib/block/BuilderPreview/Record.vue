@@ -9,11 +9,15 @@ import base from './base'
 
 export default {
   extends: base,
-  computed: {
-    module () {
-      return this.$store.getters['module/getByID'](this.options.moduleID)
-    },
 
+  props: {
+    module: {
+      type: Object,
+      required: false,
+    },
+  },
+
+  computed: {
     selectedFields () {
       return this.options.fields.filter(f => !!f).map(f => f.name).join(', ')
     },
