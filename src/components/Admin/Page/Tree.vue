@@ -76,7 +76,7 @@ export default {
       const reorder = () => {
         const pageIDs = afterParent.children.map(p => p.pageID)
         if (pageIDs.length > 1) {
-          this.$crm.pageReorder({ selfID: afterParent.pageID, pageIDs: pageIDs }).then(() => {
+          this.$crm.pageReorder({ selfID: afterParent.pageID || '0', pageIDs: pageIDs }).then(() => {
             this.raiseSuccessAlert('Page reordered')
             this.$emit('reorder')
           }).catch(this.defaultErrorHandler('Could not move this page'))
