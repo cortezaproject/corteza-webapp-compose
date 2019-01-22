@@ -3,7 +3,10 @@
     <div class="block-data">
       <h2>{{ block.title }}</h2>
       <p class="block-data-description" v-if="block.description">{{ block.description }}</p>
-      <div class="block-data-content">
+      <div class="block-data-content" v-if="blockComponentError">
+        {{ blockComponentError.message }}
+      </div>
+      <div class="block-data-content" v-else>
         <component :is="block.kind"
                    :options="block.options"
                    :page="page"
@@ -40,6 +43,12 @@ export default {
     },
   },
 
+  data () {
+    return {
+      blockComponentError: null,
+    }
+  },
+
   computed: {
     blockClass () {
       let c = ['block', this.block.kind]
@@ -50,6 +59,11 @@ export default {
 
       return c
     },
+  },
+
+  errorCaptured (err) {
+    this.blockComponentError = err
+    return false
   },
 
   components: {

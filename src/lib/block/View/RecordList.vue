@@ -1,6 +1,5 @@
 <template>
-  <div v-if="error">{{ error }}</div>
-  <div v-else-if="recordListModule">
+  <div v-if="recordListModule">
     <router-link v-if="!options.hideAddButton"
                  class="btn-url"
                  :to="{ name: 'public.page.record.create', params: { pageID: options.pageID, refRecord: record }, query: null }">+ Add new record</router-link>
@@ -70,8 +69,6 @@ export default {
         filter: '',
       },
 
-      error: null,
-
       records: [],
     }
   },
@@ -96,7 +93,19 @@ export default {
     },
   },
 
-  mounted () {
+  beforeMount () {
+    if (!this.options.moduleID || !this.options.pageID) {
+      // Make sure block is properly configured
+      throw Error('RecordList block error: module or page option not set')
+    }
+
+    /* eslint-disable no-template-curly-in-string */
+    if (!this.record && (this.options.prefilter || '').includes('${recordID}')) {
+      // If there is no current record and we are using recordID variable in (pre)filter
+      // we should disable the block
+      throw Error('Can not use ${recordID} variable in non-record pages')
+    }
+
     this.meta.sort = this.options.presort
     this.meta.filter = this.options.prefilter
     this.meta.perPage = this.options.perPage
@@ -106,7 +115,7 @@ export default {
       // this allows us to us ${recordID}, ${ownerID}, ${userID} in prefilter string;
       // hence the /hanging/ recordID, ownerID and userID variables
       this.prefilter = (function (prefilter, { recordID, ownerID, userID }) {
-        // eslint-disable-next-line
+        /* eslint-disable no-eval */
         return eval('`' + prefilter + '`')
       })(this.options.prefilter, {
         recordID: (this.record || {}).recordID,
@@ -119,14 +128,6 @@ export default {
 
     if (this.recordListModule) {
       this.fetch()
-    } else {
-      if (!this.options.moduleID) {
-        this.raiseWarningAlert('RecordList block render error: moduleID not set.')
-      }
-
-      if (!this.options.pageID) {
-        this.raiseWarningAlert('RecordList block render error: pageID not set.')
-      }
     }
   },
 
