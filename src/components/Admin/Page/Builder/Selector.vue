@@ -8,7 +8,7 @@
             :key="type.label">{{type.label}}</button>
 
       <hr />
-      <i>Some types might be disabled for a non-record pages.</i>
+      <i>Some types might be disabled for non-record pages.</i>
     </div>
 </template>
 <script>
