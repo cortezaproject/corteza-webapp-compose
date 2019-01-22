@@ -34,7 +34,7 @@
         </tbody>
       </table>
     </div>
-    <div class="sticky-footer" v-if="options.hidePaging">
+    <div class="sticky-footer" v-if="!options.hidePaging">
       <pagination
           :records="meta.count"
           :per-page="meta.perPage"

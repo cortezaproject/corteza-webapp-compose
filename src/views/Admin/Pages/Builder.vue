@@ -133,9 +133,7 @@ export default {
     handleSave ({ closeOnSuccess = false, previewOnSuccess = false } = {}) {
       this.findPageByID({ pageID: this.pageID, force: true }).then(page => {
         // Merge changes
-        console.table(this.page.blocks)
         this.page = new Page({ ...page, blocks: this.page.blocks })
-        console.table(this.page.blocks)
 
         this.updatePage(this.page).then((page) => {
           this.raiseSuccessAlert('Page saved')
