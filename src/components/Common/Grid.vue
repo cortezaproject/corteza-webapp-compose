@@ -8,6 +8,7 @@
                  :is-resizable="!!editable"
                  :is-draggable="!!editable"
                  :use-css-transforms="true"
+                 :cols="cols"
                  :responsive="true">
       <grid-item v-for="(item, index) in grid"
                  :key="item.i"
@@ -60,6 +61,9 @@ export default {
     return {
       // all blocks in vue-grid friendly structure
       grid: blocksToGrid(this.blocks),
+
+      // attempt to solve responsive grid issues. 2 views: desktop and mobile
+      cols: { lg: 12, md: 12, sm: 1, xs: 1, xxs: 1 },
     }
   },
 
