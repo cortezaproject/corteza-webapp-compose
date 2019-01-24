@@ -19,7 +19,7 @@
               <thead>
               <tr>
                 <th></th>
-                <th v-b-tooltip.hover.topright title="Must be lower-case a-z, 0-9 and underscore" class="info">Name</th>
+                <th v-b-tooltip.hover.topright title="Must be a-z/A-Z, 0-9 or underscore" class="info">Name</th>
                 <th v-b-tooltip.hover.topright title="The name displayed in form input / data lists" class="info">Title</th>
                 <th>Type</th>
                 <th v-b-tooltip.hover title="Required field" class="info">Required</th>
@@ -28,39 +28,26 @@
               </tr>
               </thead>
               <draggable v-model="module.fields" :options="{handle:'.handle'}" element="tbody">
-                <tr v-for="(field, index) in module.fields" v-if="field" :key="index">
-                  <td v-b-tooltip.hover title="Drag and drop to change order" class="handle"><font-awesome-icon :icon="['fas', 'sort']" title="Reorder fields"></font-awesome-icon></td>
-                  <td><b-form-input v-model="field.name"
-                                    required
-                                    :state="checkFieldNameState(field)"
-                                    type="text"
-                                    class="form-control" /></td>
-                  <td><input v-model="field.label" type="text" class="form-control" /></td>
-                  <td class="type">
-                    <select v-model="field.kind" class="form-control" @change="handleKindChange(field)">
-                      <option v-for="fieldType in fieldsList" :key="fieldType.kind" :value="fieldType.kind">{{ fieldType.label||fieldType.kind }}</option>
-                    </select>
-                    <button
-                      :disabled="!field.isConfigurable()"
-                      @click.prevent="handleFieldEdit(field)"
-                      class="btn-url"><font-awesome-icon :icon="['fas', 'wrench']"></font-awesome-icon></button>
-                  </td>
-                  <td class="text-center">
-                    <input v-model="field.isRequired" type="checkbox"/>
-                  </td>
-                  <td class="text-center">
-                    <input v-model="field.isPrivate" type="checkbox"/>
-                  </td>
-                  <td class="text-center">
-                    <confirmation-toggle @confirmed="module.fields.splice(index, 1)" class="confirmation-small" cta-class="btn-url">
-                      <i class="action icon-trash"></i>
-                    </confirmation-toggle>
-                  </td>
-                </tr>
+                <field-row-edit v-for="(field, index) in module.fields"
+                           :field="field"
+                           :key="index"></field-row-edit>
               </draggable>
+              <tr>
+                <th colspan="7">
+                  <button @click="handleNewField" type="button" class="btn-url add-new">+ Add new field</button>
+                </th>
+              </tr>
+              <tbody>
+                <tr>
+                  <th colspan="7">System fields:</th>
+                </tr>
+                <field-row-view v-for="(field, index) in systemFields"
+                                :field="field"
+                                :key="index"></field-row-view>
+              </tbody>
             </table>
           </div>
-          <button @click="handleNewField" type="button" class="btn-url add-new">+ Add new field</button>
+
         </div>
       </div>
     </form>
@@ -84,12 +71,11 @@ import { mapActions } from 'vuex'
 import draggable from 'vuedraggable'
 import FieldConfigurator from '@/lib/field/Configurator'
 import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
+import FieldRowEdit from '@/components/Admin/Module/FieldRowEdit'
+import FieldRowView from '@/components/Admin/Module/FieldRowView'
 import Field from '@/lib/field'
 import Module from '@/lib/module'
-import fieldList from '@/lib/field/list'
 import EditorToolbar from '@/components/Admin/EditorToolbar'
-
-const fieldNameCheck = new RegExp('^[a-zA-Z_][a-zA-Z0-9_]*$')
 
 export default {
   props: {
@@ -103,7 +89,15 @@ export default {
     return {
       updateField: null,
       module: null,
-      fieldsList: fieldList,
+      systemFields: [
+        new Field({ name: 'owned_by', label: 'Owned by', kind: 'User' }),
+        new Field({ name: 'created_by', label: 'Created by', kind: 'User' }),
+        new Field({ name: 'created_at', label: 'Created at', kind: 'DateTime' }),
+        new Field({ name: 'updated_by', label: 'Created by', kind: 'User' }),
+        new Field({ name: 'updated_at', label: 'Created at', kind: 'DateTime' }),
+        new Field({ name: 'deleted_by', label: 'Created by', kind: 'User' }),
+        new Field({ name: 'deleted_at', label: 'Created at', kind: 'DateTime' }),
+      ],
     }
   },
 
@@ -120,10 +114,6 @@ export default {
       updateModule: 'module/update',
       deleteModule: 'module/delete',
     }),
-
-    checkFieldNameState (field) {
-      return field.name.length > 1 && fieldNameCheck.test(field.name) ? null : false
-    },
 
     handleNewField () {
       this.module.fields.push(new Field())
@@ -169,6 +159,8 @@ export default {
     ConfirmationToggle,
     draggable,
     FieldConfigurator,
+    FieldRowEdit,
+    FieldRowView,
     EditorToolbar,
   },
 }
@@ -181,18 +173,9 @@ export default {
 /* stylelint-disable font-family-no-missing-generic-family-keyword */
 
 table {
-  th, td, tr {
+  th, td {
     padding: 3px;
     vertical-align: middle;
-  }
-
-  tr {
-    .handle {
-      width: 30px;
-      color: $appgrey;
-      text-align: center;
-      cursor: grab;
-    }
   }
 
   th {
@@ -210,22 +193,6 @@ table {
       }
     }
   }
-
-  td {
-    &.type {
-      width: 200px;
-
-      select {
-        width: 160px;
-        display: inline-block;
-      }
-
-      button:disabled {
-        color: $appgrey;
-        cursor: auto;
-      }
-    }
-  }
 }
 
 .btn-url {
@@ -233,7 +200,7 @@ table {
 
   &.add-new {
     display: block;
-    margin: -10px 35px 20px;
+    margin: 10px 35px 20px;
   }
 }
 
