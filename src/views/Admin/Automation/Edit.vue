@@ -324,7 +324,7 @@ label {
 }
 
 .manual {
-  margin-bottom: 70px;
+  margin-bottom: 90px;
 
   h2 {
     margin-bottom: 0;

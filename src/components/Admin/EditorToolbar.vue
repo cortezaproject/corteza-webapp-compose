@@ -36,7 +36,7 @@ export default {
 
 .toolbar {
   background: $white;
-  padding: 15px;
+  padding: 25px;
   position: fixed;
   width: 100%;
   bottom: 0;
