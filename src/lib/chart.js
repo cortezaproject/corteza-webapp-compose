@@ -140,13 +140,25 @@ export default class Chart {
 
     this.config.reports.forEach(r => {
       if (!options.scales) options.scales = { xAxes: [], yAxes: [] }
-      const timeDimensionUnit = (dimensionFunctions.lookup(r.dimensions[0]) || {}).time
-      if (timeDimensionUnit) {
-        options.scales.xAxes = [{
-          type: 'time',
-          time: timeDimensionUnit,
-        }]
-      }
+
+      options.scales.xAxes = r.dimensions.map((d, i) => {
+        const ticks = {
+          autoSkip: !!d.autoSkip,
+        }
+        const timeDimensionUnit = (dimensionFunctions.lookup(d) || {}).time
+
+        if (timeDimensionUnit) {
+          return {
+            type: 'time',
+            time: timeDimensionUnit,
+            ticks,
+          }
+        } else {
+          return {
+            ticks,
+          }
+        }
+      })
 
       options.scales.yAxes = r.metrics.map((m, i) => {
         return {

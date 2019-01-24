@@ -53,6 +53,9 @@
               </template>
             </b-form-select>
           </b-form-group>
+          <b-form-group horizontal :label-cols="2" breakpoint="md" label="">
+            <b-form-checkbox plain v-model="d.autoSkip" :value="true" :unchecked-value="false">Calculate how many labels can be shown</b-form-checkbox><br />
+          </b-form-group>
 
           <!--<b-form-group horizontal v-if="d.field && isTemporalField(d.field)">-->
             <!--<b-form-input type="date" v-model="d.conditions.min"></b-form-input>-->
