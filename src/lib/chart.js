@@ -190,6 +190,7 @@ export default class Chart {
         return {
           yAxisID: `y-axis-metric-${alias}`,
           label,
+          lineTension: 0,
           type,
           fill,
           backgroundColor,
