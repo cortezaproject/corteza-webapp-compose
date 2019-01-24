@@ -92,44 +92,38 @@
             </b-input-group>
           </b-form-group>
         </div>
-        <div class="col-md-12 well">
+        <div class="col-md-12 well manual">
           <h2>Record Automation Manual</h2>
           <h3>Trigger logic and behaviour</h3>
-          <h4>Manual triggers</h4>
+          <h4>"Manual" triggers</h4>
           <p>
-            Enabled triggers with "manual" action checked can be added to pages
-            into automation blocks. When adding triggers to record pages, trigger's
-            primary module must match page's.
+            An enabled automation rule with "manually, when user clicks a button on a page" checked can be inserted as a button in an "automation block" on a page. If the page type is a "record page", the primary module of the automation rule must match the module of the record page.
           </p>
-
-          <h4>Before* triggers</h4>
+          <hr>
+          <h4>"Before" triggers</h4>
           <p>
-            Automation triggers that fire before creation, update or deletion of a record can prevent that action.
-            If error/exception is thrown (<code>throw new Exception('Some error')</code>) or <i>non true</i>
-            value is returned (<code>return false;</code>) main action is canceled and record is not created,
-            modified or deleted
-          </p>
-
-          <h4>After* triggers</h4>
+            An enabled automation rule with "before record is created", "before record is updated" or "before record is deleted" checked, can prevent the creation, update or deletion of the record. </p>
+          <p>If an error/exception (<code>throw new Exception('Some error')</code>) or <i>non true</i> value is returned (<code>return false</code>), the following action is canceled and the record is not created, updated or deleted.</p>
+          <hr>
+          <h4>"After" triggers</h4>
           <p>
-            These events do not have an effect on the main action and are not executed if main action failed (or if
-            before* trigger failed.)
+            An enabled automation rule with "after record is created", "after record is updated" or "after record is deleted" checked is executed after a successful creation, update or deletion.
           </p>
           <p>
-            After create and update triggers receive updated record.
+            In case of creation or update, the new data of the record can be accessed in the automation code, but on deletion will return record data from before deletion.
           </p>
-
-          <h4>Trigger filtering and order of execution</h4>
-          <p>
-            Triggers filtered by action (manual, before/after create/update/delete), their status (enabled/disabled)
-            and module compatibility. Triggers without primary module are always execututed (if all other
-            conditions are met).
-          </p>
-          <p>
-            In case of multiple trigger match, order of execution can not be guaranteed. Errors that occur inside a
-            specific trigger do not affect other triggers executing at the same time
-          </p>
+          <hr>
+          <h4>Order of execution</h4>
+          <p>1. Enabled automation rules with "Before" triggers</p>
+          <p>2. Enabled automation rules with "After" triggers</p>
+            <ul>
+              <li>Enabled automation rules with a primary module are only executed when the module detects a record creation, update or deletion.</li>
+              <li>Enabled automation rules without primary module are executed whenever there is any record creation, update or deletion.</li>
+              <li>When there are multiple enabled automation rules that match at the same time (for example, two automation rules with "after update" triggers with the same primary module), the order of execution cannot be guaranteed. Errors that occur in a specific automation rule do not affect other automation rules that match.</li>
+              <li>Enabled automation rules with "Manual" trigger are only executed manually by users.</li>
+            </ul>
         </div>
+
       </div>
     </form>
   </div>
@@ -323,6 +317,39 @@ label {
 
 .btn {
   border-radius: 0;
+}
+
+.well {
+  margin-bottom: 10px;
+}
+
+.manual {
+  margin-bottom: 70px;
+
+  h2 {
+    margin-bottom: 0;
+  }
+
+  h3 {
+    margin-bottom: 30px;
+  }
+
+  h4 {
+    margin-bottom: 10px;
+  }
+
+  p, ul {
+    padding: 0 50px 0 30px;
+    text-align: justify;
+  }
+
+  ul {
+    margin-left: 50px;
+
+    li {
+      margin-bottom: 5px;
+    }
+  }
 }
 
 </style>
