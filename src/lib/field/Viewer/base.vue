@@ -29,6 +29,10 @@ export default {
 
   computed: {
     value () {
+      if (this.field.isSystem) {
+        return this.record[this.field.name]
+      }
+
       return this.record ? this.record.values[this.field.name] : undefined
     },
 

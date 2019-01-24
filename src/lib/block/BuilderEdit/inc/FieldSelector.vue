@@ -11,7 +11,11 @@
             <div v-for="field in availableFields"
                  @dblclick="selectedFields.push(field)"
                  class="field"
-                 :key="field.name"><span v-if="field.label">{{field.label}} ({{field.name}})</span><span v-else>{{field.name}}</span></div>
+                 :key="field.name">
+              <span v-if="field.label">{{field.label}} ({{field.name}})</span>
+              <span v-else>{{field.name}}</span>
+              <span class="system" v-if="field.isSystem">(system field)</span>
+            </div>
           </draggable>
         </div>
         <div class="selected">
@@ -24,7 +28,11 @@
             <div v-for="(field, index) in selectedFields"
                  @dblclick="selectedFields.splice(index,1)"
                  class="field"
-                 :key="field.name"><span v-if="field.label">{{field.label}} ({{field.name}})</span><span v-else>{{field.name}}</span></div>
+                 :key="field.name">
+              <span v-if="field.label">{{field.label}} ({{field.name}})</span>
+              <span v-else>{{field.name}}</span>
+              <span class="system" v-if="field.isSystem">(system field)</span>
+            </div>
           </draggable>
         </div>
       </div>
@@ -65,11 +73,11 @@ export default {
     },
 
     allFields () {
-      return this.module.fields
+      return [ ...this.module.fields, ...this.module.systemFields() ]
     },
 
     availableFields () {
-      const fields = this.module.fields
+      const fields = [ ...this.allFields ]
 
       if (this.fields.length > 0) {
         // Remove selected fields
@@ -112,6 +120,7 @@ div.fields {
   & > div {
     flex: 1;
     margin: 5px;
+    clear: both;
 
     button.btn-url {
       font-size: 90%;
@@ -124,6 +133,11 @@ div.fields {
       overflow-x: auto;
       border: 1px solid $appgrey;
       padding: 2px;
+    }
+
+    span.system {
+      float: right;
+      font-size: 80%;
     }
   }
 }

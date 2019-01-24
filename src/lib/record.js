@@ -51,6 +51,10 @@ export default class Record {
   }
 
   getValue (name) {
+    if (!this[fields][name]) {
+      return undefined
+    }
+
     const { isMulti = false, kind } = this[fields][name]
 
     if (kind === undefined) {
@@ -65,6 +69,10 @@ export default class Record {
   }
 
   setValue (name, value) {
+    if (!this[fields][name]) {
+      return undefined
+    }
+
     const { isMulti = false, kind } = this[fields][name]
 
     if (kind === undefined) {
@@ -98,8 +106,10 @@ export default class Record {
     if (Array.isArray(values)) {
       // filter(), allow only fields supported by this module
       values.filter(({ name }) => this[fields][name] !== undefined).forEach(({ name, value }) => {
+        const { isMulti = false } = this[fields][name]
+
         const ex = this[internal].find(r => r.name === name)
-        if (this[fields][name].isMulti || !ex) {
+        if (isMulti || !ex) {
           this[internal].push({ name, value })
         } else {
           ex.value = value

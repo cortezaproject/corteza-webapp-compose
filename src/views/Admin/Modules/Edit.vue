@@ -41,13 +41,12 @@
                 <tr>
                   <th colspan="7">System fields:</th>
                 </tr>
-                <field-row-view v-for="(field, index) in systemFields"
+                <field-row-view v-for="(field, index) in module.systemFields()"
                                 :field="field"
                                 :key="index"></field-row-view>
               </tbody>
             </table>
           </div>
-
         </div>
       </div>
     </form>
@@ -89,15 +88,6 @@ export default {
     return {
       updateField: null,
       module: null,
-      systemFields: [
-        new Field({ name: 'owned_by', label: 'Owned by', kind: 'User' }),
-        new Field({ name: 'created_by', label: 'Created by', kind: 'User' }),
-        new Field({ name: 'created_at', label: 'Created at', kind: 'DateTime' }),
-        new Field({ name: 'updated_by', label: 'Created by', kind: 'User' }),
-        new Field({ name: 'updated_at', label: 'Created at', kind: 'DateTime' }),
-        new Field({ name: 'deleted_by', label: 'Created by', kind: 'User' }),
-        new Field({ name: 'deleted_at', label: 'Created at', kind: 'DateTime' }),
-      ],
     }
   },
 

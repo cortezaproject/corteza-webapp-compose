@@ -5,7 +5,7 @@ export default class Field {
     this.merge(def)
   }
 
-  merge ({ name, label, helpText, defaultValue, maxLength, isRequired, isPrivate, isMulti, kind, options } = {}) {
+  merge ({ name, label, helpText, defaultValue, maxLength, isRequired, isPrivate, isMulti, isSystem, kind, options } = {}) {
     this.name = typeof name === 'string' ? name : this.name || ''
     this.label = typeof label === 'string' ? label : this.label || ''
     this.helpText = typeof helpText === 'string' ? helpText : this.helpText || ''
@@ -14,6 +14,7 @@ export default class Field {
     this.isRequired = typeof gdpr === 'boolean' ? isRequired : this.isRequired
     this.isPrivate = typeof isPrivate === 'boolean' ? isPrivate : this.isPrivate
     this.isMulti = typeof isMulti === 'boolean' ? isMulti : this.isMulti
+    this.isSystem = typeof isSystem === 'boolean' ? isSystem : this.isSystem
 
     this.kind = this.kind || undefined
     this.options = this.options || undefined

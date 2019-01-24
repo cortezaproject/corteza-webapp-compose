@@ -8,6 +8,16 @@ const defMeta = () => Object.assign({}, {
   },
 })
 
+const systemFields = [
+  { name: 'ownedBy', label: 'Owned by', kind: 'User' },
+  { name: 'createdBy', label: 'Created by', kind: 'User' },
+  { name: 'createdAt', label: 'Created at', kind: 'DateTime' },
+  { name: 'updatedBy', label: 'Updated by', kind: 'User' },
+  { name: 'updatedAt', label: 'Updated at', kind: 'DateTime' },
+  { name: 'deletedBy', label: 'Deleted by', kind: 'User' },
+  { name: 'deletedAt', label: 'Deleted at', kind: 'DateTime' },
+].map(f => new Field({ ...f, isSystem: true }))
+
 export default class Module {
   constructor (def = {}) {
     this.merge(def)
@@ -36,10 +46,18 @@ export default class Module {
   // Returns array of fields from this module that are in requested list (array of field object or string).
   // Returned fields are orderd in the same way as requested
   filterFields (requested = []) {
-    return requested.map(r => this.fields.find(f => (r.name || r) === f.name)).filter(f => f)
+    return requested
+      .map(r =>
+        this.systemFields().find(f => (r.name || r) === f.name) ||
+        this.fields.find(f => (r.name || r) === f.name))
+      .filter(f => f)
   }
 
   fieldNames () {
     return this.fields.map(f => f.name)
+  }
+
+  systemFields () {
+    return systemFields
   }
 }
