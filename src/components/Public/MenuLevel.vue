@@ -192,7 +192,7 @@ ul {
         border-color: transparent transparent transparent $appgrey;
         float: right;
         position: absolute;
-        bottom: 15px;
+        top: 12px;
         right: 5px;
       }
     }
