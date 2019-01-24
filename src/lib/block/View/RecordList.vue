@@ -100,10 +100,16 @@ export default {
     }
 
     /* eslint-disable no-template-curly-in-string */
-    if (!this.record && (this.options.prefilter || '').includes('${recordID}')) {
-      // If there is no current record and we are using recordID variable in (pre)filter
+    if (!this.record) {
+      // If there is no current record and we are using recordID/ownerID variable in (pre)filter
       // we should disable the block
-      throw Error('Can not use ${recordID} variable in non-record pages')
+      if ((this.options.prefilter || '').includes('${recordID}')) {
+        throw Error('Can not use ${recordID} variable in non-record pages')
+      }
+
+      if ((this.options.prefilter || '').includes('${ownerID}')) {
+        throw Error('Can not use ${ownerID} variable in non-record pages')
+      }
     }
 
     this.meta.sort = this.options.presort
@@ -120,7 +126,7 @@ export default {
       })(this.options.prefilter, {
         recordID: (this.record || {}).recordID,
         ownerID: (this.record || {}).userID,
-        userID: this.currentUser.userID,
+        userID: this.currentUser.ID,
       })
 
       this.meta.filter = this.prefilter
