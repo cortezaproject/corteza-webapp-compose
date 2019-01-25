@@ -103,8 +103,8 @@ export default {
     if (!this.record) {
       // If there is no current record and we are using recordID/ownerID variable in (pre)filter
       // we should disable the block
-      if ((this.options.prefilter || '').includes('${recordID}')) {
-        throw Error('Can not use ${recordID} variable in non-record pages')
+      if ((this.options.prefilter || '').includes('${record')) {
+        throw Error('Can not use ${record...} variable in non-record pages')
       }
 
       if ((this.options.prefilter || '').includes('${ownerID}')) {
@@ -118,12 +118,13 @@ export default {
 
     if (this.options.prefilter) {
       // Little magic here: prefilter is wraped with backticks and evaluated
-      // this allows us to us ${recordID}, ${ownerID}, ${userID} in prefilter string;
-      // hence the /hanging/ recordID, ownerID and userID variables
-      this.prefilter = (function (prefilter, { recordID, ownerID, userID }) {
+      // this allows us to us ${record.values....}, ${recordID}, ${ownerID}, ${userID} in prefilter string;
+      // hence the /hanging/ record, recordID, ownerID and userID variables
+      this.prefilter = (function (prefilter, { record, recordID, ownerID, userID }) {
         /* eslint-disable no-eval */
         return eval('`' + prefilter + '`')
       })(this.options.prefilter, {
+        record: this.record,
         recordID: (this.record || {}).recordID,
         ownerID: (this.record || {}).userID,
         userID: this.currentUser.ID,
