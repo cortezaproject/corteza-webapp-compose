@@ -13,7 +13,7 @@
       </select>
       <button
         :disabled="!field.isConfigurable()"
-        @click.prevent="handleFieldEdit(field)"
+        @click.prevent="$emit('edit')"
         class="btn-url"><font-awesome-icon :icon="['fas', 'wrench']"></font-awesome-icon></button>
     </td>
     <td class="text-center">
@@ -23,7 +23,10 @@
       <input v-model="field.isPrivate" type="checkbox"/>
     </td>
     <td class="text-center">
-      <confirmation-toggle @confirmed="module.fields.splice(index, 1)" class="confirmation-small" cta-class="btn-url">
+      <confirmation-toggle @confirmed="$emit('delete')"
+                           :no-prompt="!field.name"
+                           class="confirmation-small"
+                           cta-class="btn-url">
         <i class="action icon-trash"></i>
       </confirmation-toggle>
     </td>
@@ -54,6 +57,12 @@ export default {
       module: null,
       fieldsList: fieldList,
     }
+  },
+
+  methods: {
+    handleKindChange (field) {
+      field.merge({ kind: field.kind })
+    },
   },
 
   components: {

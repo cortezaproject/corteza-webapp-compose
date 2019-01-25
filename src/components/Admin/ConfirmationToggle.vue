@@ -1,7 +1,7 @@
 <template>
   <span>
     <span v-if="!inConfirmation">
-      <button type="button" class="btn" :class="btnClass" @click.prevent="inConfirmation=true" :disabled="disabled"><slot></slot></button>
+      <button type="button" class="btn" :class="btnClass" @click.prevent="onPrompt" :disabled="disabled"><slot></slot></button>
     </span>
     <span v-if="inConfirmation">
       <button type="button" class="btn" :class="confirmationClass" @click.prevent="onConfirmation()">Yes</button>
@@ -15,6 +15,7 @@ export default {
     ctaClass: { type: String, default: 'btn-danger' },
     confirmationClass: { default: 'btn-danger' },
     disabled: Boolean,
+    noPrompt: Boolean,
   },
 
   computed: {
@@ -34,6 +35,14 @@ export default {
   },
 
   methods: {
+    onPrompt () {
+      if (this.noPrompt) {
+        this.$emit('confirmed')
+      } else {
+        this.inConfirmation = true
+      }
+    },
+
     onConfirmation () {
       this.inConfirmation = false
       this.$emit('confirmed')

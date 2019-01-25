@@ -29,8 +29,10 @@
               </thead>
               <draggable v-model="module.fields" :options="{handle:'.handle'}" element="tbody">
                 <field-row-edit v-for="(field, index) in module.fields"
-                           :field="field"
-                           :key="index"></field-row-edit>
+                                @edit="handleFieldEdit(field)"
+                                @delete="module.fields.splice(index, 1)"
+                                :field="field"
+                                :key="index"></field-row-edit>
               </draggable>
               <tr>
                 <th colspan="7">
@@ -109,12 +111,8 @@ export default {
       this.module.fields.push(new Field())
     },
 
-    handleKindChange (field) {
-      field.merge({ kind: field.kind })
-    },
-
     handleFieldEdit (field) {
-      this.updateField = new Field(field)
+      this.updateField = new Field({ ...field })
     },
 
     handleFieldSave (field) {
