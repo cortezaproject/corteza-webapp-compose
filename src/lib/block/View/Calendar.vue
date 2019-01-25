@@ -1,0 +1,119 @@
+<template>
+  <div ref="wrap">
+    <full-calendar :events="events"
+                   :config="config"></full-calendar>
+  </div>
+</template>
+<script>
+import { mapGetters, mapActions } from 'vuex'
+import base from './base'
+import { FullCalendar } from 'vue-full-calendar'
+import 'fullcalendar/dist/fullcalendar.css'
+import Record from '@/lib/record'
+import { Calendar } from '@/lib/block/Calendar'
+
+export default {
+  extends: base,
+
+  data () {
+    return {
+      minHeight: 300,
+      heightDiff: 20,
+      events: [],
+    }
+  },
+
+  computed: {
+    ...mapGetters({
+      pages: 'page/set',
+    }),
+
+    config () {
+      return {
+        header: this.header,
+        height: ((this.boundingRect || {}).height || this.minHeight) - this.heightDiff,
+        themeSystem: 'standard',
+        defaultView: this.options.defaultView || 'month',
+        editable: false,
+        eventLimit: true,
+        eventClick: this.handleEventClick,
+        viewRender: ({ start, end }) => {
+          this.loadEvents(start, end)
+        },
+      }
+    },
+
+    header () {
+      const cal = new Calendar(this.options)
+      const h = cal.header || {}
+      if (h.hide) return false
+
+      const header = {
+        left: `${h.hidePrevNext ? '' : 'prev,next'} ${h.hideToday ? '' : 'today'}`.trim(),
+        center: `${h.hideTitle ? '' : 'title'}`,
+        right: cal.reorderViews(h.views).join(','),
+      }
+
+      return header
+    },
+  },
+
+  methods: {
+    ...mapActions({
+      findModuleByID: 'module/findByID',
+    }),
+
+    loadEvents (start, end) {
+      this.events = []
+      this.options.feeds.forEach(feed => {
+        this.findModuleByID({ moduleID: feed.moduleID }).then((module) => {
+          // We will need this for redirecting user to record page
+          const pageID = (this.pages.find(p => p.moduleID === module.moduleID) || {}).pageID
+
+          // Build params from feed configutation
+          const params = {
+            moduleID: module.moduleID,
+            filter: `date(${feed.endField || feed.startField}) >= '${start.toISOString()}' AND date(${feed.startField}) < '${end.toISOString()}'`,
+          }
+
+          this.$crm.moduleRecordList(params).then(({ meta, records }) => {
+            this.events.push(...records
+              .map(r => new Record(module, r))
+              .filter(r => !!r.values[feed.startField])
+              .map(r => {
+                return {
+                  id: r.recordID,
+                  title: r.values[feed.titleField] || r.recordID,
+                  start: r.values[feed.startField],
+                  end: feed.endField ? r.values[feed.endField] : null,
+                  allDay: feed.allDay,
+                  pageID,
+                }
+              }))
+          }).catch(this.defaultErrorHandler('Could not load record list'))
+        })
+      })
+    },
+
+    handleEventClick ({ id, pageID }) {
+      if (id && pageID) {
+        this.$router.push({ name: 'public.page.record', params: { pageID, recordID: id } })
+      }
+    },
+  },
+
+  components: {
+    FullCalendar,
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+@import "@/assets/sass/btns.scss";
+
+.btn {
+  border-radius: 0;
+  margin-bottom: 5px;
+}
+
+</style>

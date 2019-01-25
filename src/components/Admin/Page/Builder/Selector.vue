@@ -43,6 +43,9 @@ export default {
         { label: 'Automation',
           recordPageOnly: false,
           block: new Block({ kind: 'Automation' }) },
+        { label: 'Calendar',
+          recordPageOnly: false,
+          block: new Block({ kind: 'Calendar' }) },
       ],
     }
   },
