@@ -1,6 +1,11 @@
 <script>
 export default {
   props: {
+    boundingRect: {
+      type: Object,
+      required: false,
+    },
+
     page: {
       type: Object,
       required: true,

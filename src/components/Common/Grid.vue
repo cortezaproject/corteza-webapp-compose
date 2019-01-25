@@ -3,7 +3,7 @@
     <grid-layout :layout.sync="grid"
                  @layout-updated="handleLayoutUpdate"
                  :col-num="12"
-                 :row-height="30"
+                 :row-height="rowHeight"
                  :vertical-compact="true"
                  :is-resizable="!!editable"
                  :is-draggable="!!editable"
@@ -12,12 +12,15 @@
                  :responsive="true">
       <grid-item v-for="(item, index) in grid"
                  :key="item.i"
+                 ref="items"
                  :x="item.x"
                  :y="item.y"
                  :w="item.w"
                  :h="item.h"
                  :i="item.i">
-        <slot :block="item.block" :index="index"></slot>
+        <slot :block="item.block"
+              :index="index"
+              :bounding-rect="boundingRects[index]"></slot>
       </grid-item>
     </grid-layout>
   </div>
@@ -29,6 +32,7 @@
 <script>
 import VueGridLayout from 'vue-grid-layout'
 import Block from '@/lib/block'
+import _ from 'lodash'
 
 const blocksToGrid = blocks => {
   return blocks.map((block, i) => {
@@ -59,11 +63,16 @@ export default {
 
   data () {
     return {
+      rowHeight: 30,
+
       // all blocks in vue-grid friendly structure
       grid: blocksToGrid(this.blocks),
 
       // attempt to solve responsive grid issues. 2 views: desktop and mobile
       cols: { lg: 12, md: 12, sm: 1, xs: 1, xxs: 1 },
+
+      // Grid items bounding rect info
+      boundingRects: [],
     }
   },
 
@@ -71,13 +80,40 @@ export default {
     blocks: {
       handler (blocks) {
         this.grid = blocksToGrid(blocks)
+        this.recalculateBoundingRect()
       },
 
       deep: true,
     },
   },
 
+  mounted () {
+    window.addEventListener('resize', this.windowResizeThrottledHandler)
+    this.recalculateBoundingRect()
+  },
+
+  destroyed () {
+    window.removeEventListener('resize', this.windowResizeThrottledHandler)
+  },
+
   methods: {
+    windowResizeThrottledHandler: _.throttle(function () { this.recalculateBoundingRect() }, 500),
+
+    // Fetch bounding boxes of all grid items
+    recalculateBoundingRect () {
+      this.boundingRects = this.$refs.items.map(({ $el }) => {
+        const bcr = $el.getBoundingClientRect()
+        return {
+          width: bcr.width,
+          height: bcr.height,
+          top: bcr.top,
+          left: bcr.left,
+          right: bcr.right,
+          bottom: bcr.bottom,
+        }
+      })
+    },
+
     handleLayoutUpdate (grid) {
       // Emit change back with 'update:' prefix for .sync modifier to kick in.
       this.$emit(

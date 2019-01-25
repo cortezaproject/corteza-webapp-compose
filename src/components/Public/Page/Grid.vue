@@ -3,9 +3,9 @@
         :blocks="page.blocks"
         :editable="false"
         :key="page.pageID">
-    <template slot-scope="{ block, index }">
-      <block-editor :block="block" :page="page" :module="module" :record="record" v-if="editMode" />
-      <block-viewer :block="block" :page="page" :module="module" :record="record" v-else />
+    <template slot-scope="{ boundingRect, block, index }">
+      <block-editor :block="block" :page="page" :module="module" :record="record" :bounding-rect="boundingRect" v-if="editMode" />
+      <block-viewer :block="block" :page="page" :module="module" :record="record" :bounding-rect="boundingRect" v-else />
     </template>
   </grid>
 </template>

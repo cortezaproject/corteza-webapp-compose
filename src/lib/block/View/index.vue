@@ -8,6 +8,7 @@
       </div>
       <div class="block-data-content" v-else>
         <component :is="block.kind"
+                   :bounding-rect="boundingRect"
                    :options="block.options"
                    :page="page"
                    :module="module"
@@ -22,6 +23,11 @@ import * as ViewBlocks from './loader'
 
 export default {
   props: {
+    boundingRect: {
+      type: Object,
+      required: false,
+    },
+
     block: {
       type: Object,
       required: true,
