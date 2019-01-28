@@ -1,19 +1,17 @@
 <template>
   <div :class="blockClass">
-    <div class="block-data">
-      <h2>{{ block.title }}</h2>
-      <p class="block-data-description" v-if="block.description">{{ block.description }}</p>
-      <div class="block-data-content" v-if="blockComponentError">
-        {{ blockComponentError.message }}
-      </div>
-      <div class="block-data-content" v-else>
-        <component :is="block.kind"
-                   :bounding-rect="boundingRect"
-                   :options="block.options"
-                   :page="page"
-                   :module="module"
-                   :record="record" />
-      </div>
+    <h2>{{ block.title }}</h2>
+    <p v-if="block.description">{{ block.description }}</p>
+    <div v-if="blockComponentError">
+      {{ blockComponentError.message }}
+    </div>
+    <div ref="content" v-else>
+      <component :is="block.kind"
+                 :bounding-rect="adjustedBoundingRect"
+                 :options="block.options"
+                 :page="page"
+                 :module="module"
+                 :record="record" />
     </div>
   </div>
 </template>
@@ -52,6 +50,7 @@ export default {
   data () {
     return {
       blockComponentError: null,
+      adjustedBoundingRect: {},
     }
   },
 
@@ -67,9 +66,35 @@ export default {
     },
   },
 
+  watch: {
+    boundingRect () {
+      // Bounding rect changes on every resize
+      // we need to pick up new dimensions and update adjusted boundingRect
+      this.recalculateBlockRect()
+    },
+  },
+
+  mounted () {
+    this.recalculateBlockRect()
+  },
+
   errorCaptured (err) {
     this.blockComponentError = err
     return false
+  },
+
+  methods: {
+    recalculateBlockRect () {
+      const bcr = this.$refs.content.getBoundingClientRect()
+      this.adjustedBoundingRect = {
+        width: bcr.width,
+        height: bcr.height,
+        top: bcr.top,
+        left: bcr.left,
+        right: bcr.right,
+        bottom: bcr.bottom,
+      }
+    },
   },
 
   components: {

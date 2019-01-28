@@ -61,19 +61,21 @@
   }
 }
 
-.block-data {
-  .block-data-title {
-    font-size: 15px;
-  }
+.block {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
 
-  h2 {
+  & > h2 {
+    flex-grow: 0;
     font-size: 15px;
     padding: 5px 10px;
     margin-bottom: 0;
     font-weight: 300;
   }
 
-  .block-data-description {
+  & > p {
+    flex-grow: 0;
     font-size: 10px;
     border-bottom: 1px solid $black;
     min-height: 15px;
@@ -81,18 +83,13 @@
     margin-bottom: 0;
   }
 
-  .block-data-content {
+  & > div {
+    flex-grow: 1;
+    min-height: 300px;
     padding: 5px 10px;
 
     fieldset {
       border: none;
     }
-  }
-
-  .block-data-footer {
-    font-size: 10px;
-    position: absolute;
-    bottom: 0;
-    padding: 5px 10px;
   }
 }

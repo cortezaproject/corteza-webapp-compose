@@ -1,8 +1,7 @@
 <template>
-  <div ref="wrap">
-    <full-calendar :events="events"
-                   :config="config"></full-calendar>
-  </div>
+  <full-calendar :events="events"
+                 :config="config"
+                 :key="calDep"></full-calendar>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
@@ -17,8 +16,12 @@ export default {
 
   data () {
     return {
-      minHeight: 300,
-      heightDiff: 20,
+      // For the lack of better idea how to solve this...
+      // we're using this as calendar component key and changing
+      // it according to boundingRect.height (that is changed whenever
+      // window is resized. To overcome problems on mount, we increment
+      // this integer when component is mounted and then again .3sec later
+      calDep: 0,
       events: [],
     }
   },
@@ -31,7 +34,7 @@ export default {
     config () {
       return {
         header: this.header,
-        height: ((this.boundingRect || {}).height || this.minHeight) - this.heightDiff,
+        height: 'parent',
         themeSystem: 'standard',
         defaultView: this.options.defaultView || 'month',
         editable: false,
@@ -56,6 +59,21 @@ export default {
 
       return header
     },
+  },
+
+  watch: {
+    'boundingRect.height' (v) {
+      this.calDep = v
+    },
+  },
+
+  mounted () {
+    this.$nextTick(() => {
+      this.calDep++
+      window.setTimeout(() => {
+        this.calDep++
+      }, 300)
+    })
   },
 
   methods: {

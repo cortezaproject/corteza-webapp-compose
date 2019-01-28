@@ -27,10 +27,10 @@
                           :options="o.availableViews()">
       </b-form-radio-group>
     </b-form-group>
-    <hr/>
     <div v-for="(feed, index) in o.feeds" :key="index">
+      <hr/>
       <b-form-group horizontal
-                    label="Configure data source">
+                    label="Configure events source">
         <b-form-select v-model="feed.moduleID"
                        :options="modules"
                        value-field="moduleID"
@@ -72,6 +72,7 @@
         <b-form-checkbox plain v-model="feed.allDay" :value="true" :unchecked-value="false">Show as all-day-events</b-form-checkbox><br />
       </b-form-group>
     </div>
+    <b-button @click.prevent="handleAddButton" class="btn btn-url">Add events source</b-button>
   </fieldset>
 </template>
 <script>
@@ -108,6 +109,10 @@ export default {
     datetimeFields (moduleID) {
       const m = this.getModuleByID(moduleID)
       return [ ...m.fields, ...m.systemFields() ].filter(f => f.kind === 'DateTime')
+    },
+
+    handleAddButton () {
+      this.o.feeds.push({})
     },
 
     // handleAddButton () {
