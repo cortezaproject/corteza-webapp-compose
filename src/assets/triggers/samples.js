@@ -20,7 +20,9 @@ let account = crust.helpers.record.new('Account', lead)
 
 // Do some modifications to account record
 // Finds Crust user by his email and assigns him as an owner
-account.values.Owner = await crust.api.user.find('email@example.tld').userID
+let user = await crust.api.user.find('email@example.tld')
+
+account.values.Owner = user.userID
 account.values.Status = 'converted'
 
 // Saves the account
@@ -34,7 +36,7 @@ crust.notify.send.email({
   // Send 2 carbon copies to sales department and CSO
   cc: ['sales@example.cc Sales Department', 'cso@example.cc'],
 
-  subject: \`Lead "\${lead.value.Name}" coverted\`,
+  subject: \`Lead "\${lead.values.Name}" coverted\`,
   html: \`Account summary:&lt;hr>\${crust.fmt.record.toHTML(account)}\`,
 })
 
