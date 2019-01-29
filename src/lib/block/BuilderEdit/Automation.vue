@@ -20,12 +20,18 @@
           <b-input-group-prepend is-text>
             <font-awesome-icon :icon="['fas', 'grip-vertical']"></font-awesome-icon>
           </b-input-group-prepend>
-          <b-form-input v-model="b.label" placeholder="button label"></b-form-input>
-          <b-input-group-append is-text>
-            Trigger "{{ (findTriggerByID(b.triggerID) || {}).name }}"
+          <div class="btn-name">
+            <b-form-input v-model="b.label" placeholder="button label"></b-form-input>
+            <b-input-group-append is-text>
+              Trigger "{{ (findTriggerByID(b.triggerID) || {}).name }}"
+            </b-input-group-append>
+          </div>
+          <b-input-group-append class="btn-color">
+            <b-form-select v-model="b.variant" :options="variantOptions">
+            </b-form-select>
           </b-input-group-append>
           <b-input-group-append>
-            <b-button @click.prevent="o.buttons.splice(i,1)" variant="dark">
+            <b-button @click.prevent="o.buttons.splice(i,1)" variant="url">
               <i class="action icon-trash"></i>
             </b-button>
           </b-input-group-append>
@@ -77,6 +83,13 @@ export default {
     return {
       selectedTriggerID: null,
       charts: [],
+      variantOptions: [
+        { value: 'blue', text: 'Blue button' },
+        { value: 'secondary', text: 'White button' },
+        { value: 'green', text: 'Green button' },
+        { value: 'red', text: 'Red button' },
+        { value: 'dark', text: 'Grey button' },
+      ],
     }
   },
 
@@ -96,6 +109,7 @@ export default {
       this.o.buttons.push({
         triggerID: t.triggerID,
         label: t.name,
+        variant: 'blue',
       })
 
       this.selectedTriggerID = null
@@ -114,6 +128,8 @@ export default {
 .modal-body {
   .form-control {
     margin-bottom: 0;
+    min-width: 150px;
+    z-index: 1;
   }
 }
 
@@ -128,6 +144,42 @@ export default {
 }
 
 .input-group {
-  margin-bottom: 2px;
+  margin-bottom: 15px;
 }
+
+.input-group-append {
+  z-index: 0;
+
+  .input-group-text {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  }
+}
+
+.btn-name {
+  display: inline-flex;
+  width: calc(100% - 28px);
+  padding-right: 20px;
+}
+
+.custom-select {
+  margin: 2px 9px 0 27px;
+}
+
+.btn-color {
+  flex-grow: 1;
+}
+
+.btn-url {
+  text-decoration: none;
+  color: $appred;
+  margin-top: -30px;
+
+  &:hover {
+    color: $appred;
+  }
+}
+
 </style>
