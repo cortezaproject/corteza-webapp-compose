@@ -3,8 +3,9 @@ export class Calendar {
     this.merge(def)
   }
 
-  merge ({ feeds, header } = {}) {
+  merge ({ feeds, header, defaultView } = {}) {
     this.feeds = feeds || this.feeds || []
+    this.defaultView = defaultView || this.defaultView || undefined
     this.header = header || this.header || {}
     return this
   }

@@ -51,10 +51,16 @@ export default {
       const h = cal.header || {}
       if (h.hide) return false
 
+      // Show view buttons only when 2 or more are selected
+      let right = false
+      if (h.views.length >= 2) {
+        right = cal.reorderViews(h.views).join(',')
+      }
+
       const header = {
         left: `${h.hidePrevNext ? '' : 'prev,next'} ${h.hideToday ? '' : 'today'}`.trim(),
         center: `${h.hideTitle ? '' : 'title'}`,
-        right: cal.reorderViews(h.views).join(','),
+        right,
       }
 
       return header

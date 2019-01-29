@@ -3,21 +3,41 @@
 
     <b-form-group horizontal
                   label="Calendar header">
-      <b-form-checkbox plain v-model="o.header.hide" :value="true" :unchecked-value="false">Hide</b-form-checkbox><br />
-      <b-form-checkbox plain v-model="o.header.hidePrevNext" :value="true" :unchecked-value="false">Hide prev/next button</b-form-checkbox><br />
-      <b-form-checkbox plain v-model="o.header.hideToday" :value="true" :unchecked-value="false">Hide today button</b-form-checkbox><br />
-      <b-form-checkbox plain v-model="o.header.hideTitle" :value="true" :unchecked-value="false">Hide title text</b-form-checkbox><br />
+      <b-form-checkbox plain
+                       v-model="o.header.hide"
+                       :value="true"
+                       :unchecked-value="false">Hide calendar header</b-form-checkbox><br />
+      <b-form-checkbox plain
+                       v-model="o.header.hidePrevNext"
+                       :disabled="o.header.hide"
+                       value="true"
+                       :unchecked-value="false">Hide prev/next button</b-form-checkbox><br />
+      <b-form-checkbox plain
+                       v-model="o.header.hideToday"
+                       :disabled="o.header.hide"
+                       :value="true"
+                       :unchecked-value="false">Hide today button</b-form-checkbox><br />
+      <b-form-checkbox plain
+                       v-model="o.header.hideTitle"
+                       :disabled="o.header.hide"
+                       :value="true"
+                       :unchecked-value="false">Hide title text</b-form-checkbox><br />
 
+    </b-form-group>
+    <b-form-group horizontal
+                  label="Enabled views">
       <b-form-checkbox-group v-model="o.header.views"
-                          buttons
-                          button-variant="outline-secondary"
-                          size="sm"
-                          name="buttons2"
-                          :options="o.availableViews()">
+                             :disabled="o.header.hide"
+                             buttons
+                             button-variant="outline-secondary"
+                             size="sm"
+                             name="buttons2"
+                             :options="o.availableViews()">
       </b-form-checkbox-group>
     </b-form-group>
 
     <b-form-group horizontal
+                  description="Make sure default is one of the available views"
                   label="Default view">
       <b-form-radio-group v-model="o.defaultView"
                           buttons
