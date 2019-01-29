@@ -1,15 +1,13 @@
 <template>
   <div :class="blockClass">
-    <div class="block-data">
-      <h2>{{ block.title }}</h2>
-      <p v-if="block.description">{{ block.description }}</p>
-      <div>
-        <component :is="block.kind"
-                   :options="block.options"
-                   :page="page"
-                   :module="module"
-                   :record="record" />
-      </div>
+    <h2>{{ block.title }}</h2>
+    <p v-if="block.description">{{ block.description }}</p>
+    <div>
+      <component :is="block.kind"
+                 :options="block.options"
+                 :page="page"
+                 :module="module"
+                 :record="record" />
     </div>
   </div>
 </template>
