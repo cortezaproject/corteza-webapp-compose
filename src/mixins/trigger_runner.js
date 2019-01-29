@@ -99,6 +99,23 @@ export default {
 
         helpers: {
           record: {
+            page: {
+              reload: () => {
+                this.$emit('reload')
+              },
+
+              open: (record) => {
+                if (!record) return
+
+                const page = this.$store.getters['page/set'].find(p => p.moduleID === record.moduleID)
+                if (!page) return
+                this.$router.push({
+                  name: 'public.page.record',
+                  params: { pageID: page.pageID, recordID: record.recordID },
+                })
+              },
+            },
+
             new: (module, values = {}) => {
               if (typeof module === 'string') {
                 // Find from list of modules by name or ID

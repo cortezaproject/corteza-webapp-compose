@@ -20,6 +20,7 @@
                  :i="item.i">
         <slot :block="item.block"
               :index="index"
+              v-on="$listeners"
               :bounding-rect="boundingRects[index]"></slot>
       </grid-item>
     </grid-layout>

@@ -7,7 +7,8 @@
                  :options="block.options"
                  :page="page"
                  :module="module"
-                 :record="record" />
+                 :record="record"
+                 v-on="$listeners" />
     </div>
   </div>
 </template>

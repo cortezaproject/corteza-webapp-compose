@@ -48,4 +48,10 @@ crust.notify.ui.alert.success('Lead converted and assigned')
 // and save it for us.
 lead.values.Status = 'assigned'
 
+// Reload current page
+// crust.helpers.record.page.reload()
+
+// Redirect to another record page
+// crust.helpers.record.page.open(record)
+
 `.trimLeft()

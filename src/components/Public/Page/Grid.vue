@@ -4,8 +4,8 @@
         :editable="false"
         :key="page.pageID">
     <template slot-scope="{ boundingRect, block, index }">
-      <block-editor :block="block" :page="page" :module="module" :record="record" :bounding-rect="boundingRect" v-if="editMode" />
-      <block-viewer :block="block" :page="page" :module="module" :record="record" :bounding-rect="boundingRect" v-else />
+      <block-editor :block="block" :page="page" :module="module" :record="record" v-on="$listeners" :bounding-rect="boundingRect" v-if="editMode" />
+      <block-viewer :block="block" :page="page" :module="module" :record="record" v-on="$listeners" :bounding-rect="boundingRect" v-else />
     </template>
   </grid>
 </template>

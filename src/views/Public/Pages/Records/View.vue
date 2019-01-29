@@ -7,7 +7,7 @@
       <button class="btn btn-blue" @click.prevent="handleUpdate" v-if="editMode">Save</button>
       <button class="btn" @click.prevent="$router.push({ name: 'public.page.record.edit' })" v-else>Edit</button>
     </toolbar>
-    <grid :page="page" :record="record" :edit-mode="editMode" v-if="record" />
+    <grid :page="page" :record="record" :edit-mode="editMode" v-if="record" @reload="loadRecord()" />
     <b-modal id="deleteRecord" title="Delete record" @ok="handleDelete" ok-title="Delete" ok-variant="danger">
       <div class="d-block text-center">
         <h3>Are you sure you want to delete this record?</h3>
