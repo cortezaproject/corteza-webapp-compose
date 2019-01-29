@@ -28,7 +28,6 @@ export default {
 
   methods: {
     load () {
-      console.log(this.value)
       if (this.value && this.value !== (this.user || {}).userID) {
         this.$system.userRead({ userID: this.value }).then(u => {
           this.user = u
