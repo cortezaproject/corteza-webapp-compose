@@ -199,23 +199,35 @@ ul {
   }
 }
 
-@media (max-width: $wideminwidth) {
+@media (max-width: 991px) {
   ul {
     position: relative;
 
     &.root {
+      border-right: 1px solid $appcream;
+      max-width: 250px;
+      overflow: hidden;
+
       li {
         display: block;
 
         a {
-          padding: 10px 15px;
+          padding: 7px 10px;
+          font-size: 14px;
+          line-height: 20px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          &::after {
+            border: none;
+          }
         }
       }
     }
 
     &:not(.root) {
       position: relative;
-      padding-left: 25px;
+      padding-left: 15px;
       box-shadow: none;
 
       ul:nth-child(2) {
