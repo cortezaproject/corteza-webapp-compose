@@ -61,10 +61,19 @@ export default class Record {
       throw new Error(`Could not get value from an undefined field or field-kind (${name})`)
     }
 
+    const conv = (v) => {
+      switch (kind) {
+        case 'Number':
+          return parseFloat(v)
+        default:
+          return v
+      }
+    }
+
     if (isMulti) {
-      return this[internal].filter(r => r.name === name).map(r => r.value)
+      return this[internal].filter(r => r.name === name).map(r => conv(r.value))
     } else {
-      return (this[internal].find(r => r.name === name) || {}).value || undefined
+      return conv((this[internal].find(r => r.name === name) || {}).value || undefined)
     }
   }
 
@@ -85,7 +94,7 @@ export default class Record {
       // Remove existing
       this[internal] = this[internal].filter(r => r.name !== name)
       if (Array.isArray(value)) {
-        value.forEach(vitem => this[internal].push({ name, value: vitem.toString() }))
+        value.forEach(v => this[internal].push({ name, value: v.toString() }))
       } else {
         this[internal].push({ name, value: value.toString() })
       }

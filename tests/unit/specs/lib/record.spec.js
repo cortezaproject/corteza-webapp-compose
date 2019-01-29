@@ -24,13 +24,13 @@ describe('lib/record.js', () => {
     const record = make([
       { name: 'str', value: 'should be overwritten...' },
       { name: 'str', value: 'SomeString' },
-      { name: 'num', value: '123' },
+      { name: 'num', value: 123 },
       { name: 'multi', value: 'a' },
       { name: 'multi', value: 'b' },
       { name: 'multi', value: 'c' },
     ])
     expect(record.values.str).to.equal('SomeString')
-    expect(record.values.num).to.equal('123')
+    expect(record.values.num).to.equal(123)
     expect(record.values.multi).to.deep.equal(['a','b','c'])
   })
 
@@ -40,14 +40,14 @@ describe('lib/record.js', () => {
     record.values = [
       { name: 'str', value: 'should be overwritten...' },
       { name: 'str', value: 'SomeString' },
-      { name: 'num', value: '123' },
+      { name: 'num', value: 123 },
       { name: 'multi', value: 'a' },
       { name: 'multi', value: 'b' },
       { name: 'multi', value: 'c' },
     ]
 
     expect(record.values.str).to.equal('SomeString')
-    expect(record.values.num).to.equal('123')
+    expect(record.values.num).to.equal(123)
     expect(record.values.multi).to.deep.equal(['a','b','c'])
   })
 
@@ -56,12 +56,12 @@ describe('lib/record.js', () => {
 
     record.values = {
       str: 'SomeString',
-      num: '123',
+      num: 123,
       multi: ['a','b','c'],
     }
 
     expect(record.values.str).to.equal('SomeString')
-    expect(record.values.num).to.equal('123')
+    expect(record.values.num).to.equal(123)
     expect(record.values.multi).to.deep.equal(['a','b','c'])
   })
 
@@ -74,10 +74,21 @@ describe('lib/record.js', () => {
   })
 
   it('should properly serialize into json', function () {
-    const record = make({ str: 'string', multi: ['a'] })
-    const serialized = `[{"name":"str","value":"string"},{"name":"multi","value":"a"}]`
+    const record = make({ str: 'string', num: 5, multi: ['a'] })
+    const serialized = `[{"name":"str","value":"string"},{"name":"num","value":"5"},{"name":"multi","value":"a"}]`
 
     expect(JSON.stringify(record.values)).to.equal(serialized)
     expect(JSON.stringify(record)).contains(`"values":`+serialized)
+  })
+
+  it('should properly handle numeric values', function () {
+    const record = make({num: 123})
+
+    record.values.num = 2
+    expect(record.values.num).to.equal(2)
+    record.values.num++
+    expect(record.values.num).to.equal(3)
+    record.values.num = 1 + record.values.num
+    expect(record.values.num).to.equal(4)
   })
 })
