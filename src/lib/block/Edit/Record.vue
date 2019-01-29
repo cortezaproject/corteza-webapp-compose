@@ -30,7 +30,7 @@ export default {
 
   computed: {
     fields () {
-      return this.module.filterFields(this.options.fields).filter(f => !f.isSystem)
+      return this.module.filterFields(this.options.fields)
     },
   },
 

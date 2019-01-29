@@ -127,11 +127,15 @@ export default class Record {
     }
   }
 
-  merge ({ recordID, values, createdAt, updatedAt, userID }) {
+  merge ({ recordID, values, createdAt, updatedAt, ownerdBy, createdBy, updatedBy, deletedBy }) {
     this.recordID = typeof recordID === 'string' ? recordID : this.recordID || ''
-    this.userID = typeof userID === 'string' ? userID : this.userID || ''
-    this.createdAt = createdAt ? Date.parse(createdAt) : this.createdAt
-    this.updatedAt = updatedAt ? Date.parse(updatedAt) : this.updatedAt
+    this.ownerdBy = typeof ownerdBy === 'string' ? ownerdBy : this.ownerdBy || ''
+    this.createdBy = typeof createdBy === 'string' ? createdBy : this.createdBy || ''
+    this.updatedBy = typeof updatedBy === 'string' ? updatedBy : this.updatedBy || ''
+    this.deletedBy = typeof deletedBy === 'string' ? deletedBy : this.deletedBy || ''
+    this.createdAt = createdAt || this.createdAt || null
+    this.updatedAt = updatedAt || this.updatedAt || null
+    this.deletedBy = deletedBy || this.deletedBy || null
 
     if (values !== undefined) {
       this.values = values
