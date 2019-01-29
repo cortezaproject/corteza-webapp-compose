@@ -2,9 +2,10 @@
   <div>
     <field-editor
       v-for="field in fields"
+      class="field"
       :record.sync="record"
       :key="field.id"
-      :field="field" />
+      :field="field"/>
   </div>
 </template>
 <script>
@@ -40,4 +41,21 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+@import "@/assets/sass/_0.declare.scss";
+
+.field {
+  margin-bottom: 10px;
+
+  label {
+    font-weight: 900;
+    display: block;
+    font-size: 12px;
+    font-family: $crustheavy;
+  }
+
+  div {
+    min-width: 200px;
+    display: inline-block;
+  }
+}
 </style>
