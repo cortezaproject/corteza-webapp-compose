@@ -5,9 +5,9 @@
       v-model="value"
       :options="quillOptions"
       ref="myQuillEditor"></quill-editor>
-    <b-form-textarea
+    <textarea
       v-else-if="field.options.multiLine"
-      v-model="value"></b-form-textarea>
+      v-model="value"></textarea>
     <b-form-input
       v-else
       v-model="value"></b-form-input>
@@ -51,3 +51,8 @@ export default {
 }
 
 </script>
+<style>
+textarea {
+  width: 100%;
+}
+</style>
