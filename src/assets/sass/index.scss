@@ -327,6 +327,10 @@ table {
     }
   }
 
+  input[type=search] {
+    height: auto;
+  }
+
   .dropdown-toggle {
     border-radius: 0 !important;
     max-height: 29px;
