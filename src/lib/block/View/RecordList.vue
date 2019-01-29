@@ -125,9 +125,9 @@ export default {
         return eval('`' + prefilter + '`')
       })(this.options.prefilter, {
         record: this.record,
-        recordID: (this.record || {}).recordID,
-        ownerID: (this.record || {}).userID,
-        userID: this.currentUser.ID,
+        recordID: (this.record || {}).recordID || 0,
+        ownerID: (this.record || {}).userID || 0,
+        userID: this.currentUser.ID || 0,
       })
 
       this.meta.filter = this.prefilter
