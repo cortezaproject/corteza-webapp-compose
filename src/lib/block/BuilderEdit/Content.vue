@@ -41,15 +41,14 @@ export default {
 
             // custom dropdown
             // [{'size': ['small', false, 'large', 'huge']}],
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }, { 'align': [] }],
 
             // dropdown with defaults from theme
             // [{ 'color': [] }, { 'background': [] }],
             // [{ 'font': [] }],
-            [{ 'align': [] }],
 
-            // remove formatting button
-            ['clean'],
+            // add URL, remove formatting button
+            ['link', 'clean'],
           ],
         },
       },
@@ -61,3 +60,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+  .ql-snow.ql-toolbar button {
+    width: 27px;
+  }
+</style>
