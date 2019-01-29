@@ -20,6 +20,10 @@ export class DateTime {
   }
 
   formatValue (value) {
+    if (value === 'Invalid date') {
+      return null
+    }
+
     const m = moment(value)
 
     if (this.outputRelative) {

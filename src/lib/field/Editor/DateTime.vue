@@ -30,6 +30,11 @@ export default {
     date: {
       get () {
         if (this.value && this.value.length > 1) {
+          if (this.value === 'Invalid date') {
+            // Make sure this weird value does not cause us problems
+            return ''
+          }
+
           return this.value.split(' ')[0] // we only want the date part
         }
         return ''
