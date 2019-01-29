@@ -85,16 +85,16 @@ export default class Record {
       // Remove existing
       this[internal] = this[internal].filter(r => r.name !== name)
       if (Array.isArray(value)) {
-        value.forEach(vitem => this[internal].push({ name, value: vitem }))
+        value.forEach(vitem => this[internal].push({ name, value: vitem.toString() }))
       } else {
-        this[internal].push({ name, value })
+        this[internal].push({ name, value: value.toString() })
       }
     } else if (ex) {
       // Existing value... modify value
-      ex.value = value
+      ex.value = value.toString()
     } else {
       // Not multi, or non-existing, just push to stack1
-      this[internal].push({ name, value })
+      this[internal].push({ name, value: value.toString() })
     }
   }
 
