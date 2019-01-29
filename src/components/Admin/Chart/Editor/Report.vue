@@ -193,6 +193,12 @@ export default {
     }
   },
 
+  watch: {
+    'report.filter' (v) {
+      this.customFilter = !predefinedFilters.includes(v)
+    },
+  },
+
   methods: {
     isTemporalField (name) {
       if (name === 'created_at') {
