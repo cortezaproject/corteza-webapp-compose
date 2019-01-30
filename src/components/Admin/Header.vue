@@ -1,7 +1,12 @@
 <template>
   <header>
-    <b-navbar toggleable type="light" toggle-breakpoint="md">
-        <b-navbar-toggle target="nav_text_collapse"></b-navbar-toggle>
+    <b-navbar toggleable type="light" toggle-breakpoint="lg">
+        <b-navbar-toggle target="nav_text_collapse">
+          <label
+            class="channel-toggle">
+            <i class="icon-menu4"></i>
+          </label>
+        </b-navbar-toggle>
         <b-collapse is-nav id="nav_text_collapse">
           <ul>
             <li>
@@ -49,7 +54,11 @@ ul {
   margin-left: 50px;
 }
 
-@media (max-width: $wideminwidth) {
+.navbar-collapse {
+  max-width: 100%;
+}
+
+@media (max-width: 991px) {
   ul {
     position: relative;
 

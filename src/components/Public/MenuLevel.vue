@@ -173,7 +173,7 @@ ul {
       background-color: $appcream;
       z-index: 10;
       position: absolute;
-      box-shadow: 0 0 0.2rem 0 rgba(30, 34, 36, 0.1);
+      box-shadow: 0 0.1rem 0.2rem 0 rgba(30, 34, 36, 0.1);
     }
 
     &:hover > ul,
@@ -184,7 +184,7 @@ ul {
   }
 
   &:nth-child(2) {
-    margin-top: 0;
+    margin-top: 2px;
 
     a {
       &::after {
