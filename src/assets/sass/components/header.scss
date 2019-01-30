@@ -24,6 +24,10 @@ nav {
   }
 }
 
+.channel-toggle {
+  cursor: pointer;
+}
+
 .navbar {
   padding: 0;
   background: $white;
@@ -43,7 +47,7 @@ nav {
 
 .admin-panel {
   position: absolute;
-  right: 0;
+  right: 10px;
   color: $black;
   background: $white;
   z-index: 5;
