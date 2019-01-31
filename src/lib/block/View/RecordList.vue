@@ -165,7 +165,7 @@ export default {
 
         // When searching, always reset filter with prefilter + query
         filter = this.recordListModule.filterFields(this.options.fields).map(qf => {
-          if (qf.kind === 'Number' && !numQuery.isNaN()) {
+          if (qf.kind === 'Number' && !isNaN(numQuery)) {
             return `${qf.name} = ${numQuery}`
           }
 
