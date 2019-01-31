@@ -78,7 +78,7 @@ export default {
 
   methods: {
     convert (r) {
-      if (!r.values) {
+      if (!r || !r.values) {
         return null
       }
 
