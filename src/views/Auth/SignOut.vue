@@ -1,11 +1,7 @@
 <script>
 export default {
-  data () {
-    return {
-      oidc: this.$system.baseURL + '/oidc',
-    }
-  },
-  mounted () {
+  render () { return null },
+  beforeCreate () {
     this.$system.authLogout().catch((err) => {
       this.$logger.error(err)
     }).finally(() => {
