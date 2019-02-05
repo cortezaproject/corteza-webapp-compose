@@ -7,7 +7,7 @@
 yarn global add @vue/cli
 yarn install
 ```
-- in /public folder, create a copy of "config.latest.js" to "config.js".
+- in /public folder, create a copy of "config.example.js" to "config.js".
 
 
 ### Compiles and hot-reloads for development
