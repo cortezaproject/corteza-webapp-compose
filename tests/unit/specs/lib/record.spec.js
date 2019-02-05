@@ -91,4 +91,15 @@ describe('lib/record.js', () => {
     record.values.num = 1 + record.values.num
     expect(record.values.num).to.equal(4)
   })
+
+  it('should properly handle undefined value', function () {
+    const record = make()
+    expect(record.values.str).to.be.undefined
+    record.values.str = undefined
+    expect(record.values.str).to.be.undefined
+    record.values.str = "foo"
+    expect(record.values.str).to.be.a('string')
+    record.values.str = undefined
+    expect(record.values.str).to.be.undefined
+  })
 })

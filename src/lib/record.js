@@ -88,21 +88,40 @@ export default class Record {
       throw new Error(`Could not assign value to an undefined field or field-kind (${name})`)
     }
 
-    const ex = this[internal].find(recField => recField.name === name)
-
     if (isMulti) {
-      // Remove existing
+      // Remove all existing values for this field
       this[internal] = this[internal].filter(r => r.name !== name)
+
       if (Array.isArray(value)) {
+        // If array, push each value to internall stack
         value.forEach(v => this[internal].push({ name, value: v.toString() }))
       } else {
         this[internal].push({ name, value: value.toString() })
       }
-    } else if (ex) {
+
+      return
+    }
+
+    const i = this[internal].findIndex(recField => recField.name === name)
+
+    if (value === undefined) {
+      if (i > -1) {
+        // Remove existing when setting undefined
+        this[internal].splice(i, 1)
+      }
+
+      return
+    }
+
+    if (!(typeof value === 'number' || typeof value === 'string' || typeof value === 'boolean')) {
+      throw new Error(`Unsupported input value type (${typeof value})`)
+    }
+
+    if (i > -1) {
       // Existing value... modify value
-      ex.value = value.toString()
+      this[internal][i].value = value.toString()
     } else {
-      // Not multi, or non-existing, just push to stack1
+      // Not multi, or non-existing, just push to stack
       this[internal].push({ name, value: value.toString() })
     }
   }
