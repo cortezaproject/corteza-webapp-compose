@@ -72,6 +72,52 @@ export default {
                 return $crm.moduleRecordDelete(record)
               }
             },
+
+            // Finds single or multiple records
+            //
+            // When recordID is passed as an filter property (or as filter!) a single record
+            // lookup is performed
+            //
+            // Other cases run record finder, properties passed to moduleRecordList:
+            //  - filter   string, SQL-where-like, simple comparison and boolean expressions
+            //  - page     integer, page number, 1-based
+            //  - perPage  integer, limit record per page
+            //  - sort     string, SQL-order-like, comma separated fields with ASC/DESC for direction
+            //
+            //
+            async find (module, filter = {}) {
+              if (!(module instanceof Module)) {
+                throw Error('Expecting Module object')
+              }
+
+              let params = { moduleID: module.moduleID }
+
+              // Extract recordID from filter param
+              // Scenarios:
+              //   - as recordID or ID property of filter object
+              //   - filter as string
+              params.recordID = (filter || {}).recordID || (filter || {}).ID || (typeof filter === 'string' && /^[0-9]+$/.test(filter) ? filter : undefined)
+              if (params.recordID) {
+                return $crm.moduleRecordRead(params).then((r) => {
+                  if (r.recordID === '0') {
+                    // @todo remove when backend starts returning 404 on nonexistent records
+                    return Promise.reject(Error('Record does not exist'))
+                  } else {
+                    return new Record(module, r)
+                  }
+                })
+              } else {
+                if (typeof filter === 'string') {
+                  params.filter = filter
+                } else if (typeof filter === 'object') {
+                  params = { ...params, ...filter }
+                }
+
+                return $crm.moduleRecordList(params).then(({ records, meta }) => {
+                  return { meta, records: records.map(r => new Record(module, r)) }
+                })
+              }
+            },
           },
 
           module: {
