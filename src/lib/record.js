@@ -1,11 +1,5 @@
 import Module from './module'
 
-// Internal record values representation, array of objects
-const internal = Symbol('internal')
-
-// External record values representation, object (key-value)
-const external = Symbol('external')
-
 const fields = Symbol('moduleFieldIndex')
 
 // Record class
@@ -20,139 +14,25 @@ export default class Record {
       this.module.fields.forEach(({ name, isMulti, kind }) => {
         this[fields][name] = { isMulti, kind }
       })
+
+      this.values = {
+        toJSON: () => {
+          // Remove unneeded properties
+          return this.serialize(this.values)
+        },
+      }
+
+      this.module.fields.forEach(({ name, isMulti, kind }) => {
+        this[fields][name] = { isMulti, kind }
+        this.values[name] = isMulti ? [] : undefined
+      })
     } else if (module === undefined) {
       throw new Error(`Record module not defined`)
     } else {
       throw new Error(`Unexpected value for record module (${typeof module})`)
     }
 
-    this.setupValues()
     this.merge(def)
-  }
-
-  setupValues () {
-    this[internal] = []
-    this[external] = {}
-
-    this.module.fields.forEach(modField => {
-      Object.defineProperty(this[external], modField.name, {
-        configurable: false,
-        enumerable: true,
-        get: () => this.getValue(modField.name),
-        set: (value) => this.setValue(modField.name, value),
-      })
-    })
-
-    // When serializing into JSON, make sure internal values are outputed
-    // so that we do not confuse API
-    this[external].toJSON = (key) => {
-      return this[internal]
-    }
-  }
-
-  getValue (name) {
-    if (!this[fields][name]) {
-      return undefined
-    }
-
-    const { isMulti = false, kind } = this[fields][name]
-
-    if (kind === undefined) {
-      throw new Error(`Could not get value from an undefined field or field-kind (${name})`)
-    }
-
-    const conv = (v) => {
-      switch (kind) {
-        case 'Number':
-          return parseFloat(v)
-        default:
-          return v
-      }
-    }
-
-    if (isMulti) {
-      return this[internal].filter(r => r.name === name).map(r => conv(r.value))
-    } else {
-      return conv((this[internal].find(r => r.name === name) || {}).value || undefined)
-    }
-  }
-
-  setValue (name, value) {
-    if (!this[fields][name]) {
-      return undefined
-    }
-
-    const { isMulti = false, kind } = this[fields][name]
-
-    if (kind === undefined) {
-      throw new Error(`Could not assign value to an undefined field or field-kind (${name})`)
-    }
-
-    if (isMulti) {
-      // Remove all existing values for this field
-      this[internal] = this[internal].filter(r => r.name !== name)
-
-      if (Array.isArray(value)) {
-        // If array, push each value to internall stack
-        value.forEach(v => this[internal].push({ name, value: v.toString() }))
-      } else {
-        this[internal].push({ name, value: value.toString() })
-      }
-
-      return
-    }
-
-    const i = this[internal].findIndex(recField => recField.name === name)
-
-    if (value === undefined) {
-      if (i > -1) {
-        // Remove existing when setting undefined
-        this[internal].splice(i, 1)
-      }
-
-      return
-    }
-
-    if (!(typeof value === 'number' || typeof value === 'string' || typeof value === 'boolean')) {
-      throw new Error(`Unsupported input value type (${typeof value})`)
-    }
-
-    if (i > -1) {
-      // Existing value... modify value
-      this[internal][i].value = value.toString()
-    } else {
-      // Not multi, or non-existing, just push to stack
-      this[internal].push({ name, value: value.toString() })
-    }
-  }
-
-  get values () {
-    return this[external]
-  }
-
-  set values (values) {
-    if (Array.isArray(values)) {
-      // filter(), allow only fields supported by this module
-      values.filter(({ name }) => this[fields][name] !== undefined).forEach(({ name, value }) => {
-        const { isMulti = false } = this[fields][name]
-
-        const ex = this[internal].find(r => r.name === name)
-        if (isMulti || !ex) {
-          this[internal].push({ name, value })
-        } else {
-          ex.value = value
-        }
-      })
-    } else if (typeof values === 'object') {
-      // We're setting the entire value set, cleanup first
-      this[internal] = []
-
-      for (let k in values) {
-        this.setValue(k, values[k])
-      }
-    } else {
-      throw new Error(`Unexpected input for values property, should be an array with name-value object pairs or an object`)
-    }
   }
 
   merge ({ recordID, values, createdAt, updatedAt, ownerdBy, createdBy, updatedBy, deletedBy }) {
@@ -165,12 +45,58 @@ export default class Record {
     this.updatedAt = updatedAt || this.updatedAt || null
     this.deletedBy = deletedBy || this.deletedBy || null
 
-    if (values !== undefined) {
+    if (values !== undefined && Array.isArray(values)) {
+      this.unserialize(values)
+    } else if (typeof values === 'object') {
       this.values = values
     }
   }
 
-  toJSON (key) {
-    return { ...this, values: this[internal] }
+  serialize (values = {}) {
+    let arr = []
+
+    for (let name in this.values) {
+      if (this[fields][name] === undefined) {
+        continue
+      }
+
+      const { isMulti = false } = this[fields][name]
+
+      if (isMulti) {
+        if (Array.isArray(values[name])) {
+          for (let i = 0; i < values[name].length; i++) {
+            if (values[name][i] !== undefined) {
+              arr.push({ name, value: values[name][i].toString() })
+            }
+          }
+        }
+      } else if (values[name] !== undefined) {
+        arr.push({ name, value: values[name].toString() })
+      }
+    }
+
+    return arr
+  }
+
+  unserialize (arr = []) {
+    // Handling backend (array based) payload
+    if (Array.isArray(arr)) {
+      arr.filter(({ name }) => this[fields][name] !== undefined).forEach(({ name, value }) => {
+        const { isMulti = false } = this[fields][name]
+        if (isMulti) {
+          this.values[name].push(value)
+        } else {
+          this.values[name] = value
+        }
+      })
+    } else {
+      throw new Error(`Unexpected input for values property, should be an array with name-value object pairs`)
+    }
+  }
+
+  isValid () {
+    return this.module.fields
+      .map(f => f.validate(this.values[f.name]).length === 0)
+      .filter(v => !v).length === 0
   }
 }
