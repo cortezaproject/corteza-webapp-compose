@@ -12,13 +12,15 @@
       <tr v-for="(field, index) in module.fields" :key="index">
         <th><b>{{ field.kind }}</b></th>
         <td>
+          <label><input type="checkbox" v-model="field.isRequired"> Required</label>
+          <hr />
           <field-configurator :field.sync="field" />
-
-          <hr /><pre>{{ field.options }}</pre>
+          <hr />
+          <pre>Required: {{ field.isRequired }}</pre>
+          <pre>{{ field.options }}</pre>
         </td>
         <td>
-          <field-editor :field.sync="field" :record.sync="record" />
-
+          <field-editor :field.sync="field" :validate="true" :record.sync="record" />
         </td>
         <td>
           <pre>{{ record.values[field.name] || '[undefined]' }}</pre>

@@ -11,7 +11,7 @@ export default class Field {
     this.helpText = typeof helpText === 'string' ? helpText : this.helpText || ''
     this.defaultValue = defaultValue !== undefined ? defaultValue : this.defaultValue || undefined
     this.maxLength = typeof maxLength === 'number' ? maxLength : this.maxLength || 0
-    this.isRequired = typeof gdpr === 'boolean' ? isRequired : this.isRequired
+    this.isRequired = typeof isRequired === 'boolean' ? isRequired : this.isRequired
     this.isPrivate = typeof isPrivate === 'boolean' ? isPrivate : this.isPrivate
     this.isMulti = typeof isMulti === 'boolean' ? isMulti : this.isMulti
     this.isSystem = typeof isSystem === 'boolean' ? isSystem : this.isSystem
@@ -55,6 +55,21 @@ export default class Field {
 
   clone () {
     return new Field(this)
+  }
+
+  // Preforms basic validation and calls validate() function on type-specific options
+  //
+  // Returns an array of Error objects
+  validate (value) {
+    if (this.isRequired && (this.options.isEmpty ? this.options.isEmpty(value) : !value)) {
+      return ['Missing value on required field']
+    }
+
+    if (this.options && this.options.validate) {
+      return this.options.validate(value)
+    }
+
+    return []
   }
 
   // Are there any properties defined inside options object?

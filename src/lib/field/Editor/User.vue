@@ -1,12 +1,16 @@
 <template>
   <b-form-group :label="field.label || field.name">
     <vue-select :options="users"
-                  @search="search"
-                  option-value="userID"
-                  option-text="label"
-                  placeholder="Start typing to search for users by email or name"
-                  v-model="selected">
+                @search="search"
+                option-value="userID"
+                option-text="label"
+                placeholder="Start typing to search for users by email or name"
+                v-model="selected">
     </vue-select>
+
+    <b-form-text v-if="validate && errors">
+      <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
+    </b-form-text>
   </b-form-group>
 </template>
 <script>

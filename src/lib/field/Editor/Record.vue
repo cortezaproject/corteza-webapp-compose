@@ -7,6 +7,10 @@
                 option-text="label"
                 placeholder="Start typing to search for records"
                 v-model="selected">
+
+      <b-form-text v-if="validate && errors">
+        <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
+      </b-form-text>
     </vue-select>
   </b-form-group>
 </template>

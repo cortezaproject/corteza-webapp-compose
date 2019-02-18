@@ -19,18 +19,35 @@ export default {
       type: Object,
       required: true,
     },
+
+    validate: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   computed: {
+    state () {
+      if (!this.validate) {
+        return null
+      }
+
+      return this.errors === 0
+    },
+
     value: {
       get () {
-        return this.record.getValue(this.field.name)
+        return this.record.values[this.field.name]
       },
 
       set (value) {
-        this.record.setValue(this.field.name, value)
+        this.record.values[this.field.name] = value
         this.$emit('update:record', this.record)
       },
+    },
+
+    errors () {
+      return this.field.validate(this.record.values[this.field.name])
     },
   },
 }

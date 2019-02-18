@@ -3,9 +3,16 @@
     <toolbar :back-link="{name: 'admin.pages'}"
                     @delete="handleDelete"
                     @save="handleUpdate()">
-      <button class="btn" @click.prevent="$router.push({ name: 'public.page.record.create' })">+ Add new</button>
-      <button class="btn btn-blue" @click.prevent="handleUpdate" v-if="editMode">Save</button>
-      <button class="btn" @click.prevent="$router.push({ name: 'public.page.record.edit' })" v-else>Edit</button>
+
+      <button class="btn"
+              @click.prevent="$router.push({ name: 'public.page.record.create' })">+ Add new</button>
+
+      <button class="btn btn-blue"
+              :disabled="!record || !record.isValid()"
+              @click.prevent="handleUpdate" v-if="editMode">Save</button>
+
+      <button class="btn"
+              @click.prevent="$router.push({ name: 'public.page.record.edit' })" v-else>Edit</button>
     </toolbar>
     <grid :page="page" :record="record" :edit-mode="editMode" v-if="record" @reload="loadRecord()" />
     <b-modal id="deleteRecord" title="Delete record" @ok="handleDelete" ok-title="Delete" ok-variant="danger">

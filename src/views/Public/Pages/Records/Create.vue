@@ -2,7 +2,9 @@
   <div class="view">
     <toolbar :back-link="{name: 'admin.pages'}"
              :hide-delete="true">
-      <button class="btn btn-blue" @click.prevent="handleCreate">Save</button>
+      <button class="btn btn-blue"
+              :disabled="!record.isValid()"
+              @click.prevent="handleCreate">Save</button>
     </toolbar>
     <grid :page="page" :record="record" v-if="record" edit-mode />
   </div>

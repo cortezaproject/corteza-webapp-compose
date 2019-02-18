@@ -17,10 +17,16 @@
         class="btn-url"><font-awesome-icon :icon="['fas', 'wrench']"></font-awesome-icon></button>
     </td>
     <td class="text-center">
-      <input v-model="field.isRequired" type="checkbox"/>
+      <b-form-checkbox plain
+                       v-model="field.isRequired"
+                       :value="true"
+                       :unchecked-value="false"></b-form-checkbox>
     </td>
     <td class="text-center">
-      <input v-model="field.isPrivate" type="checkbox"/>
+      <b-form-checkbox plain
+                       v-model="field.isPrivate"
+                       :value="true"
+                       :unchecked-value="false"></b-form-checkbox>
     </td>
     <td class="text-center">
       <confirmation-toggle @confirmed="$emit('delete')"
