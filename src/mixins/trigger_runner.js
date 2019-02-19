@@ -48,6 +48,15 @@ export default {
 
       ctx.modules = this.$store.getters['module/set']
 
+      const openRecordPage = (name, record) => {
+        const page = this.$store.getters['page/set'].find(p => p.moduleID === record.moduleID)
+        if (!page) return
+        this.$router.push({
+          name,
+          params: { pageID: page.pageID, recordID: record.recordID },
+        })
+      }
+
       const crust = {
         api: {
           record: {
@@ -152,13 +161,12 @@ export default {
 
               open: (record) => {
                 if (!record) return
+                openRecordPage('public.page.record', record)
+              },
 
-                const page = this.$store.getters['page/set'].find(p => p.moduleID === record.moduleID)
-                if (!page) return
-                this.$router.push({
-                  name: 'public.page.record',
-                  params: { pageID: page.pageID, recordID: record.recordID },
-                })
+              edit: (record) => {
+                if (!record) return
+                openRecordPage('public.page.record.edit', record)
               },
             },
 
