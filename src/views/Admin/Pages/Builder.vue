@@ -170,9 +170,11 @@ export default {
 }
 
 .actions {
-  position: absolute;
-  right: 2px;
-  top: 2px;
+  position: sticky;
+  z-index: 2;
+  top: 3px;
+  margin-bottom: -25px;
+  padding-right: 10px;
 
   a {
     i {

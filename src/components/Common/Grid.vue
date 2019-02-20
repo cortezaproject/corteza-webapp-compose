@@ -136,6 +136,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .builder-grid {
   width: 100%;
   padding: 0 10px 70px;
