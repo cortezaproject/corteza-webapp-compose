@@ -91,7 +91,7 @@ export default {
       const extraOffset = collapse.clientWidth || 0
 
       // Check if overflow possible
-      if (nav.clientWidth === bb.clientWidth) {
+      if (nav.clientWidth >= bb.clientWidth) {
         let c = null
         // -2; skip last element (the 'more' dropdown)
         for (let i = nChildren.length - 2; i >= 0; i--) {
