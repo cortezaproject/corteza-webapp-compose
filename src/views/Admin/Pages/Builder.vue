@@ -1,61 +1,61 @@
 <template>
-  <div class="builder" v-if="page">
-    <grid :blocks.sync="page.blocks" editable>
-      <template slot-scope="{ block, index }">
-        <div class="actions">
-          <a class="action" @click="editBlock(block, index)">
-            <i class="icon-edit"></i>
-          </a>
-          <a class="action"  @click="page.blocks.splice(index,1)">
-            <i class="icon-x"></i>
-          </a>
-        </div>
-        <block-preview :block="block" :module="module"></block-preview>
-      </template>
-    </grid>
+    <div class="builder" v-if="page">
+      <grid :blocks.sync="page.blocks" editable>
+        <template slot-scope="{ block, index }">
+          <div class="actions">
+            <a class="action" @click="editBlock(block, index)">
+              <i class="icon-edit"></i>
+            </a>
+            <a class="action"  @click="page.blocks.splice(index,1)">
+              <i class="icon-x"></i>
+            </a>
+          </div>
+          <block-preview :block="block" :module="module"></block-preview>
+        </template>
+      </grid>
 
-    <b-modal id="createBlockSelector" hide-footer title="Select type of the new block">
-      <new-block-selector :record-page="!!module" @select="editBlock($event)"/>
-    </b-modal>
+      <b-modal id="createBlockSelector" hide-footer title="Select type of the new block">
+        <new-block-selector :record-page="!!module" @select="editBlock($event)"/>
+      </b-modal>
 
-    <b-modal
-      title="Add new block"
-      ok-title="Add block"
-      ok-variant="dark"
-      ok-only
-      @ok="updateBlocks"
-      @hide="editor=null"
-      :visible="showCreator">
-      <block-edit v-if="showCreator"
-                  :module="module"
-                  :page="page"
-                  :block.sync="editor.block" />
-    </b-modal>
+      <b-modal
+        title="Add new block"
+        ok-title="Add block"
+        ok-variant="dark"
+        ok-only
+        @ok="updateBlocks"
+        @hide="editor=null"
+        :visible="showCreator">
+        <block-edit v-if="showCreator"
+                    :module="module"
+                    :page="page"
+                    :block.sync="editor.block" />
+      </b-modal>
 
-    <b-modal
-      title="Change existing block"
-      header-class="test"
-      ok-title="Save and close"
-      ok-variant="dark"
-      ok-only
-      centered
-      @ok="updateBlocks"
-      @hide="editor=null"
-      :visible="showEditor">
-      <block-edit v-if="showEditor"
-                  :module="module"
-                  :page="page"
-                  :block.sync="editor.block" />
-    </b-modal>
+      <b-modal
+        title="Change existing block"
+        header-class="test"
+        ok-title="Save and close"
+        ok-variant="dark"
+        ok-only
+        centered
+        @ok="updateBlocks"
+        @hide="editor=null"
+        :visible="showEditor">
+        <block-edit v-if="showEditor"
+                    :module="module"
+                    :page="page"
+                    :block.sync="editor.block" />
+      </b-modal>
 
-    <editor-toolbar :back-link="{name: 'admin.pages'}"
-                    :hide-delete="true"
-                    @save="handleSave()"
-                    @saveAndClose="handleSave({ closeOnSuccess: true })">
-      <button v-b-modal.createBlockSelector class="btn">+ Add block</button>
-      <button @click.prevent="handleSave({ previewOnSuccess: true })" class="btn">Save and Preview</button>
-    </editor-toolbar>
-  </div>
+      <editor-toolbar :back-link="{name: 'admin.pages'}"
+                      :hide-delete="true"
+                      @save="handleSave()"
+                      @saveAndClose="handleSave({ closeOnSuccess: true })">
+        <button v-b-modal.createBlockSelector class="btn">+ Add block</button>
+        <button @click.prevent="handleSave({ previewOnSuccess: true })" class="btn">Save and Preview</button>
+      </editor-toolbar>
+    </div>
 </template>
 
 <script>
@@ -164,7 +164,9 @@ export default {
 @import "@/assets/sass/btns.scss";
 
 .builder {
-  margin-bottom: 80px;
+  overflow: hidden;
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 .actions {

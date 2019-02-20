@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="h-100">
     <editor-toolbar :back-link="{name: 'admin.charts'}"
                     @delete="handleDelete"
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
     </editor-toolbar>
-    <form @submit.prevent="handleSave" class="container well">
+    <form @submit.prevent="handleSave" class="container scrollable well">
       <div class="row">
         <div class="col-md-12">
           <h2>Chart builder</h2>

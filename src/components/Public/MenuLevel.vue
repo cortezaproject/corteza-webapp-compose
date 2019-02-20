@@ -184,8 +184,6 @@ ul {
   }
 
   &:nth-child(2) {
-    margin-top: 2px;
-
     a {
       &::after {
         border-style: dashed dashed dashed solid;

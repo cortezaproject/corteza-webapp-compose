@@ -6,12 +6,11 @@ ul,li {
 }
 
 header {
-  margin-bottom: 10px;
   border-right: 1px solid $appcream;
+  height: 50px;
 }
 
 nav {
-  box-shadow: 0 0.1rem 0.2rem 0 rgba(30, 34, 36, 0.1);
   height: 50px;
 }
 
@@ -32,6 +31,9 @@ nav {
 .navbar {
   padding: 0;
   background: $white;
+  z-index: 1;
+  box-shadow: 0 0.1rem 0.2rem 0 rgba(30, 34, 36, 0.1);
+  border-bottom: 1px solid $appcream;
 }
 
 .navbar-toggler {
@@ -82,12 +84,14 @@ nav {
     width: auto;
     max-width: 100%;
     transition: all 0.3s ease-in;
-  }
+    height: calc(100vh - 50px);
+    overflow-y: scroll;
 
-  .navbar-collapse.collapsing {
-    height: auto !important;
-    transition: all 0.2s ease;
-    left: -100%;
+    &.collapsing {
+      height: auto !important;
+      transition: all 0.2s ease;
+      left: -100%;
+    }
   }
 }
 

@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="h-100">
     <editor-toolbar :back-link="{name: 'admin.pages'}"
                     @delete="handleDeletePage"
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
     </editor-toolbar>
-    <div class="container">
+    <div class="container scrollable">
       <div class="row">
         <div class="col-md-12">
           <div class="well">

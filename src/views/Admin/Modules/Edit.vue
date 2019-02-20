@@ -1,11 +1,7 @@
 <template>
   <div>
-    <editor-toolbar :back-link="{name: 'admin.modules'}"
-                    @delete="handleDelete"
-                    @save="handleSave()"
-                    @saveAndClose="handleSave({ closeOnSuccess: true })">
-    </editor-toolbar>
-    <form @submit.prevent="handleSave" class="container" v-if="module">
+    <div class="h-100">
+    <form @submit.prevent="handleSave" class="container scrollable" v-if="module">
       <div class="row">
         <div class="col-md-12 well">
         <h2>Edit module</h2>
@@ -64,6 +60,12 @@
       :visible="!!updateField">
       <field-configurator :field.sync="updateField" />
     </b-modal>
+  </div>
+    <editor-toolbar :back-link="{name: 'admin.modules'}"
+                    @delete="handleDelete"
+                    @save="handleSave()"
+                    @saveAndClose="handleSave({ closeOnSuccess: true })">
+    </editor-toolbar>
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!!page">
+  <div v-if="!!page" class="scrollable">
     <router-view :page="page" v-if="recordID || $route.meta.newRecord" />
     <grid :page="page" v-else />
   </div>
