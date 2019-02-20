@@ -198,6 +198,12 @@ ul {
 }
 
 @media (max-width: 991px) {
+  .selected, .selected-in-path {
+    border-right: 3px solid $appblue;
+    border-bottom: none;
+    background-color: rgba($appblue, 0.15);
+  }
+
   ul {
     position: relative;
 
@@ -210,7 +216,7 @@ ul {
         display: block;
 
         a {
-          padding: 7px 10px;
+          padding: 0.35em 0 0.35em 15px;
           font-size: 14px;
           line-height: 20px;
           overflow: hidden;
