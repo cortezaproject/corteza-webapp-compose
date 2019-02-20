@@ -35,7 +35,7 @@ export default {
   transition: padding-left 0.3s;
 
   &.padded {
-    padding-left: 200px;
+    padding-left: 250px;
   }
 }
 
