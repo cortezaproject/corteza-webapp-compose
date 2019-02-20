@@ -153,3 +153,11 @@ export default {
   white-space: nowrap;
 }
 </style>
+
+<style lang="scss">
+#nav_text_collapse li[data-collapsed="true"] ul {
+  position: relative;
+  left: 0;
+  padding-left: 15px;
+}
+</style>
