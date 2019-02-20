@@ -1,36 +1,63 @@
 <template>
-  <div class="scrollable">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="well table-responsive">
-            <h2>List of triggers</h2>
-            <table class="table table-striped">
-              <tbody>
-              <tr v-for="(t, index) in triggers" :key="index">
-                <td>{{ t.name }}</td>
-                <td>{{ t.enabled ? '' : 'disabled' }}</td>
-                <td width="300"><small>{{ t.actions.join(', ') }}</small></td>
-                <td><time :datetime="t.updatedAt || t.createdAt" v-if="t.updatedAt || t.createdAt">{{ prettyDate(t.updatedAt || t.createdAt) }}</time></td>
-                <td class="actions text-right">
-                  <router-link :to="{name: 'admin.automation.edit', params: { triggerID: t.triggerID }}" class="action">
-                    <i class="action icon-edit"></i>
-                  </router-link>
-                </td>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="well table-responsive">
+          <h2>List of triggers</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <table-sortable-column
+                  label="Name"
+                  name="name"
+                  :ascending="sortedByName"
+                  v-on:sort="handleSort"/>
+
+                <table-sortable-column
+                  label="Status"
+                  name="enabled"
+                  :ascending="sortedByEnabled"
+                  v-on:sort="handleSort"/>
+
+                <table-sortable-column
+                  label="Actions"
+                  name="actions"
+                  :ascending="undefined"
+                  :sortDisabled="true"/>
+
+                <table-sortable-column
+                  label="Updated at"
+                  name="updatedAt"
+                  :ascending="sortedByUpdatedAt"
+                  v-on:sort="handleSort"/>
+
+                <th></th>
               </tr>
-              </tbody>
-            </table>
-            <form @submit.prevent="create">
-              <b-form-group label="Create a new trigger">
-                <b-input-group>
-                  <input required type="text" v-model="newTrigger.name" class="form-control" id="name" placeholder="Trigger name" />
-                  <b-input-group-append>
-                    <button type="submit" class="btn btn-dark">Create</button>
-                  </b-input-group-append>
-                </b-input-group>
-              </b-form-group>
-            </form>
-          </div>
+            </thead>
+            <tbody>
+            <tr v-for="(t, index) in sortedTriggers" :key="index">
+              <td>{{ t.name }}</td>
+              <td>{{ t.enabled ? '' : 'disabled' }}</td>
+              <td width="300"><small>{{ t.actions.join(', ') }}</small></td>
+              <td><time :datetime="t.updatedAt || t.createdAt" v-if="t.updatedAt || t.createdAt">{{ prettyDate(t.updatedAt || t.createdAt) }}</time></td>
+              <td class="actions text-right">
+                <router-link :to="{name: 'admin.automation.edit', params: { triggerID: t.triggerID }}" class="action">
+                  <i class="action icon-edit"></i>
+                </router-link>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <form @submit.prevent="create">
+            <b-form-group label="Create a new trigger">
+              <b-input-group>
+                <input required type="text" v-model="newTrigger.name" class="form-control" id="name" placeholder="Trigger name" />
+                <b-input-group-append>
+                  <button type="submit" class="btn btn-dark">Create</button>
+                </b-input-group-append>
+              </b-input-group>
+            </b-form-group>
+          </form>
         </div>
       </div>
     </div>
@@ -39,6 +66,8 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import Trigger from '@/lib/trigger'
+import TableSortableColumn from '@/components/Admin/TableSortableColumn'
+import tableSort from '@/mixins/table_sort'
 
 export default {
   data () {
@@ -51,6 +80,22 @@ export default {
     ...mapGetters({
       triggers: 'trigger/set',
     }),
+
+    sortedByName () {
+      return this.isSortedBy('name')
+    },
+
+    sortedByEnabled () {
+      return this.isSortedBy('enabled')
+    },
+
+    sortedByUpdatedAt () {
+      return this.isSortedBy('updatedAt')
+    },
+
+    sortedTriggers () {
+      return this.sortedItems([...this.triggers])
+    },
   },
 
   created () {
@@ -70,6 +115,14 @@ export default {
       })
     },
   },
+
+  components: {
+    TableSortableColumn,
+  },
+
+  mixins: [
+    tableSort,
+  ],
 }
 </script>
 <style lang="scss" scoped>

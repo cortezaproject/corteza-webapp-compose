@@ -1,36 +1,45 @@
 <template>
-  <div class="scrollable">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="well table-responsive">
-            <h2>List of charts</h2>
-            <table class="table table-striped">
-              <tbody>
-              <tr v-for="(chart) in charts" :key="chart.chartID">
-                <td>
-                  {{ chart.name }}
-                </td>
-                <td><time :datetime="chart.updatedAt" v-if="chart.updatedAt">{{ prettyDate(chart.updatedAt || chart.createdAt) }}</time></td>
-                <td class="actions text-right">
-                  <router-link :to="{name: 'admin.charts.edit', params: { chartID: chart.chartID }}" class="action">
-                    <i class="action icon-edit"></i>
-                  </router-link>
-                </td>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="well table-responsive">
+          <h2>List of charts</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <table-sortable-column
+                  label="Name"
+                  name="name"
+                  :ascending="sortedByName"
+                  v-on:sort="handleSort"/>
+
+                <th></th>
               </tr>
-              </tbody>
-            </table>
-            <form @submit.prevent="create">
-              <b-form-group label="Create a new chart:">
-                <b-input-group>
-                  <input required type="text" v-model="newChart.name" class="form-control" id="name" placeholder="Chart name" />
-                  <b-input-group-append>
-                    <button type="submit" class="btn btn-dark">Create</button>
-                  </b-input-group-append>
-                </b-input-group>
-              </b-form-group>
-            </form>
-          </div>
+            </thead>
+            <tbody>
+            <tr v-for="(chart) in sortedCharts" :key="chart.chartID">
+              <td>
+                {{ chart.name }}
+              </td>
+              <td><time :datetime="chart.updatedAt" v-if="chart.updatedAt">{{ prettyDate(chart.updatedAt || chart.createdAt) }}</time></td>
+              <td class="actions text-right">
+                <router-link :to="{name: 'admin.charts.edit', params: { chartID: chart.chartID }}" class="action">
+                  <i class="action icon-edit"></i>
+                </router-link>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <form @submit.prevent="create">
+            <b-form-group label="Create a new chart:">
+              <b-input-group>
+                <input required type="text" v-model="newChart.name" class="form-control" id="name" placeholder="Chart name" />
+                <b-input-group-append>
+                  <button type="submit" class="btn btn-dark">Create</button>
+                </b-input-group-append>
+              </b-input-group>
+            </b-form-group>
+          </form>
         </div>
       </div>
     </div>
@@ -39,6 +48,8 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import Chart from '@/lib/chart'
+import TableSortableColumn from '@/components/Admin/TableSortableColumn'
+import tableSort from '@/mixins/table_sort'
 
 export default {
   name: 'ChartList',
@@ -52,6 +63,14 @@ export default {
     ...mapGetters({
       charts: 'chart/set',
     }),
+
+    sortedByName () {
+      return this.isSortedBy('name')
+    },
+
+    sortedCharts () {
+      return this.sortedItems([...this.charts])
+    },
   },
 
   methods: {
@@ -65,6 +84,14 @@ export default {
       }).catch(this.defaultErrorHandler('Could not create a chart'))
     },
   },
+
+  components: {
+    TableSortableColumn,
+  },
+
+  mixins: [
+    tableSort,
+  ],
 }
 </script>
 <style lang="scss" scoped>
