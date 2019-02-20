@@ -1,22 +1,24 @@
 <template>
-  <div class="container scrollable">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="well">
-          <h2>List of pages</h2>
-          <page-tree
-            @reorder="handleReorder"
-            v-model="tree"/>
-          <form @submit.prevent="handleAddPageFormSubmit">
-            <b-form-group label="Create a new page:">
-              <b-input-group>
-                <input required type="text" v-model="addPageFormData.title" class="form-control" id="name" placeholder="Page title" />
-                <b-input-group-append>
-                  <button type="submit" class="btn btn-dark">Create</button>
-                </b-input-group-append>
-              </b-input-group>
-            </b-form-group>
-          </form>
+  <div class="scrollable">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="well">
+            <h2>List of pages</h2>
+            <page-tree
+              @reorder="handleReorder"
+              v-model="tree"/>
+            <form @submit.prevent="handleAddPageFormSubmit">
+              <b-form-group label="Create a new page:">
+                <b-input-group>
+                  <input required type="text" v-model="addPageFormData.title" class="form-control" id="name" placeholder="Page title" />
+                  <b-input-group-append>
+                    <button type="submit" class="btn btn-dark">Create</button>
+                  </b-input-group-append>
+                </b-input-group>
+              </b-form-group>
+            </form>
+          </div>
         </div>
       </div>
     </div>

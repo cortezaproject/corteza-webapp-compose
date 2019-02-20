@@ -38,10 +38,11 @@ export default {
   background: $white;
   padding: 25px;
   width: 100%;
-  bottom: 0;
   z-index: 5;
   border-top: 1px solid $appblue;
   text-align: center;
+  position: fixed;
+  bottom: 0;
 
   .btn-url {
     float: left;

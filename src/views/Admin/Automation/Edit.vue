@@ -1,11 +1,6 @@
 <template>
-  <div class="h-100">
-    <editor-toolbar :back-link="{name: 'admin.automation'}"
-                    @delete="handleDelete"
-                    @save="handleSave()"
-                    @saveAndClose="handleSave({ closeOnSuccess: true })">
-    </editor-toolbar>
-    <form @submit.prevent="handleSave" class="container scrollable" v-if="trigger">
+  <div class="scrollable">
+    <form @submit.prevent="handleSave" class="container" v-if="trigger">
       <div class="row">
         <div class="col-md-12 well">
           <h2>Automation</h2>
@@ -126,6 +121,11 @@
 
       </div>
     </form>
+    <editor-toolbar :back-link="{name: 'admin.automation'}"
+                    @delete="handleDelete"
+                    @save="handleSave()"
+                    @saveAndClose="handleSave({ closeOnSuccess: true })">
+    </editor-toolbar>
   </div>
 </template>
 <script>
