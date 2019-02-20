@@ -203,7 +203,7 @@ ul {
 
     &.root {
       border-right: 1px solid $appcream;
-      max-width: 250px;
+      max-width: 260px;
       overflow: hidden;
 
       li {

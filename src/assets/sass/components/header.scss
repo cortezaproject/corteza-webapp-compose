@@ -81,7 +81,7 @@ nav {
     position: absolute;
     top: 51px;
     left: 0;
-    width: auto;
+    width: 250px;
     max-width: 100%;
     transition: all 0.3s ease-in;
     height: calc(100vh - 50px);
@@ -96,10 +96,6 @@ nav {
 }
 
 @media (min-width: 992px) {
-  .navbar-collapse {
-    max-width: calc(100vw - 120px);
-  }
-
   .page-title {
     visibility: hidden;
   }
