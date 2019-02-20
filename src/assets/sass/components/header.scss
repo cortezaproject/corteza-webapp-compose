@@ -80,17 +80,19 @@ nav {
   .navbar-collapse {
     position: absolute;
     top: 51px;
-    left: 0;
+    left: -250px;
     width: 250px;
     max-width: 100%;
-    transition: all 0.3s ease-in;
+    transition: all 0.3s;
     height: calc(100vh - 50px);
     overflow-y: scroll;
 
+    &.visible {
+      left: 0;
+    }
+
     &.collapsing {
-      height: auto !important;
-      transition: all 0.2s ease;
-      left: -100%;
+      height: calc(100vh - 50px) !important;
     }
   }
 }

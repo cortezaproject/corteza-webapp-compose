@@ -7,7 +7,7 @@
               <i class="icon-menu4"></i>
             </label>
           </b-navbar-toggle>
-          <b-collapse is-nav id="nav_text_collapse" @show="toggleNav(true)" @hide="toggleNav(false)">
+          <b-collapse is-nav id="nav_text_collapse" :class="{ visible }" @show="toggleNav(true)" @hide="toggleNav(false)">
             <menu-level :pages="pages"
                         :selectedPath="selectedPath"
                         :currentPageID="currentPageID"></menu-level>
@@ -31,11 +31,13 @@ export default {
   data () {
     return {
       tree: [],
+      visible: false,
     }
   },
 
   methods: {
     toggleNav (visible) {
+      this.visible = visible
       this.$emit('toggleNav', visible)
     },
   },
