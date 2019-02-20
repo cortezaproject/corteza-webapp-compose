@@ -1,5 +1,5 @@
 <template>
-  <div v-if="grid.length" class="builder-grid scrollable">
+  <div v-if="grid.length" class="builder-grid">
     <grid-layout :layout.sync="grid"
                  @layout-updated="handleLayoutUpdate"
                  :col-num="12"
