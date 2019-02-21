@@ -11,7 +11,12 @@
             <menu-level id="menu_lvl_1"
                         :pages="pages"
                         :selectedPath="selectedPath"
-                        :currentPageID="currentPageID"></menu-level>
+                        :currentPageID="currentPageID">
+
+              <li slot="collapse" id="public_nav_collapse_0">
+                <span>More</span><ul></ul>
+              </li>
+            </menu-level>
           </b-collapse>
         <span class="page-title">{{ currentPage.title }}</span>
         <router-link :to="{ name: 'admin' }" class="nav-link admin-panel">Admin panel</router-link>
@@ -23,6 +28,7 @@ import { mapGetters } from 'vuex'
 import MenuLevel from './MenuLevel'
 
 const UNCOLLAPSE_BUFFER = 100
+const COLLAPSER_WIDTH = 55
 
 export default {
   props: {
@@ -35,6 +41,7 @@ export default {
     return {
       tree: [],
       visible: false,
+      collapsedCount: 0,
     }
   },
 
@@ -80,15 +87,12 @@ export default {
   },
 
   methods: {
-    collapser (nav, bb) {
+    collapser (nav, bb, collapse, extraOffset) {
       const { children: nChildren = new HTMLCollection() } = nav
-      const collapse = nChildren[nChildren.length - 1]
       const collapseBody = collapse.getElementsByTagName('UL')[0]
       if (!collapseBody) {
         return
       }
-
-      const extraOffset = collapse.clientWidth || 0
 
       // Check if overflow possible
       if (nav.clientWidth >= bb.clientWidth) {
@@ -100,6 +104,12 @@ export default {
           const { clientWidth, offsetLeft } = c
           if (clientWidth + offsetLeft + extraOffset > bb.clientWidth) {
             c.dataset.collapsed = true
+
+            // If none collapsed; element is hidden
+            if (!this.collapsedCount) {
+              collapse.style.display = 'inline-block'
+            }
+            this.collapsedCount++
             collapseBody.appendChild(c)
           }
         }
@@ -112,6 +122,11 @@ export default {
           if (cn.clientWidth + nav.clientWidth + extraOffset + UNCOLLAPSE_BUFFER <= bb.clientWidth) {
             delete cn.dataset.collapsed
             nav.insertBefore(cn, collapse)
+            this.collapsedCount--
+            // No more collapsed; hide element
+            if (!this.collapsedCount) {
+              collapse.style.display = 'none'
+            }
           }
         }
       }
@@ -124,10 +139,11 @@ export default {
     this.$nextTick(() => {
       const nav = document.getElementById('menu_lvl_1')
       const bb = document.getElementById('nav_text_collapse')
+      const collapse = document.getElementById('public_nav_collapse_0')
 
-      this.collapser(nav, bb)
+      this.collapser(nav, bb, collapse, COLLAPSER_WIDTH)
       window.onresize = () => {
-        this.collapser(nav, bb)
+        this.collapser(nav, bb, collapse, COLLAPSER_WIDTH)
       }
     })
   },
