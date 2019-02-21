@@ -112,7 +112,11 @@ export default {
               collapse.style.display = 'inline-block'
             }
             this.collapsedCount++
-            collapseBody.appendChild(c)
+            if (!collapseBody.firstChild) {
+              collapseBody.append(c)
+            } else {
+              collapseBody.insertBefore(c, collapseBody.firstChild)
+            }
           }
         }
       } else {
@@ -120,7 +124,7 @@ export default {
         const collapsedNodes = document.querySelectorAll('[data-collapsed]')
 
         for (let i = collapsedNodes.length - 1; i >= 0; i--) {
-          const cn = collapsedNodes[i]
+          const cn = collapsedNodes[0]
           if (parseInt(cn.dataset.clientWidth) + nav.clientWidth + extraOffset <= bbCWidth) {
             delete cn.dataset.collapsed
             delete cn.dataset.clientWidth
@@ -130,6 +134,8 @@ export default {
             if (!this.collapsedCount) {
               collapse.style.display = 'none'
             }
+          } else {
+            return
           }
         }
       }
