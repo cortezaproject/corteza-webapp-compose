@@ -174,6 +174,10 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+#public_nav_collapse_0 {
+  display: none;
+}
 </style>
 
 <style lang="scss">
