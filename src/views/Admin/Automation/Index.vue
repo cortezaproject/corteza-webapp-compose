@@ -11,13 +11,13 @@
                   label="Name"
                   name="name"
                   :ascending="sortedByName"
-                  v-on:sort="handleSort"/>
+                  @sort="handleSort"/>
 
                 <table-sortable-column
                   label="Status"
                   name="enabled"
                   :ascending="sortedByEnabled"
-                  v-on:sort="handleSort"/>
+                  @sort="handleSort"/>
 
                 <table-sortable-column
                   label="Actions"
@@ -29,7 +29,7 @@
                   label="Updated at"
                   name="updatedAt"
                   :ascending="sortedByUpdatedAt"
-                  v-on:sort="handleSort"/>
+                  @sort="handleSort"/>
 
                 <th></th>
               </tr>
@@ -82,7 +82,7 @@ export default {
     }),
 
     sortedByName () {
-      return this.isSortedBy('name')
+      return this.isSortedBy('name', true)
     },
 
     sortedByEnabled () {

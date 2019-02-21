@@ -49,5 +49,6 @@ export default {
 <style scoped>
 th {
   padding-left: 5px;
+  cursor: pointer;
 }
 </style>

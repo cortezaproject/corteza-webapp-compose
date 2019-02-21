@@ -11,7 +11,7 @@
                   label="Name"
                   name="name"
                   :ascending="sortedByName"
-                  v-on:sort="handleSort"/>
+                  @sort="handleSort"/>
 
                 <th></th>
               </tr>
@@ -65,7 +65,7 @@ export default {
     }),
 
     sortedByName () {
-      return this.isSortedBy('name')
+      return this.isSortedBy('name', true)
     },
 
     sortedCharts () {

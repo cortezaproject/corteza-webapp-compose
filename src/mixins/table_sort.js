@@ -8,40 +8,43 @@ export default {
 
   methods: {
     sortedItems (items) {
-      console.log(this.sortBy)
       let newItems = items.sort((a, b) => {
-        if (a[this.sortBy] > b[this.sortBy]) return 1
-        if (a[this.sortBy] < b[this.sortBy]) return -1
-        return 0
+        return (a[this.sortBy] || '').localeCompare(b[this.sortBy] || '')
       })
 
-      if (!this.sortAscending) return newItems.reverse()
+      if (!this.sortAscending) {
+        return newItems.reverse()
+      }
 
       return newItems
     },
 
-    handleSort (fieldObject) {
-      if (fieldObject.ascending !== undefined) {
-        this.sortAscending = fieldObject.ascending
+    handleSort ({ ascending, name }) {
+      if (ascending !== undefined) {
+        this.sortAscending = ascending
       } else {
         this.sortAscending = true
       }
-      this.sortBy = fieldObject.name
+      this.sortBy = name
 
       let param = !this.sortAscending ? ('-' + this.sortBy) : this.sortBy
       this.$router.push({ name: this.$route.name, query: { sortBy: param } })
     },
 
-    isSortedBy (fieldName) {
-      if (this.$route.query.sortBy) {
-        if (!this.$route.query.sortBy.includes(fieldName)) return undefined
-        if (this.$route.query.sortBy[0] === '-') {
-          if (this.$route.query.sortBy.slice(1) === fieldName) return false
+    isSortedBy (fieldName, def = undefined) {
+      const sortBy = this.$route.query.sortBy
+
+      if (sortBy) {
+        if (!sortBy.includes(fieldName)) {
+          return undefined
+        }
+        if (sortBy[0] === '-') {
+          if (sortBy.slice(1) === fieldName) return false
         } else {
-          if (this.$route.query.sortBy === fieldName) return true
+          if (sortBy === fieldName) return true
         }
       }
-      return undefined
+      return def
     },
   },
 }
