@@ -12,6 +12,8 @@
                   :selectedPath="selectedPath"
                   :currentPageID="currentPageID" />
     </li>
+
+   <slot name="collapse"></slot>
   </ul>
 </template>
 <script>
@@ -150,7 +152,7 @@ ul {
   li {
     position: relative;
 
-    a {
+    a, span {
       display: block;
 
       &::after {
