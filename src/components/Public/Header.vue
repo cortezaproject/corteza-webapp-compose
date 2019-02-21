@@ -44,13 +44,6 @@ export default {
     }
   },
 
-  methods: {
-    toggleNav (visible) {
-      this.visible = visible
-      this.$emit('toggleNav', visible)
-    },
-  },
-
   computed: {
     ...mapGetters({
       pages: 'page/set',
@@ -86,6 +79,11 @@ export default {
   },
 
   methods: {
+    toggleNav (visible) {
+      this.visible = visible
+      this.$emit('toggleNav', visible)
+    },
+
     collapser (nav, bb, collapse, extraOffset, rightOffset) {
       const { children: nChildren = new HTMLCollection() } = nav
       const collapseBody = collapse.getElementsByTagName('UL')[0]
@@ -124,10 +122,9 @@ export default {
         const collapsedNodes = document.querySelectorAll('[data-collapsed]')
 
         for (let i = collapsedNodes.length - 1; i >= 0; i--) {
-          const cn = collapsedNodes[0]
+          const cn = collapsedNodes[i]
           if (parseInt(cn.dataset.clientWidth) + nav.clientWidth + extraOffset <= bbCWidth) {
             delete cn.dataset.collapsed
-            delete cn.dataset.clientWidth
             nav.insertBefore(cn, collapse)
             this.collapsedCount--
 
@@ -181,14 +178,43 @@ export default {
   white-space: nowrap;
 }
 
-#public_nav_collapse_0 {
-  display: none;
-}
 </style>
 
 <style lang="scss">
-#public_nav_collapse_0 > ul > li > ul {
-  display: inline-block;
+@media (max-width: 991px) {
+  #public_nav_collapse_0 {
+    & > span {
+      display: none;
+    }
+
+    & > ul {
+      padding-left: 0;
+    }
+  }
+}
+
+#public_nav_collapse_0 {
+  display: none;
+
+  a {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+  & > ul {
+    max-width: 200px;
+    overflow: hidden;
+
+    & > li {
+      & > ul {
+        display: inline-block;
+      }
+    }
+  }
+
+  ul li ul {
+    width: 100%;
+  }
 }
 
 #nav_text_collapse li[data-collapsed="true"] ul {
