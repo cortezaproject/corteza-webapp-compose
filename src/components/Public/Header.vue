@@ -171,6 +171,10 @@ export default {
 </style>
 
 <style lang="scss">
+#public_nav_collapse_0 > ul > li > ul {
+  display: inline-block;
+}
+
 #nav_text_collapse li[data-collapsed="true"] ul {
   position: relative;
   left: 0;
