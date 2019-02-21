@@ -19,7 +19,7 @@
             </menu-level>
           </b-collapse>
         <span class="page-title">{{ currentPage.title }}</span>
-        <router-link :to="{ name: 'admin' }" class="nav-link admin-panel">Admin panel</router-link>
+        <router-link id="public_nav_to_admin_pannel" :to="{ name: 'admin' }" class="nav-link admin-panel">Admin panel</router-link>
       </b-navbar>
     </header>
 </template>
@@ -27,7 +27,6 @@
 import { mapGetters } from 'vuex'
 import MenuLevel from './MenuLevel'
 
-const UNCOLLAPSE_BUFFER = 100
 const COLLAPSER_WIDTH = 55
 
 export default {
@@ -87,23 +86,26 @@ export default {
   },
 
   methods: {
-    collapser (nav, bb, collapse, extraOffset) {
+    collapser (nav, bb, collapse, extraOffset, rightOffset) {
       const { children: nChildren = new HTMLCollection() } = nav
       const collapseBody = collapse.getElementsByTagName('UL')[0]
       if (!collapseBody) {
         return
       }
 
+      const bbCWidth = bb.clientWidth - rightOffset
+
       // Check if overflow possible
-      if (nav.clientWidth >= bb.clientWidth) {
+      if (nav.clientWidth >= bbCWidth) {
         let c = null
         // -2; skip last element (the 'more' dropdown)
         for (let i = nChildren.length - 2; i >= 0; i--) {
           c = nChildren.item(i)
 
           const { clientWidth, offsetLeft } = c
-          if (clientWidth + offsetLeft + extraOffset > bb.clientWidth) {
+          if (clientWidth + offsetLeft + extraOffset > bbCWidth) {
             c.dataset.collapsed = true
+            c.dataset.clientWidth = clientWidth
 
             // If none collapsed; element is hidden
             if (!this.collapsedCount) {
@@ -119,11 +121,12 @@ export default {
 
         for (let i = collapsedNodes.length - 1; i >= 0; i--) {
           const cn = collapsedNodes[i]
-          if (cn.clientWidth + nav.clientWidth + extraOffset + UNCOLLAPSE_BUFFER <= bb.clientWidth) {
+          if (parseInt(cn.dataset.clientWidth) + nav.clientWidth + extraOffset <= bbCWidth) {
             delete cn.dataset.collapsed
+            delete cn.dataset.clientWidth
             nav.insertBefore(cn, collapse)
             this.collapsedCount--
-            // No more collapsed; hide element
+
             if (!this.collapsedCount) {
               collapse.style.display = 'none'
             }
@@ -135,15 +138,18 @@ export default {
 
   created () {
     this.$crm.pageTree().then((result) => { this.tree = result })
+  },
 
+  mounted () {
     this.$nextTick(() => {
       const nav = document.getElementById('menu_lvl_1')
       const bb = document.getElementById('nav_text_collapse')
       const collapse = document.getElementById('public_nav_collapse_0')
+      const rOffset = document.getElementById('public_nav_to_admin_pannel').clientWidth + 50 || 200
 
-      this.collapser(nav, bb, collapse, COLLAPSER_WIDTH)
+      this.collapser(nav, bb, collapse, COLLAPSER_WIDTH, rOffset)
       window.onresize = () => {
-        this.collapser(nav, bb, collapse, COLLAPSER_WIDTH)
+        this.collapser(nav, bb, collapse, COLLAPSER_WIDTH, rOffset)
       }
     })
   },
