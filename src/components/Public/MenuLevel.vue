@@ -170,7 +170,6 @@ ul {
     }
 
     & > ul {
-      margin-top: 3px;
       display: none;
       background-color: $appcream;
       z-index: 10;
