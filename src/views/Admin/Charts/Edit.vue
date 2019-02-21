@@ -52,8 +52,6 @@ const defaultReport = {
   dimensions: [{ field: 'created_at', modifier: 'MONTH' }],
 }
 
-let chartRenderer = null
-
 export default {
   props: {
     chartID: {
@@ -65,6 +63,7 @@ export default {
   data () {
     return {
       chart: new Chart(),
+      chartRenderer: null,
     }
   },
 
@@ -107,14 +106,14 @@ export default {
       // Update chart data
       this.chart.fetchReports({ reporter: (r) => this.$crm.moduleRecordReport(r) }).then(({ labels, metrics }) => {
         if (labels) {
-          chartRenderer.data.labels = labels
+          this.chartRenderer.data.labels = labels
         }
 
         metrics.forEach((metric, index) => {
-          chartRenderer.data.datasets[index].data = metric
+          this.chartRenderer.data.datasets[index].data = metric
         })
 
-        chartRenderer.update()
+        this.chartRenderer.update()
       })
     },
 
@@ -129,22 +128,22 @@ export default {
         this.raiseWarningAlert('Could not build chart options')
       }
 
-      let refetch = !chartRenderer || forceFetch
+      let refetch = !this.chartRenderer || forceFetch
 
-      if (chartRenderer) {
+      if (this.chartRenderer) {
         // Verify if we need to reinitialize chart renderer
-        if (chartRenderer.data.datasets.length !== opt.data.datasets.length) {
-          chartRenderer = undefined
+        if (this.chartRenderer.data.datasets.length !== opt.data.datasets.length) {
+          this.chartRenderer = undefined
         }
       }
 
-      if (!chartRenderer) {
+      if (!this.chartRenderer) {
         refetch = true
-        chartRenderer = new ChartJS(this.$refs.chart.getContext('2d'), opt)
+        this.chartRenderer = new ChartJS(this.$refs.chart.getContext('2d'), opt)
       } else {
-        chartRenderer.options = opt.options
+        this.chartRenderer.options = opt.options
         opt.data.datasets.forEach((dataset, index) => {
-          Object.assign(chartRenderer.data.datasets[index], dataset)
+          Object.assign(this.chartRenderer.data.datasets[index], dataset)
         })
       }
 
@@ -152,16 +151,16 @@ export default {
         // Update chart data
         this.chart.fetchReports({ reporter: (r) => this.$crm.moduleRecordReport(r) }).then(({ labels, metrics }) => {
           if (labels) {
-            chartRenderer.data.labels = labels
+            this.chartRenderer.data.labels = labels
           }
 
           metrics.forEach((metric, index) => {
-            chartRenderer.data.datasets[index].data = metric
+            this.chartRenderer.data.datasets[index].data = metric
           })
         })
       }
 
-      chartRenderer.update()
+      this.chartRenderer.update()
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {
