@@ -53,6 +53,12 @@
               </template>
             </b-form-select>
           </b-form-group>
+          <b-form-group horizontal :label-cols="2" breakpoint="md">
+            <b-form-checkbox v-model="d.skipMissing">Skip missing values</b-form-checkbox>
+          </b-form-group>
+          <b-form-group v-if="!d.skipMissing" horizontal :label-cols="2" breakpoint="md" label="Default">
+            <b-form-input v-model="d.default" :type="dInputType(d)"></b-form-input>
+          </b-form-group>
           <b-form-group horizontal :label-cols="2" breakpoint="md" label="">
             <b-form-checkbox plain v-model="d.autoSkip" :value="true" :unchecked-value="false">Calculate how many labels can be shown</b-form-checkbox><br />
           </b-form-group>
@@ -136,6 +142,10 @@ export default {
   },
 
   computed: {
+    dInputType () {
+      return (d) => d.field === 'created_at' || (this.module.fields.filter(f => f.name === d.field)[0] || {}).kind === 'DateTime' ? 'date' : 'text'
+    },
+
     module () {
       return this.modules.find(m => m.moduleID === this.moduleID)
     },

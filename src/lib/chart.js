@@ -236,12 +236,24 @@ export default class Chart {
   }
 
   processReporterResults (results, report) {
+    const dLabel = 'dimension_0'
+    const { dimensions: [ dimension ] = [] } = report
+    const isTimeDimension = !!(dimensionFunctions.lookup(dimension) || {}).time
+    const getLabel = (rLabel, { default: dDft }) => {
+      if (rLabel) return rLabel
+      if (dDft) return dDft
+      return rLabel
+    }
     let labels = []
-    const isTimeDimension = !!(dimensionFunctions.lookup(report.dimensions[0]) || {}).time
+
+    // Skip missing values; if so requested
+    if (dimension.skipMissing) {
+      results = results.filter(r => r[dLabel] !== null)
+    }
 
     if (!isTimeDimension) {
       // Not a time dimensions, build set of labels
-      labels = results.map(r => r['dimension_0'])
+      labels = results.map(r => getLabel(r[dLabel], dimension))
     }
 
     let metrics = report.metrics.map(({ field, fill, aggregate, label, type, backgroundColor }) => {
@@ -251,11 +263,11 @@ export default class Chart {
         const y = r[field === 'count' ? field : alias]
         if (!isTimeDimension) {
           // Return a set of integers
-          return y
+          return getLabel(y, dimension)
         }
 
         // Return objects {y,t}
-        return { y, t: moment(r['dimension_0']).toDate() }
+        return { y, t: moment(getLabel(r[dLabel], dimension)).toDate() }
       })
     }) || []
 
