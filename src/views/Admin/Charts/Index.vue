@@ -1,45 +1,49 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="well table-responsive">
-          <h2>List of charts</h2>
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <table-sortable-column
-                  label="Name"
-                  name="name"
-                  :ascending="sortedByName"
-                  @sort="handleSort"/>
-
-                <th></th>
+  <div class="scrollable">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="well table-responsive">
+            <h2>List of charts</h2>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <table-sortable-column
+                    label="Name"
+                    name="name"
+                    :ascending="sortedByName"
+                    @sort="handleSort"/>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(chart) in sortedCharts" :key="chart.chartID">
+                <td>
+                  {{ chart.name }}
+                </td>
+                <td>
+                  <time :datetime="chart.updatedAt" v-if="chart.updatedAt">{{ prettyDate(chart.updatedAt || chart.createdAt) }}</time>
+                </td>
+                <td class="actions text-right">
+                  <router-link :to="{name: 'admin.charts.edit', params: { chartID: chart.chartID }}" class="action">
+                    <i class="action icon-edit"></i>
+                  </router-link>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(chart) in sortedCharts" :key="chart.chartID">
-              <td>
-                {{ chart.name }}
-              </td>
-              <td><time :datetime="chart.updatedAt" v-if="chart.updatedAt">{{ prettyDate(chart.updatedAt || chart.createdAt) }}</time></td>
-              <td class="actions text-right">
-                <router-link :to="{name: 'admin.charts.edit', params: { chartID: chart.chartID }}" class="action">
-                  <i class="action icon-edit"></i>
-                </router-link>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-          <form @submit.prevent="create">
-            <b-form-group label="Create a new chart:">
-              <b-input-group>
-                <input required type="text" v-model="newChart.name" class="form-control" id="name" placeholder="Chart name" />
-                <b-input-group-append>
-                  <button type="submit" class="btn btn-dark">Create</button>
-                </b-input-group-append>
-              </b-input-group>
-            </b-form-group>
-          </form>
+              </tbody>
+            </table>
+            <form @submit.prevent="create">
+              <b-form-group label="Create a new chart:">
+                <b-input-group>
+                  <input required type="text" v-model="newChart.name" class="form-control" id="name" placeholder="Chart name" />
+                  <b-input-group-append>
+                    <button type="submit" class="btn btn-dark">Create</button>
+                  </b-input-group-append>
+                </b-input-group>
+              </b-form-group>
+            </form>
+          </div>
         </div>
       </div>
     </div>
