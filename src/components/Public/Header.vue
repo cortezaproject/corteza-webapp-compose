@@ -27,7 +27,7 @@
 import { mapGetters } from 'vuex'
 import MenuLevel from './MenuLevel'
 
-const COLLAPSER_WIDTH = 55
+const collapserWidth = 55
 
 export default {
   props: {
@@ -150,9 +150,9 @@ export default {
       const collapse = document.getElementById('public_nav_collapse_0')
       const rOffset = document.getElementById('public_nav_to_admin_pannel').clientWidth + 50 || 200
 
-      setTimeout(() => { this.collapser(nav, bb, collapse, COLLAPSER_WIDTH, rOffset) }, 1)
+      setTimeout(() => { this.collapser(nav, bb, collapse, collapserWidth, rOffset) }, 1)
       window.onresize = () => {
-        this.collapser(nav, bb, collapse, COLLAPSER_WIDTH, rOffset)
+        this.collapser(nav, bb, collapse, collapserWidth, rOffset)
       }
     })
   },
