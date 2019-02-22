@@ -170,7 +170,7 @@ ul {
     }
 
     & > ul {
-      display: none;
+      visibility: hidden;
       background-color: $appcream;
       z-index: 10;
       position: absolute;
@@ -179,7 +179,7 @@ ul {
 
     &:hover > ul,
     &:active > ul {
-      display: block;
+      visibility: visible;
       min-width: 100%;
     }
   }
@@ -215,6 +215,7 @@ ul {
 
       li {
         display: block;
+        visibility: visible;
 
         a {
           padding: 0.35em 0 0.35em 15px;
