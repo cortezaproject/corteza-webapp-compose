@@ -150,7 +150,7 @@ export default {
       const collapse = document.getElementById('public_nav_collapse_0')
       const rOffset = document.getElementById('public_nav_to_admin_pannel').clientWidth + 50 || 200
 
-      this.collapser(nav, bb, collapse, COLLAPSER_WIDTH, rOffset)
+      setTimeout(() => { this.collapser(nav, bb, collapse, COLLAPSER_WIDTH, rOffset) }, 1)
       window.onresize = () => {
         this.collapser(nav, bb, collapse, COLLAPSER_WIDTH, rOffset)
       }
