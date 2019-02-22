@@ -121,9 +121,9 @@ export default {
         // Check if any can be uncollapsed
         const collapsedNodes = document.querySelectorAll('[data-collapsed]')
 
-        for (let i = collapsedNodes.length - 1; i >= 0; i--) {
+        for (let i = 0; i < collapsedNodes.length; i++) {
           const cn = collapsedNodes[i]
-          if (parseInt(cn.dataset.clientWidth) + nav.clientWidth + extraOffset <= bbCWidth) {
+          if ((parseInt(cn.dataset.clientWidth) || cn.clientWidth) + nav.clientWidth + extraOffset <= bbCWidth) {
             delete cn.dataset.collapsed
             nav.insertBefore(cn, collapse)
             this.collapsedCount--
@@ -181,45 +181,57 @@ export default {
 </style>
 
 <style lang="scss">
+#nav_text_collapse {
+  & li[data-collapsed="true"] ul {
+    position: relative;
+    left: 0;
+    padding-left: 15px;
+  }
+
+  #public_nav_collapse_0 {
+    display: none;
+
+    a {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    & > ul {
+      overflow: hidden;
+
+      & > li {
+        & > ul {
+          display: inline-block;
+        }
+      }
+    }
+
+    ul li ul {
+      width: 100%;
+    }
+
+    &:hover > ul {
+      max-width: 200px;
+
+      & > li > ul {
+        visibility: visible;
+      }
+    }
+  }
+}
+
 @media (max-width: 991px) {
   #public_nav_collapse_0 {
+    width: 100%;
+
     & > span {
       display: none;
     }
 
     & > ul {
       padding-left: 0;
+      max-width: unset;
     }
   }
-}
-
-#public_nav_collapse_0 {
-  display: none;
-
-  a {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-  & > ul {
-    max-width: 200px;
-    overflow: hidden;
-
-    & > li {
-      & > ul {
-        display: inline-block;
-      }
-    }
-  }
-
-  ul li ul {
-    width: 100%;
-  }
-}
-
-#nav_text_collapse li[data-collapsed="true"] ul {
-  position: relative;
-  left: 0;
-  padding-left: 15px;
 }
 </style>
