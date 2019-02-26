@@ -1,5 +1,5 @@
 <template>
-    <div class="builder" v-if="page">
+    <div class="builder scrollable" v-if="page">
       <grid :blocks.sync="page.blocks" editable>
         <template slot-scope="{ block, index }">
           <div class="actions">
