@@ -1,6 +1,6 @@
 <template>
     <header>
-      <b-navbar toggleable type="light" toggle-breakpoint="lg">
+      <b-navbar toggleable type="light" toggle-breakpoint="md">
           <b-navbar-toggle target="nav_text_collapse">
             <label
               class="channel-toggle">
@@ -178,9 +178,6 @@ export default {
   white-space: nowrap;
 }
 
-</style>
-
-<style lang="scss">
 #nav_text_collapse {
   #public_nav_collapse_0 {
     display: none;
@@ -214,7 +211,7 @@ export default {
   }
 }
 
-@media (max-width: 991px) {
+@media (max-width: 768px) {
   #public_nav_collapse_0 {
     width: 100%;
 

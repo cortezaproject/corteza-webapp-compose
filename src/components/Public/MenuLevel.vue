@@ -202,7 +202,7 @@ ul {
   }
 }
 
-@media (max-width: 991px) {
+@media (max-width: 767px) {
   .router-link-active {
     border-right: 3px solid $appblue;
     border-bottom: none;
