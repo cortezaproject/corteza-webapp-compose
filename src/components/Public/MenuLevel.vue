@@ -203,7 +203,7 @@ ul {
 }
 
 @media (max-width: 991px) {
-  .selected, .selected-in-path {
+  .router-link-active {
     border-right: 3px solid $appblue;
     border-bottom: none;
     background-color: rgba($appblue, 0.15);
