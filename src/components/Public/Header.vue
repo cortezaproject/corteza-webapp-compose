@@ -182,12 +182,6 @@ export default {
 
 <style lang="scss">
 #nav_text_collapse {
-  & li[data-collapsed="true"] ul {
-    position: relative;
-    left: 0;
-    padding-left: 15px;
-  }
-
   #public_nav_collapse_0 {
     display: none;
 
