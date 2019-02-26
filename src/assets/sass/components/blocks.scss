@@ -65,6 +65,7 @@
   height: 100%;
   display: flex;
   flex-flow: column;
+  overflow-x: auto;
 
   & > h2 {
     flex-grow: 0;
@@ -74,6 +75,7 @@
     font-weight: 300;
     position: sticky;
     top: 0;
+    z-index: 1;
   }
 
   & > p {
@@ -86,7 +88,6 @@
 
   & > div {
     flex-grow: 1;
-    min-height: 300px;
     padding: 5px 10px;
 
     fieldset {
