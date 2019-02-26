@@ -126,8 +126,10 @@ ul {
     background: #fff;
 
     ul:nth-child(2) {
-      left: 100%;
-      top: 0;
+      position: relative;
+      left: 0;
+      padding-left: 15px;
+      box-shadow: none;
     }
 
     li {
@@ -178,7 +180,9 @@ ul {
     }
 
     &:hover > ul,
-    &:active > ul {
+    &:hover > ul ul,
+    &:active > ul,
+    &:active > ul ul, {
       visibility: visible;
       min-width: 100%;
     }
@@ -188,7 +192,7 @@ ul {
     a {
       &::after {
         border-style: dashed dashed dashed solid;
-        border-color: transparent transparent transparent $appgrey;
+        border-color: $appgrey transparent transparent transparent;
         float: right;
         position: absolute;
         top: 12px;
