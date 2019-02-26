@@ -5,7 +5,6 @@ import Vue from 'vue'
 import './global'
 import './plugins'
 import './main.scss'
-
 import router from './router'
 import store from './store'
 import logger from './logger'

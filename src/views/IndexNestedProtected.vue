@@ -13,6 +13,7 @@
     <div class="loader" v-else>
       <img :src="logo" />
     </div>
+    <div class="error" v-if="error">{{ error }}</div>
   </div>
 </template>
 
@@ -24,19 +25,31 @@ export default {
     return {
       logo: require('@/assets/images/crust-logo-with-tagline.png'),
       loaded: false,
+      error: '',
       alerts: [], // { variant: 'info', message: 'foo' },
     }
   },
 
   created () {
+    this.error = ''
+
     this.handleAlert((alert) => this.alerts.push(alert))
+
+    const errHandler = (error) => {
+      switch (error.response.status) {
+        case 403:
+          this.error = 'Not allowed to access Crust CRM'
+      }
+
+      return Promise.reject(error)
+    }
 
     Promise.all([
       // Preload all data we need.
-      this.$store.dispatch('module/load'),
-      this.$store.dispatch('chart/load'),
-      this.$store.dispatch('page/load'),
-      this.$store.dispatch('trigger/load'),
+      this.$store.dispatch('module/load').catch(errHandler),
+      this.$store.dispatch('chart/load').catch(errHandler),
+      this.$store.dispatch('page/load').catch(errHandler),
+      this.$store.dispatch('trigger/load').catch(errHandler),
     ]).then(() => {
       this.loaded = true
     })
@@ -46,36 +59,48 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import "@/assets/sass/btns.scss";
-  @import "@/assets/sass/_0.declare.scss";
+@import "@/assets/sass/btns.scss";
+@import "@/assets/sass/_0.declare.scss";
 
-  .alert-holder {
-    position: absolute;
-    width: 100%;
-    top: 55px;
+.alert-holder {
+  position: absolute;
+  width: 100%;
+  top: 55px;
 
-    .alert {
-      z-index: 1;
-      box-shadow: 0 0 2px 0 rgba($appgrey, 0.75);
-    }
+  .alert {
+    z-index: 1;
+    box-shadow: 0 0 2px 0 rgba($appgrey, 0.75);
   }
+}
 
-  @keyframes flickerAnimation {
-    0% { opacity: 0.6; }
-    50% { opacity: 0.1; }
-    100% { opacity: 0.6; }
+@keyframes flickerAnimation {
+  0% { opacity: 0.6; }
+  50% { opacity: 0.1; }
+  100% { opacity: 0.6; }
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  img {
+    align-self: center;
+    opacity: 0.7;
+    animation: flickerAnimation 3s infinite;
   }
+}
 
-  .loader {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-
-    img {
-      align-self: center;
-      opacity: 0.7;
-      animation: flickerAnimation 3s infinite;
-    }
-  }
+.error {
+  color: $appred;
+  font-size: 24px;
+  background-color: $appwhite;
+  width: 100vw;
+  height: 20vh;
+  padding: 60px;
+  position: absolute;
+  top: 40vh;
+  text-align: center;
+}
 </style>
