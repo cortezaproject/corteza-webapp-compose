@@ -89,6 +89,7 @@ nav {
 
     &.visible {
       left: 0;
+      border-left: 1px solid $appcream;
     }
 
     &.collapsing {
