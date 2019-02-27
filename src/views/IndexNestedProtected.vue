@@ -36,7 +36,7 @@ export default {
     this.handleAlert((alert) => this.alerts.push(alert))
 
     const errHandler = (error) => {
-      switch (error.response.status) {
+      switch ((error.response || {}).status) {
         case 403:
           this.error = 'Not allowed to access Crust CRM'
       }
