@@ -54,10 +54,10 @@
             </b-form-select>
           </b-form-group>
           <b-form-group horizontal :label-cols="2" breakpoint="md">
-            <b-form-checkbox v-model="d.skipMissing">Skip missing values</b-form-checkbox>
+            <b-form-checkbox plain v-model="d.skipMissing">Skip missing values</b-form-checkbox>
           </b-form-group>
-          <b-form-group v-if="!d.skipMissing" horizontal :label-cols="2" breakpoint="md" label="Default">
-            <b-form-input v-model="d.default" :type="dInputType(d)"></b-form-input>
+          <b-form-group v-if="!d.skipMissing" horizontal :label-cols="2" breakpoint="md" label="Default value" description="Use this value for missing dimension values">
+            <b-form-input v-model="d.default" :type="defaultValueInputType(d)"></b-form-input>
           </b-form-group>
           <b-form-group horizontal :label-cols="2" breakpoint="md" label="">
             <b-form-checkbox plain v-model="d.autoSkip" :value="true" :unchecked-value="false">Calculate how many labels can be shown</b-form-checkbox><br />
@@ -142,8 +142,8 @@ export default {
   },
 
   computed: {
-    dInputType () {
-      return (d) => d.field === 'created_at' || (this.module.fields.filter(f => f.name === d.field)[0] || {}).kind === 'DateTime' ? 'date' : 'text'
+    defaultValueInputType () {
+      return ({ field }) => field === 'created_at' || (this.module.fields.filter(f => f.name === field)[0] || {}).kind === 'DateTime' ? 'date' : 'text'
     },
 
     module () {
