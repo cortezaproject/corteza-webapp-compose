@@ -62,17 +62,22 @@ export default {
 }
 </script>
 <style scoped="scoped" lang="scss">
-table {
-  width: 100%;
 
-  th {
-    width: 100px;
-    vertical-align: top;
-  }
+.storybook {
+  overflow: scroll;
 
-  td {
-    width: 250px;
-    vertical-align: top;
+  table {
+    width: 100%;
+
+    th {
+      width: 100px;
+      vertical-align: top;
+    }
+
+    td {
+      width: 250px;
+      vertical-align: top;
+    }
   }
 }
 </style>

@@ -7,8 +7,13 @@ export default {
       let ctx = { module, record }
 
       return this.runTriggers({ ...ctx, action: 'beforeCreate' })
-        .then(() => this.$crm.moduleRecordCreate(record))
-        .then((r) => this.runTriggers({ ...ctx, action: 'afterCreate', record: new Record(module, r) }))
+        .then(() => this.$crm.recordCreate(record))
+        .then((r) => {
+          record.merge(r)
+          record.execHooks({ action: 'create', record })
+          this.runTriggers({ ...ctx, action: 'afterCreate', record: new Record(module, record) })
+          return record
+        })
         .then((ctx) => Promise.resolve(ctx.record))
     },
 
@@ -16,8 +21,13 @@ export default {
       let ctx = { module, record }
 
       return this.runTriggers({ ...ctx, action: 'beforeUpdate' })
-        .then(() => this.$crm.moduleRecordUpdate(record))
-        .then((r) => this.runTriggers({ ...ctx, action: 'afterUpdate', record: new Record(module, r) }))
+        .then(() => this.$crm.recordUpdate(record))
+        .then((r) => {
+          record.merge(r)
+          record.execHooks(record, { action: 'update', record })
+          this.runTriggers({ ...ctx, action: 'afterUpdate', record: new Record(module, record) })
+          return record
+        })
         .then((ctx) => Promise.resolve(ctx.record))
     },
 
