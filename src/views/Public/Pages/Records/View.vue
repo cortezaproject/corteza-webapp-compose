@@ -77,7 +77,7 @@ export default {
     loadRecord () {
       this.record = null
       if (this.page && this.recordID && this.page.moduleID) {
-        this.$crm.moduleRecordRead({ moduleID: this.page.moduleID, recordID: this.recordID }).then(record => {
+        this.$crm.recordRead({ moduleID: this.page.moduleID, recordID: this.recordID }).then(record => {
           this.record = new Record(this.module, record)
         }).catch(this.defaultErrorHandler('Could not load this record'))
       }

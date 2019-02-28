@@ -25,7 +25,7 @@ export default {
       let ctx = { module, record }
 
       return this.runTriggers({ ...ctx, action: 'beforeDelete' })
-        .then(() => this.$crm.moduleRecordDelete(record))
+        .then(() => this.$crm.recordDelete(record))
         .then((r) => this.runTriggers({ ...ctx, action: 'afterDelete' }))
         .then(() => Promise.resolve())
     },
@@ -66,9 +66,9 @@ export default {
               }
 
               if (record.recordID === '') {
-                return $crm.moduleRecordCreate(record)
+                return $crm.recordCreate(record)
               } else {
-                return $crm.moduleRecordUpdate(record)
+                return $crm.recordUpdate(record)
               }
             },
 
@@ -78,7 +78,7 @@ export default {
               }
 
               if (record.recordID !== '') {
-                return $crm.moduleRecordDelete(record)
+                return $crm.recordDelete(record)
               }
             },
 
@@ -107,7 +107,7 @@ export default {
               //   - filter as string
               params.recordID = (filter || {}).recordID || (filter || {}).ID || (typeof filter === 'string' && /^[0-9]+$/.test(filter) ? filter : undefined)
               if (params.recordID) {
-                return $crm.moduleRecordRead(params).then((r) => {
+                return $crm.recordRead(params).then((r) => {
                   if (r.recordID === '0') {
                     // @todo remove when backend starts returning 404 on nonexistent records
                     return Promise.reject(Error('Record does not exist'))
@@ -122,7 +122,7 @@ export default {
                   params = { ...params, ...filter }
                 }
 
-                return $crm.moduleRecordList(params).then(({ records, meta }) => {
+                return $crm.recordList(params).then(({ records, meta }) => {
                   return { meta, records: records.map(r => new Record(module, r)) }
                 })
               }

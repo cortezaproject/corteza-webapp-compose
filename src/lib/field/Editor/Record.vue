@@ -105,7 +105,7 @@ export default {
           return `${qf} LIKE '%${query}%'`
         }).join(' OR ')
 
-        this.$crm.moduleRecordList({ moduleID, filter, sort: this.sortString() }).then(({ records }) => {
+        this.$crm.recordList({ moduleID, filter, sort: this.sortString() }).then(({ records }) => {
           this.records = records.map(r => new Record(this.module, r))
         })
       }
@@ -114,7 +114,7 @@ export default {
     loadLatest () {
       const moduleID = this.field.options.moduleID
       if (moduleID) {
-        this.$crm.moduleRecordList({ moduleID, sort: this.sortString() }).then(({ records }) => {
+        this.$crm.recordList({ moduleID, sort: this.sortString() }).then(({ records }) => {
           this.latest = records.map(r => new Record(this.module, r))
         })
       }
@@ -128,7 +128,7 @@ export default {
     findByID (recordID) {
       const moduleID = this.field.options.moduleID
       if (moduleID && recordID && (this.valueRecord || {}).recordID !== recordID) {
-        this.$crm.moduleRecordRead({ moduleID, recordID }).then(r => {
+        this.$crm.recordRead({ moduleID, recordID }).then(r => {
           this.valueRecord = new Record(this.module, r)
         })
       }

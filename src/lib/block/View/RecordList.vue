@@ -142,7 +142,7 @@ export default {
     fetch (params = this.meta) {
       params.moduleID = this.options.moduleID
 
-      return this.$crm.moduleRecordList(params).then(({ meta, records }) => {
+      return this.$crm.recordList(params).then(({ meta, records }) => {
         this.meta = meta
         this.records = records.map(r => new Record(this.recordListModule, r))
       }).catch(this.defaultErrorHandler('Could not load record list'))

@@ -100,7 +100,7 @@ export default {
             filter: `date(${feed.endField || feed.startField}) >= '${start.toISOString()}' AND date(${feed.startField}) < '${end.toISOString()}'`,
           }
 
-          this.$crm.moduleRecordList(params).then(({ meta, records }) => {
+          this.$crm.recordList(params).then(({ meta, records }) => {
             this.events.push(...records
               .map(r => new Record(module, r))
               .filter(r => !!r.values[feed.startField])
