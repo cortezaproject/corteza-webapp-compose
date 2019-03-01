@@ -5,8 +5,12 @@
     </div>
 
     <div v-if="field.options.mode === 'list'">
-      @todo list
-      {{ attachments }}
+      <div v-for="a in attachments" :key="a.attachmentID">
+        <a :href="a.download">
+          <font-awesome-icon :icon="['fas', 'download']"></font-awesome-icon>
+          {{a.name}}
+        </a> (File size: {{a.size}}, changed: {{a.changedAt}}
+      </div>
     </div>
 
     <div v-if="field.options.mode === 'grid'">
@@ -28,6 +32,8 @@
 </template>
 <script>
 import base from './base'
+import numeral from 'numeral'
+import moment from 'moment'
 
 export default {
   extends: base,
@@ -52,6 +58,8 @@ export default {
         a.previewUrl = this.baseUrl + a.previewUrl
         a.url = this.baseUrl + a.url
         a.download = a.url + '?download=1'
+        a.size = numeral(a.meta.original.size).format('0b')
+        a.changedAt = moment(a.updatedAt || a.createdAt).fromNow()
         return a
       })
     })
@@ -64,3 +72,13 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+@import "@/assets/sass/_0.declare.scss";
+
+.fa-download {
+  color: $black;
+  font-size: 12px;
+  margin-right: 2px;
+  vertical-align: baseline;
+}
+</style>
