@@ -1,12 +1,6 @@
 <template>
   <div>
     <b-form-group horizontal
-                  label="Formats">
-      <div><b-form-checkbox plain v-model="f.options.allowImages">Allow images</b-form-checkbox></div>
-      <div><b-form-checkbox plain v-model="f.options.allowDocuments">Allow documents</b-form-checkbox></div>
-    </b-form-group>
-
-    <b-form-group horizontal
                   description="How files are represented in record page blocks"
                   label="View mode">
       <b-form-radio-group v-model="f.options.mode"
