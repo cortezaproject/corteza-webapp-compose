@@ -8,4 +8,5 @@ export default [
   { kind: 'String' },
   { kind: 'Url', label: 'URL' },
   { kind: 'User' },
+  { kind: 'File' },
 ]

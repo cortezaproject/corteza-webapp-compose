@@ -46,6 +46,9 @@ export default {
         { label: 'Calendar',
           recordPageOnly: false,
           block: new Block({ kind: 'Calendar' }) },
+        { label: 'File',
+          recordPageOnly: false,
+          block: new Block({ kind: 'File' }) },
       ],
     }
   },

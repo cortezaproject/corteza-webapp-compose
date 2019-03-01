@@ -7,18 +7,26 @@ export default {
       let ctx = { module, record }
 
       return this.runTriggers({ ...ctx, action: 'beforeCreate' })
-        .then(() => this.$crm.moduleRecordCreate(record))
-        .then((r) => this.runTriggers({ ...ctx, action: 'afterCreate', record: new Record(module, r) }))
-        .then((ctx) => Promise.resolve(ctx.record))
+        .then(() => this.$crm.recordCreate(record))
+        .then((r) => {
+          record.merge(r)
+          record.execHooks({ action: 'create', record })
+          return this.runTriggers({ ...ctx, action: 'afterCreate', record: new Record(module, record) })
+        })
+        .then(({ record }) => Promise.resolve(record))
     },
 
     async updateRecord (module, record) {
       let ctx = { module, record }
 
       return this.runTriggers({ ...ctx, action: 'beforeUpdate' })
-        .then(() => this.$crm.moduleRecordUpdate(record))
-        .then((r) => this.runTriggers({ ...ctx, action: 'afterUpdate', record: new Record(module, r) }))
-        .then((ctx) => Promise.resolve(ctx.record))
+        .then(() => this.$crm.recordUpdate(record))
+        .then((r) => {
+          record.merge(r)
+          record.execHooks(record, { action: 'update', record })
+          return this.runTriggers({ ...ctx, action: 'afterUpdate', record: new Record(module, record) })
+        })
+        .then(({ record }) => Promise.resolve(record))
     },
 
     async deleteRecord (module, record) {

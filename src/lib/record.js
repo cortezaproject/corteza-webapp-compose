@@ -5,6 +5,8 @@ const fields = Symbol('moduleFieldIndex')
 // Record class
 export default class Record {
   constructor (module, def = {}) {
+    this.hooks = []
+
     // setup() will help us to proxy value to field propery
     if (module instanceof Module) {
       this.module = module
@@ -98,5 +100,20 @@ export default class Record {
     return this.module.fields
       .map(f => f.validate(this.values[f.name]).length === 0)
       .filter(v => !v).length === 0
+  }
+
+  // Add custom, runtime hooks on fields
+  // These hooks will be executed in order they are added
+  //
+  // We use these hooks mainly to handle upload on File field type
+  addHook (hook) {
+    this.hooks.push(hook)
+  }
+
+  // Execute hooks
+  execHooks () {
+    for (const hook of this.hooks) {
+      hook.apply(this, arguments)
+    }
   }
 }
