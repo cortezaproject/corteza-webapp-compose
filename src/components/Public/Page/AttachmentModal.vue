@@ -1,8 +1,10 @@
 <template>
   <b-modal id="modal-center" v-model="show" centered hide-footer>
-    <b-button @click="ptr--" :disabled="ptr === 0">prev</b-button>
-    <img :src="current.url" v-if="current" />
-    <b-button @click="ptr++" :disabled="set.length === ptr + 1">next</b-button>
+    <div v-if="current">
+      <b-button @click="ptr--" :disabled="ptr === 0">prev</b-button>
+      <img :src="current.url" />
+      <b-button @click="ptr++" :disabled="set.length === ptr + 1">next</b-button>
+    </div>
   </b-modal>
 </template>
 <script>
