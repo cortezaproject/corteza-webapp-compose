@@ -1,16 +1,12 @@
 <template>
   <div>
-    <!--<div v-for="(a, index) in attachments" :key="a.attachmentID">-->
-      <!--<img :src="a.previewUrl" @click="openLightbox(index)" />-->
-    <!--</div>-->
-
     <div v-if="field.options.mode === 'list'">
       <div v-for="a in attachments" :key="a.attachmentID">
         <a :href="a.download">
           <font-awesome-icon :icon="['fas', 'download']"></font-awesome-icon>
           {{a.name}}
         </a>
-        (File size: {{a.size}}, uploded {{a.changedAt}})
+        (File size: {{a.size}}, uploaded {{a.changedAt}})
       </div>
     </div>
 
@@ -23,18 +19,26 @@
           ></font-awesome-icon>
           {{a.name}}
         </a>
-        (File size: {{a.size}}, uploded {{a.changedAt}})
+        (File size: {{a.size}}, uploaded {{a.changedAt}})
       </div>
     </div>
 
-    <div v-if="field.options.mode === 'single'">
-      @todo single
-      {{ attachments }}
-    </div>
-
-    <div v-if="field.options.mode === 'gallery'">
-      @todo gallery
-      {{ attachments }}
+    <div v-if="field.options.mode === 'single' || 'gallery'" class="single">
+      <div v-for="(a, index) in attachments" :key="a.attachmentID">
+        <div v-if="isImage(a)">
+          <img :src="a.previewUrl" @click="openLightbox(index)" />
+        </div>
+        <div v-else>
+          <font-awesome-icon
+            :icon="['far', 'file-'+ext(a)]"
+            title="Open bookmarks"
+          ></font-awesome-icon>
+          <a :href="a.download">
+            Download
+          </a>
+        </div>
+        {{a.name}}
+      </div>
     </div>
   </div>
 </template>
@@ -108,6 +112,9 @@ export default {
         default: return 'alt'
       }
     },
+    isImage (a) {
+      return /^image\//.test(a.meta.original.mimetype)
+    },
   },
 }
 </script>
@@ -132,6 +139,16 @@ export default {
     font-size: 30px;
     float: left;
     margin-right: 10px;
+  }
+}
+
+img {
+  cursor: pointer;
+}
+
+.single {
+  .svg-inline--fa {
+    font-size: 40px;
   }
 }
 </style>

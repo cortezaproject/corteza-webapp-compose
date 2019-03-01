@@ -1,9 +1,9 @@
 <template>
-  <b-modal id="modal-center" v-model="show" centered hide-footer>
+  <b-modal size="lg" v-model="show" centered hide-footer>
     <div v-if="current">
-      <b-button @click="ptr--" :disabled="ptr === 0">prev</b-button>
+      <!--<b-button @click="ptr&#45;&#45;" :disabled="ptr === 0">prevtest</b-button>-->
       <img :src="current.url" />
-      <b-button @click="ptr++" :disabled="set.length === ptr + 1">next</b-button>
+      <!--<b-button @click="ptr++" :disabled="set.length === ptr + 1">next</b-button>-->
     </div>
   </b-modal>
 </template>
@@ -45,3 +45,9 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+  img {
+    max-width: 100%;
+  }
+
+</style>
