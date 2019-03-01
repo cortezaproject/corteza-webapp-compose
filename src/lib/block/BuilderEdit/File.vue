@@ -1,19 +1,23 @@
 <template>
   <div>
-   <attachment-uploader :endpoint="endpoint" @uploaded="appendAttachment" />
-    {{ options.attachments }}
+   <uploader :endpoint="endpoint" @uploaded="appendAttachment" />
+    <list-loader kind="page"
+                 :set="options.attachments"
+                 mode="list"></list-loader>
   </div>
 </template>
 <script>
 import base from './base'
-import AttachmentUploader from '@/components/Public/Page/Attachment/Uploader'
+import Uploader from '@/components/Public/Page/Attachment/Uploader'
+import ListLoader from '@/components/Public/Page/Attachment/ListLoader'
 
 export default {
   extends: base,
   name: 'File',
 
   components: {
-    AttachmentUploader,
+    Uploader,
+    ListLoader,
   },
 
   computed: {

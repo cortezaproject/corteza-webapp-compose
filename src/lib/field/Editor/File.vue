@@ -1,16 +1,20 @@
 <template>
   <b-form-group :label="field.label || field.name">
-    <attachment-uploader :endpoint="endpoint" @uploaded="appendAttachment" />
-    {{ value }}
+    <uploader :endpoint="endpoint" @uploaded="appendAttachment" />
+    <list-loader kind="record"
+                 :set="[value]"
+                 mode="single"></list-loader>
   </b-form-group>
 </template>
 <script>
 import base from './base'
-import AttachmentUploader from '@/components/Public/Page/Attachment/Uploader'
+import Uploader from '@/components/Public/Page/Attachment/Uploader'
+import ListLoader from '@/components/Public/Page/Attachment/ListLoader'
 
 export default {
   components: {
-    AttachmentUploader,
+    Uploader,
+    ListLoader,
   },
 
   extends: base,
