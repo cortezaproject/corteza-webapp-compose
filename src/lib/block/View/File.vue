@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div v-for="a in attachments" :key="a.attachmentID">
-      <img :src="a.previewUrl" />
-      {{ a}}
+    <div v-for="(a, index) in attachments" :key="a.attachmentID">
+      <img :src="a.previewUrl" @click="openLightbox(index)" />
+      {{ a }}
     </div>
 
     <div v-if="options.mode === 'list'">
@@ -30,6 +30,7 @@ export default {
 
   data () {
     return {
+      modalPointer: undefined,
       attachments: [],
     }
   },
@@ -52,6 +53,12 @@ export default {
         return a
       })
     })
+  },
+
+  methods: {
+    openLightbox (index) {
+      this.$root.$emit('showAttachmentsModal', index, this.attachments)
+    },
   },
 }
 </script>
