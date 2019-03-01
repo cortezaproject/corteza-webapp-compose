@@ -1,15 +1,16 @@
 <template>
-  <b-form-group :label="field.label || field.name">
-    <vue-dropzone
-      ref="dropzone"
-      id="dropzone"
-      :useCustomSlot=true
-      @vdropzone-success="onSuccess"
-      :options="dzOptions">
-      <h2>Drop files to upload....</h2>
-    </vue-dropzone>
-    --{{ options.url() }}..
-  </b-form-group>
+  <div>
+    <b-form-group vertical label="">
+      <vue-dropzone
+        ref="dropzone"
+        id="dropzone"
+        :useCustomSlot=true
+        @vdropzone-success="onSuccess"
+        :options="dzOptions">
+        <h2>Drop files to upload....</h2>
+      </vue-dropzone>
+    </b-form-group>
+  </div>
 </template>
 <script>
 import base from './base'
@@ -21,6 +22,7 @@ export default {
   },
 
   extends: base,
+  name: 'File',
 
   computed: {
     dzOptions () {
@@ -28,14 +30,12 @@ export default {
         paramName: 'upload',
         maxFilesize: 100, // mb
         url: () => {
-          const { moduleID, recordID } = this.record
-          const { name } = this.field
-          return `${this.baseUrl}/module/${moduleID}/record/${recordID}/${name}/attachment`
+          return `${this.baseUrl}/page/${this.pageID}/attachment`
         },
         thumbnailMethod: 'contain',
         thumbnailWidth: 320,
         thumbnailHeight: 180,
-        maxFiles: this.field.isMulti ? null : 1,
+        maxFiles: 1000,
         withCredentials: true,
         autoProcessQueue: true,
         // addRemoveLinks: false,
@@ -61,10 +61,11 @@ export default {
   },
 
   created () {
-    const { pageID } = this
-
-    this.$crm.attachmentList({ kind: 'page', pageID }).then(({ attachments }) => {
-      attachments.forEach(attachment => {
+    const kind = 'page'
+    this.attachments = this.options.attachments.map(() => ({}))
+    // @todo migrate to one call to attachmentList({ kind, pageID })
+    this.options.attachments.forEach((attachmentID) => {
+      this.$crm.attachmentDetails({ kind, attachmentID }).then((attachment) => {
         const { name, previewUrl, meta } = attachment
         const existing = { name, size: meta.original.size, attachment }
         this.dropzone.emit('addedfile', existing)
@@ -78,52 +79,15 @@ export default {
   methods: {
     onSuccess (file, { response }) {
       const { attachmentID, previewUrl } = response
-
-      if (this.field.isMulti) {
-        this.value.push(attachmentID)
-      } else {
-        this.value = attachmentID
-      }
+      this.options.attachments.push(attachmentID)
       this.dropzone.emit('thumbnail', file, this.baseUrl + previewUrl)
     },
   },
 }
 </script>
-<style scoped>
-.active {
-  color: #78CB5B;
-}
 
-.inactive {
-  color: #fff000;
-}
-
-.fa.fa-circle::before {
-  content: "\25C9";
-
-  /* color: #000; */
-}
-
-th {
-  text-align: center;
-}
-
-td:nth-child(1) {
-  text-align: center;
-}
-
-td:nth-child(3) {
-  text-align: center;
-}
-
-td:nth-child(2) {
-  padding-left: 40px;
-}
-
-.event-active {
-  font-weight: bold;
-  color: #78CB5B;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-}
+<style lang="scss" scoped>
+  .ql-snow.ql-toolbar button {
+    width: 27px;
+  }
 </style>
