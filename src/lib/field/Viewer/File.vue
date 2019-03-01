@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="a in attachments" :key="a.attachmentID">
+    <div v-for="(a, index) in attachments" :key="a.attachmentID">
       <img :src="a.previewUrl" @click="openLightbox(index)" />
     </div>
 
@@ -23,6 +23,7 @@
       @todo gallery
       {{ attachments }}
     </div>
+    {{ value }}
   </div>
 </template>
 <script>
@@ -45,6 +46,7 @@ export default {
 
   created () {
     const { recordID, moduleID } = this.record
+
     this.$crm.attachmentList({ kind: 'record', recordID, moduleID, fieldName: this.field.name }).then(({ attachments }) => {
       this.attachments = attachments.map(a => {
         a.previewUrl = this.baseUrl + a.previewUrl

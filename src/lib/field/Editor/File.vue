@@ -61,9 +61,9 @@ export default {
   },
 
   created () {
-    const { pageID } = this
+    const { recordID, moduleID } = this.record
 
-    this.$crm.attachmentList({ kind: 'page', pageID }).then(({ attachments }) => {
+    this.$crm.attachmentList({ kind: 'record', recordID, moduleID, fieldName: this.field.name }).then(({ attachments }) => {
       attachments.forEach(attachment => {
         const { name, previewUrl, meta } = attachment
         const existing = { name, size: meta.original.size, attachment }
