@@ -2,7 +2,7 @@ export const modes = [
   // list of attachments, no preview
   'list',
   // grid of icons
-  'icons',
+  'grid',
   // single (first) image/file, show preview
   'single',
   // list of all images/files, show preview
@@ -18,7 +18,7 @@ export class File {
     this.allowImages = !!allowImages
     this.allowDocuments = !!allowDocuments
     this.maxSize = maxSize || this.maxSize
-    this.mode = modes.includes(mode) || 'list'
+    this.mode = (mode && modes.includes(mode)) ? mode : 'list'
     return this
   }
 }

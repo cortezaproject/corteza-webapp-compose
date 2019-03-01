@@ -44,7 +44,7 @@ export default {
   },
 
   created () {
-    const { recordID, moduleID } = this.record.moduleID
+    const { recordID, moduleID } = this.record
     this.$crm.attachmentList({ kind: 'record', recordID, moduleID, fieldName: this.field.name }).then(({ attachments }) => {
       this.attachments = attachments.map(a => {
         a.previewUrl = this.baseUrl + a.previewUrl
