@@ -11,10 +11,9 @@ export default {
         .then((r) => {
           record.merge(r)
           record.execHooks({ action: 'create', record })
-          this.runTriggers({ ...ctx, action: 'afterCreate', record: new Record(module, record) })
-          return record
+          return this.runTriggers({ ...ctx, action: 'afterCreate', record: new Record(module, record) })
         })
-        .then((ctx) => Promise.resolve(ctx.record))
+        .then(({ record }) => Promise.resolve(record))
     },
 
     async updateRecord (module, record) {
@@ -25,10 +24,9 @@ export default {
         .then((r) => {
           record.merge(r)
           record.execHooks(record, { action: 'update', record })
-          this.runTriggers({ ...ctx, action: 'afterUpdate', record: new Record(module, record) })
-          return record
+          return this.runTriggers({ ...ctx, action: 'afterUpdate', record: new Record(module, record) })
         })
-        .then((ctx) => Promise.resolve(ctx.record))
+        .then(({ record }) => Promise.resolve(record))
     },
 
     async deleteRecord (module, record) {
