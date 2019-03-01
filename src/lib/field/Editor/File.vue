@@ -8,12 +8,12 @@
       :options="dzOptions">
       <h2>Drop files to upload....</h2>
     </vue-dropzone>
-    --{{ options.url() }}..
   </b-form-group>
 </template>
 <script>
 import base from './base'
 import vueDropzone from 'vue2-dropzone'
+import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 
 export default {
   components: {
@@ -52,7 +52,7 @@ export default {
     },
 
     dropzone () {
-      return this.$refs.dropzone.dropzone
+      return (this.$refs.dropzone && this.$refs.dropzone.dropzone) ? this.$refs.dropzone.dropzone : false
     },
 
     baseUrl () {
