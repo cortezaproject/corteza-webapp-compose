@@ -3,6 +3,26 @@
     <div v-for="a in attachments" :key="a.attachmentID">
       <img :src="a.previewUrl" />
     </div>
+
+    <div v-if="field.options.mode === 'list'">
+      @todo list
+      {{ attachments }}
+    </div>
+
+    <div v-if="field.options.mode === 'icons'">
+      @todo icons
+      {{ attachments }}
+    </div>
+
+    <div v-if="field.options.mode === 'single'">
+      @todo single
+      {{ attachments }}
+    </div>
+
+    <div v-if="field.options.mode === 'gallery'">
+      @todo gallery
+      {{ attachments }}
+    </div>
   </div>
 </template>
 <script>
@@ -29,15 +49,10 @@ export default {
       this.attachments = attachments.map(a => {
         a.previewUrl = this.baseUrl + a.previewUrl
         a.url = this.baseUrl + a.url
+        a.download = a.url + '?download=1'
         return a
       })
     })
   },
 }
 </script>
-
-<style>
-.multiline {
-  white-space: pre-line;
-}
-</style>
