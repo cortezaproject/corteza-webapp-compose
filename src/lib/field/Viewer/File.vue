@@ -1,21 +1,30 @@
 <template>
   <div>
-    <div v-for="(a, index) in attachments" :key="a.attachmentID">
-      <img :src="a.previewUrl" @click="openLightbox(index)" />
-    </div>
+    <!--<div v-for="(a, index) in attachments" :key="a.attachmentID">-->
+      <!--<img :src="a.previewUrl" @click="openLightbox(index)" />-->
+    <!--</div>-->
 
     <div v-if="field.options.mode === 'list'">
       <div v-for="a in attachments" :key="a.attachmentID">
         <a :href="a.download">
           <font-awesome-icon :icon="['fas', 'download']"></font-awesome-icon>
           {{a.name}}
-        </a> (File size: {{a.size}}, changed: {{a.changedAt}}
+        </a>
+        (File size: {{a.size}}, uploded {{a.changedAt}})
       </div>
     </div>
 
     <div v-if="field.options.mode === 'grid'">
-      @todo icons
-      {{ attachments }}
+      <div v-for="a in attachments" :key="a.attachmentID" class="grid">
+        <a :href="a.download">
+          <font-awesome-icon
+            :icon="['far', 'file-'+ext(a)]"
+            title="Open bookmarks"
+          ></font-awesome-icon>
+          {{a.name}}
+        </a>
+        (File size: {{a.size}}, uploded {{a.changedAt}})
+      </div>
     </div>
 
     <div v-if="field.options.mode === 'single'">
@@ -27,7 +36,6 @@
       @todo gallery
       {{ attachments }}
     </div>
-    {{ value }}
   </div>
 </template>
 <script>
@@ -69,6 +77,37 @@ export default {
     openLightbox (index) {
       this.$root.$emit('showAttachmentsModal', index, this.attachments)
     },
+
+    ext (a) {
+      const { meta } = a
+      switch (meta && meta.original ? meta.original.ext : null) {
+        case 'odt':
+        case 'doc':
+        case 'docx':
+          return 'word'
+        case 'pdf':
+          return 'pdf'
+        case 'ppt':
+        case 'pptx':
+          return 'powerpoint'
+        case 'zip':
+        case 'rar':
+          return 'archive'
+        case 'xls':
+        case 'xlsx':
+        case 'csv':
+          return 'excel'
+        case 'mov':
+        case 'mp3':
+        case 'mp4':
+          return 'video'
+        case 'png':
+        case 'jpg':
+        case 'jpeg':
+          return 'image'
+        default: return 'alt'
+      }
+    },
   },
 }
 </script>
@@ -80,5 +119,19 @@ export default {
   font-size: 12px;
   margin-right: 2px;
   vertical-align: baseline;
+}
+
+.grid {
+  a {
+    display: block;
+    line-height: 13px;
+  }
+
+  .svg-inline--fa {
+    color: #000;
+    font-size: 30px;
+    float: left;
+    margin-right: 10px;
+  }
 }
 </style>
