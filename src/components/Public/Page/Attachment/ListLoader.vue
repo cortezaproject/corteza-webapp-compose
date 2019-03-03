@@ -1,12 +1,16 @@
 <template>
   <div>
     <div v-if="mode === 'list'" class="list">
-      <div v-for="a in attachments" :key="a.attachmentID" v-if="a" class="item">
+      <div v-for="(a, index) in attachments" :key="a.attachmentID" v-if="a" class="item">
         <a :href="a.download">
           <font-awesome-icon :icon="['fas', 'download']"></font-awesome-icon>
           {{a.name}}
         </a>
         (File size: {{ size(a) }}, uploaded {{ uploadedAt(a) }})
+        <b-button variant="link"
+                  class="delete"
+                  v-if="enableDelete"
+                  @click="deleteAttachment(index)"><i class="action icon-trash"></i></b-button>
       </div>
     </div>
 
@@ -49,6 +53,10 @@ import Attachment from '@/lib/attachment'
 
 export default {
   props: {
+    enableDelete: {
+      type: Boolean,
+    },
+
     kind: {
       type: String,
       required: true,
@@ -107,6 +115,11 @@ export default {
       this.$root.$emit('showAttachmentsModal', index, this.attachments)
     },
 
+    deleteAttachment (index) {
+      this.attachments.splice(index, 1)
+      this.$emit('update:set', this.attachments.map(a => a.attachmentID))
+    },
+
     ext (a) {
       const { meta } = a
       switch (meta && meta.original ? meta.original.ext : null) {
@@ -151,6 +164,16 @@ export default {
   font-size: 12px;
   margin-right: 2px;
   vertical-align: baseline;
+}
+
+.list {
+  .item {
+    min-height: 30px;
+
+    .delete {
+      float: right;
+    }
+  }
 }
 
 .grid {

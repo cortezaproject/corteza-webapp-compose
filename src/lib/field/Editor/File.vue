@@ -2,8 +2,9 @@
   <b-form-group :label="field.label || field.name">
     <uploader :endpoint="endpoint" @uploaded="appendAttachment" />
     <list-loader kind="record"
-                 :set="[value]"
-                 mode="single"></list-loader>
+                 :set.sync="set"
+                 enable-delete
+                 mode="list"></list-loader>
   </b-form-group>
 </template>
 <script>
@@ -24,6 +25,20 @@ export default {
       const { moduleID, recordID } = this.record
       const { name } = this.field
       return `/module/${moduleID}/record/${recordID}/${name}/attachment`
+    },
+
+    set: {
+      get () {
+        return this.field.isMulti ? this.value : [this.value]
+      },
+
+      set (v) {
+        if (this.field.isMulti) {
+          this.value = v
+        } else {
+          this.value = (Array.isArray(v) && v.length > 0) ? v[0] : undefined
+        }
+      },
     },
   },
 

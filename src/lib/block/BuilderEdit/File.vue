@@ -13,7 +13,8 @@
     </b-form-group>
    <uploader :endpoint="endpoint" @uploaded="appendAttachment" />
     <list-loader kind="page"
-                 :set="options.attachments"
+                 enable-delete
+                 :set.sync="options.attachments"
                  mode="list"></list-loader>
   </div>
 </template>
