@@ -5,11 +5,17 @@
     :use-custom-slot=true
     :include-styling=false
     @vdropzone-success="onSuccess"
+    @vdropzone-upload-progress="onUploadProgress"
     :options="dzOptions">
-    <div class="droparea">Click or drop files here to upload</div>
+    <div class="uploading" v-if="active">
+      <div class="progress-bar" :style="progresBarStyle"></div>
+      Uploading {{ active.file.name }} ({{ size(active.file) }})
+    </div>
+    <div class="droparea" v-else>Click or drop files here to upload</div>
   </vue-dropzone>
 </template>
 <script>
+import numeral from 'numeral'
 import vueDropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 
@@ -23,6 +29,12 @@ export default {
       type: String,
       required: true,
     },
+  },
+
+  data () {
+    return {
+      active: null,
+    }
   },
 
   computed: {
@@ -56,11 +68,26 @@ export default {
     baseUrl () {
       return window.CrustConfig.crm.baseUrl
     },
+
+    progresBarStyle () {
+      return {
+        width: this.active.progress + '%',
+      }
+    },
   },
 
   methods: {
+    size (a) {
+      return numeral(a.size).format('0b')
+    },
+
     onSuccess (file, { response }) {
+      this.active = null
       this.$emit('uploaded', response)
+    },
+
+    onUploadProgress (file, progress, bytesSent) {
+      this.active = { file, progress, bytesSent }
     },
   },
 }
@@ -82,5 +109,24 @@ div {
       background-color: $appgrey;
     }
   }
+
+  .uploading {
+    background: $appcream;
+    background-size: 100% 100%;
+    background-position: right bottom;
+    font-size: 18px;
+    text-align: center;
+    padding: 10px 0;
+    margin-bottom: 15px;
+    cursor: wait;
+
+    .progress-bar {
+      background: $appblue;
+      position: absolute;
+      width: 0px;
+      height: 30px;
+      opacity: .3;
+    }
+   }
 }
 </style>
