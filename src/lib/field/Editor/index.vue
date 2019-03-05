@@ -4,23 +4,13 @@ import { User as UserViewer, DateTime as DateTimeViewer } from '../Viewer/loader
 import base from './base'
 
 export default {
-  extends: base,
-
-  render (createElement) {
-    const cmp = this.component
-
-    if (cmp) {
-      return createElement(cmp, {
-        props: {
-          field: this.field,
-          record: this.record,
-          validate: this.validate,
-        },
-      })
-    } else {
-      return createElement('code', `Error: Unknown field kind "${this.field.kind}", no editor component found.`)
-    }
+  components: {
+    ...Editors,
+    UserViewer,
+    DateTimeViewer,
   },
+
+  extends: base,
 
   computed: {
     component () {
@@ -47,10 +37,20 @@ export default {
     },
   },
 
-  components: {
-    ...Editors,
-    UserViewer,
-    DateTimeViewer,
+  render (createElement) {
+    const cmp = this.component
+
+    if (cmp) {
+      return createElement(cmp, {
+        props: {
+          field: this.field,
+          record: this.record,
+          validate: this.validate,
+        },
+      })
+    } else {
+      return createElement('code', `Error: Unknown field kind "${this.field.kind}", no editor component found.`)
+    }
   },
 }
 </script>

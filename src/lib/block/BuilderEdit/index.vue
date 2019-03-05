@@ -38,6 +38,10 @@
 import * as EditBlocks from './loader'
 
 export default {
+  components: {
+    ...EditBlocks,
+  },
+
   props: {
     block: {
       type: Object,
@@ -70,10 +74,6 @@ export default {
         { value: 'yellow-dark', text: 'Yellow with dark text' },
       ],
     }
-  },
-
-  components: {
-    ...EditBlocks,
   },
 }
 </script>

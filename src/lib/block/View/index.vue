@@ -21,6 +21,10 @@
 import * as ViewBlocks from './loader'
 
 export default {
+  components: {
+    ...ViewBlocks,
+  },
+
   props: {
     boundingRect: {
       type: Object,
@@ -96,10 +100,6 @@ export default {
         bottom: bcr.bottom,
       }
     },
-  },
-
-  components: {
-    ...ViewBlocks,
   },
 }
 </script>

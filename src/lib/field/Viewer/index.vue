@@ -4,23 +4,11 @@ import * as Viewers from './loader'
 
 // Renders one of the field kind components
 export default {
-  extends: base,
-
-  render (createElement) {
-    const cmp = this.component
-
-    if (cmp) {
-      return createElement(cmp, {
-        props: {
-          field: this.field,
-          record: this.record,
-          valueOnly: this.valueOnly,
-        },
-      })
-    } else {
-      return createElement('code', `Error: Unknown field kind "${this.field.kind}", no viewer component found.`)
-    }
+  components: {
+    ...Viewers,
   },
+
+  extends: base,
 
   computed: {
     component () {
@@ -36,8 +24,20 @@ export default {
     },
   },
 
-  components: {
-    ...Viewers,
+  render (createElement) {
+    const cmp = this.component
+
+    if (cmp) {
+      return createElement(cmp, {
+        props: {
+          field: this.field,
+          record: this.record,
+          valueOnly: this.valueOnly,
+        },
+      })
+    } else {
+      return createElement('code', `Error: Unknown field kind "${this.field.kind}", no viewer component found.`)
+    }
   },
 }
 </script>

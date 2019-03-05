@@ -10,6 +10,13 @@
 <script>
 
 export default {
+  data () {
+    return {
+      ptr: 0,
+      set: undefined,
+    }
+  },
+
   computed: {
     show: {
       get () {
@@ -28,13 +35,6 @@ export default {
         return this.set[this.ptr]
       }
     },
-  },
-
-  data () {
-    return {
-      ptr: 0,
-      set: undefined,
-    }
   },
 
   created () {

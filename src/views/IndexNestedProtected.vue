@@ -21,6 +21,8 @@
 import auth from '@/mixins/auth'
 
 export default {
+  mixins: [auth],
+
   data () {
     return {
       logo: require('@/assets/images/crust-logo-with-tagline.png'),
@@ -54,8 +56,6 @@ export default {
       this.loaded = true
     })
   },
-
-  mixins: [auth],
 }
 </script>
 <style lang="scss" scoped>

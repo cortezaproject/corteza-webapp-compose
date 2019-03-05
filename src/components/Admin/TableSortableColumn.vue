@@ -11,16 +11,6 @@
 
 <script>
 export default {
-  methods: {
-    sort (asc) {
-      const fieldObject = {
-        name: this.name,
-        ascending: asc,
-      }
-      this.$emit('sort', fieldObject)
-    },
-  },
-
   props: {
     label: {
       type: String,
@@ -42,6 +32,16 @@ export default {
 
   created () {
     if (this.ascending !== undefined) this.sort(this.ascending)
+  },
+
+  methods: {
+    sort (asc) {
+      const fieldObject = {
+        name: this.name,
+        ascending: asc,
+      }
+      this.$emit('sort', fieldObject)
+    },
   },
 }
 </script>

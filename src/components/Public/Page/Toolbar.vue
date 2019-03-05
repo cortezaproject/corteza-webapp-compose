@@ -9,14 +9,15 @@
 import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 
 export default {
+  components: {
+    ConfirmationToggle,
+  },
+
   props: {
     hideDelete: {
       type: Boolean,
       required: false,
     },
-  },
-  components: {
-    ConfirmationToggle,
   },
 }
 </script>

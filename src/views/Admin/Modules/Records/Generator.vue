@@ -37,6 +37,10 @@
 import FieldEditor from '@/lib/field/Editor'
 
 export default {
+  components: {
+    FieldEditor,
+  },
+
   props: {
     moduleID: {
       type: String,
@@ -127,10 +131,6 @@ export default {
           return this.faker.date.past(5).toISOString()
       }
     },
-  },
-
-  components: {
-    FieldEditor,
   },
 }
 </script>

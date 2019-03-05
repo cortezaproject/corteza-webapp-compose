@@ -63,8 +63,13 @@ import base from './base'
 import FieldSelector from './inc/FieldSelector'
 
 export default {
-  extends: base,
   name: 'RecordList',
+
+  components: {
+    FieldSelector,
+  },
+
+  extends: base,
 
   computed: {
     ...mapGetters({
@@ -94,10 +99,6 @@ export default {
       this.o.pageID = this.modulePageID[newModuleID] || undefined
       this.o.fields = []
     },
-  },
-
-  components: {
-    FieldSelector,
   },
 }
 </script>

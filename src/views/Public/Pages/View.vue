@@ -12,6 +12,11 @@ import Grid from '@/components/Public/Page/Grid'
 import AttachmentModal from '@/components/Public/Page/Attachment/Modal'
 
 export default {
+  components: {
+    Grid,
+    AttachmentModal,
+  },
+
   props: {
     pageID: {
       type: String,
@@ -26,11 +31,6 @@ export default {
     page () {
       return this.$store.getters['page/getByID'](this.pageID)
     },
-  },
-
-  components: {
-    Grid,
-    AttachmentModal,
   },
 }
 </script>

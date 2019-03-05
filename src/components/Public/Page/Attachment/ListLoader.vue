@@ -73,6 +73,12 @@ export default {
     },
   },
 
+  data () {
+    return {
+      attachments: [],
+    }
+  },
+
   watch: {
     set: {
       immediate: true,
@@ -94,12 +100,6 @@ export default {
         })
       },
     },
-  },
-
-  data () {
-    return {
-      attachments: [],
-    }
   },
 
   methods: {

@@ -13,6 +13,17 @@ const pushContentAbove = 610
 export default {
   name: 'public-root',
 
+  components: {
+    PublicHeader,
+  },
+
+  props: {
+    pageID: {
+      type: String,
+      required: true,
+    },
+  },
+
   data () {
     return {
       navVisible: false,
@@ -26,22 +37,11 @@ export default {
     },
   },
 
-  props: {
-    pageID: {
-      type: String,
-      required: true,
-    },
-  },
-
   created () {
     this.documentWidth = document.body.offsetWidth
     window.onresize = () => {
       this.documentWidth = document.body.offsetWidth
     }
-  },
-
-  components: {
-    PublicHeader,
   },
 }
 </script>

@@ -14,8 +14,13 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 
 export default {
-  extends: base,
   name: 'Content',
+
+  components: {
+    quillEditor,
+  },
+
+  extends: base,
 
   data () {
     return {
@@ -53,10 +58,6 @@ export default {
         },
       },
     }
-  },
-
-  components: {
-    quillEditor,
   },
 }
 </script>

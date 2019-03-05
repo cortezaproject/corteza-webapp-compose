@@ -2,7 +2,6 @@
 import axios from 'axios'
 
 export default {
-  render () { return null },
   beforeCreate () {
     const { adtSignOutUrl } = window.CrustConfig.webapp.auth || {}
     if (adtSignOutUrl) {
@@ -17,5 +16,7 @@ export default {
     })
     this.$router.push({ name: 'signin' })
   },
+
+  render () { return null },
 }
 </script>

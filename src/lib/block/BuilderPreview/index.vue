@@ -12,6 +12,10 @@
 import * as PreviewBlocks from './loader'
 
 export default {
+  components: {
+    ...PreviewBlocks,
+  },
+
   props: {
     block: {
       type: Object,
@@ -34,10 +38,6 @@ export default {
 
       return c
     },
-  },
-
-  components: {
-    ...PreviewBlocks,
   },
 }
 </script>

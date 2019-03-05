@@ -72,6 +72,14 @@ import TableSortableColumn from '@/components/Admin/TableSortableColumn'
 import tableSort from '@/mixins/table_sort'
 
 export default {
+  components: {
+    TableSortableColumn,
+  },
+
+  mixins: [
+    tableSort,
+  ],
+
   data () {
     return {
       newTrigger: new Trigger(),
@@ -117,14 +125,6 @@ export default {
       })
     },
   },
-
-  components: {
-    TableSortableColumn,
-  },
-
-  mixins: [
-    tableSort,
-  ],
 }
 </script>
 <style lang="scss" scoped>

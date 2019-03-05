@@ -42,6 +42,10 @@ import SortableTree from 'vue-sortable-tree'
 export default {
   name: 'page-tree',
 
+  components: {
+    SortableTree,
+  },
+
   props: {
     value: {
       type: Array,
@@ -93,10 +97,6 @@ export default {
         reorder()
       }
     },
-  },
-
-  components: {
-    SortableTree,
   },
 }
 </script>

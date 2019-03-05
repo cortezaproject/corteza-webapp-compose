@@ -10,6 +10,12 @@ export default {
     }
   },
 
+  computed: {
+    formatted () {
+      return this.user ? (this.field.options.formatter(this.user) || this.value) : 'N/A'
+    },
+  },
+
   watch: {
     value () {
       this.load()
@@ -18,12 +24,6 @@ export default {
 
   mounted () {
     this.load()
-  },
-
-  computed: {
-    formatted () {
-      return this.user ? (this.field.options.formatter(this.user) || this.value) : 'N/A'
-    },
   },
 
   methods: {

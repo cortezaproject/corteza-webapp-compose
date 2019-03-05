@@ -17,6 +17,10 @@
 import * as ViewBlocks from './loader'
 
 export default {
+  components: {
+    ...ViewBlocks,
+  },
+
   props: {
     block: {
       type: Object,
@@ -49,10 +53,6 @@ export default {
 
       return c
     },
-  },
-
-  components: {
-    ...ViewBlocks,
   },
 }
 </script>

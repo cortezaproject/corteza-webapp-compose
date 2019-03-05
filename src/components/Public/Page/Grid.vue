@@ -17,6 +17,12 @@ import BlockEditor from '@/lib/block/Edit'
 export default {
   name: 'public-grid',
 
+  components: {
+    Grid,
+    BlockViewer,
+    BlockEditor,
+  },
+
   props: {
     page: {
       type: Object,
@@ -39,12 +45,6 @@ export default {
         return this.$store.getters['module/getByID'](this.page.moduleID)
       }
     },
-  },
-
-  components: {
-    Grid,
-    BlockViewer,
-    BlockEditor,
   },
 }
 </script>

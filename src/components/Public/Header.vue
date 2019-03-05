@@ -30,6 +30,10 @@ import MenuLevel from './MenuLevel'
 const collapserWidth = 55
 
 export default {
+  components: {
+    MenuLevel,
+  },
+
   props: {
     currentPageID: {
       type: String,
@@ -76,6 +80,24 @@ export default {
 
       return tt(this.tree, this.pageID) || []
     },
+  },
+
+  mounted () {
+    this.$nextTick(() => {
+      const nav = document.getElementById('menu_lvl_1')
+      const bb = document.getElementById('nav_text_collapse')
+      const collapse = document.getElementById('public_nav_collapse_0')
+      const rOffset = document.getElementById('public_nav_to_admin_pannel').clientWidth + 50 || 200
+
+      setTimeout(() => { this.collapser(nav, bb, collapse, collapserWidth, rOffset) }, 1)
+      window.onresize = () => {
+        this.collapser(nav, bb, collapse, collapserWidth, rOffset)
+      }
+    })
+  },
+
+  created () {
+    this.$crm.pageTree().then((result) => { this.tree = result })
   },
 
   methods: {
@@ -137,28 +159,6 @@ export default {
         }
       }
     },
-  },
-
-  created () {
-    this.$crm.pageTree().then((result) => { this.tree = result })
-  },
-
-  mounted () {
-    this.$nextTick(() => {
-      const nav = document.getElementById('menu_lvl_1')
-      const bb = document.getElementById('nav_text_collapse')
-      const collapse = document.getElementById('public_nav_collapse_0')
-      const rOffset = document.getElementById('public_nav_to_admin_pannel').clientWidth + 50 || 200
-
-      setTimeout(() => { this.collapser(nav, bb, collapse, collapserWidth, rOffset) }, 1)
-      window.onresize = () => {
-        this.collapser(nav, bb, collapse, collapserWidth, rOffset)
-      }
-    })
-  },
-
-  components: {
-    MenuLevel,
   },
 }
 </script>

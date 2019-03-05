@@ -42,6 +42,12 @@ import FieldEditor from '@/lib/field/Editor'
 import FieldViewer from '@/lib/field/Viewer'
 
 export default {
+  components: {
+    FieldConfigurator,
+    FieldEditor,
+    FieldViewer,
+  },
+
   data () {
     let module = new Module({
       name: 'StoryBook mock',
@@ -52,12 +58,6 @@ export default {
       module,
       record: new Record(module),
     }
-  },
-
-  components: {
-    FieldConfigurator,
-    FieldEditor,
-    FieldViewer,
   },
 }
 </script>

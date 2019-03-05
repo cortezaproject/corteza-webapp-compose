@@ -28,10 +28,11 @@ import { quillEditor } from 'vue-quill-editor'
 import base from './base'
 
 export default {
-  extends: base,
   components: {
     quillEditor,
   },
+
+  extends: base,
 
   data () {
     return {

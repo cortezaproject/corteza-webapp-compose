@@ -5,7 +5,16 @@ import ViewRecord from './View'
 
 export default {
   name: 'EditRecord',
+
+  components: {
+    Grid,
+  },
+
   extends: ViewRecord,
+
+  mixins: [
+    triggerRunner,
+  ],
 
   data () {
     return {
@@ -26,13 +35,5 @@ export default {
       this.$router.push({ name: 'public.page.record' })
     },
   },
-
-  components: {
-    Grid,
-  },
-
-  mixins: [
-    triggerRunner,
-  ],
 }
 </script>

@@ -16,8 +16,9 @@
 import base from './base'
 
 export default {
-  extends: base,
   name: 'SocialFeed',
+
+  extends: base,
   computed: {
     selectOptions () {
       var options = []
