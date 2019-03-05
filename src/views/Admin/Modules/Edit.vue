@@ -79,6 +79,15 @@ import Module from '@/lib/module'
 import EditorToolbar from '@/components/Admin/EditorToolbar'
 
 export default {
+  components: {
+    ConfirmationToggle,
+    draggable,
+    FieldConfigurator,
+    FieldRowEdit,
+    FieldRowView,
+    EditorToolbar,
+  },
+
   props: {
     moduleID: {
       type: String,
@@ -141,15 +150,6 @@ export default {
     redirect () {
       this.$router.push({ name: 'admin.modules' })
     },
-  },
-
-  components: {
-    ConfirmationToggle,
-    draggable,
-    FieldConfigurator,
-    FieldRowEdit,
-    FieldRowView,
-    EditorToolbar,
   },
 }
 </script>

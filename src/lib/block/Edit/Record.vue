@@ -12,6 +12,10 @@
 import FieldEditor from '@/lib/field/Editor'
 
 export default {
+  components: {
+    FieldEditor,
+  },
+
   props: {
     options: {
       type: Object,
@@ -33,10 +37,6 @@ export default {
     fields () {
       return this.module.filterFields(this.options.fields)
     },
-  },
-
-  components: {
-    FieldEditor,
   },
 }
 </script>

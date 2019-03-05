@@ -19,6 +19,10 @@ import base from './base'
 import { VueSelect } from 'vue-select'
 
 export default {
+  components: {
+    VueSelect,
+  },
+
   extends: base,
 
   data () {
@@ -80,10 +84,6 @@ export default {
         })
       }
     },
-  },
-
-  components: {
-    VueSelect,
   },
 }
 </script>

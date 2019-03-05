@@ -12,12 +12,13 @@ import base from './base'
 import FieldSelector from './inc/FieldSelector'
 
 export default {
-  extends: base,
   name: 'Record',
 
   components: {
     FieldSelector,
   },
+
+  extends: base,
 }
 </script>
 <style lang="scss" scoped>

@@ -53,6 +53,13 @@ const defaultReport = {
 }
 
 export default {
+  components: {
+    Report,
+    ConfirmationToggle,
+    draggable,
+    EditorToolbar,
+  },
+
   props: {
     chartID: {
       type: String,
@@ -67,15 +74,6 @@ export default {
     }
   },
 
-  watch: {
-    'chart.config': {
-      deep: true,
-      handler: function () {
-        this.updateRenderer()
-      },
-    },
-  },
-
   computed: {
     ...mapGetters({
       modules: 'module/set',
@@ -83,6 +81,15 @@ export default {
 
     defaultReport () {
       return Object.assign({}, defaultReport)
+    },
+  },
+
+  watch: {
+    'chart.config': {
+      deep: true,
+      handler: function () {
+        this.updateRenderer()
+      },
     },
   },
 
@@ -185,13 +192,6 @@ export default {
     redirect () {
       this.$router.push({ name: 'admin.charts' })
     },
-  },
-
-  components: {
-    Report,
-    ConfirmationToggle,
-    draggable,
-    EditorToolbar,
   },
 }
 </script>

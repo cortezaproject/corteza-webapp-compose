@@ -21,6 +21,10 @@ import Record from '@/lib/record'
 import _ from 'lodash'
 
 export default {
+  components: {
+    VueSelect,
+  },
+
   extends: base,
 
   data () {
@@ -133,10 +137,6 @@ export default {
         })
       }
     },
-  },
-
-  components: {
-    VueSelect,
   },
 }
 </script>

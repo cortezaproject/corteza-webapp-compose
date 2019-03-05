@@ -72,6 +72,15 @@ import tableSort from '@/mixins/table_sort'
 
 export default {
   name: 'ModuleList',
+
+  components: {
+    TableSortableColumn,
+  },
+
+  mixins: [
+    tableSort,
+  ],
+
   data () {
     return {
       newModule: new Module({ fields: [new Field({ name: 'sample', kind: 'text' })] }),
@@ -129,14 +138,6 @@ export default {
       }).catch(this.defaultErrorHandler('Could not create a page'))
     },
   },
-
-  components: {
-    TableSortableColumn,
-  },
-
-  mixins: [
-    tableSort,
-  ],
 }
 </script>
 <style lang="scss" scoped>

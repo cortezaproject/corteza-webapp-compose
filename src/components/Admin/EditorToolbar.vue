@@ -14,6 +14,10 @@
 import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 
 export default {
+  components: {
+    ConfirmationToggle,
+  },
+
   props: {
     backLink: {
       type: Object,
@@ -23,9 +27,6 @@ export default {
       type: Boolean,
       required: false,
     },
-  },
-  components: {
-    ConfirmationToggle,
   },
 }
 </script>

@@ -24,13 +24,14 @@ import Uploader from '@/components/Public/Page/Attachment/Uploader'
 import ListLoader from '@/components/Public/Page/Attachment/ListLoader'
 
 export default {
-  extends: base,
   name: 'File',
 
   components: {
     Uploader,
     ListLoader,
   },
+
+  extends: base,
 
   computed: {
     endpoint () {

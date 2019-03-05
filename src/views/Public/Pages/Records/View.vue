@@ -32,6 +32,16 @@ import Toolbar from '@/components/Public/Page/Toolbar'
 export default {
   name: 'ViewRecord',
 
+  components: {
+    Grid,
+    ConfirmationToggle,
+    Toolbar,
+  },
+
+  mixins: [
+    triggerRunner,
+  ],
+
   props: {
     // Receives page object via router-view component
     page: {
@@ -55,17 +65,17 @@ export default {
     }
   },
 
-  watch: {
-    recordID () {
-      this.loadRecord()
-    },
-  },
-
   computed: {
     module () {
       if (this.page.moduleID) {
         return this.$store.getters['module/getByID'](this.page.moduleID)
       }
+    },
+  },
+
+  watch: {
+    recordID () {
+      this.loadRecord()
     },
   },
 
@@ -95,16 +105,6 @@ export default {
       this.$router.back()
     },
   },
-
-  components: {
-    Grid,
-    ConfirmationToggle,
-    Toolbar,
-  },
-
-  mixins: [
-    triggerRunner,
-  ],
 }
 </script>
 <style lang="scss" scoped>

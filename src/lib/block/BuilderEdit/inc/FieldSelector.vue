@@ -43,6 +43,10 @@
 import draggable from 'vuedraggable'
 
 export default {
+  components: {
+    draggable,
+  },
+
   props: {
     module: {
       type: Object,
@@ -94,10 +98,6 @@ export default {
         this.selectedFields = []
       }
     },
-  },
-
-  components: {
-    draggable,
   },
 }
 </script>

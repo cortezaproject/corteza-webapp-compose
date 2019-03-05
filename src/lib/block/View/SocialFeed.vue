@@ -14,6 +14,10 @@ import Timeline from 'vue-tweet-embed/timeline'
 import { extractSocialUrl } from '../SocialFeed'
 
 export default {
+  components: {
+    Timeline,
+  },
+
   extends: base,
 
   computed: {
@@ -24,10 +28,6 @@ export default {
     isTwitter () {
       return this.profile.socialNetwork === 'Twitter'
     },
-  },
-
-  components: {
-    Timeline,
   },
 }
 </script>

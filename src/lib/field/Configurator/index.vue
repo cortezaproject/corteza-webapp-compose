@@ -3,6 +3,10 @@ import base from './base'
 import * as Configurators from './loader'
 
 export default {
+  components: {
+    ...Configurators,
+  },
+
   extends: base,
 
   render (createElement) {
@@ -19,10 +23,6 @@ export default {
     } else {
       // It's ok if field does not have a configurator, no biggie
     }
-  },
-
-  components: {
-    ...Configurators,
   },
 }
 </script>

@@ -19,20 +19,6 @@ export default {
     }
   },
 
-  watch: {
-    value () {
-      this.load()
-    },
-  },
-
-  mounted () {
-    this.load()
-  },
-
-  updated () {
-    this.load()
-  },
-
   computed: {
     ...mapGetters({
       pages: 'page/set',
@@ -66,6 +52,20 @@ export default {
         },
       }
     },
+  },
+
+  watch: {
+    value () {
+      this.load()
+    },
+  },
+
+  mounted () {
+    this.load()
+  },
+
+  updated () {
+    this.load()
   },
 
   methods: {

@@ -44,16 +44,14 @@ import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 import fieldList from '@/lib/field/list'
 
 export default {
+  components: {
+    ConfirmationToggle,
+  },
+
   props: {
     field: {
       type: Object,
       required: true,
-    },
-  },
-
-  computed: {
-    checkFieldName () {
-      return this.field.name.length > 1 && /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(this.field.name) ? null : false
     },
   },
 
@@ -65,14 +63,16 @@ export default {
     }
   },
 
+  computed: {
+    checkFieldName () {
+      return this.field.name.length > 1 && /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(this.field.name) ? null : false
+    },
+  },
+
   methods: {
     handleKindChange (field) {
       field.merge({ kind: field.kind })
     },
-  },
-
-  components: {
-    ConfirmationToggle,
   },
 }
 </script>

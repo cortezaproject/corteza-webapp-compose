@@ -69,6 +69,14 @@ import EditorToolbar from '@/components/Admin/EditorToolbar'
 import Page from '@/lib/page'
 
 export default {
+  components: {
+    Grid,
+    NewBlockSelector,
+    BlockEdit,
+    BlockPreview,
+    EditorToolbar,
+  },
+
   props: {
     pageID: {
       type: String,
@@ -147,14 +155,6 @@ export default {
         }).catch(this.defaultErrorHandler('Could not save this page'))
       })
     },
-  },
-
-  components: {
-    Grid,
-    NewBlockSelector,
-    BlockEdit,
-    BlockPreview,
-    EditorToolbar,
   },
 }
 </script>

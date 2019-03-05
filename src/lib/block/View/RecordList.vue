@@ -53,6 +53,11 @@ import _ from 'lodash'
 import Record from '@/lib/record'
 
 export default {
+  components: {
+    Pagination,
+    FieldViewer,
+  },
+
   extends: base,
 
   data () {
@@ -200,11 +205,6 @@ export default {
     handlePageChange (page) {
       this.fetch({ ...this.meta, page: page - 1 })
     },
-  },
-
-  components: {
-    Pagination,
-    FieldViewer,
   },
 }
 </script>

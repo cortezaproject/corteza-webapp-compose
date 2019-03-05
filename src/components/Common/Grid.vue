@@ -51,6 +51,11 @@ const blocksToGrid = blocks => {
 }
 
 export default {
+  components: {
+    GridLayout: VueGridLayout.GridLayout,
+    GridItem: VueGridLayout.GridItem,
+  },
+
   props: {
     editable: {
       type: Boolean,
@@ -126,11 +131,6 @@ export default {
         })
       )
     },
-  },
-
-  components: {
-    GridLayout: VueGridLayout.GridLayout,
-    GridItem: VueGridLayout.GridItem,
   },
 }
 </script>

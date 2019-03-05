@@ -18,6 +18,15 @@ import Toolbar from '@/components/Public/Page/Toolbar'
 export default {
   name: 'CreateRecord',
 
+  components: {
+    Grid,
+    Toolbar,
+  },
+
+  mixins: [
+    triggerRunner,
+  ],
+
   props: {
     // Receives page object via router-view component
     page: {
@@ -67,15 +76,6 @@ export default {
         .catch(this.defaultErrorHandler('Could not create this record'))
     },
   },
-
-  components: {
-    Grid,
-    Toolbar,
-  },
-
-  mixins: [
-    triggerRunner,
-  ],
 }
 </script>
 

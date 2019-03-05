@@ -101,6 +101,21 @@ import base from './base'
 import draggable from 'vuedraggable'
 
 export default {
+  components: {
+    draggable,
+  },
+
+  filters: {
+    optionizeFields (ff) {
+      return ff.map(f => {
+        return {
+          text: f.label || f.name,
+          value: f.name,
+        }
+      })
+    },
+  },
+
   extends: base,
 
   data () {
@@ -146,21 +161,6 @@ export default {
     //
     //   this.selectedTriggerID = null
     // },
-  },
-
-  filters: {
-    optionizeFields (ff) {
-      return ff.map(f => {
-        return {
-          text: f.label || f.name,
-          value: f.name,
-        }
-      })
-    },
-  },
-
-  components: {
-    draggable,
   },
 }
 </script>

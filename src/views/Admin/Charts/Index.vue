@@ -57,6 +57,15 @@ import tableSort from '@/mixins/table_sort'
 
 export default {
   name: 'ChartList',
+
+  components: {
+    TableSortableColumn,
+  },
+
+  mixins: [
+    tableSort,
+  ],
+
   data () {
     return {
       newChart: new Chart(),
@@ -88,14 +97,6 @@ export default {
       }).catch(this.defaultErrorHandler('Could not create a chart'))
     },
   },
-
-  components: {
-    TableSortableColumn,
-  },
-
-  mixins: [
-    tableSort,
-  ],
 }
 </script>
 <style lang="scss" scoped>

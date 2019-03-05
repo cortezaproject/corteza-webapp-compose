@@ -31,6 +31,12 @@ import PageTree from '@/components/Admin/Page/Tree'
 
 export default {
   name: 'PageList',
+
+  components: {
+    draggable,
+    PageTree,
+  },
+
   data () {
     return {
       tree: [],
@@ -61,11 +67,6 @@ export default {
     handleReorder () {
       this.loadTree()
     },
-  },
-
-  components: {
-    draggable,
-    PageTree,
   },
 }
 </script>

@@ -18,6 +18,12 @@ export default {
     noPrompt: Boolean,
   },
 
+  data () {
+    return {
+      inConfirmation: false,
+    }
+  },
+
   computed: {
     btnClass () {
       if (this.disabled) {
@@ -26,12 +32,6 @@ export default {
 
       return this.ctaClass
     },
-  },
-
-  data () {
-    return {
-      inConfirmation: false,
-    }
   },
 
   methods: {

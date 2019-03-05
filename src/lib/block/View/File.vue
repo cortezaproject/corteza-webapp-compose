@@ -8,10 +8,10 @@ import base from './base'
 import ListLoader from '@/components/Public/Page/Attachment/ListLoader'
 
 export default {
-  extends: base,
-
   components: {
     ListLoader,
   },
+
+  extends: base,
 }
 </script>

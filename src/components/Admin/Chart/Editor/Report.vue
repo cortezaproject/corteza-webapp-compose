@@ -129,6 +129,11 @@ import { dimensionFunctions, predefinedFilters } from '@/lib/chart'
 export default {
   name: 'Report',
 
+  components: {
+    draggable,
+    VueSelect,
+  },
+
   props: {
     report: {
       type: [Object, undefined],
@@ -139,6 +144,17 @@ export default {
       type: Array,
       required: true,
     },
+  },
+
+  data () {
+    return {
+      customFilter: false,
+
+      metricAggregates: ['COUNTD', 'SUM', 'MAX', 'MIN', 'AVG', 'STD'],
+      dimensionModifiers: dimensionFunctions.map(df => df.label),
+      predefinedFilters: predefinedFilters,
+      chartTypes: ['line', 'bar'],
+    }
   },
 
   computed: {
@@ -192,17 +208,6 @@ export default {
     },
   },
 
-  data () {
-    return {
-      customFilter: false,
-
-      metricAggregates: ['COUNTD', 'SUM', 'MAX', 'MIN', 'AVG', 'STD'],
-      dimensionModifiers: dimensionFunctions.map(df => df.label),
-      predefinedFilters: predefinedFilters,
-      chartTypes: ['line', 'bar'],
-    }
-  },
-
   watch: {
     'report.filter' (v) {
       this.customFilter = !predefinedFilters.includes(v)
@@ -217,11 +222,6 @@ export default {
 
       return !!this.module.fields.find(f => f.name === name && f.kind === 'DateTime')
     },
-  },
-
-  components: {
-    draggable,
-    VueSelect,
   },
 }
 </script>

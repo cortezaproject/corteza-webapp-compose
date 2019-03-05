@@ -12,6 +12,10 @@ import Record from '@/lib/record'
 import { Calendar } from '@/lib/block/Calendar'
 
 export default {
+  components: {
+    FullCalendar,
+  },
+
   extends: base,
 
   data () {
@@ -124,10 +128,6 @@ export default {
         this.$router.push({ name: 'public.page.record', params: { pageID, recordID: id } })
       }
     },
-  },
-
-  components: {
-    FullCalendar,
   },
 }
 </script>

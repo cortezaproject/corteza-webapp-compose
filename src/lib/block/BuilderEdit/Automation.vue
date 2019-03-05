@@ -46,8 +46,27 @@ import base from './base'
 import draggable from 'vuedraggable'
 
 export default {
-  extends: base,
   name: 'Chart',
+
+  components: {
+    draggable,
+  },
+
+  extends: base,
+
+  data () {
+    return {
+      selectedTriggerID: null,
+      charts: [],
+      variantOptions: [
+        { value: 'blue', text: 'Blue button' },
+        { value: 'secondary', text: 'White button' },
+        { value: 'green', text: 'Green button' },
+        { value: 'red', text: 'Red button' },
+        { value: 'dark', text: 'Grey button' },
+      ],
+    }
+  },
 
   computed: {
     ...mapGetters({
@@ -79,20 +98,6 @@ export default {
     },
   },
 
-  data () {
-    return {
-      selectedTriggerID: null,
-      charts: [],
-      variantOptions: [
-        { value: 'blue', text: 'Blue button' },
-        { value: 'secondary', text: 'White button' },
-        { value: 'green', text: 'Green button' },
-        { value: 'red', text: 'Red button' },
-        { value: 'dark', text: 'Grey button' },
-      ],
-    }
-  },
-
   created () {
     this.$store.dispatch('trigger/load')
   },
@@ -114,10 +119,6 @@ export default {
 
       this.selectedTriggerID = null
     },
-  },
-
-  components: {
-    draggable,
   },
 }
 </script>

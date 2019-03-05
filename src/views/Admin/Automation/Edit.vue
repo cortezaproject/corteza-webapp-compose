@@ -142,6 +142,17 @@ import EditorToolbar from '@/components/Admin/EditorToolbar'
 import RecordField from '@/lib/field/Editor/Record'
 
 export default {
+  components: {
+    ConfirmationToggle,
+    AceEditor,
+    EditorToolbar,
+    RecordField,
+  },
+
+  mixins: [
+    triggerRunner,
+  ],
+
   props: {
     triggerID: {
       type: String,
@@ -288,17 +299,6 @@ export default {
       })
     },
   },
-
-  components: {
-    ConfirmationToggle,
-    AceEditor,
-    EditorToolbar,
-    RecordField,
-  },
-
-  mixins: [
-    triggerRunner,
-  ],
 }
 </script>
 <style lang="scss" scoped>

@@ -19,16 +19,16 @@ import base from './base'
 import FieldViewer from '@/lib/field/Viewer'
 
 export default {
+  components: {
+    FieldViewer,
+  },
+
   extends: base,
 
   computed: {
     fields () {
       return this.module.filterFields(this.options.fields)
     },
-  },
-
-  components: {
-    FieldViewer,
   },
 }
 </script>

@@ -4,8 +4,6 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'PublicRedirect',
 
-  render (h) { return null },
-
   computed: {
     ...mapGetters({
       pages: 'page/set',
@@ -22,5 +20,7 @@ export default {
       this.raiseWarningAlert('No pages found')
     }
   },
+
+  render (h) { return null },
 }
 </script>

@@ -15,8 +15,9 @@ import { mapGetters } from 'vuex'
 import base from './base'
 
 export default {
-  extends: base,
   name: 'Chart',
+
+  extends: base,
 
   computed: {
     ...mapGetters({

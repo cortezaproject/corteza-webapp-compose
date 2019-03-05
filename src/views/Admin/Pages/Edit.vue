@@ -39,6 +39,12 @@ import EditorToolbar from '@/components/Admin/EditorToolbar'
 
 export default {
   name: 'PageEdit',
+
+  components: {
+    ConfirmationToggle,
+    EditorToolbar,
+  },
+
   props: {
     pageID: {
       type: String,
@@ -78,11 +84,6 @@ export default {
         this.$router.push({ name: 'admin.pages' })
       }).catch(this.defaultErrorHandler('Could not delete this page'))
     },
-  },
-
-  components: {
-    ConfirmationToggle,
-    EditorToolbar,
   },
 }
 </script>
