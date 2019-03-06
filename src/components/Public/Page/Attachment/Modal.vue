@@ -50,4 +50,8 @@ export default {
     max-width: 100%;
   }
 
+  /deep/ .modal-dialog-centered {
+    text-align: center;
+  }
+
 </style>

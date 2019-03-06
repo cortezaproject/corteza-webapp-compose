@@ -119,14 +119,15 @@ div {
     padding: 10px 0;
     margin-bottom: 15px;
     cursor: wait;
+    position: relative;
 
     .progress-bar {
       background: $appblue;
       position: absolute;
-      width: 0px;
+      width: 0;
       height: 30px;
-      opacity: .3;
+      opacity: 0.3;
     }
-   }
+  }
 }
 </style>
