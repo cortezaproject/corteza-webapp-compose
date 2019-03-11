@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div><b-form-checkbox plain v-model="f.options.trimFragment">Trim '#' from the Url</b-form-checkbox></div>
-    <div><b-form-checkbox plain v-model="f.options.trimQuery">Trim '?' from the Url</b-form-checkbox></div>
-    <div><b-form-checkbox plain v-model="f.options.trimPath">Trim Url down to domain only</b-form-checkbox></div>
-    <div><b-form-checkbox plain v-model="f.options.onlySecure">Only allow SSL (https) Url</b-form-checkbox></div>
-    <div><b-form-checkbox plain v-model="f.options.outputPlain">Don't turn Url into a link</b-form-checkbox></div>
+    <div><b-form-checkbox plain v-model="f.options.trimFragment">{{ $t('field.kind.url.label') }}</b-form-checkbox></div>
+    <div><b-form-checkbox plain v-model="f.options.trimQuery">{{ $t('field.kind.url.trimHash') }}</b-form-checkbox></div>
+    <div><b-form-checkbox plain v-model="f.options.trimPath">{{ $t('field.kind.url.trimQuestionMark') }}</b-form-checkbox></div>
+    <div><b-form-checkbox plain v-model="f.options.onlySecure">{{ $t('field.kind.url.sshOnly') }}</b-form-checkbox></div>
+    <div><b-form-checkbox plain v-model="f.options.outputPlain">{{ $t('field.kind.url.preventToLink') }}</b-form-checkbox></div>
   </div>
 </template>
 

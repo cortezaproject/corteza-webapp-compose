@@ -1,5 +1,5 @@
 <template>
-  <p>Social feed</p>
+  <p>{{ $t('block.socialFeed.preview.socialFeed') }}</p>
 </template>
 <script>
 import base from './base'

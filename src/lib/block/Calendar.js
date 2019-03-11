@@ -1,3 +1,5 @@
+import i18next from 'i18next'
+
 export class Calendar {
   constructor (def = {}) {
     this.merge(def)
@@ -13,19 +15,19 @@ export class Calendar {
   availableViews () {
     return [
       { value: 'month',
-        text: 'Month' },
+        text: i18next.t('block.calendar.view.month') },
       { value: 'agendaMonth',
-        text: 'Month agenda' },
+        text: i18next.t('block.calendar.view.agendaMonth') },
       { value: 'agendaWeek',
-        text: 'Week agenda' },
+        text: i18next.t('block.calendar.view.agendaWeek') },
       { value: 'agendaDay',
-        text: 'Day agenda' },
+        text: i18next.t('block.calendar.view.agendaDay') },
       { value: 'listMonth',
-        text: 'Month list' },
+        text: i18next.t('block.calendar.view.listMonth') },
       { value: 'listWeek',
-        text: 'Week list' },
+        text: i18next.t('block.calendar.view.listWeek') },
       { value: 'listDay',
-        text: 'Day list' },
+        text: i18next.t('block.calendar.view.listDay') },
     ]
   }
 

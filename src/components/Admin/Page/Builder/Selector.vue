@@ -8,7 +8,7 @@
             :key="type.label">{{type.label}}</button>
 
       <hr />
-      <i>Some types might be disabled for non-record pages.</i>
+      <i>{{ $t('page.build.selectBlockFootnote') }}.</i>
     </div>
 </template>
 <script>
@@ -25,28 +25,28 @@ export default {
   data () {
     return {
       types: [
-        { label: 'Content',
+        { label: this.$t('block.content.label'),
           recordPageOnly: false,
           block: new Block({ kind: 'Content' }) },
-        { label: 'Chart',
+        { label: this.$t('block.chart.label'),
           recordPageOnly: false,
           block: new Block({ kind: 'Chart' }) },
-        { label: 'Social media feed',
+        { label: this.$t('block.socialFeed.label'),
           recordPageOnly: false,
           block: new Block({ kind: 'SocialFeed' }) },
-        { label: 'Record',
+        { label: this.$t('block.record.label'),
           recordPageOnly: true,
           block: new Block({ kind: 'Record' }) },
-        { label: 'RecordList',
+        { label: this.$t('block.recordList.label'),
           recordPageOnly: false,
           block: new Block({ kind: 'RecordList' }) },
-        { label: 'Automation',
+        { label: this.$t('block.automation.label'),
           recordPageOnly: false,
           block: new Block({ kind: 'Automation' }) },
-        { label: 'Calendar',
+        { label: this.$t('block.calendar.label'),
           recordPageOnly: false,
           block: new Block({ kind: 'Calendar' }) },
-        { label: 'File',
+        { label: this.$t('block.file.label'),
           recordPageOnly: false,
           block: new Block({ kind: 'File' }) },
       ],

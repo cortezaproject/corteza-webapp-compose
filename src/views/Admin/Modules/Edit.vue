@@ -3,22 +3,22 @@
     <form @submit.prevent="handleSave" class="container" v-if="module">
       <div class="row">
         <div class="col-md-12 well">
-        <h2>Edit module</h2>
+        <h2>{{ $t('module.edit.title') }}</h2>
           <div class="form-group">
-            <label>Module name</label>
-            <input required type="text" v-model="module.name" class="form-control" placeholder="Module name" />
+            <label>{{ $t('module.newPlaceholder') }}</label>
+            <input required type="text" v-model="module.name" class="form-control" :placeholder="$t('module.newPlaceholder')" />
           </div>
           <div class="form-group">
-            <h5>Manage record fields</h5>
+            <h5>{{ $t('module.edit.manageRecordFields') }}</h5>
             <table class="table">
               <thead>
               <tr>
                 <th></th>
-                <th v-b-tooltip.hover.topright title="Must be a-z/A-Z, 0-9 or underscore" class="info">Name</th>
-                <th v-b-tooltip.hover.topright title="The name displayed in form input / data lists" class="info">Title</th>
-                <th>Type</th>
-                <th v-b-tooltip.hover title="Required field" class="info">Required</th>
-                <th v-b-tooltip.hover title="Sensitive data" class="info">Sensitive</th>
+                <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.name')" class="info">{{ $t('general.label.name') }}</th>
+                <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.title')" class="info">{{ $t('general.label.title') }}</th>
+                <th>{{ $t('general.label.type') }}</th>
+                <th v-b-tooltip.hover :title="$t('module.edit.tooltip.required')" class="info">{{ $t('general.label.required') }}</th>
+                <th v-b-tooltip.hover :title="$t('module.edit.tooltip.sensitive')" class="info">{{ $t('general.label.sensitive') }}</th>
                 <th class="text-center"></th>
               </tr>
               </thead>
@@ -31,12 +31,12 @@
               </draggable>
               <tr>
                 <th colspan="7">
-                  <button @click="handleNewField" type="button" class="btn-url add-new">+ Add new field</button>
+                  <button @click="handleNewField" type="button" class="btn-url add-new">+ {{ $t('module.edit.newField') }}</button>
                 </th>
               </tr>
               <tbody>
                 <tr>
-                  <th colspan="7">System fields:</th>
+                  <th colspan="7">{{ $t('module.edit.systemFields') }}</th>
                 </tr>
                 <field-row-view v-for="(field, index) in module.systemFields()"
                                 :field="field"
@@ -50,8 +50,8 @@
 
     <b-modal
       v-if="updateField"
-      title="Module field settings"
-      ok-title="Save and close"
+      :title="$t('module.edit.moduleFieldSettings')"
+      :ok-title="$t('general.label.saveAndClose')"
       ok-variant="dark"
       ok-only
       @ok="handleFieldSave(updateField)"
@@ -133,18 +133,18 @@ export default {
 
     handleSave ({ closeOnSuccess = false } = {}) {
       this.updateModule(this.module).then(() => {
-        this.raiseSuccessAlert('Module saved')
+        this.raiseSuccessAlert(this.$t('notification.module.saved'))
         if (closeOnSuccess) {
           this.redirect()
         }
-      }).catch(this.defaultErrorHandler('Could not save this module'))
+      }).catch(this.defaultErrorHandler(this.$t('notification.module.saveFailed')))
     },
 
     handleDelete () {
       this.deleteModule({ moduleID: this.moduleID }).then(() => {
-        this.raiseSuccessAlert('Module deleted')
+        this.raiseSuccessAlert(this.$t('notification.module.deleted'))
         this.$router.push({ name: 'admin.modules' })
-      }).catch(this.defaultErrorHandler('Could not delete this module'))
+      }).catch(this.defaultErrorHandler(this.$t('notification.module.deleteFailed')))
     },
 
     redirect () {

@@ -3,7 +3,7 @@
     <div v-for="(field, index) in fields"
          class="field"
          :key="index">
-      <label>{{ field.label || field.name }}</label>
+      <label>{{ $t(field.label) || field.name }}</label>
       <div>
         <field-viewer
           :field="field"
@@ -12,7 +12,7 @@
       </div>
     </div>
   </div>
-  <div v-else>Can not render this block without a record</div>
+  <div v-else>{{ $t('block.record.preview.blockNoRecord') }}</div>
 </template>
 <script>
 import base from './base'

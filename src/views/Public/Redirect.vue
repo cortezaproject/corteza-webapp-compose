@@ -17,7 +17,7 @@ export default {
     if (firstVisibleNonRecordPage) {
       this.$router.push({ name: 'public.page', params: { pageID: firstVisibleNonRecordPage.pageID } })
     } else {
-      this.raiseWarningAlert('No pages found')
+      this.raiseWarningAlert(this.$t('notification.page.noPages'))
     }
   },
 

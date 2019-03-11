@@ -14,13 +14,13 @@
         </template>
       </grid>
 
-      <b-modal id="createBlockSelector" hide-footer title="Select type of the new block">
+      <b-modal id="createBlockSelector" hide-footer :title="$t('page.build.selectBlockTitle')">
         <new-block-selector :record-page="!!module" @select="editBlock($event)"/>
       </b-modal>
 
       <b-modal
-        title="Add new block"
-        ok-title="Add block"
+        :title="$t('block.general.title')"
+        :ok-title="$t('page.build.addBlock')"
         ok-variant="dark"
         ok-only
         @ok="updateBlocks"
@@ -33,9 +33,9 @@
       </b-modal>
 
       <b-modal
-        title="Change existing block"
+        :title="$t('block.general.changeBlock')"
         header-class="test"
-        ok-title="Save and close"
+        :ok-title="$t('general.label.saveAndClose')"
         ok-variant="dark"
         ok-only
         centered
@@ -52,8 +52,8 @@
                       :hide-delete="true"
                       @save="handleSave()"
                       @saveAndClose="handleSave({ closeOnSuccess: true })">
-        <button v-b-modal.createBlockSelector class="btn">+ Add block</button>
-        <button @click.prevent="handleSave({ previewOnSuccess: true })" class="btn">Save and Preview</button>
+        <button v-b-modal.createBlockSelector class="btn">+ {{ $t('page.build.addBlock') }}</button>
+        <button @click.prevent="handleSave({ previewOnSuccess: true })" class="btn">{{ $t('general.label.saveAndPreview') }}</button>
       </editor-toolbar>
     </div>
 </template>
@@ -144,7 +144,7 @@ export default {
         this.page = new Page({ ...page, blocks: this.page.blocks })
 
         this.updatePage(this.page).then((page) => {
-          this.raiseSuccessAlert('Page saved')
+          this.raiseSuccessAlert(this.$t('notification.page.saved'))
           if (closeOnSuccess) {
             this.$router.push({ name: 'admin.pages' })
           } else if (previewOnSuccess) {
@@ -152,7 +152,7 @@ export default {
           }
 
           this.page = new Page(page)
-        }).catch(this.defaultErrorHandler('Could not save this page'))
+        }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))
       })
     },
   },

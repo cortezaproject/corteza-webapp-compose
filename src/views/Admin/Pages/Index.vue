@@ -4,16 +4,16 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well">
-            <h2>List of pages</h2>
+            <h2>{{ $t('page.title') }}</h2>
             <page-tree
               @reorder="handleReorder"
               v-model="tree"/>
             <form @submit.prevent="handleAddPageFormSubmit">
-              <b-form-group label="Create a new page:">
+              <b-form-group :label="$t('page.newLabel')">
                 <b-input-group>
-                  <input required type="text" v-model="addPageFormData.title" class="form-control" id="name" placeholder="Page title" />
+                  <input required type="text" v-model="addPageFormData.title" class="form-control" id="name" :placeholder="$t('page.newPlaceholder')" />
                   <b-input-group-append>
-                    <button type="submit" class="btn btn-dark">Create</button>
+                    <button type="submit" class="btn btn-dark">{{ $t('general.label.create') }}</button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -55,13 +55,13 @@ export default {
     loadTree () {
       this.$crm.pageTree({}).then((tree) => {
         this.tree = tree
-      }).catch(this.defaultErrorHandler('Could not load the page tree'))
+      }).catch(this.defaultErrorHandler(this.$t('notification.page.loadFailed')))
     },
 
     handleAddPageFormSubmit () {
       this.$crm.pageCreate(this.addPageFormData).then((page) => {
         this.$router.push({ name: 'admin.pages.edit', params: { pageID: page.pageID } })
-      }).catch(this.defaultErrorHandler('Could not save this page'))
+      }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))
     },
 
     handleReorder () {

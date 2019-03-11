@@ -1,10 +1,10 @@
 <template>
   <fieldset class="form-group">
     <b-form-group>
-      <label>Chart to display inside this block:</label>
+      <label>{{ $t('block.chart.display') }}</label>
       <b-form-select v-model="o.chartID" :options="charts" text-field="name" value-field="chartID">
         <template slot="first">
-          <option disabled>Pick a chart</option>
+          <option disabled>{{ $t('block.chart.pick') }}</option>
         </template>
       </b-form-select>
     </b-form-group>

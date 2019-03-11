@@ -4,18 +4,18 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well table-responsive">
-            <h2>List of modules</h2>
+            <h2>{{ $t('module.title')}}</h2>
             <table class="table table-striped">
               <thead>
                 <tr>
                   <table-sortable-column
-                    label="Name"
+                    :label="$t('general.label.name')"
                     name="name"
                     :ascending="sortedByName"
                     @sort="handleSort"/>
 
                   <table-sortable-column
-                    label="Updated at"
+                    :label="$t('general.label.updatedAt')"
                     name="updatedAt"
                     :ascending="sortedByUpdatedAt"
                     @sort="handleSort"/>
@@ -33,11 +33,11 @@
                     <router-link
                       v-if="recordPage(m.moduleID)"
                       :to="{name: 'admin.pages.builder', params: { pageID: recordPage(m.moduleID).pageID }}"
-                      class="btn-url">Page builder</router-link>
+                      class="btn-url">{{ $t('general.label.pageBuilder') }}</router-link>
                     <button
                        v-else
                        @click="handleRecordPageCreation({ moduleID: m.moduleID })"
-                       class="btn-url">Page builder</button>
+                       class="btn-url">{{ $t('general.label.pageBuilder') }}</button>
 
                     <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="action">
                       <i class="action icon-edit"></i>
@@ -47,11 +47,11 @@
               </tbody>
             </table>
             <form @submit.prevent="create">
-              <b-form-group label="Create a new module:">
+              <b-form-group :label="$t('module.newLabel')">
                 <b-input-group>
-                  <input required type="text" v-model="newModule.name" class="form-control" id="name" placeholder="Module name" />
+                  <input required type="text" v-model="newModule.name" class="form-control" id="name" :placeholder="$t('module.newPlaceholder')" />
                   <b-input-group-append>
-                    <button type="submit" class="btn btn-dark">Create</button>
+                    <button type="submit" class="btn btn-dark">{{ $t('general.label.create') }}</button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -119,7 +119,7 @@ export default {
     create () {
       this.createModule(this.newModule).then((module) => {
         this.$router.push({ name: 'admin.modules.edit', params: { moduleID: module.moduleID } })
-      }).catch(this.defaultErrorHandler('Could not create a module'))
+      }).catch(this.defaultErrorHandler(this.$t('notification.module.createFailed')))
     },
 
     handleRecordPageCreation ({ moduleID }) {
@@ -128,14 +128,14 @@ export default {
 
       const module = this.modules.find(m => m.moduleID === moduleID)
       const payload = {
-        title: `Record page for module "${module.name || moduleID}"`,
+        title: `${this.$t('module.recordPage')} "${module.name || moduleID}"`,
         moduleID,
         blocks: [],
       }
 
       this.createPage(payload).then(page => {
         this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
-      }).catch(this.defaultErrorHandler('Could not create a page'))
+      }).catch(this.defaultErrorHandler(this.$t('notification.page.createFailed')))
     },
   },
 }

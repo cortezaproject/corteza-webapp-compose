@@ -2,8 +2,8 @@
     <fieldset class="form-group">
       <div class="fields">
         <div class="available">
-          <label>Columns available </label>
-          <button @click.prevent="selectedFields = [...allFields]" class="btn-url">Select all</button>
+          <label>{{ $t('field.selector.available') }}</label>
+          <button @click.prevent="selectedFields = [...allFields]" class="btn-url">{{ $t('field.selector.selectAll') }}</button>
           <draggable
             class="drag-area"
             :list.sync="availableFields"
@@ -12,15 +12,15 @@
                  @dblclick="selectedFields.push(field)"
                  class="field"
                  :key="field.name">
-              <span v-if="field.label">{{field.label}} ({{field.name}})</span>
+              <span v-if="field.label">{{ $t(field.label) }} ({{field.name}})</span>
               <span v-else>{{field.name}}</span>
-              <span class="system" v-if="field.isSystem">(system field)</span>
+              <span class="system" v-if="field.isSystem">{{ $t('field.selector.systemField') }}</span>
             </div>
           </draggable>
         </div>
         <div class="selected">
-          <label>Columns selected</label>
-          <button @click.prevent="selectedFields.splice(0)" class="btn-url">Unselect all</button>
+          <label>{{ $t('field.selector.selected') }}</label>
+          <button @click.prevent="selectedFields.splice(0)" class="btn-url">{{ $t('field.selector.unselectAll') }}</button>
           <draggable
             class="drag-area"
             :list.sync="selectedFields"
@@ -29,14 +29,14 @@
                  @dblclick="selectedFields.splice(index,1)"
                  class="field"
                  :key="field.name">
-              <span v-if="field.label">{{field.label}} ({{field.name}})</span>
+              <span v-if="field.label">{{ $t(field.label) }} ({{field.name}})</span>
               <span v-else>{{field.name}}</span>
-              <span class="system" v-if="field.isSystem">(system field)</span>
+              <span class="system" v-if="field.isSystem">{{ $t('field.selector.systemField') }}</span>
             </div>
           </draggable>
         </div>
       </div>
-      <i>Add fields by dragging or double-clicking on them. Selected fields can also be reordered</i>
+      <i>{{ $t('field.selector.footnote') }}</i>
     </fieldset>
 </template>
 <script>

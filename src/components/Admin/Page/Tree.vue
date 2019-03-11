@@ -4,8 +4,8 @@
         <div class="wrap" v-if="item.pageID">
           <div class="title">{{ item.title }}</div>
           <div class="prop-col">
-            <span v-if="item.moduleID !== '0'">Record page</span>
-            <span v-else-if="item.visible">Visible</span>
+            <span v-if="item.moduleID !== '0'">{{ $t('page.recordPage') }}</span>
+            <span v-else-if="item.visible">{{ $t('page.visible') }}</span>
           </div>
           <div class="actions">
               <router-link
@@ -24,7 +24,7 @@
                 </div>
 
               <router-link :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
-                           class="btn-url">Page builder</router-link>
+                           class="btn-url">{{ $t('general.label.pageBuilder') }}</router-link>
 
               <router-link :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
                            class="edit action">
@@ -81,9 +81,9 @@ export default {
         const pageIDs = afterParent.children.map(p => p.pageID)
         if (pageIDs.length > 1) {
           this.$crm.pageReorder({ selfID: afterParent.pageID || '0', pageIDs: pageIDs }).then(() => {
-            this.raiseSuccessAlert('Page reordered')
+            this.raiseSuccessAlert(this.$t('notification.page.reordered'))
             this.$emit('reorder')
-          }).catch(this.defaultErrorHandler('Could not move this page'))
+          }).catch(this.defaultErrorHandler(this.$t('notification.page.pageMoveFailed')))
         }
       }
 
@@ -92,7 +92,7 @@ export default {
         data.selfID = afterParent.pageID
         this.$crm.pageUpdate(data).then(() => {
           reorder()
-        }).catch(this.defaultErrorHandler('Could not move this page'))
+        }).catch(this.defaultErrorHandler(this.$t('notification.page.pageMoveFailed')))
       } else {
         reorder()
       }

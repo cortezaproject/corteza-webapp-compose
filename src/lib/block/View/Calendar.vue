@@ -8,9 +8,11 @@ import { mapGetters, mapActions } from 'vuex'
 import base from './base'
 import { FullCalendar } from 'vue-full-calendar'
 import 'fullcalendar/dist/fullcalendar.css'
+import './fcLocales'
 import Record from '@/lib/record'
 import { Calendar } from '@/lib/block/Calendar'
 
+const locale = 'en'
 export default {
   components: {
     FullCalendar,
@@ -43,6 +45,7 @@ export default {
         defaultView: this.options.defaultView || 'month',
         editable: false,
         eventLimit: true,
+        locale,
         eventClick: this.handleEventClick,
         viewRender: ({ start, end }) => {
           this.loadEvents(start, end)
@@ -118,7 +121,7 @@ export default {
                   pageID,
                 }
               }))
-          }).catch(this.defaultErrorHandler('Could not load record list'))
+          }).catch(this.defaultErrorHandler(this.$t('notification.record.listLoadFailed')))
         })
       })
     },

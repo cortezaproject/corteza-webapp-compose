@@ -4,7 +4,7 @@
              :hide-delete="true">
       <button class="btn btn-blue"
               :disabled="!record.isValid()"
-              @click.prevent="handleCreate">Save</button>
+              @click.prevent="handleCreate">{{ $t('general.label.save') }}</button>
     </toolbar>
     <grid :page="page" :record="record" v-if="record" edit-mode />
   </div>
@@ -73,7 +73,7 @@ export default {
         .then((record) => {
           this.$router.push({ name: 'public.page.record.edit', params: { recordID: record.recordID } })
         })
-        .catch(this.defaultErrorHandler('Could not create this record'))
+        .catch(this.defaultErrorHandler(this.$t('notification.record.createFailed')))
     },
   },
 }

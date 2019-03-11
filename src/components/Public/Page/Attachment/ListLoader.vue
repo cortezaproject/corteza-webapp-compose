@@ -6,7 +6,10 @@
           <font-awesome-icon :icon="['fas', 'download']"></font-awesome-icon>
           {{a.name}}
         </a>
-        (File size: {{ size(a) }}, uploaded {{ uploadedAt(a) }})
+        <i18next path="general.label.uploadProgress" tag="label">
+          <span>{{ size(a) }}</span>
+          <span>{{ uploadedAt(a) }}</span>
+        </i18next>
         <b-button variant="link"
                   class="delete"
                   v-if="enableDelete"
@@ -23,7 +26,10 @@
           ></font-awesome-icon>
           {{a.name}}
         </a>
-        (File size: {{ size(a) }}, uploaded {{ uploadedAt(a) }})
+        <i18next path="general.label.uploadProgress" tag="label">
+          <span>{{ size(a) }}</span>
+          <span>{{ uploadedAt(a) }}</span>
+        </i18next>
       </div>
     </div>
 
@@ -38,7 +44,7 @@
             title="Open bookmarks"
           ></font-awesome-icon>
           <a :href="a.download">
-            Download
+            {{ $t('general.label.download') }}
           </a>
         </div>
         {{a.name}}

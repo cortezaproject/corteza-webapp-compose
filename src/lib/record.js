@@ -1,4 +1,5 @@
 import Module from './module'
+import i18next from '../i18next'
 
 const fields = Symbol('moduleFieldIndex')
 
@@ -29,9 +30,9 @@ export default class Record {
         this.values[name] = isMulti ? [] : undefined
       })
     } else if (module === undefined) {
-      throw new Error(`Record module not defined`)
+      throw new Error(i18next.t('notification.record.moduleNotDefined'))
     } else {
-      throw new Error(`Unexpected value for record module (${typeof module})`)
+      throw new Error(i18next.t('notification.record.unexpectedValue', { type: typeof module }))
     }
 
     this.merge(def)
@@ -92,7 +93,7 @@ export default class Record {
         }
       })
     } else {
-      throw new Error(`Unexpected input for values property, should be an array with name-value object pairs`)
+      throw new Error(i18next.t('notification.record.unexpectedInput'))
     }
   }
 

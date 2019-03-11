@@ -1,8 +1,8 @@
 <template>
   <div>
     <b-form-group horizontal
-                  description="How files are represented in record page blocks"
-                  label="View mode">
+                  :description="$t('field.kind.file.view.modePlaceholder')"
+                  :label="$t('field.kind.file.view.modeLabel')">
       <b-form-radio-group v-model="options.mode"
                           buttons
                           button-variant="outline-secondary"
@@ -41,10 +41,10 @@ export default {
 
     modes () {
       return [
-        { value: 'list', text: 'List' },
-        { value: 'grid', text: 'Grid' },
-        { value: 'single', text: 'Single image' },
-        { value: 'gallery', text: 'Gallery of images' },
+        { value: 'list', text: this.$t('field.kind.file.view.list') },
+        { value: 'grid', text: this.$t('field.kind.file.view.grid') },
+        { value: 'single', text: this.$t('field.kind.file.view.single') },
+        { value: 'gallery', text: this.$t('field.kind.file.view.gallery') },
       ]
     },
   },

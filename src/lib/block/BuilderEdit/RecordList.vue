@@ -1,7 +1,7 @@
 <template>
   <div>
     <fieldset class="form-group">
-      <label for="select-module">Module</label>
+      <label for="select-module">{{ $t('block.recordList.module') }}</label>
       <select v-model="o.moduleID" required class="form-control" id="select-module">
         <option disabled selected>---</option>
         <option
@@ -11,49 +11,58 @@
           :value="module.moduleID"
         >{{ module.name }}</option>
       </select>
-      <i>Disabled modules on the list do not have <router-link :to="{ name: 'admin.pages'}">record pages</router-link> available.</i>
+      <i>
+        <i18next path="block.recordList.moduleFootnote" tag="label">
+          <router-link :to="{ name: 'admin.pages'}">{{ $t('block.recordList.recordPages') }}</router-link>
+        </i18next>
+      </i>
     </fieldset>
 
     <field-selector v-if="recordListModule" :module="recordListModule" :fields.sync="o.fields" />
 
-    <b-form-group horizontal :label-cols="3" breakpoint="md" label="New records">
+    <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.newLabel')">
         <b-form-checkbox :value="true"
                          :unchecked-value="false"
                          plain
-                         v-model="o.hideAddButton">Hide add record button</b-form-checkbox>
+                         v-model="o.hideAddButton">
+
+          {{ $t('block.recordList.record.hideAddButton') }}
+        </b-form-checkbox>
     </b-form-group>
-    <b-form-group horizontal :label-cols="3" breakpoint="md" label="Prefilter records">
+    <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.prefilterLabel')">
       <b-form-textarea :value="true"
-                       placeholder="field1 = 1 AND field2 = 232"
+                       :placeholder="$t('block.recordList.record.prefilterPlaceholder')"
                        v-model="o.prefilter"></b-form-textarea>
         <b-form-text>
-          Simplified SQL condition (WHERE ...) syntax is suppoeted.
-          Variables like <code>${recordID}</code>, <code>${ownerID}</code> and
-          <code>${userID}</code> are evaluated (when available).
+          <i18next path="block.recordList.record.prefilterFootnote" tag="label">
+            <code>${recordID}</code>
+            <code>${ownerID}</code>
+            <code>${userID}</code>
+          </i18next>
         </b-form-text>
       <b-form-checkbox :value="true"
                        :unchecked-value="false"
                        plain
-                       v-model="o.hideSearch">Hide search box</b-form-checkbox>
+                       v-model="o.hideSearch">{{ $t('block.recordList.record.prefilterHideSearch') }}</b-form-checkbox>
     </b-form-group>
-    <b-form-group horizontal :label-cols="3" breakpoint="md" label="Presort records">
+    <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.presortLabel')">
       <b-form-textarea :value="true"
-                       placeholder="field1 DESC, field2 ASC"
+                       :placeholder="$t('block.recordList.record.presortPlaceholder')"
                        v-model="o.presort"></b-form-textarea>
       <b-form-text>
-        Simplified SQL condition (ORDER BY ...) syntax is suppoeted.
+        {{ $t('block.recordList.record.presortFootnote') }}
       </b-form-text>
       <b-form-checkbox :value="true"
                        :unchecked-value="false"
                        plain
-                       v-model="o.hideSorting">Hide sorting</b-form-checkbox>
+                       v-model="o.hideSorting">{{ $t('block.recordList.record.presortHideSort') }}</b-form-checkbox>
     </b-form-group>
-    <b-form-group horizontal :label-cols="3" breakpoint="md" label="Records per page">
+    <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.perPage')">
       <b-form-input type="number" v-model.number="o.perPage"></b-form-input>
       <b-form-checkbox :value="true"
                        :unchecked-value="false"
                        plain
-                       v-model="o.hidePaging">Hide paging</b-form-checkbox>
+                       v-model="o.hidePaging">{{ $t('block.recordList.record.hidePaging') }}</b-form-checkbox>
     </b-form-group>
   </div>
 </template>

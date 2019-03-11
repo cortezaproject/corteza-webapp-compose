@@ -14,12 +14,12 @@
                         :currentPageID="currentPageID">
 
               <li slot="collapse" id="public_nav_collapse_0">
-                <span>More</span><ul></ul>
+                <span>{{ $t('navigation.more') }}</span><ul></ul>
               </li>
             </menu-level>
           </b-collapse>
         <span class="page-title">{{ currentPage.title }}</span>
-        <router-link id="public_nav_to_admin_pannel" :to="{ name: 'admin' }" class="nav-link admin-panel">Admin panel</router-link>
+        <router-link id="public_nav_to_admin_pannel" :to="{ name: 'admin' }" class="nav-link admin-panel">{{ $t('navigation.adminPanel') }}</router-link>
       </b-navbar>
     </header>
 </template>

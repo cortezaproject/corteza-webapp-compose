@@ -1,18 +1,18 @@
 <template>
   <fieldset class="form-group">
-    <b-form-group label="Manual triggers" horizontal description="Select from the list of manual triggers. Disabled and incompatible (different module) triggers are disabled.">
+    <b-form-group :label="$t('block.automation.manualTrigger')" horizontal :description="$t('block.automation.triggerFootnote')">
       <b-input-group>
         <b-form-select v-model="selectedTriggerID" :options="triggerOptions">
           <template slot="first">
-            <option disabled :value="null">Pick a trigger</option>
+            <option disabled :value="null">{{ $t('block.automation.pickTrigger') }}</option>
           </template>
         </b-form-select>
         <b-input-group-append>
-          <b-button @click.prevent="handleAddButton" variant="dark">Add</b-button>
+          <b-button @click.prevent="handleAddButton" variant="dark">{{ $t('general.label.add') }}</b-button>
         </b-input-group-append>
       </b-input-group>
     </b-form-group>
-    <b-form-group label="Buttons" description="A list of manual triggers, accessible via click on a button (rename and reorder as you see fit)" horizontal v-show="o.buttons.length > 0">
+    <b-form-group label="Buttons" :description="$t('block.automation.buttonFootnote')" horizontal v-show="o.buttons.length > 0">
       <draggable
         :list.sync="o.buttons"
         :options="{ group: 'fields' }">
@@ -23,7 +23,7 @@
           <div class="btn-name">
             <b-form-input v-model="b.label" placeholder="button label"></b-form-input>
             <b-input-group-append is-text>
-              Trigger "{{ (findTriggerByID(b.triggerID) || {}).name }}"
+              {{ $t('block.automation.trigger') }} "{{ (findTriggerByID(b.triggerID) || {}).name }}"
             </b-input-group-append>
           </div>
           <b-input-group-append class="btn-color">
@@ -59,11 +59,11 @@ export default {
       selectedTriggerID: null,
       charts: [],
       variantOptions: [
-        { value: 'blue', text: 'Blue button' },
-        { value: 'secondary', text: 'White button' },
-        { value: 'green', text: 'Green button' },
-        { value: 'red', text: 'Red button' },
-        { value: 'dark', text: 'Grey button' },
+        { value: 'blue', text: this.$t('block.automation.blueButton') },
+        { value: 'secondary', text: this.$t('block.automation.whiteButton') },
+        { value: 'green', text: this.$t('block.automation.greenButton') },
+        { value: 'red', text: this.$t('block.automation.redButton') },
+        { value: 'dark', text: this.$t('block.automation.greyButton') },
       ],
     }
   },

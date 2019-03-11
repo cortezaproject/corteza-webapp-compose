@@ -1,11 +1,11 @@
 <template>
   <div>
-    <section v-if="!faker">Can not use generator, no faker lib.</section>
+    <section v-if="!faker">{{ $t('module.recordGenerator.notUsable') }}</section>
     <section class="container well" v-else-if="module">
-      <h2>Record generator for {{module.name}}</h2>
+      <h2>{{ $t('module.recordGenerator.forModule') }} {{module.name}}</h2>
 
       <form @submit.prevent="handleGenerate">
-        <b-input-group prepend=" How many fake ecords do you want to create?">
+        <b-input-group :prepend="$t('module.recordGenerator.howManyRecords')">
           <b-form-input
             type="number"
             required
@@ -13,7 +13,7 @@
             v-model="totalRecordsToCreate" variant="primary" />
           <b-input-group-append>
             <b-button type="submit"
-                      :disabled="disabled">Generate!</b-button>
+                      :disabled="disabled">{{ $t('module.recordGenerator.generate') }}</b-button>
           </b-input-group-append>
         </b-input-group>
         <b-progress height="20px" class="mt-2" :max="parseInt(totalRecordsToCreate)" show-progress>
@@ -22,7 +22,13 @@
       </form>
 
       <hr />
-      <h3>Sample <button @click="demo=recordFaker()">roll the dice</button></h3>
+      <h3>
+        <i18next path="module.recordGenerator.sampleRoll" tag="label">
+          <button @click="demo=recordFaker()">
+            {{ $t('module.recordGenerator.rollTheDice') }}
+          </button>
+        </i18next>
+      </h3>
       <table border="1">
         <tr v-for="(v,i) in demo" :key="i">
           <td width="150">{{ v.name }}</td>

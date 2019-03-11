@@ -1,13 +1,13 @@
 <template>
     <div>
         <fieldset class="form-group" v-if="page.moduleID && page.moduleID !== '0'">
-            <label>Field that contains Twitter Profile URL for a record</label>
+            <label>{{ $t('block.socialFeed.twitterProfileField') }}</label>
             <b-form-select
                 :options="selectOptions"
                 v-model="o.profileSourceField" />
         </fieldset>
         <fieldset class="form-group">
-            <label>Twitter Profile URL for list pages i.e (https://twitter.com/bloomberg)</label>
+            <label>{{ $t('block.socialFeed.twitterProfileLabel') }}</label>
             <input class="form-control" type="text" v-model="o.profileUrl">
         </fieldset>
     </div>

@@ -2,30 +2,30 @@
   <fieldset class="form-group">
 
     <b-form-group horizontal
-                  label="Calendar header">
+                  :label="$t('block.calendar.calendarHeader')">
       <b-form-checkbox plain
                        v-model="o.header.hide"
                        :value="true"
-                       :unchecked-value="false">Hide calendar header</b-form-checkbox><br />
+                       :unchecked-value="false">{{ $t('block.calendar.hideHeader') }}</b-form-checkbox><br />
       <b-form-checkbox plain
                        v-model="o.header.hidePrevNext"
                        :disabled="o.header.hide"
                        value="true"
-                       :unchecked-value="false">Hide prev/next button</b-form-checkbox><br />
+                       :unchecked-value="false">{{ $t('block.calendar.hideNavigation') }}</b-form-checkbox><br />
       <b-form-checkbox plain
                        v-model="o.header.hideToday"
                        :disabled="o.header.hide"
                        :value="true"
-                       :unchecked-value="false">Hide today button</b-form-checkbox><br />
+                       :unchecked-value="false">{{ $t('block.calendar.hideToday') }}</b-form-checkbox><br />
       <b-form-checkbox plain
                        v-model="o.header.hideTitle"
                        :disabled="o.header.hide"
                        :value="true"
-                       :unchecked-value="false">Hide title text</b-form-checkbox><br />
+                       :unchecked-value="false">{{ $t('block.calendar.hideTitle') }}</b-form-checkbox><br />
 
     </b-form-group>
     <b-form-group horizontal
-                  label="Enabled views">
+                  :label="$t('block.calendar.view.enabled')">
       <b-form-checkbox-group v-model="o.header.views"
                              :disabled="o.header.hide"
                              buttons
@@ -37,8 +37,8 @@
     </b-form-group>
 
     <b-form-group horizontal
-                  description="Make sure default is one of the available views"
-                  label="Default view">
+                  :description="$t('block.calendar.view.footnote')"
+                  :label="$t('block.calendar.view.default')">
       <b-form-radio-group v-model="o.defaultView"
                           buttons
                           button-variant="outline-secondary"
@@ -50,49 +50,49 @@
     <div v-for="(feed, index) in o.feeds" :key="index">
       <hr/>
       <b-form-group horizontal
-                    label="Configure events source">
+                    :label="$t('block.calendar.eventsSource')">
         <b-form-select v-model="feed.moduleID"
                        :options="modules"
                        value-field="moduleID"
                        text-field="name">
           <template slot="first">
-            <option :value="null">(no module)</option>
+            <option :value="null">{{ $t('block.calendar.noModule') }}</option>
           </template>
         </b-form-select>
 
       </b-form-group>
       <b-form-group horizontal v-if="feed.moduleID && getModuleByID(feed.moduleID)" class="feed-config">
         <b-input-group>
-          <b-input-group-append is-text>Title</b-input-group-append>
+          <b-input-group-append is-text>{{ $t('general.label.title') }}</b-input-group-append>
           <b-form-select v-model="feed.titleField" :options="textualFields(feed.moduleID) | optionizeFields">
             <template slot="first">
-              <option disabled :value="null">(no field)</option>
+              <option disabled :value="null">{{ $t('block.calendar.noField') }}</option>
             </template>
           </b-form-select>
         </b-input-group>
 
         <b-input-group>
-          <b-input-group-append is-text>Event start</b-input-group-append>
+          <b-input-group-append is-text>{{ $t('block.calendar.eventStart') }}</b-input-group-append>
           <b-form-select v-model="feed.startField" :options="datetimeFields(feed.moduleID) | optionizeFields">
             <template slot="first">
-              <option disabled :value="null">(no field)</option>
+              <option disabled :value="null">{{ $t('block.calendar.noField') }}</option>
             </template>
           </b-form-select>
         </b-input-group>
 
         <b-input-group>
-          <b-input-group-append is-text>Event end</b-input-group-append>
+          <b-input-group-append is-text>{{ $t('block.calendar.eventEnd') }}</b-input-group-append>
           <b-form-select v-model="feed.endField" :options="datetimeFields(feed.moduleID) | optionizeFields">
             <template slot="first">
-              <option :value="null">(no field, event will last 1 hour)</option>
+              <option :value="null">{{ $t('block.calendar.noFieldOneHour') }}</option>
             </template>
           </b-form-select>
         </b-input-group>
 
-        <b-form-checkbox plain v-model="feed.allDay" :value="true" :unchecked-value="false">Show as all-day-events</b-form-checkbox><br />
+        <b-form-checkbox plain v-model="feed.allDay" :value="true" :unchecked-value="false">{{ $t('block.calendar.eventAllDay') }}</b-form-checkbox><br />
       </b-form-group>
     </div>
-    <b-button @click.prevent="handleAddButton" class="btn btn-url">Add events source</b-button>
+    <b-button @click.prevent="handleAddButton" class="btn btn-url">{{ $t('block.calendar.addEventsSource') }}</b-button>
   </fieldset>
 </template>
 <script>
@@ -109,7 +109,7 @@ export default {
     optionizeFields (ff) {
       return ff.map(f => {
         return {
-          text: f.label || f.name,
+          text: this.$t(f.label) || f.name,
           value: f.name,
         }
       })

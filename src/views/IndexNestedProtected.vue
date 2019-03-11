@@ -40,7 +40,7 @@ export default {
     const errHandler = (error) => {
       switch ((error.response || {}).status) {
         case 403:
-          this.error = 'Not allowed to access Crust CRM'
+          this.error = this.$t('notification.general.crmAccessNotAllowed')
       }
 
       return Promise.reject(error)

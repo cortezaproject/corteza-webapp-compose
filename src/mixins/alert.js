@@ -8,7 +8,7 @@ const warning = { variant: 'warning', countdown: 120 }
 export default {
   methods: {
     raiseSuccessAlert (message) {
-      this.raiseAlert(Object.assign({}, success, { message }))
+      this.raiseAlert(Object.assign({}, success, { message: this.$t(message) }))
     },
 
     raiseWarningAlert (message) {
@@ -21,7 +21,7 @@ export default {
 
     defaultErrorHandler (prefix) {
       return (err = {}) => {
-        this.raiseWarningAlert(err.message ? (prefix + ': ' + err.message) : prefix)
+        this.raiseWarningAlert(err.message ? (this.$t(prefix) + ': ' + this.$t(err.message)) : this.$t(prefix))
         this.$logger.error(err)
       }
     },

@@ -3,9 +3,12 @@
     <div v-if="mode === 'list'">
         <a :href="attachment.download">
           <font-awesome-icon :icon="['fas', 'download']"></font-awesome-icon>
-          {{aattachment.name}}
+          {{attachment.name}}
         </a>
-        (File size: {{aattachment.size}}, uploaded {{aattachment.changedAt}})
+        <i18next path="general.label.uploadProgress" tag="label">
+          <span>{{attachment.size}}</span>
+          <span>{{attachment.changedAt}}</span>
+        </i18next>
     </div>
 
     <div v-if="mode === 'grid'">
@@ -16,7 +19,10 @@
           ></font-awesome-icon>
           {{aattachment.name}}
         </a>
-        (File size: {{aattachment.size}}, uploaded {{aattachment.changedAt}})
+        <i18next path="general.label.uploadProgress" tag="label">
+          <span>{{attachment.size}}</span>
+          <span>{{attachment.changedAt}}</span>
+        </i18next>
     </div>
 
     <div v-if="mode === 'single' || 'gallery'" class="single">
@@ -29,7 +35,7 @@
             title="Open bookmarks"
           ></font-awesome-icon>
           <a :href="attachment.download">
-            Download
+            {{ $t('general.label.download') }}
           </a>
         </div>
         {{a.name}}

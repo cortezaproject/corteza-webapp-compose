@@ -1,7 +1,7 @@
 <template>
   <div class="toolbar">
-    <button class="btn-url" @click.prevent="$router.back()">&#171; Back (without saving changes)</button>
-    <confirmation-toggle v-if="!hideDelete" @confirmed="$emit('delete')" class="confirmation">Delete</confirmation-toggle>
+    <button class="btn-url" @click.prevent="$router.back()">&#171; {{ $t('general.label.backWithoutSave') }}</button>
+    <confirmation-toggle v-if="!hideDelete" @confirmed="$emit('delete')" class="confirmation">{{ $t('general.label.delete') }}</confirmation-toggle>
     <slot></slot>
   </div>
 </template>

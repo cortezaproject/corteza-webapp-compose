@@ -50,7 +50,7 @@ export default {
           this.renderer.update()
         })
       })
-    }).catch(this.defaultErrorHandler('Could not load chart'))
+    }).catch(this.defaultErrorHandler(this.$t('notification.chart.loadFailed')))
   },
 
   methods: {

@@ -1,3 +1,5 @@
+import i18next from '../i18next'
+
 export default class Trigger {
   constructor (def = {}) {
     this.merge(def)
@@ -61,7 +63,7 @@ export default class Trigger {
       if (await eval(source)) {
         return Promise.resolve(true)
       } else {
-        return Promise.reject(new Error('Trigger failed to execute successfully'))
+        return Promise.reject(new Error(i18next.t('notification.automation.execError')))
       }
     } catch (e) {
       return Promise.reject(e)

@@ -7,16 +7,21 @@ import VueI18Next from '@panter/vue-i18next'
 import cBackend from 'i18next-chained-backend'
 import xhrBackend from 'i18next-xhr-backend'
 // import localBackend from 'i18next-localstorage-backend'
+import lngDetector from 'i18next-browser-languagedetector'
 
 Vue.use(VueI18Next)
 
-const locale = 'en'
 i18next
   .use(cBackend)
+  .use(lngDetector)
   .init({
-    lng: locale,
-    fallbackLng: locale,
+    fallbackLng: window.CrustConfig.webapp.defaultLocale || 'en',
     debug: process.env.NODE_ENV !== 'production',
+    detection: {
+      // to overwrite, to use user defined, to guess user's lang
+      order: ['querystring', 'localStorage', 'cookie', 'navigator'],
+      caches: [/* 'localStorage', 'cookie' */],
+    },
     backend: {
       backends: [
         // localBackend,
