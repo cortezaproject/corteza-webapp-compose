@@ -5,19 +5,19 @@
                     @save="handleUpdate()">
 
       <button class="btn"
-              @click.prevent="$router.push({ name: 'public.page.record.create' })">+ Add new</button>
+              @click.prevent="$router.push({ name: 'public.page.record.create' })">+ {{ $t('general.label.addNew') }}</button>
 
       <button class="btn btn-blue"
               :disabled="!record || !record.isValid()"
-              @click.prevent="handleUpdate" v-if="editMode">Save</button>
+              @click.prevent="handleUpdate" v-if="editMode">{{ $t('general.label.save') }}</button>
 
       <button class="btn"
-              @click.prevent="$router.push({ name: 'public.page.record.edit' })" v-else>Edit</button>
+              @click.prevent="$router.push({ name: 'public.page.record.edit' })" v-else>{{ $t('general.label.edit') }}</button>
     </toolbar>
     <grid :page="page" :record="record" :edit-mode="editMode" v-if="record" @reload="loadRecord()" />
-    <b-modal id="deleteRecord" title="Delete record" @ok="handleDelete" ok-title="Delete" ok-variant="danger">
+    <b-modal id="deleteRecord" :title="$t('block.record.deleteRecord')" @ok="handleDelete" :ok-title="$t('general.label.delete')" ok-variant="danger">
       <div class="d-block text-center">
-        <h3>Are you sure you want to delete this record?</h3>
+        <h3>{{ $t('block.record.confirmDelete') }}</h3>
       </div>
     </b-modal>
   </div>
@@ -89,7 +89,7 @@ export default {
       if (this.page && this.recordID && this.page.moduleID) {
         this.$crm.recordRead({ moduleID: this.page.moduleID, recordID: this.recordID }).then(record => {
           this.record = new Record(this.module, record)
-        }).catch(this.defaultErrorHandler('Could not load this record'))
+        }).catch(this.defaultErrorHandler(this.$t('notification.record.loadFailed')))
       }
     },
 
@@ -98,7 +98,7 @@ export default {
         .then(() => {
           this.$router.push({ name: 'public.page', params: { pageID: this.page.pageID } })
         })
-        .catch(this.defaultErrorHandler('Could not delete this record'))
+        .catch(this.defaultErrorHandler(this.$t('notification.record.deleteFailed')))
     },
 
     handleBack () {

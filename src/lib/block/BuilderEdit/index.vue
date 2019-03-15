@@ -2,31 +2,29 @@
   <form class="col-12">
     <fieldset class="form-group">
       <div class="form-group">
-        <label for="title">Title</label>
+        <label for="title">{{ $t('block.general.titleLabel') }}</label>
         <input
           v-model="block.title"
           type="text"
           class="form-control form-control-sm"
           id="title"
-          placeholder="Block Title"
-        >
+          :placeholder="$t('block.general.titlePlaceholder')">
       </div>
 
       <div class="form-group">
-        <label for="description">Description</label>
+        <label for="description">{{ $t('block.general.descriptionLabel') }}</label>
         <input
           v-model="block.description"
           type="text"
           class="form-control form-control-sm"
           id="description"
-          placeholder="Block Description"
-        >
+          :placeholder="$t('block.general.descriptionPlaceholder')">
       </div>
      <div class="form-group">
-       <label for="color">Header style</label>
+       <label for="color">{{ $t('block.general.headerStyle') }}</label>
        <b-form-select v-model="block.theme" :options="options" class="mb-3" />
        <div :class="'theme-'+block.theme">
-         <h2>Preview of your header</h2>
+         <h2>{{ $t('block.general.previewHeader') }}</h2>
        </div>
      </div>
     </fieldset>
@@ -62,16 +60,16 @@ export default {
   data () {
     return {
       options: [
-        { value: '', text: 'White with dark text - default' },
-        { value: 'red-light', text: 'Red with white text' },
-        { value: 'red-dark', text: 'Red with dark text' },
-        { value: 'green-light', text: 'Green with white text' },
-        { value: 'green-dark', text: 'Green with dark text' },
-        { value: 'blue-light', text: 'Blue with white text' },
-        { value: 'blue-dark', text: 'Blue with dark text' },
-        { value: 'grey-light', text: 'Grey with white text' },
-        { value: 'grey-dark', text: 'Grey with dark text' },
-        { value: 'yellow-dark', text: 'Yellow with dark text' },
+        { value: '', text: this.$t('block.general.style.default') },
+        { value: 'red-light', text: this.$t('block.general.style.redLight') },
+        { value: 'red-dark', text: this.$t('block.general.style.redDark') },
+        { value: 'green-light', text: this.$t('block.general.style.greenLight') },
+        { value: 'green-dark', text: this.$t('block.general.style.greenDark') },
+        { value: 'blue-light', text: this.$t('block.general.style.blueLight') },
+        { value: 'blue-dark', text: this.$t('block.general.style.blueDark') },
+        { value: 'grey-light', text: this.$t('block.general.style.greyLight') },
+        { value: 'grey-dark', text: this.$t('block.general.style.greyDark') },
+        { value: 'yellow-dark', text: this.$t('block.general.style.yellowDark') },
       ],
     }
   },

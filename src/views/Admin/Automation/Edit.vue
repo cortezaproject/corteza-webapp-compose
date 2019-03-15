@@ -3,42 +3,42 @@
     <form @submit.prevent="handleSave" class="container" v-if="trigger">
       <div class="row">
         <div class="col-md-12 well">
-          <h2>Automation</h2>
+          <h2>{{ $t(`automation.edit.title`) }}</h2>
           <b-form-group horizontal
-                        label="Name">
+                        :label="$t(`automation.edit.nameLabel`)">
             <b-form-input v-model="trigger.name"
                           require
-                          placeholder="Automation name"></b-form-input>
+                          :placeholder="$t(`automation.edit.namePlaceholder`)"></b-form-input>
           </b-form-group>
 
           <b-form-group horizontal>
             <b-form-checkbox v-model="trigger.enabled"
                              :value="true"
                              plain
-                             :unchecked-value="false">Enabled</b-form-checkbox>
+                             :unchecked-value="false">{{ $t(`automation.edit.enabled`) }}</b-form-checkbox>
           </b-form-group>
 
           <b-form-group horizontal
-                        label="Primary module">
+                        :label="$t(`automation.edit.primaryModule.label`)">
             <b-form-select v-model="trigger.moduleID"
                            :options="modules"
                            text-field="name"
                            required
                            value-field="moduleID"
                            class="form-control">
-              <template slot="first"><option :value="null">(no primary module)</option></template>
+              <template slot="first"><option :value="null">{{ $t(`automation.edit.primaryModule.none`) }}</option></template>
             </b-form-select>
           </b-form-group>
 
           <b-form-group horizontal>
             <b-button-group>
-              <b-button variant="link" @click="insertSample('LeadConversion')">Lead conversion example</b-button>
+              <b-button variant="link" @click="insertSample('LeadConversion')">{{ $t(`automation.edit.loadExampleConversion`) }}</b-button>
             </b-button-group>
-            <b-button class="float-right" variant="link" @click="insertSample('Default', true)">Reset</b-button>
+            <b-button class="float-right" variant="link" @click="insertSample('Default', true)">{{ $t(`automation.edit.reset`) }}</b-button>
           </b-form-group>
 
           <b-form-group horizontal
-                        label="Code">
+                        :label="$t('automation.edit.codeLabel')">
             <AceEditor :value="trigger.source"
                        :fontSize="14"
                        :showPrintMargin="false"
@@ -59,65 +59,34 @@
           </b-form-group>
 
           <b-form-group horizontal
-                        label="Actions that trigger the automation ...">
+                        :label="$t('automation.triggerCondition.label')">
             <b-form-checkbox-group plain v-model="trigger.actions" stacked>
-              <b-form-checkbox value="manual">manually, when user clicks a button on a page</b-form-checkbox>
-              <b-form-checkbox value="beforeCreate">before record is created</b-form-checkbox>
-              <b-form-checkbox value="afterCreate">after record is created</b-form-checkbox>
-              <b-form-checkbox value="beforeUpdate">before record is updated</b-form-checkbox>
-              <b-form-checkbox value="afterUpdate">after record is updated</b-form-checkbox>
-              <b-form-checkbox value="beforeDelete">before record is deleted</b-form-checkbox>
-              <b-form-checkbox value="afterDelete">after record is deleted</b-form-checkbox>
+              <b-form-checkbox value="manual">{{ $t(`automation.triggerCondition.manual`) }}</b-form-checkbox>
+              <b-form-checkbox value="beforeCreate">{{ $t(`automation.triggerCondition.beforeCreate`) }}</b-form-checkbox>
+              <b-form-checkbox value="afterCreate">{{ $t(`automation.triggerCondition.afterCreate`) }}</b-form-checkbox>
+              <b-form-checkbox value="beforeUpdate">{{ $t(`automation.triggerCondition.beforeUpdate`) }}</b-form-checkbox>
+              <b-form-checkbox value="afterUpdate">{{ $t(`automation.triggerCondition.afterUpdate`) }}</b-form-checkbox>
+              <b-form-checkbox value="beforeDelete">{{ $t(`automation.triggerCondition.beforeDelete`) }}</b-form-checkbox>
+              <b-form-checkbox value="afterDelete">{{ $t(`automation.triggerCondition.afterDelete`) }}</b-form-checkbox>
             </b-form-checkbox-group>
           </b-form-group>
         </div>
         <div class="col-md-12 well">
           <b-form-group horizontal
-                        label="Testing trigger"
-                        description="When trigger has primary module selected, record ID is needed for tests to run properly.<br />
-                                     Changes to records are ignored if not explicity saved (through crust.api.record.save/delete)">
+                        :label="$t('automation.testing.label')"
+                        :description="`${$t('automation.testing.footnotePrimaryModule')}<br />${$t('automation.testing.footnoteRecordChanges')}`">
             <b-input-group>
-              <b-input-group-text slot="prepend">Record ID</b-input-group-text>
+              <b-input-group-text slot="prepend">{{ $t('automation.testing.recordID') }}</b-input-group-text>
               <b-form-input v-model="test.recordID"
                             :state="testRecordIDState"
                             :disabled="!trigger.moduleID"></b-form-input>
               &nbsp;&nbsp;
               <b-button @click.prevent="onRun"
-                        :disabled="testRecordIDState === false">Run test</b-button>
+                        :disabled="testRecordIDState === false">{{ $t('automation.testing.run') }}</b-button>
             </b-input-group>
           </b-form-group>
         </div>
-        <div class="col-md-12 well manual">
-          <h2>Record Automation Manual</h2>
-          <h3>Trigger logic and behaviour</h3>
-          <h4>"Manual" triggers</h4>
-          <p>
-            An enabled automation rule with "manually, when user clicks a button on a page" checked can be inserted as a button in an "automation block" on a page. If the page type is a "record page", the primary module of the automation rule must match the module of the record page.
-          </p>
-          <hr>
-          <h4>"Before" triggers</h4>
-          <p>
-            An enabled automation rule with "before record is created", "before record is updated" or "before record is deleted" checked, can prevent the creation, update or deletion of the record. </p>
-          <p>If an error/exception (<code>throw new Exception('Some error')</code>) or <i>non true</i> value is returned (<code>return false</code>), the following action is canceled and the record is not created, updated or deleted.</p>
-          <hr>
-          <h4>"After" triggers</h4>
-          <p>
-            An enabled automation rule with "after record is created", "after record is updated" or "after record is deleted" checked is executed after a successful creation, update or deletion.
-          </p>
-          <p>
-            In case of creation or update, the new data of the record can be accessed in the automation code, but on deletion will return record data from before deletion.
-          </p>
-          <hr>
-          <h4>Order of execution</h4>
-          <p>1. Enabled automation rules with "Before" triggers</p>
-          <p>2. Enabled automation rules with "After" triggers</p>
-            <ul>
-              <li>Enabled automation rules with a primary module are only executed when the module detects a record creation, update or deletion.</li>
-              <li>Enabled automation rules without primary module are executed whenever there is any record creation, update or deletion.</li>
-              <li>When there are multiple enabled automation rules that match at the same time (for example, two automation rules with "after update" triggers with the same primary module), the order of execution cannot be guaranteed. Errors that occur in a specific automation rule do not affect other automation rules that match.</li>
-              <li>Enabled automation rules with "Manual" trigger are only executed manually by users.</li>
-            </ul>
-        </div>
+        <div id="automation-manual" class="col-md-12 well manual" v-html="manualFromMd($t(`automation.manual`, { joinArrays: '\n' }))"></div>
 
       </div>
     </form>
@@ -140,6 +109,8 @@ import 'brace/mode/javascript'
 import 'brace/theme/monokai'
 import EditorToolbar from '@/components/Admin/EditorToolbar'
 import RecordField from '@/lib/field/Editor/Record'
+
+const md = require('markdown-it')('commonmark')
 
 export default {
   components: {
@@ -175,6 +146,10 @@ export default {
       modules: 'module/set',
     }),
 
+    manualFromMd () {
+      return (mdRaw) => md.render(mdRaw)
+    },
+
     testRecordIDState () {
       if (!this.trigger.moduleID || !this.test.recordID) {
         return null
@@ -200,18 +175,18 @@ export default {
 
     handleSave ({ closeOnSuccess = false } = {}) {
       this.updateTrigger(this.trigger).then(() => {
-        this.raiseSuccessAlert('Trigger saved')
+        this.raiseSuccessAlert(this.$t('notification.automation.saved'))
         if (closeOnSuccess) {
           this.redirect()
         }
-      }).catch(this.defaultErrorHandler('Could not save this trigger'))
+      }).catch(this.defaultErrorHandler(this.$t('notification.automation.saveFailed')))
     },
 
     handleDelete () {
       this.deleteTrigger(this.trigger).then(() => {
-        this.raiseSuccessAlert('Trigger deleted')
+        this.raiseSuccessAlert(this.$t('notification.automation.deleted'))
         this.redirect()
-      }).catch(this.defaultErrorHandler('Could not delete this trigger'))
+      }).catch(this.defaultErrorHandler(this.$t('notification.automation.deleteFailed')))
     },
 
     onRun () {
@@ -269,7 +244,7 @@ export default {
 
       if (this.trigger.moduleID) {
         if (!this.test.recordID) {
-          this.raiseWarningAlert('Primary module set, expecting valid recordID')
+          this.raiseWarningAlert(this.$t('notification.automation.invalidRecordID'))
           return
         }
 
@@ -294,8 +269,8 @@ export default {
         // Whatever the context & promise are, continue and run the trigger.
         this.trigger
           .run(this.triggerContext(ctx))
-          .catch(this.defaultErrorHandler('An error occurred while executing the trigger (see browser console for details)'))
-          .then(() => this.raiseSuccessAlert('Trigger successfully executed'))
+          .catch(this.defaultErrorHandler(this.$t('notification.automation.execFailed')))
+          .then(() => this.raiseSuccessAlert(this.$t('notification.automation.executed')))
       })
     },
   },
@@ -325,7 +300,14 @@ label {
 
 .manual {
   margin-bottom: 90px;
+}
 
+</style>
+
+<style lang="scss">
+// Here manual's scss is not scoped, because it is rendered from markdown. This style is extremely specific so
+// it will not interfeare with other pages.
+div#automation-manual.col-md-12.well.manual {
   h2 {
     margin-bottom: 0;
   }
@@ -351,5 +333,4 @@ label {
     }
   }
 }
-
 </style>

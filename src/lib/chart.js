@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import moment from 'moment'
+import i18next from 'i18next'
 
 const defDimension = () => Object.assign({}, { conditions: {} })
 const defMetrics = () => Object.assign({}, {})
@@ -18,33 +19,69 @@ const defConfig = () => Object.assign({}, {
   },
 })
 
+export const chartTypes = [
+  { text: 'line',
+    value: 'line',
+  },
+  { text: 'bar',
+    value: 'bar',
+  },
+]
+
+export const aggregateFunctions = [
+  { value: 'COUNTD',
+    text: 'countd',
+  },
+  { value: 'SUM',
+    text: 'sum',
+  },
+  { value: 'MAX',
+    text: 'max',
+  },
+  { value: 'MIN',
+    text: 'min',
+  },
+  { value: 'AVG',
+    text: 'avg',
+  },
+  { value: 'STD',
+    text: 'std',
+  },
+]
+
 export const dimensionFunctions = [
-  { label: '(no grouping / buckets)',
+  { text: 'none',
+    value: '(no grouping / buckets)',
     convert: (f) => f,
     time: false,
   },
 
-  { label: 'DATE',
+  { text: 'date',
+    value: 'DATE',
     convert: (f) => `DATE(${f})`,
     time: { unit: 'day', minUnit: 'day', round: true },
   },
 
-  { label: 'WEEK',
+  { text: 'week',
+    value: 'WEEK',
     convert: (f) => `DATE(${f})`,
     time: { unit: 'week', minUnit: 'week', round: true, isoWeekday: true },
   },
 
-  { label: 'MONTH',
+  { text: 'month',
+    value: 'MONTH',
     convert: (f) => `DATE_FORMAT(${f}, '%Y-%m-01')`,
     time: { unit: 'month', minUnit: 'month', round: true },
   },
 
-  { label: 'QUARTER', // fetch monthly aggregation but tell renderer to group by quarter
+  { text: 'quarter', // fetch monthly aggregation but tell renderer to group by quarter
+    value: 'QUARTER',
     convert: (f) => `DATE_FORMAT(${f}, '%Y-%m-01')`,
     time: { unit: 'quarter', minUnit: 'quarter', round: true },
   },
 
-  { label: 'YEAR',
+  { text: 'year',
+    value: 'YEAR',
     convert: (f) => `DATE_FORMAT(${f}, '%Y-01-01')`,
     time: { unit: 'year', minUnit: 'year', round: true },
   },
@@ -52,22 +89,22 @@ export const dimensionFunctions = [
 
 export const predefinedFilters = [
   { value: `YEAR(created_at) = YEAR(NOW())`,
-    text: `Records created this year` },
+    text: `recordsCreatedThisYear` },
   { value: `YEAR(created_at) = YEAR(NOW()) - 1`,
-    text: `Records created last year` },
+    text: `recordsCreatedLastYear` },
 
   { value: `YEAR(created_at) = YEAR(NOW()) AND QUARTER(created_at) = QUARTER(NOW())`,
-    text: `Records created this quarter` },
+    text: `recordsCreatedThisQuarter` },
   { value: `YEAR(created_at) = YEAR(NOW()) - 1 AND QUARTER(created_at) = QUARTER(DATE_SUB(NOW(), INTERVAL 3 MONTH)`,
-    text: `Records created last quarter` },
+    text: `recordsCreatedLastQuarter` },
 
   { value: `DATE_FORMAT(created_at, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')`,
-    text: `Records created this month` },
+    text: `recordsCreatedThisMonth` },
   { value: `DATE_FORMAT(created_at, '%Y-%m') = DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 YEAR), '%Y-%m')`,
-    text: `Records created last month` },
+    text: `recordsCreatedLastMonth` },
 ]
 
-dimensionFunctions.lookup = (d) => dimensionFunctions.find(f => d.modifier === f.label)
+dimensionFunctions.lookup = (d) => dimensionFunctions.find(f => d.modifier === f.value)
 dimensionFunctions.convert = (d) => (dimensionFunctions.lookup(d) || {}).convert(d.field)
 
 // Makes a standarised alias from modifier or dimension report option
@@ -90,7 +127,7 @@ export default class Chart {
         let { version } = renderer || {}
 
         if (version !== 'chart.js') {
-          throw Error(`Unsupported renderer: ${version}`)
+          throw Error(i18next.t('notification.chart.unsupportedRenderer', { version }))
         }
       } else {
         renderer = { version: 'chart.js' }

@@ -1,8 +1,8 @@
 <template>
-  <b-form-group :label="field.label || field.name">
+  <b-form-group :label="$t(field.label) || field.name">
     <b-form-input v-if="!field.options.onlyTime"
                   type="date"
-                  v-b-tooltip.hover :title="dateRule"
+                  v-b-tooltip.hover :title="$t(dateRule)"
                   v-model="date" />
     <b-form-input v-if="!field.options.onlyDate"
                   type="time"
@@ -24,9 +24,9 @@ export default {
   computed: {
     dateRule () {
       if (this.field.options.onlyFutureValues) {
-        return 'Only dates in the future will be saved!'
+        return 'field.kind.dateTime.warning.pastValuesOnly'
       } else if (this.field.options.onlyPastValues) {
-        return 'Only dates in the past will be saved!'
+        return 'field.kind.dateTime.warning.futureValuesOnly'
       } else {
         return ''
       }

@@ -3,11 +3,11 @@
     <router-link
       :to="backLink"
       v-if="backLink"
-      class="btn-url">&#171; Back (without saving changes)</router-link>
+      class="btn-url">&#171; {{ $t('general.label.backWithoutSave') }}</router-link>
     <slot></slot>
-    <confirmation-toggle v-if="!hideDelete" @confirmed="$emit('delete')" class="confirmation">Delete</confirmation-toggle>
-    <button type="submit" @click.prevent="$emit('save')" class="btn btn-blue">Save</button>
-    <button type="button" @click.prevent="$emit('saveAndClose')" class="btn btn-blue">Save and close</button>
+    <confirmation-toggle v-if="!hideDelete" @confirmed="$emit('delete')" class="confirmation">{{ $t('general.label.delete') }}</confirmation-toggle>
+    <button type="submit" @click.prevent="$emit('save')" class="btn btn-blue">{{ $t('general.label.save') }}</button>
+    <button type="button" @click.prevent="$emit('saveAndClose')" class="btn btn-blue">{{ $t('general.label.saveAndClose') }}</button>
   </div>
 </template>
 <script>

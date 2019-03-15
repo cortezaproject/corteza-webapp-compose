@@ -12,7 +12,7 @@ export default {
 
   computed: {
     formatted () {
-      return this.user ? (this.field.options.formatter(this.user) || this.value) : 'N/A'
+      return this.user ? (this.field.options.formatter(this.user) || this.value) : this.$t('field.kind.user.na')
     },
   },
 

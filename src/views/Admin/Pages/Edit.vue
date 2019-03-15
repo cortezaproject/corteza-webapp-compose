@@ -4,21 +4,21 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well">
-            <h2>Edit page</h2>
-            <router-link :to="{name: 'admin.pages.builder'}" class="btn-url float-right">Page builder</router-link>
+            <h2>{{ $t('page.edit.title') }}</h2>
+            <router-link :to="{name: 'admin.pages.builder'}" class="btn-url float-right">{{ $t('general.label.pageBuilder') }}</router-link>
             <form @submit.prevent="handleSave()">
               <input required type="hidden" v-model="page.pageID" id="id" />
               <div class="form-group">
-                <label for="title">Page title</label>
-                <input required type="text" v-model="page.title" class="form-control" id="title" placeholder="Page title" />
+                <label for="title">{{ $t('page.newPlaceholder') }}</label>
+                <input required type="text" v-model="page.title" class="form-control" id="title" :placeholder="$t('page.newPlaceholder')" />
               </div>
               <div class="form-group">
-                <label for="title">Description</label>
-                <textarea v-model="page.description" class="form-control" id="description" placeholder="Page description" />
+                <label for="title">{{ $t('general.label.description') }}</label>
+                <textarea v-model="page.description" class="form-control" id="description" :placeholder="$t('page.edit.pageDescription')" />
               </div>
               <div class="form-group form-check">
                 <input type="checkbox" id="visible" class="form-check-input" v-model="page.visible">
-                <label for="visible" class="form-check-label">Page visible?</label>
+                <label for="visible" class="form-check-label">{{ $t('page.edit.visible') }}?</label>
               </div>
             </form>
           </div>
@@ -67,22 +67,22 @@ export default {
       }
 
       this.page = page
-    }).catch(this.defaultErrorHandler('Could not load page'))
+    }).catch(this.defaultErrorHandler(this.$t('notification.page.loadFailed')))
   },
   methods: {
     handleSave ({ closeOnSuccess = false } = {}) {
       this.$crm.pageUpdate(this.page).then(() => {
-        this.raiseSuccessAlert('Page saved')
+        this.raiseSuccessAlert(this.$t('notification.page.saved'))
         if (closeOnSuccess) {
           this.$router.push({ name: 'admin.pages' })
         }
-      }).catch(this.defaultErrorHandler('Could not save this page'))
+      }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))
     },
 
     handleDeletePage () {
       this.$crm.pageDelete({ pageID: this.pageID }).then(() => {
         this.$router.push({ name: 'admin.pages' })
-      }).catch(this.defaultErrorHandler('Could not delete this page'))
+      }).catch(this.defaultErrorHandler(this.$t('notification.page.deleteFailed')))
     },
   },
 }

@@ -1,3 +1,3 @@
 <template>
-  <div>File block</div>
+  <div>{{ $t('block.file.preview.label') }}</div>
 </template>

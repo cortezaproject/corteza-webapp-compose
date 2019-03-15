@@ -10,19 +10,19 @@
         <b-collapse is-nav id="nav_text_collapse">
           <ul>
             <li>
-              <router-link :to="{name: 'admin.modules'}" class="nav-link">Modules</router-link>
+              <router-link :to="{name: 'admin.modules'}" class="nav-link">{{ $t('navigation.module') }}</router-link>
             </li>
             <li>
-              <router-link :to="{name: 'admin.pages'}" class="nav-link">Pages</router-link>
+              <router-link :to="{name: 'admin.pages'}" class="nav-link">{{ $t('navigation.page') }}</router-link>
             </li>
             <li>
-              <router-link :to="{name: 'admin.charts'}" class="nav-link">Charts</router-link>
+              <router-link :to="{name: 'admin.charts'}" class="nav-link">{{ $t('navigation.chart') }}</router-link>
             </li>
             <li>
-              <router-link :to="{name: 'admin.automation'}" class="nav-link">Automation</router-link>
+              <router-link :to="{name: 'admin.automation'}" class="nav-link">{{ $t('navigation.automation') }}</router-link>
             </li>
             <li v-if="false">
-              <router-link :to="{name: 'admin.configuration'}" class="nav-link">Configuration</router-link>
+              <router-link :to="{name: 'admin.configuration'}" class="nav-link">{{ $t('navigation.configuration') }}</router-link>
             </li>
           </ul>
         </b-collapse>

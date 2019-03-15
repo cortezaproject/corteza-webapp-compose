@@ -4,8 +4,8 @@
       <button type="button" class="btn" :class="btnClass" @click.prevent="onPrompt" :disabled="disabled"><slot></slot></button>
     </span>
     <span v-if="inConfirmation">
-      <button type="button" class="btn" :class="confirmationClass" @click.prevent="onConfirmation()">Yes</button>
-      <button type="button" class="btn" @click.prevent="inConfirmation=false">No</button>
+      <button type="button" class="btn" :class="confirmationClass" @click.prevent="onConfirmation()">{{ $t('general.label.yes') }}</button>
+      <button type="button" class="btn" @click.prevent="inConfirmation=false">{{ $t('general.label.no') }}</button>
     </span>
   </span>
 </template>

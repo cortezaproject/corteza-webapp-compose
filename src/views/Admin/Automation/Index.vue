@@ -4,30 +4,30 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well table-responsive">
-            <h2>List of triggers</h2>
+            <h2>{{ $t('automation.title') }}</h2>
             <table class="table table-striped">
               <thead>
                 <tr>
                   <table-sortable-column
-                    label="Name"
+                    :label="$t('general.label.name')"
                     name="name"
                     :ascending="sortedByName"
                     @sort="handleSort"/>
 
                   <table-sortable-column
-                    label="Status"
+                    :label="$t('general.label.status')"
                     name="enabled"
                     :ascending="sortedByEnabled"
                     @sort="handleSort"/>
 
                   <table-sortable-column
-                    label="Actions"
+                    :label="$t('general.label.actions')"
                     name="actions"
                     :ascending="undefined"
                     :sortDisabled="true"/>
 
                   <table-sortable-column
-                    label="Updated at"
+                    :label="$t('general.label.updatedAt')"
                     name="updatedAt"
                     :ascending="sortedByUpdatedAt"
                     @sort="handleSort"/>
@@ -38,8 +38,8 @@
               <tbody>
               <tr v-for="(t, index) in sortedTriggers" :key="index">
                 <td>{{ t.name }}</td>
-                <td>{{ t.enabled ? '' : 'disabled' }}</td>
-                <td width="300"><small>{{ t.actions.join(', ') }}</small></td>
+                <td>{{ $t(`automation.status.${t.enabled}`) }}</td>
+                <td width="300"><small>{{ (t.actions || []).map(a => $t(`automation.triggerCondition.${a}`)).join(', ') }}</small></td>
                 <td><time :datetime="t.updatedAt || t.createdAt" v-if="t.updatedAt || t.createdAt">{{ prettyDate(t.updatedAt || t.createdAt) }}</time></td>
                 <td class="actions text-right">
                   <router-link :to="{name: 'admin.automation.edit', params: { triggerID: t.triggerID }}" class="action">
@@ -50,11 +50,11 @@
               </tbody>
             </table>
             <form @submit.prevent="create">
-              <b-form-group label="Create a new trigger">
+              <b-form-group :label="$t(`automation.newLabel`)">
                 <b-input-group>
-                  <input required type="text" v-model="newTrigger.name" class="form-control" id="name" placeholder="Trigger name" />
+                  <input required type="text" v-model="newTrigger.name" class="form-control" id="name" :placeholder="$t(`automation.newPlaceholder`)" />
                   <b-input-group-append>
-                    <button type="submit" class="btn btn-dark">Create</button>
+                    <button type="submit" class="btn btn-dark">{{ $t(`general.label.create`) }}</button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>

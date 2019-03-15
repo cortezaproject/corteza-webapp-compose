@@ -49,7 +49,7 @@ export default {
         },
       })
     } else {
-      return createElement('code', `Error: Unknown field kind "${this.field.kind}", no editor component found.`)
+      return createElement('code', this.$t('notification.field.unknownFieldKind', { kind: this.field.kind }))
     }
   },
 }

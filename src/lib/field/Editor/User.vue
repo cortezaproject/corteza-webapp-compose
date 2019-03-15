@@ -1,10 +1,10 @@
 <template>
-  <b-form-group :label="field.label || field.name">
+  <b-form-group :label="$t(field.label) || field.name">
     <vue-select :options="users"
                 @search="search"
                 option-value="userID"
                 option-text="label"
-                placeholder="Start typing to search for users by email or name"
+                :placeholder="$t('field.kind.user.suggestionPlacehodler')"
                 v-model="selected">
     </vue-select>
 

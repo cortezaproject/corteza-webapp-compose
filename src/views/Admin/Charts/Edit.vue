@@ -3,10 +3,10 @@
     <form @submit.prevent="handleSave" class="container well">
       <div class="row">
         <div class="col-md-12">
-          <h2>Chart builder</h2>
+          <h2>{{ $t('chart.edit.title') }}</h2>
 
           <fieldset v-if="modules">
-            <b-form-input v-model="chart.name" placeholder="Chart name"></b-form-input>
+            <b-form-input v-model="chart.name" :placeholder="$t('chart.newPlaceholder')"></b-form-input>
           </fieldset>
         </div>
       </div>
@@ -20,7 +20,7 @@
           <b-button @click.prevent="render"
                     :disabled="!chart.isValid()"
                     class="float-right"
-                    variant="blue">Load data</b-button>
+                    variant="blue">{{ $t('chart.edit.loadData') }}</b-button>
           <canvas ref="chart" width="200" height="200"></canvas>
         </section>
       </div>
@@ -97,7 +97,7 @@ export default {
     this.findChartByID({ chartID: this.chartID }).then((chart) => {
       // Make a copy so that we do not change store item by ref
       this.chart = new Chart({ ...chart })
-    }).catch(this.defaultErrorHandler('Could not load chart'))
+    }).catch(this.defaultErrorHandler(this.$t('notification.chart.loadFailed')))
   },
 
   methods: {
@@ -132,7 +132,7 @@ export default {
       const opt = this.chart.buildOptions()
 
       if (!opt) {
-        this.raiseWarningAlert('Could not build chart options')
+        this.raiseWarningAlert(this.$t('notification.chart.optionsBuildFailed'))
       }
 
       let refetch = !this.chartRenderer || forceFetch
@@ -175,18 +175,18 @@ export default {
       delete (c.config.renderer.data)
 
       this.updateChart(c).then(() => {
-        this.raiseSuccessAlert('Chart saved')
+        this.raiseSuccessAlert(this.$t('notification.chart.saved'))
         if (closeOnSuccess) {
           this.redirect()
         }
-      }).catch(this.defaultErrorHandler('Could not save this chart'))
+      }).catch(this.defaultErrorHandler(this.$t('notification.chart.saveFailed')))
     },
 
     handleDelete () {
       this.deleteChart({ chartID: this.chartID }).then(() => {
-        this.raiseSuccessAlert('Chart deleted')
+        this.raiseSuccessAlert(this.$t('notification.chart.deleted'))
         this.$router.push({ name: 'admin.charts' })
-      }).catch(this.defaultErrorHandler('Could not delete this chart'))
+      }).catch(this.defaultErrorHandler(this.$t('notification.chart.deleteFailed')))
     },
 
     redirect () {

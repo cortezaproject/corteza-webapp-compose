@@ -1,7 +1,7 @@
 <template>
   <div>
     <fieldset class="form-group">
-      <label>{{ field.label || field.name }}</label>
+      <label>{{ $t(field.label) || field.name }}</label>
       <div>{{ value }}</div>
     </fieldset>
   </div>

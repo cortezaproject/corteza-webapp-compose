@@ -28,7 +28,7 @@ export default {
         .then((record) => {
           this.$router.push({ name: 'public.page.record' })
         })
-        .catch(this.defaultErrorHandler('Could not update this record'))
+        .catch(this.defaultErrorHandler(this.$t('notification.record.updateFailed')))
     },
 
     handleBack () {

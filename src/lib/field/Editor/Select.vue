@@ -1,5 +1,5 @@
 <template>
-  <b-form-group :label="field.label || field.name">
+  <b-form-group :label="$t(field.label) || field.name">
     <b-form-select
       :options="selectOptions"
       v-model="value" />

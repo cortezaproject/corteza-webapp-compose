@@ -10,5 +10,6 @@ window.CrustConfig = {
       adtSignOutUrl: `https://satosa.didmos.${domain}/didmos/logout/`,
     },
     baseUrl: `http://${domain}`,
+    defaultLocale: 'en',
   },
 }

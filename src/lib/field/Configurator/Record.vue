@@ -1,27 +1,27 @@
 <template>
   <div>
     <div class="form-group">
-      <label class="d-block">Module name</label>
+      <label class="d-block">{{ $t('field.kind.record.moduleLabel') }}</label>
       <b-form-select v-model="f.options.moduleID"
                      :options="modules"
                      text-field="name"
                      value-field="moduleID"
                      class="form-control">
-        <template slot="first"><option disabled :value="undefined">Pick module</option></template>
+        <template slot="first"><option disabled :value="undefined">{{ $t('field.kind.record.modulePlaceholder') }}</option></template>
       </b-form-select>
     </div>
 
     <div class="form-group">
-      <label class="d-block">Record label from field</label>
+      <label class="d-block">{{ $t('field.kind.record.recordFieldLabel') }}</label>
       <b-form-select v-model="f.options.labelField"
                      class="form-control"
                      :options="fields"
                      :disabled="!module">
-        <template slot="first"><option disabled :value="undefined">Pick field</option></template>
+        <template slot="first"><option disabled :value="undefined">{{ $t('field.kind.record.recordFieldPlaceholder') }}</option></template>
       </b-form-select>
     </div>
     <div class="form-group">
-      <label class="d-block">Query fields on search</label>
+      <label class="d-block">{{ $t('field.kind.record.queryFieldsLabel') }}</label>
       <b-form-select v-model="f.options.queryFields"
                      class="form-control"
                      :options="fields"
@@ -61,7 +61,7 @@ export default {
     },
 
     fields () {
-      return this.module ? this.module.fields.map(f => { return { value: f.name, text: f.label || f.name } }) : []
+      return this.module ? this.module.fields.map(f => { return { value: f.name, text: this.$t(f.label) || f.name } }) : []
     },
   },
 

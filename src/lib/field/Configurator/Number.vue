@@ -1,28 +1,28 @@
 <template>
   <div>
     <div class="form-group">
-      <label class="d-block">Prefix</label>
-      <b-form-input v-model="f.options.prefix" placeholder="Prefix"></b-form-input>
+      <label class="d-block">{{ $t('field.kind.number.prefixLabel') }}</label>
+      <b-form-input v-model="f.options.prefix" :placeholder="$t('field.kind.number.prefixPlaceholder')"></b-form-input>
     </div>
     <div class="form-group">
-      <label class="d-block">Suffix</label>
-      <b-form-input v-model="f.options.suffix" placeholder="Suffix"></b-form-input>
+      <label class="d-block">{{ $t('field.kind.number.suffixLabel') }}</label>
+      <b-form-input v-model="f.options.suffix" :placeholder="$t('field.kind.number.suffixPlaceholder')"></b-form-input>
     </div>
     <div class="form-group">
-      <label class="d-block">Precision</label>
-      <b-form-input v-model="f.options.precision" placeholder="Precision" type="number" min="0" max="6"></b-form-input>
+      <label class="d-block">{{ $t('field.kind.number.precisionLabel') }}</label>
+      <b-form-input v-model="f.options.precision" :placeholder="$t('field.kind.number.precisionPlaceholder')" type="number" min="0" max="6"></b-form-input>
     </div>
     <div class="form-group">
-      <label class="d-block">Format</label>
-      <b-form-input v-model="f.options.format" placeholder="Format"></b-form-input>
+      <label class="d-block">{{ $t('field.kind.number.formatLabel') }}</label>
+      <b-form-input v-model="f.options.format" :placeholder="$t('field.kind.number.formatPlaceholder')"></b-form-input>
     </div>
     <div>
-      <p>Format Examples:</p>
+      <p>{{ $t('field.kind.number.examplesLabel') }}</p>
       <table style="width:100%;">
         <tr>
-          <th>Input</th>
-          <th>Format</th>
-          <th>Result</th>
+          <th>{{ $t('field.kind.number.exampleInput') }}</th>
+          <th>{{ $t('field.kind.number.exampleFormat') }}</th>
+          <th>{{ $t('field.kind.number.exampleResult') }}</th>
         </tr>
         <tr>
           <td>10000.234</td>

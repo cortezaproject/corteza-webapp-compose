@@ -5,7 +5,7 @@
       </timeline>
     </div>
     <div v-else>
-      <p>No input for displaying social feed...</p>
+      <p>{{ $t('block.socialFeed.noInput') }}</p>
     </div>
 </template>
 <script>

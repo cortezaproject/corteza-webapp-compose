@@ -9,9 +9,9 @@
     :options="dzOptions">
     <div class="uploading" v-if="active">
       <div class="progress-bar" :style="progresBarStyle"></div>
-      Uploading {{ active.file.name }} ({{ size(active.file) }})
+      {{ $t('general.label.uploading') }} {{ active.file.name }} ({{ size(active.file) }})
     </div>
-    <div class="droparea" v-else>Click or drop files here to upload</div>
+    <div class="droparea" v-else>{{ $t('general.label.dropFiles') }}</div>
   </vue-dropzone>
 </template>
 <script>

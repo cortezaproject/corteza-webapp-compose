@@ -1,8 +1,13 @@
 <template>
   <div v-if="options">
-    <p v-if="module">Single record block, displaying fields ({{ selectedFields }}) from module <code>{{ module.name || 'Untitled' }}</code></p>
+    <p v-if="module">
+      <i18next path="block.record.preview.fieldsFromModule" tag="label">
+        <span>{{ selectedFields }}</span>
+        <code>{{ module.name || 'Untitled' }}</code>
+      </i18next>
+    </p>
   </div>
-  <div v-else>Can not render this block without a record</div>
+  <div v-else>{{ $t('block.record.preview.blockNoRecord') }}</div>
 </template>
 <script>
 import base from './base'

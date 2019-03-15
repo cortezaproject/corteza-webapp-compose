@@ -1,13 +1,13 @@
 <template>
   <div class="row no-gutters">
     <div class="form-group col-10">
-      <div>Options to select from</div>
+      <div>{{ $t('field.kind.select.optionsLabel') }}</div>
       <div v-for="(option, index) in f.options.options" :key="index">
         <b-form-input plain v-model="f.options.options[index]" size="sm"></b-form-input>
-        <button @click.prevent="f.options.options.splice(index, 1)" class="btn-url">Remove</button>
+        <button @click.prevent="f.options.options.splice(index, 1)" class="btn-url">{{ $t('field.kind.select.optionRemove') }}</button>
       </div>
-      <b-form-input plain v-model="newOption" @keypress.enter.prevent="handleAddOption" size="sm" placeholder="Add more"></b-form-input>
-      <button @click.prevent="handleAddOption" :disabled="newOption.length === 0" class="btn-url">+ Add</button>
+      <b-form-input plain v-model="newOption" @keypress.enter.prevent="handleAddOption" size="sm" :placeholder="$t('field.kind.select.optionRemove')"></b-form-input>
+      <button @click.prevent="handleAddOption" :disabled="newOption.length === 0" class="btn-url">+ {{ $t('field.kind.select.optionAdd') }}</button>
     </div>
   </div>
 </template>

@@ -1,11 +1,11 @@
 <template>
-  <b-form-group :label="field.label || field.name">
+  <b-form-group :label="$t(field.label) || field.name">
     <vue-select :options="options"
                 :disabled="!module"
                 @search="search"
                 option-value="recordID"
                 option-text="label"
-                placeholder="Start typing to search for records"
+                :placeholder="$t('field.kind.record.suggestionPlaceholder')"
                 v-model="selected">
 
       <b-form-text v-if="validate && errors">

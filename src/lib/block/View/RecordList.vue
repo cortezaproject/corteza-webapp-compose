@@ -2,18 +2,18 @@
   <div v-if="recordListModule">
     <router-link v-if="!options.hideAddButton"
                  class="btn-url"
-                 :to="{ name: 'public.page.record.create', params: { pageID: options.pageID, refRecord: record }, query: null }">+ Add new record</router-link>
+                 :to="{ name: 'public.page.record.create', params: { pageID: options.pageID, refRecord: record }, query: null }">+ {{ $t('block.recordList.addRecord') }}</router-link>
     <input v-if="!options.hideSearch"
            @keyup.enter.prevent="handleQuery"
            @keyup="handleQueryThrottled"
            v-model="query"
-           placeholder="Search" />
+           :placeholder="$t('general.label.search')" />
     <div class="table-responsive">
       <table class="table sticky-header table-hover" :class="{sortable: !options.hideSorting}">
         <thead v-if="!options.hideHeader">
           <tr >
             <th v-for="(col) in columns" :key="'header:'+col.name" @click="handleSort(col.name)">
-              {{ col.label || col.name }}
+              {{ $t(col.label) || col.name }}
               <font-awesome-icon :icon="['fas', 'sort']" v-if="!options.hideSorting"></font-awesome-icon>
             </th>
             <th></th>
@@ -39,10 +39,11 @@
           :per-page="meta.perPage"
           @paginate="handlePageChange"
           theme="bootstrap4"
-          :page="meta.page + 1" />
+          :page="meta.page + 1"
+          :options="{ texts: { count: $t('block.recordList.pagination') } }" />
     </div>
   </div>
-  <div v-else>Loading...</div>
+  <div v-else>{{ $t('general.label.loading') }}...</div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
@@ -101,7 +102,7 @@ export default {
   beforeMount () {
     if (!this.options.moduleID || !this.options.pageID) {
       // Make sure block is properly configured
-      throw Error('RecordList block error: module or page option not set')
+      throw Error(this.$t('notification.record.moduleOrPageNotSet'))
     }
 
     /* eslint-disable no-template-curly-in-string */
@@ -109,11 +110,11 @@ export default {
       // If there is no current record and we are using recordID/ownerID variable in (pre)filter
       // we should disable the block
       if ((this.options.prefilter || '').includes('${record')) {
-        throw Error('Can not use ${record...} variable in non-record pages')
+        throw Error(this.$t('notification.record.invalidRecordVar'))
       }
 
       if ((this.options.prefilter || '').includes('${ownerID}')) {
-        throw Error('Can not use ${ownerID} variable in non-record pages')
+        throw Error(this.$t('notification.record.invalidOwnerVar'))
       }
     }
 
@@ -150,7 +151,7 @@ export default {
       return this.$crm.recordList(params).then(({ meta, records }) => {
         this.meta = meta
         this.records = records.map(r => new Record(this.recordListModule, r))
-      }).catch(this.defaultErrorHandler('Could not load record list'))
+      }).catch(this.defaultErrorHandler(this.$t('notification.record.listLoadFailed')))
     },
 
     handleQueryThrottled: _.throttle(function (e) { this.handleQuery(e) }, 500),
@@ -204,6 +205,13 @@ export default {
 
     handlePageChange (page) {
       this.fetch({ ...this.meta, page: page - 1 })
+    },
+
+    getFieldLabel (field) {
+      if (field.isSystem) {
+        return this.$t(field.label)
+      }
+      return field.name
     },
   },
 }

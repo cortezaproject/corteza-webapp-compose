@@ -1,5 +1,6 @@
 import Record from '@/lib/record'
 import Module from '@/lib/module'
+import i18next from '../i18next'
 
 export default {
   methods: {
@@ -70,7 +71,7 @@ export default {
           record: {
             async save (record) {
               if (!(record instanceof Record)) {
-                throw Error('Expecting Record object')
+                throw Error(i18next.t('notification.automation.expectingRecordObject'))
               }
 
               if (record.recordID === '') {
@@ -82,7 +83,7 @@ export default {
 
             async delete (record) {
               if (!(record instanceof Record)) {
-                throw Error('Expecting Record object')
+                throw Error(i18next.t('notification.automation.expectingRecordObject'))
               }
 
               if (record.recordID !== '') {
@@ -104,7 +105,7 @@ export default {
             //
             async find (module, filter = {}) {
               if (!(module instanceof Module)) {
-                throw Error('Expecting Module object')
+                throw Error(i18next.t('notification.automation.expectingModuleObject'))
               }
 
               let params = { moduleID: module.moduleID }
@@ -118,7 +119,7 @@ export default {
                 return $crm.recordRead(params).then((r) => {
                   if (r.recordID === '0') {
                     // @todo remove when backend starts returning 404 on nonexistent records
-                    return Promise.reject(Error('Record does not exist'))
+                    return Promise.reject(Error(i18next.t('notification.automation.recordDoesNotExist')))
                   } else {
                     return new Record(module, r)
                   }
@@ -185,7 +186,7 @@ export default {
               }
 
               if (!(module instanceof Module)) {
-                throw Error('Expecting Module object')
+                throw Error(i18next.t('notification.automation.expectingModuleObject'))
               }
 
               let record = new Record(module)
@@ -205,7 +206,7 @@ export default {
             toHTML: (record) => {
               let rows = record.module.fields.map(f => {
                 const v = record.values[f.name]
-                return `<tr><td>${f.label || f.name}</td><td>${v || ''}</td></tr>`
+                return `<tr><td>${this.$t(f.label) || f.name}</td><td>${v || ''}</td></tr>`
               })
 
               return `<table>${rows.join('')}</table>`

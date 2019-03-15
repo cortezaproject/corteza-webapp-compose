@@ -1,7 +1,7 @@
 <template>
   <div>
     <fieldset class="form-group">
-      <label>Module</label>
+      <label>{{ $t('block.recordList.module') }}</label>
       <input v-if="module" class="form-control" type="text" v-model="module.name" readonly>
     </fieldset>
     <field-selector v-if="module" :module="module" :fields.sync="o.fields" />

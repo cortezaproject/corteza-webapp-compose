@@ -1,12 +1,16 @@
 <template>
   <div>
-    <div><b-form-checkbox plain v-model="f.options.onlyDate" :disabled="f.options.onlyTime">Date Only</b-form-checkbox></div>
-    <div><b-form-checkbox plain v-model="f.options.onlyTime" :disabled="f.options.onlyDate">Time Only</b-form-checkbox></div>
-    <div><b-form-checkbox plain v-model="f.options.onlyPastValues" :disabled="f.options.onlyFutureValues">Past Values Only</b-form-checkbox></div>
-    <div><b-form-checkbox plain v-model="f.options.onlyFutureValues" :disabled="f.options.onlyPastValues">Future Value Only</b-form-checkbox></div>
-    <div><b-form-checkbox plain v-model="f.options.outputRelative">Output Relative value (eg: 3 days ago)</b-form-checkbox></div>
-    <div>Output format: <b-form-input plain v-model="f.options.format" placeholder="YYYY-MM-DD HH:ii"></b-form-input></div>
-    See <a href="https://momentjs.com/docs/#/displaying/format/" target="_blank">Moment.js documentation</a> for formatting options
+    <div><b-form-checkbox plain v-model="f.options.onlyDate" :disabled="f.options.onlyTime">{{ $t('field.kind.dateTime.dateOnly') }}</b-form-checkbox></div>
+    <div><b-form-checkbox plain v-model="f.options.onlyTime" :disabled="f.options.onlyDate">{{ $t('field.kind.dateTime.timeOnly') }}</b-form-checkbox></div>
+    <div><b-form-checkbox plain v-model="f.options.onlyPastValues" :disabled="f.options.onlyFutureValues">{{ $t('field.kind.dateTime.pastValuesOnly') }}</b-form-checkbox></div>
+    <div><b-form-checkbox plain v-model="f.options.onlyFutureValues" :disabled="f.options.onlyPastValues">{{ $t('field.kind.dateTime.futureValuesOnly') }}</b-form-checkbox></div>
+    <div><b-form-checkbox plain v-model="f.options.outputRelative">{{ $t('field.kind.dateTime.relativeOutput') }}</b-form-checkbox></div>
+    <div>{{ $t('field.kind.dateTime.outputFormat') }}<b-form-input plain v-model="f.options.format" placeholder="YYYY-MM-DD HH:ii"></b-form-input></div>
+
+    <i18next path="system.type.dateTime.outputFormatFootnote" tag="label">
+      <a href="https://momentjs.com/docs/#/displaying/format/" target="_blank">Moment.js</a>
+      <span>{{ $t("promise") }}</span>
+    </i18next>
   </div>
 </template>
 

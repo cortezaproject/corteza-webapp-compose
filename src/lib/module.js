@@ -8,14 +8,16 @@ const defMeta = () => Object.assign({}, {
   },
 })
 
+const systemPrefix = 'field.system.'
+
 const systemFields = [
-  { name: 'ownedBy', label: 'Owned by', kind: 'User' },
-  { name: 'createdBy', label: 'Created by', kind: 'User' },
-  { name: 'createdAt', label: 'Created at', kind: 'DateTime' },
-  { name: 'updatedBy', label: 'Updated by', kind: 'User' },
-  { name: 'updatedAt', label: 'Updated at', kind: 'DateTime' },
-  { name: 'deletedBy', label: 'Deleted by', kind: 'User' },
-  { name: 'deletedAt', label: 'Deleted at', kind: 'DateTime' },
+  { name: 'ownedBy', label: `${systemPrefix}ownedBy`, kind: 'User' },
+  { name: 'createdBy', label: `${systemPrefix}createdBy`, kind: 'User' },
+  { name: 'createdAt', label: `${systemPrefix}createdAt`, kind: 'DateTime' },
+  { name: 'updatedBy', label: `${systemPrefix}updatedBy`, kind: 'User' },
+  { name: 'updatedAt', label: `${systemPrefix}updatedAt`, kind: 'DateTime' },
+  { name: 'deletedBy', label: `${systemPrefix}deletedBy`, kind: 'User' },
+  { name: 'deletedAt', label: `${systemPrefix}deletedAt`, kind: 'DateTime' },
 ].map(f => new Field({ ...f, isSystem: true }))
 
 export default class Module {

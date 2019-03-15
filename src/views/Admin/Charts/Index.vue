@@ -4,12 +4,12 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well table-responsive">
-            <h2>List of charts</h2>
+            <h2>{{ $t('chart.title') }}</h2>
             <table class="table table-striped">
               <thead>
                 <tr>
                   <table-sortable-column
-                    label="Name"
+                    :label="$t('general.label.name')"
                     name="name"
                     :ascending="sortedByName"
                     @sort="handleSort"/>
@@ -34,11 +34,11 @@
               </tbody>
             </table>
             <form @submit.prevent="create">
-              <b-form-group label="Create a new chart:">
+              <b-form-group :label="$t('chart.newLabel')">
                 <b-input-group>
-                  <input required type="text" v-model="newChart.name" class="form-control" id="name" placeholder="Chart name" />
+                  <input required type="text" v-model="newChart.name" class="form-control" id="name" :placeholder="$t('chart.newPlaceholder')" />
                   <b-input-group-append>
-                    <button type="submit" class="btn btn-dark">Create</button>
+                    <button type="submit" class="btn btn-dark">{{ $t('general.label.create') }}</button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -94,7 +94,7 @@ export default {
     create () {
       this.createChart(this.newChart).then((chart) => {
         this.$router.push({ name: 'admin.charts.edit', params: { chartID: chart.chartID } })
-      }).catch(this.defaultErrorHandler('Could not create a chart'))
+      }).catch(this.defaultErrorHandler(this.$t('notification.chart.createFailed')))
     },
   },
 }
