@@ -9,7 +9,7 @@ export default {
   methods: {
     sortedItems (items) {
       let newItems = items.sort((a, b) => {
-        return (a[this.sortBy] || '').localeCompare(b[this.sortBy] || '')
+        return (String(a[this.sortBy]) || '').localeCompare(String(b[this.sortBy]) || '')
       })
 
       if (!this.sortAscending) {
