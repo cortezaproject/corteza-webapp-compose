@@ -1,7 +1,7 @@
 var webpack = require('webpack')
 var exec = require('child_process').execSync
 
-const baseUrl = process.env.NODE_ENV === 'production' ? '/crm' : '/'
+const publicPath = process.env.NODE_ENV === 'production' ? '/crm' : '/'
 
 let optimization
 if (process.env.NODE_ENV !== 'test') {
@@ -23,7 +23,7 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 module.exports = {
-  baseUrl,
+  publicPath,
   lintOnSave: true,
   configureWebpack: {
     // other webpack options to merge in ...
