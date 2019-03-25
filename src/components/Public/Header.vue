@@ -26,6 +26,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import MenuLevel from './MenuLevel'
+import navbarCollapse from '@/mixins/navbar_collapse'
 
 const collapserWidth = 55
 
@@ -33,6 +34,8 @@ export default {
   components: {
     MenuLevel,
   },
+
+  mixins: [ navbarCollapse ],
 
   props: {
     currentPageID: {
@@ -43,7 +46,6 @@ export default {
   data () {
     return {
       tree: [],
-      visible: false,
       collapsedCount: 0,
     }
   },
@@ -101,11 +103,6 @@ export default {
   },
 
   methods: {
-    toggleNav (visible) {
-      this.visible = visible
-      this.$emit('toggleNav', visible)
-    },
-
     collapser (nav, bb, collapse, extraOffset, rightOffset) {
       const { children: nChildren = new HTMLCollection() } = nav
       const collapseBody = collapse.getElementsByTagName('UL')[0]

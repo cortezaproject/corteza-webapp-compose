@@ -1,13 +1,13 @@
 <template>
   <header>
-    <b-navbar toggleable="lg" type="light">
+    <b-navbar toggleable="md" type="light">
         <b-navbar-toggle target="admin_nav_collapse">
           <label
             class="channel-toggle">
             <i class="icon-menu4"></i>
           </label>
         </b-navbar-toggle>
-        <b-collapse is-nav id="admin_nav_collapse">
+        <b-collapse is-nav id="admin_nav_collapse" :class="{ visible }" @show="toggleNav(true)" @hide="toggleNav(false)">
           <ul>
             <li>
               <router-link :to="{name: 'admin.modules'}" class="nav-link">{{ $t('navigation.module') }}</router-link>
@@ -29,6 +29,14 @@
     </b-navbar>
   </header>
 </template>
+
+<script>
+import navbarCollapse from '@/mixins/navbar_collapse'
+
+export default {
+  mixins: [ navbarCollapse ],
+}
+</script>
 
 <style lang="scss" scoped>
 @import "@/assets/sass/components/header.scss";
@@ -58,7 +66,7 @@ ul {
   max-width: 100%;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 768px) {
   ul {
     position: relative;
 
