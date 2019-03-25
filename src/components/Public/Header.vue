@@ -1,13 +1,13 @@
 <template>
     <header>
-      <b-navbar toggleable type="light" toggle-breakpoint="md">
-          <b-navbar-toggle target="nav_text_collapse">
+      <b-navbar type="light" toggleable="md">
+          <b-navbar-toggle target="public_nav_collapse">
             <label
               class="channel-toggle">
               <i class="icon-menu4"></i>
             </label>
           </b-navbar-toggle>
-          <b-collapse is-nav id="nav_text_collapse" :class="{ visible }" @show="toggleNav(true)" @hide="toggleNav(false)">
+          <b-collapse is-nav id="public_nav_collapse" :class="{ visible }" @show="toggleNav(true)" @hide="toggleNav(false)">
             <menu-level id="menu_lvl_1"
                         :pages="pages"
                         :selectedPath="selectedPath"
@@ -85,7 +85,7 @@ export default {
   mounted () {
     this.$nextTick(() => {
       const nav = document.getElementById('menu_lvl_1')
-      const bb = document.getElementById('nav_text_collapse')
+      const bb = document.getElementById('public_nav_collapse')
       const collapse = document.getElementById('public_nav_collapse_0')
       const rOffset = document.getElementById('public_nav_to_admin_pannel').clientWidth + 50 || 200
 
@@ -178,7 +178,7 @@ export default {
   white-space: nowrap;
 }
 
-#nav_text_collapse {
+#public_nav_collapse {
   #public_nav_collapse_0 {
     display: none;
 

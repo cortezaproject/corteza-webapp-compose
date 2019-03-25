@@ -1,13 +1,13 @@
 <template>
   <header>
-    <b-navbar toggleable type="light" toggle-breakpoint="lg">
-        <b-navbar-toggle target="nav_text_collapse">
+    <b-navbar toggleable="lg" type="light">
+        <b-navbar-toggle target="admin_nav_collapse">
           <label
             class="channel-toggle">
             <i class="icon-menu4"></i>
           </label>
         </b-navbar-toggle>
-        <b-collapse is-nav id="nav_text_collapse">
+        <b-collapse is-nav id="admin_nav_collapse">
           <ul>
             <li>
               <router-link :to="{name: 'admin.modules'}" class="nav-link">{{ $t('navigation.module') }}</router-link>
