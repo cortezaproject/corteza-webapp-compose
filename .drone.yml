@@ -1,0 +1,6 @@
+pipeline:
+  build:
+    image: node:10-alpine
+    commands:
+      - apk --no-cache add make curl git
+      - make build

@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 /dist
+/dist.tgz
 
 # local env files
 .env.local
