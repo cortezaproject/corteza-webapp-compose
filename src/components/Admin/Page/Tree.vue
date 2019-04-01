@@ -14,7 +14,7 @@
                 class="action">
                 <font-awesome-icon
                   :icon="['far', 'eye']"
-                  title="View"
+                  :title="$t('general.label.view')"
                 ></font-awesome-icon>
               </router-link>
 

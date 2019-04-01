@@ -1,6 +1,6 @@
 <template>
   <tr>
-    <td v-b-tooltip.hover :title="$t('module.edit.tooltip.dragAndDrop')" class="handle"><font-awesome-icon :icon="['fas', 'sort']" title="Reorder fields"></font-awesome-icon></td>
+    <td v-b-tooltip.hover :title="$t('module.edit.tooltip.dragAndDrop')" class="handle"><font-awesome-icon :icon="['fas', 'sort']" :title="$t('module.edit.reorderFields')"></font-awesome-icon></td>
     <td><b-form-input v-model="field.name"
                       required
                       :state="checkFieldName"

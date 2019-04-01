@@ -15,7 +15,7 @@
         <a :href="aattachment.download">
           <font-awesome-icon
             :icon="['far', 'file-'+ext(a)]"
-            title="Open bookmarks"
+            :title="$t('general.label.openBookmarks')"
           ></font-awesome-icon>
           {{aattachment.name}}
         </a>
@@ -32,7 +32,7 @@
         <div v-else>
           <font-awesome-icon
             :icon="['far', 'file-'+ext(a)]"
-            title="Open bookmarks"
+            :title="$t('general.label.openBookmarks')"
           ></font-awesome-icon>
           <a :href="attachment.download">
             {{ $t('general.label.download') }}

@@ -12,7 +12,7 @@
         </b-input-group-append>
       </b-input-group>
     </b-form-group>
-    <b-form-group label="Buttons" :description="$t('block.automation.buttonFootnote')" horizontal v-show="o.buttons.length > 0">
+    <b-form-group :label="$t('general.label.buttons')" :description="$t('block.automation.buttonFootnote')" horizontal v-show="o.buttons.length > 0">
       <draggable
         :list.sync="o.buttons"
         :options="{ group: 'fields' }">

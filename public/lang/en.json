@@ -129,7 +129,8 @@
       "confirmDelete": "Are you sure you want to delete this record?",
       "preview": {
         "fieldsFromModule": "Single record block, displaying fields ({{0}}) from module {{1}}",
-        "blockNoRecord": "Can not render this block without a record"
+        "blockNoRecord": "Can not render this block without a record",
+        "untitled": "Untitled"
       }
     },
     "socialFeed": {
@@ -165,6 +166,7 @@
       "moduleFieldSettings": "Module field settings",
       "newField": "Add new field",
       "systemFields": "System fields:",
+      "reorderFields": "Reorder fields",
       "tooltip": {
         "name": "Must be a-z/A-Z, 0-9 or underscore",
         "title": "The name displayed in form input / data lists",
@@ -350,6 +352,8 @@
 
   "general": {
     "label": {
+      "openBookmarks": "Open bookmarks",
+      "buttons": "Buttons",
       "name": "Name",
       "actions": "Actions",
       "status": "Status",
@@ -379,7 +383,8 @@
       "download": "Download",
       "uploadProgress": "(File size: {{0}}, uploaded {{1}})",
       "yes": "Yes",
-      "no": "No"
+      "no": "No",
+      "view": "View"
     }
   },
 

@@ -3,7 +3,7 @@
     <p v-if="module">
       <i18next path="block.record.preview.fieldsFromModule" tag="label">
         <span>{{ selectedFields }}</span>
-        <code>{{ module.name || 'Untitled' }}</code>
+        <code>{{ module.name || $t('block.record.preview.untitled') }}</code>
       </i18next>
     </p>
   </div>
