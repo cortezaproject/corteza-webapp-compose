@@ -109,7 +109,7 @@ export default {
     optionizeFields (ff) {
       return ff.map(f => {
         return {
-          text: this.$t(f.label) || f.name,
+          text: f.label || f.name,
           value: f.name,
         }
       })
