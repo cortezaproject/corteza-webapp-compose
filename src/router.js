@@ -7,20 +7,6 @@ function view (name) {
   return () => import(`./views/${name}.vue`)
 }
 
-function defaultViews () {
-  return [
-    {
-      path: '/auth',
-      component: view('IndexNested'),
-      redirect: '/auth/signin',
-      children: [
-        { path: 'signin', name: 'signin', component: view('Auth/SignIn') },
-        { path: 'signout', name: 'signout', component: view('Auth/SignOut') },
-      ],
-    },
-  ]
-}
-
 function crmViews () {
   return [
     {
@@ -92,7 +78,8 @@ export default new VueRouter({
   mode: 'history',
   routes: [
     ...crmViews(),
-    ...defaultViews(),
+
+    { path: '/auth', name: 'auth', component: view('Auth') },
 
     // When everything else fails, go to pages
     { path: '*', redirect: { name: 'public.pages' } },

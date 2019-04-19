@@ -14,7 +14,6 @@
   </b-form-group>
 </template>
 <script>
-import { mapGetters } from 'vuex'
 import base from './base'
 import { VueSelect } from 'vue-select'
 
@@ -32,10 +31,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      currentUser: 'auth/user',
-    }),
-
     selected: {
       get () {
         if (this.value) {
@@ -56,7 +51,7 @@ export default {
   beforeMount () {
     if (!this.value && this.field.options.presetWithAuthenticated) {
       // This (ID) was not converted yet
-      let { ID, userID } = this.currentUser
+      let { ID, userID } = this.$auth.user
       this.value = userID || ID
     }
   },

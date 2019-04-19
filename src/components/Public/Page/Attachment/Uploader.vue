@@ -20,6 +20,7 @@ import vueDropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 
 export default {
+
   components: {
     vueDropzone,
   },
@@ -56,6 +57,7 @@ export default {
           // https://github.com/enyo/dropzone/issues/1154
           'Cache-Control': '',
           'X-Requested-With': '',
+          'Authorization': 'Bearer ' + this.$auth.JWT,
         },
         addedfile (file) {},
       }
@@ -66,7 +68,7 @@ export default {
     },
 
     baseUrl () {
-      return window.CrustConfig.crm.baseUrl
+      return window.CrustCrmAPI
     },
 
     progresBarStyle () {

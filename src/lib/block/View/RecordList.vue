@@ -81,7 +81,6 @@ export default {
 
   computed: {
     ...mapGetters({
-      currentUser: 'auth/user',
       getModuleByID: 'module/getByID',
     }),
 
@@ -133,7 +132,7 @@ export default {
         record: this.record,
         recordID: (this.record || {}).recordID || 0,
         ownerID: (this.record || {}).userID || 0,
-        userID: this.currentUser.ID || 0,
+        userID: (this.$auth.user || {}).ID || 0,
       })
 
       this.meta.filter = this.prefilter

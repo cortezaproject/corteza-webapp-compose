@@ -1,5 +1,5 @@
 <template>
-  <div class="centering-wrap inactive-area" v-if="isAuthenticated">
+  <div class="centering-wrap inactive-area" v-if="$auth.is()">
     <div class="alert-holder">
       <b-alert v-for="(a,i) in alerts"
                :variant=" a.variant || 'info'"
@@ -18,11 +18,7 @@
 </template>
 
 <script>
-import auth from '@/mixins/auth'
-
 export default {
-  mixins: [auth],
-
   data () {
     return {
       logo: require('@/assets/images/crust-logo-with-tagline.png'),
@@ -33,27 +29,31 @@ export default {
   },
 
   created () {
-    this.error = ''
+    this.$auth.check(this.$system).then(() => {
+      this.error = ''
 
-    this.handleAlert((alert) => this.alerts.push(alert))
+      this.handleAlert((alert) => this.alerts.push(alert))
 
-    const errHandler = (error) => {
-      switch ((error.response || {}).status) {
-        case 403:
-          this.error = this.$t('notification.general.crmAccessNotAllowed')
+      const errHandler = (error) => {
+        switch ((error.response || {}).status) {
+          case 403:
+            this.error = this.$t('notification.general.crmAccessNotAllowed')
+        }
+
+        return Promise.reject(error)
       }
 
-      return Promise.reject(error)
-    }
-
-    Promise.all([
-      // Preload all data we need.
-      this.$store.dispatch('module/load').catch(errHandler),
-      this.$store.dispatch('chart/load').catch(errHandler),
-      this.$store.dispatch('page/load').catch(errHandler),
-      this.$store.dispatch('trigger/load').catch(errHandler),
-    ]).then(() => {
-      this.loaded = true
+      Promise.all([
+        // Preload all data we need.
+        this.$store.dispatch('module/load').catch(errHandler),
+        this.$store.dispatch('chart/load').catch(errHandler),
+        this.$store.dispatch('page/load').catch(errHandler),
+        this.$store.dispatch('trigger/load').catch(errHandler),
+      ]).then(() => {
+        this.loaded = true
+      })
+    }).catch(() => {
+      window.location = '/auth'
     })
   },
 }

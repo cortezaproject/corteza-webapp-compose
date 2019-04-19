@@ -5,8 +5,7 @@ export default class Attachment {
   }
 
   merge ({ attachmentID, ownerID, url, previewUrl, meta, name, createdAt, updatedAt }) {
-    const { baseUrl } = window.CrustConfig.crm
-    console.log(baseUrl)
+    const baseUrl = window.CrustCrmAPI
 
     this.attachmentID = (typeof attachmentID === 'string' ? attachmentID : this.attachmentID) || ''
     this.previewUrl = baseUrl + previewUrl

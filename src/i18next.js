@@ -13,7 +13,7 @@ i18next
   .use(xhrBackend)
   .use(lngDetector)
   .init({
-    fallbackLng: window.CrustConfig.webapp.defaultLocale || 'en',
+    fallbackLng: 'en',
     debug: process.env.NODE_ENV !== 'production',
     detection: {
       // to overwrite, to use user defined, to guess user's lang
