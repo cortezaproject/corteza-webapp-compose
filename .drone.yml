@@ -1,0 +1,44 @@
+kind: pipeline
+name: Build & Pack
+
+steps:
+  - name: deps
+    image: crusttech/webapp-builder
+    commands:
+      - yarn install
+
+  - name: build
+    image: crusttech/webapp-builder
+    commands:
+      - yarn build
+
+  - name: pack
+    image: crusttech/webapp-builder
+    volumes:
+      - name: webapp-build
+        path: /var/build
+    commands:
+      - tar -cjf /var/build/$DRONE_REPO_NAME-$DRONE_BRANCH.tar.bz2 -C dist/ .
+
+  - name: trigger
+    image: plugins/downstream
+    settings:
+      fork: true
+      server: https://drone.crust.tech
+      token:
+        from_secret: drone_token
+      repositories:
+        - crusttech/webapp@${DRONE_BRANCH}
+
+trigger:
+  branch:
+    - master
+  refs:
+    - refs/tags/v20??.*
+  event:
+    - push
+
+volumes:
+  - name: webapp-build
+    host:
+      path: /var/build/drone/webapp-build
