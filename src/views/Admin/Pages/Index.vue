@@ -4,7 +4,15 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well">
-            <h2>{{ $t('page.title') }}</h2>
+            <div class="title-bar">
+              <h2>{{ $t('page.title')}}</h2>
+              <div class="title-actions actions">
+                <a v-b-modal="'pagePermissions'" class="action">
+                  <i class="action icon-fatlock" />
+                </a>
+                <permission-modal id="pagePermissions" filter="page" targetAll/>
+              </div>
+            </div>
             <page-tree
               :namespace="namespace"
               @reorder="handleReorder"
@@ -30,6 +38,7 @@
 import draggable from 'vuedraggable'
 import PageTree from '@/components/Admin/Page/Tree'
 import Namespace from '@/lib/namespace'
+import PermissionModal from '@/components/Admin/Permissions/PermissionModal'
 
 export default {
   name: 'PageList',
@@ -37,6 +46,7 @@ export default {
   components: {
     draggable,
     PageTree,
+    PermissionModal,
   },
 
   props: {
@@ -90,6 +100,20 @@ table {
 
 .btn {
   border-radius: 0;
+}
+
+.title-actions {
+  padding-bottom: 10px;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+  text-align: right;
+  float: right;
+}
+
+.title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 form {

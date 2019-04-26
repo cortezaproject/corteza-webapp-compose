@@ -388,6 +388,91 @@
     }
   },
 
+  "permission": {
+    "saveChanges": "Save changes",
+    "resetBack": "Reset back to \"{{current}}\"",
+    "setFor": "Set permissions for: {{target}}",
+    "all": {
+      "module": "All modules",
+      "page": "All pages",
+      "trigger": "All triggers",
+      "chart": "All charts"
+    },
+
+    "compose-page": {
+      "read": {
+        "title": "Read any page",
+        "description": "Default: deny"
+      },
+      "update": {
+        "title": "Update any page",
+        "description": "Default: deny"
+      },
+      "delete": {
+        "title": "Delete any page",
+        "description": "Default: deny"
+      }
+    },
+    "compose-trigger": {
+      "read": {
+        "title": "Read any trigger",
+        "description": "Default: deny"
+      },
+      "update": {
+        "title": "Update any trigger",
+        "description": "Default: deny"
+      },
+      "delete": {
+        "title": "Delete any trigger",
+        "description": "Default: deny"
+      }
+    },
+    "compose-module": {
+      "read": {
+        "title": "Read any module",
+        "description": "Default: deny"
+      },
+      "update": {
+        "title": "Update any module",
+        "description": "Default: deny"
+      },
+      "delete": {
+        "title": "Delete any module",
+        "description": "Default: deny"
+      },
+      "record-create": {
+        "title": "Create record under any module",
+        "description": "Default: deny"
+      },
+      "record-read": {
+        "title": "Read records under any module",
+        "description": "Default: deny"
+      },
+      "record-update": {
+        "title": "Update records under any module",
+        "description": "Default: deny"
+      },
+      "record-delete": {
+        "title": "Delete records under any module",
+        "description": "Default: deny"
+      }
+    },
+    "compose-chart": {
+      "read": {
+        "title": "Read any chart",
+        "description": "Default: deny"
+      },
+      "update": {
+        "title": "Update any chart",
+        "description": "Default: deny"
+      },
+      "delete": {
+        "title": "Delete any chart",
+        "description": "Default: deny"
+      }
+    }
+  },
+
   "field": {
     "system": {
       "ownedBy": "Owned by",
