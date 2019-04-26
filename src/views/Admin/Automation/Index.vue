@@ -4,7 +4,15 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well table-responsive">
-            <h2>{{ $t('automation.title') }}</h2>
+            <div class="title-bar">
+              <h2>{{ $t('automation.title')}}</h2>
+              <div class="title-actions actions">
+                <a v-b-modal="'triggerPermissions'" class="action">
+                  <i class="action icon-fatlock" />
+                </a>
+                <permission-modal id="triggerPermissions" filter="trigger" targetAll/>
+              </div>
+            </div>
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -45,6 +53,10 @@
                   <router-link :to="{name: 'admin.automation.edit', params: { triggerID: t.triggerID }}" class="action">
                     <i class="action icon-edit"></i>
                   </router-link>
+                  <a v-b-modal="`permissions${index}`" class="action">
+                    <i class="action icon-fatlock" />
+                  </a>
+                  <permission-modal :id="`permissions${index}`" filter="trigger" :target="t"  />
                 </td>
               </tr>
               </tbody>
@@ -69,11 +81,13 @@
 import { mapGetters, mapActions } from 'vuex'
 import Trigger from '@/lib/trigger'
 import TableSortableColumn from '@/components/Admin/TableSortableColumn'
+import PermissionModal from '@/components/Admin/Permissions/PermissionModal'
 import tableSort from '@/mixins/table_sort'
 
 export default {
   components: {
     TableSortableColumn,
+    PermissionModal,
   },
 
   mixins: [
@@ -132,6 +146,22 @@ export default {
 
 .btn {
   border-radius: 0;
+  margin-right: 0;
+}
+
+.title-actions {
+  padding-bottom: 10px;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+  text-align: right;
+  float: right;
+}
+
+.title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 5px;
 }
 
 .table {
