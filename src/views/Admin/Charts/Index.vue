@@ -7,9 +7,6 @@
             <div class="title-bar">
               <h2>{{ $t('chart.title')}}</h2>
               <div class="title-actions actions">
-                <a v-b-modal="'chartPermissions'" class="action">
-                  <i class="action icon-fatlock" />
-                </a>
                 <permission-modal id="chartPermissions" filter="chart" targetAll/>
               </div>
             </div>
@@ -38,9 +35,6 @@
                     <i class="action icon-edit"></i>
                   </router-link>
 
-                  <a v-b-modal="`permissions${chart.chartID}`" class="action">
-                    <i class="action icon-fatlock" />
-                  </a>
                   <permission-modal :id="`permissions${chart.chartID}`" filter="chart" :target="chart"  />
                 </td>
               </tr>
@@ -127,7 +121,6 @@ export default {
 
 .btn {
   border-radius: 0;
-  margin-right: 0;
 }
 
 .title-actions {

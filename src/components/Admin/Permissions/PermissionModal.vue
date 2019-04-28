@@ -1,13 +1,19 @@
 <template>
-  <b-modal
-    :id="id"
-    :title="getTitle"
-    hide-footer
-    size="xl"
-    lazy>
+  <span>
+    <a v-b-modal="id" class="action">
+      <i class="action icon-fatlock" />
+    </a>
 
-    <roles :filter="filter" :targetID="getTargetID" />
-  </b-modal>
+    <b-modal
+      :id="id"
+      :title="$t('permission.setFor', { target: getTitle })"
+      hide-footer
+      size="permission"
+      lazy>
+
+      <roles :filter="filter" :targetID="getTargetID" :targetTitle="getTitle" />
+    </b-modal>
+  </span>
 </template>
 
 <script>
@@ -49,7 +55,6 @@ export default {
       }
       return this.target[`${this.filter}ID`]
     },
-
     getTitle () {
       let target = ''
       if (this.targetAll) {
@@ -57,35 +62,24 @@ export default {
       } else {
         target = this.target.name || this.target.title
       }
-      return this.$t('permission.setFor', { target })
+      return target
     },
   },
 }
 </script>
 
 <style>
-.modal .modal-xl {
-  margin-top: 20px;
-  min-width: 550px;
+.modal .modal-permission {
+  max-width: 50%;
+  width: 50%;
 }
 
-.modal-xl .modal-body {
+.modal-permission .modal-body {
   padding: 0;
 }
 
-.modal {
-  padding: 0;
-}
-
-.modal-title {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.modal-header {
-  align-items: center;
+.modal-permission .modal-content {
+  min-width: 720px;
 }
 </style>
 

@@ -31,9 +31,6 @@
                 <i class="action icon-edit" v-if="item.moduleID === '0'"></i>
               </router-link>
 
-              <a v-b-modal="`permissions${item.pageID}`" class="action">
-                <i class="action icon-fatlock" />
-              </a>
               <permission-modal :id="`permissions${item.pageID}`" filter="page" :target="item"  />
           </div>
         </div>

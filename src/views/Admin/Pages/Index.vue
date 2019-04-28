@@ -7,9 +7,6 @@
             <div class="title-bar">
               <h2>{{ $t('page.title')}}</h2>
               <div class="title-actions actions">
-                <a v-b-modal="'pagePermissions'" class="action">
-                  <i class="action icon-fatlock" />
-                </a>
                 <permission-modal id="pagePermissions" filter="page" targetAll/>
               </div>
             </div>

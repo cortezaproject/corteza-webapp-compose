@@ -18,7 +18,8 @@
         :roleTitle="getRoleTitle"
         :roleID="getRoleID"
         :filter="filter"
-        :targetID="targetID"/>
+        :targetID="targetID"
+        :targetTitle="targetTitle"/>
     </b-col>
   </b-row>
 </template>
@@ -38,6 +39,11 @@ export default {
     },
 
     targetID: {
+      type: String,
+      required: true,
+    },
+
+    targetTitle: {
       type: String,
       required: true,
     },
