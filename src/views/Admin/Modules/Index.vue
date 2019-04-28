@@ -7,9 +7,6 @@
             <div class="title-bar">
               <h2>{{ $t('module.title')}}</h2>
               <div class="title-actions actions">
-                <a v-b-modal="'modulePermissions'" class="action">
-                  <i class="action icon-fatlock" />
-                </a>
                 <permission-modal id="modulePermissions" filter="module" targetAll/>
               </div>
             </div>
@@ -51,9 +48,6 @@
                       <i class="action icon-edit"></i>
                     </router-link>
 
-                    <a v-b-modal="`permissions${index}`" class="action">
-                      <i class="action icon-fatlock" />
-                    </a>
                     <permission-modal :id="`permissions${index}`" filter="module" :target="m"  />
                   </td>
                 </tr>
@@ -160,7 +154,6 @@ export default {
 
 .btn {
   border-radius: 0;
-  margin-right: 0;
 }
 
 .title-actions {

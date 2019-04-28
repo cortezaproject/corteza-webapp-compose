@@ -2,7 +2,15 @@
   <b-form @submit.prevent="onSubmit">
     <div class="rules">
       <table cellspacing="0" cellpadding="0" border="0">
-        <permission-group :title="roleTitle" :permissions="filtered('compose')" />
+        <transition-group name="list" tag="tbody">
+          <permission
+            v-for="p in filtered('compose')"
+            :key="p.resource + p.operation"
+            v-bind="p"
+            :value.sync="p.value"
+            v-on="$listeners"/>
+
+        </transition-group>
       </table>
     </div>
 
@@ -15,11 +23,11 @@
 </template>
 
 <script>
-import PermissionGroup from '@/components/Admin/Permissions/PermissionGroup'
+import Permission from '@/components/Admin/Permissions/Permission'
 
 export default {
   components: {
-    PermissionGroup,
+    Permission,
   },
 
   props: {
@@ -39,6 +47,10 @@ export default {
       type: String,
       required: true,
     },
+    targetTitle: {
+      type: String,
+      required: true,
+    },
   },
 
   data () {
@@ -52,30 +64,7 @@ export default {
 
   computed: {
     filtered () {
-      const filterParts = this.filter.trim().toLocaleLowerCase().split(/\s+/)
-
-      const has = ({ resource, operation, title, description, value }) => {
-        if (!filterParts) {
-          return true
-        }
-
-        const idx = `${resource} ${operation} ${title} ${description} ${value}`.toLocaleLowerCase()
-
-        // No namespace rules
-        if (idx.indexOf('namespace') >= 0) {
-          return false
-        }
-
-        for (const fp of filterParts) {
-          if (idx.indexOf(fp) === -1) {
-            return false
-          }
-        }
-
-        return true
-      }
-
-      return (prefix) => this.rules.filter(p => (!prefix || p.resource.indexOf(prefix) === 0) && (has(p)))
+      return (prefix) => this.rules.filter(p => (!prefix || p.resource.indexOf(prefix) === 0) && p.resource.indexOf(this.filter) > 0)
     },
 
     dirty () {
@@ -164,9 +153,13 @@ export default {
       }
 
       const tString = `permission.${resource}.${operation}`
+      let permissionTitle = this.$t(`${tString}.title`)
+      if (this.targetID) {
+        permissionTitle = this.$t(`${tString}.specific`, { target: this.targetTitle })
+      }
       return {
         ...p,
-        title: this.$t(`${tString}.title`),
+        title: permissionTitle,
         description: this.$t(`${tString}.description`),
       }
     },
@@ -191,6 +184,44 @@ export default {
 
 .btn {
   border-radius: 0;
+}
+
+table tbody tr:nth-of-type(odd) {
+  background-color: #fff;
+}
+
+th {
+  color: $appgrey;
+  font-size: 20px;
+  padding: 10px 9px;
+  border-top: 0;
+}
+
+.list-enter-active,
+.list-leave-active,
+.list-move {
+  transition: 200ms cubic-bezier(0.59, 0.12, 0.34, 0.95);
+  transition-property: opacity, transform;
+}
+
+.list-enter {
+  opacity: 0;
+  transform: translateX(50px) scaleY(0.5);
+}
+
+.list-enter-to {
+  opacity: 1;
+  transform: translateX(0) scaleY(1);
+}
+
+.list-leave-active {
+  position: absolute;
+}
+
+.list-leave-to {
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: center top;
 }
 
 form {

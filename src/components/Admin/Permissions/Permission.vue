@@ -7,6 +7,12 @@
         :enabled="enabled"
         v-on="$listeners"/>
 
+    </td>
+    <td class="text">
+      <b v-html="title"/>
+      <div>{{ description }}</div>
+    </td>
+    <td class="short">
       <b-button
         variant="link"
         @click="$emit('update:value', current)"
@@ -14,10 +20,6 @@
 
         {{ $t('permission.resetBack', {current}) }}
       </b-button>
-    </td>
-    <td class="text">
-      <b>{{ title }}</b>
-      <div>{{ description }}</div>
     </td>
   </tr>
 </template>
@@ -94,10 +96,17 @@ td {
   &.buttons {
     width: 170px;
     text-align: center;
+    vertical-align: middle;
 
     div {
       margin: auto;
     }
+  }
+
+  &.short {
+    vertical-align: middle;
+    text-align: right;
+    width: 100px;
   }
 
   &.text {
