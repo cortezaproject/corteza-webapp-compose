@@ -99,7 +99,7 @@ export default {
   },
 
   created () {
-    this.$crm.pageTree().then((result) => { this.tree = result })
+    this.$compose.pageTree().then((result) => { this.tree = result })
   },
 
   methods: {

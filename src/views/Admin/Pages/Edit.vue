@@ -60,7 +60,7 @@ export default {
   },
 
   created () {
-    this.$crm.pageRead({ pageID: this.pageID }).then((page) => {
+    this.$compose.pageRead({ pageID: this.pageID }).then((page) => {
       if (page.moduleID !== '0') {
         // Do not allow to edit record pages, move to builder
         this.$router.replace({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     handleSave ({ closeOnSuccess = false } = {}) {
-      this.$crm.pageUpdate(this.page).then(() => {
+      this.$compose.pageUpdate(this.page).then(() => {
         this.raiseSuccessAlert(this.$t('notification.page.saved'))
         if (closeOnSuccess) {
           this.$router.push({ name: 'admin.pages' })
@@ -80,7 +80,7 @@ export default {
     },
 
     handleDeletePage () {
-      this.$crm.pageDelete({ pageID: this.pageID }).then(() => {
+      this.$compose.pageDelete({ pageID: this.pageID }).then(() => {
         this.$router.push({ name: 'admin.pages' })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.deleteFailed')))
     },

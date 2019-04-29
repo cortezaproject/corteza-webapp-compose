@@ -99,7 +99,7 @@ export default {
 
         set.forEach((a, index) => {
           if (typeof a === 'string') {
-            this.$crm.attachmentDetails({ kind: this.kind, attachmentID: a }).then(att => {
+            this.$compose.attachmentDetails({ kind: this.kind, attachmentID: a }).then(att => {
               this.attachments.splice(index, 1, new Attachment(att))
             })
           }

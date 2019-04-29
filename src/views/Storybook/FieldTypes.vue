@@ -1,6 +1,6 @@
 <template>
   <div class="storybook">
-    <h1>Crust CRM Storybook</h1>
+    <h1>Crust Compose Storybook</h1>
     <table border="1">
       <tr>
         <th></th>

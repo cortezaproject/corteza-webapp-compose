@@ -1,7 +1,7 @@
 <template>
   <div class="centering-wrap inactive-area">
     <public-header :currentPageID="pageID" @toggleNav="navVisible = $event"></public-header>
-    <router-view :class="`crm-content ${navVisible && canPushContent ? 'padded' : ''}`" />
+    <router-view :class="`compose-content ${navVisible && canPushContent ? 'padded' : ''}`" />
   </div>
 </template>
 
@@ -47,7 +47,7 @@ export default {
 </script>
 
 <style lang="scss">
-.crm-content {
+.compose-content {
   padding-left: 0;
   transition: padding-left 0.3s;
 

@@ -111,7 +111,7 @@ export default {
       this.updateRenderer({ forceFetch: true })
 
       // Update chart data
-      this.chart.fetchReports({ reporter: (r) => this.$crm.recordReport(r) }).then(({ labels, metrics }) => {
+      this.chart.fetchReports({ reporter: (r) => this.$compose.recordReport(r) }).then(({ labels, metrics }) => {
         if (labels) {
           this.chartRenderer.data.labels = labels
         }
@@ -156,7 +156,7 @@ export default {
 
       if (refetch) {
         // Update chart data
-        this.chart.fetchReports({ reporter: (r) => this.$crm.recordReport(r) }).then(({ labels, metrics }) => {
+        this.chart.fetchReports({ reporter: (r) => this.$compose.recordReport(r) }).then(({ labels, metrics }) => {
           if (labels) {
             this.chartRenderer.data.labels = labels
           }

@@ -3,12 +3,9 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-function view (name) {
-  return () => import(`./views/${name}.vue`)
-}
-
-function crmViews () {
-  return [
+export default new VueRouter({
+  mode: 'history',
+  routes: [
     {
       path: '',
       name: 'root',
@@ -70,14 +67,6 @@ function crmViews () {
         },
       ],
     },
-  ]
-}
-
-export default new VueRouter({
-  base: '/crm',
-  mode: 'history',
-  routes: [
-    ...crmViews(),
 
     { path: '/auth', name: 'auth', component: view('Auth') },
 
@@ -85,3 +74,7 @@ export default new VueRouter({
     { path: '*', redirect: { name: 'public.pages' } },
   ],
 })
+
+function view (name) {
+  return () => import(`./views/${name}.vue`)
+}

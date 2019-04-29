@@ -85,7 +85,7 @@ export default {
     async handleGenerate () {
       this.disabled = true
       for (this.recordsCreated = 0; this.recordsCreated < this.totalRecordsToCreate; this.recordsCreated++) {
-        await this.$crm.recordCreate({ fields: this.recordFaker(), moduleID: this.moduleID })
+        await this.$compose.recordCreate({ fields: this.recordFaker(), moduleID: this.moduleID })
       }
       this.disabled = false
     },

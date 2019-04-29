@@ -80,7 +80,7 @@ export default {
       const reorder = () => {
         const pageIDs = afterParent.children.map(p => p.pageID)
         if (pageIDs.length > 1) {
-          this.$crm.pageReorder({ selfID: afterParent.pageID || '0', pageIDs: pageIDs }).then(() => {
+          this.$compose.pageReorder({ selfID: afterParent.pageID || '0', pageIDs: pageIDs }).then(() => {
             this.raiseSuccessAlert(this.$t('notification.page.reordered'))
             this.$emit('reorder')
           }).catch(this.defaultErrorHandler(this.$t('notification.page.pageMoveFailed')))
@@ -90,7 +90,7 @@ export default {
       if (beforeParent.pageID !== afterParent.pageID) {
         // Page moved to a different parent
         data.selfID = afterParent.pageID
-        this.$crm.pageUpdate(data).then(() => {
+        this.$compose.pageUpdate(data).then(() => {
           reorder()
         }).catch(this.defaultErrorHandler(this.$t('notification.page.pageMoveFailed')))
       } else {

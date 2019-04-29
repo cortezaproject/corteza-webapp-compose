@@ -256,7 +256,7 @@ export default {
             ctx.module = m
 
             // And load record from the given params
-            return this.$crm.recordRead({ moduleID: m.moduleID, recordID: this.test.recordID })
+            return this.$compose.recordRead({ moduleID: m.moduleID, recordID: this.test.recordID })
           })
           .then(r => {
             // Properly convert record and update context

@@ -77,7 +77,7 @@ export default {
       if (this.value && this.value !== (this.relRecord || {}).recordID) {
         this.findModuleByID({ moduleID: this.field.options.moduleID })
           .then(m => {
-            this.$crm.recordRead({ moduleID: m.moduleID, recordID: this.value })
+            this.$compose.recordRead({ moduleID: m.moduleID, recordID: this.value })
               .then(r => {
                 this.relRecord = new Record(m, r)
               })

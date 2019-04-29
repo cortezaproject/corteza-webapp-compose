@@ -53,13 +53,13 @@ export default {
 
   methods: {
     loadTree () {
-      this.$crm.pageTree({}).then((tree) => {
+      this.$compose.pageTree({}).then((tree) => {
         this.tree = tree
       }).catch(this.defaultErrorHandler(this.$t('notification.page.loadFailed')))
     },
 
     handleAddPageFormSubmit () {
-      this.$crm.pageCreate(this.addPageFormData).then((page) => {
+      this.$compose.pageCreate(this.addPageFormData).then((page) => {
         this.$router.push({ name: 'admin.pages.edit', params: { pageID: page.pageID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))
     },

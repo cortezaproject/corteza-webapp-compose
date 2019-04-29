@@ -1,5 +1,5 @@
 export const Default = `
-// Crust automation triggers will help you manage your CRM records
+// Crust automation triggers will help you manage your records
 // It is a simple JavaScript engine that runs custom code that triggers manually
 // or automatically before/after certain record events (create, update, delete)
 `.trimLeft()

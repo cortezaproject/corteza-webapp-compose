@@ -1,7 +1,7 @@
 var webpack = require('webpack')
 var exec = require('child_process').execSync
 
-const publicPath = process.env.NODE_ENV === 'production' ? '/crm' : '/'
+const publicPath = process.env.NODE_ENV === 'production' ? '/compose' : '/'
 
 let optimization
 if (process.env.NODE_ENV !== 'test') {

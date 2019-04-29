@@ -74,7 +74,7 @@ export default {
         console.log(value)
         // On input change resolve/load all attachments
         if (typeof value === 'string') {
-          this.$crm.attachmentDetails({ kind: this.kind, attachmentID: value }).then(a => {
+          this.$compose.attachmentDetails({ kind: this.kind, attachmentID: value }).then(a => {
             this.attachment = a
           })
         } else {

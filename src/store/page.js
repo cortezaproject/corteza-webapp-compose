@@ -7,7 +7,7 @@ const types = {
   removeFromSet: 'removeFromSet',
 }
 
-export default function (CRM) {
+export default function (ComposeAPI) {
   return {
     namespaced: true,
 
@@ -38,7 +38,7 @@ export default function (CRM) {
         }
 
         commit(types.pending)
-        return CRM.pageList({ moduleID }).then(pp => {
+        return ComposeAPI.pageList({ moduleID }).then(pp => {
           if (pp && pp.length > 0) {
             commit(types.updateSet, pp.map(p => new Page(p)))
           }
@@ -57,7 +57,7 @@ export default function (CRM) {
         }
 
         commit(types.pending)
-        return CRM.pageRead({ pageID }).then(raw => {
+        return ComposeAPI.pageRead({ pageID }).then(raw => {
           let page = new Page(raw)
           commit(types.updateSet, [page])
           commit(types.completed)
@@ -67,7 +67,7 @@ export default function (CRM) {
 
       async create ({ commit }, item) {
         commit(types.pending)
-        return CRM.pageCreate(item).then(raw => {
+        return ComposeAPI.pageCreate(item).then(raw => {
           let page = new Page(raw)
           commit(types.updateSet, [page])
           commit(types.completed)
@@ -77,7 +77,7 @@ export default function (CRM) {
 
       async update ({ commit }, item) {
         commit(types.pending)
-        return CRM.pageUpdate(item).then(raw => {
+        return ComposeAPI.pageUpdate(item).then(raw => {
           let page = new Page(raw)
           commit(types.updateSet, [page])
           commit(types.completed)
@@ -87,7 +87,7 @@ export default function (CRM) {
 
       async delete ({ commit }, item) {
         commit(types.pending)
-        return CRM.pageDelete(item).then(() => {
+        return ComposeAPI.pageDelete(item).then(() => {
           commit(types.removeFromSet, [item])
           commit(types.completed)
           return true

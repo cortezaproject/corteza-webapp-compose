@@ -7,7 +7,7 @@ const types = {
   removeFromSet: 'removeFromSet',
 }
 
-export default function (CRM) {
+export default function (ComposeAPI) {
   return {
     namespaced: true,
 
@@ -38,7 +38,7 @@ export default function (CRM) {
         }
 
         commit(types.pending)
-        return CRM.triggerList({ moduleID }).then(tt => {
+        return ComposeAPI.triggerList({ moduleID }).then(tt => {
           if (tt && tt.length > 0) {
             commit(types.updateSet, tt.map(t => new Trigger(t)))
           }
@@ -57,7 +57,7 @@ export default function (CRM) {
         }
 
         commit(types.pending)
-        return CRM.triggerRead({ triggerID }).then(raw => {
+        return ComposeAPI.triggerRead({ triggerID }).then(raw => {
           let trigger = new Trigger(raw)
           commit(types.updateSet, [trigger])
           commit(types.completed)
@@ -67,7 +67,7 @@ export default function (CRM) {
 
       async create ({ commit }, item) {
         commit(types.pending)
-        return CRM.triggerCreate(item).then(raw => {
+        return ComposeAPI.triggerCreate(item).then(raw => {
           let trigger = new Trigger(raw)
           commit(types.updateSet, [trigger])
           commit(types.completed)
@@ -77,7 +77,7 @@ export default function (CRM) {
 
       async update ({ commit }, item) {
         commit(types.pending)
-        return CRM.triggerUpdate(item).then(raw => {
+        return ComposeAPI.triggerUpdate(item).then(raw => {
           let trigger = new Trigger(raw)
           commit(types.updateSet, [trigger])
           commit(types.completed)
@@ -87,7 +87,7 @@ export default function (CRM) {
 
       async delete ({ commit }, item) {
         commit(types.pending)
-        return CRM.triggerDelete(item).then(() => {
+        return ComposeAPI.triggerDelete(item).then(() => {
           commit(types.removeFromSet, [item])
           commit(types.completed)
           return true

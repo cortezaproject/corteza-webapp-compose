@@ -301,7 +301,7 @@
       "codeLabel": "Code",
       "code": {
         "label": "Code",
-        "comment1": "Crust automation triggers will help you manage your CRM records",
+        "comment1": "Crust automation triggers will help you manage your records",
         "comment2": "It is a simple JavaScript engine that runs custom code that triggers manually",
         "comment3": "or automatically before/after certain record events (create, update, delete)"
       }
@@ -502,7 +502,7 @@
 
   "notification": {
     "general": {
-      "crmAccessNotAllowed": "Not allowed to access Crust CRM"
+      "composeAccessNotAllowed": "Not allowed to access Crust Compose"
     },
     "field": {
       "unsupportedKind": "Unsupported field kind {{kind}}",

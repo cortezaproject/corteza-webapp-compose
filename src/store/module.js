@@ -7,7 +7,7 @@ const types = {
   removeFromSet: 'removeFromSet',
 }
 
-export default function (CRM) {
+export default function (ComposeAPI) {
   return {
     namespaced: true,
 
@@ -38,7 +38,7 @@ export default function (CRM) {
         }
 
         commit(types.pending)
-        return CRM.moduleList({ moduleID }).then(mm => {
+        return ComposeAPI.moduleList({ moduleID }).then(mm => {
           if (mm && mm.length > 0) {
             commit(types.updateSet, mm.map(m => new Module(m)))
           }
@@ -57,7 +57,7 @@ export default function (CRM) {
         }
 
         commit(types.pending)
-        return CRM.moduleRead({ moduleID }).then(raw => {
+        return ComposeAPI.moduleRead({ moduleID }).then(raw => {
           let module = new Module(raw)
           commit(types.updateSet, [module])
           commit(types.completed)
@@ -67,7 +67,7 @@ export default function (CRM) {
 
       async create ({ commit }, item) {
         commit(types.pending)
-        return CRM.moduleCreate(item).then(raw => {
+        return ComposeAPI.moduleCreate(item).then(raw => {
           let module = new Module(raw)
           commit(types.updateSet, [module])
           commit(types.completed)
@@ -77,7 +77,7 @@ export default function (CRM) {
 
       async update ({ commit }, item) {
         commit(types.pending)
-        return CRM.moduleUpdate(item).then(raw => {
+        return ComposeAPI.moduleUpdate(item).then(raw => {
           let module = new Module(raw)
           commit(types.updateSet, [module])
           commit(types.completed)
@@ -87,7 +87,7 @@ export default function (CRM) {
 
       async delete ({ commit }, item) {
         commit(types.pending)
-        return CRM.moduleDelete(item).then(() => {
+        return ComposeAPI.moduleDelete(item).then(() => {
           commit(types.removeFromSet, [item])
           commit(types.completed)
           return true

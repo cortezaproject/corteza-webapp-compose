@@ -7,7 +7,7 @@ const types = {
   removeFromSet: 'removeFromSet',
 }
 
-export default function (CRM) {
+export default function (ComposeAPI) {
   return {
     namespaced: true,
 
@@ -38,7 +38,7 @@ export default function (CRM) {
         }
 
         commit(types.pending)
-        return CRM.chartList({ chartID }).then(cc => {
+        return ComposeAPI.chartList({ chartID }).then(cc => {
           if (cc && cc.length > 0) {
             commit(types.updateSet, cc.map(c => new Chart(c)))
           }
@@ -57,7 +57,7 @@ export default function (CRM) {
         }
 
         commit(types.pending)
-        return CRM.chartRead({ chartID }).then(raw => {
+        return ComposeAPI.chartRead({ chartID }).then(raw => {
           let chart = new Chart(raw)
           commit(types.updateSet, [chart])
           commit(types.completed)
@@ -67,7 +67,7 @@ export default function (CRM) {
 
       async create ({ commit }, item) {
         commit(types.pending)
-        return CRM.chartCreate(item).then(raw => {
+        return ComposeAPI.chartCreate(item).then(raw => {
           let chart = new Chart(raw)
           commit(types.updateSet, [chart])
           commit(types.completed)
@@ -77,7 +77,7 @@ export default function (CRM) {
 
       async update ({ commit }, item) {
         commit(types.pending)
-        return CRM.chartUpdate(item).then(raw => {
+        return ComposeAPI.chartUpdate(item).then(raw => {
           let chart = new Chart(raw)
           commit(types.updateSet, [chart])
           commit(types.completed)
@@ -87,7 +87,7 @@ export default function (CRM) {
 
       async delete ({ commit }, item) {
         commit(types.pending)
-        return CRM.chartDelete(item).then(() => {
+        return ComposeAPI.chartDelete(item).then(() => {
           commit(types.removeFromSet, [item])
           commit(types.completed)
           return true
