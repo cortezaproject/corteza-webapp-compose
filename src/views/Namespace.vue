@@ -37,7 +37,7 @@ export default {
       const errHandler = (error) => {
         switch ((error.response || {}).status) {
           case 403:
-            this.error = this.$t('notification.general.crmAccessNotAllowed')
+            this.error = this.$t('notification.general.composeAccessNotAllowed')
         }
 
         return Promise.reject(error)

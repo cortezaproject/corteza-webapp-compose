@@ -170,12 +170,12 @@ export default {
 
               open: (record) => {
                 if (!record) return
-                openRecordPage('public.page.record', record)
+                openRecordPage('page.record', record)
               },
 
               edit: (record) => {
                 if (!record) return
-                openRecordPage('public.page.record.edit', record)
+                openRecordPage('page.record.edit', record)
               },
             },
 

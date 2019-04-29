@@ -71,7 +71,7 @@ export default {
     handleCreate () {
       this.createRecord(this.module, this.record)
         .then((record) => {
-          this.$router.push({ name: 'public.page.record.edit', params: { recordID: record.recordID } })
+          this.$router.push({ name: 'page.record.edit', params: { recordID: record.recordID } })
         })
         .catch(this.defaultErrorHandler(this.$t('notification.record.createFailed')))
     },

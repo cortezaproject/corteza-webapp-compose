@@ -2,7 +2,7 @@
   <div v-if="recordListModule">
     <router-link v-if="!options.hideAddButton"
                  class="btn-url"
-                 :to="{ name: 'public.page.record.create', params: { pageID: options.pageID, refRecord: record }, query: null }">+ {{ $t('block.recordList.addRecord') }}</router-link>
+                 :to="{ name: 'page.record.create', params: { pageID: options.pageID, refRecord: record }, query: null }">+ {{ $t('block.recordList.addRecord') }}</router-link>
     <input v-if="!options.hideSearch"
            @keyup.enter.prevent="handleQuery"
            @keyup="handleQueryThrottled"
@@ -26,7 +26,7 @@
             </td>
             <td class="text-right">
               <router-link
-                :to="{ name: 'public.page.record', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
+                :to="{ name: 'page.record', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
                 <i class="action icon-search"></i></router-link>
             </td>
           </tr>

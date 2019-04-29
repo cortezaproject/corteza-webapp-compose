@@ -3,75 +3,93 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
+// public route builder/helper
+function pub (name, path, component) {
+  return {
+    path,
+    name,
+    component: () => import(`./views/Public/${component}.vue`),
+    props: true,
+  }
+}
+
+// admin route builder/helper
+//
+// we're not auto-prefixing name because we want to
+// have it in one string for easier searching
+function adm (name, path, component) {
+  return {
+    path,
+    name,
+    component: () => import(`./views/Admin/${component}.vue`),
+    props: true,
+  }
+}
+
 export default new VueRouter({
   mode: 'history',
   routes: [
+    { path: '', name: 'root', component: view('Namespaces') },
+
+    { path: '/auth', name: 'auth', component: view('Auth') },
+
     {
-      path: '',
-      name: 'root',
-      component: view('IndexNestedProtected'),
-      redirect: 'pages',
+      path: '/ns/:slug/',
+      name: 'namespace',
+      component: view('Namespace'),
+      props: true,
+
       children: [
-        { path: 'pages/', name: 'public.pages', component: view('Public/Redirect'), props: true },
         {
-          path: 'pages/:pageID',
-          component: view('Public/Index'),
-          props: true,
+          ...pub('pages', 'pages', 'Index'),
           children: [
-            { path: '',
-              name: 'public.page',
-              component: view('Public/Pages/View'),
-              props: true,
+            {
+              ...pub('page', ':pageID?', 'Pages/View'),
+
               children: [
-                { path: 'record/:recordID/edit', name: 'public.page.record.edit', component: view('Public/Pages/Records/Edit'), props: true },
-                { path: 'record/:recordID', name: 'public.page.record', component: view('Public/Pages/Records/View'), props: true },
-                { path: 'record', name: 'public.page.record.create', component: view('Public/Pages/Records/Create'), props: true, meta: { newRecord: true } },
+                pub('page.record.edit', 'record/:recordID/edit', 'Pages/Records/Edit'),
+                pub('page.record', 'record/:recordID', 'Pages/Records/View'),
+                pub('page.record.create', 'record', 'Pages/Records/Create'),
               ],
             },
           ],
         },
         {
-          path: 'admin',
-          name: 'admin',
-          component: view('Admin/Index'),
+          ...adm('admin', 'admin', 'Index'),
+
           children: [
-            // list modules (contacts, etc.)
-            { path: 'modules', name: 'admin.modules', component: view('Admin/Modules/Index') },
-            // create individual module structure (fields)
-            { path: 'modules/edit', name: 'admin.modules.add', component: view('Admin/Modules/Edit') },
-            // edit individual module structure (fields)
-            { path: 'modules/:moduleID/edit', name: 'admin.modules.edit', component: view('Admin/Modules/Edit'), props: true },
+            adm('admin.modules', 'modules', 'Modules/Index'),
+            adm('admin.modules.edit', 'modules/:moduleID/edit', 'Modules/Edit'),
+            adm('admin.modules.generator', 'modules/:moduleID/generator', 'Modules/Records/Generator'),
 
-            { path: 'modules/:moduleID/generator', name: 'admin.modules.generator', component: view('Admin/Modules/Records/Generator'), props: true },
+            adm('admin.pages', 'pages', 'Pages/Index'),
+            adm('admin.pages.edit', 'pages/:pageID/edit', 'Pages/Edit'),
+            adm('admin.pages.generator', 'pages/:pageID/generator', 'Pages/Builder'),
 
-            { path: 'pages/', name: 'admin.pages', component: view('Admin/Pages/Index') },
-            { path: 'pages/:pageID/edit', name: 'admin.pages.edit', component: view('Admin/Pages/Edit'), props: true },
-            { path: 'pages/:pageID/builder', name: 'admin.pages.builder', component: view('Admin/Pages/Builder'), props: true },
+            adm('admin.charts', 'charts', 'Charts/Index'),
+            adm('admin.charts.edit', 'charts/:chartID/edit', 'Charts/Edit'),
 
-            { path: 'charts', name: 'admin.charts', component: view('Admin/Charts/Index') },
-            { path: 'charts/:chartID/edit', name: 'admin.charts.edit', component: view('Admin/Charts/Edit'), props: true },
+            adm('admin.automation', 'automation', 'Automation/Index'),
+            adm('admin.automation.edit', 'automation/:triggerID/edit', 'Automation/Edit'),
 
-            { path: 'automation', name: 'admin.automation', component: view('Admin/Automation/Index') },
-            { path: 'automation/:triggerID/edit', name: 'admin.automation.edit', component: view('Admin/Automation/Edit'), props: true },
-
-            { path: 'configuration', name: 'admin.configuration', component: view('Admin/Configuration/Index') },
+            adm('admin.configuration', 'configuration', 'Configuration/Index'),
           ],
         },
-        {
-          path: 'storybook',
-          redirect: 'field-types',
-          component: view('Admin/Index'),
-          children: [
-            { path: 'field-types', name: 'storybook.field-types', component: view('Storybook/FieldTypes') },
-          ],
-        },
+        { path: '*', redirect: { name: 'pages' } },
       ],
     },
 
-    { path: '/auth', name: 'auth', component: view('Auth') },
+    {
+      path: '/storybook',
+      redirect: 'field-types',
+      component: view('Admin/Index'),
+      children: [
+        { path: 'field-types', name: 'storybook.field-types', component: view('Storybook/FieldTypes') },
+      ],
+    },
 
-    // When everything else fails, go to pages
-    { path: '*', redirect: { name: 'public.pages' } },
+    // When everything else fails, go to namespaces
+    { path: '*', redirect: { name: 'root' } },
   ],
 })
 

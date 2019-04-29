@@ -15,7 +15,7 @@ export default {
     const firstVisibleNonRecordPage = this.pages.find(p => !p.moduleID && p.visible)
 
     if (firstVisibleNonRecordPage) {
-      this.$router.push({ name: 'public.page', params: { pageID: firstVisibleNonRecordPage.pageID } })
+      this.$router.push({ name: 'page', params: { pageID: firstVisibleNonRecordPage.pageID } })
     } else {
       this.raiseWarningAlert(this.$t('notification.page.noPages'))
     }

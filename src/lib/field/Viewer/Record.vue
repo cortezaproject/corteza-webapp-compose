@@ -45,7 +45,7 @@ export default {
       }
 
       return {
-        name: 'public.page.record',
+        name: 'page.record',
         params: {
           pageID: recordPage.pageID,
           recordID: this.relRecord.recordID,

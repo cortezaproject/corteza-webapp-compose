@@ -148,7 +148,7 @@ export default {
           if (closeOnSuccess) {
             this.$router.push({ name: 'admin.pages' })
           } else if (previewOnSuccess) {
-            this.$router.push({ name: 'public.page' })
+            this.$router.push({ name: 'page' })
           }
 
           this.page = new Page(page)

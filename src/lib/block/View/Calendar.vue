@@ -128,7 +128,7 @@ export default {
 
     handleEventClick ({ id, pageID }) {
       if (id && pageID) {
-        this.$router.push({ name: 'public.page.record', params: { pageID, recordID: id } })
+        this.$router.push({ name: 'page.record', params: { pageID, recordID: id } })
       }
     },
   },

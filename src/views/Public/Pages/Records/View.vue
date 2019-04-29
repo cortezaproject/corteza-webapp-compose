@@ -5,14 +5,14 @@
                     @save="handleUpdate()">
 
       <button class="btn"
-              @click.prevent="$router.push({ name: 'public.page.record.create' })">+ {{ $t('general.label.addNew') }}</button>
+              @click.prevent="$router.push({ name: 'page.record.create' })">+ {{ $t('general.label.addNew') }}</button>
 
       <button class="btn btn-blue"
               :disabled="!record || !record.isValid()"
               @click.prevent="handleUpdate" v-if="editMode">{{ $t('general.label.save') }}</button>
 
       <button class="btn"
-              @click.prevent="$router.push({ name: 'public.page.record.edit' })" v-else>{{ $t('general.label.edit') }}</button>
+              @click.prevent="$router.push({ name: 'page.record.edit' })" v-else>{{ $t('general.label.edit') }}</button>
     </toolbar>
     <grid :page="page" :record="record" :edit-mode="editMode" v-if="record" @reload="loadRecord()" />
     <b-modal id="deleteRecord" :title="$t('block.record.deleteRecord')" @ok="handleDelete" :ok-title="$t('general.label.delete')" ok-variant="danger">
@@ -96,7 +96,7 @@ export default {
     handleDelete () {
       this.deleteRecord(this.module, this.record)
         .then(() => {
-          this.$router.push({ name: 'public.page', params: { pageID: this.page.pageID } })
+          this.$router.push({ name: 'page', params: { pageID: this.page.pageID } })
         })
         .catch(this.defaultErrorHandler(this.$t('notification.record.deleteFailed')))
     },
