@@ -5,8 +5,9 @@ export default class Trigger {
     this.merge(def)
   }
 
-  merge ({ triggerID, name, moduleID, actions, source, enabled, createdAt, updatedAt }) {
+  merge ({ triggerID, namespaceID, name, moduleID, actions, source, enabled, createdAt, updatedAt }) {
     this.triggerID = (typeof triggerID === 'string' ? triggerID : this.triggerID) || ''
+    this.namespaceID = typeof namespaceID === 'string' ? namespaceID : this.namespaceID || ''
     this.moduleID = (typeof moduleID === 'string' ? moduleID : this.moduleID) || null
     this.name = (typeof name === 'string' ? name : this.name) || ''
     this.source = (typeof source === 'string' ? source : this.source) || ''

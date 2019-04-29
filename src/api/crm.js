@@ -1,3 +1,3 @@
-import { CRM } from 'crust-api-client'
+import { Compose } from 'crust-api-client.js'
 
-export default new CRM({ baseURL: window.CrustCrmAPI })
+export default new Compose({ baseURL: window.CrustComposeAPI })
