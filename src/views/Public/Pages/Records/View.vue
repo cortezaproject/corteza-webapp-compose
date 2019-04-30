@@ -14,7 +14,11 @@
       <button class="btn"
               @click.prevent="$router.push({ name: 'page.record.edit' })" v-else>{{ $t('general.label.edit') }}</button>
     </toolbar>
-    <grid :page="page" :record="record" :edit-mode="editMode" v-if="record" @reload="loadRecord()" />
+    <grid :namespace="namespace"
+          :page="page"
+          :record="record"
+          :edit-mode="editMode"
+          v-if="record" @reload="loadRecord()" />
     <b-modal id="deleteRecord" :title="$t('block.record.deleteRecord')" @ok="handleDelete" :ok-title="$t('general.label.delete')" ok-variant="danger">
       <div class="d-block text-center">
         <h3>{{ $t('block.record.confirmDelete') }}</h3>
@@ -28,6 +32,8 @@ import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 import Record from '@/lib/record'
 import triggerRunner from '@/mixins/trigger_runner'
 import Toolbar from '@/components/Public/Page/Toolbar'
+import Namespace from '@/lib/namespace'
+import Page from '@/lib/page'
 
 export default {
   name: 'ViewRecord',
@@ -43,9 +49,13 @@ export default {
   ],
 
   props: {
-    // Receives page object via router-view component
-    page: {
-      type: Object,
+    namespace: { // via router-view
+      type: Namespace,
+      required: true,
+    },
+
+    page: { // via router-view
+      type: Page,
       required: true,
     },
 

@@ -1,5 +1,13 @@
 <template>
-  <p>List of namespace</p>
+  <p>
+    List of namespace {{ namespaces }}
+
+    <router-link :to="{ name: 'pages', params: { slug: (n.slug || n.namespaceID) } }" v-for="(n) in namespaces" :key="n.namespaceID">{{ n.name }}</router-link>
+
+    {{ error }}
+
+    <a href="/ns/88714882739863655/admin">test</a>
+  </p>
 </template>
 <script>
 export default {
@@ -9,14 +17,13 @@ export default {
       loaded: false,
       error: '',
       alerts: [], // { variant: 'info', message: 'foo' },
+      namespaces: [],
     }
   },
 
   created () {
     this.$auth.check(this.$system).then(() => {
       this.error = ''
-
-      this.handleAlert((alert) => this.alerts.push(alert))
 
       const errHandler = (error) => {
         switch ((error.response || {}).status) {
@@ -28,12 +35,10 @@ export default {
       }
 
       this.$store.dispatch('namespace/load').then((nn) => {
-        console.log(nn)
+        this.namespaces = nn
         this.loaded = true
       }).catch(errHandler)
-
     }).catch((e) => {
-      console.error(e)
       window.location = '/auth'
     })
   },

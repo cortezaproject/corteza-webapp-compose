@@ -9,7 +9,8 @@
                @dismiss-count-down="a.countdown=$event"
                @dismissed="alerts.splice(i, 0)">{{ a.message }}</b-alert>
     </div>
-    <router-view v-if="loaded" />
+    <router-view v-if="loaded && namespace"
+                 :namespace="namespace" />
     <div class="loader" v-else>
       <img :src="logo" />
     </div>
@@ -19,42 +20,90 @@
 
 <script>
 export default {
+  name: 'Namespace',
+
+  props: {
+    slug: {
+      required: true,
+      type: String,
+    },
+  },
+
   data () {
     return {
       logo: require('@/assets/images/crust-logo-with-tagline.png'),
       loaded: false,
       error: '',
       alerts: [], // { variant: 'info', message: 'foo' },
+      namespace: null,
     }
   },
 
-  created () {
-    this.$auth.check(this.$system).then(() => {
-      this.error = ''
+  watch: {
+    slug: {
+      immediate: true,
+      handler (slug) {
+        console.debug('Slug changed', { slug })
+        this.$auth.check(this.$system).then(() => {
+          this.$store.dispatch('namespace/load').then(() => {
+            this.namespace = this.$store.getters['namespace/getByUrlPart'](slug)
+          }).then(() => {
+          }).catch(this.errHandler)
+        }).catch(() => {
+          window.location = '/auth'
+        })
+      },
+    },
 
-      this.handleAlert((alert) => this.alerts.push(alert))
+    namespace: {
+      handler (namespace) {
+        console.debug('Namespace changed', { namespace })
 
-      const errHandler = (error) => {
-        switch ((error.response || {}).status) {
-          case 403:
-            this.error = this.$t('notification.general.composeAccessNotAllowed')
+        if (!namespace) {
+          return
         }
 
-        return Promise.reject(error)
+        this.loaded = false
+
+        const p = { namespaceID: namespace.namespaceID, clear: true }
+
+        // Preload all data we need.
+        Promise.all([
+          this.$store.dispatch('module/load', p)
+            .catch(this.errHandler),
+
+          this.$store.dispatch('chart/load', p)
+            .catch(this.errHandler),
+
+          this.$store.dispatch('page/load', p)
+            .catch(this.errHandler),
+
+          this.$store.dispatch('trigger/load', p)
+            .catch(this.errHandler),
+
+        ]).catch(this.errHandler).then(() => {
+          console.log('loaded')
+          this.loaded = true
+        })
+      },
+    },
+  },
+
+  created () {
+    this.error = ''
+    this.handleAlert((alert) => this.alerts.push(alert))
+  },
+
+  methods: {
+    // Error handler for Promise
+    errHandler (error) {
+      switch ((error.response || {}).status) {
+        case 403:
+          this.error = this.$t('notification.general.composeAccessNotAllowed')
       }
 
-      Promise.all([
-        // Preload all data we need.
-        this.$store.dispatch('module/load').catch(errHandler),
-        this.$store.dispatch('chart/load').catch(errHandler),
-        this.$store.dispatch('page/load').catch(errHandler),
-        this.$store.dispatch('trigger/load').catch(errHandler),
-      ]).then(() => {
-        this.loaded = true
-      })
-    }).catch(() => {
-      window.location = '/auth'
-    })
+      return Promise.reject(error)
+    },
   },
 }
 </script>
