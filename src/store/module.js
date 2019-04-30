@@ -5,6 +5,7 @@ const types = {
   completed: 'completed',
   updateSet: 'updateSet',
   removeFromSet: 'removeFromSet',
+  clearSet: 'clearSet',
 }
 
 export default function (ComposeAPI) {
@@ -29,7 +30,11 @@ export default function (ComposeAPI) {
     },
 
     actions: {
-      async load ({ commit, getters }, { moduleID, force = false } = {}) {
+      async load ({ commit, getters, rootGetters }, { namespaceID, clear = false, force = false } = {}) {
+        if (clear) {
+          commit(types.clearSet)
+        }
+
         if (!force && getters.set.length > 1) {
           // When there's forced load, make sure we have more than 1 item in the set
           // in the scenario when user came to detail page first and has one item loaded
@@ -38,9 +43,13 @@ export default function (ComposeAPI) {
         }
 
         commit(types.pending)
-        return ComposeAPI.moduleList({ moduleID }).then(mm => {
-          if (mm && mm.length > 0) {
-            commit(types.updateSet, mm.map(m => new Module(m)))
+        return ComposeAPI.moduleList({ namespaceID }).then(({ set, filter }) => {
+          if (filter.count > filter.perPage) {
+            console.error('Got %d modules of total %d.', filter.perPage, filter.count)
+          }
+
+          if (set && set.length > 0) {
+            commit(types.updateSet, set.map(m => new Module(m)))
           }
 
           commit(types.completed)
@@ -93,6 +102,10 @@ export default function (ComposeAPI) {
           return true
         })
       },
+
+      clearSet ({ commit }) {
+        commit(types.clearSet)
+      },
     },
 
     mutations: {
@@ -122,6 +135,11 @@ export default function (ComposeAPI) {
             state.set.splice(i, 1)
           }
         })
+      },
+
+      [types.clearSet] (state) {
+        state.pending = false
+        state.set.splice(0)
       },
     },
   }

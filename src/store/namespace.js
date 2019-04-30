@@ -5,6 +5,7 @@ const types = {
   completed: 'completed',
   updateSet: 'updateSet',
   removeFromSet: 'removeFromSet',
+  clearSet: 'clearSet',
 }
 
 export default function (ComposeAPI) {
@@ -23,13 +24,17 @@ export default function (ComposeAPI) {
         return (ID) => state.set.find(({ namespaceID }) => ID === namespaceID)
       },
 
+      getByUrlPart (state) {
+        return (urlPart) => state.set.find(({ slug, namespaceID }) => (urlPart === slug) || (urlPart === namespaceID))
+      },
+
       set (state) {
         return state.set
       },
     },
 
     actions: {
-      async load ({ commit, getters }, { namespaceID, force = false } = {}) {
+      async load ({ commit, getters }, { force = false } = {}) {
         if (!force && getters.set.length > 1) {
           // When there's forced load, make sure we have more than 1 item in the set
           // in the scenario when user came to detail page first and has one item loaded
@@ -38,9 +43,14 @@ export default function (ComposeAPI) {
         }
 
         commit(types.pending)
-        return ComposeAPI.namespaceList({ namespaceID }).then(cc => {
-          if (cc && cc.length > 0) {
-            commit(types.updateSet, cc.map(c => new Namespace(c)))
+        // @todo expect issues with larger sets of namespaces because we do paging on the API
+        return ComposeAPI.namespaceList({}).then(({ set, filter }) => {
+          if (filter.count > filter.perPage) {
+            console.error('Got %d namespaces of total %d.', filter.perPage, filter.count)
+          }
+
+          if (set && set.length > 0) {
+            commit(types.updateSet, set.map(n => new Namespace(n)))
           }
 
           commit(types.completed)
@@ -93,6 +103,10 @@ export default function (ComposeAPI) {
           return true
         })
       },
+
+      clearSet ({ commit }) {
+        commit(types.clearSet)
+      },
     },
 
     mutations: {
@@ -122,6 +136,11 @@ export default function (ComposeAPI) {
             state.set.splice(i, 1)
           }
         })
+      },
+
+      [types.clearSet] (state) {
+        state.pending = false
+        state.set.splice(0)
       },
     },
   }
