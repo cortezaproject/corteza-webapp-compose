@@ -22,7 +22,7 @@
         <tbody>
           <tr v-for="(row) in records" :key="row.recordID">
             <td v-for="(col) in columns" :key="row.recordID+':'+col.name">
-              <field-viewer :field="col" value-only :record="row"></field-viewer>
+              <field-viewer :field="col" value-only :record="row" :namespace="namespace"></field-viewer>
             </td>
             <td class="text-right">
               <router-link
@@ -35,11 +35,11 @@
     </div>
     <div class="sticky-footer" v-if="!options.hidePaging">
       <pagination
-          :records="meta.count"
-          :per-page="meta.perPage"
+          :records="filter.count"
+          :per-page="filter.perPage"
           @paginate="handlePageChange"
           theme="bootstrap4"
-          :page="meta.page + 1"
+          :page="filter.page + 1"
           :options="{ texts: { count: $t('block.recordList.pagination') } }" />
     </div>
   </div>
@@ -67,7 +67,7 @@ export default {
       sortColumn: null,
       query: null,
 
-      meta: {
+      filter: {
         count: 0,
         page: 0,
         perPage: 20,
@@ -117,9 +117,9 @@ export default {
       }
     }
 
-    this.meta.sort = this.options.presort
-    this.meta.filter = this.options.prefilter
-    this.meta.perPage = this.options.perPage
+    this.filter.sort = this.options.presort
+    this.filter.filter = this.options.prefilter
+    this.filter.perPage = this.options.perPage
 
     if (this.options.prefilter) {
       // Little magic here: prefilter is wraped with backticks and evaluated
@@ -135,7 +135,7 @@ export default {
         userID: (this.$auth.user || {}).ID || 0,
       })
 
-      this.meta.filter = this.prefilter
+      this.filter.filter = this.prefilter
     }
 
     if (this.recordListModule) {
@@ -144,12 +144,13 @@ export default {
   },
 
   methods: {
-    fetch (params = this.meta) {
+    fetch (params = this.filter) {
       params.moduleID = this.options.moduleID
+      params.namespaceID = this.namespace.namespaceID
 
-      return this.$compose.recordList(params).then(({ meta, records }) => {
-        this.meta = meta
-        this.records = records.map(r => new Record(this.recordListModule, r))
+      return this.$compose.recordList(params).then(({ filter, set }) => {
+        this.filter = filter
+        this.records = set.map(r => new Record(this.recordListModule, r))
       }).catch(this.defaultErrorHandler(this.$t('notification.record.listLoadFailed')))
     },
 
@@ -184,7 +185,7 @@ export default {
         }
       }
 
-      this.fetch({ ...this.meta, filter })
+      this.fetch({ ...this.filter, filter })
     },
 
     handleSort (fieldName) {
@@ -199,11 +200,11 @@ export default {
         sort = this.options.presort + ', ' + sort
       }
 
-      this.fetch({ ...this.meta, sort })
+      this.fetch({ ...this.filter, sort })
     },
 
     handlePageChange (page) {
-      this.fetch({ ...this.meta, page: page - 1 })
+      this.fetch({ ...this.filter, page: page - 1 })
     },
 
     getFieldLabel (field) {

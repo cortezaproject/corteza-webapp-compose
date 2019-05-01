@@ -56,11 +56,17 @@
 import numeral from 'numeral'
 import moment from 'moment'
 import Attachment from '@/lib/attachment'
+import Namespace from '@/lib/namespace'
 
 export default {
   props: {
     enableDelete: {
       type: Boolean,
+    },
+
+    namespace: {
+      type: Namespace,
+      required: true,
     },
 
     kind: {
@@ -97,9 +103,10 @@ export default {
           }
         })
 
-        set.forEach((a, index) => {
-          if (typeof a === 'string') {
-            this.$compose.attachmentDetails({ kind: this.kind, attachmentID: a }).then(att => {
+        const namespaceID = this.namespace.namespaceID
+        set.forEach((attachmentID, index) => {
+          if (typeof attachmentID === 'string') {
+            this.$compose.attachmentRead({ kind: this.kind, attachmentID, namespaceID }).then(att => {
               this.attachments.splice(index, 1, new Attachment(att))
             })
           }

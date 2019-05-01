@@ -42,11 +42,7 @@ export default {
 
     if (cmp) {
       return createElement(cmp, {
-        props: {
-          field: this.field,
-          record: this.record,
-          validate: this.validate,
-        },
+        props: this.$props,
       })
     } else {
       return createElement('code', this.$t('notification.field.unknownFieldKind', { kind: this.field.kind }))

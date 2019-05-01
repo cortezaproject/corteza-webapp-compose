@@ -103,12 +103,13 @@ export default {
 
           // Build params from feed configutation
           const params = {
+            namespaceID: this.namespace.namespaceID,
             moduleID: module.moduleID,
             filter: `date(${feed.endField || feed.startField}) >= '${start.toISOString()}' AND date(${feed.startField}) < '${end.toISOString()}'`,
           }
 
-          this.$compose.recordList(params).then(({ meta, records }) => {
-            this.events.push(...records
+          this.$compose.recordList(params).then(({ filter, set }) => {
+            this.events.push(...set
               .map(r => new Record(module, r))
               .filter(r => !!r.values[feed.startField])
               .map(r => {

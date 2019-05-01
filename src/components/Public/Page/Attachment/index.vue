@@ -71,10 +71,9 @@ export default {
     value: {
       immediate: true,
       handler (value) {
-        console.log(value)
         // On input change resolve/load all attachments
         if (typeof value === 'string') {
-          this.$compose.attachmentDetails({ kind: this.kind, attachmentID: value }).then(a => {
+          this.$compose.attachmentRead({ kind: this.kind, attachmentID: value }).then(a => {
             this.attachment = a
           })
         } else {

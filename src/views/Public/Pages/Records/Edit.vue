@@ -26,7 +26,7 @@ export default {
     handleUpdate () {
       this.updateRecord(this.module, this.record)
         .then((record) => {
-          this.$router.push({ name: 'page.record' })
+          this.$router.push({ name: 'page.record', params: { ...this.$route.params } })
         })
         .catch(this.defaultErrorHandler(this.$t('notification.record.updateFailed')))
     },

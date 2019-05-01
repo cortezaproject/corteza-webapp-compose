@@ -108,7 +108,10 @@ export default {
                 throw Error(i18next.t('notification.automation.expectingModuleObject'))
               }
 
-              let params = { moduleID: module.moduleID }
+              let params = {
+                namespaceID: module.namespaceID,
+                moduleID: module.moduleID,
+              }
 
               // Extract recordID from filter param
               // Scenarios:
@@ -131,8 +134,8 @@ export default {
                   params = { ...params, ...filter }
                 }
 
-                return $compose.recordList(params).then(({ records, meta }) => {
-                  return { meta, records: records.map(r => new Record(module, r)) }
+                return $compose.recordList(params).then(({ records, filter }) => {
+                  return { filter, records: records.map(r => new Record(module, r)) }
                 })
               }
             },

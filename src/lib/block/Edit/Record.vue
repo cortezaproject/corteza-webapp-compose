@@ -5,7 +5,8 @@
       class="field"
       :record.sync="record"
       :key="field.id"
-      :field="field"/>
+      :namespace="namespace"
+      :field="field" />
   </div>
 </template>
 <script>
@@ -23,6 +24,11 @@ export default {
     },
 
     module: {
+      type: Object,
+      required: true,
+    },
+
+    namespace: {
       type: Object,
       required: true,
     },

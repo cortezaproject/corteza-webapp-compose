@@ -1,6 +1,11 @@
 <script>
 export default {
   props: {
+    namespace: {
+      type: Object,
+      required: true,
+    },
+
     page: {
       type: Object,
       required: true,

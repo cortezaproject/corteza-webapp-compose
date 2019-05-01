@@ -22,13 +22,13 @@
       </div>
      <div class="form-group">
        <label for="color">{{ $t('block.general.headerStyle') }}</label>
-       <b-form-select v-model="block.theme" :options="options" class="mb-3" />
+       <b-form-select id="color" v-model="block.theme" :options="options" class="mb-3" />
        <div :class="'theme-'+block.theme">
          <h2>{{ $t('block.general.previewHeader') }}</h2>
        </div>
      </div>
     </fieldset>
-    <component :is="block.kind" :module="module" :page="page" :options.sync="block.options"/>
+    <component :is="block.kind" :namespace="namespace" :module="module" :page="page" :options.sync="block.options"/>
   </form>
 </template>
 
@@ -42,6 +42,11 @@ export default {
 
   props: {
     block: {
+      type: Object,
+      required: true,
+    },
+
+    namespace: {
       type: Object,
       required: true,
     },

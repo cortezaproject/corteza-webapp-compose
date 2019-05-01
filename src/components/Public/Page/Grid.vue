@@ -4,8 +4,22 @@
         :editable="false"
         :key="page.pageID">
     <template slot-scope="{ boundingRect, block, index }">
-      <block-editor :block="block" :page="page" :module="module" :record="record" v-on="$listeners" :bounding-rect="boundingRect" v-if="editMode" />
-      <block-viewer :block="block" :page="page" :module="module" :record="record" v-on="$listeners" :bounding-rect="boundingRect" v-else />
+      <block-editor :block="block"
+                    :namespace="namespace"
+                    :page="page"
+                    :module="module"
+                    :record="record"
+                    :bounding-rect="boundingRect"
+                    v-on="$listeners"
+                    v-if="editMode" />
+      <block-viewer :block="block"
+                    :namespace="namespace"
+                    :page="page"
+                    :module="module"
+                    :record="record"
+                    :bounding-rect="boundingRect"
+                    v-on="$listeners"
+                    v-else />
     </template>
   </grid>
 </template>
@@ -24,6 +38,11 @@ export default {
   },
 
   props: {
+    namespace: {
+      type: Object,
+      required: true,
+    },
+
     page: {
       type: Object,
       required: true,

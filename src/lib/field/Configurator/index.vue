@@ -16,9 +16,7 @@ export default {
 
     if (i >= 0) {
       return createElement(this.$options.components[keys[i]], {
-        props: {
-          field: this.field,
-        },
+        props: this.$props,
       })
     } else {
       // It's ok if field does not have a configurator, no biggie
