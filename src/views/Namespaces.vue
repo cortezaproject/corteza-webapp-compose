@@ -1,13 +1,27 @@
 <template>
-  <p>
-    List of namespace {{ namespaces }}
+  <main class="centering-wrap inactive-area">
 
-    <router-link :to="{ name: 'pages', params: { slug: (n.slug || n.namespaceID) } }" v-for="(n) in namespaces" :key="n.namespaceID">{{ n.name }}</router-link>
+    <h1>Compose Namespaces</h1>
 
-    {{ error }}
+    <div class="row">
+      <div class="col-sm-3" v-for="(n) in namespaces" :key="n.namespaceID">
+        <div class="card">
+          <img class="card-img-top" :src="logo" alt="Card image cap">
+          <h4 v-if="n.name" class="card-title">{{ n.name }}</h4>
+          <h5 v-if="n.meta.subtitle" class="card-subtitle mb-2 text-muted">{{ n.meta.subtitle }}</h5>
+          <div class="card-body" v-if="n.meta.description">
+            <p class="card-text">{{ n.meta.description }}</p>
+          </div>
+          <div class="card-footer">
+            <p class="card-text text-right">
+              <router-link :to="{ name: 'pages', params: { slug: (n.slug || n.namespaceID) } }" class="btn btn-primary">{{ n.name || 'Go' }}</router-link>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <a href="/ns/88714882739863655/admin">test</a>
-  </p>
+  </main>
 </template>
 <script>
 export default {
@@ -44,3 +58,6 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+
+</style>

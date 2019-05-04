@@ -3,10 +3,11 @@ export default class Namespace {
     this.merge(def)
   }
 
-  merge ({ namespaceID, name, slug, createdAt, updatedAt, ...args }) {
+  merge ({ namespaceID, name, slug, meta, createdAt, updatedAt, ...args }) {
     this.namespaceID = typeof namespaceID === 'string' ? namespaceID : this.namespaceID || ''
     this.name = typeof name === 'string' ? name : this.name || ''
     this.slug = typeof slug === 'string' ? slug : this.slug || ''
+    this.meta = (meta !== undefined ? meta : this.meta) || {}
     this.createdAt = createdAt || this.createdAt
     this.updatedAt = updatedAt || this.updatedAt
 
