@@ -36,6 +36,7 @@
 <script>
 import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 import EditorToolbar from '@/components/Admin/EditorToolbar'
+import Namespace from '@/lib/namespace'
 
 export default {
   name: 'PageEdit',
@@ -46,6 +47,11 @@ export default {
   },
 
   props: {
+    namespace: {
+      type: Namespace,
+      required: true,
+    },
+
     pageID: {
       type: String,
       required: true,
@@ -60,7 +66,8 @@ export default {
   },
 
   created () {
-    this.$compose.pageRead({ pageID: this.pageID }).then((page) => {
+    const { namespaceID } = this.namespace
+    this.$compose.pageRead({ namespaceID, pageID: this.pageID }).then((page) => {
       if (page.moduleID !== '0') {
         // Do not allow to edit record pages, move to builder
         this.$router.replace({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
@@ -71,7 +78,8 @@ export default {
   },
   methods: {
     handleSave ({ closeOnSuccess = false } = {}) {
-      this.$compose.pageUpdate(this.page).then(() => {
+      const { namespaceID } = this.namespace
+      this.$compose.pageUpdate({ namespaceID, ...this.page }).then(() => {
         this.raiseSuccessAlert(this.$t('notification.page.saved'))
         if (closeOnSuccess) {
           this.$router.push({ name: 'admin.pages' })
@@ -80,7 +88,7 @@ export default {
     },
 
     handleDeletePage () {
-      this.$compose.pageDelete({ pageID: this.pageID }).then(() => {
+      this.$compose.pageDelete(this.page).then(() => {
         this.$router.push({ name: 'admin.pages' })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.deleteFailed')))
     },

@@ -81,9 +81,18 @@ export default {
     tableSort,
   ],
 
+  props: {
+    namespace: {
+      type: Object,
+      required: false,
+    },
+  },
+
   data () {
+    const { namespaceID } = this.namespace
+
     return {
-      newModule: new Module({ fields: [new Field({ name: 'sample', kind: 'text' })] }),
+      newModule: new Module({ namespaceID, fields: [new Field({ name: 'sample', kind: 'String' })] }),
     }
   },
 
@@ -127,7 +136,9 @@ export default {
       // with reference to a module
 
       const module = this.modules.find(m => m.moduleID === moduleID)
+      const { namespaceID } = this.namespace
       const payload = {
+        namespaceID,
         title: `${this.$t('module.recordPage')} "${module.name || moduleID}"`,
         moduleID,
         blocks: [],

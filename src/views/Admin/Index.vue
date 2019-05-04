@@ -1,7 +1,7 @@
 <template>
   <div class="centering-wrap inactive-area">
     <admin-header></admin-header>
-    <router-view/>
+    <router-view :namespace="namespace" />
   </div>
 </template>
 
@@ -12,6 +12,13 @@ export default {
 
   components: {
     AdminHeader,
+  },
+
+  props: {
+    namespace: {
+      type: Object,
+      required: false,
+    },
   },
 }
 </script>

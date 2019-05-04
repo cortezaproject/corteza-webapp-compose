@@ -53,7 +53,7 @@ export default function (ComposeAPI) {
         })
       },
 
-      async findByID ({ commit, getters }, { chartID, force = false } = {}) {
+      async findByID ({ commit, getters }, { namespaceID, chartID, force = false } = {}) {
         if (!force) {
           let oldItem = getters.getByID(chartID)
           if (oldItem) {
@@ -62,7 +62,7 @@ export default function (ComposeAPI) {
         }
 
         commit(types.pending)
-        return ComposeAPI.chartRead({ chartID }).then(raw => {
+        return ComposeAPI.chartRead({ namespaceID, chartID }).then(raw => {
           let chart = new Chart(raw)
           commit(types.updateSet, [chart])
           commit(types.completed)

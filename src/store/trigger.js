@@ -53,7 +53,7 @@ export default function (ComposeAPI) {
         })
       },
 
-      async findByID ({ commit, getters }, { triggerID, force = false } = {}) {
+      async findByID ({ commit, getters }, { namespaceID, triggerID, force = false } = {}) {
         if (!force) {
           const oldItem = getters.getByID(triggerID)
           if (oldItem) {
@@ -62,7 +62,7 @@ export default function (ComposeAPI) {
         }
 
         commit(types.pending)
-        return ComposeAPI.triggerRead({ triggerID }).then(raw => {
+        return ComposeAPI.triggerRead({ namespaceID, triggerID }).then(raw => {
           let trigger = new Trigger(raw)
           commit(types.updateSet, [trigger])
           commit(types.completed)

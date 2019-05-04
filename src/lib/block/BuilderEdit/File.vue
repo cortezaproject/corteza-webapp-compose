@@ -39,7 +39,7 @@ export default {
       const { pageID } = this.page
 
       return this.$compose.pageUploadEndpoint({
-        namespacIDe: this.namespace.namespaceID,
+        namespaceID: this.namespace.namespaceID,
         pageID,
       })
     },

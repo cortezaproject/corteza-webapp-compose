@@ -2832,7 +2832,7 @@ cross-spawn@^6.0.0:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
-crust-api-client@crusttech/crust-api-client.js.git#master:
+crust-api-client.js@crusttech/crust-api-client.js.git#master:
   version "2019.3.1"
   resolved "https://codeload.github.com/crusttech/crust-api-client.js/tar.gz/f510b993779fd4fe2311012d94c8ec0ab16571b4"
   dependencies:

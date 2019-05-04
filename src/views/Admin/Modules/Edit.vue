@@ -89,6 +89,11 @@ export default {
   },
 
   props: {
+    namespace: {
+      type: Object,
+      required: false,
+    },
+
     moduleID: {
       type: String,
       required: true,
@@ -141,7 +146,7 @@ export default {
     },
 
     handleDelete () {
-      this.deleteModule({ moduleID: this.moduleID }).then(() => {
+      this.deleteModule(this.module).then(() => {
         this.raiseSuccessAlert(this.$t('notification.module.deleted'))
         this.$router.push({ name: 'admin.modules' })
       }).catch(this.defaultErrorHandler(this.$t('notification.module.deleteFailed')))

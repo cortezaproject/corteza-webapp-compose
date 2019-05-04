@@ -64,7 +64,7 @@ export default new VueRouter({
 
             adm('admin.pages', 'pages', 'Pages/Index'),
             adm('admin.pages.edit', 'pages/:pageID/edit', 'Pages/Edit'),
-            adm('admin.pages.generator', 'pages/:pageID/generator', 'Pages/Builder'),
+            adm('admin.pages.builder', 'pages/:pageID/builder', 'Pages/Builder'),
 
             adm('admin.charts', 'charts', 'Charts/Index'),
             adm('admin.charts.edit', 'charts/:chartID/edit', 'Charts/Edit'),

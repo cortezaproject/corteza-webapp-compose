@@ -12,6 +12,7 @@ export default class Record {
     if (module instanceof Module) {
       this.module = module
       this.moduleID = module.moduleID
+      this.namespaceID = module.namespaceID
 
       this[fields] = {}
       this.module.fields.forEach(({ name, isMulti, kind }) => {

@@ -57,7 +57,7 @@ export default function (ComposeAPI) {
         })
       },
 
-      async findByID ({ commit, getters }, { moduleID, force = false } = {}) {
+      async findByID ({ commit, getters }, { namespaceID, moduleID, force = false } = {}) {
         if (!force) {
           const oldItem = getters.getByID(moduleID)
           if (oldItem) {
@@ -66,7 +66,7 @@ export default function (ComposeAPI) {
         }
 
         commit(types.pending)
-        return ComposeAPI.moduleRead({ moduleID }).then(raw => {
+        return ComposeAPI.moduleRead({ namespaceID, moduleID }).then(raw => {
           let module = new Module(raw)
           commit(types.updateSet, [module])
           commit(types.completed)

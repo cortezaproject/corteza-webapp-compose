@@ -55,7 +55,7 @@ export default function (ComposeAPI) {
         })
       },
 
-      async findByID ({ commit, getters }, { pageID, force = false } = {}) {
+      async findByID ({ commit, getters }, { namespaceID, pageID, force = false } = {}) {
         if (!force) {
           const oldItem = getters.getByID(pageID)
           if (oldItem) {
@@ -64,7 +64,7 @@ export default function (ComposeAPI) {
         }
 
         commit(types.pending)
-        return ComposeAPI.pageRead({ pageID }).then(raw => {
+        return ComposeAPI.pageRead({ namespaceID, pageID }).then(raw => {
           let page = new Page(raw)
           commit(types.updateSet, [page])
           commit(types.completed)

@@ -101,6 +101,7 @@ export default {
 
     search (query) {
       this.query = query
+      const namespaceID = this.namespace.namespaceID
       const moduleID = this.field.options.moduleID
 
       if (moduleID && query.length > 0) {
@@ -109,16 +110,17 @@ export default {
           return `${qf} LIKE '%${query}%'`
         }).join(' OR ')
 
-        this.$compose.recordList({ moduleID, filter, sort: this.sortString() }).then(({ set }) => {
+        this.$compose.recordList({ namespaceID, moduleID, filter, sort: this.sortString() }).then(({ set }) => {
           this.records = set.map(r => new Record(this.module, r))
         })
       }
     },
 
     loadLatest () {
+      const namespaceID = this.namespace.namespaceID
       const moduleID = this.field.options.moduleID
       if (moduleID) {
-        this.$compose.recordList({ moduleID, sort: this.sortString() }).then(({ set }) => {
+        this.$compose.recordList({ namespaceID, moduleID, sort: this.sortString() }).then(({ set }) => {
           this.latest = set.map(r => new Record(this.module, r))
         })
       }

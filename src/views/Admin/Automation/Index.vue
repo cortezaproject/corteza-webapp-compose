@@ -80,9 +80,17 @@ export default {
     tableSort,
   ],
 
+  props: {
+    namespace: {
+      type: Object,
+      required: false,
+    },
+  },
+
   data () {
+    const { namespaceID } = this.namespace
     return {
-      newTrigger: new Trigger(),
+      newTrigger: new Trigger({ namespaceID }),
     }
   },
 
@@ -109,7 +117,8 @@ export default {
   },
 
   created () {
-    this.loadTriggers({ force: true })
+    const { namespaceID } = this.namespace
+    this.loadTriggers({ namespaceID, force: true })
   },
 
   methods: {

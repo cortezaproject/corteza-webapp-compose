@@ -28,7 +28,11 @@
        </div>
      </div>
     </fieldset>
-    <component :is="block.kind" :namespace="namespace" :module="module" :page="page" :options.sync="block.options"/>
+    <component :is="block.kind"
+               :namespace="namespace"
+               :module="module"
+               :page="page"
+               :options.sync="block.options"/>
   </form>
 </template>
 

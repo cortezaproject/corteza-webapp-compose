@@ -129,6 +129,11 @@ export default {
       type: String,
       required: true,
     },
+
+    namespace: {
+      type: Object,
+      required: false,
+    },
   },
 
   data () {
@@ -254,9 +259,10 @@ export default {
           .then(m => {
             // Set loaded module to context
             ctx.module = m
+            const { namespaceID, moduleID } = m
 
             // And load record from the given params
-            return this.$compose.recordRead({ namespaceID: m.namespaceID, moduleID: m.moduleID, recordID: this.test.recordID })
+            return this.$compose.recordRead({ namespaceID, moduleID, recordID: this.test.recordID })
           })
           .then(r => {
             // Properly convert record and update context

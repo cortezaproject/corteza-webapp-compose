@@ -24,8 +24,10 @@ export default {
   computed: {
     endpoint () {
       const { moduleID, recordID } = this.record
+      const { namespaceID } = this.namespace
+
       return this.$compose.recordUploadEndpoint({
-        namespaceID: this.namespace.namespaceID,
+        namespaceID,
         moduleID,
         recordID,
         fieldName: this.field.name,

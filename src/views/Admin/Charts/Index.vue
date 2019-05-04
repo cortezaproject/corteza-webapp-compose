@@ -66,9 +66,17 @@ export default {
     tableSort,
   ],
 
+  props: {
+    namespace: {
+      type: Object,
+      required: false,
+    },
+  },
+
   data () {
+    const { namespaceID } = this.namespace
     return {
-      newChart: new Chart(),
+      newChart: new Chart({ namespaceID }),
     }
   },
 

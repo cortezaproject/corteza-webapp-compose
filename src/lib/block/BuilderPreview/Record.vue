@@ -15,13 +15,6 @@ import base from './base'
 export default {
   extends: base,
 
-  props: {
-    module: {
-      type: Object,
-      required: false,
-    },
-  },
-
   computed: {
     selectedFields () {
       return this.options.fields.filter(f => !!f).map(f => f.name).join(', ')

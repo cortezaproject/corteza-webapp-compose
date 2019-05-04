@@ -10,7 +10,9 @@
               <i class="icon-x"></i>
             </a>
           </div>
-          <block-preview :block="block" :module="module"></block-preview>
+          <block-preview :block="block"
+                         :namespace="namespace"
+                         :module="module"></block-preview>
         </template>
       </grid>
 
@@ -27,6 +29,7 @@
         @hide="editor=null"
         :visible="showCreator">
         <block-edit v-if="showCreator"
+                    :namespace="namespace"
                     :module="module"
                     :page="page"
                     :block.sync="editor.block" />
@@ -43,6 +46,7 @@
         @hide="editor=null"
         :visible="showEditor">
         <block-edit v-if="showEditor"
+                    :namespace="namespace"
                     :module="module"
                     :page="page"
                     :block.sync="editor.block" />
@@ -67,6 +71,7 @@ import BlockPreview from '@/lib/block/BuilderPreview'
 import BlockEdit from '@/lib/block/BuilderEdit'
 import EditorToolbar from '@/components/Admin/EditorToolbar'
 import Page from '@/lib/page'
+import Namespace from '@/lib/namespace'
 
 export default {
   components: {
@@ -78,6 +83,11 @@ export default {
   },
 
   props: {
+    namespace: {
+      type: Namespace,
+      required: true,
+    },
+
     pageID: {
       type: String,
       required: true,
@@ -110,7 +120,8 @@ export default {
   },
 
   mounted () {
-    this.findPageByID({ pageID: this.pageID, force: true }).then(page => {
+    const { namespaceID } = this.namespace
+    this.findPageByID({ namespaceID, pageID: this.pageID, force: true }).then(page => {
       this.page = new Page(page)
     })
   },
