@@ -11,14 +11,14 @@
             <menu-level id="menu_lvl_1"
                         :pages="pages"
                         :selectedPath="selectedPath"
-                        :currentPageID="currentPageID">
+                        :currentPageID="page.pageID">
 
               <li slot="collapse" id="public_nav_collapse_0">
                 <span>{{ $t('navigation.more') }}</span><ul></ul>
               </li>
             </menu-level>
           </b-collapse>
-        <span class="page-title">{{ currentPage.title }}</span>
+        <span class="page-title" v-if="page">{{ page.title }}</span>
         <router-link id="public_nav_to_admin_pannel" :to="{ name: 'admin' }" class="nav-link admin-panel">{{ $t('navigation.adminPanel') }}</router-link>
       </b-navbar>
     </header>
@@ -27,6 +27,8 @@
 import { mapGetters } from 'vuex'
 import MenuLevel from './MenuLevel'
 import navbarCollapse from '@/mixins/navbar_collapse'
+import Namespace from '@/lib/namespace'
+import Page from '@/lib/page'
 
 const collapserWidth = 55
 
@@ -38,8 +40,14 @@ export default {
   mixins: [ navbarCollapse ],
 
   props: {
-    currentPageID: {
-      type: String,
+    namespace: {
+      type: Namespace,
+      required: true,
+    },
+
+    page: {
+      type: Page,
+      required: true,
     },
   },
 
@@ -53,11 +61,7 @@ export default {
   computed: {
     ...mapGetters({
       pages: 'page/set',
-      getPageByID: 'page/getByID',
     }),
-    currentPage () {
-      return this.getPageByID(this.currentPageID)
-    },
 
     selectedPath () {
       const tt = (pp, pageID) => {
@@ -99,7 +103,7 @@ export default {
   },
 
   created () {
-    this.$crm.pageTree().then((result) => { this.tree = result })
+    this.$compose.pageTree({ namespaceID: this.namespace.namespaceID }).then((result) => { this.tree = result })
   },
 
   methods: {

@@ -101,6 +101,7 @@ export default {
 
     search (query) {
       this.query = query
+      const namespaceID = this.namespace.namespaceID
       const moduleID = this.field.options.moduleID
 
       if (moduleID && query.length > 0) {
@@ -109,17 +110,18 @@ export default {
           return `${qf} LIKE '%${query}%'`
         }).join(' OR ')
 
-        this.$crm.recordList({ moduleID, filter, sort: this.sortString() }).then(({ records }) => {
-          this.records = records.map(r => new Record(this.module, r))
+        this.$compose.recordList({ namespaceID, moduleID, filter, sort: this.sortString() }).then(({ set }) => {
+          this.records = set.map(r => new Record(this.module, r))
         })
       }
     },
 
     loadLatest () {
+      const namespaceID = this.namespace.namespaceID
       const moduleID = this.field.options.moduleID
       if (moduleID) {
-        this.$crm.recordList({ moduleID, sort: this.sortString() }).then(({ records }) => {
-          this.latest = records.map(r => new Record(this.module, r))
+        this.$compose.recordList({ namespaceID, moduleID, sort: this.sortString() }).then(({ set }) => {
+          this.latest = set.map(r => new Record(this.module, r))
         })
       }
     },
@@ -130,9 +132,10 @@ export default {
 
     // Fetches record if not already present
     findByID (recordID) {
+      const namespaceID = this.namespace.namespaceID
       const moduleID = this.field.options.moduleID
       if (moduleID && recordID && (this.valueRecord || {}).recordID !== recordID) {
-        this.$crm.recordRead({ moduleID, recordID }).then(r => {
+        this.$compose.recordRead({ namespaceID, moduleID, recordID }).then(r => {
           this.valueRecord = new Record(this.module, r)
         })
       }

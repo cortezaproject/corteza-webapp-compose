@@ -99,7 +99,8 @@ export default {
   },
 
   created () {
-    this.$store.dispatch('trigger/load')
+    const { namespaceID } = this.namespace
+    this.$store.dispatch('trigger/load', { namespaceID })
   },
 
   methods: {

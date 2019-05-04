@@ -1,6 +1,7 @@
 <template>
   <list-loader kind="record"
                :set="[value]"
+               :namespace="namespace"
                :mode="field.options.mode"></list-loader>
 </template>
 <script>

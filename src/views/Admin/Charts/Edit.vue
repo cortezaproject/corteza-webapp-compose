@@ -45,6 +45,7 @@ import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 import Chart from '@/lib/chart.js'
 import ChartJS from 'chart.js'
 import EditorToolbar from '@/components/Admin/EditorToolbar'
+import Namespace from '@/lib/namespace'
 
 const defaultReport = {
   moduleID: undefined,
@@ -61,6 +62,11 @@ export default {
   },
 
   props: {
+    namespace: {
+      type: Namespace,
+      required: true,
+    },
+
     chartID: {
       type: String,
       required: true,
@@ -108,10 +114,11 @@ export default {
     }),
 
     async render () {
+      const { namespaceID } = this.namespace
       this.updateRenderer({ forceFetch: true })
 
       // Update chart data
-      this.chart.fetchReports({ reporter: (r) => this.$crm.recordReport(r) }).then(({ labels, metrics }) => {
+      this.chart.fetchReports({ reporter: (r) => this.$compose.recordReport({ namespaceID, ...r }) }).then(({ labels, metrics }) => {
         if (labels) {
           this.chartRenderer.data.labels = labels
         }
@@ -155,8 +162,9 @@ export default {
       }
 
       if (refetch) {
+        const { namespaceID } = this.namespace
         // Update chart data
-        this.chart.fetchReports({ reporter: (r) => this.$crm.recordReport(r) }).then(({ labels, metrics }) => {
+        this.chart.fetchReports({ reporter: (r) => this.$compose.recordReport({ namespaceID, ...r }) }).then(({ labels, metrics }) => {
           if (labels) {
             this.chartRenderer.data.labels = labels
           }
@@ -183,7 +191,7 @@ export default {
     },
 
     handleDelete () {
-      this.deleteChart({ chartID: this.chartID }).then(() => {
+      this.deleteChart(this.chart).then(() => {
         this.raiseSuccessAlert(this.$t('notification.chart.deleted'))
         this.$router.push({ name: 'admin.charts' })
       }).catch(this.defaultErrorHandler(this.$t('notification.chart.deleteFailed')))

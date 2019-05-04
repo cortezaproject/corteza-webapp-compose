@@ -6,6 +6,11 @@ export default {
       required: false,
     },
 
+    namespace: {
+      type: Object,
+      required: true,
+    },
+
     page: {
       type: Object,
       required: true,

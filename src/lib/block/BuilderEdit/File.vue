@@ -14,6 +14,7 @@
    <uploader :endpoint="endpoint" @uploaded="appendAttachment" />
     <list-loader kind="page"
                  enable-delete
+                 :namespace="namespace"
                  :set.sync="options.attachments"
                  mode="list"></list-loader>
   </div>
@@ -36,7 +37,11 @@ export default {
   computed: {
     endpoint () {
       const { pageID } = this.page
-      return `/page/${pageID}/attachment`
+
+      return this.$compose.pageUploadEndpoint({
+        namespaceID: this.namespace.namespaceID,
+        pageID,
+      })
     },
 
     modes () {
@@ -50,7 +55,7 @@ export default {
   },
 
   methods: {
-    appendAttachment ({ attachmentID }) {
+    appendAttachment ({ attachmentID } = {}) {
       this.options.attachments.push(attachmentID)
     },
   },

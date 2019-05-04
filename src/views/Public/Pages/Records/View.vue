@@ -1,20 +1,25 @@
 <template>
   <div :class="[editMode ? 'edit': 'view']">
-    <toolbar :back-link="{name: 'admin.pages'}"
+    <toolbar :back-link="{name: 'pages'}"
                     @delete="handleDelete"
                     @save="handleUpdate()">
 
       <button class="btn"
-              @click.prevent="$router.push({ name: 'public.page.record.create' })">+ {{ $t('general.label.addNew') }}</button>
+              @click.prevent="$router.push({ name: 'page.record.create', params: $route.params })">+ {{ $t('general.label.addNew') }}</button>
 
       <button class="btn btn-blue"
               :disabled="!record || !record.isValid()"
               @click.prevent="handleUpdate" v-if="editMode">{{ $t('general.label.save') }}</button>
 
       <button class="btn"
-              @click.prevent="$router.push({ name: 'public.page.record.edit' })" v-else>{{ $t('general.label.edit') }}</button>
+              @click.prevent="$router.push({ name: 'page.record.edit', params: $route.params })" v-else>{{ $t('general.label.edit') }}</button>
     </toolbar>
-    <grid :page="page" :record="record" :edit-mode="editMode" v-if="record" @reload="loadRecord()" />
+    <grid :namespace="namespace"
+          :page="page"
+          :record="record"
+          :edit-mode="editMode"
+          v-if="record"
+          @reload="loadRecord()" />
     <b-modal id="deleteRecord" :title="$t('block.record.deleteRecord')" @ok="handleDelete" :ok-title="$t('general.label.delete')" ok-variant="danger">
       <div class="d-block text-center">
         <h3>{{ $t('block.record.confirmDelete') }}</h3>
@@ -28,6 +33,8 @@ import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 import Record from '@/lib/record'
 import triggerRunner from '@/mixins/trigger_runner'
 import Toolbar from '@/components/Public/Page/Toolbar'
+import Namespace from '@/lib/namespace'
+import Page from '@/lib/page'
 
 export default {
   name: 'ViewRecord',
@@ -43,9 +50,13 @@ export default {
   ],
 
   props: {
-    // Receives page object via router-view component
-    page: {
-      type: Object,
+    namespace: { // via router-view
+      type: Namespace,
+      required: true,
+    },
+
+    page: { // via router-view
+      type: Page,
       required: true,
     },
 
@@ -74,20 +85,20 @@ export default {
   },
 
   watch: {
-    recordID () {
-      this.loadRecord()
+    recordID: {
+      immediate: true,
+      handler () {
+        this.loadRecord()
+      },
     },
-  },
-
-  mounted () {
-    this.loadRecord()
   },
 
   methods: {
     loadRecord () {
       this.record = null
       if (this.page && this.recordID && this.page.moduleID) {
-        this.$crm.recordRead({ moduleID: this.page.moduleID, recordID: this.recordID }).then(record => {
+        const { namespaceID, moduleID } = this.page
+        this.$compose.recordRead({ namespaceID, moduleID, recordID: this.recordID }).then(record => {
           this.record = new Record(this.module, record)
         }).catch(this.defaultErrorHandler(this.$t('notification.record.loadFailed')))
       }
@@ -96,7 +107,7 @@ export default {
     handleDelete () {
       this.deleteRecord(this.module, this.record)
         .then(() => {
-          this.$router.push({ name: 'public.page', params: { pageID: this.page.pageID } })
+          this.$router.push({ name: 'page', params: { pageID: this.page.pageID } })
         })
         .catch(this.defaultErrorHandler(this.$t('notification.record.deleteFailed')))
     },

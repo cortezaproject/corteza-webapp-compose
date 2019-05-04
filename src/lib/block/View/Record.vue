@@ -5,10 +5,10 @@
          :key="index">
       <label>{{ $t(field.label) || field.name }}</label>
       <div>
-        <field-viewer
-          :field="field"
-          value-only
-          :record="record"></field-viewer>
+        <field-viewer :namespace="namespace"
+                      :field="field"
+                      :record="record"
+                      value-only />
       </div>
     </div>
   </div>

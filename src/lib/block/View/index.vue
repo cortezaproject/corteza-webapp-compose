@@ -9,6 +9,7 @@
       <component :is="block.kind"
                  :bounding-rect="adjustedBoundingRect"
                  :options="block.options"
+                 :namespace="namespace"
                  :page="page"
                  :module="module"
                  :record="record"
@@ -29,6 +30,11 @@ export default {
     boundingRect: {
       type: Object,
       required: false,
+    },
+
+    namespace: {
+      type: Object,
+      required: true,
     },
 
     block: {

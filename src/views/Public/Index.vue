@@ -1,12 +1,18 @@
 <template>
   <div class="centering-wrap inactive-area">
-    <public-header :currentPageID="pageID" @toggleNav="navVisible = $event"></public-header>
-    <router-view :class="`crm-content ${navVisible && canPushContent ? 'padded' : ''}`" />
+    <public-header :page="page"
+                   :namespace="namespace"
+                   @toggleNav="navVisible = $event" />
+    <router-view v-if="namespace && page"
+                 :namespace="namespace"
+                 :page="page"
+                 :class="`compose-content ${navVisible && canPushContent ? 'padded' : ''}`" />
   </div>
 </template>
 
 <script>
 import PublicHeader from '@/components/Public/Header'
+import Namespace from '@/lib/namespace'
 
 const pushContentAbove = 610
 
@@ -20,6 +26,11 @@ export default {
   props: {
     pageID: {
       type: String,
+      required: false,
+    },
+
+    namespace: { // via router-view
+      type: Namespace,
       required: true,
     },
   },
@@ -35,6 +46,14 @@ export default {
     canPushContent () {
       return this.documentWidth > pushContentAbove
     },
+
+    page () {
+      if (this.pageID) {
+        return this.$store.getters['page/getByID'](this.pageID)
+      } else {
+        return this.$store.getters['page/firstVisibleNonRecordPage']
+      }
+    },
   },
 
   created () {
@@ -43,11 +62,16 @@ export default {
       this.documentWidth = document.body.offsetWidth
     }
   },
+
+  mounted () {
+    //
+    console.log('mounted')
+  },
 }
 </script>
 
 <style lang="scss">
-.crm-content {
+.compose-content {
   padding-left: 0;
   transition: padding-left 0.3s;
 

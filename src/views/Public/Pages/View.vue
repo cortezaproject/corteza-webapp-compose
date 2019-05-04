@@ -1,7 +1,11 @@
 <template>
   <div v-if="!!page" class="scrollable">
-    <router-view :page="page" v-if="recordID || $route.meta.newRecord" />
-    <grid :page="page" v-else />
+    <router-view :namespace="namespace"
+                 :page="page"
+                 v-if="recordID || $route.meta.newRecord" />
+
+    <grid :namespace="namespace"
+          :page="page" v-else />
 
     <attachment-modal />
   </div>
@@ -10,6 +14,8 @@
 <script>
 import Grid from '@/components/Public/Page/Grid'
 import AttachmentModal from '@/components/Public/Page/Attachment/Modal'
+import Namespace from '@/lib/namespace'
+import Page from '@/lib/page'
 
 export default {
   components: {
@@ -18,19 +24,18 @@ export default {
   },
 
   props: {
-    pageID: {
-      type: String,
+    namespace: { // via router-view
+      type: Namespace,
+      required: true,
+    },
+
+    page: { // via route-view
+      type: Page,
       required: true,
     },
 
     // We're using recordID to check if we need to display router-view or grid component
     recordID: String,
-  },
-
-  computed: {
-    page () {
-      return this.$store.getters['page/getByID'](this.pageID)
-    },
   },
 }
 </script>

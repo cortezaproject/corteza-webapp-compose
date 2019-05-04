@@ -10,6 +10,11 @@
 
 export default {
   props: {
+    namespace: {
+      type: Object,
+      required: true,
+    },
+
     field: {
       type: Object,
       required: true,

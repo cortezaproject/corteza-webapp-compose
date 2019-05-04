@@ -8,7 +8,7 @@ export default {
       let ctx = { module, record }
 
       return this.runTriggers({ ...ctx, action: 'beforeCreate' })
-        .then(() => this.$crm.recordCreate(record))
+        .then(() => this.$compose.recordCreate(record))
         .then((r) => {
           record.merge(r)
           record.execHooks({ action: 'create', record })
@@ -21,7 +21,7 @@ export default {
       let ctx = { module, record }
 
       return this.runTriggers({ ...ctx, action: 'beforeUpdate' })
-        .then(() => this.$crm.recordUpdate(record))
+        .then(() => this.$compose.recordUpdate(record))
         .then((r) => {
           record.merge(r)
           record.execHooks(record, { action: 'update', record })
@@ -34,7 +34,7 @@ export default {
       let ctx = { module, record }
 
       return this.runTriggers({ ...ctx, action: 'beforeDelete' })
-        .then(() => this.$crm.recordDelete(record))
+        .then(() => this.$compose.recordDelete(record))
         .then((r) => this.runTriggers({ ...ctx, action: 'afterDelete' }))
         .then(() => Promise.resolve())
     },
@@ -51,8 +51,8 @@ export default {
 
     // Creates a basic context for trigger env
     triggerContext (ctx) {
-      const $crm = this.$crm
       const $system = this.$system
+      const $compose = this.$compose
       const $messaging = this.$messaging
 
       ctx.modules = this.$store.getters['module/set']
@@ -75,9 +75,9 @@ export default {
               }
 
               if (record.recordID === '') {
-                return $crm.recordCreate(record)
+                return $compose.recordCreate(record)
               } else {
-                return $crm.recordUpdate(record)
+                return $compose.recordUpdate(record)
               }
             },
 
@@ -87,7 +87,7 @@ export default {
               }
 
               if (record.recordID !== '') {
-                return $crm.recordDelete(record)
+                return $compose.recordDelete(record)
               }
             },
 
@@ -108,7 +108,10 @@ export default {
                 throw Error(i18next.t('notification.automation.expectingModuleObject'))
               }
 
-              let params = { moduleID: module.moduleID }
+              let params = {
+                namespaceID: module.namespaceID,
+                moduleID: module.moduleID,
+              }
 
               // Extract recordID from filter param
               // Scenarios:
@@ -116,7 +119,7 @@ export default {
               //   - filter as string
               params.recordID = (filter || {}).recordID || (filter || {}).ID || (typeof filter === 'string' && /^[0-9]+$/.test(filter) ? filter : undefined)
               if (params.recordID) {
-                return $crm.recordRead(params).then((r) => {
+                return $compose.recordRead(params).then((r) => {
                   if (r.recordID === '0') {
                     // @todo remove when backend starts returning 404 on nonexistent records
                     return Promise.reject(Error(i18next.t('notification.automation.recordDoesNotExist')))
@@ -131,8 +134,8 @@ export default {
                   params = { ...params, ...filter }
                 }
 
-                return $crm.recordList(params).then(({ records, meta }) => {
-                  return { meta, records: records.map(r => new Record(module, r)) }
+                return $compose.recordList(params).then(({ records, filter }) => {
+                  return { filter, records: records.map(r => new Record(module, r)) }
                 })
               }
             },
@@ -170,12 +173,12 @@ export default {
 
               open: (record) => {
                 if (!record) return
-                openRecordPage('public.page.record', record)
+                openRecordPage('page.record', record)
               },
 
               edit: (record) => {
                 if (!record) return
-                openRecordPage('public.page.record.edit', record)
+                openRecordPage('page.record.edit', record)
               },
             },
 
@@ -217,7 +220,7 @@ export default {
         notify: {
           send: {
             email: ({ to, cc = [], subject, html }) => {
-              $crm.notificationEmailSend({
+              $compose.notificationEmailSend({
                 to: Array.isArray(to) ? to : [to],
                 cc: Array.isArray(cc) ? cc : [cc],
                 subject,

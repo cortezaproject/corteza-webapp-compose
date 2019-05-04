@@ -1,6 +1,7 @@
 <template>
   <list-loader kind="page"
                :set="options.attachments"
+               :namespace="namespace"
                :mode="options.mode"></list-loader>
 </template>
 <script>

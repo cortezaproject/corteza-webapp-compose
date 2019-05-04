@@ -115,8 +115,9 @@ export default class Chart {
     this.merge(def)
   }
 
-  merge ({ chartID, name, config }) {
+  merge ({ chartID, namespaceID, name, config }) {
     this.chartID = typeof chartID === 'string' ? chartID : this.chartID || null
+    this.namespaceID = typeof namespaceID === 'string' ? namespaceID : this.namespaceID || ''
     this.name = typeof name === 'string' ? name : this.name || ''
 
     if (typeof config === 'object') {

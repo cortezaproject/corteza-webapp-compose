@@ -5,9 +5,10 @@ export default class Page {
     this.merge(def)
   }
 
-  merge ({ pageID, selfID, moduleID, title, description, blocks, visible = true, createdAt, updatedAt }) {
+  merge ({ pageID, namespaceID, selfID, moduleID, title, description, blocks, visible = true, createdAt, updatedAt }) {
     this.pageID = (typeof pageID === 'string' ? pageID : this.pageID) || ''
     this.selfID = (typeof selfID === 'string' && selfID !== '0' ? selfID : this.selfID) || null
+    this.namespaceID = typeof namespaceID === 'string' ? namespaceID : this.namespaceID || ''
     this.moduleID = (typeof moduleID === 'string' && moduleID !== '0' ? moduleID : this.moduleID) || null
     this.title = typeof title === 'string' ? title : this.title || ''
     this.description = typeof description === 'string' ? description : this.description || ''

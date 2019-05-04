@@ -1,4 +1,4 @@
-import Page from '@/lib/page'
+import Namespace from '@/lib/namespace'
 
 const types = {
   pending: 'pending',
@@ -21,10 +21,12 @@ export default function (ComposeAPI) {
       pending: (state) => state.pending,
 
       getByID (state) {
-        return (ID) => state.set.find(({ pageID }) => ID === pageID)
+        return (ID) => state.set.find(({ namespaceID }) => ID === namespaceID)
       },
 
-      firstVisibleNonRecordPage: (state) => state.set.find(p => !p.moduleID && p.visible),
+      getByUrlPart (state) {
+        return (urlPart) => state.set.find(({ slug, namespaceID }) => (urlPart === slug) || (urlPart === namespaceID))
+      },
 
       set (state) {
         return state.set
@@ -32,7 +34,7 @@ export default function (ComposeAPI) {
     },
 
     actions: {
-      async load ({ commit, getters }, { namespaceID, force = false } = {}) {
+      async load ({ commit, getters }, { force = false } = {}) {
         if (!force && getters.set.length > 1) {
           // When there's forced load, make sure we have more than 1 item in the set
           // in the scenario when user came to detail page first and has one item loaded
@@ -41,13 +43,14 @@ export default function (ComposeAPI) {
         }
 
         commit(types.pending)
-        return ComposeAPI.pageList({ namespaceID }).then(({ set, filter }) => {
+        // @todo expect issues with larger sets of namespaces because we do paging on the API
+        return ComposeAPI.namespaceList({}).then(({ set, filter }) => {
           if (filter.count > filter.perPage) {
-            console.error('Got %d pages of total %d.', filter.perPage, filter.count)
+            console.error('Got %d namespaces of total %d.', filter.perPage, filter.count)
           }
 
           if (set && set.length > 0) {
-            commit(types.updateSet, set.map(p => new Page(p)))
+            commit(types.updateSet, set.map(n => new Namespace(n)))
           }
 
           commit(types.completed)
@@ -55,46 +58,46 @@ export default function (ComposeAPI) {
         })
       },
 
-      async findByID ({ commit, getters }, { namespaceID, pageID, force = false } = {}) {
+      async findByID ({ commit, getters }, { namespaceID, force = false } = {}) {
         if (!force) {
-          const oldItem = getters.getByID(pageID)
+          let oldItem = getters.getByID(namespaceID)
           if (oldItem) {
             return new Promise((resolve) => resolve(oldItem))
           }
         }
 
         commit(types.pending)
-        return ComposeAPI.pageRead({ namespaceID, pageID }).then(raw => {
-          let page = new Page(raw)
-          commit(types.updateSet, [page])
+        return ComposeAPI.namespaceRead({ namespaceID }).then(raw => {
+          let namespace = new Namespace(raw)
+          commit(types.updateSet, [namespace])
           commit(types.completed)
-          return page
+          return namespace
         })
       },
 
       async create ({ commit }, item) {
         commit(types.pending)
-        return ComposeAPI.pageCreate(item).then(raw => {
-          let page = new Page(raw)
-          commit(types.updateSet, [page])
+        return ComposeAPI.namespaceCreate(item).then(raw => {
+          let namespace = new Namespace(raw)
+          commit(types.updateSet, [namespace])
           commit(types.completed)
-          return page
+          return namespace
         })
       },
 
       async update ({ commit }, item) {
         commit(types.pending)
-        return ComposeAPI.pageUpdate(item).then(raw => {
-          let page = new Page(raw)
-          commit(types.updateSet, [page])
+        return ComposeAPI.namespaceUpdate(item).then(raw => {
+          let namespace = new Namespace(raw)
+          commit(types.updateSet, [namespace])
           commit(types.completed)
-          return page
+          return namespace
         })
       },
 
       async delete ({ commit }, item) {
         commit(types.pending)
-        return ComposeAPI.pageDelete(item).then(() => {
+        return ComposeAPI.namespaceDelete(item).then(() => {
           commit(types.removeFromSet, [item])
           commit(types.completed)
           return true
@@ -115,11 +118,11 @@ export default function (ComposeAPI) {
         state.pending = false
       },
 
-      [types.updateSet] (state, set) {
-        set.forEach(newItem => {
-          const oldIndex = state.set.findIndex(({ pageID }) => pageID === newItem.pageID)
-          if (oldIndex > -1) {
-            state.set.splice(oldIndex, 1, newItem)
+      [types.updateSet] (state, updatedSet) {
+        (updatedSet || []).forEach(newItem => {
+          const i = state.set.findIndex(({ namespaceID }) => namespaceID === newItem.namespaceID)
+          if (i > -1) {
+            state.set.splice(i, 1, newItem)
           } else {
             state.set.push(newItem)
           }
@@ -128,7 +131,7 @@ export default function (ComposeAPI) {
 
       [types.removeFromSet] (state, removedSet) {
         (removedSet || []).forEach(removedItem => {
-          const i = state.set.findIndex(({ pageID }) => pageID === removedItem.pageID)
+          const i = state.set.findIndex(({ namespaceID }) => namespaceID === removedItem.namespaceID)
           if (i > -1) {
             state.set.splice(i, 1)
           }

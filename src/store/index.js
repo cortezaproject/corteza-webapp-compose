@@ -1,22 +1,24 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import CRM from '@/api/crm'
-import trigger from './trigger'
+import ComposeAPI from '@/api/compose'
+import namespace from './namespace'
 import module from './module'
-import chart from './chart'
 import page from './page'
+import trigger from './trigger'
+import chart from './chart'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
+
   modules: {
-    trigger: trigger(CRM),
-    module: module(CRM),
-    chart: chart(CRM),
-    page: page(CRM),
+    namespace: namespace(ComposeAPI),
+    module: module(ComposeAPI),
+    page: page(ComposeAPI),
+    trigger: trigger(ComposeAPI),
+    chart: chart(ComposeAPI),
   },
-  // plugins: [createLogger()],
 })
 
 export default store

@@ -5,9 +5,10 @@ const types = {
   completed: 'completed',
   updateSet: 'updateSet',
   removeFromSet: 'removeFromSet',
+  clearSet: 'clearSet',
 }
 
-export default function (CRM) {
+export default function (ComposeAPI) {
   return {
     namespaced: true,
 
@@ -29,7 +30,7 @@ export default function (CRM) {
     },
 
     actions: {
-      async load ({ commit, getters }, { chartID, force = false } = {}) {
+      async load ({ commit, getters }, { namespaceID, force = false } = {}) {
         if (!force && getters.set.length > 1) {
           // When there's forced load, make sure we have more than 1 item in the set
           // in the scenario when user came to detail page first and has one item loaded
@@ -38,9 +39,13 @@ export default function (CRM) {
         }
 
         commit(types.pending)
-        return CRM.chartList({ chartID }).then(cc => {
-          if (cc && cc.length > 0) {
-            commit(types.updateSet, cc.map(c => new Chart(c)))
+        return ComposeAPI.chartList({ namespaceID }).then(({ set, filter }) => {
+          if (filter.count > filter.perPage) {
+            console.error('Got %d charts of total %d.', filter.perPage, filter.count)
+          }
+
+          if (set && set.length > 0) {
+            commit(types.updateSet, set.map(c => new Chart(c)))
           }
 
           commit(types.completed)
@@ -48,7 +53,7 @@ export default function (CRM) {
         })
       },
 
-      async findByID ({ commit, getters }, { chartID, force = false } = {}) {
+      async findByID ({ commit, getters }, { namespaceID, chartID, force = false } = {}) {
         if (!force) {
           let oldItem = getters.getByID(chartID)
           if (oldItem) {
@@ -57,7 +62,7 @@ export default function (CRM) {
         }
 
         commit(types.pending)
-        return CRM.chartRead({ chartID }).then(raw => {
+        return ComposeAPI.chartRead({ namespaceID, chartID }).then(raw => {
           let chart = new Chart(raw)
           commit(types.updateSet, [chart])
           commit(types.completed)
@@ -67,7 +72,7 @@ export default function (CRM) {
 
       async create ({ commit }, item) {
         commit(types.pending)
-        return CRM.chartCreate(item).then(raw => {
+        return ComposeAPI.chartCreate(item).then(raw => {
           let chart = new Chart(raw)
           commit(types.updateSet, [chart])
           commit(types.completed)
@@ -77,7 +82,7 @@ export default function (CRM) {
 
       async update ({ commit }, item) {
         commit(types.pending)
-        return CRM.chartUpdate(item).then(raw => {
+        return ComposeAPI.chartUpdate(item).then(raw => {
           let chart = new Chart(raw)
           commit(types.updateSet, [chart])
           commit(types.completed)
@@ -87,11 +92,15 @@ export default function (CRM) {
 
       async delete ({ commit }, item) {
         commit(types.pending)
-        return CRM.chartDelete(item).then(() => {
+        return ComposeAPI.chartDelete(item).then(() => {
           commit(types.removeFromSet, [item])
           commit(types.completed)
           return true
         })
+      },
+
+      clearSet ({ commit }) {
+        commit(types.clearSet)
       },
     },
 
@@ -122,6 +131,11 @@ export default function (CRM) {
             state.set.splice(i, 1)
           }
         })
+      },
+
+      [types.clearSet] (state) {
+        state.pending = false
+        state.set.splice(0)
       },
     },
   }

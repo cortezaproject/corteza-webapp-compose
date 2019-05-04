@@ -41,6 +41,7 @@
 
 <script>
 import FieldEditor from '@/lib/field/Editor'
+import Namespace from '@/lib/namespace'
 
 export default {
   components: {
@@ -48,6 +49,11 @@ export default {
   },
 
   props: {
+    namespace: {
+      type: Namespace,
+      required: true,
+    },
+
     moduleID: {
       type: String,
       required: true,
@@ -83,9 +89,10 @@ export default {
 
   methods: {
     async handleGenerate () {
+      const { namespaceID } = this.namespace
       this.disabled = true
       for (this.recordsCreated = 0; this.recordsCreated < this.totalRecordsToCreate; this.recordsCreated++) {
-        await this.$crm.recordCreate({ fields: this.recordFaker(), moduleID: this.moduleID })
+        await this.$compose.recordCreate({ namespaceID, fields: this.recordFaker(), moduleID: this.moduleID })
       }
       this.disabled = false
     },

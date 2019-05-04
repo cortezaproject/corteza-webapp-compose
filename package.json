@@ -1,5 +1,5 @@
 {
-  "name": "crm",
+  "name": "webapp-compose",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -34,7 +34,7 @@
     "c3": "^0.6.11",
     "chart.js": "^2.7.3",
     "crust-common.vue": "crusttech/crust-common.vue.git#master",
-    "crust-api-client": "crusttech/crust-api-client.js.git#master",
+    "crust-api-client.js": "crusttech/crust-api-client.js.git#master",
     "ejs": "^2.6.1",
     "i": "^0.3.6",
     "i18next": "^15.0.6",

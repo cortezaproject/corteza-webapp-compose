@@ -5,9 +5,10 @@ const types = {
   completed: 'completed',
   updateSet: 'updateSet',
   removeFromSet: 'removeFromSet',
+  clearSet: 'clearSet',
 }
 
-export default function (CRM) {
+export default function (ComposeAPI) {
   return {
     namespaced: true,
 
@@ -29,7 +30,7 @@ export default function (CRM) {
     },
 
     actions: {
-      async load ({ commit, getters }, { moduleID, force = false } = {}) {
+      async load ({ commit, getters }, { namespaceID, moduleID, force = false } = {}) {
         if (!force && getters.set.length > 1) {
           // When there's forced load, make sure we have more than 1 item in the set
           // in the scenario when user came to detail page first and has one item loaded
@@ -38,9 +39,13 @@ export default function (CRM) {
         }
 
         commit(types.pending)
-        return CRM.triggerList({ moduleID }).then(tt => {
-          if (tt && tt.length > 0) {
-            commit(types.updateSet, tt.map(t => new Trigger(t)))
+        return ComposeAPI.triggerList({ namespaceID, moduleID }).then(({ set, filter }) => {
+          if (filter.count > filter.perPage) {
+            console.error('Got %d triggers of total %d.', filter.perPage, filter.count)
+          }
+
+          if (set && set.length > 0) {
+            commit(types.updateSet, set.map(t => new Trigger(t)))
           }
 
           commit(types.completed)
@@ -48,7 +53,7 @@ export default function (CRM) {
         })
       },
 
-      async findByID ({ commit, getters }, { triggerID, force = false } = {}) {
+      async findByID ({ commit, getters }, { namespaceID, triggerID, force = false } = {}) {
         if (!force) {
           const oldItem = getters.getByID(triggerID)
           if (oldItem) {
@@ -57,7 +62,7 @@ export default function (CRM) {
         }
 
         commit(types.pending)
-        return CRM.triggerRead({ triggerID }).then(raw => {
+        return ComposeAPI.triggerRead({ namespaceID, triggerID }).then(raw => {
           let trigger = new Trigger(raw)
           commit(types.updateSet, [trigger])
           commit(types.completed)
@@ -67,7 +72,7 @@ export default function (CRM) {
 
       async create ({ commit }, item) {
         commit(types.pending)
-        return CRM.triggerCreate(item).then(raw => {
+        return ComposeAPI.triggerCreate(item).then(raw => {
           let trigger = new Trigger(raw)
           commit(types.updateSet, [trigger])
           commit(types.completed)
@@ -77,7 +82,7 @@ export default function (CRM) {
 
       async update ({ commit }, item) {
         commit(types.pending)
-        return CRM.triggerUpdate(item).then(raw => {
+        return ComposeAPI.triggerUpdate(item).then(raw => {
           let trigger = new Trigger(raw)
           commit(types.updateSet, [trigger])
           commit(types.completed)
@@ -87,11 +92,15 @@ export default function (CRM) {
 
       async delete ({ commit }, item) {
         commit(types.pending)
-        return CRM.triggerDelete(item).then(() => {
+        return ComposeAPI.triggerDelete(item).then(() => {
           commit(types.removeFromSet, [item])
           commit(types.completed)
           return true
         })
+      },
+
+      clearSet ({ commit }) {
+        commit(types.clearSet)
       },
     },
 
@@ -122,6 +131,11 @@ export default function (CRM) {
             state.set.splice(i, 1)
           }
         })
+      },
+
+      [types.clearSet] (state) {
+        state.pending = false
+        state.set.splice(0)
       },
     },
   }

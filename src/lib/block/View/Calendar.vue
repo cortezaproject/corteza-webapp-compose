@@ -103,12 +103,13 @@ export default {
 
           // Build params from feed configutation
           const params = {
+            namespaceID: this.namespace.namespaceID,
             moduleID: module.moduleID,
             filter: `date(${feed.endField || feed.startField}) >= '${start.toISOString()}' AND date(${feed.startField}) < '${end.toISOString()}'`,
           }
 
-          this.$crm.recordList(params).then(({ meta, records }) => {
-            this.events.push(...records
+          this.$compose.recordList(params).then(({ filter, set }) => {
+            this.events.push(...set
               .map(r => new Record(module, r))
               .filter(r => !!r.values[feed.startField])
               .map(r => {
@@ -128,7 +129,7 @@ export default {
 
     handleEventClick ({ id, pageID }) {
       if (id && pageID) {
-        this.$router.push({ name: 'public.page.record', params: { pageID, recordID: id } })
+        this.$router.push({ name: 'page.record', params: { pageID, recordID: id } })
       }
     },
   },

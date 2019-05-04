@@ -5,9 +5,10 @@ const types = {
   completed: 'completed',
   updateSet: 'updateSet',
   removeFromSet: 'removeFromSet',
+  clearSet: 'clearSet',
 }
 
-export default function (CRM) {
+export default function (ComposeAPI) {
   return {
     namespaced: true,
 
@@ -29,7 +30,11 @@ export default function (CRM) {
     },
 
     actions: {
-      async load ({ commit, getters }, { moduleID, force = false } = {}) {
+      async load ({ commit, getters, rootGetters }, { namespaceID, clear = false, force = false } = {}) {
+        if (clear) {
+          commit(types.clearSet)
+        }
+
         if (!force && getters.set.length > 1) {
           // When there's forced load, make sure we have more than 1 item in the set
           // in the scenario when user came to detail page first and has one item loaded
@@ -38,9 +43,13 @@ export default function (CRM) {
         }
 
         commit(types.pending)
-        return CRM.moduleList({ moduleID }).then(mm => {
-          if (mm && mm.length > 0) {
-            commit(types.updateSet, mm.map(m => new Module(m)))
+        return ComposeAPI.moduleList({ namespaceID }).then(({ set, filter }) => {
+          if (filter.count > filter.perPage) {
+            console.error('Got %d modules of total %d.', filter.perPage, filter.count)
+          }
+
+          if (set && set.length > 0) {
+            commit(types.updateSet, set.map(m => new Module(m)))
           }
 
           commit(types.completed)
@@ -48,7 +57,7 @@ export default function (CRM) {
         })
       },
 
-      async findByID ({ commit, getters }, { moduleID, force = false } = {}) {
+      async findByID ({ commit, getters }, { namespaceID, moduleID, force = false } = {}) {
         if (!force) {
           const oldItem = getters.getByID(moduleID)
           if (oldItem) {
@@ -57,7 +66,7 @@ export default function (CRM) {
         }
 
         commit(types.pending)
-        return CRM.moduleRead({ moduleID }).then(raw => {
+        return ComposeAPI.moduleRead({ namespaceID, moduleID }).then(raw => {
           let module = new Module(raw)
           commit(types.updateSet, [module])
           commit(types.completed)
@@ -67,7 +76,7 @@ export default function (CRM) {
 
       async create ({ commit }, item) {
         commit(types.pending)
-        return CRM.moduleCreate(item).then(raw => {
+        return ComposeAPI.moduleCreate(item).then(raw => {
           let module = new Module(raw)
           commit(types.updateSet, [module])
           commit(types.completed)
@@ -77,7 +86,7 @@ export default function (CRM) {
 
       async update ({ commit }, item) {
         commit(types.pending)
-        return CRM.moduleUpdate(item).then(raw => {
+        return ComposeAPI.moduleUpdate(item).then(raw => {
           let module = new Module(raw)
           commit(types.updateSet, [module])
           commit(types.completed)
@@ -87,11 +96,15 @@ export default function (CRM) {
 
       async delete ({ commit }, item) {
         commit(types.pending)
-        return CRM.moduleDelete(item).then(() => {
+        return ComposeAPI.moduleDelete(item).then(() => {
           commit(types.removeFromSet, [item])
           commit(types.completed)
           return true
         })
+      },
+
+      clearSet ({ commit }) {
+        commit(types.clearSet)
       },
     },
 
@@ -122,6 +135,11 @@ export default function (CRM) {
             state.set.splice(i, 1)
           }
         })
+      },
+
+      [types.clearSet] (state) {
+        state.pending = false
+        state.set.splice(0)
       },
     },
   }

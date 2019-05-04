@@ -6,6 +6,7 @@
           <div class="well">
             <h2>{{ $t('page.title') }}</h2>
             <page-tree
+              :namespace="namespace"
               @reorder="handleReorder"
               v-model="tree"/>
             <form @submit.prevent="handleAddPageFormSubmit">
@@ -28,6 +29,7 @@
 <script>
 import draggable from 'vuedraggable'
 import PageTree from '@/components/Admin/Page/Tree'
+import Namespace from '@/lib/namespace'
 
 export default {
   name: 'PageList',
@@ -35,6 +37,13 @@ export default {
   components: {
     draggable,
     PageTree,
+  },
+
+  props: {
+    namespace: {
+      type: Namespace,
+      required: false,
+    },
   },
 
   data () {
@@ -53,13 +62,15 @@ export default {
 
   methods: {
     loadTree () {
-      this.$crm.pageTree({}).then((tree) => {
+      const { namespaceID } = this.namespace
+      this.$compose.pageTree({ namespaceID }).then((tree) => {
         this.tree = tree
       }).catch(this.defaultErrorHandler(this.$t('notification.page.loadFailed')))
     },
 
     handleAddPageFormSubmit () {
-      this.$crm.pageCreate(this.addPageFormData).then((page) => {
+      const { namespaceID } = this.namespace
+      this.$compose.pageCreate({ namespaceID, ...this.addPageFormData }).then((page) => {
         this.$router.push({ name: 'admin.pages.edit', params: { pageID: page.pageID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))
     },

@@ -3,6 +3,7 @@
     <uploader :endpoint="endpoint" @uploaded="appendAttachment" />
     <list-loader kind="record"
                  :set.sync="set"
+                 :namespace="namespace"
                  enable-delete
                  mode="list"></list-loader>
   </b-form-group>
@@ -23,8 +24,14 @@ export default {
   computed: {
     endpoint () {
       const { moduleID, recordID } = this.record
-      const { name } = this.field
-      return `/module/${moduleID}/record/${recordID}/${name}/attachment`
+      const { namespaceID } = this.namespace
+
+      return this.$compose.recordUploadEndpoint({
+        namespaceID,
+        moduleID,
+        recordID,
+        fieldName: this.field.name,
+      })
     },
 
     set: {
@@ -43,7 +50,7 @@ export default {
   },
 
   methods: {
-    appendAttachment ({ attachmentID }) {
+    appendAttachment ({ attachmentID } = {}) {
       if (this.field.isMulti) {
         this.value.push(attachmentID)
       } else {

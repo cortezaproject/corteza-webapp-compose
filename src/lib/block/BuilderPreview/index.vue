@@ -3,7 +3,10 @@
     <h2>{{ block.title }}</h2>
     <p v-if="block.description">{{ block.description }}</p>
     <div>
-      <component :is="block.kind" :options="block.options" :module="module" />
+      <component :is="block.kind"
+                 :options="block.options"
+                 :module="module"
+                 :namespace="namespace"/>
     </div>
   </div>
 </template>
@@ -17,6 +20,11 @@ export default {
   },
 
   props: {
+    namespace: {
+      type: Object,
+      required: true,
+    },
+
     block: {
       type: Object,
       required: true,

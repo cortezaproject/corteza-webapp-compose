@@ -25,8 +25,9 @@ export default class Module {
     this.merge(def)
   }
 
-  merge ({ moduleID, name, fields, meta, createdAt, updatedAt }) {
+  merge ({ moduleID, namespaceID, name, fields, meta, createdAt, updatedAt }) {
     this.moduleID = typeof moduleID === 'string' ? moduleID : this.moduleID || ''
+    this.namespaceID = typeof namespaceID === 'string' ? namespaceID : this.namespaceID || ''
     this.name = typeof name === 'string' ? name : this.name || ''
     this.fields = Array.isArray(fields) ? fields.map(f => new Field(f)) : []
     this.createdAt = createdAt || this.createdAt

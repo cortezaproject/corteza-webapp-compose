@@ -5,9 +5,7 @@
     <div>
       <component :is="block.kind"
                  :options="block.options"
-                 :page="page"
-                 :module="module"
-                 :record="record"
+                 v-bind="$props"
                  v-on="$listeners" />
     </div>
   </div>
@@ -23,6 +21,11 @@ export default {
 
   props: {
     block: {
+      type: Object,
+      required: true,
+    },
+
+    namespace: {
       type: Object,
       required: true,
     },

@@ -1,4 +1,4 @@
-# CRM admin & end user blocks
+# Compose admin & end user blocks
 
 This is the place for all block types (kinds), their edit and view components.
 

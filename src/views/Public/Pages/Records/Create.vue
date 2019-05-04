@@ -6,12 +6,17 @@
               :disabled="!record.isValid()"
               @click.prevent="handleCreate">{{ $t('general.label.save') }}</button>
     </toolbar>
-    <grid :page="page" :record="record" v-if="record" edit-mode />
+    <grid :namespace="namespace"
+          :page="page"
+          :record="record"
+          v-if="record" edit-mode />
   </div>
 </template>
 <script>
 import Grid from '@/components/Public/Page/Grid'
 import triggerRunner from '@/mixins/trigger_runner'
+import Namespace from '@/lib/namespace'
+import Page from '@/lib/page'
 import Record from '@/lib/record'
 import Toolbar from '@/components/Public/Page/Toolbar'
 
@@ -28,9 +33,13 @@ export default {
   ],
 
   props: {
-    // Receives page object via router-view component
-    page: {
-      type: Object,
+    page: { // via router-view
+      type: Page,
+      required: false,
+    },
+
+    namespace: { // via router-view
+      type: Namespace,
       required: true,
     },
 
@@ -71,7 +80,7 @@ export default {
     handleCreate () {
       this.createRecord(this.module, this.record)
         .then((record) => {
-          this.$router.push({ name: 'public.page.record.edit', params: { recordID: record.recordID } })
+          this.$router.push({ name: 'page.record.edit', params: { ...this.$route.params, recordID: record.recordID } })
         })
         .catch(this.defaultErrorHandler(this.$t('notification.record.createFailed')))
     },
