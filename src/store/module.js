@@ -44,10 +44,6 @@ export default function (ComposeAPI) {
 
         commit(types.pending)
         return ComposeAPI.moduleList({ namespaceID }).then(({ set, filter }) => {
-          if (filter.count > filter.perPage) {
-            console.error('Got %d modules of total %d.', filter.perPage, filter.count)
-          }
-
           if (set && set.length > 0) {
             commit(types.updateSet, set.map(m => new Module(m)))
           }

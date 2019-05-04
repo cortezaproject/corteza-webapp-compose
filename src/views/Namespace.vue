@@ -43,11 +43,9 @@ export default {
     slug: {
       immediate: true,
       handler (slug) {
-        console.debug('Slug changed', { slug })
         this.$auth.check(this.$system).then(() => {
           this.$store.dispatch('namespace/load').then(() => {
             this.namespace = this.$store.getters['namespace/getByUrlPart'](slug)
-          }).then(() => {
           }).catch(this.errHandler)
         }).catch(() => {
           window.location = '/auth'

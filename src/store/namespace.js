@@ -45,10 +45,6 @@ export default function (ComposeAPI) {
         commit(types.pending)
         // @todo expect issues with larger sets of namespaces because we do paging on the API
         return ComposeAPI.namespaceList({}).then(({ set, filter }) => {
-          if (filter.count > filter.perPage) {
-            console.error('Got %d namespaces of total %d.', filter.perPage, filter.count)
-          }
-
           if (set && set.length > 0) {
             commit(types.updateSet, set.map(n => new Namespace(n)))
           }

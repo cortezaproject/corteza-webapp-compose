@@ -40,10 +40,6 @@ export default function (ComposeAPI) {
 
         commit(types.pending)
         return ComposeAPI.triggerList({ namespaceID, moduleID }).then(({ set, filter }) => {
-          if (filter.count > filter.perPage) {
-            console.error('Got %d triggers of total %d.', filter.perPage, filter.count)
-          }
-
           if (set && set.length > 0) {
             commit(types.updateSet, set.map(t => new Trigger(t)))
           }
