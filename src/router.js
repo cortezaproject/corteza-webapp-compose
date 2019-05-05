@@ -28,6 +28,7 @@ function adm (name, path, component) {
 
 export default new VueRouter({
   mode: 'history',
+  base: '/compose/',
   routes: [
     { path: '', name: 'root', component: view('Namespaces') },
 
