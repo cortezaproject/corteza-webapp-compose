@@ -4,7 +4,12 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well table-responsive">
-            <h2>{{ $t('chart.title') }}</h2>
+            <div class="title-bar">
+              <h2>{{ $t('chart.title')}}</h2>
+              <div class="title-actions actions">
+                <permission-modal id="chartPermissions" filter="chart" targetAll/>
+              </div>
+            </div>
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -29,6 +34,8 @@
                   <router-link :to="{name: 'admin.charts.edit', params: { chartID: chart.chartID }}" class="action">
                     <i class="action icon-edit"></i>
                   </router-link>
+
+                  <permission-modal :id="`permissions${chart.chartID}`" filter="chart" :target="chart"  />
                 </td>
               </tr>
               </tbody>
@@ -53,6 +60,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import Chart from '@/lib/chart'
 import TableSortableColumn from '@/components/Admin/TableSortableColumn'
+import PermissionModal from '@/components/Admin/Permissions/PermissionModal'
 import tableSort from '@/mixins/table_sort'
 
 export default {
@@ -60,6 +68,7 @@ export default {
 
   components: {
     TableSortableColumn,
+    PermissionModal,
   },
 
   mixins: [
@@ -112,6 +121,21 @@ export default {
 
 .btn {
   border-radius: 0;
+}
+
+.title-actions {
+  padding-bottom: 10px;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+  text-align: right;
+  float: right;
+}
+
+.title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 5px;
 }
 
 .table {
