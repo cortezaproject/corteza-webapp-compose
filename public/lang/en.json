@@ -402,88 +402,88 @@
     "compose-page": {
       "read": {
         "title": "Read any page",
-        "specific": "Read {{target}}",
+        "specific": "Read page \"{{target}}\"",
         "description": "Default: deny"
       },
       "update": {
         "title": "Update any page",
-        "specific": "Update {{target}}",
+        "specific": "Update page \"{{target}}\"",
         "description": "Default: deny"
       },
       "delete": {
         "title": "Delete any page",
-        "specific": "Delete {{target}}",
+        "specific": "Delete page \"{{target}}\"",
         "description": "Default: deny"
       }
     },
     "compose-trigger": {
       "read": {
         "title": "Read any trigger",
-        "specific": "Read {{target}}",
+        "specific": "Read trigger \"{{target}}\"",
         "description": "Default: deny"
       },
       "update": {
         "title": "Update any trigger",
-        "specific": "Update {{target}}",
+        "specific": "Update trigger \"{{target}}\"",
         "description": "Default: deny"
       },
       "delete": {
         "title": "Delete any trigger",
-        "specific": "Delete {{target}}",
+        "specific": "Delete trigger \"{{target}}\"",
         "description": "Default: deny"
       }
     },
     "compose-module": {
       "read": {
         "title": "Read any module",
-        "specific": "Read {{target}}",
+        "specific": "Read module \"{{target}}\"",
         "description": "Default: deny"
       },
       "update": {
         "title": "Update any module",
-        "specific": "Update {{target}}",
+        "specific": "Update module \"{{target}}\"",
         "description": "Default: deny"
       },
       "delete": {
         "title": "Delete any module",
-        "specific": "Delete {{target}}",
+        "specific": "Delete module \"{{target}}\"",
         "description": "Default: deny"
       },
       "record-create": {
-        "title": "Create record under any module",
-        "specific": "Create record under {{target}}",
+        "title": "Create record of any module",
+        "specific": "Create record of module \"{{target}}\"",
         "description": "Default: deny"
       },
       "record-read": {
-        "title": "Read records under any module",
-        "specific": "Read record under {{target}}",
+        "title": "Read records of any module",
+        "specific": "Read record of module \"{{target}}\"",
         "description": "Default: deny"
       },
       "record-update": {
-        "title": "Update records under any module",
-        "specific": "Update record under {{target}}",
+        "title": "Update records of any module",
+        "specific": "Update record of module \"{{target}}\"",
         "description": "Default: deny"
       },
       "record-delete": {
-        "title": "Delete records under any module",
-        "specific": "Delete record under {{target}}",
+        "title": "Delete records of any module",
+        "specific": "Delete record of module \"{{target}}\"",
         "description": "Default: deny"
       }
     },
     "compose-chart": {
       "read": {
         "title": "Read any chart",
-        "specific": "Read {{target}}",
+        "specific": "Read chart \"{{target}}\"",
         "description": "Default: deny"
       },
       "update": {
         "title": "Update any chart",
-        "specific": "Update {{target}}",
+        "specific": "Update chart \"{{target}}\"",
         "description": "Default: deny"
       },
       "delete": {
         "title": "Delete any chart",
-        "specific": "Delete {{target}}",
+        "specific": "Delete chart \"{{target}}\"",
         "description": "Default: deny"
       }
     }
