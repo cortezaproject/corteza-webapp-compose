@@ -132,7 +132,7 @@ export default {
         record: this.record,
         recordID: (this.record || {}).recordID || 0,
         ownerID: (this.record || {}).userID || 0,
-        userID: (this.$auth.user || {}).ID || 0,
+        userID: (this.$auth.user || {}).userID || 0,
       })
 
       this.filter.filter = this.prefilter
