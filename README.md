@@ -1,4 +1,6 @@
 # Crust Unify webapp
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcrusttech%2Fwebapp-compose.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcrusttech%2Fwebapp-compose?ref=badge_shield)
+
 
 ## Project setup
 
@@ -33,3 +35,7 @@ yarn run lint
 ```bash
 yarn run test:unit
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcrusttech%2Fwebapp-compose.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcrusttech%2Fwebapp-compose?ref=badge_large)
