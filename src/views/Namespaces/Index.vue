@@ -1,20 +1,25 @@
 <template>
   <main class="container">
 
-    <h1 class="text-center mt-4">Compose Namespaces</h1>
+    <h1 class="text-center mt-4">{{ $t('namespace.title') }}</h1>
 
     <div class="m-2 row">
       <div class="col-md-6 col-lg-4 col-12 mt-4" v-for="(n) in namespaces" :key="n.namespaceID">
-        <namespace-item :namespace="n" />
+        <div v-if="n.enabled">
+          <router-link :to="{ name: 'pages', params: { slug: (n.slug || n.namespaceID) } }">
+            <namespace-item :namespace="n" />
+          </router-link>
+        </div>
+        <namespace-item v-else :namespace="n" />
       </div>
       <div class="add-wrap col-md-6 col-lg-4 col-12 mt-4">
-        <router-link :to="{ name: 'namespace.create'}">
+        <router-link :to="{ name: 'namespace.edit' }">
           <div class="add-namespace">
             <label class="add-icon">
               <i class="icon-plus" />
             </label>
             <label class="add-text">
-                Create namespace
+                {{ $t('namespace.create') }}
             </label>
           </div>
         </router-link>
@@ -33,7 +38,7 @@ export default {
       error: '',
       alerts: [], // { variant: 'info', message: 'foo' },
       /* eslint-disable*/
-      namespaces: [{"namespaceID":"887148827239863655","name":"Crust CRM","slug":"crm","meta":{"subtitle": "this is a subtitle"},"createdAt":"2019-05-08T11:19:47Z","updatedAt":undefined,"canCreateChart":false,"canCreateModule":false,"canCreatePage":false,"canCreateTrigger":false,"canDeleteNamespace":false,"canUpdateNamespace":false},{"namespaceID":"8871148827239863655","name":"Crust CRM","slug":"crm","meta":{"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", "subtitle":"BBBBBBBBBBBBBBBB"},"createdAt":"2019-05-08T11:19:47Z","updatedAt":undefined,"canCreateChart":false,"canCreateModule":false,"canCreatePage":false,"canCreateTrigger":false,"canDeleteNamespace":false,"canUpdateNamespace":false}, {"namespaceID":"8871482827239863655","name":"Crust CRM","slug":"crm","meta":{},"createdAt":"2019-05-08T11:19:47Z","updatedAt":undefined,"canCreateChart":false,"canCreateModule":false,"canCreatePage":false,"canCreateTrigger":false,"canDeleteNamespace":false,"canUpdateNamespace":false}],  
+      namespaces: [],
       currentID: ''
     }
   },
@@ -51,8 +56,8 @@ export default {
         return Promise.reject(error)
       }
 
-      this.$store.dispatch('namespace/load').then((nn) => {
-        //this.namespaces = nn
+      this.$compose.namespaceList().then(({ set }) => {
+        this.namespaces = set
         this.loaded = true
       }).catch(errHandler)
     }).catch((e) => {

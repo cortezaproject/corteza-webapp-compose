@@ -1,35 +1,33 @@
 <template>
   <div class="ns-wrap">
-    <router-link :to="{ name: 'pages', params: { slug: (namespace.slug || namespace.namespaceID) } }">
-      <div class="ns-label">
-        <label
-          class="ns-visual ns-logo">
-          <i :style="'background-image:url(' + logo + ');'" />
+    <div :class="{ 'ns-label': true, 'pointer': !!namespace.enabled }">
+      <label
+        class="ns-visual ns-logo">
+        <i :style="'background-image:url(' + logo + ');'" />
+      </label>
+      <div>
+        <label :class="{'ns-text': true, 'subtitle': namespace.meta.subtitle}">
+          {{ namespace.name }}
+          <span v-if="namespace.meta.subtitle">
+            <br>{{ namespace.meta.subtitle }}
+          </span>
         </label>
-        <div>
-          <label :class="{'ns-text': true, 'subtitle': namespace.meta.subtitle}">
-            {{ namespace.name }}
-            <span v-if="namespace.meta.subtitle">
-              <br>{{ namespace.meta.subtitle }}
-            </span>
-          </label>
-        </div>
       </div>
-      <!-- this should appear on hover -->
-      <div class="ns-display-options">
-        <div class="options actions">
-          <router-link :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }" class="action">
-            <i class="icon-edit"></i>
-          </router-link>
-        </div>
-        <div class="extra-text text">
-          <p class="description" v-if="namespace.meta.description">{{ namespace.meta.description }}</p>
-          <label v-else class="click">
-            Click to open
-          </label>
-        </div>
+    </div>
+    <!-- this should appear on hover -->
+    <div class="ns-display-options">
+      <div class="options actions">
+        <router-link :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }" class="action">
+          <i class="icon-edit"></i>
+        </router-link>
       </div>
-    </router-link>
+      <div class="extra-text text">
+        <p class="description" v-if="namespace.meta.description">{{ namespace.meta.description }}</p>
+        <label v-else :class="{ 'click': true, 'pointer': !!namespace.enabled }">
+          {{ $t('namespace.clickOpen') }}
+        </label>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -53,6 +51,10 @@ export default {
 <style lang="scss" scoped>
   $nsheight: 200px;
   $nsvisualheight: 100px;
+
+  .pointer {
+    cursor: pointer;
+  }
 
   .ns-visual,
   .ns-text,
@@ -99,8 +101,6 @@ export default {
     margin-top: 5px;
 
     .extra-text {
-      cursor: pointer;
-
       p {
         overflow: hidden;
         text-overflow: ellipsis;
@@ -119,7 +119,6 @@ export default {
         line-height: 125px;
         color: #90A3B1;
         font-size: 24px;
-        cursor: pointer;
       }
 
       height: 160px;
@@ -159,7 +158,6 @@ export default {
     max-width: 100%;
     overflow: hidden;
     background-color: #fff;
-    cursor: pointer;
 
     .ns-label {
       transition: all 0.25s;

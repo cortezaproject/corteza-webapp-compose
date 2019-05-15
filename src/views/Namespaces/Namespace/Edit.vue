@@ -1,15 +1,143 @@
 <template>
-  <div class="container">
-    <h1 class="text-center mt-4">Edit namespace {{ $route.params.namespaceID}}</h1>
+  <div class="scrollable">
+    <div class="container">
+      <h1 v-if="isEdit" class="text-center mt-4">{{ $t('namespace.edit', {name: namespace.name}) }}</h1>
+      <h1 v-else class="text-center mt-4">{{ $t('namespace.create') }}</h1>
+
+      <form class="col-12">
+        <fieldset class="form-group">
+          <div class="form-group">
+            <label for="name">{{ $t('general.label.name') }}</label>
+            <input
+              v-model="namespace.name"
+              type="text"
+              class="form-control form-control-lg"
+              id="name"
+              placeholder="Namespace name">
+          </div>
+
+          <div class="form-group">
+            <label for="subtitle">{{ $t('namespace.label.subtitle') }}</label>
+            <input
+              v-model="namespace.meta.subtitle"
+              type="text"
+              class="form-control"
+              id="subtitle"
+              placeholder="Namespace subtitle">
+          </div>
+
+          <div class="form-group">
+            <label for="description">{{ $t('general.label.name') }}</label>
+            <textarea
+              v-model="namespace.meta.description"
+              rows="3"
+              class="form-control"
+              id="description"
+              placeholder="Namespace description"/>
+          </div>
+
+          <div class="row ">
+            <div class="col-sm-6 form-group">
+              <label for="slug">{{ $t('namespace.label.slug') }}</label>
+              <input
+                v-model="namespace.slug"
+                type="text"
+                class="form-control form-control-sm"
+                id="slug"
+                placeholder="Namespace slug">
+
+            </div>
+
+            <div class="col-sm-6 enabled form-check">
+              <input
+                v-model="namespace.enabled"
+                type="checkbox"
+                class="form-check-input"
+                id="enabled">
+              <label for="enabled">{{ $t('namespace.label.enabled') }}</label>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <editor-toolbar :back-link="{name: 'root'}"
+                    :hide-delete="!isEdit"
+                    @delete="handleDelete"
+                    @save="handleSave()"
+                    @saveAndClose="handleSave({ closeOnSuccess: true })">
+    </editor-toolbar>
   </div>
 </template>
 
 <script>
-export default {
+import Namespace from '@/lib/namespace'
+import EditorToolbar from '@/components/Admin/EditorToolbar'
 
+export default {
+  components: {
+    EditorToolbar,
+  },
+
+  data () {
+    return {
+      namespace: new Namespace(),
+    }
+  },
+
+  computed: {
+    isEdit () {
+      return !!this.namespace.namespaceID
+    },
+  },
+
+  created () {
+    const namespaceID = this.$route.params.namespaceID
+    if (namespaceID) {
+      return this.$compose.namespaceRead({ namespaceID: namespaceID }).then((ns) => {
+        this.namespace = new Namespace(ns)
+      })
+    }
+  },
+
+  methods: {
+    handleSave ({ closeOnSuccess = false } = {}) {
+      const { namespaceID, name, slug, enabled, meta } = this.namespace
+      if (this.isEdit) {
+        this.$compose.namespaceUpdate({ namespaceID, name, slug, enabled, meta }).then((ns) => {
+          this.raiseSuccessAlert(this.$t('notification.namespace.saved'))
+          if (closeOnSuccess) {
+            this.$router.push({ name: 'root' })
+          }
+        }).catch(this.defaultErrorHandler(this.$t('notification.namespace.saveFailed')))
+      } else {
+        this.$compose.namespaceCreate({ name, slug, enabled, meta }).then((ns) => {
+          this.namespace.namespaceID = ns.namespaceID
+          this.raiseSuccessAlert(this.$t('notification.namespace.saved'))
+          if (closeOnSuccess) {
+            this.$router.push({ name: 'root' })
+          }
+        }).catch(this.defaultErrorHandler(this.$t('notification.namespace.updateFailed')))
+      }
+    },
+
+    handleDelete () {
+      const { namespaceID } = this.namespace
+      this.$compose.namespaceDelete({ namespaceID }).then(() => {
+        this.$router.push({ name: 'root' })
+      }).catch(this.defaultErrorHandler(this.$t('notification.namespace.deleteFailed')))
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/sass/btns.scss";
 
+.enabled {
+  margin-top: 10px;
+}
+
+.row {
+  align-items: center;
+}
 </style>

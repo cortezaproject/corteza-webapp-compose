@@ -613,9 +613,27 @@
     }
   },
 
+  "namespace": {
+    "clickOpen": "Click to open",
+    "title": "Compose Namespaces",
+    "create": "Create namespace",
+    "edit": "Edit \"{{name}}\"",
+    "label": {
+      "subtitle": "Subtitle",
+      "slug": "Slug",
+      "enabled": "Enabled"
+    }
+  },
+
   "notification": {
     "general": {
       "composeAccessNotAllowed": "Not allowed to access Crust Compose"
+    },
+    "namespace": {
+      "saveFailed": "Could not save this namespace",
+      "deleteFailed": "Could not delete this namespace",
+
+      "saved": "Namespace saved"
     },
     "field": {
       "unsupportedKind": "Unsupported field kind {{kind}}",

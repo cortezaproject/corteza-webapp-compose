@@ -3,11 +3,21 @@ export default class Namespace {
     this.merge(def)
   }
 
-  merge ({ namespaceID, name, slug, meta, createdAt, updatedAt, ...args }) {
+  merge ({ namespaceID, name, slug, enabled, meta, createdAt, updatedAt, ...args }) {
     this.namespaceID = typeof namespaceID === 'string' ? namespaceID : this.namespaceID || ''
     this.name = typeof name === 'string' ? name : this.name || ''
     this.slug = typeof slug === 'string' ? slug : this.slug || ''
+    this.enabled = typeof enabled === 'boolean' ? enabled : true
     this.meta = (meta !== undefined ? meta : this.meta) || {}
+
+    const metaIncludes = ['subtitle', 'description']
+    const metaKeys = Object.keys(this.meta)
+    for (let inc of metaIncludes) {
+      if (!metaKeys.includes(inc)) {
+        this.meta[inc] = ''
+      }
+    }
+
     this.createdAt = createdAt || this.createdAt
     this.updatedAt = updatedAt || this.updatedAt
 

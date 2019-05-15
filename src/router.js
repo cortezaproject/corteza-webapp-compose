@@ -34,6 +34,11 @@ export default new VueRouter({
 
     { path: '/auth', name: 'auth', component: view('Auth') },
 
+<<<<<<< HEAD
+=======
+    { ...adm('namespace.edit', '/ns/:namespaceID?', '/Namespaces/Edit') },
+
+>>>>>>> Make edit view for namespaces
     {
       path: '/ns/:slug/',
       name: 'namespace',
