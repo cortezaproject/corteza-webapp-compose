@@ -2,7 +2,7 @@
   <tr>
     <td class="buttons">
       <permission-value
-        v-model="value"
+        v-model="access"
         :current="current"
         :enabled="enabled"
         v-on="$listeners"/>
@@ -15,7 +15,7 @@
     <td class="short">
       <b-button
         variant="link"
-        @click="$emit('update:value', current)"
+        @click="$emit('update:access', current)"
         v-show="isChanged">
 
         {{ $t('permission.resetBack', {current}) }}
@@ -63,7 +63,7 @@ export default {
       default: true,
     },
 
-    value: {
+    access: {
       type: String,
       required: false,
     },
@@ -76,7 +76,7 @@ export default {
 
   computed: {
     isChanged () {
-      return this.value !== this.current
+      return this.access !== this.current
     },
   },
 }

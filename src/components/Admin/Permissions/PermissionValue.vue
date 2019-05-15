@@ -1,6 +1,7 @@
 <template>
   <b-form-group class="no-margin">
-    <b-form-radio-group buttons
+    <b-form-radio-group class="pointer"
+                        buttons
                         v-model="selected"
                         :disabled="!enabled"
                         :button-variant="variant"
@@ -56,7 +57,7 @@ export default {
           this.$emit('change', sel)
         }
 
-        this.$emit('update:value', sel)
+        this.$emit('update:access', sel)
       },
     },
   },
@@ -66,5 +67,9 @@ export default {
 <style scoped>
 .no-margin {
   margin: 0;
+}
+
+.pointer {
+  cursor: pointer;
 }
 </style>

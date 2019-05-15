@@ -470,6 +470,18 @@
         "description": "Default: deny"
       }
     },
+    "compose-module-field": {
+      "record-value-read": {
+        "title": "Read record fields of any module",
+        "specific": "Read \"{{target}}\" record fields ",
+        "description": "Default: deny"
+      },
+      "record-value-update": {
+        "title": "Update record fields of any module",
+        "specific": "Update \"{{target}}\" record fields ",
+        "description": "Default: deny"
+      }
+    },
     "compose-chart": {
       "read": {
         "title": "Read any chart",

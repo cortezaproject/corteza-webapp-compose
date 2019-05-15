@@ -6,7 +6,7 @@
           v-for="p in filtered('compose')"
           :key="p.resource + p.operation"
           v-bind="p"
-          :value.sync="p.value"
+          :access.sync="p.access"
           v-on="$listeners"/>
       </table>
     </div>
@@ -91,7 +91,7 @@ export default {
   methods: {
     fetchPermissionsList () {
       this.processing = true
-      return this.$system.permissionsList().then((pp) => {
+      return this.$compose.permissionsList().then((pp) => {
         this.permissions = pp
           .map(this.describePermission)
           .map(this.appendWildcard)
@@ -102,7 +102,7 @@ export default {
 
     fetchRules () {
       this.processing = true
-      return this.$system.permissionsRead({ roleID: this.roleID }).then((rules) => {
+      return this.$compose.permissionsRead({ roleID: this.roleID }).then((rules) => {
         this.setCurrentRules(rules)
         this.processing = false
       })
@@ -110,33 +110,33 @@ export default {
 
     onSubmit () {
       this.processing = true
-      const permissions = this.collectChangedRules()
-      return this.$system.permissionsUpdate({ roleID: this.roleID, permissions }).then((rules) => {
-        this.setCurrentRules(rules)
+      const rules = this.collectChangedRules()
+      return this.$compose.permissionsUpdate({ roleID: this.roleID, rules }).then((rules) => {
+        this.fetchRules()
         this.processing = false
       })
     },
 
     collectChangedRules () {
-      return this.rules.filter(r => r.value !== r.current).map(({ resource, operation, value }) => {
-        return { resource, operation, value }
+      return this.rules.filter(r => r.access !== r.current).map(({ resource, operation, access }) => {
+        return { resource, operation, access }
       })
     },
 
     setCurrentRules (rules) {
       const findCurrent = ({ resource, operation }) => {
-        return (rules.find(r => r.resource === resource && r.operation === operation) || {}).value || 'inherit'
+        return (rules.find(r => r.resource === resource && r.operation === operation) || {}).access || 'inherit'
       }
 
       this.rules = this.permissions.map((p) => {
         const current = findCurrent(p)
-        return { ...p, value: current, current }
+        return { ...p, access: current, current }
       })
     },
 
-    setAllFiltered (value) {
+    setAllFiltered (access) {
       this.filtered().forEach(rule => {
-        rule.value = value
+        rule.access = access
       })
     },
 
