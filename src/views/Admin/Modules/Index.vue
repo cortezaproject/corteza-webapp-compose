@@ -99,7 +99,7 @@ export default {
     const { namespaceID } = this.namespace
 
     return {
-      newModule: new Module({ namespaceID, fields: [new Field({ name: 'sample', kind: 'String' })] }),
+      newModule: new Module({ namespaceID, fields: [new Field({ fieldID: '0', name: 'sample', kind: 'String' })] }),
     }
   },
 
