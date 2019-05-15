@@ -179,7 +179,8 @@ export default {
     }),
 
     handleSave ({ closeOnSuccess = false } = {}) {
-      this.updateTrigger(this.trigger).then(() => {
+      this.updateTrigger(this.trigger).then((trigger) => {
+        this.trigger = trigger
         this.raiseSuccessAlert(this.$t('notification.automation.saved'))
         if (closeOnSuccess) {
           this.redirect()

@@ -79,7 +79,8 @@ export default {
   methods: {
     handleSave ({ closeOnSuccess = false } = {}) {
       const { namespaceID } = this.namespace
-      this.$compose.pageUpdate({ namespaceID, ...this.page }).then(() => {
+      this.$compose.pageUpdate({ namespaceID, ...this.page }).then((page) => {
+        this.page = page
         this.raiseSuccessAlert(this.$t('notification.page.saved'))
         if (closeOnSuccess) {
           this.$router.push({ name: 'admin.pages' })

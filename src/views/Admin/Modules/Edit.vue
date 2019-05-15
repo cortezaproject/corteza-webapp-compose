@@ -47,7 +47,6 @@
         </div>
       </div>
     </form>
-
     <b-modal
       v-if="updateField"
       :title="$t('module.edit.moduleFieldSettings')"
@@ -137,7 +136,8 @@ export default {
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {
-      this.updateModule(this.module).then(() => {
+      this.updateModule(this.module).then((module) => {
+        this.module = module
         this.raiseSuccessAlert(this.$t('notification.module.saved'))
         if (closeOnSuccess) {
           this.redirect()
