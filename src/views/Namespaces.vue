@@ -20,11 +20,17 @@
         </div>
       </div>
     </div>
-
+    <permissions-modal />
   </main>
 </template>
 <script>
+import { PermissionsModal } from 'crust-common.vue/components'
+
 export default {
+  components: {
+    PermissionsModal,
+  },
+
   data () {
     return {
       logo: require('@/assets/images/crust-logo-with-tagline.png'),

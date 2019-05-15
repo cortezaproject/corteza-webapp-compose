@@ -35,6 +35,7 @@
                            cta-class="btn-url">
         <i class="action icon-trash"></i>
       </confirmation-toggle>
+      <permissions-button :resource="'compose:module-field:'+field.fieldID" link />
     </td>
   </tr>
 </template>

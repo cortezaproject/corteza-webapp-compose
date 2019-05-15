@@ -15,12 +15,19 @@
       <img :src="logo" />
     </div>
     <div class="error" v-if="error">{{ error }}</div>
+    <permissions-modal />
   </div>
 </template>
 
 <script>
+import { PermissionsModal } from 'crust-common.vue/components'
+
 export default {
   name: 'Namespace',
+
+  components: {
+    PermissionsModal,
+  },
 
   props: {
     slug: {

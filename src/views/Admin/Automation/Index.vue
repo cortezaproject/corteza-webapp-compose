@@ -7,7 +7,7 @@
             <div class="title-bar">
               <h2>{{ $t('automation.title')}}</h2>
               <div class="title-actions actions">
-                <permission-modal id="triggerPermissions" filter="trigger" targetAll/>
+                <permissions-button resource="compose:trigger:*" link />
               </div>
             </div>
             <table class="table table-striped">
@@ -51,7 +51,7 @@
                     <i class="action icon-edit"></i>
                   </router-link>
 
-                  <permission-modal :id="`permissions${index}`" filter="trigger" :target="t"  />
+                  <permissions-button :resource="'compose:trigger:'+t.triggerID" link />
                 </td>
               </tr>
               </tbody>
@@ -76,13 +76,11 @@
 import { mapGetters, mapActions } from 'vuex'
 import Trigger from '@/lib/trigger'
 import TableSortableColumn from '@/components/Admin/TableSortableColumn'
-import PermissionModal from '@/components/Admin/Permissions/PermissionModal'
 import tableSort from '@/mixins/table_sort'
 
 export default {
   components: {
     TableSortableColumn,
-    PermissionModal,
   },
 
   mixins: [

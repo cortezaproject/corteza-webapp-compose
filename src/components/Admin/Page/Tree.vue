@@ -31,7 +31,7 @@
                 <i class="action icon-edit" v-if="item.moduleID === '0'"></i>
               </router-link>
 
-              <permission-modal :id="`permissions${item.pageID}`" filter="page" :target="item"  />
+              <permissions-button :resource="'compose:page:'+item.pageID" link />
           </div>
         </div>
     </template>
@@ -41,14 +41,12 @@
 <script>
 import SortableTree from 'vue-sortable-tree'
 import Namespace from '@/lib/namespace'
-import PermissionModal from '@/components/Admin/Permissions/PermissionModal'
 
 export default {
   name: 'page-tree',
 
   components: {
     SortableTree,
-    PermissionModal,
   },
 
   props: {

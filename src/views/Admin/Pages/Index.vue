@@ -7,7 +7,7 @@
             <div class="title-bar">
               <h2>{{ $t('page.title')}}</h2>
               <div class="title-actions actions">
-                <permission-modal id="pagePermissions" filter="page" targetAll/>
+                <permissions-button resource="compose:page:*" link />
               </div>
             </div>
             <page-tree
@@ -35,7 +35,6 @@
 import draggable from 'vuedraggable'
 import PageTree from '@/components/Admin/Page/Tree'
 import Namespace from '@/lib/namespace'
-import PermissionModal from '@/components/Admin/Permissions/PermissionModal'
 
 export default {
   name: 'PageList',
@@ -43,7 +42,6 @@ export default {
   components: {
     draggable,
     PageTree,
-    PermissionModal,
   },
 
   props: {

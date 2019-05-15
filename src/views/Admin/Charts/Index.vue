@@ -7,7 +7,7 @@
             <div class="title-bar">
               <h2>{{ $t('chart.title')}}</h2>
               <div class="title-actions actions">
-                <permission-modal id="chartPermissions" filter="chart" targetAll/>
+                <permissions-button resource="compose:chart:*" link />
               </div>
             </div>
             <table class="table table-striped">
@@ -35,7 +35,7 @@
                     <i class="action icon-edit"></i>
                   </router-link>
 
-                  <permission-modal :id="`permissions${chart.chartID}`" filter="chart" :target="chart"  />
+                  <permissions-button :resource="'compose:trigger:'+chart.chartID" link />
                 </td>
               </tr>
               </tbody>
@@ -60,7 +60,6 @@
 import { mapGetters, mapActions } from 'vuex'
 import Chart from '@/lib/chart'
 import TableSortableColumn from '@/components/Admin/TableSortableColumn'
-import PermissionModal from '@/components/Admin/Permissions/PermissionModal'
 import tableSort from '@/mixins/table_sort'
 
 export default {
@@ -68,7 +67,6 @@ export default {
 
   components: {
     TableSortableColumn,
-    PermissionModal,
   },
 
   mixins: [

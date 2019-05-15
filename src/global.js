@@ -3,6 +3,8 @@ import axios from 'axios'
 import alertMixin from '@/mixins/alert'
 import prettyMixin from '@/mixins/pretty'
 import BootstrapVue from 'bootstrap-vue'
+import { PermissionsButton } from 'crust-common.vue/components'
+
 import VTooltip from 'v-tooltip'
 import Vue from 'vue'
 import './ui'
@@ -24,9 +26,10 @@ if (!String.format) {
 
 Vue.config.productionTip = false
 
-// Global Vue components
+// Global Vue plugins, mixins & components
 
 Vue.use(VTooltip)
 Vue.use(BootstrapVue)
 Vue.mixin(alertMixin)
 Vue.mixin(prettyMixin)
+Vue.component('permissions-button', PermissionsButton)

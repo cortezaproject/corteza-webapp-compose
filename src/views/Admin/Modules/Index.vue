@@ -7,7 +7,7 @@
             <div class="title-bar">
               <h2>{{ $t('module.title')}}</h2>
               <div class="title-actions actions">
-                <permission-modal id="modulePermissions" filter="module" targetAll/>
+                <permissions-button resource="compose:module:*" link />
               </div>
             </div>
             <table class="table table-striped">
@@ -48,7 +48,7 @@
                       <i class="action icon-edit"></i>
                     </router-link>
 
-                    <permission-modal :id="`permissions${index}`" filter="module" :target="m"  />
+                    <permissions-button :resource="'compose:module:'+m.moduleID" link />
                   </td>
                 </tr>
               </tbody>
@@ -75,7 +75,6 @@ import { mapGetters, mapActions } from 'vuex'
 import Field from '@/lib/field'
 import Module from '@/lib/module'
 import TableSortableColumn from '@/components/Admin/TableSortableColumn'
-import PermissionModal from '@/components/Admin/Permissions/PermissionModal'
 import tableSort from '@/mixins/table_sort'
 
 export default {
@@ -83,7 +82,6 @@ export default {
 
   components: {
     TableSortableColumn,
-    PermissionModal,
   },
 
   mixins: [
