@@ -2836,13 +2836,13 @@ cross-spawn@^6.0.0:
 
 crust-api-client.js@crusttech/crust-api-client.js.git#master:
   version "2019.3.4"
-  resolved "https://codeload.github.com/crusttech/crust-api-client.js/tar.gz/20ac7908538d626e0f25ae4d932a52d5c1e751d1"
+  resolved "https://codeload.github.com/crusttech/crust-api-client.js/tar.gz/6d36ef732d5abe26c2f2cba62d501a7d3c46da54"
   dependencies:
     axios "^0.18.0"
 
 crust-common.vue@crusttech/crust-common.vue.git#master:
-  version "2019.3.1"
-  resolved "https://codeload.github.com/crusttech/crust-common.vue/tar.gz/60ce14331b1b67810762ac8ceef98995b49d4d4e"
+  version "2019.3.5"
+  resolved "https://codeload.github.com/crusttech/crust-common.vue/tar.gz/23d374207712d8abab1332fd0a3998086a32753f"
 
 crypto-browserify@^3.11.0:
   version "3.12.0"

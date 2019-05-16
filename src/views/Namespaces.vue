@@ -1,43 +1,49 @@
 <template>
-  <main class="centering-wrap inactive-area">
+  <main class="container">
 
-    <h1>Compose Namespaces</h1>
+    <h1 class="text-center actions mt-4">
+      {{ $t('namespace.title') }}
+      <permissions-button :resource="'compose:namespace:*'" link />
+    </h1>
 
-    <div class="row">
-      <div class="col-sm-3" v-for="(n) in namespaces" :key="n.namespaceID">
-        <div class="card">
-          <img class="card-img-top" :src="logo" alt="Card image cap">
-          <h4 v-if="n.name" class="card-title">{{ n.name }}</h4>
-          <h5 v-if="n.meta.subtitle" class="card-subtitle mb-2 text-muted">{{ n.meta.subtitle }}</h5>
-          <div class="card-body" v-if="n.meta.description">
-            <p class="card-text">{{ n.meta.description }}</p>
-          </div>
-          <div class="card-footer">
-            <p class="card-text text-right">
-              <router-link :to="{ name: 'pages', params: { slug: (n.slug || n.namespaceID) } }" class="btn btn-primary">{{ n.name || 'Go' }}</router-link>
-            </p>
-          </div>
+    <div class="m-2 row">
+      <div class="col-md-6 col-lg-4 col-12 mt-4" v-for="(n) in namespaces" :key="n.namespaceID">
+        <div v-if="n.enabled">
+          <router-link :to="{ name: 'pages', params: { slug: (n.slug || n.namespaceID) } }">
+            <namespace-item :namespace="n" />
+          </router-link>
         </div>
+        <namespace-item v-else :namespace="n" />
+      </div>
+      <div class="add-wrap col-md-6 col-lg-4 col-12 mt-4">
+        <router-link :to="{ name: 'namespace.edit' }">
+          <div class="add-namespace">
+            <label class="add-icon">
+              <i class="icon-plus" />
+            </label>
+            <label class="add-text">
+                {{ $t('namespace.create') }}
+            </label>
+          </div>
+        </router-link>
       </div>
     </div>
     <permissions-modal />
   </main>
 </template>
 <script>
+import NamespaceItem from '@/components/Namespaces/NamespaceItem'
 import { PermissionsModal } from 'crust-common.vue/components'
 
 export default {
-  components: {
-    PermissionsModal,
-  },
-
   data () {
     return {
-      logo: require('@/assets/images/crust-logo-with-tagline.png'),
       loaded: false,
       error: '',
       alerts: [], // { variant: 'info', message: 'foo' },
+      /* eslint-disable*/
       namespaces: [],
+      currentID: ''
     }
   },
 
@@ -54,16 +60,71 @@ export default {
         return Promise.reject(error)
       }
 
-      this.$store.dispatch('namespace/load').then((nn) => {
-        this.namespaces = nn
+      this.$compose.namespaceList().then(({ set }) => {
+        this.namespaces = set
         this.loaded = true
       }).catch(errHandler)
     }).catch((e) => {
       window.location = '/auth'
     })
   },
+
+  components: {
+    NamespaceItem,
+    PermissionsModal,
+  }
 }
 </script>
 <style lang="scss" scoped>
+.add-wrap {
+  display: block;
+  text-align: center;
 
+  .add-icon {
+    height: 100px;
+    line-height: 100px;
+    display: block;
+    text-align: center;
+    cursor: pointer;
+
+    i {
+      display: block;
+      line-height: 128px;
+      margin: 0 auto;
+      font-size: 86px;
+      font-style: normal;
+    }
+  }
+
+  .add-text {
+    height: 100px;
+    line-height: 100px;
+    display: block;
+    text-align: center;
+    color: #90A3B1;
+    font-size: 24px;
+    max-width: 75%;
+    margin: 0 auto;
+    cursor: pointer;
+  }
+
+  .add-namespace {
+    border: 3px solid #fff;
+    min-height: 200px;
+    max-height: 200px;
+
+    &:hover,
+    &:focus {
+      background-color: #fff;
+
+      i {
+        color: #000;
+      }
+
+      .add-text {
+        color: #000;
+      }
+    }
+  }
+}
 </style>
