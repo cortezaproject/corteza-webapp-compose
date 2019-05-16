@@ -399,6 +399,44 @@
       "chart": "All charts"
     },
 
+    "compose-namespace": {
+      "read": {
+        "title": "Read any namespace",
+        "specific": "Read namespace \"{{target}}\"",
+        "description": ""
+      },
+      "update": {
+        "title": "Update any namespace",
+        "specific": "Update namespace \"{{target}}\"",
+        "description": ""
+      },
+      "delete": {
+        "title": "Delete any namespace",
+        "specific": "Delete namespace \"{{target}}\"",
+        "description": ""
+      },
+      "module-create": {
+        "title": "Create modules under any namespace",
+        "specific": "Create modules under namespace \"{{target}}\"",
+        "description": ""
+      },
+      "chart-create": {
+        "title": "Create charts under any namespace",
+        "specific": "Create charts under namespace \"{{target}}\"",
+        "description": ""
+      },
+      "page-create": {
+        "title": "Create pages under any namespace",
+        "specific": "Create pages under namespace \"{{target}}\"",
+        "description": ""
+      },
+      "trigger-create": {
+        "title": "Create triggers under any namespace",
+        "specific": "Create triggers under namespace \"{{target}}\"",
+        "description": ""
+      }
+    },
+
     "compose-page": {
       "read": {
         "title": "Read any page",
@@ -618,6 +656,7 @@
     "title": "Compose Namespaces",
     "create": "Create namespace",
     "edit": "Edit \"{{name}}\"",
+    "disabled": "Namespace is disabled",
     "label": {
       "subtitle": "Subtitle",
       "slug": "Slug",

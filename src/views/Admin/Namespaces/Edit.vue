@@ -36,8 +36,8 @@
               placeholder="Namespace description"/>
           </div>
 
-          <div class="row ">
-            <div class="col-sm-6 form-group">
+          <div class="row no-gutters">
+            <div class="col-12 col-md-7 form-group">
               <label for="slug">{{ $t('namespace.label.slug') }}</label>
               <input
                 v-model="namespace.slug"
@@ -48,13 +48,18 @@
 
             </div>
 
-            <div class="col-sm-6 enabled form-check">
+            <div class="col-6 col-md-2 enabled form-check">
               <input
                 v-model="namespace.enabled"
                 type="checkbox"
                 class="form-check-input"
                 id="enabled">
               <label for="enabled">{{ $t('namespace.label.enabled') }}</label>
+            </div>
+
+            <div v-if="isEdit" class="col-6 col-md-3 permissions actions">
+              {{ $t('Set permissions') }}
+              <permissions-button :resource="'compose:namespace:'+namespace.namespaceID" link />
             </div>
           </div>
         </fieldset>
@@ -66,16 +71,19 @@
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
     </editor-toolbar>
+    <permissions-modal />
   </div>
 </template>
 
 <script>
 import Namespace from '@/lib/namespace'
 import EditorToolbar from '@/components/Admin/EditorToolbar'
+import { PermissionsModal } from 'crust-common.vue/components'
 
 export default {
   components: {
     EditorToolbar,
+    PermissionsModal,
   },
 
   data () {
@@ -134,7 +142,13 @@ export default {
 @import "@/assets/sass/btns.scss";
 
 .enabled {
+  text-align: center;
   margin-top: 10px;
+}
+
+.permissions {
+  text-align: center;
+  margin-top: 12px;
 }
 
 .row {

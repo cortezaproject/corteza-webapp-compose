@@ -1,6 +1,6 @@
 <template>
   <div class="ns-wrap">
-    <div :class="{ 'ns-label': true, 'pointer': !!namespace.enabled }">
+    <div :class="{ 'ns-label': true, 'pointer': isEnabled }">
       <label
         class="ns-visual ns-logo">
         <i :style="'background-image:url(' + logo + ');'" />
@@ -17,14 +17,19 @@
     <!-- this should appear on hover -->
     <div class="ns-display-options">
       <div class="options actions">
-        <router-link :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }" class="action">
+        <router-link :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }" class="action p-0">
           <i class="icon-edit"></i>
         </router-link>
       </div>
       <div class="extra-text text">
         <p class="description" v-if="namespace.meta.description">{{ namespace.meta.description }}</p>
-        <label v-else :class="{ 'click': true, 'pointer': !!namespace.enabled }">
-          {{ $t('namespace.clickOpen') }}
+        <label v-else :class="{ 'click': true, 'pointer': isEnabled }">
+          <span v-if="isEnabled">
+            {{ $t('namespace.clickOpen') }}
+          </span>
+          <span v-else>
+            {{ $t('namespace.disabled') }}
+          </span>
         </label>
       </div>
     </div>
@@ -44,6 +49,12 @@ export default {
     return {
       logo: require('@/assets/images/crust-logo-with-tagline.png'),
     }
+  },
+
+  computed: {
+    isEnabled () {
+      return !!this.namespace.enabled
+    },
   },
 }
 </script>
@@ -98,7 +109,6 @@ export default {
   .ns-display-options {
     transition: opacity 0.75s;
     opacity: 0;
-    margin-top: 5px;
 
     .extra-text {
       p {
@@ -106,17 +116,17 @@ export default {
         text-overflow: ellipsis;
         display: -webkit-box;
         -webkit-box-orient: vertical;
-        -webkit-line-clamp: 9;
+        -webkit-line-clamp: 10;
         line-height: 16px;
-        max-height: 155px;
+        max-height: 160px;
         text-align: justify;
         max-width: 95%;
         margin: 0 auto;
       }
 
       .click {
-        height: 160px;
-        line-height: 125px;
+        height: 170px;
+        line-height: 130px;
         color: #90A3B1;
         font-size: 24px;
       }
@@ -129,6 +139,8 @@ export default {
       line-height: 30px;
       font-size: 20px;
       text-align: left;
+      width: 95%;
+      margin: 0 auto;
     }
   }
 
