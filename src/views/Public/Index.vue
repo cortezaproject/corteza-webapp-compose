@@ -13,6 +13,7 @@
 <script>
 import PublicHeader from '@/components/Public/Header'
 import Namespace from '@/lib/namespace'
+import Page from '@/lib/page'
 
 const pushContentAbove = 610
 
@@ -27,6 +28,7 @@ export default {
     pageID: {
       type: String,
       required: false,
+      default: '',
     },
 
     namespace: { // via router-view
@@ -51,7 +53,7 @@ export default {
       if (this.pageID) {
         return this.$store.getters['page/getByID'](this.pageID)
       } else {
-        return this.$store.getters['page/firstVisibleNonRecordPage']
+        return this.$store.getters['page/firstVisibleNonRecordPage'] || new Page()
       }
     },
   },
