@@ -386,7 +386,10 @@
       "uploadProgress": "(File size: {{0}}, uploaded {{1}})",
       "yes": "Yes",
       "no": "No",
-      "view": "View"
+      "view": "View",
+      "processing": "Processing...",
+      "import": "Import",
+      "cancel": "Cancel"
     }
   },
 
