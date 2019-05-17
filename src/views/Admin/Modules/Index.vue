@@ -4,11 +4,25 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well table-responsive">
+<<<<<<< HEAD
             <permissions-button v-if="namespace.canGrant"
                                 resource="compose:module:*"
                                 class="float-right"
                                 link />
             <h2>{{ $t('module.title')}}</h2>
+=======
+            <div class="title-bar">
+              <h2>{{ $t('module.title')}}</h2>
+              <div class="title-actions actions">
+                <permissions-button v-if="namespace.canGrant" resource="compose:module:*" link />
+                <button @click="jsonExport(modules, 'module')">
+                  <font-awesome-icon :icon="['fas', 'file-export']"></font-awesome-icon>
+                </button>
+
+                <permissions-button resource="compose:module:*" link />
+              </div>
+            </div>
+>>>>>>> Implement export function
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -83,6 +97,7 @@ import Field from '@/lib/field'
 import Module from '@/lib/module'
 import TableSortableColumn from '@/components/Admin/TableSortableColumn'
 import tableSort from '@/mixins/table_sort'
+import { saveAs } from 'file-saver'
 
 export default {
   name: 'ModuleList',
@@ -138,6 +153,11 @@ export default {
       createModule: 'module/create',
       createPage: 'page/create',
     }),
+
+    jsonExport (list, type) {
+      let blob = new Blob([JSON.stringify({ type, list: list.map(m => m.export()) })], { type: 'application/json' })
+      saveAs(blob, 'modules-export.json')
+    },
 
     create () {
       this.createModule(this.newModule).then((module) => {

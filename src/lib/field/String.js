@@ -9,4 +9,11 @@ export class String {
 
     return this
   }
+
+  export () {
+    return {
+      multiLine: this.multiLine,
+      useRichTextEditor: this.useRichTextEditor,
+    }
+  }
 }

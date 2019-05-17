@@ -70,4 +70,11 @@ export default class Module {
   systemFields () {
     return systemFields
   }
+
+  export () {
+    return {
+      name: this.name,
+      fields: (this.fields || []).map(f => f.export()),
+    }
+  }
 }

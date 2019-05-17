@@ -41,6 +41,7 @@
     "crust-api-client.js": "crusttech/crust-api-client.js.git#master",
     "crust-common.vue": "crusttech/crust-common.vue.git#master",
     "ejs": "^2.6.1",
+    "file-saver": "^2.0.2",
     "i": "^0.3.6",
     "i18next": "^15.0.6",
     "i18next-browser-languagedetector": "^3.0.1",

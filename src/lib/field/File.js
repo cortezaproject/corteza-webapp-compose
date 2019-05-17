@@ -21,4 +21,13 @@ export class File {
     this.mode = (mode && modes.includes(mode)) ? mode : 'list'
     return this
   }
+
+  export () {
+    return {
+      allowImages: this.allowImages,
+      allowDocuments: this.allowDocuments,
+      maxSize: this.maxSize,
+      mode: this.mode,
+    }
+  }
 }
