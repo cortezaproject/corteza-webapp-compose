@@ -84,6 +84,7 @@
                 </b-input-group>
               </b-form-group>
             </form>
+            <import-bar @jsonImport="jsonImport" />
           </div>
         </div>
       </div>
@@ -98,12 +99,14 @@ import Module from '@/lib/module'
 import TableSortableColumn from '@/components/Admin/TableSortableColumn'
 import tableSort from '@/mixins/table_sort'
 import { saveAs } from 'file-saver'
+import ImportBar from '../../../components/Admin/ImportBar'
 
 export default {
   name: 'ModuleList',
 
   components: {
     TableSortableColumn,
+    ImportBar,
   },
 
   mixins: [
@@ -153,6 +156,11 @@ export default {
       createModule: 'module/create',
       createPage: 'page/create',
     }),
+
+    // @todo
+    jsonImport ({ list, type }) {
+      console.debug('import', { list, type })
+    },
 
     jsonExport (list, type) {
       let blob = new Blob([JSON.stringify({ type, list: list.map(m => m.export()) })], { type: 'application/json' })
