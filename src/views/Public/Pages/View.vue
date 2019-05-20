@@ -2,7 +2,7 @@
   <div v-if="!!page" class="scrollable">
     <router-view :namespace="namespace"
                  :page="page"
-                 v-if="recordID || $route.meta.newRecord" />
+                 v-if="recordID || createPage" />
 
     <grid :namespace="namespace"
           :page="page" v-else />
@@ -36,6 +36,12 @@ export default {
 
     // We're using recordID to check if we need to display router-view or grid component
     recordID: String,
+  },
+
+  computed: {
+    createPage () {
+      return this.$route.name === 'page.record.create'
+    },
   },
 }
 </script>
