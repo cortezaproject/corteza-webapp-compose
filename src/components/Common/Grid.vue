@@ -107,7 +107,7 @@ export default {
 
     // Fetch bounding boxes of all grid items
     recalculateBoundingRect () {
-      this.boundingRects = this.$refs.items.map(({ $el }) => {
+      this.boundingRects = (this.$refs.items || []).map(({ $el }) => {
         const bcr = $el.getBoundingClientRect()
         return {
           width: bcr.width,
