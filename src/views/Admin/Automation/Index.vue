@@ -47,16 +47,18 @@
                 <td width="300"><small>{{ (t.actions || []).map(a => $t(`automation.triggerCondition.${a}`)).join(', ') }}</small></td>
                 <td><time :datetime="t.updatedAt || t.createdAt" v-if="t.updatedAt || t.createdAt">{{ prettyDate(t.updatedAt || t.createdAt) }}</time></td>
                 <td class="actions text-right">
-                  <router-link :to="{name: 'admin.automation.edit', params: { triggerID: t.triggerID }}" class="action">
-                    <i class="action icon-edit"></i>
-                  </router-link>
+                  <span v-if="t.canUpdateTrigger || t.canDeleteTrigger">
+                    <router-link :to="{name: 'admin.automation.edit', params: { triggerID: t.triggerID }}" class="action">
+                      <i class="action icon-edit"></i>
+                    </router-link>
+                  </span>
 
                   <permissions-button :resource="'compose:trigger:'+t.triggerID" link />
                 </td>
               </tr>
               </tbody>
             </table>
-            <form @submit.prevent="create">
+            <form v-if="namespace.canCreateTrigger" @submit.prevent="create">
               <b-form-group :label="$t(`automation.newLabel`)">
                 <b-input-group>
                   <input required type="text" v-model="newTrigger.name" class="form-control" id="name" :placeholder="$t(`automation.newPlaceholder`)" />

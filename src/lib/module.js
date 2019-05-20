@@ -25,13 +25,19 @@ export default class Module {
     this.merge(def)
   }
 
-  merge ({ moduleID, namespaceID, name, fields, meta, createdAt, updatedAt }) {
+  merge ({ moduleID, namespaceID, name, fields, meta, createdAt, updatedAt, ...args }) {
     this.moduleID = typeof moduleID === 'string' ? moduleID : this.moduleID || ''
     this.namespaceID = typeof namespaceID === 'string' ? namespaceID : this.namespaceID || ''
     this.name = typeof name === 'string' ? name : this.name || ''
     this.fields = Array.isArray(fields) ? fields.map(f => new Field(f)) : []
     this.createdAt = createdAt || this.createdAt
     this.updatedAt = updatedAt || this.updatedAt
+    this.canUpdateModule = typeof args.canUpdateModule === 'boolean' ? args.canUpdateModule : false
+    this.canDeleteModule = typeof args.canDeleteModule === 'boolean' ? args.canDeleteModule : false
+    this.canCreateRecord = typeof args.canCreateRecord === 'boolean' ? args.canUpdateModule : false
+    this.canReadRecord = typeof args.canReadRecord === 'boolean' ? args.canReadRecord : false
+    this.canUpdateRecord = typeof args.canUpdateRecord === 'boolean' ? args.canUpdateRecord : false
+    this.canDeleteRecord = typeof args.canDeleteRecord === 'boolean' ? args.canDeleteRecord : false
 
     // Properly convert old meta data that contained fields:
     if (Array.isArray(meta)) {

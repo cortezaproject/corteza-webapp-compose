@@ -22,16 +22,16 @@ export default class Namespace {
     this.updatedAt = updatedAt || this.updatedAt
 
     this.canCreateChart =
-      typeof canCreateChart === 'boolean' ? args.canCreateChart : false
+      typeof args.canCreateChart === 'boolean' ? args.canCreateChart : false
     this.canCreateModule =
-      typeof canCreateModule === 'boolean' ? args.canCreateModule : false
+      typeof args.canCreateModule === 'boolean' ? args.canCreateModule : false
     this.canCreatePage =
-      typeof canCreatePage === 'boolean' ? args.canCreatePage : false
+      typeof args.canCreatePage === 'boolean' ? args.canCreatePage : false
     this.canCreateTrigger =
-      typeof canCreateTrigger === 'boolean' ? args.canCreateTrigger : false
+      typeof args.canCreateTrigger === 'boolean' ? args.canCreateTrigger : false
     this.canDeleteNamespace =
-      typeof canDeleteNamespace === 'boolean' ? args.canDeleteNamespace : false
+      typeof args.canDeleteNamespace === 'boolean' ? args.canDeleteNamespace : false
     this.canUpdateNamespace =
-      typeof canUpdateNamespace === 'boolean' ? args.canUpdateNamespace : false
+      typeof args.canUpdateNamespace === 'boolean' ? args.canUpdateNamespace : false
   }
 }

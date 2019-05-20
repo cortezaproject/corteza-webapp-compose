@@ -17,9 +17,11 @@
     <!-- this should appear on hover -->
     <div class="ns-display-options">
       <div class="options actions">
-        <router-link :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }" class="action p-0">
-          <i class="icon-edit"></i>
-        </router-link>
+        <span v-if="namespace.canUpdateNamespace">
+          <router-link :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }" class="action p-0">
+            <i class="icon-edit"></i>
+          </router-link>
+        </span>
       </div>
       <div class="extra-text text">
         <p class="description" v-if="namespace.meta.description">{{ namespace.meta.description }}</p>

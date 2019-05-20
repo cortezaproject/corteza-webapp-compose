@@ -5,7 +5,7 @@ export default class Page {
     this.merge(def)
   }
 
-  merge ({ pageID, namespaceID, selfID, moduleID, title, description, blocks, visible = true, createdAt, updatedAt }) {
+  merge ({ pageID, namespaceID, selfID, moduleID, title, description, blocks, visible = true, createdAt, updatedAt, ...args }) {
     this.pageID = (typeof pageID === 'string' ? pageID : this.pageID) || ''
     this.selfID = (typeof selfID === 'string' && selfID !== '0' ? selfID : this.selfID) || null
     this.namespaceID = typeof namespaceID === 'string' ? namespaceID : this.namespaceID || ''
@@ -16,5 +16,7 @@ export default class Page {
     this.visible = typeof visible === 'boolean' ? visible : this.visible
     this.createdAt = createdAt || this.createdAt
     this.updatedAt = updatedAt || this.updatedAt
+    this.canUpdatePage = typeof args.canUpdatePage === 'boolean' ? args.canUpdatePage : false
+    this.canDeletePage = typeof args.canDeletePage === 'boolean' ? args.canDeletePage : false
   }
 }

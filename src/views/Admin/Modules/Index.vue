@@ -43,17 +43,17 @@
                        v-else
                        @click="handleRecordPageCreation({ moduleID: m.moduleID })"
                        class="action btn-url">{{ $t('general.label.pageBuilder') }}</button>
-
-                    <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="action">
-                      <i class="action icon-edit"></i>
-                    </router-link>
-
+                    <span v-if="m.canUpdateModule || m.canDeleteModule">
+                      <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="action">
+                       <i class="action icon-edit"></i>
+                      </router-link>
+                    </span>
                     <permissions-button :resource="'compose:module:'+m.moduleID" link />
                   </td>
                 </tr>
               </tbody>
             </table>
-            <form @submit.prevent="create">
+            <form v-if="namespace.canCreateModule" @submit.prevent="create">
               <b-form-group :label="$t('module.newLabel')">
                 <b-input-group>
                   <input required type="text" v-model="newModule.name" class="form-control" id="name" :placeholder="$t('module.newPlaceholder')" />

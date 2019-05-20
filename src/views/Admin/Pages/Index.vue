@@ -15,8 +15,8 @@
               @reorder="handleReorder"
               v-model="tree"/>
             <form @submit.prevent="handleAddPageFormSubmit">
-              <b-form-group :label="$t('page.newLabel')">
-                <b-input-group>
+              <b-form-group v-if="namespace.canCreatePage" :label="$t('page.newLabel')">
+                <b-input-group >
                   <input required type="text" v-model="addPageFormData.title" class="form-control" id="name" :placeholder="$t('page.newPlaceholder')" />
                   <b-input-group-append>
                     <button type="submit" class="btn btn-dark">{{ $t('general.label.create') }}</button>

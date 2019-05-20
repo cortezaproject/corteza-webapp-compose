@@ -59,6 +59,8 @@
       <field-configurator :field.sync="updateField" />
     </b-modal>
     <editor-toolbar :back-link="{name: 'admin.modules'}"
+                    :hideDelete="!module.canDeleteModule"
+                    :hideSave="!chart.canUpdateModule"
                     @delete="handleDelete"
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
@@ -102,7 +104,7 @@ export default {
   data () {
     return {
       updateField: null,
-      module: null,
+      module: new Module(),
     }
   },
 

@@ -66,7 +66,8 @@
       </form>
     </div>
     <editor-toolbar :back-link="{name: 'root'}"
-                    :hide-delete="!isEdit"
+                    :hideDelete="!isEdit || !namespace.canDeleteNamespace"
+                    :hideSave="!namespace.canUpdateNamespace"
                     @delete="handleDelete"
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
@@ -99,15 +100,21 @@ export default {
   },
 
   created () {
-    const namespaceID = this.$route.params.namespaceID
-    if (namespaceID) {
-      return this.$compose.namespaceRead({ namespaceID: namespaceID }).then((ns) => {
-        this.namespace = new Namespace(ns)
-      })
-    }
+    this.fetchNamespace()
   },
 
   methods: {
+    fetchNamespace () {
+      const namespaceID = this.$route.params.namespaceID
+      if (namespaceID) {
+        this.$compose.namespaceRead({ namespaceID: namespaceID }).then((ns) => {
+          console.log(ns)
+          this.namespace = new Namespace(ns)
+          console.log(this.namespace)
+        })
+      }
+    },
+
     handleSave ({ closeOnSuccess = false } = {}) {
       const { namespaceID, name, slug, enabled, meta } = this.namespace
       if (this.isEdit) {

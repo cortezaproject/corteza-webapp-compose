@@ -115,10 +115,12 @@ export default class Chart {
     this.merge(def)
   }
 
-  merge ({ chartID, namespaceID, name, config }) {
+  merge ({ chartID, namespaceID, name, config, ...args }) {
     this.chartID = typeof chartID === 'string' ? chartID : this.chartID || null
     this.namespaceID = typeof namespaceID === 'string' ? namespaceID : this.namespaceID || ''
     this.name = typeof name === 'string' ? name : this.name || ''
+    this.canUpdateChart = typeof args.canUpdateChart === 'boolean' ? args.canUpdateChart : false
+    this.canDeleteChart = typeof args.canDeleteChart === 'boolean' ? args.canDeleteChart : false
 
     if (typeof config === 'object') {
       // Verify & normalize

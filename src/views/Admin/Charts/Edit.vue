@@ -31,6 +31,8 @@
       -->
     </form>
     <editor-toolbar :back-link="{name: 'admin.charts'}"
+                    :hideDelete="!chart.canDeleteChart"
+                    :hideSave="!chart.canUpdateChart"
                     @delete="handleDelete"
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">

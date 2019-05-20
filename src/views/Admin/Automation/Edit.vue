@@ -91,6 +91,8 @@
       </div>
     </form>
     <editor-toolbar :back-link="{name: 'admin.automation'}"
+                    :hideDelete="trigger.canDeleteTrigger"
+                    :hideSave="trigger.canUpdateTrigger"
                     @delete="handleDelete"
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
