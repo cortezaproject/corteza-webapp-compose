@@ -541,6 +541,7 @@
   },
 
   "field": {
+    "noPermission": "No permission to read field value",
     "system": {
       "ownedBy": "Owned by",
       "createdBy": "Created by",

@@ -4,12 +4,13 @@
          class="field"
          :key="index">
       <label>{{ $t(field.label) || field.name }}</label>
-      <div>
+      <div v-if="field.canReadRecordValue">
         <field-viewer :namespace="namespace"
                       :field="field"
                       :record="record"
                       value-only />
       </div>
+      <i v-else>{{ $t('field.noPermission') }}</i>
     </div>
   </div>
   <div v-else>{{ $t('block.record.preview.blockNoRecord') }}</div>
@@ -49,6 +50,10 @@ export default {
     div {
       min-width: 200px;
       display: inline-block;
+    }
+
+    i {
+      color: $appgrey;
     }
   }
 }

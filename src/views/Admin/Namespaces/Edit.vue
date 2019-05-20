@@ -108,9 +108,7 @@ export default {
       const namespaceID = this.$route.params.namespaceID
       if (namespaceID) {
         this.$compose.namespaceRead({ namespaceID: namespaceID }).then((ns) => {
-          console.log(ns)
           this.namespace = new Namespace(ns)
-          console.log(this.namespace)
         })
       }
     },

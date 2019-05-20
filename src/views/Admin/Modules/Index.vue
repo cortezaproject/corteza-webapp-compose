@@ -43,12 +43,12 @@
                        v-else
                        @click="handleRecordPageCreation({ moduleID: m.moduleID })"
                        class="action btn-url">{{ $t('general.label.pageBuilder') }}</button>
-                    <span v-if="m.canUpdateModule || m.canDeleteModule">
+                    <span v-if="m.canUpdateModule || m.canDeleteModule && false">
                       <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="action">
                        <i class="action icon-edit"></i>
                       </router-link>
                     </span>
-                    <permissions-button :resource="'compose:module:'+m.moduleID" link />
+                    <permissions-button class="action" :resource="'compose:module:'+m.moduleID" link />
                   </td>
                 </tr>
               </tbody>
@@ -167,6 +167,7 @@ export default {
 
 .title-actions {
   padding-bottom: 10px;
+  padding-right: 10px;
   margin-bottom: 0.5rem;
   line-height: 1;
   text-align: right;

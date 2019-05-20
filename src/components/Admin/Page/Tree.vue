@@ -24,7 +24,7 @@
                 </div>
 
               <router-link :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
-                           class="btn-url">{{ $t('general.label.pageBuilder') }}</router-link>
+                           class="btn-url action">{{ $t('general.label.pageBuilder') }}</router-link>
 
               <span v-if="item.canUpdatePage || item.canDeletePage">
                 <router-link :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
@@ -33,7 +33,7 @@
                 </router-link>
               </span>
 
-              <permissions-button :resource="'compose:page:'+item.pageID" link />
+              <permissions-button class="action" :resource="'compose:page:'+item.pageID" link />
           </div>
         </div>
     </template>

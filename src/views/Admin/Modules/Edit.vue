@@ -60,7 +60,7 @@
     </b-modal>
     <editor-toolbar :back-link="{name: 'admin.modules'}"
                     :hideDelete="!module.canDeleteModule"
-                    :hideSave="!chart.canUpdateModule"
+                    :hideSave="!module.canUpdateModule"
                     @delete="handleDelete"
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">

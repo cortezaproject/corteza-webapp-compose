@@ -36,7 +36,7 @@
                       <i class="action icon-edit"></i>
                     </router-link>
                   </span>
-                  <permissions-button :resource="'compose:trigger:'+chart.chartID" link />
+                  <permissions-button class="action" :resource="'compose:trigger:'+chart.chartID" link />
                 </td>
               </tr>
               </tbody>
@@ -124,6 +124,7 @@ export default {
 
 .title-actions {
   padding-bottom: 10px;
+  padding-right: 10px;
   margin-bottom: 0.5rem;
   line-height: 1;
   text-align: right;

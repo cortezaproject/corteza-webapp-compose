@@ -14,7 +14,6 @@ export default class Trigger {
     this.enabled = !!(typeof enabled === 'boolean' ? enabled : this.enabled)
     this.createdAt = createdAt || this.createdAt
     this.updatedAt = updatedAt || this.updatedAt
-    this.canReadTrigger = typeof args.canReadTrigger === 'boolean' ? args.canReadTrigger : false
     this.canUpdateTrigger = typeof args.canUpdateTrigger === 'boolean' ? args.canUpdateTrigger : false
     this.canDeleteTrigger = typeof args.canDeleteTrigger === 'boolean' ? args.canDeleteTrigger : false
 

@@ -1,8 +1,10 @@
 <template>
   <div v-if="recordListModule">
-    <router-link v-if="!options.hideAddButton"
-                 class="btn-url"
-                 :to="{ name: 'page.record.create', params: { pageID: options.pageID, refRecord: record }, query: null }">+ {{ $t('block.recordList.addRecord') }}</router-link>
+    <span v-if="!options.hideAddButton && recordListModule.canCreateRecord">
+      <router-link
+                  class="btn-url"
+                  :to="{ name: 'page.record.create', params: { pageID: options.pageID, refRecord: record }, query: null }">+ {{ $t('block.recordList.addRecord') }}</router-link>
+    </span>
     <input v-if="!options.hideSearch"
            @keyup.enter.prevent="handleQuery"
            @keyup="handleQueryThrottled"
@@ -22,7 +24,8 @@
         <tbody>
           <tr v-for="(row) in records" :key="row.recordID">
             <td v-for="(col) in columns" :key="row.recordID+':'+col.name">
-              <field-viewer :field="col" value-only :record="row" :namespace="namespace"></field-viewer>
+              <field-viewer v-if="col.canReadRecordValue" :field="col" value-only :record="row" :namespace="namespace"/>
+               <i v-else class="no-perm">{{ $t('field.noPermission') }}</i>
             </td>
             <td class="text-right">
               <router-link
@@ -266,6 +269,10 @@ input {
 .btn-url {
   margin-top: 5px;
   display: inline-block;
+}
+
+.no-perm {
+  color: $appgrey;
 }
 
 </style>
