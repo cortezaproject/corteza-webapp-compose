@@ -2836,7 +2836,7 @@ cross-spawn@^6.0.0:
 
 crust-api-client.js@crusttech/crust-api-client.js.git#master:
   version "2019.3.4"
-  resolved "https://codeload.github.com/crusttech/crust-api-client.js/tar.gz/6d36ef732d5abe26c2f2cba62d501a7d3c46da54"
+  resolved "https://codeload.github.com/crusttech/crust-api-client.js/tar.gz/2e98a042d029629b00e93ac9625d625367350afa"
   dependencies:
     axios "^0.18.0"
 

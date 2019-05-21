@@ -7,7 +7,7 @@
             <div class="title-bar">
               <h2>{{ $t('module.title')}}</h2>
               <div class="title-actions actions">
-                <permissions-button resource="compose:module:*" link />
+                <permissions-button v-if="namespace.canGrant" resource="compose:module:*" link />
               </div>
             </div>
             <table class="table table-striped">
@@ -43,17 +43,17 @@
                        v-else
                        @click="handleRecordPageCreation({ moduleID: m.moduleID })"
                        class="action btn-url">{{ $t('general.label.pageBuilder') }}</button>
-
-                    <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="action">
-                      <i class="action icon-edit"></i>
-                    </router-link>
-
-                    <permissions-button :resource="'compose:module:'+m.moduleID" link />
+                    <span v-if="m.canUpdateModule || m.canDeleteModule">
+                      <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="action">
+                       <i class="action icon-edit"></i>
+                      </router-link>
+                    </span>
+                    <permissions-button v-if="m.canGrant" class="action" :resource="'compose:module:'+m.moduleID" link />
                   </td>
                 </tr>
               </tbody>
             </table>
-            <form @submit.prevent="create">
+            <form v-if="namespace.canCreateModule" @submit.prevent="create">
               <b-form-group :label="$t('module.newLabel')">
                 <b-input-group>
                   <input required type="text" v-model="newModule.name" class="form-control" id="name" :placeholder="$t('module.newPlaceholder')" />
@@ -167,6 +167,7 @@ export default {
 
 .title-actions {
   padding-bottom: 10px;
+  padding-right: 10px;
   margin-bottom: 0.5rem;
   line-height: 1;
   text-align: right;

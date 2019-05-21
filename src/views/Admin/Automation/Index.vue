@@ -7,7 +7,7 @@
             <div class="title-bar">
               <h2>{{ $t('automation.title')}}</h2>
               <div class="title-actions actions">
-                <permissions-button resource="compose:trigger:*" link />
+                <permissions-button v-if="namespace.canGrant" resource="compose:trigger:*" link />
               </div>
             </div>
             <table class="table table-striped">
@@ -47,16 +47,18 @@
                 <td width="300"><small>{{ (t.actions || []).map(a => $t(`automation.triggerCondition.${a}`)).join(', ') }}</small></td>
                 <td><time :datetime="t.updatedAt || t.createdAt" v-if="t.updatedAt || t.createdAt">{{ prettyDate(t.updatedAt || t.createdAt) }}</time></td>
                 <td class="actions text-right">
-                  <router-link :to="{name: 'admin.automation.edit', params: { triggerID: t.triggerID }}" class="action">
-                    <i class="action icon-edit"></i>
-                  </router-link>
+                  <span v-if="t.canUpdateTrigger || t.canDeleteTrigger">
+                    <router-link :to="{name: 'admin.automation.edit', params: { triggerID: t.triggerID }}" class="action">
+                      <i class="action icon-edit"></i>
+                    </router-link>
+                  </span>
 
-                  <permissions-button :resource="'compose:trigger:'+t.triggerID" link />
+                  <permissions-button v-if="t.canGrant" class="action" :resource="'compose:trigger:'+t.triggerID" link />
                 </td>
               </tr>
               </tbody>
             </table>
-            <form @submit.prevent="create">
+            <form v-if="namespace.canCreateTrigger" @submit.prevent="create">
               <b-form-group :label="$t(`automation.newLabel`)">
                 <b-input-group>
                   <input required type="text" v-model="newTrigger.name" class="form-control" id="name" :placeholder="$t(`automation.newPlaceholder`)" />
@@ -152,6 +154,7 @@ export default {
 
 .title-actions {
   padding-bottom: 10px;
+  padding-right: 10px;
   margin-bottom: 0.5rem;
   line-height: 1;
   text-align: right;

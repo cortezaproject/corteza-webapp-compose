@@ -1,20 +1,35 @@
 <template>
   <div>
-    <field-editor
-      v-for="field in fields"
-      class="field"
-      :record.sync="record"
-      :key="field.id"
-      :namespace="namespace"
-      :field="field" />
+    <div v-for="field in fields" :key="field.id">
+      <field-editor
+        v-if="field.canUpdateRecordValue"
+        class="field"
+        :record.sync="record"
+        :namespace="namespace"
+        :field="field" />
+
+      <field-viewer
+        v-else-if="field.canReadRecordValue"
+        class="field"
+        :record.sync="record"
+        :namespace="namespace"
+        :field="field" />
+
+      <div v-else class="field">
+        <label>{{ $t(field.label) || field.name }}</label>
+        <i>{{ $t('field.noPermission') }}</i>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import FieldEditor from '@/lib/field/Editor'
+import FieldViewer from '@/lib/field/Viewer'
 
 export default {
   components: {
     FieldEditor,
+    FieldViewer,
   },
 
   props: {
@@ -62,6 +77,10 @@ export default {
   div {
     min-width: 200px;
     display: inline-block;
+  }
+
+  i {
+    color: $appgrey;
   }
 }
 </style>

@@ -5,7 +5,7 @@ export default class Trigger {
     this.merge(def)
   }
 
-  merge ({ triggerID, namespaceID, name, moduleID, actions, source, enabled, createdAt, updatedAt }) {
+  merge ({ triggerID, namespaceID, name, moduleID, actions, source, enabled, createdAt, updatedAt, ...args }) {
     this.triggerID = (typeof triggerID === 'string' ? triggerID : this.triggerID) || ''
     this.namespaceID = typeof namespaceID === 'string' ? namespaceID : this.namespaceID || ''
     this.moduleID = (typeof moduleID === 'string' ? moduleID : this.moduleID) || null
@@ -14,6 +14,9 @@ export default class Trigger {
     this.enabled = !!(typeof enabled === 'boolean' ? enabled : this.enabled)
     this.createdAt = createdAt || this.createdAt
     this.updatedAt = updatedAt || this.updatedAt
+    this.canUpdateTrigger = typeof args.canUpdateTrigger === 'boolean' ? args.canUpdateTrigger : false
+    this.canDeleteTrigger = typeof args.canDeleteTrigger === 'boolean' ? args.canDeleteTrigger : false
+    this.canGrant = typeof args.canGrant === 'boolean' ? args.canGrant : false
 
     if (Array.isArray(actions)) {
       this.actions = actions.filter(a => !!a)

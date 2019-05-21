@@ -26,6 +26,8 @@
       </div>
     </div>
     <editor-toolbar :back-link="{name: 'admin.pages'}"
+                    :hideDelete="!page.canDeletePage"
+                    :hideSave="!page.canUpdatePage"
                     @delete="handleDeletePage"
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
@@ -37,6 +39,7 @@
 import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 import EditorToolbar from '@/components/Admin/EditorToolbar'
 import Namespace from '@/lib/namespace'
+import Page from '@/lib/page'
 
 export default {
   name: 'PageEdit',
@@ -61,7 +64,7 @@ export default {
   data () {
     return {
       modulesList: [],
-      page: {},
+      page: new Page(),
     }
   },
 
@@ -73,14 +76,14 @@ export default {
         this.$router.replace({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
       }
 
-      this.page = page
+      this.page = new Page(page)
     }).catch(this.defaultErrorHandler(this.$t('notification.page.loadFailed')))
   },
   methods: {
     handleSave ({ closeOnSuccess = false } = {}) {
       const { namespaceID } = this.namespace
       this.$compose.pageUpdate({ namespaceID, ...this.page }).then((page) => {
-        this.page = page
+        this.page = new Page(page)
         this.raiseSuccessAlert(this.$t('notification.page.saved'))
         if (closeOnSuccess) {
           this.$router.push({ name: 'admin.pages' })

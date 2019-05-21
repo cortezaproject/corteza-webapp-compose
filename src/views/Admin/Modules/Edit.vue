@@ -27,6 +27,7 @@
                                 @edit="handleFieldEdit(field)"
                                 @delete="module.fields.splice(index, 1)"
                                 :field="field"
+                                :canGrant="namespace.canGrant"
                                 :key="index"></field-row-edit>
               </draggable>
               <tr>
@@ -59,6 +60,8 @@
       <field-configurator :field.sync="updateField" />
     </b-modal>
     <editor-toolbar :back-link="{name: 'admin.modules'}"
+                    :hideDelete="!module.canDeleteModule"
+                    :hideSave="!module.canUpdateModule"
                     @delete="handleDelete"
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
@@ -102,7 +105,7 @@ export default {
   data () {
     return {
       updateField: null,
-      module: null,
+      module: new Module(),
     }
   },
 

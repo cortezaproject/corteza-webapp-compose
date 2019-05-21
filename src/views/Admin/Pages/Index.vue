@@ -7,7 +7,7 @@
             <div class="title-bar">
               <h2>{{ $t('page.title')}}</h2>
               <div class="title-actions actions">
-                <permissions-button resource="compose:page:*" link />
+                <permissions-button v-if="namespace.canGrant" resource="compose:page:*" link />
               </div>
             </div>
             <page-tree
@@ -15,8 +15,8 @@
               @reorder="handleReorder"
               v-model="tree"/>
             <form @submit.prevent="handleAddPageFormSubmit">
-              <b-form-group :label="$t('page.newLabel')">
-                <b-input-group>
+              <b-form-group v-if="namespace.canCreatePage" :label="$t('page.newLabel')">
+                <b-input-group >
                   <input required type="text" v-model="addPageFormData.title" class="form-control" id="name" :placeholder="$t('page.newPlaceholder')" />
                   <b-input-group-append>
                     <button type="submit" class="btn btn-dark">{{ $t('general.label.create') }}</button>
@@ -99,6 +99,7 @@ table {
 
 .title-actions {
   padding-bottom: 10px;
+  padding-right: 10px;
   margin-bottom: 0.5rem;
   line-height: 1;
   text-align: right;

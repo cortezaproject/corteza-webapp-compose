@@ -1,18 +1,24 @@
 <template>
   <div :class="[editMode ? 'edit': 'view']">
     <toolbar :back-link="{name: 'pages'}"
+                    :hideDelete="!module.canDeleteRecord"
                     @delete="handleDelete"
                     @save="handleUpdate()">
 
-      <button class="btn"
+      <button v-if="module.canCreateRecord"
+              class="btn"
               @click.prevent="$router.push({ name: 'page.record.create', params: $route.params })">+ {{ $t('general.label.addNew') }}</button>
 
-      <button class="btn btn-blue"
-              :disabled="!record || !record.isValid()"
-              @click.prevent="handleUpdate" v-if="editMode">{{ $t('general.label.save') }}</button>
+      <button v-if="!editMode && module.canUpdateRecord"
+              class="btn"
+              @click.prevent="$router.push({ name: 'page.record.edit', params: $route.params })" >{{ $t('general.label.edit') }}</button>
 
-      <button class="btn"
-              @click.prevent="$router.push({ name: 'page.record.edit', params: $route.params })" v-else>{{ $t('general.label.edit') }}</button>
+      <button v-if="module.canUpdateRecord"
+              class="btn btn-blue"
+              :disabled="!record || !record.isValid()"
+              @click.prevent="handleUpdate"
+              >{{ $t('general.label.save') }}</button>
+
     </toolbar>
     <grid :namespace="namespace"
           :page="page"

@@ -6,8 +6,8 @@
       class="btn-url">&#171; {{ $t('general.label.backWithoutSave') }}</router-link>
     <slot></slot>
     <confirmation-toggle v-if="!hideDelete" @confirmed="$emit('delete')" class="confirmation">{{ $t('general.label.delete') }}</confirmation-toggle>
-    <button type="submit" @click.prevent="$emit('save')" class="btn btn-blue">{{ $t('general.label.save') }}</button>
-    <button type="button" @click.prevent="$emit('saveAndClose')" class="btn btn-blue">{{ $t('general.label.saveAndClose') }}</button>
+    <button v-if="!hideSave" type="submit" @click.prevent="$emit('save')" class="btn btn-blue">{{ $t('general.label.save') }}</button>
+    <button v-if="!hideSave" type="button" @click.prevent="$emit('saveAndClose')" class="btn btn-blue">{{ $t('general.label.saveAndClose') }}</button>
   </div>
 </template>
 <script>
@@ -24,6 +24,10 @@ export default {
       required: false,
     },
     hideDelete: {
+      type: Boolean,
+      required: false,
+    },
+    hideSave: {
       type: Boolean,
       required: false,
     },

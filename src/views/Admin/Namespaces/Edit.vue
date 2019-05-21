@@ -7,45 +7,45 @@
       <form class="col-12">
         <fieldset class="form-group">
           <div class="form-group">
-            <label for="name">{{ $t('general.label.name') }}</label>
+            <label for="name">{{ $t('namespace.name.label') }}</label>
             <input
               v-model="namespace.name"
               type="text"
               class="form-control form-control-lg"
               id="name"
-              placeholder="Namespace name">
+              :placeholder="$t('namespace.name.placeholder')">
           </div>
 
           <div class="form-group">
-            <label for="subtitle">{{ $t('namespace.label.subtitle') }}</label>
+            <label for="subtitle">{{ $t('namespace.subtitle.label') }}</label>
             <input
               v-model="namespace.meta.subtitle"
               type="text"
               class="form-control"
               id="subtitle"
-              placeholder="Namespace subtitle">
+              :placeholder="$t('namespace.subtitle.placeholder')">
           </div>
 
           <div class="form-group">
-            <label for="description">{{ $t('general.label.name') }}</label>
+            <label for="description">{{ $t('namespace.description.label') }}</label>
             <textarea
               v-model="namespace.meta.description"
               rows="3"
               class="form-control"
               id="description"
-              placeholder="Namespace description"/>
+              :placeholder="$t('namespace.description.placeholder')" />
           </div>
 
           <div class="row no-gutters">
             <div class="col-12 col-md-7 form-group">
-              <label for="slug">{{ $t('namespace.label.slug') }}</label>
+              <label for="slug">{{ $t('namespace.slug.label') }}</label>
               <input
                 v-model="namespace.slug"
                 type="text"
                 class="form-control form-control-sm"
                 id="slug"
-                placeholder="Namespace slug">
-
+                :placeholder="$t('namespace.slug.placeholder')">
+              <i class="desc">{{ $t('namespace.slug.description') }}</i>
             </div>
 
             <div class="col-6 col-md-2 enabled form-check">
@@ -54,11 +54,11 @@
                 type="checkbox"
                 class="form-check-input"
                 id="enabled">
-              <label for="enabled">{{ $t('namespace.label.enabled') }}</label>
+              <label for="enabled">{{ $t('namespace.enabled.label') }}</label>
             </div>
 
-            <div v-if="isEdit" class="col-6 col-md-3 permissions actions">
-              {{ $t('Set permissions') }}
+            <div v-if="isEdit && namespace.canGrant" class="col-6 col-md-3 permissions actions">
+              {{ $t('namespace.setPermissions') }}
               <permissions-button :resource="'compose:namespace:'+namespace.namespaceID" link />
             </div>
           </div>
@@ -66,7 +66,8 @@
       </form>
     </div>
     <editor-toolbar :back-link="{name: 'root'}"
-                    :hide-delete="!isEdit"
+                    :hideDelete="!isEdit || !namespace.canDeleteNamespace"
+                    :hideSave="!canSave"
                     @delete="handleDelete"
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
@@ -96,41 +97,55 @@ export default {
     isEdit () {
       return !!this.namespace.namespaceID
     },
+
+    canSave () {
+      if (this.isEdit) {
+        return this.namespace.canUpdateNamespace
+      }
+      return !!this.namespace.name && !!this.namespace.slug
+    },
   },
 
   created () {
-    const namespaceID = this.$route.params.namespaceID
-    if (namespaceID) {
-      return this.$compose.namespaceRead({ namespaceID: namespaceID }).then((ns) => {
-        this.namespace = new Namespace(ns)
-      })
-    }
+    this.namespace.namespaceID = this.$route.params.namespaceID
+    this.fetchNamespace()
   },
 
   methods: {
+    fetchNamespace () {
+      const { namespaceID } = this.namespace
+      if (namespaceID) {
+        this.$store.dispatch('namespace/findByID', { namespaceID: namespaceID }).then((ns) => {
+          this.namespace = new Namespace(ns)
+        })
+      }
+    },
+
     handleSave ({ closeOnSuccess = false } = {}) {
       const { namespaceID, name, slug, enabled, meta } = this.namespace
       if (this.isEdit) {
-        this.$compose.namespaceUpdate({ namespaceID, name, slug, enabled, meta }).then((ns) => {
+        this.$store.dispatch('namespace/update', { namespaceID, name, slug, enabled, meta }).then((ns) => {
           this.raiseSuccessAlert(this.$t('notification.namespace.saved'))
           if (closeOnSuccess) {
             this.$router.push({ name: 'root' })
           }
+          this.fetchNamespace()
         }).catch(this.defaultErrorHandler(this.$t('notification.namespace.saveFailed')))
       } else {
-        this.$compose.namespaceCreate({ name, slug, enabled, meta }).then((ns) => {
+        this.$store.dispatch('namespace/create', { name, slug, enabled, meta }).then((ns) => {
           this.namespace.namespaceID = ns.namespaceID
           this.raiseSuccessAlert(this.$t('notification.namespace.saved'))
           if (closeOnSuccess) {
             this.$router.push({ name: 'root' })
           }
+          this.fetchNamespace()
         }).catch(this.defaultErrorHandler(this.$t('notification.namespace.updateFailed')))
       }
     },
 
     handleDelete () {
       const { namespaceID } = this.namespace
-      this.$compose.namespaceDelete({ namespaceID }).then(() => {
+      this.$store.dispatch('namespace/delete', { namespaceID }).then(() => {
         this.$router.push({ name: 'root' })
       }).catch(this.defaultErrorHandler(this.$t('notification.namespace.deleteFailed')))
     },
@@ -143,15 +158,19 @@ export default {
 
 .enabled {
   text-align: center;
-  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .permissions {
   text-align: center;
-  margin-top: 12px;
+  margin-bottom: 8px;
 }
 
 .row {
   align-items: center;
+}
+
+.desc {
+  color: $appgrey;
 }
 </style>

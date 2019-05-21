@@ -7,7 +7,7 @@
             <div class="title-bar">
               <h2>{{ $t('chart.title')}}</h2>
               <div class="title-actions actions">
-                <permissions-button resource="compose:chart:*" link />
+                <permissions-button v-if="namespace.canGrant" resource="compose:chart:*" link />
               </div>
             </div>
             <table class="table table-striped">
@@ -31,16 +31,17 @@
                   <time :datetime="chart.updatedAt" v-if="chart.updatedAt">{{ prettyDate(chart.updatedAt || chart.createdAt) }}</time>
                 </td>
                 <td class="actions text-right">
-                  <router-link :to="{name: 'admin.charts.edit', params: { chartID: chart.chartID }}" class="action">
-                    <i class="action icon-edit"></i>
-                  </router-link>
-
-                  <permissions-button :resource="'compose:trigger:'+chart.chartID" link />
+                  <span v-if="chart.canUpdateChart || chart.canDeleteChart">
+                    <router-link :to="{name: 'admin.charts.edit', params: { chartID: chart.chartID }}" class="action">
+                      <i class="action icon-edit"></i>
+                    </router-link>
+                  </span>
+                  <permissions-button v-if="chart.canGrant" class="action" :resource="'compose:trigger:'+chart.chartID" link />
                 </td>
               </tr>
               </tbody>
             </table>
-            <form @submit.prevent="create">
+            <form v-if="namespace.canCreateChart" @submit.prevent="create">
               <b-form-group :label="$t('chart.newLabel')">
                 <b-input-group>
                   <input required type="text" v-model="newChart.name" class="form-control" id="name" :placeholder="$t('chart.newPlaceholder')" />
@@ -123,6 +124,7 @@ export default {
 
 .title-actions {
   padding-bottom: 10px;
+  padding-right: 10px;
   margin-bottom: 0.5rem;
   line-height: 1;
   text-align: right;
