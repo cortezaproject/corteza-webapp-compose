@@ -1,5 +1,3 @@
-// All future configurable elements colors and dimensions reside here.
-
 $wideminwidth:767px;
 $confortableminwidth:1020px;
 
@@ -8,35 +6,34 @@ $fonts_dir : './assets/fonts/';
 $icomoon-font-path: $fonts_dir + 'crust-icomoon' !default;
 $icomoon-font-family: "crust-icomoon" !default;
 
-//variabilize fonts, so we can change theme easily
-$crustregular: 'nunito_sansregular';
-$crustheavy : 'nunito_sansbold';
-$crustsemibold : 'nunito_sanssemibold';
+//fonts
+$regular: 'nunito_sansregular';
+$bold: 'nunito_sansbold';
+$semibold: 'nunito_sanssemibold';
 
-$gris-bleu: #90A3B1;
-$bleu: #1397CB;
+// Color system
+$primary:       #1397CB;
+$secondary:     #90A3B1;
+$success:       #2FBC95;
+$warning:       #FFCC32;
+$danger:        #E85568;
+$light:         #F3F3F5;
+
 $white: #ffffff;
 $black: #1E2224;
-$error: #E85568;
 $success: #00D53E;
-$jaune: #FFCC32;
-$vert-bleu: #2FBC95;
-$gris: #F3F3F5;
 
-$appyellow : #FFCC32;
-$appred    : #E85568;
-$appgreen  : #2FBC95;
-$appblue   : #1397CB;
-$applime   : #00D53E;
-$appgrey   : #90A3B1;
-$appcream  : #F3F3F5;
-$appwhite  : #FFFFFF;
+$appyellow : #FFCC32; //warning
+$appred    : #E85568; //danger
+$appgreen  : #2FBC95; //success
+$appblue: #1397CB; //primary
+$appgrey   : #90A3B1; //secondary
+$appcream  : #F3F3F5; //light
 
-$appselectorbg : #EDF1F4;
-$appselectoritembg : #fff;
+$enable-rounded: false;
 
-//generics
-$mainbgcolor      : #36393f;
+  //generics
+$mainbgcolor      : $light;
 $inactivebgcolor  : #36393f;
 $hoverbgcolor     : #4f545c;
 $defaulttextcolor : #8d8d8d;
@@ -44,15 +41,10 @@ $defaultlinkcolor : #f6f6f7;
 $defaultbodysize  : 14px;
 $defaultfirstlinecolor: #484b51;
 $defaultlinecolor   : #3e4147;
-$defaulticoncolor   : $gris-bleu;
-$defaultitembgcolor : $gris-bleu;
 
 //header
 $headerbgcolor    : #fff;
 $pfbgcolor        : #FFCC32;
-
-//menupanes
-$menupanebgcolor  : #fff;
 
 //forms
 $defaultbuttonbkg : #1397CB;

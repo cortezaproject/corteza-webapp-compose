@@ -54,5 +54,12 @@ module.exports = {
   runtimeCompiler: true,
   css: {
     sourceMap: process.env['NODE_ENV'] === 'development',
+    loaderOptions: {
+      sass: {
+        data: `
+          @import "@/assets/sass/variables.scss";
+        `,
+      },
+    },
   },
 }
