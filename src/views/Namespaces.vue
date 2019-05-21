@@ -3,10 +3,10 @@
 
     <h1 class="text-center actions mt-4">
       {{ $t('namespace.title') }}
-      <permissions-button :resource="'compose:namespace:*'" link />
+      <permissions-button v-if="canGrant" :resource="'compose:namespace:*'" link />
     </h1>
 
-    <div class="m-2 row">
+    <div v-if="loaded" class="m-2 row">
       <div class="col-md-6 col-lg-4 col-12 mt-4" v-for="(n) in namespaces" :key="n.namespaceID">
         <div v-if="n.enabled">
           <router-link :to="{ name: 'pages', params: { slug: (n.slug || n.namespaceID) } }">
@@ -15,7 +15,7 @@
         </div>
         <namespace-item v-else :namespace="n" />
       </div>
-      <div class="add-wrap col-md-6 col-lg-4 col-12 mt-4">
+      <div v-if="canCreateNamespace" class="add-wrap col-md-6 col-lg-4 col-12 mt-4">
         <router-link :to="{ name: 'namespace.edit' }">
           <div class="add-namespace">
             <label class="add-icon">
@@ -43,7 +43,8 @@ export default {
       alerts: [], // { variant: 'info', message: 'foo' },
       /* eslint-disable*/
       namespaces: [],
-      currentID: ''
+      canCreateNamespace: false,
+      canGrant: false,
     }
   },
 
@@ -62,7 +63,11 @@ export default {
 
       this.$compose.namespaceList().then(({ set }) => {
         this.namespaces = set
-        this.loaded = true
+        this.$compose.permissionsEffective().then((p) => {
+          this.canCreateNamespace = p.filter(per => per.operation === 'namespace.create')[0].allow
+          this.canGrant = p.filter(per => per.operation === 'grant')[0].allow
+          this.loaded = true
+        })
       }).catch(errHandler)
     }).catch((e) => {
       window.location = '/auth'

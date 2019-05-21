@@ -16,6 +16,7 @@ export default class Trigger {
     this.updatedAt = updatedAt || this.updatedAt
     this.canUpdateTrigger = typeof args.canUpdateTrigger === 'boolean' ? args.canUpdateTrigger : false
     this.canDeleteTrigger = typeof args.canDeleteTrigger === 'boolean' ? args.canDeleteTrigger : false
+    this.canGrant = typeof args.canGrant === 'boolean' ? args.canGrant : false
 
     if (Array.isArray(actions)) {
       this.actions = actions.filter(a => !!a)

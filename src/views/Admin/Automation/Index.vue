@@ -7,7 +7,7 @@
             <div class="title-bar">
               <h2>{{ $t('automation.title')}}</h2>
               <div class="title-actions actions">
-                <permissions-button resource="compose:trigger:*" link />
+                <permissions-button v-if="namespace.canGrant" resource="compose:trigger:*" link />
               </div>
             </div>
             <table class="table table-striped">
@@ -53,7 +53,7 @@
                     </router-link>
                   </span>
 
-                  <permissions-button class="action" :resource="'compose:trigger:'+t.triggerID" link />
+                  <permissions-button v-if="t.canGrant" class="action" :resource="'compose:trigger:'+t.triggerID" link />
                 </td>
               </tr>
               </tbody>

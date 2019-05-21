@@ -18,5 +18,6 @@ export default class Page {
     this.updatedAt = updatedAt || this.updatedAt
     this.canUpdatePage = typeof args.canUpdatePage === 'boolean' ? args.canUpdatePage : false
     this.canDeletePage = typeof args.canDeletePage === 'boolean' ? args.canDeletePage : false
+    this.canGrant = typeof args.canGrant === 'boolean' ? args.canGrant : false
   }
 }

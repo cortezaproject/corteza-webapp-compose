@@ -27,6 +27,7 @@
                                 @edit="handleFieldEdit(field)"
                                 @delete="module.fields.splice(index, 1)"
                                 :field="field"
+                                :canGrant="namespace.canGrant"
                                 :key="index"></field-row-edit>
               </draggable>
               <tr>

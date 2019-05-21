@@ -7,7 +7,7 @@
             <div class="title-bar">
               <h2>{{ $t('chart.title')}}</h2>
               <div class="title-actions actions">
-                <permissions-button resource="compose:chart:*" link />
+                <permissions-button v-if="namespace.canGrant" resource="compose:chart:*" link />
               </div>
             </div>
             <table class="table table-striped">
@@ -36,7 +36,7 @@
                       <i class="action icon-edit"></i>
                     </router-link>
                   </span>
-                  <permissions-button class="action" :resource="'compose:trigger:'+chart.chartID" link />
+                  <permissions-button v-if="chart.canGrant" class="action" :resource="'compose:trigger:'+chart.chartID" link />
                 </td>
               </tr>
               </tbody>

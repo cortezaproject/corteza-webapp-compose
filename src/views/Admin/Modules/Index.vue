@@ -7,7 +7,7 @@
             <div class="title-bar">
               <h2>{{ $t('module.title')}}</h2>
               <div class="title-actions actions">
-                <permissions-button resource="compose:module:*" link />
+                <permissions-button v-if="namespace.canGrant" resource="compose:module:*" link />
               </div>
             </div>
             <table class="table table-striped">
@@ -43,12 +43,12 @@
                        v-else
                        @click="handleRecordPageCreation({ moduleID: m.moduleID })"
                        class="action btn-url">{{ $t('general.label.pageBuilder') }}</button>
-                    <span v-if="m.canUpdateModule || m.canDeleteModule && false">
+                    <span v-if="m.canUpdateModule || m.canDeleteModule">
                       <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="action">
                        <i class="action icon-edit"></i>
                       </router-link>
                     </span>
-                    <permissions-button class="action" :resource="'compose:module:'+m.moduleID" link />
+                    <permissions-button v-if="m.canGrant" class="action" :resource="'compose:module:'+m.moduleID" link />
                   </td>
                 </tr>
               </tbody>

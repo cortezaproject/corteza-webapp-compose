@@ -1,5 +1,11 @@
 <template>
-  <sortable-tree :data="{children:list}" element="ul" class="list-group" @changePosition="handleChangePosition">
+  <sortable-tree
+    :draggable="namespace.canCreatePage"
+    :data="{children:list}"
+    element="ul"
+    :class="{'list-group': true, 'grab': namespace.canCreatePage}"
+    @changePosition="handleChangePosition">
+
       <template slot-scope="{item}">
         <div class="wrap" v-if="item.pageID">
           <div class="title">{{ item.title }}</div>
@@ -26,14 +32,14 @@
               <router-link :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
                            class="btn-url action">{{ $t('general.label.pageBuilder') }}</router-link>
 
-              <span v-if="item.canUpdatePage || item.canDeletePage">
+              <span>
                 <router-link :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
                             class="edit action">
                   <i class="action icon-edit" v-if="item.moduleID === '0'"></i>
                 </router-link>
               </span>
 
-              <permissions-button class="action" :resource="'compose:page:'+item.pageID" link />
+              <permissions-button v-if="namespace.canGrant" class="action" :resource="'compose:page:'+item.pageID" link />
           </div>
         </div>
     </template>
@@ -126,8 +132,6 @@ ul {
       background-color: $appwhite;
       margin: 0 0 0 5px;
       padding: 1px;
-      cursor: move;
-      cursor: -webkit-grabbing;
 
       div.prop-col {
         text-align: left;
@@ -145,6 +149,13 @@ ul {
         display: inline-block;
       }
     }
+  }
+}
+
+.grab {
+  div.wrap {
+    cursor: move;
+    cursor: -webkit-grabbing;
   }
 }
 

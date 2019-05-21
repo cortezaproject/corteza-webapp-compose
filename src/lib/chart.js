@@ -121,6 +121,7 @@ export default class Chart {
     this.name = typeof name === 'string' ? name : this.name || ''
     this.canUpdateChart = typeof args.canUpdateChart === 'boolean' ? args.canUpdateChart : false
     this.canDeleteChart = typeof args.canDeleteChart === 'boolean' ? args.canDeleteChart : false
+    this.canGrant = typeof args.canGrant === 'boolean' ? args.canGrant : false
 
     if (typeof config === 'object') {
       // Verify & normalize

@@ -7,7 +7,7 @@
             <div class="title-bar">
               <h2>{{ $t('page.title')}}</h2>
               <div class="title-actions actions">
-                <permissions-button resource="compose:page:*" link />
+                <permissions-button v-if="namespace.canGrant" resource="compose:page:*" link />
               </div>
             </div>
             <page-tree

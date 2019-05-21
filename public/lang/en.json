@@ -659,10 +659,26 @@
     "create": "Create namespace",
     "edit": "Edit \"{{name}}\"",
     "disabled": "Namespace is disabled",
-    "label": {
-      "subtitle": "Subtitle",
-      "slug": "Slug",
-      "enabled": "Enabled"
+    "setPermissions": "Set namespace permissions",
+    "name": {
+      "label": "Full namespace name",
+      "placeholder": "Enter namespace name"
+    },
+    "description": {
+      "label": "Namespace description",
+      "placeholder": "Enter namespace description"
+    },
+    "subtitle": {
+      "label": "Subtitle",
+      "placeholder": "Enter namespace subtitle"
+    },
+    "slug": {
+      "label": "Slug",
+      "placeholder": "Enter namespace slug",
+      "description": "A slug is a short name for the namespace. It's used in the URL."
+    },
+    "enabled": {
+      "label": "Enabled"
     }
   },
 

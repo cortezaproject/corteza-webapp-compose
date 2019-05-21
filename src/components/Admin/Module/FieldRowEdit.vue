@@ -35,7 +35,7 @@
                            cta-class="btn-url">
         <i class="action icon-trash"></i>
       </confirmation-toggle>
-      <permissions-button class="action" :resource="'compose:module-field:'+field.fieldID" link />
+      <permissions-button v-if="canGrant" class="action" :resource="'compose:module-field:'+field.fieldID" link />
     </td>
   </tr>
 </template>
@@ -53,6 +53,11 @@ export default {
     field: {
       type: Object,
       required: true,
+    },
+
+    canGrant: {
+      type: Boolean,
+      required: false,
     },
   },
 
