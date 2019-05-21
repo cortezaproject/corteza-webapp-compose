@@ -178,6 +178,6 @@ export default {
 }
 
 .desc {
-  color: $appgrey;
+  color: $secondary;
 }
 </style>

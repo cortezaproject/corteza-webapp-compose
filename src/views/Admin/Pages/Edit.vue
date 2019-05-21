@@ -4,22 +4,27 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well">
+            <router-link :to="{name: 'admin.pages.builder'}"
+                         class="btn-url float-right">
+                         {{ $t('general.label.pageBuilder') }}</router-link>
             <h2>{{ $t('page.edit.title') }}</h2>
-            <router-link :to="{name: 'admin.pages.builder'}" class="btn-url float-right">{{ $t('general.label.pageBuilder') }}</router-link>
             <form @submit.prevent="handleSave()">
               <input required type="hidden" v-model="page.pageID" id="id" />
-              <div class="form-group">
-                <label for="title">{{ $t('page.newPlaceholder') }}</label>
-                <input required type="text" v-model="page.title" class="form-control" id="title" :placeholder="$t('page.newPlaceholder')" />
-              </div>
-              <div class="form-group">
-                <label for="title">{{ $t('general.label.description') }}</label>
-                <textarea v-model="page.description" class="form-control" id="description" :placeholder="$t('page.edit.pageDescription')" />
-              </div>
-              <div class="form-group form-check">
-                <input type="checkbox" id="visible" class="form-check-input" v-model="page.visible">
-                <label for="visible" class="form-check-label">{{ $t('page.edit.visible') }}?</label>
-              </div>
+              <label for="title">{{ $t('page.newPlaceholder') }}</label>
+              <b-form-input required
+                            v-model="page.title"
+                            id="title"
+                            class="mb-2"
+                            :placeholder="$t('page.newPlaceholder')"></b-form-input>
+              <label for="title">{{ $t('general.label.description') }}</label>
+              <b-form-textarea v-model="page.description"
+                               :placeholder="$t('page.edit.pageDescription')"
+                               class="mb-2"
+                               rows="8"></b-form-textarea>
+              <b-form-checkbox plain
+                               v-model="page.visible"
+                               id="visible">
+                               {{ $t('page.edit.visible') }}?</b-form-checkbox>
             </form>
           </div>
         </div>
@@ -99,25 +104,3 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-@import "@/assets/sass/btns.scss";
-
-textarea {
-  &.form-control {
-    min-height: 200px;
-  }
-}
-
-h2 {
-  display: inline-block;
-}
-
-.form-check {
-  display: inline-block;
-
-  &-label {
-    line-height: 24px;
-    margin-left: 5px;
-  }
-}
-</style>

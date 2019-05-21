@@ -4,12 +4,11 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well table-responsive">
-            <div class="title-bar">
-              <h2>{{ $t('module.title')}}</h2>
-              <div class="title-actions actions">
-                <permissions-button v-if="namespace.canGrant" resource="compose:module:*" link />
-              </div>
-            </div>
+            <permissions-button v-if="namespace.canGrant"
+                                resource="compose:module:*"
+                                class="float-right"
+                                link />
+            <h2>{{ $t('module.title')}}</h2>
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -31,21 +30,24 @@
               <tbody>
                 <tr v-for="(m, index) in sortedModules" :key="index">
                   <td>
-                    <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="btn-url">{{ m.name }}</router-link>
+                    <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}"
+                                 class="text-dark">{{ m.name }}</router-link>
                   </td>
                   <td><time :datetime="m.updatedAt" v-if="m.updatedAt">{{ prettyDate(m.updatedAt || m.createdAt) }}</time></td>
-                  <td class="actions text-right">
-                    <router-link
+                  <td class="text-right">
+                    <b-button
                       v-if="recordPage(m.moduleID)"
                       :to="{name: 'admin.pages.builder', params: { pageID: recordPage(m.moduleID).pageID }}"
-                      class="action btn-url">{{ $t('general.label.pageBuilder') }}</router-link>
-                    <button
+                      variant="link"
+                      class="mr-2 text-dark">{{ $t('general.label.pageBuilder') }}</b-button>
+                    <b-button
                        v-else
                        @click="handleRecordPageCreation({ moduleID: m.moduleID })"
-                       class="action btn-url">{{ $t('general.label.pageBuilder') }}</button>
+                       variant="link"
+                       class="mr-2 text-dark">{{ $t('general.label.pageBuilder') }}</b-button>
                     <span v-if="m.canUpdateModule || m.canDeleteModule">
-                      <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="action">
-                       <i class="action icon-edit"></i>
+                      <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="mr-2 text-dark">
+                       <i class="icon-edit"></i>
                       </router-link>
                     </span>
                     <permissions-button v-if="m.canGrant" :title="m.name" :resource="'compose:module:'+m.moduleID" link />
@@ -53,12 +55,17 @@
                 </tr>
               </tbody>
             </table>
-            <form v-if="namespace.canCreateModule" @submit.prevent="create">
+            <form v-if="namespace.canCreateModule"
+                  class="mt-4"
+                  @submit.prevent="create">
               <b-form-group :label="$t('module.newLabel')">
                 <b-input-group>
-                  <input required type="text" v-model="newModule.name" class="form-control" id="name" :placeholder="$t('module.newPlaceholder')" />
+                  <b-input required type="text"
+                         v-model="newModule.name"
+                         id="name"
+                         :placeholder="$t('module.newPlaceholder')" />
                   <b-input-group-append>
-                    <button type="submit" class="btn btn-dark">{{ $t('general.label.create') }}</button>
+                    <b-button type="submit" variant="secondary">{{ $t('general.label.create') }}</b-button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -158,36 +165,3 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-@import "@/assets/sass/btns.scss";
-
-.btn {
-  border-radius: 0;
-}
-
-.title-actions {
-  padding-bottom: 10px;
-  margin-bottom: 0.5rem;
-  line-height: 1;
-  text-align: right;
-  float: right;
-}
-
-.title-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-right: 5px;
-}
-
-.table {
-  td {
-    min-width: 100px;
-    border-top: 0;
-  }
-}
-
-form {
-  margin-top: 50px;
-}
-</style>

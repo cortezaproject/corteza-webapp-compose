@@ -4,12 +4,11 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well table-responsive">
-            <div class="title-bar">
-              <h2>{{ $t('chart.title')}}</h2>
-              <div class="title-actions actions">
-                <permissions-button v-if="namespace.canGrant" resource="compose:chart:*" link />
-              </div>
-            </div>
+            <permissions-button v-if="namespace.canGrant"
+                                resource="compose:chart:*"
+                                class="float-right"
+                                link />
+            <h2>{{ $t('chart.title')}}</h2>
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -41,12 +40,12 @@
               </tr>
               </tbody>
             </table>
-            <form v-if="namespace.canCreateChart" @submit.prevent="create">
+            <form v-if="namespace.canCreateChart" @submit.prevent="create" class="mt-4">
               <b-form-group :label="$t('chart.newLabel')">
                 <b-input-group>
                   <input required type="text" v-model="newChart.name" class="form-control" id="name" :placeholder="$t('chart.newPlaceholder')" />
                   <b-input-group-append>
-                    <button type="submit" class="btn btn-dark">{{ $t('general.label.create') }}</button>
+                    <b-button type="submit" variant="secondary">{{ $t('general.label.create') }}</b-button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -115,6 +114,7 @@ export default {
   },
 }
 </script>
+<<<<<<< HEAD
 <style lang="scss" scoped>
 @import "@/assets/sass/btns.scss";
 
@@ -148,3 +148,5 @@ form {
   margin-top: 50px;
 }
 </style>
+=======
+>>>>>>> Scss cleanup in the admin area

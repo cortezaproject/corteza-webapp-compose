@@ -3,10 +3,10 @@
       <grid :blocks.sync="page.blocks" editable>
         <template slot-scope="{ block, index }">
           <div class="actions">
-            <a class="action" @click="editBlock(block, index)">
+            <a class="action pr-1" @click="editBlock(block, index)">
               <i class="icon-edit"></i>
             </a>
-            <a class="action"  @click="page.blocks.splice(index,1)">
+            <a class="action pr-1"  @click="page.blocks.splice(index,1)">
               <i class="icon-x"></i>
             </a>
           </div>
@@ -37,7 +37,6 @@
 
       <b-modal
         :title="$t('block.general.changeBlock')"
-        header-class="test"
         :ok-title="$t('general.label.saveAndClose')"
         ok-variant="dark"
         ok-only
@@ -57,8 +56,8 @@
                       :hideSave="!page.canUpdatePage"
                       @save="handleSave()"
                       @saveAndClose="handleSave({ closeOnSuccess: true })">
-        <button v-if="page.canUpdatePage" v-b-modal.createBlockSelector class="btn">+ {{ $t('page.build.addBlock') }}</button>
-        <button v-if="page.canUpdatePage" @click.prevent="handleSave({ previewOnSuccess: true })" class="btn">{{ $t('general.label.saveAndPreview') }}</button>
+        <b-button v-if="page.canUpdatePage" pill variant="outline-secondary" class="mr-1" v-b-modal.createBlockSelector>+ {{ $t('page.build.addBlock') }}</b-button>
+        <b-button v-if="page.canUpdatePage" pill variant="outline-secondary" @click.prevent="handleSave({ previewOnSuccess: true })">{{ $t('general.label.saveAndPreview') }}</b-button>
       </editor-toolbar>
     </div>
 </template>
@@ -174,9 +173,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/_0.declare.scss";
-@import "@/assets/sass/btns.scss";
-
 .builder {
   overflow: hidden;
   display: flex;
@@ -186,24 +182,14 @@ export default {
 .actions {
   position: sticky;
   z-index: 2;
-  top: 3px;
   margin-bottom: -25px;
-  padding-right: 10px;
 
   a {
-    i {
-      font-weight: 900;
-    }
-
     &:hover {
       i {
         color: $black;
         opacity: 0.8;
       }
-    }
-
-    &.action {
-      padding: 0 5px;
     }
   }
 }

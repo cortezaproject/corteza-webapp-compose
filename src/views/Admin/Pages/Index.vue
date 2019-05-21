@@ -4,22 +4,18 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well">
-            <div class="title-bar">
-              <h2>{{ $t('page.title')}}</h2>
-              <div class="title-actions actions">
-                <permissions-button v-if="namespace.canGrant" resource="compose:page:*" link />
-              </div>
-            </div>
+            <permissions-button v-if="namespace.canGrant" resource="compose:page:*" link  class="float-right"/>
+            <h2>{{ $t('page.title')}}</h2>
             <page-tree
               :namespace="namespace"
               @reorder="handleReorder"
               v-model="tree"/>
-            <form @submit.prevent="handleAddPageFormSubmit">
+            <form @submit.prevent="handleAddPageFormSubmit" class="mt-4">
               <b-form-group v-if="namespace.canCreatePage" :label="$t('page.newLabel')">
                 <b-input-group >
                   <input required type="text" v-model="addPageFormData.title" class="form-control" id="name" :placeholder="$t('page.newPlaceholder')" />
                   <b-input-group-append>
-                    <button type="submit" class="btn btn-dark">{{ $t('general.label.create') }}</button>
+                    <b-button type="submit" variant="secondary">{{ $t('general.label.create') }}</b-button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -86,6 +82,7 @@ export default {
   },
 }
 </script>
+<<<<<<< HEAD
 <style lang="scss" scoped>
 @import "@/assets/sass/btns.scss";
 
@@ -116,3 +113,5 @@ form {
   margin-top: 50px;
 }
 </style>
+=======
+>>>>>>> Scss cleanup in the admin area

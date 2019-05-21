@@ -4,13 +4,15 @@
       <div class="row">
         <div class="col-md-12 well">
         <h2>{{ $t('module.edit.title') }}</h2>
-          <div class="form-group">
+          <b-form-group>
             <label>{{ $t('module.newPlaceholder') }}</label>
-            <input required type="text" v-model="module.name" class="form-control" :placeholder="$t('module.newPlaceholder')" />
-          </div>
+            <b-form-input required
+                          v-model="module.name"
+                          :placeholder="$t('module.newPlaceholder')"></b-form-input>
+          </b-form-group>
           <div class="form-group">
-            <div class="title-bar">
-              <h5>{{ $t('module.edit.manageRecordFields') }}</h5>
+git st            <div class="title-bar">
+              <h5 class="mt-5">{{ $t('module.edit.manageRecordFields') }}</h5>
               <div class="title-actions actions">
                 <permissions-button v-if="module.canGrant" resource="compose:module-field:*" link />
               </div>
@@ -37,7 +39,8 @@
               </draggable>
               <tr>
                 <th colspan="7">
-                  <button @click="handleNewField" type="button" class="btn-url add-new">+ {{ $t('module.edit.newField') }}</button>
+                  <b-button @click="handleNewField"
+                            variant="link">+ {{ $t('module.edit.newField') }}</b-button>
                 </th>
               </tr>
               <tbody>
@@ -166,61 +169,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-@import "@/assets/sass/_0.declare.scss";
-@import "@/assets/sass/btns.scss";
-
-/* stylelint-disable font-family-no-missing-generic-family-keyword */
-
-table {
-  th, td {
-    padding: 3px;
-    vertical-align: middle;
-  }
-
-  th {
-    cursor: default;
-
-    &.info {
-      min-width: 50px;
-
-      &::after {
-        font-family: $icomoon-font-family;
-        content: "\ea0c";
-        padding-left: 3px;
-        font-weight: 300;
-        color: $appgrey;
-      }
-    }
-  }
-}
-
-.btn-url {
-  margin-left: 10px;
-
-  &.add-new {
-    display: block;
-    margin: 10px 35px 20px;
-  }
-}
-
-h5 {
-  margin-top: 40px;
-}
-
-.title-actions {
-  padding-bottom: 10px;
-  margin-bottom: 0.5rem;
-  line-height: 1;
-  text-align: right;
-  float: right;
-}
-
-.title-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-right: 5px;
-}
-</style>

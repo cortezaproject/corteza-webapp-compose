@@ -149,7 +149,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/_0.declare.scss";
 @import "@/assets/sass/btns.scss";
 
 table {
@@ -166,6 +165,6 @@ table {
   position: absolute;
   z-index: 1;
   width: 100%;
-  box-shadow: 0 0 2px 0 rgba($appgrey, 0.75);
+  box-shadow: 0 0 2px 0 rgba($secondary, 0.75);
 }
 </style>
