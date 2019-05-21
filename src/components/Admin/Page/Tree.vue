@@ -148,6 +148,11 @@ ul {
         width: 30px;
         display: inline-block;
       }
+
+      .actions {
+        width: 200px;
+        text-align: left;
+      }
     }
   }
 }

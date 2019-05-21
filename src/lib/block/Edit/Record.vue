@@ -8,12 +8,13 @@
         :namespace="namespace"
         :field="field" />
 
-      <field-viewer
-        v-else-if="field.canReadRecordValue"
-        class="field"
-        :record.sync="record"
-        :namespace="namespace"
-        :field="field" />
+      <div v-else-if="field.canReadRecordValue" class="field">
+        <label>{{ $t(field.label) || field.name }}</label>
+        <field-viewer
+          :record.sync="record"
+          :namespace="namespace"
+          :field="field" />
+      </div>
 
       <div v-else class="field">
         <label>{{ $t(field.label) || field.name }}</label>

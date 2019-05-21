@@ -17,8 +17,14 @@ export default class Field {
     this.isPrivate = typeof isPrivate === 'boolean' ? isPrivate : this.isPrivate
     this.isMulti = typeof isMulti === 'boolean' ? isMulti : this.isMulti
     this.isSystem = typeof isSystem === 'boolean' ? isSystem : this.isSystem
-    this.canUpdateRecordValue = typeof args.canUpdateRecordValue === 'boolean' ? args.canUpdateRecordValue : false
-    this.canReadRecordValue = typeof args.canReadRecordValue === 'boolean' ? args.canReadRecordValue : false
+
+    if (this.isSystem) {
+      this.canUpdateRecordValue = true
+      this.canReadRecordValue = true
+    } else {
+      this.canUpdateRecordValue = typeof args.canUpdateRecordValue === 'boolean' ? args.canUpdateRecordValue : false
+      this.canReadRecordValue = typeof args.canReadRecordValue === 'boolean' ? args.canReadRecordValue : false
+    }
 
     this.kind = this.kind || undefined
     this.options = this.options || undefined

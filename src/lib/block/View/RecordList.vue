@@ -23,11 +23,15 @@
         </thead>
         <tbody>
           <tr v-for="(row) in records" :key="row.recordID">
-            <td v-for="(col) in columns" :key="row.recordID+':'+col.name">
-              <field-viewer v-if="col.canReadRecordValue" :field="col" value-only :record="row" :namespace="namespace"/>
-               <i v-else class="no-perm">{{ $t('field.noPermission') }}</i>
+            <td v-if="!recordListModule.canReadRecord">
+              <i class="no-perm">{{ $t('block.recordList.record.noPermission') }}</i>
             </td>
-            <td class="text-right">
+            <td v-for="(col) in columns" :key="row.recordID+':'+col.name">
+              <span v-if="!recordListModule.canReadRecord"/>
+              <field-viewer v-else-if="col.canReadRecordValue" :field="col" value-only :record="row" :namespace="namespace"/>
+              <i v-else class="no-perm">{{ $t('field.noPermission') }}</i>
+            </td>
+            <td v-if="recordListModule.canUpdateRecord || recordListModule.canDeleteRecord" class="text-right">
               <router-link
                 :to="{ name: 'page.record', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
                 <i class="action icon-search"></i></router-link>

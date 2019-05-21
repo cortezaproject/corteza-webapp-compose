@@ -2,7 +2,8 @@
   <div class="view">
     <toolbar :back-link="{name: 'admin.pages'}"
              :hide-delete="true">
-      <button class="btn btn-blue"
+      <button v-if="module.canCreateRecord"
+              class="btn btn-blue"
               :disabled="!record.isValid()"
               @click.prevent="handleCreate">{{ $t('general.label.save') }}</button>
     </toolbar>

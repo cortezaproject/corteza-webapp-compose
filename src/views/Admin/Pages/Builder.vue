@@ -53,11 +53,12 @@
       </b-modal>
 
       <editor-toolbar :back-link="{name: 'admin.pages'}"
-                      :hide-delete="true"
+                      :hideDelete="!page.canDeletePage"
+                      :hideSave="!page.canUpdatePage"
                       @save="handleSave()"
                       @saveAndClose="handleSave({ closeOnSuccess: true })">
-        <button v-b-modal.createBlockSelector class="btn">+ {{ $t('page.build.addBlock') }}</button>
-        <button @click.prevent="handleSave({ previewOnSuccess: true })" class="btn">{{ $t('general.label.saveAndPreview') }}</button>
+        <button v-if="page.canUpdatePage" v-b-modal.createBlockSelector class="btn">+ {{ $t('page.build.addBlock') }}</button>
+        <button v-if="page.canUpdatePage" @click.prevent="handleSave({ previewOnSuccess: true })" class="btn">{{ $t('general.label.saveAndPreview') }}</button>
       </editor-toolbar>
     </div>
 </template>

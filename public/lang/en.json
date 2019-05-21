@@ -101,7 +101,8 @@
         "presortFootnote": "Simplified SQL condition (ORDER BY ...) syntax is supported.",
         "presortHideSort": "Hide sorting",
         "perPage": "Records per page",
-        "hidePaging": "Hide paging"
+        "hidePaging": "Hide paging",
+        "noPermission": "No permission to read record"
       },
       "preview": {
         "recordFromModule": "Showing records from {{0}} module with columns: {{1}}",

@@ -36,7 +36,7 @@
                       <i class="action icon-edit"></i>
                     </router-link>
                   </span>
-                  <permissions-button v-if="chart.canGrant" class="action" :resource="'compose:trigger:'+chart.chartID" link />
+                  <permissions-button v-if="chart.canGrant" class="action" :resource="'compose:chart:'+chart.chartID" link />
                 </td>
               </tr>
               </tbody>

@@ -66,7 +66,7 @@
       </form>
     </div>
     <editor-toolbar :back-link="{name: 'root'}"
-                    :hideDelete="!isEdit || !namespace.canDeleteNamespace"
+                    :hideDelete="!canDelete"
                     :hideSave="!canSave"
                     @delete="handleDelete"
                     @save="handleSave()"
@@ -98,9 +98,16 @@ export default {
       return !!this.namespace.namespaceID
     },
 
+    canDelete () {
+      if (this.isEdit) {
+        return this.namespace.canDeleteNamespace
+      }
+      return false
+    },
+
     canSave () {
       if (this.isEdit) {
-        return this.namespace.canUpdateNamespace
+        return this.namespace.canUpdateNamespace && !!this.namespace.name && !!this.namespace.slug
       }
       return !!this.namespace.name && !!this.namespace.slug
     },
