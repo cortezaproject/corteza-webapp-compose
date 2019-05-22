@@ -3,10 +3,9 @@
     <public-header :page="page"
                    :namespace="namespace"
                    @toggleNav="navVisible = $event" />
-    <router-view v-if="namespace && page"
-                 :namespace="namespace"
+    <router-view :namespace="namespace && page"
                  :page="page"
-                 :class="`compose-content ${navVisible && canPushContent ? 'padded' : ''}`" />
+                 :class="routerViewClass" />
   </div>
 </template>
 
@@ -45,16 +44,19 @@ export default {
   },
 
   computed: {
+    routerViewClass () {
+      return {
+        'compose-content': true,
+        'padded': this.navVisible && this.canPushContent,
+      }
+    },
+
     canPushContent () {
       return this.documentWidth > pushContentAbove
     },
 
     page () {
-      if (this.pageID) {
-        return this.$store.getters['page/getByID'](this.pageID)
-      } else {
-        return this.$store.getters['page/firstVisibleNonRecordPage'] || new Page()
-      }
+      return this.$store.getters['page/getByID'](this.pageID) || new Page()
     },
   },
 
@@ -65,9 +67,13 @@ export default {
     }
   },
 
-  mounted () {
-    //
-    console.log('mounted')
+  beforeMount () {
+    if (!this.pageID) {
+      let { pageID } = this.$store.getters['page/firstVisibleNonRecordPage'] || {}
+      if (pageID) {
+        this.$router.push({ name: 'page', params: { pageID } })
+      }
+    }
   },
 }
 </script>
