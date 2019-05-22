@@ -36,7 +36,7 @@
                       <i class="action icon-edit"></i>
                     </router-link>
                   </span>
-                  <permissions-button v-if="chart.canGrant" class="action" :resource="'compose:chart:'+chart.chartID" link />
+                  <permissions-button v-if="chart.canGrant" :title="chart.name" :resource="'compose:chart:'+chart.chartID" link />
                 </td>
               </tr>
               </tbody>
@@ -124,7 +124,6 @@ export default {
 
 .title-actions {
   padding-bottom: 10px;
-  padding-right: 10px;
   margin-bottom: 0.5rem;
   line-height: 1;
   text-align: right;

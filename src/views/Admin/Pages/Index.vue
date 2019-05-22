@@ -99,7 +99,7 @@ table {
 
 .title-actions {
   padding-bottom: 10px;
-  padding-right: 15px;
+  padding-right: 5px;
   margin-bottom: 0.5rem;
   line-height: 1;
   text-align: right;

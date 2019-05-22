@@ -3,7 +3,7 @@
 
     <h1 class="text-center actions mt-4">
       {{ $t('namespace.title') }}
-      <permissions-button v-if="canGrant" :resource="'compose:namespace:*'" link />
+      <permissions-button v-if="canGrant" resource="compose:namespace:*" link />
     </h1>
 
     <div v-if="loaded" class="m-2 row">

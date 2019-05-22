@@ -394,11 +394,29 @@
     "saveChanges": "Save changes",
     "resetBack": "Reset back to \"{{current}}\"",
     "setFor": "Set permissions for {{target}}",
-    "all": {
-      "module": "All modules",
-      "page": "All pages",
-      "trigger": "All triggers",
-      "chart": "All charts"
+    "namespace": {
+      "all": "all namespaces",
+      "specific": "namespace \"{{target}}\""
+    },
+    "module": {
+      "all": "all modules",
+      "specific": "module \"{{target}}\""
+    },
+    "module-field": {
+      "all": "all module fields",
+      "specific": "field \"{{target}}\""
+    },
+    "page": {
+      "all": "all pages",
+      "specific": "page \"{{target}}\""
+    },
+    "trigger": {
+      "all": "all triggers",
+      "specific": "trigger \"{{target}}\""
+    },
+    "chart": {
+      "all": "all charts",
+      "specific": "chart \"{{target}}\""
     },
 
     "compose-namespace": {

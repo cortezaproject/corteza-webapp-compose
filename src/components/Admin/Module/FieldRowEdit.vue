@@ -28,14 +28,14 @@
                        :value="true"
                        :unchecked-value="false"></b-form-checkbox>
     </td>
-    <td class="text-center actions">
+    <td class="actions">
       <confirmation-toggle @confirmed="$emit('delete')"
                            :no-prompt="!field.name"
                            class="confirmation-small"
                            cta-class="btn-url">
         <i class="action icon-trash"></i>
       </confirmation-toggle>
-      <permissions-button v-if="canGrant" class="action" :resource="'compose:module-field:'+field.fieldID" link />
+      <permissions-button v-if="canGrant" :title="field.name" :resource="'compose:module-field:'+field.fieldID" link />
     </td>
   </tr>
 </template>

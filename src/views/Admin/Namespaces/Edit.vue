@@ -59,7 +59,7 @@
 
             <div v-if="isEdit && namespace.canGrant" class="col-6 col-md-3 permissions actions">
               {{ $t('namespace.setPermissions') }}
-              <permissions-button :resource="'compose:namespace:'+namespace.namespaceID" link />
+              <permissions-button :title="namespace.name" :resource="'compose:namespace:'+namespace.namespaceID" link />
             </div>
           </div>
         </fieldset>

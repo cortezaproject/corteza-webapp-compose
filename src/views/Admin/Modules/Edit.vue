@@ -9,7 +9,12 @@
             <input required type="text" v-model="module.name" class="form-control" :placeholder="$t('module.newPlaceholder')" />
           </div>
           <div class="form-group">
-            <h5>{{ $t('module.edit.manageRecordFields') }}</h5>
+            <div class="title-bar">
+              <h5>{{ $t('module.edit.manageRecordFields') }}</h5>
+              <div class="title-actions actions">
+                <permissions-button v-if="module.canGrant" resource="compose:module-field:*" link />
+              </div>
+            </div>
             <table class="table">
               <thead>
               <tr>
@@ -17,8 +22,8 @@
                 <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.name')" class="info">{{ $t('general.label.name') }}</th>
                 <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.title')" class="info">{{ $t('general.label.title') }}</th>
                 <th>{{ $t('general.label.type') }}</th>
-                <th v-b-tooltip.hover :title="$t('module.edit.tooltip.required')" class="info">{{ $t('general.label.required') }}</th>
-                <th v-b-tooltip.hover :title="$t('module.edit.tooltip.sensitive')" class="info">{{ $t('general.label.sensitive') }}</th>
+                <th v-b-tooltip.hover :title="$t('module.edit.tooltip.required')" class="info text-center">{{ $t('general.label.required') }}</th>
+                <th v-b-tooltip.hover :title="$t('module.edit.tooltip.sensitive')" class="info text-center">{{ $t('general.label.sensitive') }}</th>
                 <th class="text-center"></th>
               </tr>
               </thead>
@@ -202,5 +207,20 @@ table {
 
 h5 {
   margin-top: 40px;
+}
+
+.title-actions {
+  padding-bottom: 10px;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+  text-align: right;
+  float: right;
+}
+
+.title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 5px;
 }
 </style>

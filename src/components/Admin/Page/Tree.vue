@@ -39,7 +39,7 @@
                 </router-link>
               </span>
 
-              <permissions-button v-if="namespace.canGrant" class="action" :resource="'compose:page:'+item.pageID" link />
+              <permissions-button v-if="namespace.canGrant" :title="item.title" :resource="'compose:page:'+item.pageID" link />
           </div>
         </div>
     </template>
