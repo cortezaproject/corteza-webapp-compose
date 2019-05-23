@@ -1,11 +1,11 @@
 <template>
   <span>
     <span v-if="!inConfirmation">
-      <button type="button" class="btn" :class="btnClass" @click.prevent="onPrompt" :disabled="disabled"><slot></slot></button>
+      <b-button pill variant="outline-danger" @click.prevent="onPrompt" :disabled="disabled"><slot></slot></b-button>
     </span>
     <span v-if="inConfirmation">
-      <button type="button" class="btn" :class="confirmationClass" @click.prevent="onConfirmation()">{{ $t('general.label.yes') }}</button>
-      <button type="button" class="btn" @click.prevent="inConfirmation=false">{{ $t('general.label.no') }}</button>
+      <b-button pill variant="danger" class="mr-1" @click.prevent="onConfirmation()">{{ $t('general.label.yes') }}</b-button>
+      <b-button pill @click.prevent="inConfirmation=false">{{ $t('general.label.no') }}</b-button>
     </span>
   </span>
 </template>
@@ -13,7 +13,6 @@
 export default {
   props: {
     ctaClass: { type: String, default: 'btn-danger' },
-    confirmationClass: { default: 'btn-danger' },
     disabled: Boolean,
     noPrompt: Boolean,
   },
@@ -50,25 +49,3 @@ export default {
   },
 }
 </script>
-<style scoped lang="scss">
-@import '@/assets/sass/_0.commons.scss';
-@import "@/assets/sass/btns.scss";
-@import "@/assets/sass/components/actions.scss";
-
-.btn {
-  margin: 0 1px;
-}
-
-.btn-url {
-  color: $appred;
-  text-decoration: none;
-
-  &:hover {
-    color: $appred;
-
-    .icon-trash {
-      font-weight: 900;
-    }
-  }
-}
-</style>

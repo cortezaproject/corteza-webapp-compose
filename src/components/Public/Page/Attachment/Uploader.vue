@@ -7,11 +7,11 @@
     @vdropzone-success="onSuccess"
     @vdropzone-upload-progress="onUploadProgress"
     :options="dzOptions">
-    <div class="uploading" v-if="active">
-      <div class="progress-bar" :style="progresBarStyle"></div>
+    <div class="uploading position-relative" v-if="active">
+      <div class="progress-bar position-absolute text-center mb-2" :style="progresBarStyle"></div>
       {{ $t('general.label.uploading') }} {{ active.file.name }} ({{ size(active.file) }})
     </div>
-    <div class="droparea" v-else>{{ $t('general.label.dropFiles') }}</div>
+    <div class="droparea text-center mb-2" v-else>{{ $t('general.label.dropFiles') }}</div>
   </vue-dropzone>
 </template>
 <script>
@@ -96,36 +96,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/sass/_0.commons.scss';
-
 div {
   .droparea {
-    background-color: $appcream;
-    font-size: 18px;
-    text-align: center;
+    background-color: $light;
     padding: 10px;
-    margin-bottom: 15px;
     cursor: pointer;
 
     &:hover {
-      background-color: $appgrey;
+      background-color: $secondary;
     }
   }
 
   .uploading {
-    background: $appcream;
+    background: $light;
     background-size: 100% 100%;
     background-position: right bottom;
-    font-size: 18px;
-    text-align: center;
     padding: 10px 0;
-    margin-bottom: 15px;
     cursor: wait;
-    position: relative;
 
     .progress-bar {
-      background: $appblue;
-      position: absolute;
+      background: $primary;
       width: 0;
       height: 30px;
       opacity: 0.3;

@@ -16,11 +16,11 @@
                 :modules="modules"
                 :key="'report_'+index"></report>
 
-        <section class="chart col-md-6">
+        <section class="col-md-6 mt-2">
           <b-button @click.prevent="render"
                     :disabled="!chart.isValid()"
                     class="float-right"
-                    variant="blue">{{ $t('chart.edit.loadData') }}</b-button>
+                    variant="outline-primary">{{ $t('chart.edit.loadData') }}</b-button>
           <canvas ref="chart" width="200" height="200"></canvas>
         </section>
       </div>
@@ -206,11 +206,3 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-@import "@/assets/sass/btns.scss";
-
-.chart {
-  margin-top: 10px;
-}
-
-</style>

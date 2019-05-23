@@ -1,6 +1,5 @@
 <template>
   <main class="container">
-
     <h1 class="text-center actions mt-4">
       {{ $t('namespace.title') }}
       <permissions-button v-if="canGrant" resource="compose:namespace:*" link />

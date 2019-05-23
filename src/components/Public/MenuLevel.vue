@@ -12,7 +12,6 @@
                   :selectedPath="selectedPath"
                   :currentPageID="currentPageID" />
     </li>
-
    <slot name="collapse"></slot>
   </ul>
 </template>
@@ -78,7 +77,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "@/assets/sass/_0.declare.scss";
 /* stylelint-disable no-descending-specificity */
 
 ul,li {
@@ -87,43 +85,34 @@ ul,li {
 }
 
 .nav-link {
-  color: $black;
-}
+  color: $navbar-color;
 
-.selected, .selected-in-path {
-  text-decoration: none;
-  border-bottom: 2px solid $appblue;
-}
+  &.router-link-active {
+    color: $navbar-active-color;
+    background-color: $navbar-active-bg;
+  }
 
-.selected {
-  & > a {
-    color: $appblue;
+  &:hover {
+    color: $navbar-hover-color;
   }
 }
 
+.selected,
+.selected-in-path {
+  border-bottom: 2px solid $navbar-active-border;
+}
+
 ul {
-  font-size: 15px;
   white-space: nowrap;
 
   &.root {
-    max-width: calc(100vw - 120px);
-
     li {
       display: inline-block;
-      cursor: pointer;
-
-      a {
-        padding: 13px 15px;
-
-        &:hover {
-          color: $appblue;
-        }
-      }
     }
   }
 
   &:not(.root) {
-    background: #fff;
+    background: $navbar-bg;
 
     ul:nth-child(2) {
       position: relative;
@@ -139,10 +128,6 @@ ul {
 
       &.selected, &.selected-in-path {
         border-bottom: none;
-      }
-
-      a {
-        padding: 5px 20px;
       }
 
       :nth-child(2) {
@@ -163,7 +148,7 @@ ul {
         margin-left: 10px;
         border-width: 4px;
         border-style: solid dashed dashed dashed;
-        border-color: $appgrey transparent transparent transparent;
+        border-color: $secondary transparent transparent transparent;
       }
 
       &:only-child::after {
@@ -173,7 +158,6 @@ ul {
 
     & > ul {
       visibility: hidden;
-      background-color: $appcream;
       z-index: 10;
       position: absolute;
       box-shadow: 0 0.1rem 0.2rem 0 rgba(30, 34, 36, 0.1);
@@ -192,7 +176,7 @@ ul {
     a {
       &::after {
         border-style: dashed dashed dashed solid;
-        border-color: $appgrey transparent transparent transparent;
+        border-color: $secondary transparent transparent transparent;
         float: right;
         position: absolute;
         top: 12px;
@@ -203,17 +187,17 @@ ul {
 }
 
 @media (max-width: 767px) {
-  .router-link-active {
-    border-right: 3px solid $appblue;
+  .nav-link.router-link-active {
+    border-right: 3px solid $navbar-active-border;
     border-bottom: none;
-    background-color: rgba($appblue, 0.15);
+    background-color: rgba($navbar-active-border, 0.15);
   }
 
   ul {
     position: relative;
 
     &.root {
-      border-right: 1px solid $appcream;
+      border-right: 1px solid $light;
       max-width: 260px;
       overflow: hidden;
 
@@ -222,9 +206,6 @@ ul {
         visibility: visible;
 
         a {
-          padding: 0.35em 0 0.35em 15px;
-          font-size: 14px;
-          line-height: 20px;
           overflow: hidden;
           text-overflow: ellipsis;
 

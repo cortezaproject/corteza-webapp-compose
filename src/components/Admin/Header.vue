@@ -37,18 +37,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/_0.declare.scss";
 
 .navbar {
   background: $white;
   margin-bottom: 0;
   z-index: 1;
   box-shadow: 0 0.1rem 0.2rem 0 rgba(30, 34, 36, 0.1);
-  border-bottom: 1px solid $appcream;
+  border-bottom: 1px solid $light;
 
   .nav-link {
     .router-link-active {
-      color: $appblue;
+      color: $primary;
     }
   }
 }

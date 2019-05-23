@@ -3,6 +3,7 @@
     <b-button v-for="(b) in options.buttons"
               :key="b.triggerID"
               variant="dark"
+              class="mb-1"
               disabled>{{ b.label }}
      </b-button>
   </div>
@@ -14,13 +15,3 @@ export default {
   extends: base,
 }
 </script>
-
-<style lang="scss" scoped>
-@import "@/assets/sass/btns.scss";
-
-.btn {
-  border-radius: 0;
-  margin-bottom: 5px;
-}
-
-</style>

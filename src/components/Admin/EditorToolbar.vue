@@ -1,13 +1,13 @@
 <template>
-  <div class="toolbar">
-    <router-link
+  <div class="toolbar text-center">
+    <b-button pill variant="link"
       :to="backLink"
       v-if="backLink"
-      class="btn-url">&#171; {{ $t('general.label.backWithoutSave') }}</router-link>
+      class="float-left">&#171; {{ $t('general.label.backWithoutSave') }}</b-button>
     <slot></slot>
     <confirmation-toggle v-if="!hideDelete" @confirmed="$emit('delete')" class="confirmation">{{ $t('general.label.delete') }}</confirmation-toggle>
-    <button v-if="!hideSave" type="submit" @click.prevent="$emit('save')" class="btn btn-blue">{{ $t('general.label.save') }}</button>
-    <button v-if="!hideSave" type="button" @click.prevent="$emit('saveAndClose')" class="btn btn-blue">{{ $t('general.label.saveAndClose') }}</button>
+    <b-button v-if="!hideSave" pill variant="primary" @click.prevent="$emit('save')" class="float-right">{{ $t('general.label.save') }}</b-button>
+    <b-button v-if="!hideSave" pill variant="primary" @click.prevent="$emit('saveAndClose')" class="float-right mr-1">{{ $t('general.label.saveAndClose') }}</b-button>
   </div>
 </template>
 <script>
@@ -35,31 +35,15 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-@import '@/assets/sass/_0.commons.scss';
-@import "@/assets/sass/btns.scss";
 @import "@/assets/sass/components/actions.scss";
 
 .toolbar {
   background: $white;
-  padding: 25px;
+  padding: 15px;
   width: 100%;
   z-index: 5;
-  border-top: 1px solid $appblue;
-  text-align: center;
+  border-top: 1px solid $primary;
   position: fixed;
   bottom: 0;
-
-  .btn-url {
-    float: left;
-  }
-
-  .btn-blue {
-    float: right;
-    margin-left: 0.5em;
-  }
-}
-
-.confirmation {
-  margin-right: 0.5em;
 }
 </style>

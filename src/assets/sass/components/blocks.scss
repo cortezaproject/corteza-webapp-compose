@@ -1,61 +1,60 @@
-@import "@/assets/sass/_0.declare.scss";
 
 .theme- {
   &red-dark {
     h2 {
-      background: rgba($appred, 0.9);
+      background: rgba($danger, 0.9);
     }
   }
 
   &red-light {
     h2 {
-      background: $appred;
+      background: $danger;
       color: $white;
     }
   }
 
   &yellow-dark {
     h2 {
-      background: $appyellow;
+      background: $warning;
       color: $black;
     }
   }
 
   &green-dark {
     h2 {
-      background: rgba($appgreen, 0.9);
+      background: rgba($success, 0.9);
     }
   }
 
   &green-light {
     h2 {
-      background: $appgreen;
+      background: $success;
       color: $white;
     }
   }
 
   &blue-dark {
     h2 {
-      background: rgba($appblue, 0.9);
+      background: rgba($primary, 0.9);
     }
   }
 
   &blue-light {
     h2 {
-      background: $appblue;
+      background: $primary;
       color: $white;
     }
   }
 
   &grey-dark {
     h2 {
-      background: rgba($appgrey, 0.9);
+      background: rgba($secondary, 0.9);
     }
   }
 
   &grey-light {
     h2 {
-      background: $appgrey;
+      background: $secondary;
       color: $white;
     }
   }

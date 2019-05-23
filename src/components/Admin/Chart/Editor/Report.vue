@@ -10,9 +10,9 @@
       </b-form-group>
     </fieldset>
 
-    <div v-if="!!module" class="report-config">
-      <div class="filter">
-        <h5>{{ $t('chart.edit.filter.label') }}</h5>
+    <div v-if="!!module" class="mt-1 report-config">
+      <div class="filter border px-3 py-2 mb-2">
+        <h5 class="mb-3">{{ $t('chart.edit.filter.label') }}</h5>
         <b-form-group>
           <b-form-select v-model="report.filter"
                          :disabled="customFilter"
@@ -31,9 +31,9 @@
     </div>
 
     <div v-if="!!module" class="report-config">
-      <div class="dimensions">
+      <div class="dimensions border px-3 py-2 mb-2">
         <fieldset v-for="(d,i) in dimensions" :key="'d'+i">
-          <h5> {{ $t('chart.edit.dimension.label') }} </h5>
+          <h5 class="mb-3"> {{ $t('chart.edit.dimension.label') }} </h5>
           <b-form-group horizontal :label-cols="2" breakpoint="md" :label="$t('chart.edit.dimension.fieldLabel')">
             <b-form-select v-model="d.field"
                            :options="dimensionFields"
@@ -69,12 +69,12 @@
           <!--</b-form-group>-->
         </fieldset>
       </div>
-      <draggable class="metrics" :list.sync="metrics" :options="{ group: 'metrics_'+moduleID, sort: true }">
+      <draggable class="metrics border px-3 py-2" :list.sync="metrics" :options="{ group: 'metrics_'+moduleID, sort: true }">
         <fieldset v-for="(m,i) in metrics" :key="'m'+i" class="main-fieldset">
-          <font-awesome-icon v-if="metrics.length>1" :icon="['fas', 'grip-vertical']"></font-awesome-icon>
-          <h5>{{ $t('chart.edit.metric.label') }}</h5>
-          <b-button v-if="metrics.length>1" @click.prevent="metrics.splice(i)" variant="url"><i class="action icon-trash"></i></b-button>
-          <b-form horizontal class="color-picker" label="">
+          <font-awesome-icon class="align-baseline text-secondary mr-2" v-if="metrics.length>1" :icon="['fas', 'grip-vertical']"></font-awesome-icon>
+          <h5 class="mb-3 d-inline-block">{{ $t('chart.edit.metric.label') }}</h5>
+          <b-button v-if="metrics.length>1" @click.prevent="metrics.splice(i)" variant="linke" class="text-danger align-baseline"><i class="action icon-trash"></i></b-button>
+          <b-form horizontal class="color-picker float-right" label="">
               <b-form-input v-model="m.backgroundColor" type="color" ></b-form-input>
           </b-form>
 
@@ -118,7 +118,7 @@
         </fieldset>
       </draggable>
     </div>
-    <b-button @click.prevent="metrics.push({})" variant="url" class="float-right">+ {{ $t('chart.edit.metric.add') }}</b-button>
+    <b-button @click.prevent="metrics.push({})" variant="link" class="float-right">+ {{ $t('chart.edit.metric.add') }}</b-button>
   </div>
 </template>
 <script>
@@ -226,43 +226,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "@/assets/sass/_0.declare.scss";
-@import "@/assets/sass/btns.scss";
-
 .report-config {
-  margin-top: 5px;
-
-  .filter,
-  .metrics,
-  .dimensions {
-    margin: 2px;
-    padding: 15px 20px;
-    border: 1px solid $appcream;
-
-    .form-group {
-      padding-right: 15px;
-    }
-  }
-
-  h5 {
-    margin-bottom: 15px;
-    font-weight: 900;
-  }
-
-  .metrics {
-    h5 {
-      display: inline-block;
-    }
-
-    p {
-      margin: 5px 5px 0 0;
-    }
-  }
-
-  .dimensions {
-    margin: 10px 0;
-  }
-
   input.form-control[type="color"] {
     padding: 0;
     border: none;
@@ -271,34 +235,15 @@ export default {
     background: transparent;
   }
 
-  .color-picker {
-    margin: 0 15px;
-    float: right;
-  }
-
   .main-fieldset {
-    border-top: 1px solid $appcream;
-    padding-top: 15px;
-    margin-top: 10px;
+    border-top: 1px solid $light;
 
     &:first-child {
       border: none;
-      padding-top: 0;
-    }
-
-    .btn-url {
-      color: $appred;
-      text-decoration: none;
-      margin-left: 5px;
     }
 
     .fa-grip-vertical {
-      position: absolute;
-      left: 25px;
-      color: $appgrey;
       cursor: move;
-      margin-top: 4px;
-      font-size: 12px;
     }
   }
 }

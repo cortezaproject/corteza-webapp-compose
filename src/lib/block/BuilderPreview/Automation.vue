@@ -1,8 +1,9 @@
 <template>
-  <div class="flex">
+  <div class="flex flex-wrap">
     <b-button v-for="(b) in options.buttons"
               :key="b.triggerID"
-              :variant="b.variant || 'blue'"
+              :variant="b.variant || 'primary'"
+              class="flex-grow-1 mb-1"
               disabled
     >{{ b.label }}
      </b-button>
@@ -15,25 +16,3 @@ export default {
   extends: base,
 }
 </script>
-
-<style lang="scss" scoped>
-@import "@/assets/sass/btns.scss";
-
-.btn {
-  border-radius: 0;
-  margin-bottom: 5px;
-  flex-grow: 1;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  &:last-child {
-    margin-right: 0.5em;
-  }
-}
-
-.flex {
-  flex-wrap: wrap;
-}
-
-</style>

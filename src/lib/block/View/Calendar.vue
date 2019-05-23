@@ -135,13 +135,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-@import "@/assets/sass/btns.scss";
-
-.btn {
-  border-radius: 0;
-  margin-bottom: 5px;
-}
-
-</style>

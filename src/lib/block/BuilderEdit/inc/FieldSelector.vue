@@ -1,11 +1,11 @@
 <template>
     <fieldset class="form-group">
-      <div class="fields">
+      <div class="fields d-flex">
         <div class="available">
           <label>{{ $t('field.selector.available') }}</label>
-          <button @click.prevent="selectedFields = [...allFields]" class="btn-url">{{ $t('field.selector.selectAll') }}</button>
+          <b-button @click.prevent="selectedFields = [...allFields]" variant="link" class="float-right">{{ $t('field.selector.selectAll') }}</b-button>
           <draggable
-            class="drag-area"
+            class="drag-area border"
             :list.sync="availableFields"
             :options="{ group: 'fields', sort: false }">
             <div v-for="field in availableFields"
@@ -14,15 +14,15 @@
                  :key="field.name">
               <span v-if="field.label">{{ $t(field.label) }} ({{field.name}})</span>
               <span v-else>{{field.name}}</span>
-              <span class="system" v-if="field.isSystem">{{ $t('field.selector.systemField') }}</span>
+              <span class="system float-right" v-if="field.isSystem">{{ $t('field.selector.systemField') }}</span>
             </div>
           </draggable>
         </div>
         <div class="selected">
           <label>{{ $t('field.selector.selected') }}</label>
-          <button @click.prevent="selectedFields.splice(0)" class="btn-url">{{ $t('field.selector.unselectAll') }}</button>
+          <b-button @click.prevent="selectedFields.splice(0)" variant="link" class="float-right">{{ $t('field.selector.unselectAll') }}</b-button>
           <draggable
-            class="drag-area"
+            class="drag-area border"
             :list.sync="selectedFields"
             :options="{ group:'fields' }">
             <div v-for="(field, index) in selectedFields"
@@ -31,7 +31,7 @@
                  :key="field.name">
               <span v-if="field.label">{{ $t(field.label) }} ({{field.name}})</span>
               <span v-else>{{field.name}}</span>
-              <span class="system" v-if="field.isSystem">{{ $t('field.selector.systemField') }}</span>
+              <span class="system float-right" v-if="field.isSystem">{{ $t('field.selector.systemField') }}</span>
             </div>
           </draggable>
         </div>
@@ -102,11 +102,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "@/assets/sass/btns.scss";
-@import "@/assets/sass/_0.declare.scss";
-
 div.fields {
-  display: flex;
   flex-flow: row nowrap;
 
   .selected .field {
@@ -122,21 +118,18 @@ div.fields {
     margin: 5px;
     clear: both;
 
-    button.btn-url {
+    button.btn-link {
       font-size: 90%;
-      display: block;
-      margin-top: 5px;
     }
 
     .drag-area {
       height: 150px;
       overflow-x: auto;
-      border: 1px solid $appgrey;
       padding: 2px;
+      width: 100%;
     }
 
     span.system {
-      float: right;
       font-size: 80%;
     }
   }

@@ -1,9 +1,7 @@
 <template>
-  <b-modal size="lg" v-model="show" centered hide-footer>
+  <b-modal size="lg" v-model="show" class="text-center" centered hide-footer>
     <div v-if="current">
-      <!--<b-button @click="ptr&#45;&#45;" :disabled="ptr === 0">prevtest</b-button>-->
       <img :src="current.url" />
-      <!--<b-button @click="ptr++" :disabled="set.length === ptr + 1">next</b-button>-->
     </div>
   </b-modal>
 </template>
@@ -48,10 +46,6 @@ export default {
 <style lang="scss" scoped>
   img {
     max-width: 100%;
-  }
-
-  /deep/ .modal-dialog-centered {
-    text-align: center;
   }
 
 </style>

@@ -1,23 +1,27 @@
 <template>
   <div :class="[editMode ? 'edit': 'view']">
     <toolbar :back-link="{name: 'pages'}"
-                    :hideDelete="!module.canDeleteRecord"
-                    @delete="handleDelete"
-                    @save="handleUpdate()">
+             :hideDelete="!module.canDeleteRecord"
+              @delete="handleDelete"
+              @save="handleUpdate()">
 
-      <button v-if="module.canCreateRecord"
-              class="btn"
-              @click.prevent="$router.push({ name: 'page.record.create', params: $route.params })">+ {{ $t('general.label.addNew') }}</button>
+      <b-button v-if="module.canCreateRecord"
+                pill
+                variant="outline-secondary mx-1"
+                @click.prevent="$router.push({ name: 'page.record.create', params: $route.params })">+ {{ $t('general.label.addNew') }}</b-button>
 
-      <button v-if="!editMode && module.canUpdateRecord"
-              class="btn"
-              @click.prevent="$router.push({ name: 'page.record.edit', params: $route.params })" >{{ $t('general.label.edit') }}</button>
+      <b-button v-if="!editMode && module.canUpdateRecord"
+                pill
+                variant="outline-secondary"
+                @click.prevent="$router.push({ name: 'page.record.edit', params: $route.params })" >{{ $t('general.label.edit') }}</b-button>
 
-      <button v-if="module.canUpdateRecord"
-              class="btn btn-blue"
-              :disabled="!record || !record.isValid()"
-              @click.prevent="handleUpdate"
-              >{{ $t('general.label.save') }}</button>
+      <b-button v-if="module.canUpdateRecord"
+                :disabled="!record || !record.isValid()"
+                @click.prevent="handleUpdate"
+                pill
+                class="float-right"
+                variant="primary"
+              >{{ $t('general.label.save') }}</b-button>
 
     </toolbar>
     <grid :namespace="namespace"
@@ -124,12 +128,3 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-@import "@/assets/sass/btns.scss";
-@import "@/assets/sass/_0.declare.scss";
-
-.confirmation {
-  margin-right: 0.5em;
-}
-
-</style>

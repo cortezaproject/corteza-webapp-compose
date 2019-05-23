@@ -1,5 +1,5 @@
 <template>
-  <div v-if="module" class="preview">
+  <div v-if="module" class="mb-1">
     <div>
       <i18next path="block.recordList.preview.recordFromModule" tag="label">
         <code>{{ module.name || module.moduleID }}</code>
@@ -95,10 +95,3 @@ export default {
   },
 }
 </script>
-<style lang="scss">
-.preview {
-  > div {
-    margin-bottom: 10px;
-  }
-}
-</style>

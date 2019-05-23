@@ -16,12 +16,12 @@
       <draggable
         :list.sync="o.buttons"
         :options="{ group: 'fields' }">
-        <b-input-group v-for="(b,i) in o.buttons" :key="b.triggerID">
+        <b-input-group class="mb-2" v-for="(b,i) in o.buttons" :key="b.triggerID">
           <b-input-group-prepend is-text>
-            <font-awesome-icon :icon="['fas', 'grip-vertical']"></font-awesome-icon>
+            <font-awesome-icon :icon="['fas', 'grip-vertical']" class="text-secondary"></font-awesome-icon>
           </b-input-group-prepend>
           <div class="btn-name">
-            <b-form-input v-model="b.label" placeholder="button label"></b-form-input>
+            <b-form-input class="mb-0" v-model="b.label" placeholder="button label"></b-form-input>
             <b-input-group-append is-text>
               {{ $t('block.automation.trigger') }} "{{ (findTriggerByID(b.triggerID) || {}).name }}"
             </b-input-group-append>
@@ -31,7 +31,7 @@
             </b-form-select>
           </b-input-group-append>
           <b-input-group-append>
-            <b-button @click.prevent="o.buttons.splice(i,1)" variant="url">
+            <b-button @click.prevent="o.buttons.splice(i,1)" variant="link" class="text-danger">
               <i class="action icon-trash"></i>
             </b-button>
           </b-input-group-append>
@@ -59,10 +59,10 @@ export default {
       selectedTriggerID: null,
       charts: [],
       variantOptions: [
-        { value: 'blue', text: this.$t('block.automation.blueButton') },
+        { value: 'primary', text: this.$t('block.automation.blueButton') },
         { value: 'secondary', text: this.$t('block.automation.whiteButton') },
-        { value: 'green', text: this.$t('block.automation.greenButton') },
-        { value: 'red', text: this.$t('block.automation.redButton') },
+        { value: 'success', text: this.$t('block.automation.greenButton') },
+        { value: 'danger', text: this.$t('block.automation.redButton') },
         { value: 'dark', text: this.$t('block.automation.greyButton') },
       ],
     }
@@ -125,63 +125,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/btns.scss";
-
-.modal-body {
-  .form-control {
-    margin-bottom: 0;
-    min-width: 150px;
-    z-index: 1;
-  }
-}
-
-.btn,
-.input-group-text {
-  border-radius: 0;
-}
-
 .fa-grip-vertical {
-  color: $appgrey;
   cursor: move;
-}
-
-.input-group {
-  margin-bottom: 15px;
 }
 
 .input-group-append {
   z-index: 0;
 
   .input-group-text {
-    max-width: 200px;
+    width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: block;
   }
 }
 
 .btn-name {
-  display: inline-flex;
-  width: calc(100% - 28px);
-  padding-right: 20px;
-}
-
-.custom-select {
-  margin: 2px 9px 0 27px;
+  width: calc(100% - 75px);
 }
 
 .btn-color {
   flex-grow: 1;
-}
-
-.btn-url {
-  text-decoration: none;
-  color: $appred;
-  margin-top: -30px;
-
-  &:hover {
-    color: $appred;
-  }
 }
 
 </style>

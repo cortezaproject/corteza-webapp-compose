@@ -1,4 +1,3 @@
-
 .vue-grid-item {
   &:not(.vue-grid-placeholder) {
     background: #FFF;
@@ -117,7 +116,7 @@
 
 .vue-grid-item input[type="text"], .vue-grid-item textarea, .vue-grid-item select {
   background-color: transparent;
-  border: 1px solid $appgrey;
+  border: 1px solid $secondary;
   border-radius: 5px;
   box-sizing: border-box;
   color: $defaulttextcolor;
@@ -132,7 +131,7 @@
 .vue-grid-item input[type="radio"],
 .vue-grid-item input[type="checkbox"] {
   background-color: transparent;
-  border: 1px solid $appgrey;
+  border: 1px solid $secondary;
   border-radius: 5px;
   box-sizing: border-box;
   color: $defaulttextcolor;
@@ -143,7 +142,7 @@
 }
 
 .vue-grid-item input[type="text"]:focus, .vue-grid-item textarea:focus, .vue-grid-item select:focus {
-  border: 2px solid $appgreen;
+  border: 2px solid $success;
   margin: 1px 0 7px;
 }
 

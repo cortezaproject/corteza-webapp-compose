@@ -34,7 +34,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-@import "@/assets/sass/_0.declare.scss";
 
 .record {
   .field {
@@ -44,7 +43,7 @@ export default {
       font-weight: 900;
       display: block;
       font-size: 12px;
-      font-family: $crustheavy;
+      font-family: $bold;
     }
 
     div {
@@ -53,7 +52,7 @@ export default {
     }
 
     i {
-      color: $appgrey;
+      color: $secondary;
     }
   }
 }

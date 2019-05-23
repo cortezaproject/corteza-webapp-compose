@@ -55,7 +55,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-@import "@/assets/sass/_0.declare.scss";
 
 button {
   height: 100px;
@@ -64,13 +63,13 @@ button {
 }
 
 .btn-outline {
-  border: 2px solid $appblue;
+  border: 2px solid $primary;
   font-size: 14px;
-  box-shadow: 0 0 3px 0 rgba($appgrey, 0.75);
+  box-shadow: 0 0 3px 0 rgba($secondary, 0.75);
   background: $white;
 
   &:disabled {
-    border-color: $appgrey;
+    border-color: $secondary;
   }
 }
 </style>

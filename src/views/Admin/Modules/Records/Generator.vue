@@ -149,13 +149,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/btns.scss";
-
-table {
-  td {
-    vertical-align: middle;
-  }
-}
 
 .well {
   margin-bottom: 80px;

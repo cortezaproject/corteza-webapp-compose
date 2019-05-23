@@ -1,28 +1,15 @@
-/* Import bootstrap styles from npm package */
-@import "~bootstrap/dist/css/bootstrap.min.css";
-@import "./_0.declare-light";
-@import "./components/pagination";
+@import "./variables";
 @import "./components/actions";
 /* stylelint-disable no-descending-specificity */
 
-.clear {
-  clear: both;
-}
-
 html,
 body {
-  background: $mainbgcolor;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
 }
 
-html body {
-  color: $defaulttextcolor;
-  font-size: $defaultbodysize;
-}
-
-#crust-compose {
+#compose {
   height: 100vh;
   width: 100vw;
   flex: 1;
@@ -47,33 +34,11 @@ html body {
   }
 }
 
-a {
-  color: $defaultlinkcolor;
-
-  &:hover {
-    color: $defaultlinkcolor;
-    text-decoration: none;
-  }
-}
-
 .well {
   min-height: 20px;
   padding: 5px;
   margin-bottom: 90px;
-  background-color: $appwhite;
-
-  h2 {
-    padding-bottom: 10px;
-    font-weight: 900;
-  }
-
-  .btn-dark {
-    margin-left: 0;
-  }
-}
-
-.flex {
-  display: flex;
+  background-color: $white;
 }
 
 .navbar-default .navbar-nav > li.dropdown:hover > a,
@@ -96,23 +61,17 @@ label {
 .form-control {
   font-size: 14px;
   color: $black;
-  border-radius: 0;
 
   &:focus,
   &:active {
     color: $black;
-    border-color: $appblue;
+    border-color: $primary;
     box-shadow: none;
   }
 
   &::placeholder {
-    color: $appgrey;
+    color: $secondary;
   }
-}
-
-.custom-select,
-.input-group-text {
-  border-radius: 0;
 }
 
 li.dropdown:hover > .dropdown-menu {
@@ -165,7 +124,7 @@ li.dropdown:hover > .dropdown-menu {
     width: 100%;
     padding: 0 0 10px;
     margin: 0 0 1px;
-    border-bottom: solid 2px rgba($defaultfirstlinecolor, 0.25);
+    border-bottom: solid 2px rgba($secondary, 0.25);
   }
 
   .block_footer {
@@ -187,7 +146,7 @@ li.dropdown:hover > .dropdown-menu {
 
   .block_view_fields {
     .form_row {
-      border-bottom: solid 1px rgba($defaultlinecolor, 0.25);
+      border-bottom: solid 1px rgba($secondary, 0.25);
     }
   }
 
@@ -199,7 +158,6 @@ li.dropdown:hover > .dropdown-menu {
   }
 
   .form_label {
-    color: rgba($defaulttextcolor, 0.75);
     display: block;
     font-size: 0.9em;
     margin: 0;
@@ -209,7 +167,6 @@ li.dropdown:hover > .dropdown-menu {
   }
 
   .form_value_viewing_mode {
-    color: $defaulttextcolor;
     display: block;
     font-size: 1em;
     margin: 0;
@@ -221,53 +178,28 @@ li.dropdown:hover > .dropdown-menu {
   input[type],
   textarea,
   select {
-    /*    background-color: transparent;
-    border: 1px solid $appgrey;
-    border-radius: 0;
-    box-sizing: border-box;
-    color: $defaulttextcolor;
-    display: block;
-    font-size: 1em;
-    font-weight: 700;
-    margin: 2px 0 8px;
-    padding: 6px;
-    width: 100%; */
-
     &:focus {
-      border: 1px solid $appblue;
+      border: 1px solid $primary;
     }
   }
 
   input[type] {
     font-weight: 300;
   }
-
-  input[type="radio"],
-  input[type="checkbox"] {
-    /*    background-color: transparent;
-    border-radius: 5px;
-    box-sizing: border-box;
-    color: $defaulttextcolor;
-    font-size: 1em;
-    font-weight: 700;
-    margin: 2px 0 8px;
-    padding: 6px; */
-  }
 }
 
 input {
-  border-radius: 0;
-  border: 1px solid $appgrey;
+  border: 1px solid $secondary;
   font-size: 14px;
 
   &:focus:invalid {
-    border-color: $appred;
+    border-color: $danger;
   }
 
   &[type="url"],
   &[type="email"] {
     &:invalid {
-      border-color: $appred;
+      border-color: $danger;
     }
   }
 }
@@ -286,7 +218,7 @@ input {
 
   thead {
     th {
-      border-bottom: 1px solid $appcream;
+      border-bottom: 1px solid $light;
     }
   }
 }
@@ -297,7 +229,7 @@ table {
       position: sticky;
       top: -1px;
       background: $white;
-      box-shadow: 0 1px $appcream;
+      box-shadow: 0 1px $light;
     }
   }
 }
@@ -323,7 +255,7 @@ table {
 
 .modal-footer {
   .btn {
-    border: solid 1px $appgrey;
+    border: solid 1px $secondary;
     padding: 0.25em 1em;
     border-radius: 1.5em;
     transition: color 0.2s, background-color 0.2s;
@@ -331,11 +263,11 @@ table {
   }
 
   .btn-dark {
-    background-color: $appgrey;
+    background-color: $secondary;
     color: white;
 
     &:hover {
-      color: $appgrey;
+      color: $secondary;
       background-color: white;
     }
   }
@@ -359,10 +291,6 @@ table {
   }
 
   .dropdown-toggle {
-    border-radius: 0 !important;
-    max-height: 29px;
-    border: 1px solid $appgrey;
-
     &::after {
       display: none;
     }
@@ -371,10 +299,6 @@ table {
 
 .ql-toolbar.ql-snow .ql-picker-label {
   margin-top: -5px;
-}
-
-input[type="checkbox"] {
-  font-size: 16px;
 }
 
 @media (min-width: $wideminwidth) {

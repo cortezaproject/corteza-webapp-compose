@@ -6,22 +6,22 @@
       <b-form-checkbox plain
                        v-model="o.header.hide"
                        :value="true"
-                       :unchecked-value="false">{{ $t('block.calendar.hideHeader') }}</b-form-checkbox><br />
+                       :unchecked-value="false">{{ $t('block.calendar.hideHeader') }}</b-form-checkbox>
       <b-form-checkbox plain
                        v-model="o.header.hidePrevNext"
                        :disabled="o.header.hide"
                        value="true"
-                       :unchecked-value="false">{{ $t('block.calendar.hideNavigation') }}</b-form-checkbox><br />
+                       :unchecked-value="false">{{ $t('block.calendar.hideNavigation') }}</b-form-checkbox>
       <b-form-checkbox plain
                        v-model="o.header.hideToday"
                        :disabled="o.header.hide"
                        :value="true"
-                       :unchecked-value="false">{{ $t('block.calendar.hideToday') }}</b-form-checkbox><br />
+                       :unchecked-value="false">{{ $t('block.calendar.hideToday') }}</b-form-checkbox>
       <b-form-checkbox plain
                        v-model="o.header.hideTitle"
                        :disabled="o.header.hide"
                        :value="true"
-                       :unchecked-value="false">{{ $t('block.calendar.hideTitle') }}</b-form-checkbox><br />
+                       :unchecked-value="false">{{ $t('block.calendar.hideTitle') }}</b-form-checkbox>
 
     </b-form-group>
     <b-form-group horizontal
@@ -63,7 +63,7 @@
       </b-form-group>
       <b-form-group horizontal v-if="feed.moduleID && getModuleByID(feed.moduleID)" class="feed-config">
         <b-input-group>
-          <b-input-group-append is-text>{{ $t('general.label.title') }}</b-input-group-append>
+          <b-input-group-append class="w-25" is-text>{{ $t('general.label.title') }}</b-input-group-append>
           <b-form-select v-model="feed.titleField" :options="textualFields(feed.moduleID) | optionizeFields">
             <template slot="first">
               <option disabled :value="null">{{ $t('block.calendar.noField') }}</option>
@@ -72,7 +72,7 @@
         </b-input-group>
 
         <b-input-group>
-          <b-input-group-append is-text>{{ $t('block.calendar.eventStart') }}</b-input-group-append>
+          <b-input-group-append class="w-25" is-text>{{ $t('block.calendar.eventStart') }}</b-input-group-append>
           <b-form-select v-model="feed.startField" :options="datetimeFields(feed.moduleID) | optionizeFields">
             <template slot="first">
               <option disabled :value="null">{{ $t('block.calendar.noField') }}</option>
@@ -81,7 +81,7 @@
         </b-input-group>
 
         <b-input-group>
-          <b-input-group-append is-text>{{ $t('block.calendar.eventEnd') }}</b-input-group-append>
+          <b-input-group-append class="w-25" is-text>{{ $t('block.calendar.eventEnd') }}</b-input-group-append>
           <b-form-select v-model="feed.endField" :options="datetimeFields(feed.moduleID) | optionizeFields">
             <template slot="first">
               <option :value="null">{{ $t('block.calendar.noFieldOneHour') }}</option>
@@ -164,34 +164,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-@import "@/assets/sass/btns.scss";
-
-.modal-body {
-  .form-control {
-    margin-bottom: 0;
-  }
-}
-
-.btn,
-.input-group-text {
-  border-radius: 0;
-}
-
-.fa-grip-vertical {
-  color: $appgrey;
-  cursor: move;
-}
-
-.input-group {
-  margin-bottom: 2px;
-}
-
-.feed-config {
-  .input-group-text {
-    min-width: 150px;
-  }
-}
-
-</style>

@@ -2,12 +2,11 @@
     <header>
       <b-navbar type="light" toggleable="md">
           <b-navbar-toggle target="public_nav_collapse">
-            <label
-              class="channel-toggle">
+            <label>
               <i class="icon-menu4"></i>
             </label>
           </b-navbar-toggle>
-          <b-collapse is-nav id="public_nav_collapse" :class="{ visible }" @show="toggleNav(true)" @hide="toggleNav(false)">
+          <b-collapse is-nav id="public_nav_collapse" :class="{ visible }" class="mt-2" @show="toggleNav(true)" @hide="toggleNav(false)">
             <menu-level id="menu_lvl_1"
                         :pages="pages"
                         :selectedPath="selectedPath"
@@ -18,8 +17,8 @@
               </li>
             </menu-level>
           </b-collapse>
-        <span class="page-title" v-if="page">{{ page.title }}</span>
-        <router-link id="public_nav_to_admin_pannel" :to="{ name: 'admin' }" class="nav-link admin-panel">{{ $t('navigation.adminPanel') }}</router-link>
+        <span class="page-title text-nowrap position-absolute" v-if="page">{{ page.title }}</span>
+        <router-link id="public_nav_to_admin_pannel" :to="{ name: 'admin' }" class="nav-link float-right">{{ $t('navigation.adminPanel') }}</router-link>
       </b-navbar>
     </header>
 </template>
@@ -165,18 +164,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/components/header.scss";
+
+header {
+  border-right: 1px solid $light;
+}
+
+.navbar {
+  background: $navbar-bg;
+  height: $navbar-height;
+}
 
 .page-title {
   left: 50px;
-  top: 12px;
-  position: absolute;
-  font-size: 15px;
-  font-family: $crustsemibold;
   max-width: calc(100vw - 150px);
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+}
+
+.navbar-toggler {
+  border: none;
+
+  &:focus,
+  &:hover {
+    outline: none;
+  }
 }
 
 #public_nav_collapse {
@@ -196,10 +206,6 @@ export default {
           display: inline-block;
         }
       }
-    }
-
-    ul li ul {
-      width: 100%;
     }
 
     &:hover > ul {
@@ -222,8 +228,34 @@ export default {
 
     & > ul {
       padding-left: 0;
-      max-width: unset;
     }
+  }
+
+  .navbar-collapse {
+    position: absolute;
+    top: $navbar-height;
+    left: calc(0 - #{$sidebar-width});
+    width: $sidebar-width;
+    max-width: 100%;
+    transition: all 0.3s;
+    height: $sidebar-height;
+    overflow-y: scroll;
+    background: $navbar-bg;
+
+    &.visible {
+      left: 0;
+      border-left: 1px solid $light;
+    }
+
+    &.collapsing {
+      height: $sidebar-height;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .page-title {
+    visibility: hidden;
   }
 }
 </style>

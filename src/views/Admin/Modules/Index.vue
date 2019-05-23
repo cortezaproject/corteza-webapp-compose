@@ -65,7 +65,7 @@
                          id="name"
                          :placeholder="$t('module.newPlaceholder')" />
                   <b-input-group-append>
-                    <b-button type="submit" variant="secondary">{{ $t('general.label.create') }}</b-button>
+                    <b-button type="submit" variant="dark">{{ $t('general.label.create') }}</b-button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>

@@ -161,8 +161,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/btns.scss";
-
 .enabled {
   text-align: center;
   margin-bottom: 10px;

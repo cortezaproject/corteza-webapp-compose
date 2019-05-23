@@ -2,7 +2,7 @@
   <div class="scrollable">
     <form @submit.prevent="handleSave" class="container" v-if="trigger">
       <div class="row">
-        <div class="col-md-12 well">
+        <div class="col-md-12 well mb-1">
           <h2>{{ $t(`automation.edit.title`) }}</h2>
           <b-form-group horizontal
                         :label="$t(`automation.edit.nameLabel`)">
@@ -32,9 +32,9 @@
 
           <b-form-group horizontal>
             <b-button-group>
-              <b-button variant="link" @click="insertSample('LeadConversion')">{{ $t(`automation.edit.loadExampleConversion`) }}</b-button>
+              <b-button variant="outline-dark" @click="insertSample('LeadConversion')">{{ $t(`automation.edit.loadExampleConversion`) }}</b-button>
             </b-button-group>
-            <b-button class="float-right" variant="link" @click="insertSample('Default', true)">{{ $t(`automation.edit.reset`) }}</b-button>
+            <b-button class="float-right" variant="outline-dark" @click="insertSample('Default', true)">{{ $t(`automation.edit.reset`) }}</b-button>
           </b-form-group>
 
           <b-form-group horizontal
@@ -71,7 +71,7 @@
             </b-form-checkbox-group>
           </b-form-group>
         </div>
-        <div class="col-md-12 well">
+        <div class="col-md-12 well mb-1">
           <b-form-group horizontal
                         :label="$t('automation.testing.label')"
                         :description="`${$t('automation.testing.footnotePrimaryModule')}<br />${$t('automation.testing.footnoteRecordChanges')}`">
@@ -80,13 +80,13 @@
               <b-form-input v-model="test.recordID"
                             :state="testRecordIDState"
                             :disabled="!trigger.moduleID"></b-form-input>
-              &nbsp;&nbsp;
               <b-button @click.prevent="onRun"
+                        variant="dark"
                         :disabled="testRecordIDState === false">{{ $t('automation.testing.run') }}</b-button>
             </b-input-group>
           </b-form-group>
         </div>
-        <div id="automation-manual" class="col-md-12 well manual" v-html="manualFromMd($t(`automation.manual`, { joinArrays: '\n' }))"></div>
+        <div id="automation-manual" class="col-md-12 manual well text-justify" v-html="manualFromMd($t(`automation.manual`, { joinArrays: '\n' }))"></div>
 
       </div>
     </form>
@@ -286,59 +286,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "@/assets/sass/btns.scss";
-
-label {
-  margin-left: 5px;
-}
-
-.table {
-  td {
-    border-top: 0;
-  }
-}
-
-.btn {
-  border-radius: 0;
-}
-
-.well {
-  margin-bottom: 10px;
-}
-
 .manual {
-  margin-bottom: 90px;
-}
-
-</style>
-
-<style lang="scss">
-// Here manual's scss is not scoped, because it is rendered from markdown. This style is extremely specific so
-// it will not interfeare with other pages.
-div#automation-manual.col-md-12.well.manual {
-  h2 {
-    margin-bottom: 0;
-  }
-
-  h3 {
-    margin-bottom: 30px;
-  }
-
-  h4 {
-    margin-bottom: 10px;
-  }
-
-  p, ul {
-    padding: 0 50px 0 30px;
-    text-align: justify;
-  }
-
-  ul {
-    margin-left: 50px;
-
-    li {
-      margin-bottom: 5px;
-    }
-  }
+  margin-bottom: 100px;
 }
 </style>

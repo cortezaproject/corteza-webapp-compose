@@ -19,7 +19,7 @@
       text-decoration: none;
 
       i {
-        color: $appblue;
+        color: $primary;
       }
     }
   }
@@ -33,7 +33,7 @@
   .action {
     &-disabled {
       display: inline-block;
-      width: 35px;
+      width: 25px;
     }
   }
 }
@@ -41,9 +41,4 @@
 .confirmation-small {
   display: inline-block;
   min-width: 80px;
-  text-align: right;
-
-  .btn {
-    padding: 0 10px;
-  }
 }

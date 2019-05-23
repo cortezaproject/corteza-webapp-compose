@@ -2,21 +2,22 @@
   <div v-if="recordListModule">
     <span v-if="!options.hideAddButton && recordListModule.canCreateRecord">
       <router-link
-                  class="btn-url"
+                  class="btn-url d-inline-block mt-1"
                   :to="{ name: 'page.record.create', params: { pageID: options.pageID, refRecord: record }, query: null }">+ {{ $t('block.recordList.addRecord') }}</router-link>
     </span>
-    <input v-if="!options.hideSearch"
+    <b-input v-if="!options.hideSearch"
            @keyup.enter.prevent="handleQuery"
            @keyup="handleQueryThrottled"
            v-model="query"
+           class="float-right mw-100 mb-1"
            :placeholder="$t('general.label.search')" />
     <div class="table-responsive">
       <table class="table sticky-header table-hover" :class="{sortable: !options.hideSorting}">
         <thead v-if="!options.hideHeader">
           <tr >
-            <th v-for="(col) in columns" :key="'header:'+col.name" @click="handleSort(col.name)">
+            <th v-for="(col) in columns" :key="'header:'+col.name" @click="handleSort(col.name)" class="text-nowrap">
               {{ $t(col.label) || col.name }}
-              <font-awesome-icon :icon="['fas', 'sort']" v-if="!options.hideSorting"></font-awesome-icon>
+              <font-awesome-icon :icon="['fas', 'sort']" v-if="!options.hideSorting" class="ml-1"></font-awesome-icon>
             </th>
             <th></th>
           </tr>
@@ -24,12 +25,12 @@
         <tbody>
           <tr v-for="(row) in records" :key="row.recordID">
             <td v-if="!recordListModule.canReadRecord">
-              <i class="no-perm">{{ $t('block.recordList.record.noPermission') }}</i>
+              <i class="text-secondary">{{ $t('block.recordList.record.noPermission') }}</i>
             </td>
             <td v-for="(col) in columns" :key="row.recordID+':'+col.name">
               <span v-if="!recordListModule.canReadRecord"/>
               <field-viewer v-else-if="col.canReadRecordValue" :field="col" value-only :record="row" :namespace="namespace"/>
-              <i v-else class="no-perm">{{ $t('field.noPermission') }}</i>
+              <i v-else class="text-secondary">{{ $t('field.noPermission') }}</i>
             </td>
             <td v-if="recordListModule.canUpdateRecord || recordListModule.canDeleteRecord" class="text-right">
               <router-link
@@ -40,12 +41,11 @@
         </tbody>
       </table>
     </div>
-    <div class="sticky-footer" v-if="!options.hidePaging">
+    <div class="position-sticky border-top pt-1" v-if="!options.hidePaging">
       <pagination
           :records="filter.count"
           :per-page="filter.perPage"
           @paginate="handlePageChange"
-          theme="bootstrap4"
           :page="filter.page + 1"
           :options="{ texts: { count: $t('block.recordList.pagination') } }" />
     </div>
@@ -225,30 +225,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/_0.declare.scss";
-@import "@/assets/sass/btns.scss";
+/deep/ .VuePagination {
+  .pagination {
+    float: right;
+
+    .page-item {
+      .page-link {
+        outline: none;
+        box-shadow: none;
+      }
+    }
+
+    .VuePagination__pagination-item-prev-chunk,
+    .VuePagination__pagination-item-next-chunk {
+      display: none;
+    }
+  }
+}
 
 .action {
   visibility: hidden;
 }
 
 table {
-  width: 100%;
-  margin-bottom: 0;
-
   tr {
     &:hover {
       .action {
         visibility: visible;
       }
-    }
-  }
-
-  th {
-    white-space: nowrap;
-
-    .fa-sort {
-      margin-left: 10px;
     }
   }
 
@@ -258,25 +262,6 @@ table {
 }
 
 input {
-  padding: 3px 10px;
-  float: right;
-  margin-bottom: 5px;
   width: 200px;
-  max-width: 100%;
-
-  &:focus {
-    border: 1px solid $appblue;
-    outline: none;
-  }
 }
-
-.btn-url {
-  margin-top: 5px;
-  display: inline-block;
-}
-
-.no-perm {
-  color: $appgrey;
-}
-
 </style>

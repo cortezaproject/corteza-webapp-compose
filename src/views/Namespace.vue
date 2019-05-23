@@ -14,7 +14,7 @@
     <div class="loader" v-else>
       <img :src="logo" />
     </div>
-    <div class="error" v-if="error">{{ error }}</div>
+    <div class="error text-danger text-center position-absolute" v-if="error">{{ error }}</div>
     <permissions-modal />
   </div>
 </template>
@@ -113,9 +113,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "@/assets/sass/btns.scss";
-@import "@/assets/sass/_0.declare.scss";
-
 .alert-holder {
   position: absolute;
   width: 100%;
@@ -123,7 +120,7 @@ export default {
 
   .alert {
     z-index: 1;
-    box-shadow: 0 0 2px 0 rgba($appgrey, 0.75);
+    box-shadow: 0 0 2px 0 rgba($secondary, 0.75);
   }
 }
 
@@ -147,14 +144,11 @@ export default {
 }
 
 .error {
-  color: $appred;
   font-size: 24px;
-  background-color: $appwhite;
+  background-color: $white;
   width: 100vw;
   height: 20vh;
   padding: 60px;
-  position: absolute;
   top: 40vh;
-  text-align: center;
 }
 </style>

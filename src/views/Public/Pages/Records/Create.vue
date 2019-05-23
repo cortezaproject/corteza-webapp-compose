@@ -2,10 +2,12 @@
   <div class="view">
     <toolbar :back-link="{name: 'admin.pages'}"
              :hide-delete="true">
-      <button v-if="module.canCreateRecord"
-              class="btn btn-blue"
-              :disabled="!record.isValid()"
-              @click.prevent="handleCreate">{{ $t('general.label.save') }}</button>
+      <b-button v-if="module.canCreateRecord"
+                pill
+                variant="primary"
+                class="float-right"
+                :disabled="!record.isValid()"
+                @click.prevent="handleCreate">{{ $t('general.label.save') }}</b-button>
     </toolbar>
     <grid :namespace="namespace"
           :page="page"
@@ -88,19 +90,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-@import "@/assets/sass/btns.scss";
-@import "@/assets/sass/_0.declare.scss";
-
-.alert {
-  position: absolute;
-  z-index: 1;
-  width: 100%;
-  box-shadow: 0 0 2px 0 rgba($appgrey, 0.75);
-}
-
-.btn {
-  margin-right: 0.5em;
-}
-</style>

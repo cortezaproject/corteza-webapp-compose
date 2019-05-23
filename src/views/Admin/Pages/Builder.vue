@@ -3,10 +3,10 @@
       <grid :blocks.sync="page.blocks" editable>
         <template slot-scope="{ block, index }">
           <div class="actions">
-            <a class="action pr-1" @click="editBlock(block, index)">
+            <a class="pr-1" @click="editBlock(block, index)">
               <i class="icon-edit"></i>
             </a>
-            <a class="action pr-1"  @click="page.blocks.splice(index,1)">
+            <a class="pr-1"  @click="page.blocks.splice(index,1)">
               <i class="icon-x"></i>
             </a>
           </div>
@@ -57,7 +57,7 @@
                       @save="handleSave()"
                       @saveAndClose="handleSave({ closeOnSuccess: true })">
         <b-button v-if="page.canUpdatePage" pill variant="outline-secondary" class="mr-1" v-b-modal.createBlockSelector>+ {{ $t('page.build.addBlock') }}</b-button>
-        <b-button v-if="page.canUpdatePage" pill variant="outline-secondary" @click.prevent="handleSave({ previewOnSuccess: true })">{{ $t('general.label.saveAndPreview') }}</b-button>
+        <b-button v-if="page.canUpdatePage" pill variant="outline-secondary" class="mr-1" @click.prevent="handleSave({ previewOnSuccess: true })">{{ $t('general.label.saveAndPreview') }}</b-button>
       </editor-toolbar>
     </div>
 </template>

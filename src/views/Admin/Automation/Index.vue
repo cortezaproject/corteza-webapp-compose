@@ -62,7 +62,7 @@
                 <b-input-group>
                   <input required type="text" v-model="newTrigger.name" class="form-control" id="name" :placeholder="$t(`automation.newPlaceholder`)" />
                   <b-input-group-append>
-                    <b-button type="submit" variant="secondary">{{ $t(`general.label.create`) }}</b-button>
+                    <b-button type="submit" variant="dark">{{ $t(`general.label.create`) }}</b-button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
@@ -144,39 +144,3 @@ export default {
   },
 }
 </script>
-<<<<<<< HEAD
-<style lang="scss" scoped>
-@import "@/assets/sass/btns.scss";
-
-.btn {
-  border-radius: 0;
-}
-
-.title-actions {
-  padding-bottom: 10px;
-  margin-bottom: 0.5rem;
-  line-height: 1;
-  text-align: right;
-  float: right;
-}
-
-.title-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-right: 5px;
-}
-
-.table {
-  td {
-    min-width: 100px;
-    border-top: 0;
-  }
-}
-
-form {
-  margin-top: 50px;
-}
-</style>
-=======
->>>>>>> Scss cleanup in the admin area

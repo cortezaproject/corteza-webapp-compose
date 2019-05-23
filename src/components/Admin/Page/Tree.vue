@@ -17,29 +17,27 @@
               <router-link
                 v-if="item.blocks && item.blocks.length >= 1"
                 :to="{name: 'page', params: { pageID: item.pageID }}"
-                class="action">
+                class="mr-2">
                 <font-awesome-icon
                   :icon="['far', 'eye']"
                   :title="$t('general.label.view')"
                 ></font-awesome-icon>
               </router-link>
 
-              <div
-                v-else
+              <div v-else
                 class="action-disabled">
-                </div>
+              </div>
 
               <router-link :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
-                           class="btn-url action">{{ $t('general.label.pageBuilder') }}</router-link>
+                           class="link mr-2">{{ $t('general.label.pageBuilder') }}</router-link>
 
               <span>
                 <router-link :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
-                            class="edit action">
-                  <i class="action icon-edit" v-if="item.moduleID === '0'"></i>
+                            class="edit mr-2">
+                  <i class="icon-edit" v-if="item.moduleID === '0'"></i>
                 </router-link>
               </span>
-
-              <permissions-button v-if="namespace.canGrant" :title="item.title" :resource="'compose:page:'+item.pageID" link />
+             <permissions-button v-if="namespace.canGrant" :title="item.title" :resource="'compose:page:'+item.pageID" link />
           </div>
         </div>
     </template>
@@ -121,15 +119,13 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import "@/assets/sass/_0.declare.scss";
-@import "@/assets/sass/btns.scss";
 
 ul {
   li {
     div.wrap {
       font-size: 0.9em;
       display: flex;
-      background-color: $appwhite;
+      background-color: $white;
       margin: 0 0 0 5px;
       padding: 1px;
 
@@ -162,14 +158,5 @@ ul {
     cursor: move;
     cursor: -webkit-grabbing;
   }
-}
-
-.btn {
-  border-radius: 0;
-  margin-right: 0;
-}
-
-.btn-url {
-  margin-left: 5px;
 }
 </style>

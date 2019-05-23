@@ -24,6 +24,6 @@ if (window.CrustSystemAPI === undefined) {
     router,
     i18n,
     store,
-    template: '<div id="crust-compose" class="h-100"><router-view class="view" /></div>',
+    template: '<div id="compose" class="h-100"><router-view class="view" /></div>',
   }).$mount('#app')
 }
