@@ -4,6 +4,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well table-responsive">
+            <export :list="sortedTriggers" type="trigger" />
             <permissions-button v-if="namespace.canGrant"
                                 resource="compose:trigger:*"
                                 class="float-right"
@@ -42,8 +43,8 @@
               <tbody>
               <tr v-for="(t, index) in sortedTriggers" :key="index">
                 <td>{{ t.name }}</td>
-                <td>{{ $t(`automation.status.${t.enabled}`) }}</td>
-                <td width="300"><small>{{ (t.actions || []).map(a => $t(`automation.triggerCondition.${a}`)).join(', ') }}</small></td>
+                <td>{{ $t(`trigger.status.${t.enabled}`) }}</td>
+                <td width="300"><small>{{ (t.actions || []).map(a => $t(`trigger.triggerCondition.${a}`)).join(', ') }}</small></td>
                 <td><time :datetime="t.updatedAt || t.createdAt" v-if="t.updatedAt || t.createdAt">{{ prettyDate(t.updatedAt || t.createdAt) }}</time></td>
                 <td class="actions text-right">
                   <span v-if="t.canUpdateTrigger || t.canDeleteTrigger">
@@ -57,16 +58,22 @@
               </tr>
               </tbody>
             </table>
+<<<<<<< HEAD
             <form v-if="namespace.canCreateTrigger" @submit.prevent="create" class="mt-4">
               <b-form-group :label="$t(`automation.newLabel`)">
+=======
+            <form v-if="namespace.canCreateTrigger" @submit.prevent="create">
+              <b-form-group :label="$t(`trigger.newLabel`)">
+>>>>>>> Create import export component
                 <b-input-group>
-                  <input required type="text" v-model="newTrigger.name" class="form-control" id="name" :placeholder="$t(`automation.newPlaceholder`)" />
+                  <input required type="text" v-model="newTrigger.name" class="form-control" id="name" :placeholder="$t(`trigger.newPlaceholder`)" />
                   <b-input-group-append>
                     <b-button type="submit" variant="dark">{{ $t(`general.label.create`) }}</b-button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
             </form>
+            <import :namespaceID="namespace.namespaceID" type="trigger" />
           </div>
         </div>
       </div>
@@ -78,10 +85,14 @@ import { mapGetters, mapActions } from 'vuex'
 import Trigger from '@/lib/trigger'
 import TableSortableColumn from '@/components/Admin/TableSortableColumn'
 import tableSort from '@/mixins/table_sort'
+import Import from '@/components/Admin/Import'
+import Export from '@/components/Admin/Export'
 
 export default {
   components: {
     TableSortableColumn,
+    Import,
+    Export,
   },
 
   mixins: [

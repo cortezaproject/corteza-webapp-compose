@@ -2,43 +2,54 @@
   <div class="scrollable">
     <form @submit.prevent="handleSave" class="container" v-if="trigger">
       <div class="row">
+<<<<<<< HEAD
         <div class="col-md-12 well mb-1">
           <h2>{{ $t(`automation.edit.title`) }}</h2>
+=======
+        <div class="col-md-12 well">
+          <h2>{{ $t(`trigger.edit.title`) }}</h2>
+>>>>>>> Create import export component
           <b-form-group horizontal
-                        :label="$t(`automation.edit.nameLabel`)">
+                        :label="$t(`trigger.edit.nameLabel`)">
             <b-form-input v-model="trigger.name"
                           require
-                          :placeholder="$t(`automation.edit.namePlaceholder`)"></b-form-input>
+                          :placeholder="$t(`trigger.edit.namePlaceholder`)"></b-form-input>
           </b-form-group>
 
           <b-form-group horizontal>
             <b-form-checkbox v-model="trigger.enabled"
                              :value="true"
                              plain
-                             :unchecked-value="false">{{ $t(`automation.edit.enabled`) }}</b-form-checkbox>
+                             :unchecked-value="false">{{ $t(`trigger.edit.enabled`) }}</b-form-checkbox>
           </b-form-group>
 
           <b-form-group horizontal
-                        :label="$t(`automation.edit.primaryModule.label`)">
+                        :label="$t(`trigger.edit.primaryModule.label`)">
             <b-form-select v-model="trigger.moduleID"
                            :options="modules"
                            text-field="name"
                            required
                            value-field="moduleID"
                            class="form-control">
-              <template slot="first"><option :value="null">{{ $t(`automation.edit.primaryModule.none`) }}</option></template>
+              <template slot="first"><option :value="null">{{ $t(`trigger.edit.primaryModule.none`) }}</option></template>
             </b-form-select>
           </b-form-group>
 
           <b-form-group horizontal>
             <b-button-group>
+<<<<<<< HEAD
               <b-button variant="outline-dark" @click="insertSample('LeadConversion')">{{ $t(`automation.edit.loadExampleConversion`) }}</b-button>
             </b-button-group>
             <b-button class="float-right" variant="outline-dark" @click="insertSample('Default', true)">{{ $t(`automation.edit.reset`) }}</b-button>
+=======
+              <b-button variant="link" @click="insertSample('LeadConversion')">{{ $t(`trigger.edit.loadExampleConversion`) }}</b-button>
+            </b-button-group>
+            <b-button class="float-right" variant="link" @click="insertSample('Default', true)">{{ $t(`trigger.edit.reset`) }}</b-button>
+>>>>>>> Create import export component
           </b-form-group>
 
           <b-form-group horizontal
-                        :label="$t('automation.edit.codeLabel')">
+                        :label="$t('trigger.edit.codeLabel')">
             <AceEditor :value="trigger.source"
                        :fontSize="14"
                        :showPrintMargin="false"
@@ -59,34 +70,42 @@
           </b-form-group>
 
           <b-form-group horizontal
-                        :label="$t('automation.triggerCondition.label')">
+                        :label="$t('trigger.triggerCondition.label')">
             <b-form-checkbox-group plain v-model="trigger.actions" stacked>
-              <b-form-checkbox value="manual">{{ $t(`automation.triggerCondition.manual`) }}</b-form-checkbox>
-              <b-form-checkbox value="beforeCreate">{{ $t(`automation.triggerCondition.beforeCreate`) }}</b-form-checkbox>
-              <b-form-checkbox value="afterCreate">{{ $t(`automation.triggerCondition.afterCreate`) }}</b-form-checkbox>
-              <b-form-checkbox value="beforeUpdate">{{ $t(`automation.triggerCondition.beforeUpdate`) }}</b-form-checkbox>
-              <b-form-checkbox value="afterUpdate">{{ $t(`automation.triggerCondition.afterUpdate`) }}</b-form-checkbox>
-              <b-form-checkbox value="beforeDelete">{{ $t(`automation.triggerCondition.beforeDelete`) }}</b-form-checkbox>
-              <b-form-checkbox value="afterDelete">{{ $t(`automation.triggerCondition.afterDelete`) }}</b-form-checkbox>
+              <b-form-checkbox value="manual">{{ $t(`trigger.triggerCondition.manual`) }}</b-form-checkbox>
+              <b-form-checkbox value="beforeCreate">{{ $t(`trigger.triggerCondition.beforeCreate`) }}</b-form-checkbox>
+              <b-form-checkbox value="afterCreate">{{ $t(`trigger.triggerCondition.afterCreate`) }}</b-form-checkbox>
+              <b-form-checkbox value="beforeUpdate">{{ $t(`trigger.triggerCondition.beforeUpdate`) }}</b-form-checkbox>
+              <b-form-checkbox value="afterUpdate">{{ $t(`trigger.triggerCondition.afterUpdate`) }}</b-form-checkbox>
+              <b-form-checkbox value="beforeDelete">{{ $t(`trigger.triggerCondition.beforeDelete`) }}</b-form-checkbox>
+              <b-form-checkbox value="afterDelete">{{ $t(`trigger.triggerCondition.afterDelete`) }}</b-form-checkbox>
             </b-form-checkbox-group>
           </b-form-group>
         </div>
         <div class="col-md-12 well mb-1">
           <b-form-group horizontal
-                        :label="$t('automation.testing.label')"
-                        :description="`${$t('automation.testing.footnotePrimaryModule')}<br />${$t('automation.testing.footnoteRecordChanges')}`">
+                        :label="$t('trigger.testing.label')"
+                        :description="`${$t('trigger.testing.footnotePrimaryModule')}<br />${$t('trigger.testing.footnoteRecordChanges')}`">
             <b-input-group>
-              <b-input-group-text slot="prepend">{{ $t('automation.testing.recordID') }}</b-input-group-text>
+              <b-input-group-text slot="prepend">{{ $t('trigger.testing.recordID') }}</b-input-group-text>
               <b-form-input v-model="test.recordID"
                             :state="testRecordIDState"
                             :disabled="!trigger.moduleID"></b-form-input>
               <b-button @click.prevent="onRun"
+<<<<<<< HEAD
                         variant="dark"
                         :disabled="testRecordIDState === false">{{ $t('automation.testing.run') }}</b-button>
             </b-input-group>
           </b-form-group>
         </div>
         <div id="automation-manual" class="col-md-12 manual well text-justify" v-html="manualFromMd($t(`automation.manual`, { joinArrays: '\n' }))"></div>
+=======
+                        :disabled="testRecordIDState === false">{{ $t('trigger.testing.run') }}</b-button>
+            </b-input-group>
+          </b-form-group>
+        </div>
+        <div id="automation-manual" class="col-md-12 well manual" v-html="manualFromMd($t(`trigger.manual`, { joinArrays: '\n' }))"></div>
+>>>>>>> Create import export component
 
       </div>
     </form>

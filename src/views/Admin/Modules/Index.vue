@@ -14,12 +14,8 @@
             <div class="title-bar">
               <h2>{{ $t('module.title')}}</h2>
               <div class="title-actions actions">
+                <export :list="sortedModules" type="module" />
                 <permissions-button v-if="namespace.canGrant" resource="compose:module:*" link />
-                <button @click="jsonExport(modules, 'module')">
-                  <font-awesome-icon :icon="['fas', 'file-export']"></font-awesome-icon>
-                </button>
-
-                <permissions-button resource="compose:module:*" link />
               </div>
             </div>
 >>>>>>> Implement export function
@@ -84,7 +80,7 @@
                 </b-input-group>
               </b-form-group>
             </form>
-            <import-bar @jsonImport="jsonImport" />
+            <import :namespaceID="namespace.namespaceID" type="module" />
           </div>
         </div>
       </div>
@@ -98,15 +94,16 @@ import Field from '@/lib/field'
 import Module from '@/lib/module'
 import TableSortableColumn from '@/components/Admin/TableSortableColumn'
 import tableSort from '@/mixins/table_sort'
-import { saveAs } from 'file-saver'
-import ImportBar from '../../../components/Admin/ImportBar'
+import Import from '@/components/Admin/Import'
+import Export from '@/components/Admin/Export'
 
 export default {
   name: 'ModuleList',
 
   components: {
     TableSortableColumn,
-    ImportBar,
+    Import,
+    Export,
   },
 
   mixins: [
@@ -156,16 +153,6 @@ export default {
       createModule: 'module/create',
       createPage: 'page/create',
     }),
-
-    // @todo
-    jsonImport ({ list, type }) {
-      console.debug('import', { list, type })
-    },
-
-    jsonExport (list, type) {
-      let blob = new Blob([JSON.stringify({ type, list: list.map(m => m.export()) })], { type: 'application/json' })
-      saveAs(blob, 'modules-export.json')
-    },
 
     create () {
       this.createModule(this.newModule).then((module) => {

@@ -20,4 +20,13 @@ export default class Page {
     this.canDeletePage = typeof args.canDeletePage === 'boolean' ? args.canDeletePage : false
     this.canGrant = typeof args.canGrant === 'boolean' ? args.canGrant : false
   }
+
+  export () {
+    return {
+      title: this.title,
+      description: this.description,
+      visible: this.visible,
+      blocks: this.blocks,
+    }
+  }
 }

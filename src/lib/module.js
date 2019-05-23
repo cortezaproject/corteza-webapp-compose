@@ -75,6 +75,7 @@ export default class Module {
     return {
       name: this.name,
       fields: (this.fields || []).map(f => f.export()),
+      meta: this.meta,
     }
   }
 }

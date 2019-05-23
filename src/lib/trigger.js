@@ -73,4 +73,13 @@ export default class Trigger {
       return Promise.reject(e)
     }
   }
+
+  export () {
+    return {
+      name: this.name,
+      actions: this.actions,
+      enabled: this.enabled,
+      source: this.source,
+    }
+  }
 }

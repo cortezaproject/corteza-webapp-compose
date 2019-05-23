@@ -314,4 +314,11 @@ export default class Chart {
 
     return { labels, metrics }
   }
+
+  export () {
+    return {
+      name: this.name,
+      config: this.config,
+    }
+  }
 }

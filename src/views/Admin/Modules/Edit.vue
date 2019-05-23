@@ -14,6 +14,7 @@
 git st            <div class="title-bar">
               <h5 class="mt-5">{{ $t('module.edit.manageRecordFields') }}</h5>
               <div class="title-actions actions">
+                <export :list="[this.module]" type="module" />
                 <permissions-button v-if="module.canGrant" resource="compose:module-field:*" link />
               </div>
             </div>
@@ -87,6 +88,7 @@ import FieldRowView from '@/components/Admin/Module/FieldRowView'
 import Field from '@/lib/field'
 import Module from '@/lib/module'
 import EditorToolbar from '@/components/Admin/EditorToolbar'
+import Export from '@/components/Admin/Export'
 
 export default {
   components: {
@@ -96,6 +98,7 @@ export default {
     FieldRowEdit,
     FieldRowView,
     EditorToolbar,
+    Export,
   },
 
   props: {

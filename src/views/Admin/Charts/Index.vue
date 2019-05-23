@@ -4,11 +4,21 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well table-responsive">
+<<<<<<< HEAD
             <permissions-button v-if="namespace.canGrant"
                                 resource="compose:chart:*"
                                 class="float-right"
                                 link />
             <h2>{{ $t('chart.title')}}</h2>
+=======
+            <div class="title-bar">
+              <h2>{{ $t('chart.title')}}</h2>
+              <div class="title-actions actions">
+                <export :list="sortedCharts" type="chart" />
+                <permissions-button v-if="namespace.canGrant" resource="compose:chart:*" link />
+              </div>
+            </div>
+>>>>>>> Create import export component
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -50,6 +60,7 @@
                 </b-input-group>
               </b-form-group>
             </form>
+            <import :namespaceID="namespace.namespaceID" type="chart" />
           </div>
         </div>
       </div>
@@ -61,12 +72,16 @@ import { mapGetters, mapActions } from 'vuex'
 import Chart from '@/lib/chart'
 import TableSortableColumn from '@/components/Admin/TableSortableColumn'
 import tableSort from '@/mixins/table_sort'
+import Import from '@/components/Admin/Import'
+import Export from '@/components/Admin/Export'
 
 export default {
   name: 'ChartList',
 
   components: {
     TableSortableColumn,
+    Import,
+    Export,
   },
 
   mixins: [
