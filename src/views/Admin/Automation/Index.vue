@@ -4,12 +4,12 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well table-responsive">
-            <export :list="sortedTriggers" type="trigger" />
             <permissions-button v-if="namespace.canGrant"
                                 resource="compose:trigger:*"
-                                class="float-right"
+                                class="float-right mt-1 ml-2 mr-3"
                                 link />
-            <h2>{{ $t('automation.title')}}</h2>
+            <export :list="sortedTriggers" type="trigger" class="float-right" />
+            <h2>{{ $t('trigger.title')}}</h2>
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -58,13 +58,8 @@
               </tr>
               </tbody>
             </table>
-<<<<<<< HEAD
             <form v-if="namespace.canCreateTrigger" @submit.prevent="create" class="mt-4">
-              <b-form-group :label="$t(`automation.newLabel`)">
-=======
-            <form v-if="namespace.canCreateTrigger" @submit.prevent="create">
               <b-form-group :label="$t(`trigger.newLabel`)">
->>>>>>> Create import export component
                 <b-input-group>
                   <input required type="text" v-model="newTrigger.name" class="form-control" id="name" :placeholder="$t(`trigger.newPlaceholder`)" />
                   <b-input-group-append>
@@ -73,7 +68,7 @@
                 </b-input-group>
               </b-form-group>
             </form>
-            <import :namespaceID="namespace.namespaceID" type="trigger" />
+            <import :namespace="namespace" type="trigger" />
           </div>
         </div>
       </div>

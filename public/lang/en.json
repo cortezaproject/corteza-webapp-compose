@@ -195,7 +195,7 @@
     "newLabel": "Create a new page:",
     "newPlaceholder": "Page title",
     "noBlock": "No block added yet",
-    "import": "Import page(s)",
+    "import": "Import page(s):",
     "edit": {
       "title": "Edit page",
       "pageDescription": "Page description",
@@ -212,7 +212,7 @@
     "title": "List of charts",
     "newLabel": "Create a new chart:",
     "newPlaceholder": "Chart name",
-    "import": "Import chart(s)",
+    "import": "Import chart(s):",
     "edit": {
       "title": "Chart builder",
       "modulePick": "Pick a module",
@@ -392,6 +392,7 @@
       "view": "View",
       "processing": "Processing...",
       "import": "Import",
+      "export": "Export",
       "cancel": "Cancel"
     }
   },
@@ -778,6 +779,12 @@
 
       "saved": "Module saved",
       "deleted": "Module deleted"
+    },
+    "import": {
+      "typeMissmatch": "Import error: trying to import object of type \"{{type1}}\" into a list of objects of type \"{{type2}}\"",
+      "readingError": "Error reading file",
+      "failed": "Import failed",
+      "successful": "Import successful"
     }
   }
 }

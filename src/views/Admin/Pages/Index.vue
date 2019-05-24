@@ -4,18 +4,8 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well">
-<<<<<<< HEAD
-            <permissions-button v-if="namespace.canGrant" resource="compose:page:*" link  class="float-right"/>
+            <permissions-button v-if="namespace.canGrant" resource="compose:page:*" class="float-right" link/>
             <h2>{{ $t('page.title')}}</h2>
-=======
-            <div class="title-bar">
-              <h2>{{ $t('page.title')}}</h2>
-              <div class="title-actions actions">
-                <export :list="getPages" type="page" />
-                <permissions-button v-if="namespace.canGrant" resource="compose:page:*" link />
-              </div>
-            </div>
->>>>>>> Create import export component
             <page-tree
               :namespace="namespace"
               @reorder="handleReorder"
@@ -30,7 +20,7 @@
                 </b-input-group>
               </b-form-group>
             </form>
-            <import :namespaceID="namespace.namespaceID" type="page" />
+            <import :namespace="namespace" type="page" />
           </div>
         </div>
       </div>
@@ -41,10 +31,7 @@
 <script>
 import draggable from 'vuedraggable'
 import PageTree from '@/components/Admin/Page/Tree'
-import Page from '@/lib/page'
 import Namespace from '@/lib/namespace'
-import Import from '@/components/Admin/Import'
-import Export from '@/components/Admin/Export'
 
 export default {
   name: 'PageList',
@@ -52,8 +39,6 @@ export default {
   components: {
     draggable,
     PageTree,
-    Import,
-    Export,
   },
 
   props: {
@@ -71,16 +56,6 @@ export default {
         blocks: [],
       },
     }
-  },
-
-  computed: {
-    getPages () {
-      if (this.tree) {
-        return this.tree.map(b => {
-          return new Page(b)
-        })
-      }
-    },
   },
 
   created () {

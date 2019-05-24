@@ -1,33 +1,57 @@
 <template>
   <form ref="importForm" @submit.prevent class="import-form">
-    <p v-if="importErr">
-      {{ this.importErr }}
-    </p>
-
     <b-form-group :label="$t(`${type}.import`)">
       <b-input-group>
         <input @change="loadFile" type="file" class="input-file" />
-        <button
+        <b-button
               v-if="importObj && !processing"
-              class="btn btn-dark"
-              @click="jsonImport(importObj)">{{ $t('general.label.import') }}</button>
-        <button
-              v-if="importObj"
-              class="btn btn-dark"
-              @click="cancelImport">{{ $t('general.label.cancel') }}</button>
+              variant="secondary"
+              @click="openModal">{{ $t('general.label.import') }}</b-button>
+        <b-button
+              v-if="importObj && processing"
+              variant="secondary"
+              @click="cancelImport">{{ $t('general.label.cancel') }}</b-button>
+        <h5 v-if="processing" class="ml-2 mt-1 mb-0">
+          {{ $t('general.label.processing') }}
+        </h5>
       </b-input-group>
     </b-form-group>
-    <p v-if="processing">
-      {{ $t('general.label.processing') }}
-    </p>
+    <b-modal v-if="importObj" size="lg" v-model="show" id="importModal" scrollable>
+      <div slot="modal-title">
+        <div>
+          <h5>{{ $t(`${type}.import`) }}</h5>
+          <b-button
+              variant="secondary"
+              pill
+              @click="selectAll(true)">{{ $t('field.selector.selectAll') }}</b-button>
+          <b-button
+              class="ml-2"
+              variant="secondary"
+              pill
+              @click="selectAll(false)">{{ $t('field.selector.unselectAll') }}</b-button>
+        </div>
+      </div>
+      <div v-for="(o, index) in importObj.list" :key="`${o.name || o.title}-${index}`" class="form-check">
+        <label class="form-check-label" :for="`${o.name || o.title}-${index}`">
+          <input type="checkbox" :true-value="true" :false-value="false" class="form-check-input"  v-model="o.import" :id="`${o.name || o.title}-${index}`">
+          {{ o.name || o.title }}
+        </label>
+      </div>
+      <div slot="modal-footer">
+        <b-button
+            :disabled="!importObj.list.filter(i => i.import).length > 0"
+            variant="primary"
+            @click="jsonImport(importObj)">{{ $t('general.label.import') }}</b-button>
+      </div>
+    </b-modal>
   </form>
 </template>
 
 <script>
 export default {
   props: {
-    namespaceID: {
-      type: String,
+    namespace: {
+      type: Object,
       required: true,
     },
     type: {
@@ -41,25 +65,44 @@ export default {
       importObj: null,
       importErr: null,
       processing: false,
+      show: false,
     }
   },
 
   methods: {
     async jsonImport ({ list, type }) {
       this.processing = true
-      const namespaceID = this.namespaceID
+      this.show = false
+      const { namespaceID } = this.namespace
       try {
-        for (let item of list) {
+        for (let item of list.filter(i => i.import)) {
           if (this.importObj) {
             await this.$store.dispatch(`${this.type}/create`, { namespaceID, ...item })
           } else {
             break
           }
         }
+        this.raiseSuccessAlert(this.$t('notification.import.successful'))
       } catch (e) {
-        this.defaultErrorHandler(this.$t(`notification.${this.type}.importFailed`))
+        this.raiseWarningAlert(this.$t(`notification.import.importFailed`))
       }
       this.cancelImport()
+    },
+
+    selectAll (selectAll) {
+      this.importObj.list = this.importObj.list.map(i => {
+        i.import = selectAll && true
+        return i
+      })
+    },
+
+    openModal () {
+      if (this.importObj.type === this.type) {
+        this.show = true
+      } else {
+        this.raiseWarningAlert(this.$t('notification.import.typeMissmatch', { type1: this.importObj.type, type2: this.type }))
+        this.importObj = null
+      }
     },
 
     cancelImport () {
@@ -77,18 +120,19 @@ export default {
         reader.onload = (evt) => {
           try {
             this.importObj = JSON.parse(evt.target.result)
+            this.importObj.list = this.importObj.list.map(i => {
+              return { import: true, ...i }
+            })
           } catch (err) {
-            this.importErr = err.message
+            this.raiseWarningAlert(err.message)
           } finally {
             this.processing = false
           }
         }
         reader.onerror = (evt) => {
-          this.importErr = 'err.fileRead'
+          this.raiseWarningAlert(this.$t('notification.import.errorReading'))
           this.processing = false
         }
-      } else {
-        this.importErr = 'err.noFile'
       }
     },
   },
@@ -96,13 +140,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/btns.scss";
-
-.btn {
-  border-radius: 0;
-}
-
-.import-form {
-  margin: 0;
+.form-check {
+  line-height: 24px;
+  font-size: 17px;
 }
 </style>

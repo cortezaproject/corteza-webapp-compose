@@ -4,21 +4,12 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well table-responsive">
-<<<<<<< HEAD
             <permissions-button v-if="namespace.canGrant"
                                 resource="compose:module:*"
-                                class="float-right"
+                                class="float-right ml-2 mt-1 mr-1"
                                 link />
+            <export :list="sortedModules" type="module" class="float-right" />
             <h2>{{ $t('module.title')}}</h2>
-=======
-            <div class="title-bar">
-              <h2>{{ $t('module.title')}}</h2>
-              <div class="title-actions actions">
-                <export :list="sortedModules" type="module" />
-                <permissions-button v-if="namespace.canGrant" resource="compose:module:*" link />
-              </div>
-            </div>
->>>>>>> Implement export function
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -80,7 +71,7 @@
                 </b-input-group>
               </b-form-group>
             </form>
-            <import :namespaceID="namespace.namespaceID" type="module" />
+            <import :namespace="namespace" type="module" />
           </div>
         </div>
       </div>

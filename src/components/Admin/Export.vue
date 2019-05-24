@@ -1,7 +1,7 @@
 <template>
-  <a v-if="list.length > 0" class="action" @click="jsonExport(list, type)">
-    <i class="icon-edit" />
-  </a>
+  <b-button v-if="list.length > 0" variant="link" class="p-0" @click="jsonExport(list, type)">
+    {{ $t('general.label.export') }}
+  </b-button>
 </template>
 
 <script>
@@ -21,7 +21,7 @@ export default {
 
   methods: {
     jsonExport (list, type) {
-      let blob = new Blob([JSON.stringify({ type, list: list.map(m => m.export()) }, null, 2)], { type: 'application/json' })
+      let blob = new Blob([JSON.stringify({ type, list }, null, 2)], { type: 'application/json' })
       saveAs(blob, `${type}-export.json`)
     },
   },
