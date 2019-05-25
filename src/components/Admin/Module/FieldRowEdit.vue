@@ -10,6 +10,7 @@
     <td>
       <b-form-input v-model="field.name"
                     required
+                    readonly
                     :state="checkFieldName"
                     type="text"
                     class="form-control"></b-form-input>
@@ -21,6 +22,7 @@
     </td>
     <td class="type">
       <select v-model="field.kind"
+              disabled
               class="form-control"
               @change="handleKindChange(field)">
         <option v-for="fieldType in fieldsList"
