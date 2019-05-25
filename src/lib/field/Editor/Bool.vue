@@ -1,8 +1,8 @@
 <template>
   <b-form-group>
     <b-form-checkbox
-        value="1"
-        unchecked-value=""
+        :value="true"
+        :unchecked-value="false"
         v-model="value"
         plain>
       {{ $t(field.label) || field.name }}
