@@ -17,7 +17,11 @@
           <tr >
             <th v-for="(col) in columns" :key="'header:'+col.name" @click="handleSort(col.name)" class="text-nowrap">
               {{ $t(col.label) || col.name }}
-              <font-awesome-icon :icon="['fas', 'sort']" v-if="!options.hideSorting" class="ml-1"></font-awesome-icon>
+              <span v-if="!options.hideSorting" class="ml-1">
+                <font-awesome-icon v-if="!isSortedBy(col.name)" :icon="['fas', 'sort']"></font-awesome-icon>
+                <font-awesome-icon v-else-if="isSortedBy(col.name) === 'ASC'" :icon="['fas', 'sort-up']"></font-awesome-icon>
+                <font-awesome-icon v-else-if="isSortedBy(col.name) === 'DESC'" :icon="['fas', 'sort-down']"></font-awesome-icon>
+              </span>
             </th>
             <th></th>
           </tr>
@@ -71,7 +75,7 @@ export default {
   data () {
     return {
       prefilter: null,
-      sortColumn: null,
+      sortColumn: '',
       query: null,
 
       filter: {
@@ -128,7 +132,7 @@ export default {
     this.filter.filter = this.options.prefilter
     this.filter.perPage = this.options.perPage
 
-    if (this.options.prefilter) {
+    if (this.filter.prefilter) {
       // Little magic here: prefilter is wraped with backticks and evaluated
       // this allows us to us ${record.values....}, ${recordID}, ${ownerID}, ${userID} in prefilter string;
       // hence the /hanging/ record, recordID, ownerID and userID variables
@@ -143,6 +147,10 @@ export default {
       })
 
       this.filter.filter = this.prefilter
+    }
+
+    if (this.filter.sort) {
+      this.handleSort(this.filter.sort)
     }
 
     if (this.recordListModule) {
@@ -204,11 +212,18 @@ export default {
       let sort = this.sortColumn === fieldName ? fieldName + ' DESC' : fieldName
       this.sortColumn = sort
 
-      if (this.options.presort) {
-        sort = this.options.presort + ', ' + sort
-      }
-
       this.fetch({ ...this.filter, sort })
+    },
+
+    isSortedBy (name) {
+      if (this.sortColumn.includes(name)) {
+        if (this.sortColumn.includes('DESC')) {
+          return 'DESC'
+        } else {
+          return 'ASC'
+        }
+      }
+      return false
     },
 
     handlePageChange (page) {
