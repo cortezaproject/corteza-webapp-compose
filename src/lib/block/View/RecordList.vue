@@ -190,6 +190,7 @@ export default {
         if (this.prefilter) {
           filter = `${this.prefilter} AND ${filter}`
         }
+        this.filter.page = 0
       }
 
       this.fetch({ ...this.filter, filter })
