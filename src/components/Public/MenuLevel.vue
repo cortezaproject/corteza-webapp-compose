@@ -166,7 +166,7 @@ ul {
     &:hover > ul,
     &:hover > ul ul,
     &:active > ul,
-    &:active > ul ul, {
+    &:active > ul ul {
       visibility: visible;
       min-width: 100%;
     }
