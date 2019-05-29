@@ -132,7 +132,7 @@ export default {
     this.filter.filter = this.options.prefilter
     this.filter.perPage = this.options.perPage
 
-    if (this.filter.prefilter) {
+    if (this.options.prefilter) {
       // Little magic here: prefilter is wraped with backticks and evaluated
       // this allows us to us ${record.values....}, ${recordID}, ${ownerID}, ${userID} in prefilter string;
       // hence the /hanging/ record, recordID, ownerID and userID variables
@@ -149,7 +149,7 @@ export default {
       this.filter.filter = this.prefilter
     }
 
-    if (this.filter.sort) {
+    if (this.options.presort) {
       this.handleSort(this.filter.sort)
     }
 
