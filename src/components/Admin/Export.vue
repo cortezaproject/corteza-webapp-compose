@@ -6,6 +6,7 @@
 
 <script>
 import { saveAs } from 'file-saver'
+import { mapActions } from 'vuex'
 
 export default {
   props: {
@@ -20,9 +21,15 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      findModuleByID: 'module/findByID',
+    }),
+
     jsonExport (list, type) {
-      let blob = new Blob([JSON.stringify({ type, list }, null, 2)], { type: 'application/json' })
-      saveAs(blob, `${type}-export.json`)
+      Promise.all(list.map(i => i.export(this.findModuleByID))).then(list => {
+        let blob = new Blob([JSON.stringify({ type, list }, null, 2)], { type: 'application/json' })
+        saveAs(blob, `${type}-export.json`)
+      })
     },
   },
 }

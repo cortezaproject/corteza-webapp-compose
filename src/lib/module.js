@@ -72,10 +72,10 @@ export default class Module {
   }
 
   export () {
-    return {
-      name: this.name,
-      fields: (this.fields || []).map(f => f.export()),
-      meta: this.meta,
-    }
+    return this
+  }
+
+  import () {
+    return this
   }
 }

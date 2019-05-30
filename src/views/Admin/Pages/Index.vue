@@ -20,7 +20,6 @@
                 </b-input-group>
               </b-form-group>
             </form>
-            <import :namespace="namespace" type="page" />
           </div>
         </div>
       </div>

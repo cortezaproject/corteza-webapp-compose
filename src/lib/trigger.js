@@ -74,12 +74,22 @@ export default class Trigger {
     }
   }
 
-  export () {
-    return {
-      name: this.name,
-      actions: this.actions,
-      enabled: this.enabled,
-      source: this.source,
+  async export (findModuleByID) {
+    let copy = new Trigger(this)
+    if (this.moduleID) {
+      const { namespaceID, moduleID } = this
+      const module = await findModuleByID({ namespaceID, moduleID })
+      copy.moduleID = module.name
     }
+    return copy
+  }
+
+  import (getModuleID) {
+    let copy = new Trigger(this)
+    const { moduleID } = copy
+    if (moduleID) {
+      copy.moduleID = getModuleID(moduleID)
+    }
+    return copy
   }
 }

@@ -48,6 +48,11 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import Trigger from '@/lib/trigger'
+import Chart from '@/lib/chart'
+import Module from '@/lib/module'
+
 export default {
   props: {
     namespace: {
@@ -66,7 +71,18 @@ export default {
       importErr: null,
       processing: false,
       show: false,
+      classes: {
+        'module': Module,
+        'chart': Chart,
+        'trigger': Trigger,
+      },
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      modules: 'module/set',
+    }),
   },
 
   methods: {
@@ -74,19 +90,32 @@ export default {
       this.processing = true
       this.show = false
       const { namespaceID } = this.namespace
+      const ItemClass = this.classes[type]
       try {
         for (let item of list.filter(i => i.import)) {
           if (this.importObj) {
-            await this.$store.dispatch(`${this.type}/create`, { namespaceID, ...item })
+            item = new ItemClass(item).import(this.getModuleID)
+            item.namespaceID = namespaceID
+            await this.$store.dispatch(`${this.type}/create`, item)
           } else {
             break
           }
         }
         this.raiseSuccessAlert(this.$t('notification.import.successful'))
       } catch (e) {
-        this.raiseWarningAlert(this.$t(`notification.import.importFailed`))
+        this.raiseWarningAlert(this.$t(`notification.import.failed`))
       }
       this.cancelImport()
+    },
+
+    getModuleID (moduleName) {
+      // find module, replaceID
+      const matchedModules = this.modules.filter(m => m.name === moduleName)
+      if (matchedModules.length > 0) {
+        return matchedModules[0].moduleID
+      } else {
+        return null
+      }
     },
 
     selectAll (selectAll) {
