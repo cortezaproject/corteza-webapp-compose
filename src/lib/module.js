@@ -70,4 +70,12 @@ export default class Module {
   systemFields () {
     return systemFields
   }
+
+  export () {
+    return this
+  }
+
+  import () {
+    return this
+  }
 }

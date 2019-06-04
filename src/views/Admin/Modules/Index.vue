@@ -6,8 +6,9 @@
           <div class="well table-responsive">
             <permissions-button v-if="namespace.canGrant"
                                 resource="compose:module:*"
-                                class="float-right"
+                                class="float-right ml-2 mt-1 mr-1"
                                 link />
+            <export :list="sortedModules" type="module" class="float-right" />
             <h2>{{ $t('module.title')}}</h2>
             <table class="table table-striped">
               <thead>
@@ -70,6 +71,7 @@
                 </b-input-group>
               </b-form-group>
             </form>
+            <import :namespace="namespace" type="module" />
           </div>
         </div>
       </div>
@@ -83,12 +85,16 @@ import Field from '@/lib/field'
 import Module from '@/lib/module'
 import TableSortableColumn from '@/components/Admin/TableSortableColumn'
 import tableSort from '@/mixins/table_sort'
+import Import from '@/components/Admin/Import'
+import Export from '@/components/Admin/Export'
 
 export default {
   name: 'ModuleList',
 
   components: {
     TableSortableColumn,
+    Import,
+    Export,
   },
 
   mixins: [

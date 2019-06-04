@@ -14,6 +14,16 @@ export class Url {
 
     return this
   }
+
+  export () {
+    return {
+      trimFragment: this.trimFragment,
+      trimQuery: this.trimQuery,
+      trimPath: this.trimPath,
+      onlySecure: this.onlySecure,
+      outputPlain: this.outputPlain,
+    }
+  }
 }
 
 export function trimUrlFragment (url) {

@@ -11,4 +11,10 @@ export class Email {
 
     return this
   }
+
+  export () {
+    return {
+      outputPlain: this.outputPlain,
+    }
+  }
 }

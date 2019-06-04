@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="well">
-            <permissions-button v-if="namespace.canGrant" resource="compose:page:*" link  class="float-right"/>
+            <permissions-button v-if="namespace.canGrant" resource="compose:page:*" class="float-right" link/>
             <h2>{{ $t('page.title')}}</h2>
             <page-tree
               :namespace="namespace"

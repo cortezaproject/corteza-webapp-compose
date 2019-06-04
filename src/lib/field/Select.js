@@ -10,4 +10,10 @@ export class Select {
 
     return this
   }
+
+  export () {
+    return {
+      options: this.options,
+    }
+  }
 }

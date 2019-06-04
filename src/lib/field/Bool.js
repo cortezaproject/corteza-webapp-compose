@@ -9,4 +9,11 @@ export class Bool {
 
     return this
   }
+
+  export () {
+    return {
+      trueLabel: this.trueLabel,
+      falseLabel: this.falseLabel,
+    }
+  }
 }

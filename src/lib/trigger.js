@@ -73,4 +73,23 @@ export default class Trigger {
       return Promise.reject(e)
     }
   }
+
+  async export (findModuleByID) {
+    let copy = new Trigger(this)
+    if (this.moduleID) {
+      const { namespaceID, moduleID } = this
+      const module = await findModuleByID({ namespaceID, moduleID })
+      copy.moduleID = module.name
+    }
+    return copy
+  }
+
+  import (getModuleID) {
+    let copy = new Trigger(this)
+    const { moduleID } = copy
+    if (moduleID) {
+      copy.moduleID = getModuleID(moduleID)
+    }
+    return copy
+  }
 }

@@ -13,4 +13,10 @@ export class User {
   formatter ({ userID, name, username, email } = {}) {
     return name || username || email || userID
   }
+
+  export () {
+    return {
+      presetWithAuthenticated: this.presetWithAuthenticated,
+    }
+  }
 }

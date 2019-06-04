@@ -38,6 +38,17 @@ export class DateTime {
       return m.format('YYYY-MM-DD HH:mm')
     }
   }
+
+  export () {
+    return {
+      format: this.format,
+      onlyDate: this.onlyDate,
+      onlyTime: this.onlyTime,
+      onlyPastValues: this.onlyPastValues,
+      onlyFutureValues: this.onlyFutureValues,
+      outputRelative: this.outputRelative,
+    }
+  }
 }
 
 export function checkPast (value, onlyPast, onlyDate, onlyTime) {

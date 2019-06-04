@@ -87,4 +87,20 @@ export default class Field {
   isConfigurable () {
     return this.options && Object.keys(this.options).length > 0
   }
+
+  export () {
+    return {
+      name: this.name,
+      label: this.label,
+      helpText: this.helpText,
+      defaultValue: this.defaultValue,
+      maxLength: this.maxLength,
+      isRequired: this.isRequired,
+      isPrivate: this.isPrivate,
+      isMulti: this.isMulti,
+      isSystem: this.isSystem,
+      kind: this.kind,
+      options: this.options.export(),
+    }
+  }
 }

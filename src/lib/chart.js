@@ -314,4 +314,34 @@ export default class Chart {
 
     return { labels, metrics }
   }
+
+  async export (findModuleByID) {
+    const { namespaceID } = this
+    let copy = new Chart(this)
+    await Promise.all(copy.config.reports.map(async r => {
+      const { moduleID } = r
+      if (moduleID) {
+        const module = await findModuleByID({ namespaceID, moduleID })
+        r.moduleID = module.name
+        return r
+      } else {
+        return null
+      }
+    })).then(a => {
+      return a
+    })
+    return copy
+  }
+
+  import (getModuleID) {
+    let copy = new Chart(this)
+    copy.config.reports.map(r => {
+      const { moduleID } = r
+      if (moduleID) {
+        r.moduleID = getModuleID(moduleID)
+      }
+      return r
+    })
+    return copy
+  }
 }

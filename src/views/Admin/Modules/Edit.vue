@@ -3,7 +3,8 @@
     <form @submit.prevent="handleSave" class="container" v-if="module">
       <div class="row">
         <div class="col-md-12 well">
-        <h2>{{ $t('module.edit.title') }}</h2>
+          <export :list="[this.module]" type="module" class="float-right" />
+          <h2>{{ $t('module.edit.title') }}</h2>
           <b-form-group>
             <label>{{ $t('module.newPlaceholder') }}</label>
             <b-form-input required
@@ -11,7 +12,7 @@
                           :placeholder="$t('module.newPlaceholder')"></b-form-input>
           </b-form-group>
           <div class="form-group">
-git st            <div class="title-bar">
+            <div class="title-bar">
               <h5 class="mt-5">{{ $t('module.edit.manageRecordFields') }}</h5>
               <div class="title-actions actions">
                 <permissions-button v-if="module.canGrant" resource="compose:module-field:*" link />
@@ -87,6 +88,7 @@ import FieldRowView from '@/components/Admin/Module/FieldRowView'
 import Field from '@/lib/field'
 import Module from '@/lib/module'
 import EditorToolbar from '@/components/Admin/EditorToolbar'
+import Export from '@/components/Admin/Export'
 
 export default {
   components: {
@@ -96,6 +98,7 @@ export default {
     FieldRowEdit,
     FieldRowView,
     EditorToolbar,
+    Export,
   },
 
   props: {

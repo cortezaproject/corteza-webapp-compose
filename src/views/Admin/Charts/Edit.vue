@@ -3,6 +3,7 @@
     <form @submit.prevent="handleSave" class="container well">
       <div class="row">
         <div class="col-md-12">
+          <export :list="[chart]" type="chart" class="float-right" />
           <h2>{{ $t('chart.edit.title') }}</h2>
 
           <fieldset v-if="modules">
@@ -48,6 +49,7 @@ import Chart from '@/lib/chart.js'
 import ChartJS from 'chart.js'
 import EditorToolbar from '@/components/Admin/EditorToolbar'
 import Namespace from '@/lib/namespace'
+import Export from '@/components/Admin/Export'
 
 const defaultReport = {
   moduleID: undefined,
@@ -61,6 +63,7 @@ export default {
     ConfirmationToggle,
     draggable,
     EditorToolbar,
+    Export,
   },
 
   props: {

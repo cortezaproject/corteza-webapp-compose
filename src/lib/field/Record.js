@@ -13,4 +13,11 @@ export class Record {
 
     return this
   }
+
+  export () {
+    return {
+      labelField: this.labelField,
+      queryFields: this.queryFields,
+    }
+  }
 }

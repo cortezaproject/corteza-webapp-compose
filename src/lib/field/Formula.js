@@ -1,1 +1,5 @@
-export class Formula {}
+export class Formula {
+  export () {
+    return {}
+  }
+}

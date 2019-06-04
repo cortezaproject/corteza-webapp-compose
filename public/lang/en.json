@@ -162,6 +162,7 @@
     "newLabel": "Create a new module:",
     "newPlaceholder": "$t(general.label.moduleName)",
     "recordPage": "Record page for module",
+    "import": "Import module(s):",
     "edit": {
       "title": "Edit module",
       "manageRecordFields": "Manage record fields",
@@ -194,6 +195,7 @@
     "newLabel": "Create a new page:",
     "newPlaceholder": "Page title",
     "noBlock": "No block added yet",
+    "import": "Import page(s):",
     "edit": {
       "title": "Edit page",
       "pageDescription": "Page description",
@@ -210,7 +212,7 @@
     "title": "List of charts",
     "newLabel": "Create a new chart:",
     "newPlaceholder": "Chart name",
-
+    "import": "Import chart(s):",
     "edit": {
       "title": "Chart builder",
       "modulePick": "Pick a module",
@@ -278,19 +280,16 @@
       }
     }
   },
-  "automation": {
+  "trigger": {
     "title": "List of triggers",
     "newLabel": "Create a new trigger",
     "newPlaceholder": "Trigger name",
-    "status": {
-      "true": "Enabled",
-      "false": "Disabled"
-    },
+    "import": "Import trigger(s)",
     "edit": {
       "title": "Automation",
       "nameLabel": "Name",
       "namePlaceholder": "Automation name",
-      "enabled": "$t(automation.status.true)",
+      "enabled": "$t(trigger.status.true)",
 
       "primaryModule": {
         "label": "Primary module",
@@ -307,6 +306,10 @@
         "comment2": "It is a simple JavaScript engine that runs custom code that triggers manually",
         "comment3": "or automatically before/after certain record events (create, update, delete)"
       }
+    },
+    "status": {
+      "true": "Enabled",
+      "false": "Disabled"
     },
     "triggerCondition": {
       "label": "Actions that trigger the automation...",
@@ -386,7 +389,11 @@
       "uploadProgress": "(File size: {{0}}, uploaded {{1}})",
       "yes": "Yes",
       "no": "No",
-      "view": "View"
+      "view": "View",
+      "processing": "Processing...",
+      "import": "Import",
+      "export": "Export",
+      "cancel": "Cancel"
     }
   },
 
@@ -772,6 +779,12 @@
 
       "saved": "Module saved",
       "deleted": "Module deleted"
+    },
+    "import": {
+      "typeMissmatch": "Import error: trying to import object of type \"{{type1}}\" into a list of objects of type \"{{type2}}\"",
+      "readingError": "Error reading file",
+      "failed": "Import failed",
+      "successful": "Import successful"
     }
   }
 }

@@ -45,4 +45,13 @@ export class Number {
 
     return this.prefix + out + this.suffix
   }
+
+  export () {
+    return {
+      format: this.format,
+      prefix: this.prefix,
+      suffix: this.suffix,
+      precision: this.precision,
+    }
+  }
 }

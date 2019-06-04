@@ -253,26 +253,6 @@ table {
   }
 }
 
-.modal-footer {
-  .btn {
-    border: solid 1px $secondary;
-    padding: 0.25em 1em;
-    border-radius: 1.5em;
-    transition: color 0.2s, background-color 0.2s;
-    background-color: transparent;
-  }
-
-  .btn-dark {
-    background-color: $secondary;
-    color: white;
-
-    &:hover {
-      color: $secondary;
-      background-color: white;
-    }
-  }
-}
-
 .tooltip {
   font-size: 14px;
 }
