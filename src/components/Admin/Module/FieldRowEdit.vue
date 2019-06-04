@@ -10,7 +10,7 @@
     <td>
       <b-form-input v-model="field.name"
                     required
-                    readonly
+                    :readonly="disabled"
                     :state="checkFieldName"
                     type="text"
                     class="form-control"></b-form-input>
@@ -22,7 +22,7 @@
     </td>
     <td class="type">
       <select v-model="field.kind"
-              disabled
+              :disabled="disabled"
               class="form-control"
               @change="handleKindChange(field)">
         <option v-for="fieldType in fieldsList"
@@ -91,6 +91,11 @@ export default {
   computed: {
     checkFieldName () {
       return this.field.name.length > 1 && /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(this.field.name) ? null : false
+    },
+
+    disabled () {
+      // @todo count number of records and disable if > 0
+      return false
     },
   },
 
