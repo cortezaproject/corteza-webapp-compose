@@ -16,26 +16,23 @@
         </h5>
       </b-input-group>
     </b-form-group>
-    <b-modal v-if="importObj" size="lg" v-model="show" id="importModal" scrollable>
-      <div slot="modal-title">
-        <div>
-          <h5>{{ $t(`${type}.import`) }}</h5>
-          <b-button
-              variant="secondary"
-              pill
-              @click="selectAll(true)">{{ $t('field.selector.selectAll') }}</b-button>
-          <b-button
-              class="ml-2"
-              variant="secondary"
-              pill
-              @click="selectAll(false)">{{ $t('field.selector.unselectAll') }}</b-button>
-        </div>
+    <b-modal v-if="importObj" size="lg" v-model="show" :title="$t(`${type}.import`)" id="importModal" scrollable>
+      <div class="form-group">
+        <b-button
+            variant="secondary"
+            @click="selectAll(true)">{{ $t('field.selector.selectAll') }}</b-button>
+        <b-button
+            class="ml-2"
+            variant="secondary"
+            @click="selectAll(false)">{{ $t('field.selector.unselectAll') }}</b-button>
       </div>
-      <div v-for="(o, index) in importObj.list" :key="`${o.name || o.title}-${index}`" class="form-check">
-        <label class="form-check-label" :for="`${o.name || o.title}-${index}`">
-          <input type="checkbox" :true-value="true" :false-value="false" class="form-check-input"  v-model="o.import" :id="`${o.name || o.title}-${index}`">
-          {{ o.name || o.title }}
-        </label>
+      <div class="row m-0">
+        <div v-for="(o, index) in importObj.list" :key="`${o.name || o.title}-${index}`" class="form-check col-4">
+          <label class="form-check-label" :for="`${o.name || o.title}-${index}`">
+            <input type="checkbox" :true-value="true" :false-value="false" class="form-check-input"  v-model="o.import" :id="`${o.name || o.title}-${index}`">
+            {{ o.name || o.title }}
+          </label>
+        </div>
       </div>
       <div slot="modal-footer">
         <b-button
