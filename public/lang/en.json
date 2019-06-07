@@ -89,6 +89,9 @@
       "recordPages": "record pages",
       "addRecord": "Add new record",
       "pagination": "Showing {from} to {to} of {count} records|{count} records|One record",
+      "export": "Export records",
+      "pickFormat": "Pick a format:",
+      "chooseColumns": "Choose the columns you wish to export",
       "record": {
         "newLabel": "New records",
         "hideAddButton": "Hide add record button",
@@ -162,7 +165,7 @@
     "newLabel": "Create a new module:",
     "newPlaceholder": "$t(general.label.moduleName)",
     "recordPage": "Record page for module",
-    "import": "Import module(s):",
+    "import": "Import module(s)",
     "edit": {
       "title": "Edit module",
       "manageRecordFields": "Manage record fields",
@@ -195,7 +198,7 @@
     "newLabel": "Create a new page:",
     "newPlaceholder": "Page title",
     "noBlock": "No block added yet",
-    "import": "Import page(s):",
+    "import": "Import page(s)",
     "edit": {
       "title": "Edit page",
       "pageDescription": "Page description",
@@ -212,7 +215,7 @@
     "title": "List of charts",
     "newLabel": "Create a new chart:",
     "newPlaceholder": "Chart name",
-    "import": "Import chart(s):",
+    "import": "Import chart(s)",
     "edit": {
       "title": "Chart builder",
       "modulePick": "Pick a module",
@@ -280,6 +283,7 @@
       }
     }
   },
+
   "trigger": {
     "title": "List of triggers",
     "newLabel": "Create a new trigger",

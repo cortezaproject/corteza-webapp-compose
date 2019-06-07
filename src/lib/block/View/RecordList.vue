@@ -1,16 +1,21 @@
 <template>
   <div v-if="recordListModule">
-    <span v-if="!options.hideAddButton && recordListModule.canCreateRecord">
-      <router-link
-                  class="btn-url d-inline-block mt-1"
-                  :to="{ name: 'page.record.create', params: { pageID: options.pageID, refRecord: record }, query: null }">+ {{ $t('block.recordList.addRecord') }}</router-link>
-    </span>
-    <b-input v-if="!options.hideSearch"
-           @keyup.enter.prevent="handleQuery"
-           @keyup="handleQueryThrottled"
-           v-model="query"
-           class="float-right mw-100 mb-1"
-           :placeholder="$t('general.label.search')" />
+    <div class="row header">
+      <span class="col-9">
+        <span v-if="!options.hideAddButton && recordListModule.canCreateRecord">
+          <router-link
+                      class="btn-url"
+                      :to="{ name: 'page.record.create', params: { pageID: options.pageID, refRecord: record }, query: null }">+ {{ $t('block.recordList.addRecord') }}</router-link>
+        </span>
+        <export-records :columns="recordListModule.fields" :params="{ moduleID: options.moduleID, namespaceID: namespace.namespaceID, ...filter }" />
+      </span>
+      <b-input v-if="!options.hideSearch"
+            @keyup.enter.prevent="handleQuery"
+            @keyup="handleQueryThrottled"
+            v-model="query"
+            class="float-right mw-100 mb-1 col-3"
+            :placeholder="$t('general.label.search')" />
+    </div>
     <div class="table-responsive">
       <table class="table sticky-header table-hover" :class="{sortable: !options.hideSorting}">
         <thead v-if="!options.hideHeader">
@@ -63,11 +68,13 @@ import FieldViewer from '@/lib/field/Viewer'
 import Pagination from 'vue-pagination-2'
 import _ from 'lodash'
 import Record from '@/lib/record'
+import ExportRecords from '@/components/Public/ExportRecords'
 
 export default {
   components: {
     Pagination,
     FieldViewer,
+    ExportRecords,
   },
 
   extends: base,
@@ -162,7 +169,6 @@ export default {
     fetch (params = this.filter) {
       params.moduleID = this.options.moduleID
       params.namespaceID = this.namespace.namespaceID
-
       return this.$compose.recordList(params).then(({ filter, set }) => {
         this.filter = filter
         this.records = set.map(r => new Record(this.recordListModule, r))
@@ -257,6 +263,10 @@ export default {
       display: none;
     }
   }
+}
+
+.header {
+  align-items: center;
 }
 
 .action {
