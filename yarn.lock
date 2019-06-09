@@ -3685,11 +3685,6 @@ dotenv@^6.2.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.2.0.tgz#941c0410535d942c8becf28d3f357dbd9d476064"
   integrity sha512-HygQCKUBSFl8wKQZBSemMywRWcEDNidvNbjGVyZu3nbZ8qq9ubiPoGLMdRDpfSrpkkm9BXYFkpKxxFX38o/76w==
 
-downloadjs@^1.4.7:
-  version "1.4.7"
-  resolved "https://registry.yarnpkg.com/downloadjs/-/downloadjs-1.4.7.tgz#f69f96f940e0d0553dac291139865a3cd0101e3c"
-  integrity sha1-9p+W+UDg0FU9rCkROYZaPNAQHjw=
-
 dropzone@^5.5.1:
   version "5.5.1"
   resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-5.5.1.tgz#06e2f513e61d6aa363d4b556f18574f47cf7ba26"
@@ -10908,16 +10903,6 @@ vue-hot-reload-api@^2.3.0:
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.3.tgz#2756f46cb3258054c5f4723de8ae7e87302a1ccf"
   integrity sha512-KmvZVtmM26BQOMK1rwUZsrqxEGeKiYSZGA7SNWE6uExx8UX/cj9hq2MRV/wWC3Cq6AoeDGk57rL9YMFRel/q+g==
 
-vue-json-csv@^1.2.4:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/vue-json-csv/-/vue-json-csv-1.2.4.tgz#95e9081106e567eb36bc8ee95c73e01196248d07"
-  integrity sha512-3ExnTeFFZEi2oQwD3JIqFZg1Z8V5uuae52RpX3lL6py1n7PeuzV0Z44sxw6T0iOumYDi5s3IsxLRTYwWjS/SUQ==
-  dependencies:
-    downloadjs "^1.4.7"
-    lodash "^4.17.11"
-    papaparse "^4.6.3"
-    vue "^2.5.22"
-
 vue-loader@^15.6.4:
   version "15.7.0"
   resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-15.7.0.tgz#27275aa5a3ef4958c5379c006dd1436ad04b25b3"
@@ -10942,6 +10927,14 @@ vue-pagination-2@^2.0.3:
     merge "^1.2.0"
     vue ">=2.0.0"
     vuex "^2.0.0"
+
+vue-papa-parse@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/vue-papa-parse/-/vue-papa-parse-1.2.1.tgz#ac7892be063104a5d871ac20a42dd858d6f2ceca"
+  integrity sha512-sekh27cD76zzJ9tfsGRdgmayGDKX2ZSRyI6SzaF89GUNIJytWejEJCJOyf8F6/AyBi20hDPJuKaY0pU3olurKg==
+  dependencies:
+    papaparse "^4.6.3"
+    vue "^2.6.10"
 
 vue-quill-editor@^3.0.6:
   version "3.0.6"
@@ -11016,7 +11009,7 @@ vue@>=2.0.0:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.9.tgz#415c1cc1a5ed00c8f0acdd0a948139d12b7ea6b3"
   integrity sha512-t1+tvH8hybPM86oNne3ZozCD02zj/VoZIiojOBPJLjwBn7hxYU5e1gBObFpq8ts1NEn1VhPf/hVXBDAJ3X5ljg==
 
-vue@^2.5.17, vue@^2.5.22:
+vue@^2.5.17, vue@^2.6.10:
   version "2.6.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==

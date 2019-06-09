@@ -1,7 +1,7 @@
 <template>
   <div v-if="recordListModule">
     <div class="row header">
-      <span class="col-9">
+      <span class="col-5">
         <span v-if="!options.hideAddButton && recordListModule.canCreateRecord">
           <router-link
                       class="btn-url"
@@ -9,6 +9,7 @@
         </span>
         <export-records :columns="recordListModule.fields" :params="{ moduleID: options.moduleID, namespaceID: namespace.namespaceID, ...filter }" />
       </span>
+      <import-records class="col-4" :module="recordListModule" />
       <b-input v-if="!options.hideSearch"
             @keyup.enter.prevent="handleQuery"
             @keyup="handleQueryThrottled"
@@ -69,12 +70,14 @@ import Pagination from 'vue-pagination-2'
 import _ from 'lodash'
 import Record from '@/lib/record'
 import ExportRecords from '@/components/Public/ExportRecords'
+import ImportRecords from '@/components/Public/ImportRecords'
 
 export default {
   components: {
     Pagination,
     FieldViewer,
     ExportRecords,
+    ImportRecords,
   },
 
   extends: base,

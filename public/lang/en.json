@@ -90,8 +90,9 @@
       "addRecord": "Add new record",
       "pagination": "Showing {from} to {to} of {count} records|{count} records|One record",
       "export": "Export records",
+      "import": "Import records",
       "pickFormat": "Pick a format:",
-      "chooseColumns": "Choose the columns you wish to export",
+      "chooseColumns": "Choose the columns you wish to {{target}}",
       "record": {
         "newLabel": "New records",
         "hideAddButton": "Hide add record button",

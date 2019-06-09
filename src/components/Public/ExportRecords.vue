@@ -15,7 +15,7 @@
         </label>
       </div>
       <label for="columns">
-        {{ $t('block.recordList.chooseColumns') }}
+        {{ $t('block.recordList.chooseColumns', { target: $t('general.label.export')}) }}
         <div class="form-group" id="columns">
           <b-button
               variant="secondary"
@@ -39,7 +39,6 @@
               :disabled="!exportColumns.filter(c => c.export).length > 0"
               variant="primary"
               @click="startExport">{{ $t('general.label.export') }}</b-button>
-          <download-csv class="invisible" :data="getExportData" ref="downloadCSV"/>
       </div>
     </b-modal>
   </form>
@@ -47,13 +46,8 @@
 
 <script>
 import { saveAs } from 'file-saver'
-import JsonCSV from 'vue-json-csv'
 
 export default {
-  components: {
-    'download-csv': JsonCSV,
-  },
-
   props: {
     params: {
       type: Object,
@@ -72,11 +66,10 @@ export default {
       exportColumns: [],
       exportData: [],
       formatOptions: [
-        { text: '.csv', value: 'csv' },
+        { text: 'CSV', value: 'csv' },
         { text: 'JSON Lines', value: 'jsonl' },
       ],
       selectedFormat: 'csv',
-      readyToExport: false,
       show: false,
     }
   },
@@ -111,10 +104,9 @@ export default {
 
     startExport () {
       this.show = false
-      const exportColumns = this.exportColumns.filter(c => c.export)
       this.exportData = this.records.map(r => {
         let crtObj = {}
-        for (let { name } of exportColumns) {
+        for (let { name } of this.exportColumns.filter(c => c.export)) {
           let matchedValues = r.filter(v => v.name === name)
           if (matchedValues.length > 0) {
             crtObj[name] = matchedValues[0].value
@@ -124,13 +116,14 @@ export default {
         }
         return crtObj
       })
+
+      let blob = null
       if (this.selectedFormat === 'csv') {
-        this.$refs.downloadCSV.data = this.getExportData
-        this.$refs.downloadCSV.$el.click()
+        blob = new Blob([this.$papa.unparse(this.exportData)], { encoding: 'UTF-8', type: 'text/csv' })
       } else if (this.selectedFormat === 'jsonl') {
-        let blob = new Blob([this.getExportData.map((o, index) => JSON.stringify(o)).join('\n')], { type: 'application/json' })
-        saveAs(blob, `record-export.jsonl`)
+        blob = new Blob([this.getExportData.map((o, index) => JSON.stringify(o)).join('\n')], { encoding: 'UTF-8', type: 'application/x-ndjson' })
       }
+      saveAs(blob, `record-export.${this.selectedFormat}`)
     },
   },
 }
