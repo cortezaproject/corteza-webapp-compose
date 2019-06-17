@@ -110,7 +110,7 @@ export default {
           return `${qf} LIKE '%${query}%'`
         }).join(' OR ')
 
-        this.$compose.recordList({ namespaceID, moduleID, filter, sort: this.sortString() }).then(({ set }) => {
+        this.$ComposeAPI.recordList({ namespaceID, moduleID, filter, sort: this.sortString() }).then(({ set }) => {
           this.records = set.map(r => new Record(this.module, r))
         })
       }
@@ -120,7 +120,7 @@ export default {
       const namespaceID = this.namespace.namespaceID
       const moduleID = this.field.options.moduleID
       if (moduleID) {
-        this.$compose.recordList({ namespaceID, moduleID, sort: this.sortString() }).then(({ set }) => {
+        this.$ComposeAPI.recordList({ namespaceID, moduleID, sort: this.sortString() }).then(({ set }) => {
           this.latest = set.map(r => new Record(this.module, r))
         })
       }
@@ -135,7 +135,7 @@ export default {
       const namespaceID = this.namespace.namespaceID
       const moduleID = this.field.options.moduleID
       if (moduleID && recordID && (this.valueRecord || {}).recordID !== recordID) {
-        this.$compose.recordRead({ namespaceID, moduleID, recordID }).then(r => {
+        this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID }).then(r => {
           this.valueRecord = new Record(this.module, r)
         })
       }

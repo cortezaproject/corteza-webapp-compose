@@ -38,7 +38,7 @@ export default {
       this.$nextTick(() => {
         this.renderer = new ChartJS(this.$refs.chartCanvas.getContext('2d'), opt)
         const { namespaceID } = this.namespace
-        this.chart.fetchReports({ reporter: (r) => this.$compose.recordReport({ namespaceID, ...r }) }).then(({ labels, metrics }) => {
+        this.chart.fetchReports({ reporter: (r) => this.$ComposeAPI.recordReport({ namespaceID, ...r }) }).then(({ labels, metrics }) => {
           if (labels) {
             this.renderer.data.labels = labels
           }

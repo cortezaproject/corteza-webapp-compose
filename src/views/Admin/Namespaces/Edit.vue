@@ -79,7 +79,7 @@
 <script>
 import Namespace from '@/lib/namespace'
 import EditorToolbar from '@/components/Admin/EditorToolbar'
-import { PermissionsModal } from 'crust-common.vue/components'
+import { PermissionsModal } from 'corteza-webapp-common/components'
 
 export default {
   components: {

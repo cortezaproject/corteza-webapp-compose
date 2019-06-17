@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import ComposeAPI from '@/api/compose'
+import ComposeAPI from 'corteza-webapp-common/src/lib/corteza-server/compose'
 import namespace from './namespace'
 import module from './module'
 import page from './page'

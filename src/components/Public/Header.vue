@@ -100,7 +100,7 @@ export default {
   },
 
   created () {
-    this.$compose.pageTree({ namespaceID: this.namespace.namespaceID }).then((result) => { this.tree = result })
+    this.$ComposeAPI.pageTree({ namespaceID: this.namespace.namespaceID }).then((result) => { this.tree = result })
   },
 
   methods: {

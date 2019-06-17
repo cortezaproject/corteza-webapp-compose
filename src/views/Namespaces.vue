@@ -32,7 +32,7 @@
 </template>
 <script>
 import NamespaceItem from '@/components/Namespaces/NamespaceItem'
-import { PermissionsModal } from 'crust-common.vue/components'
+import { PermissionsModal } from 'corteza-webapp-common/components'
 
 export default {
   data () {
@@ -48,7 +48,7 @@ export default {
   },
 
   created () {
-    this.$auth.check(this.$system).then(() => {
+    this.$auth.check(this.$SystemAPI).then(() => {
       this.error = ''
 
       const errHandler = (error) => {
@@ -60,9 +60,9 @@ export default {
         return Promise.reject(error)
       }
 
-      this.$compose.namespaceList().then(({ set }) => {
+      this.$ComposeAPI.namespaceList().then(({ set }) => {
         this.namespaces = set
-        this.$compose.permissionsEffective().then((p) => {
+        this.$ComposeAPI.permissionsEffective().then((p) => {
           this.canCreateNamespace = p.filter(per => per.operation === 'namespace.create')[0].allow
           this.canGrant = p.filter(per => per.operation === 'grant')[0].allow
           this.loaded = true

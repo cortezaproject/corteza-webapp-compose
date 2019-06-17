@@ -66,7 +66,7 @@ export default {
 
     search (query) {
       if (query) {
-        this.$system.userList({ query }).then(uu => {
+        this.$SystemAPI.userList({ query }).then(uu => {
           this.users = uu.map(this.convert)
         })
       }
@@ -74,7 +74,7 @@ export default {
 
     findByID (userID) {
       if (!this.users.find(v => v.value === userID)) {
-        this.$system.userRead({ userID }).then(u => {
+        this.$SystemAPI.userRead({ userID }).then(u => {
           this.users.push(this.convert(u))
         })
       }

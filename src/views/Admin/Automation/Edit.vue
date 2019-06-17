@@ -268,7 +268,7 @@ export default {
             const { namespaceID, moduleID } = m
 
             // And load record from the given params
-            return this.$compose.recordRead({ namespaceID, moduleID, recordID: this.test.recordID })
+            return this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID: this.test.recordID })
           })
           .then(r => {
             // Properly convert record and update context

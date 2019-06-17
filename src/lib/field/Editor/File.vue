@@ -26,7 +26,7 @@ export default {
       const { moduleID, recordID } = this.record
       const { namespaceID } = this.namespace
 
-      return this.$compose.recordUploadEndpoint({
+      return this.$ComposeAPI.recordUploadEndpoint({
         namespaceID,
         moduleID,
         recordID,

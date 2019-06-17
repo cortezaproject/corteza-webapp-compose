@@ -108,7 +108,7 @@ export default {
             filter: `date(${feed.endField || feed.startField}) >= '${start.toISOString()}' AND date(${feed.startField}) < '${end.toISOString()}'`,
           }
 
-          this.$compose.recordList(params).then(({ filter, set }) => {
+          this.$ComposeAPI.recordList(params).then(({ filter, set }) => {
             this.events.push(...set
               .map(r => new Record(module, r))
               .filter(r => !!r.values[feed.startField])

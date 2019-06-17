@@ -92,7 +92,7 @@ export default {
       const { namespaceID } = this.namespace
       this.disabled = true
       for (this.recordsCreated = 0; this.recordsCreated < this.totalRecordsToCreate; this.recordsCreated++) {
-        await this.$compose.recordCreate({ namespaceID, fields: this.recordFaker(), moduleID: this.moduleID })
+        await this.$ComposeAPI.recordCreate({ namespaceID, fields: this.recordFaker(), moduleID: this.moduleID })
       }
       this.disabled = false
     },

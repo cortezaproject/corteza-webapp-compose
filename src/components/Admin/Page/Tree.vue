@@ -96,7 +96,7 @@ export default {
       const reorder = () => {
         const pageIDs = afterParent.children.map(p => p.pageID)
         if (pageIDs.length > 1) {
-          this.$compose.pageReorder({ namespaceID, selfID: afterParent.pageID || '0', pageIDs: pageIDs }).then(() => {
+          this.$ComposeAPI.pageReorder({ namespaceID, selfID: afterParent.pageID || '0', pageIDs: pageIDs }).then(() => {
             this.raiseSuccessAlert(this.$t('notification.page.reordered'))
             this.$emit('reorder')
           }).catch(this.defaultErrorHandler(this.$t('notification.page.pageMoveFailed')))
@@ -108,7 +108,7 @@ export default {
         data.selfID = afterParent.pageID
         data.namespaceID = namespaceID
 
-        this.$compose.pageUpdate(data).then(() => {
+        this.$ComposeAPI.pageUpdate(data).then(() => {
           reorder()
         }).catch(this.defaultErrorHandler(this.$t('notification.page.pageMoveFailed')))
       } else {

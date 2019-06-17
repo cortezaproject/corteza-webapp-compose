@@ -106,7 +106,7 @@ export default {
         const namespaceID = this.namespace.namespaceID
         set.forEach((attachmentID, index) => {
           if (typeof attachmentID === 'string') {
-            this.$compose.attachmentRead({ kind: this.kind, attachmentID, namespaceID }).then(att => {
+            this.$ComposeAPI.attachmentRead({ kind: this.kind, attachmentID, namespaceID }).then(att => {
               this.attachments.splice(index, 1, new Attachment(att))
             })
           }

@@ -163,7 +163,7 @@ export default {
       params.moduleID = this.options.moduleID
       params.namespaceID = this.namespace.namespaceID
 
-      return this.$compose.recordList(params).then(({ filter, set }) => {
+      return this.$ComposeAPI.recordList(params).then(({ filter, set }) => {
         this.filter = filter
         this.records = set.map(r => new Record(this.recordListModule, r))
       }).catch(this.defaultErrorHandler(this.$t('notification.record.listLoadFailed')))

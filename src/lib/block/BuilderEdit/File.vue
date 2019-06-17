@@ -38,7 +38,7 @@ export default {
     endpoint () {
       const { pageID } = this.page
 
-      return this.$compose.pageUploadEndpoint({
+      return this.$ComposeAPI.pageUploadEndpoint({
         namespaceID: this.namespace.namespaceID,
         pageID,
       })

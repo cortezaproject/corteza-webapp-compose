@@ -123,7 +123,7 @@ export default {
       this.updateRenderer({ forceFetch: true })
 
       // Update chart data
-      this.chart.fetchReports({ reporter: (r) => this.$compose.recordReport({ namespaceID, ...r }) }).then(({ labels, metrics }) => {
+      this.chart.fetchReports({ reporter: (r) => this.$ComposeAPI.recordReport({ namespaceID, ...r }) }).then(({ labels, metrics }) => {
         if (labels) {
           this.chartRenderer.data.labels = labels
         }
@@ -169,7 +169,7 @@ export default {
       if (refetch) {
         const { namespaceID } = this.namespace
         // Update chart data
-        this.chart.fetchReports({ reporter: (r) => this.$compose.recordReport({ namespaceID, ...r }) }).then(({ labels, metrics }) => {
+        this.chart.fetchReports({ reporter: (r) => this.$ComposeAPI.recordReport({ namespaceID, ...r }) }).then(({ labels, metrics }) => {
           if (labels) {
             this.chartRenderer.data.labels = labels
           }

@@ -73,7 +73,7 @@ export default {
       handler (value) {
         // On input change resolve/load all attachments
         if (typeof value === 'string') {
-          this.$compose.attachmentRead({ kind: this.kind, attachmentID: value }).then(a => {
+          this.$ComposeAPI.attachmentRead({ kind: this.kind, attachmentID: value }).then(a => {
             this.attachment = a
           })
         } else {

@@ -64,14 +64,14 @@ export default {
   methods: {
     loadTree () {
       const { namespaceID } = this.namespace
-      this.$compose.pageTree({ namespaceID }).then((tree) => {
+      this.$ComposeAPI.pageTree({ namespaceID }).then((tree) => {
         this.tree = tree
       }).catch(this.defaultErrorHandler(this.$t('notification.page.loadFailed')))
     },
 
     handleAddPageFormSubmit () {
       const { namespaceID } = this.namespace
-      this.$compose.pageCreate({ namespaceID, ...this.addPageFormData }).then((page) => {
+      this.$ComposeAPI.pageCreate({ namespaceID, ...this.addPageFormData }).then((page) => {
         this.$router.push({ name: 'admin.pages.edit', params: { pageID: page.pageID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))
     },

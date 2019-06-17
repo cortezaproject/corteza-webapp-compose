@@ -59,7 +59,7 @@ export default {
 
   methods: {
     check () {
-      this.$auth.check(this.$system, this.newJWT).then((user) => {
+      this.$auth.check(this.$SystemAPI, this.newJWT).then((user) => {
         this.currentUser = user
         this.checkRsp = 'Valid JWT.'
       }).catch(({ message }) => {

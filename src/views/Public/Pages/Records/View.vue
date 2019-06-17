@@ -108,7 +108,7 @@ export default {
       this.record = null
       if (this.page && this.recordID && this.page.moduleID) {
         const { namespaceID, moduleID } = this.page
-        this.$compose.recordRead({ namespaceID, moduleID, recordID: this.recordID }).then(record => {
+        this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID: this.recordID }).then(record => {
           this.record = new Record(this.module, record)
         }).catch(this.defaultErrorHandler(this.$t('notification.record.loadFailed')))
       }

@@ -3,7 +3,7 @@ import axios from 'axios'
 import alertMixin from '@/mixins/alert'
 import prettyMixin from '@/mixins/pretty'
 import BootstrapVue from 'bootstrap-vue'
-import { PermissionsButton } from 'crust-common.vue/components'
+import { PermissionsButton } from 'corteza-webapp-common/components'
 
 import VTooltip from 'v-tooltip'
 import Vue from 'vue'

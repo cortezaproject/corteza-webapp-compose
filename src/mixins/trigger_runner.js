@@ -8,7 +8,7 @@ export default {
       let ctx = { module, record }
 
       return this.runTriggers({ ...ctx, action: 'beforeCreate' })
-        .then(() => this.$compose.recordCreate(record))
+        .then(() => this.$ComposeAPI.recordCreate(record))
         .then((r) => {
           record.merge(r)
           record.execHooks({ action: 'create', record })
@@ -21,7 +21,7 @@ export default {
       let ctx = { module, record }
 
       return this.runTriggers({ ...ctx, action: 'beforeUpdate' })
-        .then(() => this.$compose.recordUpdate(record))
+        .then(() => this.$ComposeAPI.recordUpdate(record))
         .then((r) => {
           record.merge(r)
           record.execHooks(record, { action: 'update', record })
@@ -34,7 +34,7 @@ export default {
       let ctx = { module, record }
 
       return this.runTriggers({ ...ctx, action: 'beforeDelete' })
-        .then(() => this.$compose.recordDelete(record))
+        .then(() => this.$ComposeAPI.recordDelete(record))
         .then((r) => this.runTriggers({ ...ctx, action: 'afterDelete' }))
         .then(() => Promise.resolve())
     },
@@ -51,9 +51,9 @@ export default {
 
     // Creates a basic context for trigger env
     triggerContext (ctx) {
-      const $system = this.$system
-      const $compose = this.$compose
-      const $messaging = this.$messaging
+      const $system = this.$SystemAPI
+      const $compose = this.$ComposeAPI
+      const $messaging = this.$MessagingAPI
 
       ctx.modules = this.$store.getters['module/set']
 

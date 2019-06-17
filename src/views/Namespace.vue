@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { PermissionsModal } from 'crust-common.vue/components'
+import { PermissionsModal } from 'corteza-webapp-common/components'
 
 export default {
   name: 'Namespace',
@@ -50,7 +50,7 @@ export default {
     slug: {
       immediate: true,
       handler (slug) {
-        this.$auth.check(this.$system).then(() => {
+        this.$auth.check(this.$SystemAPI).then(() => {
           this.$store.dispatch('namespace/load').then(() => {
             this.namespace = this.$store.getters['namespace/getByUrlPart'](slug)
           }).catch(this.errHandler)

@@ -75,7 +75,7 @@ export default {
 
   created () {
     const { namespaceID } = this.namespace
-    this.$compose.pageRead({ namespaceID, pageID: this.pageID }).then((page) => {
+    this.$ComposeAPI.pageRead({ namespaceID, pageID: this.pageID }).then((page) => {
       if (page.moduleID !== '0') {
         // Do not allow to edit record pages, move to builder
         this.$router.replace({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
@@ -87,7 +87,7 @@ export default {
   methods: {
     handleSave ({ closeOnSuccess = false } = {}) {
       const { namespaceID } = this.namespace
-      this.$compose.pageUpdate({ namespaceID, ...this.page }).then((page) => {
+      this.$ComposeAPI.pageUpdate({ namespaceID, ...this.page }).then((page) => {
         this.page = new Page(page)
         this.raiseSuccessAlert(this.$t('notification.page.saved'))
         if (closeOnSuccess) {
@@ -97,7 +97,7 @@ export default {
     },
 
     handleDeletePage () {
-      this.$compose.pageDelete(this.page).then(() => {
+      this.$ComposeAPI.pageDelete(this.page).then(() => {
         this.$router.push({ name: 'admin.pages' })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.deleteFailed')))
     },
