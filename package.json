@@ -47,6 +47,7 @@
     "i18next-browser-languagedetector": "^3.0.1",
     "i18next-xhr-backend": "^2.0.1",
     "jquery": "^3.3.1",
+    "js-yaml": "^3.13.1",
     "json-bigint": "^0.3.0",
     "lodash": "^4.17.11",
     "markdown-it": "^8.4.2",
