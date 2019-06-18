@@ -10,6 +10,7 @@ steps:
   - name: test
     image: cortezaproject/corteza-webapp-builder
     commands:
+      - yarn lint
       - yarn test:unit
 
   - name: build
