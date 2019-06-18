@@ -55,10 +55,14 @@ export default class Trigger {
     return true
   }
 
-  async run ({ crust, module, record, action }) {
+  async run ({ $C, module, record, action }) {
     if (this.source.trim().length === 0) {
       return Promise.resolve()
     }
+
+    // Keeping `crust` for BC.
+    /* eslint-disable no-unused-vars */
+    const crust = $C
 
     const source = `(async function() {\n${this.source};\n return true;})()`
 

@@ -66,7 +66,7 @@ export default {
         })
       }
 
-      const crust = {
+      const $C = {
         api: {
           record: {
             async save (record) {
@@ -185,7 +185,7 @@ export default {
             new: (module, values = {}) => {
               if (typeof module === 'string') {
                 // Find from list of modules by name or ID
-                module = crust.api.module.find(module)
+                module = $C.api.module.find(module)
               }
 
               if (!(module instanceof Module)) {
@@ -247,7 +247,7 @@ export default {
 
       return {
         ...ctx,
-        crust,
+        $C,
       }
     },
   },

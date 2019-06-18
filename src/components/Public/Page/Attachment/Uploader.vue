@@ -68,7 +68,7 @@ export default {
     },
 
     baseUrl () {
-      return window.CrustComposeAPI
+      return window.ComposeAPI
     },
 
     progresBarStyle () {

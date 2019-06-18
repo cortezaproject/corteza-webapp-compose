@@ -5,7 +5,7 @@ export default class Attachment {
   }
 
   merge ({ attachmentID, ownerID, url, previewUrl, meta, name, createdAt, updatedAt }) {
-    const baseUrl = window.CrustComposeAPI
+    const baseUrl = window.ComposeAPI
 
     this.attachmentID = (typeof attachmentID === 'string' ? attachmentID : this.attachmentID) || ''
     this.previewUrl = baseUrl + previewUrl

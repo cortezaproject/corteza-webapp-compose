@@ -38,7 +38,7 @@ export default {
 
   data () {
     return {
-      logo: require('@/assets/images/crust-logo-with-tagline.png'),
+      logo: require('@/assets/images/corteza-logo-with-tagline.png'),
       loaded: false,
       error: '',
       alerts: [], // { variant: 'info', message: 'foo' },

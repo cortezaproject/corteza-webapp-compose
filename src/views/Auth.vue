@@ -1,6 +1,6 @@
 <template>
   <main>
-    <h1>Hello Crust developer.</h1>
+    <h1>Hello Developer.</h1>
 
     <p><b>It looks like you need to login</b></p>
 
@@ -13,7 +13,7 @@
     </p>
 
     <p>
-      Crust System API:<br/>
+      System API:<br/>
       <code>{{ backend }}</code>
     </p>
 
@@ -44,7 +44,7 @@ export default {
 
   computed: {
     backend () {
-      return window.CrustSystemAPI
+      return window.SystemAPI
     },
   },
 

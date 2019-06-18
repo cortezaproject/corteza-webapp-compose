@@ -302,7 +302,7 @@
       "codeLabel": "Code",
       "code": {
         "label": "Code",
-        "comment1": "Crust automation triggers will help you manage your records",
+        "comment1": "Automation triggers will help you manage your records",
         "comment2": "It is a simple JavaScript engine that runs custom code that triggers manually",
         "comment3": "or automatically before/after certain record events (create, update, delete)"
       }
@@ -326,7 +326,7 @@
       "recordID": "Record ID",
       "run": "Run test",
       "footnotePrimaryModule": "When trigger has primary module selected, record ID is needed for tests to run properly.",
-      "footnoteRecordChanges": "Changes to records are ignored if not explicity saved (through crust.api.record.save/delete)"
+      "footnoteRecordChanges": "Changes to records are ignored if not explicitly saved (through $C.api.record.save or $C.api.record.delete)"
     },
     "manual": [
       "## Record Automation Manual",
@@ -710,7 +710,7 @@
 
   "notification": {
     "general": {
-      "composeAccessNotAllowed": "Not allowed to access Crust Compose"
+      "composeAccessNotAllowed": "Not allowed to access Compose"
     },
     "namespace": {
       "saveFailed": "Could not save this namespace",

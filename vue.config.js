@@ -29,8 +29,8 @@ module.exports = {
     // other webpack options to merge in ...
     plugins: [
       new webpack.DefinePlugin({
-        CRUST_VERSION: JSON.stringify(('' + exec('git describe --always --tags')).trim()),
-        CRUST_BUILD_TIME: JSON.stringify((new Date()).toISOString()),
+        VERSION: JSON.stringify(('' + exec('git describe --always --tags')).trim()),
+        BUILD_TIME: JSON.stringify((new Date()).toISOString()),
       }),
     ],
 
