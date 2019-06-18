@@ -22,7 +22,6 @@ export default {
     defaultErrorHandler (prefix) {
       return (err = {}) => {
         this.raiseWarningAlert(err.message ? (this.$t(prefix) + ': ' + this.$t(err.message)) : this.$t(prefix))
-        this.$logger.error(err)
       }
     },
 
