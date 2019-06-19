@@ -1,45 +1,76 @@
 <template>
-  <b-modal size="lg" v-model="show" class="text-center" centered hide-footer>
-    <div v-if="current">
-      <img :src="current.url" />
-    </div>
-  </b-modal>
+  <preview-lightbox
+    v-if="show"
+    :src="(attachment || {}).pdf || (attachment || {}).src"
+    :name="(attachment || {}).name"
+    :alt="(attachment || {}).name"
+    @close="attachment=undefined">
+
+    <p slot="header.left" class="m-0">
+      {{ (attachment || {}).name }}
+    </p>
+
+    <a
+      slot="header.right"
+      :href="(attachment || {}).download">
+
+      {{ $t('general.label.download') }}
+    </a>
+  </preview-lightbox>
 </template>
+
 <script>
+import { PreviewLightbox } from 'corteza-webapp-common/src/components/FilePreview/index'
 
 export default {
+  components: {
+    PreviewLightbox,
+  },
+
   data () {
     return {
-      ptr: 0,
-      set: undefined,
+      attachment: undefined,
     }
   },
 
   computed: {
     show: {
       get () {
-        return this.set !== undefined
+        return !!this.attachment
       },
 
       set (show) {
         if (!show) {
-          this.set = undefined
+          this.attachment = undefined
         }
       },
-    },
-
-    current () {
-      if (this.show && this.set[this.ptr] !== undefined) {
-        return this.set[this.ptr]
-      }
     },
   },
 
   created () {
-    this.$root.$on('showAttachmentsModal', (ptr, set) => {
-      this.ptr = ptr
-      this.set = set
+    window.addEventListener('keyup', this.onKeyUp)
+    this.$root.$on('showAttachmentsModal', ({ url, download, name, pdf = undefined }) => {
+      this.attachment = {
+        pdf,
+        download,
+        src: url,
+        name: name,
+        caption: name,
+      }
     })
+  },
+
+  beforeDestroy () {
+    window.removeEventListener('keyup', this.onKeyUp)
+    this.$root.$off('showAttachmentsModal')
+  },
+
+  methods: {
+    onKeyUp ({ key }) {
+      if (key === 'Escape') {
+        this.attachment = undefined
+      }
+    },
   },
 }
 </script>

@@ -34,19 +34,25 @@
     </div>
 
     <div v-else-if="mode === 'single' || 'gallery'" class="single gallery">
-      <div v-for="(a, index) in attachments" :key="a.attachmentID" v-if="a" class="item">
-        <div v-if="isImage(a)">
-          <img :src="a.previewUrl" @click="openLightbox(index)" />
-        </div>
+      <div v-for="(a) in attachments" :key="a.attachmentID" v-if="a" class="item mb-2">
+        <preview-inline
+          v-if="canPreview(a)"
+          @openPreview="openLightbox({ ...a, ...$event })"
+          :src="inlineUrl(a)"
+          :meta="(a.meta.preview || {}).image || {}"
+          :name="a.name"
+          :alt="a.name"
+          :preview-style="{ width: 'unset' }" />
+
         <div v-else>
           <font-awesome-icon
             :icon="['far', 'file-'+ext(a)]"
             title="Open bookmarks"
           ></font-awesome-icon>
-          <a :href="a.download">
-            {{ $t('general.label.download') }}
-          </a>
         </div>
+        <a :href="a.download">
+          {{ $t('general.label.download') }}
+        </a>
         {{a.name}}
       </div>
     </div>
@@ -57,8 +63,14 @@ import numeral from 'numeral'
 import moment from 'moment'
 import Attachment from '@/lib/attachment'
 import Namespace from '@/lib/namespace'
+import { canPreview } from 'corteza-webapp-common/src/lib/file_preview'
+import { PreviewInline } from 'corteza-webapp-common/src/components/FilePreview/index'
 
 export default {
+  components: {
+    PreviewInline,
+  },
+
   props: {
     enableDelete: {
       type: Boolean,
@@ -89,6 +101,21 @@ export default {
     return {
       attachments: [],
     }
+  },
+
+  computed: {
+    inlineUrl () {
+      return (a) => this.ext(a) === 'pdf' ? a.download : a.previewUrl
+    },
+
+    canPreview () {
+      return (a) => {
+        const meta = a.meta || {}
+        const type = (meta.preview || meta.original || {}).mimetype
+        const src = this.inlineUrl(a)
+        return canPreview({ type, src, name: a.name })
+      }
+    },
   },
 
   watch: {
@@ -124,8 +151,8 @@ export default {
       return moment(a.updatedAt || a.createdAt).fromNow()
     },
 
-    openLightbox (index) {
-      this.$root.$emit('showAttachmentsModal', index, this.attachments)
+    openLightbox (e) {
+      this.$root.$emit('showAttachmentsModal', e)
     },
 
     deleteAttachment (index) {
@@ -162,9 +189,6 @@ export default {
           return 'image'
         default: return 'alt'
       }
-    },
-    isImage (a) {
-      return /^image\//.test(a.meta.original.mimetype)
     },
   },
 }
