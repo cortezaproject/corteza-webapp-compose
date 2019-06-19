@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon32x32.png">
+    <link rel="preload" href="<%= BASE_URL %>config.js" as="script" />
+    <script src="<%= BASE_URL %>config.js" type="text/javascript"></script>
     <title>Crust</title>
   </head>
   <body>
@@ -12,7 +14,6 @@
       <strong>We're sorry but chrome doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
-    <script src="<%= BASE_URL %>config.js"></script>
     <!-- built files will be auto injected -->
   </body>
 </html>
