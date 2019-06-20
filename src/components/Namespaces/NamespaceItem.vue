@@ -2,11 +2,11 @@
   <div class="ns-wrap">
     <div :class="{ 'ns-label': true, 'pointer': isEnabled }">
       <label
-        class="ns-visual ns-logo">
-        <i :style="'background-image:url(' + logo + ');'" />
+        class="ns-visual ns-logo text-center d-block">
+        <i class="d-block m-auto" :style="'background-image:url(' + logo + ');'" />
       </label>
       <div>
-        <label :class="{'ns-text': true, 'subtitle': namespace.meta.subtitle}">
+        <label :class="{'ns-text': true, 'subtitle': namespace.meta.subtitle}" class="text-center d-block">
           {{ namespace.name }}
           <span v-if="namespace.meta.subtitle">
             <br>{{ namespace.meta.subtitle }}
@@ -15,10 +15,10 @@
       </div>
     </div>
     <!-- this should appear on hover -->
-    <div class="ns-display-options">
+    <div class="ns-display-options text-center">
       <div :class="{'options actions': namespace.canUpdateNamespace, 'no-edit': !namespace.canUpdateNamespace}">
         <span v-if="namespace.canUpdateNamespace">
-          <router-link :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }" class="action p-0">
+          <router-link :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }" class="p-0 float-right">
             <i class="icon-edit"></i>
           </router-link>
         </span>
@@ -69,18 +69,11 @@ export default {
     cursor: pointer;
   }
 
-  .ns-visual,
-  .ns-text,
-  .ns-display-options {
-    display: block;
-    text-align: center;
-  }
-
   .ns-text {
-    color: #90A3B1;
-    line-height: 100px;
+    color: $secondary;
+    line-height: 50px;
     height: 100px;
-    font-size: 24px;
+    font-size: 20px;
     max-width: 85%;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -104,7 +97,6 @@ export default {
 
   .ns-visual {
     height: $nsvisualheight;
-    line-height: $nsvisualheight;
     transition: opacity 0.5s;
   }
 
@@ -118,7 +110,6 @@ export default {
         text-overflow: ellipsis;
         display: -webkit-box;
         -webkit-box-orient: vertical;
-        -webkit-line-clamp: 10;
         line-height: 16px;
         max-height: 160px;
         text-align: justify;
@@ -129,7 +120,7 @@ export default {
       .click {
         height: 170px;
         line-height: 130px;
-        color: #90A3B1;
+        color: $secondary;
         font-size: 24px;
       }
 
@@ -152,21 +143,13 @@ export default {
 
   .ns-logo {
     i {
-      top: 50%;
       transform: translateY(10px);
-      display: block;
       height: $nsvisualheight - 10px;
-      margin: 0 auto;
-      border-radius: 3px;
       background-size: contain;
       background-repeat: no-repeat;
-      background-position-x: center;
       background-position-y: center;
+      width: 75%;
     }
-  }
-
-  .ns-letter i {
-    font-weight: 600;
   }
 
   .ns-wrap {

@@ -1,6 +1,6 @@
 <template>
   <main class="container">
-    <h1 class="text-center actions mt-4">
+    <h1 class="text-center mt-4">
       {{ $t('namespace.title') }}
       <permissions-button v-if="canGrant" resource="compose:namespace:*" link />
     </h1>
@@ -18,9 +18,9 @@
         <router-link :to="{ name: 'namespace.edit' }">
           <div class="add-namespace">
             <label class="add-icon">
-              <i class="icon-plus" />
+              <i class="icon-plus d-block m-auto" />
             </label>
-            <label class="add-text">
+            <label class="add-text text-center d-block">
                 {{ $t('namespace.create') }}
             </label>
           </div>
@@ -92,23 +92,14 @@ export default {
     cursor: pointer;
 
     i {
-      display: block;
-      line-height: 128px;
-      margin: 0 auto;
-      font-size: 86px;
+      font-size: 85px;
       font-style: normal;
     }
   }
 
   .add-text {
-    height: 100px;
-    line-height: 100px;
-    display: block;
-    text-align: center;
-    color: #90A3B1;
-    font-size: 24px;
-    max-width: 75%;
-    margin: 0 auto;
+    color: $secondary;
+    font-size: 20px;
     cursor: pointer;
   }
 
@@ -128,6 +119,12 @@ export default {
       .add-text {
         color: #000;
       }
+    }
+  }
+
+  a {
+    &:hover {
+      text-decoration: none;
     }
   }
 }
