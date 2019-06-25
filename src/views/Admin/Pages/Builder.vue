@@ -138,13 +138,11 @@ export default {
 
     updateBlocks () {
       let block = new Block(this.editor.block) // make sure we get rid of the references
-      // console.log(block, this.editor.index)
       if (this.editor.index !== undefined) {
         this.page.blocks.splice(this.editor.index, 1, block)
       } else {
         this.page.blocks.push(block)
       }
-      // console.log(this.page)
 
       this.editor = null
     },

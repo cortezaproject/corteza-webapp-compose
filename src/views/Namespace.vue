@@ -62,8 +62,6 @@ export default {
 
     namespace: {
       handler (namespace) {
-        console.debug('Namespace changed', { namespace })
-
         if (!namespace) {
           return
         }
@@ -87,7 +85,6 @@ export default {
             .catch(this.errHandler),
 
         ]).catch(this.errHandler).then(() => {
-          console.log('loaded')
           this.loaded = true
         })
       },
