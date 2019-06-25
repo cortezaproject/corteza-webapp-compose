@@ -23,17 +23,13 @@
                   :title="$t('general.label.view')"
                 ></font-awesome-icon>
               </router-link>
-
-              <div v-else
-                class="action-disabled">
-              </div>
-
-              <router-link v-if="item.canEditPage"
+              <div v-else class="action-disabled"></div>
+              <router-link v-if="item.canUpdatePage"
                            :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
                            class="link mr-2">{{ $t('general.label.pageBuilder') }}</router-link>
 
               <span>
-                <router-link v-if="item.canEditPage"
+                <router-link v-if="item.canUpdatePage"
                              :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
                              class="edit mr-2">
                   <i class="icon-edit" v-if="item.moduleID === '0'"></i>
