@@ -5,7 +5,7 @@
         :unchecked-value="false"
         v-model="value"
         plain>
-      {{ $t(field.label) || field.name }}
+      {{ field.label || field.name }}
     </b-form-checkbox>
 
     <b-form-text v-if="validate && errors">

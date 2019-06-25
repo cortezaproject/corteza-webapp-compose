@@ -3,7 +3,7 @@
     <div v-for="(field, index) in fields"
          class="field"
          :key="index">
-      <label>{{ $t(field.label) || field.name }}</label>
+      <label>{{ field.label || field.name }}</label>
       <div v-if="field.canReadRecordValue">
         <field-viewer :namespace="namespace"
                       :field="field"

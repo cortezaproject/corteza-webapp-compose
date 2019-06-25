@@ -12,7 +12,7 @@
                  @dblclick="selectedFields.push(field)"
                  class="field"
                  :key="field.name">
-              <span v-if="field.label">{{ $t(field.label) }} ({{field.name}})</span>
+              <span v-if="field.label">{{ field.label }} ({{field.name}})</span>
               <span v-else>{{field.name}}</span>
               <span class="system float-right" v-if="field.isSystem">{{ $t('field.selector.systemField') }}</span>
             </div>
@@ -29,7 +29,7 @@
                  @dblclick="selectedFields.splice(index,1)"
                  class="field"
                  :key="field.name">
-              <span v-if="field.label">{{ $t(field.label) }} ({{field.name}})</span>
+              <span v-if="field.label">{{ field.label }} ({{field.name}})</span>
               <span v-else>{{field.name}}</span>
               <span class="system float-right" v-if="field.isSystem">{{ $t('field.selector.systemField') }}</span>
             </div>

@@ -1,5 +1,5 @@
 <template>
-  <b-form-group :label="$t(field.label) || field.name">
+  <b-form-group :label="field.label || field.name">
     <quill-editor
       v-if="field.options.useRichTextEditor"
       v-model="value"

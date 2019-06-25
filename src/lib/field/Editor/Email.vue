@@ -1,5 +1,5 @@
 <template>
-  <b-form-group :label="$t(field.label) || field.name">
+  <b-form-group :label="field.label || field.name">
     <b-form-input type="email" v-model="value"></b-form-input>
 
     <b-form-text v-if="validate && errors">

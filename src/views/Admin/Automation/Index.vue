@@ -59,11 +59,11 @@
               </tbody>
             </table>
             <form v-if="namespace.canCreateTrigger" @submit.prevent="create" class="mt-4">
-              <b-form-group :label="$t(`trigger.newLabel`)">
+              <b-form-group :label="$t('trigger.newLabel')">
                 <b-input-group>
-                  <input required type="text" v-model="newTrigger.name" class="form-control" id="name" :placeholder="$t(`trigger.newPlaceholder`)" />
+                  <input required type="text" v-model="newTrigger.name" class="form-control" id="name" :placeholder="$t('trigger.newPlaceholder')" />
                   <b-input-group-append>
-                    <b-button type="submit" variant="dark">{{ $t(`general.label.create`) }}</b-button>
+                    <b-button type="submit" variant="dark">{{ $t('general.label.create') }}</b-button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>

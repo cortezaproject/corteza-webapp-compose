@@ -209,7 +209,7 @@ export default {
             toHTML: (record) => {
               let rows = record.module.fields.map(f => {
                 const v = record.values[f.name]
-                return `<tr><td>${this.$t(f.label) || f.name}</td><td>${v || ''}</td></tr>`
+                return `<tr><td>${f.label || f.name}</td><td>${v || ''}</td></tr>`
               })
 
               return `<table>${rows.join('')}</table>`

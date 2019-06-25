@@ -1,6 +1,6 @@
 <template>
   <div v-if="valid">
-    <label v-if="!valueOnly">{{ $t(field.label) || field.name }}</label>
+    <label v-if="!valueOnly">{{ field.label || field.name }}</label>
     <div v-if="linkToRecord"><router-link :to="linkToRecord">{{ formatted }}</router-link></div>
     <div v-else>{{ formatted }}</div>
   </div>

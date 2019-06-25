@@ -16,7 +16,7 @@
         <thead v-if="!options.hideHeader">
           <tr >
             <th v-for="(col) in columns" :key="'header:'+col.name" @click="handleSort(col.name)" class="text-nowrap">
-              {{ $t(col.label) || col.name }}
+              {{ col.label || col.name }}
               <span v-if="!options.hideSorting" class="ml-1">
                 <font-awesome-icon v-if="!isSortedBy(col.name)" :icon="['fas', 'sort']"></font-awesome-icon>
                 <font-awesome-icon v-else-if="isSortedBy(col.name) === 'ASC'" :icon="['fas', 'sort-up']"></font-awesome-icon>
@@ -228,13 +228,6 @@ export default {
 
     handlePageChange (page) {
       this.fetch({ ...this.filter, page: page - 1 })
-    },
-
-    getFieldLabel (field) {
-      if (field.isSystem) {
-        return this.$t(field.label)
-      }
-      return field.name
     },
   },
 }

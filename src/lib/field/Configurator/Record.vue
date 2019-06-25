@@ -61,7 +61,7 @@ export default {
     },
 
     fields () {
-      return this.module ? this.module.fields.map(f => { return { value: f.name, text: this.$t(f.label) || f.name } }) : []
+      return this.module ? this.module.fields.map(f => { return { value: f.name, text: f.label || f.name } }) : []
     },
   },
 

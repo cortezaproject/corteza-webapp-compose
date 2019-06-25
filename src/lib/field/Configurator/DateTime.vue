@@ -7,9 +7,8 @@
     <div><b-form-checkbox plain v-model="f.options.outputRelative">{{ $t('field.kind.dateTime.relativeOutput') }}</b-form-checkbox></div>
     <div>{{ $t('field.kind.dateTime.outputFormat') }}<b-form-input plain v-model="f.options.format" placeholder="YYYY-MM-DD HH:ii"></b-form-input></div>
 
-    <i18next path="system.type.dateTime.outputFormatFootnote" tag="label">
+    <i18next path="field.kind.dateTime.outputFormatFootnote" tag="label">
       <a href="https://momentjs.com/docs/#/displaying/format/" target="_blank">Moment.js</a>
-      <span>{{ $t("promise") }}</span>
     </i18next>
   </div>
 </template>

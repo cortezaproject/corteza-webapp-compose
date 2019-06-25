@@ -3,7 +3,7 @@
     <div>{{ formatted }}</div>
   </span>
   <div v-else>
-    <label>{{ $t(field.label) || field.name }}</label>
+    <label>{{ field.label || field.name }}</label>
     <div>{{ formatted }}</div>
   </div>
 </template>

@@ -4,38 +4,38 @@
       <div class="row">
         <div class="col-md-12 well mb-1">
           <export :list="[trigger]" type="trigger" class="float-right" />
-          <h2>{{ $t(`trigger.edit.title`) }}</h2>
+          <h2>{{ $t('trigger.edit.title') }}</h2>
           <b-form-group horizontal
-                        :label="$t(`trigger.edit.nameLabel`)">
+                        :label="$t('trigger.edit.nameLabel')">
             <b-form-input v-model="trigger.name"
                           require
-                          :placeholder="$t(`trigger.edit.namePlaceholder`)"></b-form-input>
+                          :placeholder="$t('trigger.edit.namePlaceholder')"></b-form-input>
           </b-form-group>
 
           <b-form-group horizontal>
             <b-form-checkbox v-model="trigger.enabled"
                              :value="true"
                              plain
-                             :unchecked-value="false">{{ $t(`trigger.edit.enabled`) }}</b-form-checkbox>
+                             :unchecked-value="false">{{ $t('trigger.edit.enabled') }}</b-form-checkbox>
           </b-form-group>
 
           <b-form-group horizontal
-                        :label="$t(`trigger.edit.primaryModule.label`)">
+                        :label="$t('trigger.edit.primaryModule.label')">
             <b-form-select v-model="trigger.moduleID"
                            :options="modules"
                            text-field="name"
                            required
                            value-field="moduleID"
                            class="form-control">
-              <template slot="first"><option :value="null">{{ $t(`trigger.edit.primaryModule.none`) }}</option></template>
+              <template slot="first"><option :value="null">{{ $t('trigger.edit.primaryModule.none') }}</option></template>
             </b-form-select>
           </b-form-group>
 
           <b-form-group horizontal>
             <b-button-group>
-              <b-button variant="outline-dark" @click="insertSample('LeadConversion')">{{ $t(`trigger.edit.loadExampleConversion`) }}</b-button>
+              <b-button variant="outline-dark" @click="insertSample('LeadConversion')">{{ $t('trigger.edit.loadExampleConversion') }}</b-button>
             </b-button-group>
-            <b-button class="float-right" variant="outline-dark" @click="insertSample('Default', true)">{{ $t(`trigger.edit.reset`) }}</b-button>
+            <b-button class="float-right" variant="outline-dark" @click="insertSample('Default', true)">{{ $t('trigger.edit.reset') }}</b-button>
           </b-form-group>
 
           <b-form-group horizontal
@@ -62,13 +62,13 @@
           <b-form-group horizontal
                         :label="$t('trigger.triggerCondition.label')">
             <b-form-checkbox-group plain v-model="trigger.actions" stacked>
-              <b-form-checkbox value="manual">{{ $t(`trigger.triggerCondition.manual`) }}</b-form-checkbox>
-              <b-form-checkbox value="beforeCreate">{{ $t(`trigger.triggerCondition.beforeCreate`) }}</b-form-checkbox>
-              <b-form-checkbox value="afterCreate">{{ $t(`trigger.triggerCondition.afterCreate`) }}</b-form-checkbox>
-              <b-form-checkbox value="beforeUpdate">{{ $t(`trigger.triggerCondition.beforeUpdate`) }}</b-form-checkbox>
-              <b-form-checkbox value="afterUpdate">{{ $t(`trigger.triggerCondition.afterUpdate`) }}</b-form-checkbox>
-              <b-form-checkbox value="beforeDelete">{{ $t(`trigger.triggerCondition.beforeDelete`) }}</b-form-checkbox>
-              <b-form-checkbox value="afterDelete">{{ $t(`trigger.triggerCondition.afterDelete`) }}</b-form-checkbox>
+              <b-form-checkbox value="manual">{{ $t('trigger.triggerCondition.manual') }}</b-form-checkbox>
+              <b-form-checkbox value="beforeCreate">{{ $t('trigger.triggerCondition.beforeCreate') }}</b-form-checkbox>
+              <b-form-checkbox value="afterCreate">{{ $t('trigger.triggerCondition.afterCreate') }}</b-form-checkbox>
+              <b-form-checkbox value="beforeUpdate">{{ $t('trigger.triggerCondition.beforeUpdate') }}</b-form-checkbox>
+              <b-form-checkbox value="afterUpdate">{{ $t('trigger.triggerCondition.afterUpdate') }}</b-form-checkbox>
+              <b-form-checkbox value="beforeDelete">{{ $t('trigger.triggerCondition.beforeDelete') }}</b-form-checkbox>
+              <b-form-checkbox value="afterDelete">{{ $t('trigger.triggerCondition.afterDelete') }}</b-form-checkbox>
             </b-form-checkbox-group>
           </b-form-group>
         </div>
@@ -87,7 +87,7 @@
             </b-input-group>
           </b-form-group>
         </div>
-        <div id="trigger-manual" class="col-md-12 manual well text-justify" v-html="manualFromMd($t(`trigger.manual`, { joinArrays: '\n' }))"></div>
+        <div id="trigger-manual" class="col-md-12 manual well text-justify" v-html="manualFromMd($t('trigger.manual', { joinArrays: '\n' }))"></div>
 
       </div>
     </form>
