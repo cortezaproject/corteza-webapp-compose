@@ -68,7 +68,8 @@
                 </b-input-group>
               </b-form-group>
             </form>
-            <import :namespace="namespace" type="trigger" />
+            <import v-if="namespace.canCreateTrigger"
+                    :namespace="namespace" type="trigger" />
           </div>
         </div>
       </div>

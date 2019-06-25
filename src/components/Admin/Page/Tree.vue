@@ -28,12 +28,14 @@
                 class="action-disabled">
               </div>
 
-              <router-link :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
+              <router-link v-if="item.canEditPage"
+                           :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
                            class="link mr-2">{{ $t('general.label.pageBuilder') }}</router-link>
 
               <span>
-                <router-link :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
-                            class="edit mr-2">
+                <router-link v-if="item.canEditPage"
+                             :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
+                             class="edit mr-2">
                   <i class="icon-edit" v-if="item.moduleID === '0'"></i>
                 </router-link>
               </span>

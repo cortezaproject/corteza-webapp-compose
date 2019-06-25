@@ -18,7 +18,10 @@
             </menu-level>
           </b-collapse>
         <span class="page-title text-nowrap position-absolute" v-if="page">{{ page.title }}</span>
-        <router-link id="public_nav_to_admin_pannel" :to="{ name: 'admin' }" class="nav-link mw-100 text-nowrap">{{ $t('navigation.adminPanel') }}</router-link>
+        <router-link v-if="namespace.canManage"
+                     :to="{ name: 'admin' }"
+                     id="public_nav_to_admin_pannel"
+                     class="nav-link mw-100 text-nowrap">{{ $t('navigation.adminPanel') }}</router-link>
       </b-navbar>
     </header>
 </template>

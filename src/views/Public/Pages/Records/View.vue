@@ -1,9 +1,10 @@
 <template>
   <div :class="[editMode ? 'edit': 'view']">
     <toolbar :back-link="{name: 'pages'}"
-             :hideDelete="!module.canDeleteRecord"
-              @delete="handleDelete"
-              @save="handleUpdate()">
+             :hide-delete="!module.canDeleteRecord"
+             :read-only="!module.canUpdateRecord"
+             @delete="handleDelete"
+             @save="handleUpdate()">
 
       <b-button v-if="module.canCreateRecord"
                 pill

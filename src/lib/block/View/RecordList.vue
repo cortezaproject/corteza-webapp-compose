@@ -36,7 +36,7 @@
               <field-viewer v-else-if="col.canReadRecordValue" :field="col" value-only :record="row" :namespace="namespace"/>
               <i v-else class="text-secondary">{{ $t('field.noPermission') }}</i>
             </td>
-            <td v-if="recordListModule.canUpdateRecord || recordListModule.canDeleteRecord" class="text-right">
+            <td class="text-right">
               <router-link
                 :to="{ name: 'page.record', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
                 <i class="action icon-search"></i></router-link>

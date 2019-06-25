@@ -1,5 +1,5 @@
 <template>
-  <div class="centering-wrap inactive-area">
+  <div class="centering-wrap inactive-area" v-if="namespace.canManageNamespace">
     <admin-header :namespace="namespace"></admin-header>
     <router-view :namespace="namespace" />
   </div>
@@ -19,6 +19,12 @@ export default {
       type: Object,
       required: false,
     },
+  },
+
+  mounted () {
+    if (!this.namespace.canManageNamespace) {
+      this.$router.push({ name: 'pages' })
+    }
   },
 }
 </script>

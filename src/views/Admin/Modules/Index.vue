@@ -71,7 +71,8 @@
                 </b-input-group>
               </b-form-group>
             </form>
-            <import :namespace="namespace" type="module" />
+            <import v-if="namespace.canCreateModule"
+                    :namespace="namespace" type="module" />
           </div>
         </div>
       </div>

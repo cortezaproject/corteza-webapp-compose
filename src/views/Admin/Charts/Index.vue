@@ -51,7 +51,8 @@
                 </b-input-group>
               </b-form-group>
             </form>
-            <import :namespace="namespace" type="chart" />
+            <import v-if="namespace.canCreateChart"
+                    :namespace="namespace" type="chart" />
           </div>
         </div>
       </div>

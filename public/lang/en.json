@@ -442,6 +442,11 @@
         "specific": "Delete namespace \"{{target}}\"",
         "description": ""
       },
+      "manage": {
+        "title": "Manage any namespace",
+        "specific": "Manage namespace \"{{target}}\"",
+        "description": "Allow access to namespace's admin pages"
+      },
       "module-create": {
         "title": "Create modules under any namespace",
         "specific": "Create modules under namespace \"{{target}}\"",

@@ -1,6 +1,7 @@
 <template>
   <div class="view">
     <toolbar :back-link="{name: 'admin.pages'}"
+             :read-only="!module.canUpdateRecord"
              :hide-delete="true">
       <b-button v-if="module.canCreateRecord"
                 pill
