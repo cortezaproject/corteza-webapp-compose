@@ -29,6 +29,11 @@ export default {
       // this integer when component is mounted and then again .3sec later
       calDep: 0,
       events: [],
+
+      loaded: {
+        start: null,
+        end: null,
+      },
     }
   },
 
@@ -95,6 +100,15 @@ export default {
     }),
 
     loadEvents (start, end) {
+      if (start.isSame(this.loaded.start) && end.isSame(this.loaded.end)) {
+        // loadEvents could be called multiple times with the same
+        // parameters, causing same events building up in the array.
+        return
+      }
+
+      this.loaded.start = start
+      this.loaded.end = end
+
       this.events = []
       this.options.feeds.forEach(feed => {
         this.findModuleByID({ moduleID: feed.moduleID }).then((module) => {
