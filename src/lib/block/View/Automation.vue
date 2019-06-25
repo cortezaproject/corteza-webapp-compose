@@ -4,7 +4,7 @@
                 :key="b.triggerID"
                 :variant="b.variant || 'primary'"
                 class="flex-grow-1 mb-1"
-                @click.prevent="runTriggers({ triggerID: b.triggerID, action: 'manual', module, record })">{{ b.label }}</b-button>
+                @click.prevent="runTriggers({ triggerID: b.triggerID, action: 'manual', module, record, namespace })">{{ b.label }}</b-button>
     </div>
 </template>
 <script>

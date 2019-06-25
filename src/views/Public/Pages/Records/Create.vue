@@ -82,7 +82,7 @@ export default {
 
   methods: {
     handleCreate () {
-      this.createRecord(this.module, this.record)
+      this.createRecord(this.namespace, this.module, this.record)
         .then((record) => {
           this.$router.push({ name: 'page.record.edit', params: { ...this.$route.params, recordID: record.recordID } })
         })

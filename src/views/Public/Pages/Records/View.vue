@@ -116,7 +116,7 @@ export default {
     },
 
     handleDelete () {
-      this.deleteRecord(this.module, this.record)
+      this.deleteRecord(this.namespace, this.module, this.record)
         .then(() => {
           this.$router.push({ name: 'page', params: { pageID: this.page.pageID } })
         })

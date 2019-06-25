@@ -4,8 +4,8 @@ import i18next from '../i18next'
 
 export default {
   methods: {
-    async createRecord (module, record) {
-      let ctx = { module, record }
+    async createRecord (namespace, module, record) {
+      let ctx = { namespace, module, record }
 
       return this.runTriggers({ ...ctx, action: 'beforeCreate' })
         .then(() => this.$ComposeAPI.recordCreate(record))
@@ -17,8 +17,8 @@ export default {
         .then(({ record }) => Promise.resolve(record))
     },
 
-    async updateRecord (module, record) {
-      let ctx = { module, record }
+    async updateRecord (namespace, module, record) {
+      let ctx = { namespace, module, record }
 
       return this.runTriggers({ ...ctx, action: 'beforeUpdate' })
         .then(() => this.$ComposeAPI.recordUpdate(record))
@@ -30,8 +30,8 @@ export default {
         .then(({ record }) => Promise.resolve(record))
     },
 
-    async deleteRecord (module, record) {
-      let ctx = { module, record }
+    async deleteRecord (namespace, module, record) {
+      let ctx = { namespace, module, record }
 
       return this.runTriggers({ ...ctx, action: 'beforeDelete' })
         .then(() => this.$ComposeAPI.recordDelete(record))
@@ -42,7 +42,9 @@ export default {
     // Loads triggers, filters them according to context and runs them all
     async runTriggers (ctx) {
       ctx = this.triggerContext(ctx)
-      return this.$store.dispatch('trigger/load').then(triggers => Promise.all(
+      const { namespace: { namespaceID } } = ctx
+
+      return this.$store.dispatch('trigger/load', { namespaceID }).then(triggers => Promise.all(
         triggers
           .filter(t => t.runnable(ctx))
           .map(t => t.run(ctx))

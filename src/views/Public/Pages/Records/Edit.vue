@@ -24,7 +24,7 @@ export default {
 
   methods: {
     handleUpdate () {
-      this.updateRecord(this.module, this.record)
+      this.updateRecord(this.namespace, this.module, this.record)
         .then((record) => {
           this.$router.push({ name: 'page.record', params: { ...this.$route.params } })
         })
