@@ -3,7 +3,7 @@
     <public-header :page="page"
                    :namespace="namespace"
                    @toggleNav="navVisible = $event" />
-    <router-view :namespace="namespace && page"
+    <router-view :namespace="namespace"
                  :page="page"
                  :class="routerViewClass" />
   </div>

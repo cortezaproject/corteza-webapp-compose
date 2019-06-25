@@ -386,7 +386,7 @@
       "loading": "Loading",
       "uploading": "Uploading",
       "download": "Download",
-      "uploadProgress": "(File size: {{0}}, uploaded {{1}})",
+      "attachmentFileInfo": "(File size: {{0}}, uploaded {{1}})",
       "yes": "Yes",
       "no": "No",
       "view": "View",

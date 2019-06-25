@@ -1,5 +1,6 @@
 // Global Axios defaults
 import axios from 'axios'
+import moment from 'moment'
 import alertMixin from '@/mixins/alert'
 import prettyMixin from '@/mixins/pretty'
 import BootstrapVue from 'bootstrap-vue'
@@ -21,6 +22,8 @@ if (!String.format) {
     })
   }
 }
+
+moment.locale('en')
 
 // Global Vue settings
 

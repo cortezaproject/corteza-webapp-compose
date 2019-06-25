@@ -2,31 +2,32 @@
   <div>
     <div v-if="mode === 'list'" class="list">
       <div v-for="(a, index) in attachments" :key="a.attachmentID" v-if="a" class="item">
-        <a :href="a.download">
-          <font-awesome-icon :icon="['fas', 'download']"></font-awesome-icon>
-          {{a.name}}
-        </a>
-        <i18next path="general.label.uploadProgress" tag="label">
-          <span>{{ size(a) }}</span>
-          <span>{{ uploadedAt(a) }}</span>
-        </i18next>
-        <b-button variant="link"
-                  class="delete"
-                  v-if="enableDelete"
-                  @click="deleteAttachment(index)"><i class="action icon-trash"></i></b-button>
+        <div class="row">
+          <div class="col-sm-10">
+            <attachment-link :attachment="a" />
+            <i18next path="general.label.attachmentFileInfo" tag="label">
+              <span>{{ size(a) }}</span>
+              <span>{{ uploadedAt(a) }}</span>
+            </i18next>
+          </div>
+          <div class="col-sm-2 text-right">
+            <a :href="a.download"><font-awesome-icon :icon="['fas', 'download']"></font-awesome-icon></a>
+            <b-button variant="link"
+                      class="delete right inline"
+                      v-if="enableDelete"
+                      @click="deleteAttachment(index)"><i class="action icon-trash"></i></b-button>
+          </div>
+        </div>
       </div>
     </div>
 
     <div v-else-if="mode === 'grid'" class="grid">
       <div v-for="a in attachments" :key="a.attachmentID" v-if="a" class="item">
-        <a :href="a.download">
-          <font-awesome-icon
-            :icon="['far', 'file-'+ext(a)]"
-            title="Open bookmarks"
-          ></font-awesome-icon>
+        <attachment-link :attachment="a">
+          <font-awesome-icon :icon="['far', 'file-'+ext(a)]"></font-awesome-icon>
           {{a.name}}
-        </a>
-        <i18next path="general.label.uploadProgress" tag="label">
+        </attachment-link>
+        <i18next path="general.label.attachmentFileInfo" tag="label">
           <span>{{ size(a) }}</span>
           <span>{{ uploadedAt(a) }}</span>
         </i18next>
@@ -50,10 +51,7 @@
             title="Open bookmarks"
           ></font-awesome-icon>
         </div>
-        <a :href="a.download">
-          {{ $t('general.label.download') }}
-        </a>
-        {{a.name}}
+        <attachment-link :attachment="a" />
       </div>
     </div>
   </div>
@@ -65,10 +63,12 @@ import Attachment from '@/lib/attachment'
 import Namespace from '@/lib/namespace'
 import { canPreview } from 'corteza-webapp-common/src/lib/file_preview'
 import { PreviewInline } from 'corteza-webapp-common/src/components/FilePreview/index'
+import AttachmentLink from './Link'
 
 export default {
   components: {
     PreviewInline,
+    AttachmentLink,
   },
 
   props: {
@@ -148,7 +148,7 @@ export default {
     },
 
     uploadedAt (a) {
-      return moment(a.updatedAt || a.createdAt).fromNow()
+      return moment(a.updatedAt || a.createdAt).locale('en').fromNow()
     },
 
     openLightbox (e) {
@@ -205,10 +205,6 @@ export default {
 .list {
   .item {
     min-height: 30px;
-
-    .delete {
-      float: right;
-    }
   }
 }
 

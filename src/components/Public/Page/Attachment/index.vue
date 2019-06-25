@@ -5,7 +5,7 @@
           <font-awesome-icon :icon="['fas', 'download']"></font-awesome-icon>
           {{attachment.name}}
         </a>
-        <i18next path="general.label.uploadProgress" tag="label">
+        <i18next path="general.label.attachmentFileInfo" tag="label">
           <span>{{attachment.size}}</span>
           <span>{{attachment.changedAt}}</span>
         </i18next>
@@ -19,7 +19,7 @@
           ></font-awesome-icon>
           {{aattachment.name}}
         </a>
-        <i18next path="general.label.uploadProgress" tag="label">
+        <i18next path="general.label.attachmentFileInfo" tag="label">
           <span>{{attachment.size}}</span>
           <span>{{attachment.changedAt}}</span>
         </i18next>
