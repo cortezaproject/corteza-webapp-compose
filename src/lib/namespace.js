@@ -33,6 +33,8 @@ export default class Namespace {
       typeof args.canDeleteNamespace === 'boolean' ? args.canDeleteNamespace : false
     this.canUpdateNamespace =
       typeof args.canUpdateNamespace === 'boolean' ? args.canUpdateNamespace : false
+    this.canManageNamespace =
+      typeof args.canManageNamespace === 'boolean' ? args.canManageNamespace : false
     this.canGrant = typeof args.canGrant === 'boolean' ? args.canGrant : false
   }
 }
