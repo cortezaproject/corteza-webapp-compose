@@ -43,7 +43,8 @@
           :meta="(a.meta.preview || {}).image || {}"
           :name="a.name"
           :alt="a.name"
-          :preview-style="{ width: 'unset' }" />
+          :preview-style="{ width: 'unset' }"
+          :labels="previewLabels" />
 
         <div v-else>
           <font-awesome-icon
@@ -106,6 +107,15 @@ export default {
   computed: {
     inlineUrl () {
       return (a) => this.ext(a) === 'pdf' ? a.download : a.previewUrl
+    },
+
+    previewLabels () {
+      return {
+        loading: this.$t('preview.pdf.loading'),
+        firstPagePreview: this.$t('preview.pdf.firstPagePreview'),
+        pageLoadFailed: this.$t('preview.pdf.pageLoadFailed'),
+        pageLoading: this.$t('preview.pdf.pageLoading'),
+      }
     },
 
     canPreview () {

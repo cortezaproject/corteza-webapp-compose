@@ -713,6 +713,16 @@
     }
   },
 
+  "preview": {
+    "pdf": {
+      "loading": "Loading",
+      "downloadForAll": "Download to see all pages",
+      "firstPagePreview": "First page preview",
+      "pageLoadFailed": "Page failed to load",
+      "pageLoading": "$t(preview.pdf.loading)"
+    }
+  },
+
   "notification": {
     "general": {
       "composeAccessNotAllowed": "Not allowed to access Compose"

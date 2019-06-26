@@ -4,6 +4,7 @@
     :src="(attachment || {}).pdf || (attachment || {}).src"
     :name="(attachment || {}).name"
     :alt="(attachment || {}).name"
+    :labels="previewLabels"
     @close="attachment=undefined">
 
     <p slot="header.left" class="m-0">
@@ -44,6 +45,15 @@ export default {
           this.attachment = undefined
         }
       },
+    },
+
+    previewLabels () {
+      return {
+        loading: this.$t('preview.pdf.loading'),
+        downloadForAll: this.$t('preview.pdf.downloadForAll'),
+        pageLoadFailed: this.$t('preview.pdf.pageLoadFailed'),
+        pageLoading: this.$t('preview.pdf.pageLoading'),
+      }
     },
   },
 
