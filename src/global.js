@@ -9,6 +9,7 @@ import { PermissionsButton } from 'corteza-webapp-common/components'
 import VTooltip from 'v-tooltip'
 import Vue from 'vue'
 import './ui'
+import './fullCalendar'
 
 axios.defaults.timeout = 15000
 

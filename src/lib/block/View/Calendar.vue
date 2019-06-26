@@ -8,7 +8,6 @@ import { mapGetters, mapActions } from 'vuex'
 import base from './base'
 import { FullCalendar } from 'vue-full-calendar'
 import 'fullcalendar/dist/fullcalendar.css'
-import './fcLocales'
 import Record from '@/lib/record'
 import { Calendar } from '@/lib/block/Calendar'
 
