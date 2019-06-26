@@ -241,7 +241,7 @@ export default {
           ui: {
             alert: {
               success: (text) => this.raiseSuccessAlert(text),
-              error: (text) => this.raiseErrorAlert(text),
+              error: (text) => this.raiseWarningAlert(text),
             },
           },
         },
