@@ -154,9 +154,9 @@ export default {
               if (/^[0-9]+$/.test(keyword)) {
                 return $system.userRead({ userID: keyword })
               } else {
-                return $system.userList({ email: keyword }).then(uu => {
-                  if (uu.length > 0) {
-                    return uu[0]
+                return $system.userList({ email: keyword }).then(({ set }) => {
+                  if (set.length > 0) {
+                    return set[0]
                   } else {
                     return null
                   }

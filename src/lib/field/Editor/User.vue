@@ -66,8 +66,8 @@ export default {
 
     search (query) {
       if (query) {
-        this.$SystemAPI.userList({ query }).then(uu => {
-          this.users = uu.map(this.convert)
+        this.$SystemAPI.userList({ query }).then(({ set }) => {
+          this.users = set.map(this.convert)
         })
       }
     },
