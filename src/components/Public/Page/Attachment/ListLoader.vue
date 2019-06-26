@@ -158,7 +158,7 @@ export default {
     },
 
     uploadedAt (a) {
-      return moment(a.updatedAt || a.createdAt).locale('en').fromNow()
+      return moment(a.updatedAt || a.createdAt).fromNow()
     },
 
     openLightbox (e) {
