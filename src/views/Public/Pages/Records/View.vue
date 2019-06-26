@@ -16,7 +16,7 @@
                 variant="outline-secondary"
                 @click.prevent="$router.push({ name: 'page.record.edit', params: $route.params })" >{{ $t('general.label.edit') }}</b-button>
 
-      <b-button v-if="module.canUpdateRecord"
+      <b-button v-if="module.canUpdateRecord && editMode"
                 :disabled="!record || !record.isValid()"
                 @click.prevent="handleUpdate"
                 pill
