@@ -3,6 +3,7 @@
     :draggable="namespace.canCreatePage"
     :data="{children:list}"
     element="ul"
+    mixinParentKey="parent"
     :class="{'list-group': true, 'grab': namespace.canCreatePage}"
     @changePosition="handleChangePosition">
 
@@ -90,20 +91,22 @@ export default {
   methods: {
     handleChangePosition ({ beforeParent, data, afterParent }) {
       const { namespaceID } = this.namespace
+      const beforeID = beforeParent.parent ? beforeParent.pageID : '0'
+      const afterID = afterParent.parent ? afterParent.pageID : '0'
 
       const reorder = () => {
         const pageIDs = afterParent.children.map(p => p.pageID)
         if (pageIDs.length > 1) {
-          this.$ComposeAPI.pageReorder({ namespaceID, selfID: afterParent.pageID || '0', pageIDs: pageIDs }).then(() => {
+          this.$ComposeAPI.pageReorder({ namespaceID, selfID: afterID, pageIDs: pageIDs }).then(() => {
             this.raiseSuccessAlert(this.$t('notification.page.reordered'))
             this.$emit('reorder')
           }).catch(this.defaultErrorHandler(this.$t('notification.page.pageMoveFailed')))
         }
       }
 
-      if (beforeParent.pageID !== afterParent.pageID) {
+      if (beforeID !== afterID) {
         // Page moved to a different parent
-        data.selfID = afterParent.pageID
+        data.selfID = afterID
         data.namespaceID = namespaceID
 
         this.$ComposeAPI.pageUpdate(data).then(() => {
