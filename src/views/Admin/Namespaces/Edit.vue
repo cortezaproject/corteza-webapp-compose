@@ -137,7 +137,7 @@ export default {
             this.$router.push({ name: 'root' })
           }
           this.fetchNamespace()
-        }).catch(this.defaultErrorHandler(this.$t('notification.namespace.saveFailed')))
+        }).catch(this.raiseWarningAlert(this.$t('notification.namespace.saveFailed')))
       } else {
         this.$store.dispatch('namespace/create', { name, slug, enabled, meta }).then((ns) => {
           this.namespace.namespaceID = ns.namespaceID
@@ -146,7 +146,7 @@ export default {
             this.$router.push({ name: 'root' })
           }
           this.fetchNamespace()
-        }).catch(this.defaultErrorHandler(this.$t('notification.namespace.updateFailed')))
+        }).catch(this.raiseWarningAlert(this.$t('notification.namespace.createFailed')))
       }
     },
 
@@ -154,7 +154,7 @@ export default {
       const { namespaceID } = this.namespace
       this.$store.dispatch('namespace/delete', { namespaceID }).then(() => {
         this.$router.push({ name: 'root' })
-      }).catch(this.defaultErrorHandler(this.$t('notification.namespace.deleteFailed')))
+      }).catch(this.raiseWarningAlert(this.$t('notification.namespace.deleteFailed')))
     },
   },
 }

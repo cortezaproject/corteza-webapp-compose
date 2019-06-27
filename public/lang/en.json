@@ -730,6 +730,7 @@
     "namespace": {
       "saveFailed": "Could not save this namespace",
       "deleteFailed": "Could not delete this namespace",
+      "createFailed": "Could not create namespace",
 
       "saved": "Namespace saved"
     },
