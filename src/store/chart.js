@@ -30,7 +30,11 @@ export default function (ComposeAPI) {
     },
 
     actions: {
-      async load ({ commit, getters }, { namespaceID, force = false } = {}) {
+      async load ({ commit, getters }, { namespaceID, clear = false, force = false } = {}) {
+        if (clear) {
+          commit(types.clearSet)
+        }
+
         if (!force && getters.set.length > 1) {
           // When there's forced load, make sure we have more than 1 item in the set
           // in the scenario when user came to detail page first and has one item loaded
