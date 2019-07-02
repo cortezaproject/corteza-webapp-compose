@@ -90,6 +90,10 @@ export default {
   },
 
   errorCaptured (err) {
+    // Capture and output error into the block
+    // + log it to console so we do not lost the details
+    /* eslint-disable no-console */
+    console.error(err)
     this.blockComponentError = err
     return false
   },
