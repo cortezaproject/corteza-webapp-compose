@@ -136,8 +136,8 @@ export default {
                   params = { ...params, ...filter }
                 }
 
-                return $compose.recordList(params).then(({ records, filter }) => {
-                  return { filter, records: records.map(r => new Record(module, r)) }
+                return $compose.recordList(params).then(({ set, filter }) => {
+                  return { filter, records: (set || []).map(r => new Record(module, r)) }
                 })
               }
             },
