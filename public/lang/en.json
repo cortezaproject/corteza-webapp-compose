@@ -383,6 +383,7 @@
       "back": "Back",
       "backWithoutSave": "Back (without saving changes)",
       "dropFiles": "Click or drop files here to upload",
+      "uploadDisabledUntilRecordIsCreated": "Save record to enable upload",
       "loading": "Loading",
       "uploading": "Uploading",
       "download": "Download",

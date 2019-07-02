@@ -1,11 +1,19 @@
 <template>
-  <b-form-group :label="field.label || field.name">
-    <uploader :endpoint="endpoint" @uploaded="appendAttachment" />
+  <b-form-group v-if="record.recordID"
+                :label="field.label || field.name">
+    <uploader :endpoint="endpoint"
+              @uploaded="appendAttachment" />
     <list-loader kind="record"
                  :set.sync="set"
                  :namespace="namespace"
                  enable-delete
                  mode="list"></list-loader>
+  </b-form-group>
+  <b-form-group v-else
+                :label="field.label || field.name">
+    <div class="text-center">
+      <i>{{ $t('general.label.uploadDisabledUntilRecordIsCreated') }}</i>
+    </div>
   </b-form-group>
 </template>
 <script>
