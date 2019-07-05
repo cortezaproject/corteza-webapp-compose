@@ -1,5 +1,6 @@
 <script>
 import base from './base'
+import { mapGetters } from 'vuex'
 
 export default {
   extends: base,
@@ -11,6 +12,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      findByID: 'user/findByID',
+    }),
+
     formatted () {
       return this.user ? (this.field.options.formatter(this.user) || this.value) : this.$t('field.kind.user.na')
     },
@@ -29,9 +34,7 @@ export default {
   methods: {
     load () {
       if (this.value && this.value !== (this.user || {}).userID) {
-        this.$SystemAPI.userRead({ userID: this.value }).then(u => {
-          this.user = u
-        })
+        this.user = this.findByID(this.value)
       }
     },
   },

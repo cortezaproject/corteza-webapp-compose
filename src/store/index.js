@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import ComposeAPI from 'corteza-webapp-common/src/lib/corteza-server/compose'
+import SystemAPI from 'corteza-webapp-common/src/lib/corteza-server/system'
 import namespace from './namespace'
 import module from './module'
 import page from './page'
 import trigger from './trigger'
 import chart from './chart'
+import user from './user'
 
 Vue.use(Vuex)
 
@@ -18,6 +20,7 @@ const store = new Vuex.Store({
     page: page(ComposeAPI),
     trigger: trigger(ComposeAPI),
     chart: chart(ComposeAPI),
+    user: user(SystemAPI),
   },
 })
 
