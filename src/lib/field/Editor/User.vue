@@ -4,7 +4,7 @@
                 @search="search"
                 option-value="userID"
                 option-text="label"
-                :placeholder="$t('field.kind.user.suggestionPlacehodler')"
+                :placeholder="$t('field.kind.user.suggestionPlaceholder')"
                 v-model="selected">
     </vue-select>
 
