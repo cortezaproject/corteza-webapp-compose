@@ -81,6 +81,9 @@ export default {
           this.$store.dispatch('trigger/load', p)
             .catch(this.errHandler),
 
+          this.$store.dispatch('user/load')
+            .catch(this.errHandler),
+
         ]).catch(this.errHandler).then(() => {
           this.loaded = true
         })

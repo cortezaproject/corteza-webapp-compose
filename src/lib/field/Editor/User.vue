@@ -16,6 +16,7 @@
 <script>
 import base from './base'
 import { VueSelect } from 'vue-select'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -31,10 +32,15 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      findByID: 'user/findByID',
+      allUsers: 'user/set',
+    }),
+
     selected: {
       get () {
         if (this.value) {
-          this.findByID(this.value)
+          this.findUserByID(this.value)
         }
 
         return this.users.find(v => v.value === this.value) || { value: this.value, label: this.value }
@@ -66,17 +72,13 @@ export default {
 
     search (query) {
       if (query) {
-        this.$SystemAPI.userList({ query }).then(({ set }) => {
-          this.users = set.map(this.convert)
-        })
+        this.users = this.allUsers.map(this.convert)
       }
     },
 
-    findByID (userID) {
+    findUserByID (userID) {
       if (!this.users.find(v => v.value === userID)) {
-        this.$SystemAPI.userRead({ userID }).then(u => {
-          this.users.push(this.convert(u))
-        })
+        this.users.push(this.convert(this.findByID(userID)))
       }
     },
   },
