@@ -86,7 +86,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/components/blocks.scss";
+// @todo to be removed, should be part of general style
+@import "@/themes/corteza-base/components/blocks.scss";
 
 h2 {
   font-size: 15px;

@@ -1,6 +1,12 @@
 var webpack = require('webpack')
 var exec = require('child_process').execSync
 
+if (process.env.NODE_ENV === 'test') {
+  var Vue = require('vue')
+  Vue.config.devtools = false
+  Vue.config.productionTip = false
+}
+
 const publicPath = process.env.NODE_ENV === 'production' ? '/compose' : '/'
 
 let optimization
@@ -43,6 +49,23 @@ module.exports = {
       options[0][0].ignore.push('config*js')
       return options
     })
+
+    const scssNormal = config.module.rule('scss').oneOf('normal')
+
+    scssNormal.use('sass-loader')
+      .loader('sass-loader')
+      .tap(options => ({
+        ...options,
+        sourceMap: true,
+        sourceMapContents: false,
+      }))
+
+    // Load CSS assets according to their location
+    scssNormal.use('resolve-url-loader')
+      .loader('resolve-url-loader').options({
+        keepQuery: true,
+      })
+      .before('sass-loader')
   },
 
   // devServer Options don't belong into `configureWebpack`
@@ -56,8 +79,9 @@ module.exports = {
     sourceMap: process.env['NODE_ENV'] === 'development',
     loaderOptions: {
       sass: {
+        // @todo cleanup all components and remove this global iport
         data: `
-          @import "@/assets/sass/variables.scss";
+          @import "@/themes/corteza-base/variables.scss";
         `,
       },
     },

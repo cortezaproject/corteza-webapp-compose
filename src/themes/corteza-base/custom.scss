@@ -1,7 +1,4 @@
-@import "./variables";
-@import "./components/actions";
 /* stylelint-disable no-descending-specificity */
-
 html,
 body {
   height: 100vh;
@@ -71,6 +68,17 @@ label {
 
   &::placeholder {
     color: $secondary;
+  }
+}
+
+.modal-body {
+  textarea {
+    display: block;
+    width: 100%;
+  }
+
+  .form-control {
+    margin-bottom: 10px;
   }
 }
 
@@ -175,16 +183,16 @@ li.dropdown:hover > .dropdown-menu {
     font-weight: bold;
   }
 
+  input[type] {
+    font-weight: 300;
+  }
+
   input[type],
   textarea,
   select {
     &:focus {
       border: 1px solid $primary;
     }
-  }
-
-  input[type] {
-    font-weight: 300;
   }
 }
 
@@ -240,17 +248,6 @@ table {
 
 .modal-title {
   font-weight: 900;
-}
-
-.modal-body {
-  textarea {
-    display: block;
-    width: 100%;
-  }
-
-  .form-control {
-    margin-bottom: 10px;
-  }
 }
 
 .tooltip {

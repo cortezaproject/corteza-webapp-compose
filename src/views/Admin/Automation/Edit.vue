@@ -104,7 +104,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import Trigger from '@/lib/trigger'
 import Record from '@/lib/record'
-import * as TriggerCodeSamples from '@/assets/triggers/samples'
+import * as TriggerCodeSamples from '@/triggers/samples'
 import triggerRunner from '@/mixins/trigger_runner'
 import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
 import { Ace as AceEditor } from 'vue2-brace-editor'

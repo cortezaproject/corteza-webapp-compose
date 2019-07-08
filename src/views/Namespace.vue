@@ -38,7 +38,7 @@ export default {
 
   data () {
     return {
-      logo: require('@/assets/images/corteza-logo-with-tagline.png'),
+      logo: require('@/themes/corteza-base/img/logo.png'),
       loaded: false,
       error: '',
       alerts: [], // { variant: 'info', message: 'foo' },

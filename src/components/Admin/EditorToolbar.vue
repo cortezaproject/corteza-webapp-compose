@@ -34,8 +34,9 @@ export default {
   },
 }
 </script>
-<style scoped lang="scss">
-@import "@/assets/sass/components/actions.scss";
+<style lang="scss" scoped>
+// @todo to be removed, should be part of general style
+@import "@/themes/corteza-base/components/actions.scss";
 
 .toolbar {
   background: $white;
