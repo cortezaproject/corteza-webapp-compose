@@ -35,6 +35,7 @@ module.exports = {
     // other webpack options to merge in ...
     plugins: [
       new webpack.DefinePlugin({
+        WEBAPP: JSON.stringify('Corteza Compose'),
         VERSION: JSON.stringify(('' + exec('git describe --always --tags')).trim()),
         BUILD_TIME: JSON.stringify((new Date()).toISOString()),
       }),

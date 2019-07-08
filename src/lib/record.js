@@ -1,5 +1,5 @@
 import Module from './module'
-import i18next from '../i18next'
+import i18next from 'i18next'
 
 const fields = Symbol('moduleFieldIndex')
 

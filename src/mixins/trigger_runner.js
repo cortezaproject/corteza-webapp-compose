@@ -1,6 +1,6 @@
 import Record from '@/lib/record'
 import Module from '@/lib/module'
-import i18next from '../i18next'
+import i18next from 'i18next'
 
 export default {
   methods: {
