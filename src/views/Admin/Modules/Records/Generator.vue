@@ -40,8 +40,8 @@
 </template>
 
 <script>
-import FieldEditor from '@/lib/field/Editor'
-import Namespace from '@/lib/namespace'
+import FieldEditor from 'corteza-webapp-compose/src/lib/field/Editor'
+import Namespace from 'corteza-webapp-compose/src/lib/namespace'
 
 export default {
   components: {

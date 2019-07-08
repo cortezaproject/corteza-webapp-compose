@@ -24,9 +24,9 @@
   </grid>
 </template>
 <script>
-import Grid from '@/components/Common/Grid'
-import BlockViewer from '@/lib/block/View'
-import BlockEditor from '@/lib/block/Edit'
+import Grid from 'corteza-webapp-compose/src/components/Common/Grid'
+import BlockViewer from 'corteza-webapp-compose/src/lib/block/View'
+import BlockEditor from 'corteza-webapp-compose/src/lib/block/Edit'
 
 export default {
   name: 'public-grid',

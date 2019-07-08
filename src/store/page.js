@@ -1,4 +1,4 @@
-import Page from '@/lib/page'
+import Page from 'corteza-webapp-compose/src/lib/page'
 
 const types = {
   pending: 'pending',

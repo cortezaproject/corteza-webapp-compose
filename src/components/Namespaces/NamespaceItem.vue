@@ -49,7 +49,7 @@ export default {
 
   data () {
     return {
-      logo: require('@/themes/corteza-base/img/logo.png'),
+      logo: require('corteza-webapp-compose/src/themes/corteza-base/img/logo.png'),
     }
   },
 

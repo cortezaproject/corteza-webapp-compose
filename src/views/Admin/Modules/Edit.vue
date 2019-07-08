@@ -81,14 +81,14 @@
 <script>
 import { mapActions } from 'vuex'
 import draggable from 'vuedraggable'
-import FieldConfigurator from '@/lib/field/Configurator'
-import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
-import FieldRowEdit from '@/components/Admin/Module/FieldRowEdit'
-import FieldRowView from '@/components/Admin/Module/FieldRowView'
-import Field from '@/lib/field'
-import Module from '@/lib/module'
-import EditorToolbar from '@/components/Admin/EditorToolbar'
-import Export from '@/components/Admin/Export'
+import FieldConfigurator from 'corteza-webapp-compose/src/lib/field/Configurator'
+import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
+import FieldRowEdit from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowEdit'
+import FieldRowView from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowView'
+import Field from 'corteza-webapp-compose/src/lib/field'
+import Module from 'corteza-webapp-compose/src/lib/module'
+import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
+import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 
 export default {
   components: {

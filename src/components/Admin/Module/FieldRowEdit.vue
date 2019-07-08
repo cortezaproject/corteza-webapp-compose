@@ -60,8 +60,8 @@
 </template>
 
 <script>
-import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
-import fieldList from '@/lib/field/list'
+import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
+import fieldList from 'corteza-webapp-compose/src/lib/field/list'
 
 export default {
   components: {

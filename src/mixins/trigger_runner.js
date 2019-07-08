@@ -1,5 +1,5 @@
-import Record from '@/lib/record'
-import Module from '@/lib/module'
+import Record from 'corteza-webapp-compose/src/lib/record'
+import Module from 'corteza-webapp-compose/src/lib/module'
 import i18next from 'i18next'
 
 export default {

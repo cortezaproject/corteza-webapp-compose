@@ -1,4 +1,4 @@
-import Module from '@/lib/module'
+import Module from 'corteza-webapp-compose/src/lib/module'
 
 const types = {
   pending: 'pending',

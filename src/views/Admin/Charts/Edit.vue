@@ -43,13 +43,13 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import draggable from 'vuedraggable'
-import Report from '@/components/Admin/Chart/Editor/Report'
-import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
-import Chart from '@/lib/chart.js'
+import Report from 'corteza-webapp-compose/src/components/Admin/Chart/Editor/Report'
+import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
+import Chart from 'corteza-webapp-compose/src/lib/chart.js'
 import ChartJS from 'chart.js'
-import EditorToolbar from '@/components/Admin/EditorToolbar'
-import Namespace from '@/lib/namespace'
-import Export from '@/components/Admin/Export'
+import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
+import Namespace from 'corteza-webapp-compose/src/lib/namespace'
+import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 
 const defaultReport = {
   moduleID: undefined,

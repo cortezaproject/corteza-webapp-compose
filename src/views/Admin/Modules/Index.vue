@@ -82,12 +82,12 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Field from '@/lib/field'
-import Module from '@/lib/module'
-import TableSortableColumn from '@/components/Admin/TableSortableColumn'
-import tableSort from '@/mixins/table_sort'
-import Import from '@/components/Admin/Import'
-import Export from '@/components/Admin/Export'
+import Field from 'corteza-webapp-compose/src/lib/field'
+import Module from 'corteza-webapp-compose/src/lib/module'
+import TableSortableColumn from 'corteza-webapp-compose/src/components/Admin/TableSortableColumn'
+import tableSort from 'corteza-webapp-compose/src/mixins/table_sort'
+import Import from 'corteza-webapp-compose/src/components/Admin/Import'
+import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 
 export default {
   name: 'ModuleList',

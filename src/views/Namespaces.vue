@@ -31,7 +31,7 @@
   </main>
 </template>
 <script>
-import NamespaceItem from '@/components/Namespaces/NamespaceItem'
+import NamespaceItem from 'corteza-webapp-compose/src/components/Namespaces/NamespaceItem'
 import { PermissionsModal } from 'corteza-webapp-common/components'
 
 export default {

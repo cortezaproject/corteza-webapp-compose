@@ -102,17 +102,17 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Trigger from '@/lib/trigger'
-import Record from '@/lib/record'
-import * as TriggerCodeSamples from '@/triggers/samples'
-import triggerRunner from '@/mixins/trigger_runner'
-import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
+import Trigger from 'corteza-webapp-compose/src/lib/trigger'
+import Record from 'corteza-webapp-compose/src/lib/record'
+import * as TriggerCodeSamples from 'corteza-webapp-compose/src/triggers/samples'
+import triggerRunner from 'corteza-webapp-compose/src/mixins/trigger_runner'
+import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
 import { Ace as AceEditor } from 'vue2-brace-editor'
 import 'brace/mode/javascript'
 import 'brace/theme/monokai'
-import EditorToolbar from '@/components/Admin/EditorToolbar'
-import RecordField from '@/lib/field/Editor/Record'
-import Export from '@/components/Admin/Export'
+import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
+import RecordField from 'corteza-webapp-compose/src/lib/field/Editor/Record'
+import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 
 const md = require('markdown-it')('commonmark')
 

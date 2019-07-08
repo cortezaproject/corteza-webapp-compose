@@ -33,13 +33,13 @@
   </div>
 </template>
 <script>
-import fieldKinds from '@/lib/field/list'
-import Field from '@/lib/field'
-import Module from '@/lib/module'
-import Record from '@/lib/record'
-import FieldConfigurator from '@/lib/field/Configurator'
-import FieldEditor from '@/lib/field/Editor'
-import FieldViewer from '@/lib/field/Viewer'
+import fieldKinds from 'corteza-webapp-compose/src/lib/field/list'
+import Field from 'corteza-webapp-compose/src/lib/field'
+import Module from 'corteza-webapp-compose/src/lib/module'
+import Record from 'corteza-webapp-compose/src/lib/record'
+import FieldConfigurator from 'corteza-webapp-compose/src/lib/field/Configurator'
+import FieldEditor from 'corteza-webapp-compose/src/lib/field/Editor'
+import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
 
 export default {
   components: {

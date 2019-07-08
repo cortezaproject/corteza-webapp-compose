@@ -39,13 +39,13 @@
   </div>
 </template>
 <script>
-import Grid from '@/components/Public/Page/Grid'
-import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
-import Record from '@/lib/record'
-import triggerRunner from '@/mixins/trigger_runner'
-import Toolbar from '@/components/Public/Page/Toolbar'
-import Namespace from '@/lib/namespace'
-import Page from '@/lib/page'
+import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
+import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
+import Record from 'corteza-webapp-compose/src/lib/record'
+import triggerRunner from 'corteza-webapp-compose/src/mixins/trigger_runner'
+import Toolbar from 'corteza-webapp-compose/src/components/Public/Page/Toolbar'
+import Namespace from 'corteza-webapp-compose/src/lib/namespace'
+import Page from 'corteza-webapp-compose/src/lib/page'
 
 export default {
   name: 'ViewRecord',

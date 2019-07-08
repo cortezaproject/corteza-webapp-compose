@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import AdminHeader from '@/components/Admin/Header'
+import AdminHeader from 'corteza-webapp-compose/src/components/Admin/Header'
 export default {
   name: 'admin-root',
 

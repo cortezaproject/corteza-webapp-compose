@@ -1,4 +1,4 @@
-import Chart from '@/lib/chart'
+import Chart from 'corteza-webapp-compose/src/lib/chart'
 
 const types = {
   pending: 'pending',

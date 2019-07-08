@@ -9,7 +9,7 @@
 </template>
 <script>
 import base from './base'
-import triggerRunner from '@/mixins/trigger_runner'
+import triggerRunner from 'corteza-webapp-compose/src/mixins/trigger_runner'
 
 export default {
   extends: base,

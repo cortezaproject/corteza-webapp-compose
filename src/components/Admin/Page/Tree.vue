@@ -45,7 +45,7 @@
 
 <script>
 import SortableTree from 'vue-sortable-tree'
-import Namespace from '@/lib/namespace'
+import Namespace from 'corteza-webapp-compose/src/lib/namespace'
 
 export default {
   name: 'page-tree',

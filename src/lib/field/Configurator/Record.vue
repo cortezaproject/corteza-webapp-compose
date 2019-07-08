@@ -35,7 +35,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import base from './base'
-import { Record } from '@/lib/field/Record'
+import { Record } from 'corteza-webapp-compose/src/lib/field/Record'
 
 // @todo rename to Record and make appropriate changes...
 export default {

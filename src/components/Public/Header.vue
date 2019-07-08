@@ -28,9 +28,9 @@
 <script>
 import { mapGetters } from 'vuex'
 import MenuLevel from './MenuLevel'
-import navbarCollapse from '@/mixins/navbar_collapse'
-import Namespace from '@/lib/namespace'
-import Page from '@/lib/page'
+import navbarCollapse from 'corteza-webapp-compose/src/mixins/navbar_collapse'
+import Namespace from 'corteza-webapp-compose/src/lib/namespace'
+import Page from 'corteza-webapp-compose/src/lib/page'
 
 export default {
   components: {

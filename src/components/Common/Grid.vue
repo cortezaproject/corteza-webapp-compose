@@ -32,7 +32,7 @@
 
 <script>
 import VueGridLayout from 'vue-grid-layout'
-import Block from '@/lib/block'
+import Block from 'corteza-webapp-compose/src/lib/block'
 import _ from 'lodash'
 
 const blocksToGrid = blocks => {

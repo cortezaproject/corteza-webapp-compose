@@ -60,8 +60,8 @@
 <script>
 import numeral from 'numeral'
 import moment from 'moment'
-import Attachment from '@/lib/attachment'
-import Namespace from '@/lib/namespace'
+import Attachment from 'corteza-webapp-compose/src/lib/attachment'
+import Namespace from 'corteza-webapp-compose/src/lib/namespace'
 import { canPreview } from 'corteza-webapp-common/src/lib/file_preview'
 import { PreviewInline } from 'corteza-webapp-common/src/components/FilePreview/index'
 import AttachmentLink from './Link'

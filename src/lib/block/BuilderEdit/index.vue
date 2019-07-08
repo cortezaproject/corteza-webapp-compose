@@ -87,7 +87,7 @@ export default {
 
 <style lang="scss" scoped>
 // @todo to be removed, should be part of general style
-@import "@/themes/corteza-base/components/blocks.scss";
+@import "corteza-webapp-compose/src/themes/corteza-base/components/blocks.scss";
 
 h2 {
   font-size: 15px;

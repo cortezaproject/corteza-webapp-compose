@@ -64,14 +64,14 @@
 
 <script>
 import { mapActions } from 'vuex'
-import NewBlockSelector from '@/components/Admin/Page/Builder/Selector'
-import Grid from '@/components/Common/Grid'
-import Block from '@/lib/block'
-import BlockPreview from '@/lib/block/BuilderPreview'
-import BlockEdit from '@/lib/block/BuilderEdit'
-import EditorToolbar from '@/components/Admin/EditorToolbar'
-import Page from '@/lib/page'
-import Namespace from '@/lib/namespace'
+import NewBlockSelector from 'corteza-webapp-compose/src/components/Admin/Page/Builder/Selector'
+import Grid from 'corteza-webapp-compose/src/components/Common/Grid'
+import Block from 'corteza-webapp-compose/src/lib/block'
+import BlockPreview from 'corteza-webapp-compose/src/lib/block/BuilderPreview'
+import BlockEdit from 'corteza-webapp-compose/src/lib/block/BuilderEdit'
+import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
+import Page from 'corteza-webapp-compose/src/lib/page'
+import Namespace from 'corteza-webapp-compose/src/lib/namespace'
 
 export default {
   components: {

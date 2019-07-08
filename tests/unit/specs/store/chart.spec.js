@@ -2,7 +2,7 @@
 /* ESLint didn't like some expects */
 
 import { expect } from 'chai'
-import chart from '@/store/chart'
+import chart from 'corteza-webapp-compose/src/store/chart'
 
 
 

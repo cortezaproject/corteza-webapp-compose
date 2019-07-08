@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import Namespace from '@/lib/namespace'
+import Namespace from 'corteza-webapp-compose/src/lib/namespace'
 
 export default {
   props: {

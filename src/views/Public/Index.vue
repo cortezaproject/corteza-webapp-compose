@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import PublicHeader from '@/components/Public/Header'
-import Namespace from '@/lib/namespace'
-import Page from '@/lib/page'
+import PublicHeader from 'corteza-webapp-compose/src/components/Public/Header'
+import Namespace from 'corteza-webapp-compose/src/lib/namespace'
+import Page from 'corteza-webapp-compose/src/lib/page'
 
 const pushContentAbove = 610
 

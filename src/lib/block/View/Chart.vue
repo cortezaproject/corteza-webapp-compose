@@ -5,7 +5,7 @@
 import { mapActions } from 'vuex'
 import base from './base'
 import ChartJS from 'chart.js'
-import Chart from '@/lib/chart'
+import Chart from 'corteza-webapp-compose/src/lib/chart'
 
 export default {
   extends: base,

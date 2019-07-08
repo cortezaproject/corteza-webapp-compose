@@ -12,7 +12,7 @@
     </div>
 </template>
 <script>
-import Block from '@/lib/block'
+import Block from 'corteza-webapp-compose/src/lib/block'
 
 export default {
   props: {

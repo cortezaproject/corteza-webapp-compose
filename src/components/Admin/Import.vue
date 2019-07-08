@@ -49,9 +49,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Trigger from '@/lib/trigger'
-import Chart from '@/lib/chart'
-import Module from '@/lib/module'
+import Trigger from 'corteza-webapp-compose/src/lib/trigger'
+import Chart from 'corteza-webapp-compose/src/lib/chart'
+import Module from 'corteza-webapp-compose/src/lib/module'
 
 export default {
   props: {

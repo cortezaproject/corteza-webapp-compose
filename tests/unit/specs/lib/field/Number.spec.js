@@ -2,7 +2,7 @@
 /* ESLint didn't like some expects */
 
 import { expect } from 'chai'
-import { Number } from '@/lib/field/Number'
+import { Number } from 'corteza-webapp-compose/src/lib/field/Number'
 
 describe('lib/field/Number.js', () => {
   it('Should insert prefix', function () {

@@ -24,8 +24,8 @@
   </div>
 </template>
 <script>
-import FieldEditor from '@/lib/field/Editor'
-import FieldViewer from '@/lib/field/Viewer'
+import FieldEditor from 'corteza-webapp-compose/src/lib/field/Editor'
+import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
 
 export default {
   components: {

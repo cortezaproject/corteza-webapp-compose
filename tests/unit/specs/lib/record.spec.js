@@ -2,9 +2,9 @@
 /* ESLint didn't like some expects */
 
 import { expect } from 'chai'
-import Module from '@/lib/module'
-import Field from '@/lib/field'
-import Record from '@/lib/record'
+import Module from 'corteza-webapp-compose/src/lib/module'
+import Field from 'corteza-webapp-compose/src/lib/field'
+import Record from 'corteza-webapp-compose/src/lib/record'
 
 const M = new Module({
   fields: [

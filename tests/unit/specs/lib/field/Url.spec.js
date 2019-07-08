@@ -2,7 +2,7 @@
 /* ESLint didn't like some expects */
 
 import { expect } from 'chai'
-import { trimUrlFragment, trimUrlQuery, trimUrlPath, onlySecureUrl } from '@/lib/field/Url'
+import { trimUrlFragment, trimUrlQuery, trimUrlPath, onlySecureUrl } from 'corteza-webapp-compose/src/lib/field/Url'
 
 var should = require('chai').should()
 

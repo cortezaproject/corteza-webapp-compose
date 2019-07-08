@@ -3,10 +3,10 @@
 
 import { expect } from 'chai'
 import { shallowMount, createLocalVue } from '@vue/test-utils'
-import Create from '@/views/Public/Pages/Records/Create'
-import Module from '@/lib/module'
-import Record from '@/lib/record'
-import Page from '@/lib/page'
+import Create from 'corteza-webapp-compose/src/views/Public/Pages/Records/Create'
+import Module from 'corteza-webapp-compose/src/lib/module'
+import Record from 'corteza-webapp-compose/src/lib/record'
+import Page from 'corteza-webapp-compose/src/lib/page'
 import Vuex from 'vuex'
 
 const localVue = createLocalVue()

@@ -78,11 +78,11 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Trigger from '@/lib/trigger'
-import TableSortableColumn from '@/components/Admin/TableSortableColumn'
-import tableSort from '@/mixins/table_sort'
-import Import from '@/components/Admin/Import'
-import Export from '@/components/Admin/Export'
+import Trigger from 'corteza-webapp-compose/src/lib/trigger'
+import TableSortableColumn from 'corteza-webapp-compose/src/components/Admin/TableSortableColumn'
+import tableSort from 'corteza-webapp-compose/src/mixins/table_sort'
+import Import from 'corteza-webapp-compose/src/components/Admin/Import'
+import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 
 export default {
   components: {

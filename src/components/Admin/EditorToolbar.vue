@@ -11,7 +11,7 @@
   </div>
 </template>
 <script>
-import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
+import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
 
 export default {
   components: {
@@ -36,7 +36,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 // @todo to be removed, should be part of general style
-@import "@/themes/corteza-base/components/actions.scss";
+@import "corteza-webapp-compose/src/themes/corteza-base/components/actions.scss";
 
 .toolbar {
   background: $white;

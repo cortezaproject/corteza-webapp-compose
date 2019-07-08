@@ -10,8 +10,8 @@
 </template>
 <script>
 import base from './base'
-import Uploader from '@/components/Public/Page/Attachment/Uploader'
-import ListLoader from '@/components/Public/Page/Attachment/ListLoader'
+import Uploader from 'corteza-webapp-compose/src/components/Public/Page/Attachment/Uploader'
+import ListLoader from 'corteza-webapp-compose/src/components/Public/Page/Attachment/ListLoader'
 
 export default {
   components: {

@@ -51,6 +51,11 @@ module.exports = {
       return options
     })
 
+    // Aliasing 'corteza-webapp-compose' instead of '@' so we do
+    // not break imports on apps that import this code
+    config.resolve.alias.delete('@')
+    config.resolve.alias.set('corteza-webapp-compose', require('path').resolve(__dirname, '.'))
+
     const scssNormal = config.module.rule('scss').oneOf('normal')
 
     scssNormal.use('sass-loader')
@@ -80,9 +85,9 @@ module.exports = {
     sourceMap: process.env['NODE_ENV'] === 'development',
     loaderOptions: {
       sass: {
-        // @todo cleanup all components and remove this global iport
+        // @todo cleanup all components and remove this global import
         data: `
-          @import "@/themes/corteza-base/variables.scss";
+          @import "corteza-webapp-compose/src/themes/corteza-base/variables.scss";
         `,
       },
     },

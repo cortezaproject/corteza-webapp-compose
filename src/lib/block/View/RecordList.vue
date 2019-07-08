@@ -59,10 +59,10 @@
 <script>
 import { mapGetters } from 'vuex'
 import base from './base'
-import FieldViewer from '@/lib/field/Viewer'
+import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
 import Pagination from 'vue-pagination-2'
 import _ from 'lodash'
-import Record from '@/lib/record'
+import Record from 'corteza-webapp-compose/src/lib/record'
 
 export default {
   components: {

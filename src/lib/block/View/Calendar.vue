@@ -8,8 +8,8 @@ import { mapGetters, mapActions } from 'vuex'
 import base from './base'
 import { FullCalendar } from 'vue-full-calendar'
 import 'fullcalendar/dist/fullcalendar.css'
-import Record from '@/lib/record'
-import { Calendar } from '@/lib/block/Calendar'
+import Record from 'corteza-webapp-compose/src/lib/record'
+import { Calendar } from 'corteza-webapp-compose/src/lib/block/Calendar'
 
 const locale = 'en'
 export default {

@@ -17,7 +17,7 @@
 import base from './base'
 import moment from 'moment'
 
-import { checkFuturePast } from '@/lib/field/DateTime'
+import { checkFuturePast } from 'corteza-webapp-compose/src/lib/field/DateTime'
 
 export default {
   extends: base,

@@ -1,4 +1,4 @@
-import Trigger from '@/lib/trigger'
+import Trigger from 'corteza-webapp-compose/src/lib/trigger'
 
 const types = {
   pending: 'pending',

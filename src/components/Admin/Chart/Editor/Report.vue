@@ -124,7 +124,7 @@
 <script>
 import draggable from 'vuedraggable'
 import { VueSelect } from 'vue-select'
-import { chartTypes, aggregateFunctions, dimensionFunctions, predefinedFilters } from '@/lib/chart'
+import { chartTypes, aggregateFunctions, dimensionFunctions, predefinedFilters } from 'corteza-webapp-compose/src/lib/chart'
 
 export default {
   name: 'Report',

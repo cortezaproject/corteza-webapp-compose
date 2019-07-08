@@ -7,7 +7,7 @@
 </template>
 <script>
 import base from './base'
-import Record from '@/lib/record'
+import Record from 'corteza-webapp-compose/src/lib/record'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {

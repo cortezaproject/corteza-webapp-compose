@@ -17,7 +17,7 @@
 <script>
 import base from './base'
 import { VueSelect } from 'vue-select'
-import Record from '@/lib/record'
+import Record from 'corteza-webapp-compose/src/lib/record'
 import _ from 'lodash'
 
 export default {

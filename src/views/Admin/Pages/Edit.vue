@@ -41,10 +41,10 @@
 </template>
 
 <script>
-import ConfirmationToggle from '@/components/Admin/ConfirmationToggle'
-import EditorToolbar from '@/components/Admin/EditorToolbar'
-import Namespace from '@/lib/namespace'
-import Page from '@/lib/page'
+import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
+import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
+import Namespace from 'corteza-webapp-compose/src/lib/namespace'
+import Page from 'corteza-webapp-compose/src/lib/page'
 
 export default {
   name: 'PageEdit',
