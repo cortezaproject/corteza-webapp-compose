@@ -1,74 +1,76 @@
-$wideminwidth:767px;
-$confortableminwidth:1020px;
+$wideminwidth:767px !default;
+$confortableminwidth:1020px !default;
+
+$logo: 'img/logo.png' !default;
 
 // Paths
-$fonts_dir : './fonts/';
+$fonts_dir : './fonts/' !default;
 $icomoon-font-path: $fonts_dir + 'icomoon' !default;
 $icomoon-font-family: "icomoon" !default;
 
 // Typography
-$regular: 'nunito_sansregular';
-$bold: 'nunito_sansbold';
-$semibold: 'nunito_sanssemibold';
-$font-size-base: 0.85rem;
+$regular: 'nunito_sansregular' !default;
+$bold: 'nunito_sansbold' !default;
+$semibold: 'nunito_sanssemibold' !default;
+$font-size-base: 0.85rem !default;
 
-$font-family-base:      $regular;
-$headings-font-family:  $semibold;
+$font-family-base:      $regular !default;
+$headings-font-family:  $semibold !default;
 
 // Color system
 $white:         #fff !default;
 $black:         #000 !default;
-$primary:       #568ba2;
-$secondary:     #90A3B1;
-$success:       #719430;
-$warning:       #F5D380;
-$danger:        #E85568;
-$light:         #F3F3F5;
-$dark:          #1e2224;
+$primary:       #568ba2 !default;
+$secondary:     #90A3B1 !default;
+$success:       #719430 !default;
+$warning:       #F5D380 !default;
+$danger:        #E85568 !default;
+$light:         #F3F3F5 !default;
+$dark:          #1e2224 !default;
 
 // Options
-$enable-rounded: false;
+$enable-rounded: false !default;
 
 // Components
-$border-radius: 0;
+$border-radius: 0 !default;
 
 // Body
-$body-bg: $light;
+$body-bg: $light !default;
 
 // Tables
-$table-cell-padding: 0.5rem;
-$table-cell-padding-sm: 0.25rem;
+$table-cell-padding: 0.5rem !default;
+$table-cell-padding-sm: 0.25rem !default;
 
-$table-border-width: 0;
+$table-border-width: 0 !default;
 
 // Buttons
-$btn-font-size: $font-size-base;
-$btn-padding-y: 0.25em;
-$btn-padding-x: 1em;
-$btn-focus-width: 0;
-$btn-focus-box-shadow: none;
-$btn-active-box-shadow: none;
+$btn-font-size: $font-size-base !default;
+$btn-padding-y: 0.25em !default;
+$btn-padding-x: 1em !default;
+$btn-focus-width: 0 !default;
+$btn-focus-box-shadow: none !default;
+$btn-active-box-shadow: none !default;
 
 // Navbar
-$navbar-bg:             $white;
-$navbar-color:          $black;
-$navbar-border:         $primary;
-$navbar-active-bg:      $white;
-$navbar-active-color:   $primary;
-$navbar-active-border:  $primary;
-$navbar-hover-bg:       $white;
-$navbar-hover-color:    $primary;
-$navbar-hover-border:   $primary;
-$navbar-height:         50px;
-$navbar-padding-y:      0;
-$navbar-padding-x:      0;
+$navbar-bg:             $white !default;
+$navbar-color:          $black !default;
+$navbar-border:         $primary !default;
+$navbar-active-bg:      $white !default;
+$navbar-active-color:   $primary !default;
+$navbar-active-border:  $primary !default;
+$navbar-hover-bg:       $white !default;
+$navbar-hover-color:    $primary !default;
+$navbar-hover-border:   $primary !default;
+$navbar-height:         50px !default;
+$navbar-padding-y:      0 !default;
+$navbar-padding-x:      0 !default;
 
-$navbar-toggler-font-size:  24px;
-$sidebar-width:         250px;
-$sidebar-height:        calc(100vh - #{$navbar-height});
+$navbar-toggler-font-size:  24px !default;
+$sidebar-width:         250px !default;
+$sidebar-height:        calc(100vh - #{$navbar-height}) !default;
 
 // Forms
-$input-font-size: $font-size-base;
-$input-btn-focus-width:        0;
-$input-focus-box-shadow:       none;
-$input-focus-border-color:     $primary;
+$input-font-size: $font-size-base !default;
+$input-btn-focus-width:        0 !default;
+$input-focus-box-shadow:       none !default;
+$input-focus-border-color:     $primary !default;

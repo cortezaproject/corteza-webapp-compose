@@ -3,7 +3,7 @@
     <div :class="{ 'ns-label': true, 'pointer': isEnabled }">
       <label
         class="ns-visual ns-logo text-center d-block">
-        <i class="d-block m-auto" :style="'background-image:url(' + logo + ');'" />
+        <i class="d-block m-auto" />
       </label>
       <div>
         <label :class="{'ns-text': true, 'subtitle': namespace.meta.subtitle}" class="text-center d-block">
@@ -37,7 +37,6 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
   props: {
@@ -47,12 +46,6 @@ export default {
     },
   },
 
-  data () {
-    return {
-      logo: require('corteza-webapp-compose/src/themes/corteza-base/img/logo.png'),
-    }
-  },
-
   computed: {
     isEnabled () {
       return !!this.namespace.enabled
@@ -60,7 +53,6 @@ export default {
   },
 }
 </script>
-
 <style lang="scss" scoped>
   $nsheight: 200px;
   $nsvisualheight: 100px;

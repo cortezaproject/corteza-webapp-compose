@@ -11,9 +11,7 @@
     </div>
     <router-view v-if="loaded && namespace"
                  :namespace="namespace" />
-    <div class="loader" v-else>
-      <img :src="logo" />
-    </div>
+    <div class="loader" v-else></div>
     <div class="error text-danger text-center position-absolute" v-if="error">{{ error }}</div>
     <permissions-modal />
   </div>
@@ -38,7 +36,6 @@ export default {
 
   data () {
     return {
-      logo: require('corteza-webapp-compose/src/themes/corteza-base/img/logo.png'),
       loaded: false,
       error: '',
       alerts: [], // { variant: 'info', message: 'foo' },
@@ -118,25 +115,6 @@ export default {
   .alert {
     z-index: 1;
     box-shadow: 0 0 2px 0 rgba($secondary, 0.75);
-  }
-}
-
-@keyframes flickerAnimation {
-  0% { opacity: 0.6; }
-  50% { opacity: 0.1; }
-  100% { opacity: 0.6; }
-}
-
-.loader {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-
-  img {
-    align-self: center;
-    opacity: 0.7;
-    animation: flickerAnimation 3s infinite;
   }
 }
 

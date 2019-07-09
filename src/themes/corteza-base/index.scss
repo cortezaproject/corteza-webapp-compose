@@ -1,13 +1,7 @@
-@import "~bootstrap/scss/bootstrap";
-
-// @todo migrate to boostrap-vue
-// @import '~bootstrap-vue/src/index.scss';
-
 @import "./variables";
+@import "~bootstrap/scss/bootstrap";
+@import '~bootstrap-vue/src/index.scss';
 @import "./components/actions";
 @import "./custom";
-
-// nunito global font
 @import "./nunito.scss";
-// icomoon font
 @import "./icons.scss";
