@@ -1,4 +1,4 @@
-import Vue from 'vue'
 import app from './app'
+import './themes'
 
-app(Vue)
+app()

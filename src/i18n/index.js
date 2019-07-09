@@ -1,5 +1,4 @@
-// i18n / languages / translations
-
+import Vue from 'vue'
 import i18next from 'i18next'
 import lngDetector from 'i18next-browser-languagedetector'
 import VueI18Next from '@panter/vue-i18next'
@@ -19,7 +18,7 @@ import en from './en'
 
 // Initializes i18n options, registers
 // plugin on a given Vue instance and returns the options (to be used in new Vue({ i18n: ... })
-export default (Vue, lng = 'en', fallbackLng = lng) => {
+export default (lng = 'en', fallbackLng = lng) => {
   const options = {
     lng,
     fallbackLng,

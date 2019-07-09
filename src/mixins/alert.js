@@ -1,7 +1,3 @@
-import Vue from 'vue'
-
-const bus = new Vue()
-
 const success = { variant: 'success', countdown: 5 }
 const warning = { variant: 'warning', countdown: 120 }
 
@@ -16,7 +12,7 @@ export default {
     },
 
     raiseAlert (alert = {}) {
-      bus.$emit('alert', alert)
+      this.$root.$emit('alert', alert)
     },
 
     defaultErrorHandler (prefix) {
@@ -26,7 +22,7 @@ export default {
     },
 
     handleAlert (handler) {
-      bus.$on('alert', handler)
+      this.$root.$on('alert', handler)
     },
   },
 }

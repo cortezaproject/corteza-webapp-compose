@@ -56,7 +56,7 @@ export default [
     ],
   },
 
-  r('/auth', 'auth', 'Auth'),
+  r('auth', '/auth', 'Auth'),
 
   // @todo migrate to storybook
   // {
