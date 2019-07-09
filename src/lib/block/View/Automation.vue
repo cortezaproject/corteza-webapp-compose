@@ -17,5 +17,14 @@ export default {
   mixins: [
     triggerRunner,
   ],
+
+  created () {
+    const variants = ['primary', 'light', 'success', 'danger', 'secondary', 'warning', 'info', 'dark']
+    this.options.buttons.map(b => {
+      if (variants.indexOf(b.variant) < 0) {
+        b.variant = 'primary'
+      }
+    })
+  },
 }
 </script>

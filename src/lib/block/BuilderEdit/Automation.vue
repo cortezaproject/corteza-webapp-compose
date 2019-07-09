@@ -59,11 +59,14 @@ export default {
       selectedTriggerID: null,
       charts: [],
       variantOptions: [
-        { value: 'primary', text: this.$t('block.automation.blueButton') },
-        { value: 'secondary', text: this.$t('block.automation.whiteButton') },
-        { value: 'success', text: this.$t('block.automation.greenButton') },
-        { value: 'danger', text: this.$t('block.automation.redButton') },
-        { value: 'dark', text: this.$t('block.automation.greyButton') },
+        { value: 'primary', text: this.$t('block.automation.primaryButton') },
+        { value: 'secondary', text: this.$t('block.automation.secondaryButton') },
+        { value: 'success', text: this.$t('block.automation.successButton') },
+        { value: 'danger', text: this.$t('block.automation.dangerButton') },
+        { value: 'warning', text: this.$t('block.automation.warningButton') },
+        { value: 'info', text: this.$t('block.automation.infoButton') },
+        { value: 'light', text: this.$t('block.automation.lightButton') },
+        { value: 'dark', text: this.$t('block.automation.darkButton') },
       ],
     }
   },
@@ -101,6 +104,13 @@ export default {
   created () {
     const { namespaceID } = this.namespace
     this.$store.dispatch('trigger/load', { namespaceID })
+
+    const variants = ['primary', 'light', 'success', 'danger', 'secondary', 'warning', 'info', 'dark']
+    this.o.buttons.map(b => {
+      if (variants.indexOf(b.variant) < 0) {
+        b.variant = 'primary'
+      }
+    })
   },
 
   methods: {
@@ -115,7 +125,7 @@ export default {
       this.o.buttons.push({
         triggerID: t.triggerID,
         label: t.name,
-        variant: 'blue',
+        variant: 'primary',
       })
 
       this.selectedTriggerID = null
