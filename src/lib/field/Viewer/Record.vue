@@ -79,7 +79,10 @@ export default {
           .then(m => {
             this.$ComposeAPI.recordRead({ namespaceID: m.namespaceID, moduleID: m.moduleID, recordID: this.value })
               .then(r => {
-                this.relRecord = new Record(m, r)
+                // In case record isn't found, this if prevents an infinite fetch loop
+                if (r) {
+                  this.relRecord = new Record(m, r)
+                }
               })
           })
       }
