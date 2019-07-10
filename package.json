@@ -11,7 +11,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint && stylelint '**/*.{vue,scss}' --fix",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "cdeps": "yarn upgrade corteza-webapp-common"
+
   },
   "gitHooks": {
     "pre-commit": "yarn lint"
