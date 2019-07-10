@@ -72,7 +72,7 @@ export default class Field {
   // Returns an array of Error objects
   validate (value) {
     if (this.isRequired && (this.options.isEmpty ? this.options.isEmpty(value) : !value)) {
-      return [i18next.t('xnotification.field.missingRequired')]
+      return [i18next.t('notification.field.missingRequired')]
     }
 
     if (this.options && this.options.validate) {

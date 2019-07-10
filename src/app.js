@@ -18,7 +18,7 @@ export default (options = {}) => {
     template: '<div id="compose" class="h-100"><router-view class="view" /></div>',
 
     router,
-    store: store,
+    store,
     i18n: i18n(),
 
     // Any additional options we want to merge
