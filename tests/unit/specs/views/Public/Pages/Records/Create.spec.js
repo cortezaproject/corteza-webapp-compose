@@ -4,6 +4,7 @@
 import { expect } from 'chai'
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Create from 'corteza-webapp-compose/src/views/Public/Pages/Records/Create'
+import Namespace from 'corteza-webapp-compose/src/lib/namespace'
 import Module from 'corteza-webapp-compose/src/lib/module'
 import Record from 'corteza-webapp-compose/src/lib/record'
 import Page from 'corteza-webapp-compose/src/lib/page'
@@ -15,6 +16,7 @@ localVue.use(Vuex)
 describe('Create', () => {
 
   it('properly links passed record reference', () => {
+    const namespace = new Namespace({namespaceID: '3003'})
     const refRecModule = new Module({moduleID: '2002'})
     const refRecord = new Record(refRecModule, { recordID: '1000' })
 
@@ -37,6 +39,7 @@ describe('Create', () => {
       store,
       localVue,
       propsData: {
+        namespace,
         refRecord,
         page: new Page({ moduleID: "2001"})
       }

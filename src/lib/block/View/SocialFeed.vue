@@ -10,7 +10,7 @@
 </template>
 <script>
 import base from './base'
-import Timeline from 'vue-tweet-embed/timeline'
+import { Timeline } from 'vue-tweet-embed'
 import { extractSocialUrl } from '../SocialFeed'
 
 export default {
