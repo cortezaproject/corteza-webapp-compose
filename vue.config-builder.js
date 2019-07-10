@@ -2,7 +2,7 @@ var webpack = require('webpack')
 var exec = require('child_process').execSync
 var path = require('path')
 
-module.exports = ({ appName, appLabel, version, theme, packageAlias, root, env = process.env.NODE_ENV }) => {
+module.exports = ({ appName, appLabel, version, theme, packageAlias, root = path.resolve('.'), env = process.env.NODE_ENV }) => {
   const isDevelopment = (env === 'development')
   const isProduction = (env === 'production')
   const isTest = (env === 'test')
@@ -27,8 +27,6 @@ module.exports = ({ appName, appLabel, version, theme, packageAlias, root, env =
       },
     },
   }
-
-  root = root || path.resolve('.')
 
   return {
     publicPath,
