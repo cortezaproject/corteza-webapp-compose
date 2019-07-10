@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-Vue.component('permissions-button', () => import('corteza-webapp-common/components').then(c => c['PermissionsButton']))
-Vue.component('font-awesome-icon', () => import('@fortawesome/vue-fontawesome'))
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('permissions-button', () => import('corteza-webapp-common/src/components/Permissions/Button'))
