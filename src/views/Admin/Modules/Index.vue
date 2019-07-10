@@ -6,9 +6,9 @@
           <div class="well table-responsive">
             <permissions-button v-if="namespace.canGrant"
                                 resource="compose:module:*"
-                                class="float-right ml-2 mt-1 mr-1"
+                                class="float-right"
                                 link />
-            <export :list="sortedModules" type="module" class="float-right" />
+            <export :list="sortedModules" type="module" class="float-right mr-2" />
             <h2>{{ $t('module.title')}}</h2>
             <table class="table table-striped">
               <thead>
