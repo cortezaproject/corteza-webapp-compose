@@ -21,7 +21,7 @@ export default {
       previewHeader: 'Preview of your header',
       headerStyle: 'Header style',
       style: {
-        'default': 'White with dark text - default',
+        default: 'White with dark text - default',
         redLight: 'Red with white text',
         redDark: 'Red with dark text',
         greenLight: 'Green with white text',
@@ -56,7 +56,7 @@ export default {
       addEventsSource: 'Add events source',
       view: {
         enabled: 'Enabled views',
-        'default': 'Default view',
+        default: 'Default view',
         footnote: 'Make sure default is one of the available views',
         month: 'Month',
         agendaMonth: 'Month agenda',
@@ -164,7 +164,7 @@ export default {
     newLabel: 'Create a new module:',
     newPlaceholder: '$t(general.label.moduleName)',
     recordPage: 'Record page for module',
-    'import': 'Import module(s):',
+    import: 'Import module(s):',
     edit: {
       title: 'Edit module',
       manageRecordFields: 'Manage record fields',
@@ -196,7 +196,7 @@ export default {
     newLabel: 'Create a new page:',
     newPlaceholder: 'Page title',
     noBlock: 'No block added yet',
-    'import': 'Import page(s):',
+    import: 'Import page(s):',
     edit: {
       title: 'Edit page',
       pageDescription: 'Page description',
@@ -212,7 +212,7 @@ export default {
     title: 'List of charts',
     newLabel: 'Create a new chart:',
     newPlaceholder: 'Chart name',
-    'import': 'Import chart(s):',
+    import: 'Import chart(s):',
     edit: {
       title: 'Chart builder',
       modulePick: 'Pick a module',
@@ -236,7 +236,7 @@ export default {
         defaultValueLabel: 'Default value',
         defaultValueFootnote: 'Use this value for missing dimension values',
         calculateLabelCount: 'Calculate how many labels can be shown',
-        'function': {
+        function: {
           label: 'Function',
           placeholder: 'Select dimension modifier (bucket size)',
           none: '(no grouping / buckets)',
@@ -258,7 +258,7 @@ export default {
         axisScaleFromZero: 'Always begin axis scale at zero',
         fillArea: 'Fill area below the line',
         add: 'Add metric',
-        'function': {
+        function: {
           label: 'Function',
           placeholder: 'Select metric aggregate function',
           countd: 'COUNTD',
@@ -281,7 +281,7 @@ export default {
     title: 'List of triggers',
     newLabel: 'Create a new trigger',
     newPlaceholder: 'Trigger name',
-    'import': 'Import trigger(s)',
+    import: 'Import trigger(s)',
     edit: {
       title: 'Automation',
       nameLabel: 'Name',
@@ -372,7 +372,7 @@ export default {
       add: 'Add',
       addNew: 'Add new',
       close: 'Close',
-      'delete': 'Delete',
+      delete: 'Delete',
       back: 'Back',
       backWithoutSave: 'Back (without saving changes)',
       dropFiles: 'Click or drop files here to upload',
@@ -384,8 +384,8 @@ export default {
       no: 'No',
       view: 'View',
       processing: 'Processing...',
-      'import': 'Import',
-      'export': 'Export',
+      import: 'Import',
+      export: 'Export',
       cancel: 'Cancel',
     },
   },
@@ -553,7 +553,7 @@ export default {
         specific: 'Update chart "{{target}}"',
         description: 'Default: deny',
       },
-      'delete': {
+      delete: {
         title: 'Delete any chart',
         specific: 'Delete chart "{{target}}"',
         description: 'Default: deny',
@@ -773,7 +773,7 @@ export default {
       saved: 'Module saved',
       deleted: 'Module deleted',
     },
-    'import': {
+    import: {
       typeMissmatch: 'Import error: trying to import object of type "{{type1}}" into a list of objects of type "{{type2}}"',
       readingError: 'Error reading file',
       failed: 'Import failed',
