@@ -1,6 +1,11 @@
 <template>
   <b-form-group :label="field.label || field.name">
+    <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
+          <b-form-select :options="selectOptions" v-model="value[ctx.index]" />
+    </multi>
+
     <b-form-select
+      v-else
       :options="selectOptions"
       v-model="value" />
 

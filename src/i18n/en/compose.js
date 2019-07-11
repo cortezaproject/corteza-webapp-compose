@@ -179,7 +179,6 @@ export default {
         title: 'The name displayed in form input / data lists',
         required: 'Required field',
         sensitive: 'Sensitive data',
-        dragAndDrop: 'Drag and drop to change order',
       },
     },
     recordGenerator: {
@@ -360,6 +359,7 @@ export default {
       title: 'Title',
       description: 'Description',
       type: 'Type',
+      multi: 'Multiple values',
       required: 'Required',
       sensitive: 'Sensitive',
       updatedAt: '$t(field.system.updatedAt)',
@@ -373,6 +373,7 @@ export default {
       saveAndPreview: 'Save and Preview',
       add: 'Add',
       addNew: 'Add new',
+      addValue: 'Add new value',
       close: 'Close',
       delete: 'Delete',
       back: 'Back',
@@ -389,6 +390,9 @@ export default {
       import: 'Import',
       export: 'Export',
       cancel: 'Cancel',
+    },
+    tooltip: {
+      dragAndDrop: 'Drag and drop to change order',
     },
   },
   permission: {

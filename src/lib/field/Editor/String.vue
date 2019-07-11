@@ -8,6 +8,11 @@
     <textarea
       v-else-if="field.options.multiLine"
       v-model="value"></textarea>
+
+    <multi v-else-if="field.isMulti" :value.sync="value" v-slot="ctx">
+      <b-form-input v-model="value[ctx.index]" />
+    </multi>
+
     <b-form-input
       v-else
       v-model="value"></b-form-input>

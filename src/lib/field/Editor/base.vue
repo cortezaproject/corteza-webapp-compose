@@ -7,8 +7,13 @@
   </div>
 </template>
 <script>
+import multi from './multi'
 
 export default {
+  components: {
+    multi,
+  },
+
   props: {
     namespace: {
       type: Object,

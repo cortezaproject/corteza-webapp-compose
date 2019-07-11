@@ -1,7 +1,7 @@
 <template>
   <tr>
     <td v-b-tooltip.hover
-        :title="$t('module.edit.tooltip.dragAndDrop')"
+        :title="$t('general.tooltip.dragAndDrop')"
         class="handle text-center align-middle">
         <font-awesome-icon :icon="['fas', 'sort']"
                            class="text-secondary"
@@ -37,9 +37,15 @@
     </td>
     <td class="text-center align-middle">
       <b-form-checkbox plain
+                       v-model="field.isMulti"
+                       :disabled="field.kind === 'Bool'"
+                       :value="true"
+                       :unchecked-value="false"></b-form-checkbox>
+    </td>
+    <td class="text-center">
+      <b-form-checkbox plain
                        v-model="field.isRequired"
                        :value="true"
-                       class="pl-0"
                        :unchecked-value="false"></b-form-checkbox>
     </td>
     <td class="text-center align-middle">
