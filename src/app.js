@@ -15,8 +15,7 @@ export default (options = {}) => {
   options = {
     el: '#app',
     name: 'compose',
-    template: '<div id="compose" class="h-100"><router-view class="view" /></div>',
-
+    template: '<router-view/>',
     router,
     store,
     i18n: i18n(),
