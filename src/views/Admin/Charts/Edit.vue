@@ -1,9 +1,9 @@
 <template>
-  <div class="scrollable">
-    <b-container @submit.prevent="handleSave" tag="form">
+  <div class="mt-3">
+    <b-container @submit.prevent="handleSave" tag="form" class="pb-5">
       <b-row>
         <b-col md="12">
-          <b-card :title="$t('chart.edit.title')">
+          <b-card :title="$t('chart.edit.title')" class="mb-5">
             <export :list="[chart]" type="chart" class="float-right" slot="header"/>
               <b-row>
                 <b-col md="6">

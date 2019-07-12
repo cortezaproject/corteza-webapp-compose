@@ -1,8 +1,8 @@
 <template>
-  <div class="scrollable">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
+  <div class="mt-3">
+    <b-container>
+      <b-row>
+        <b-col md="12">
           <b-card :title="$t('page.edit.title')">
             <router-link :to="{name: 'admin.pages.builder'}"
                          class="position-absolute fixed-top text-right p-2">
@@ -26,9 +26,9 @@
                                {{ $t('page.edit.visible') }}?</b-form-checkbox>
             </b-form>
           </b-card>
-        </div>
-      </div>
-    </div>
+        </b-col>
+      </b-row>
+    </b-container>
     <editor-toolbar :back-link="{name: 'admin.pages'}"
                     :hideDelete="!page.canDeletePage"
                     :hideSave="!page.canUpdatePage"

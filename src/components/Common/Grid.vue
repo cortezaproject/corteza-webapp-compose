@@ -1,5 +1,5 @@
 <template>
-  <div v-if="grid.length" class="builder-grid">
+  <div v-if="grid.length" class="w-100 pb-5">
     <grid-layout :layout.sync="grid"
                  @layout-updated="handleLayoutUpdate"
                  :col-num="12"
@@ -9,6 +9,7 @@
                  :is-draggable="!!editable"
                  :use-css-transforms="true"
                  :cols="cols"
+                 class="mb-5"
                  :responsive="true">
       <grid-item v-for="(item, index) in grid"
                  :key="item.i"
@@ -25,7 +26,7 @@
       </grid-item>
     </grid-layout>
   </div>
-  <div v-else class="no-builder-grid container well text-center">
+  <div v-else class="no-builder-grid container text-center">
     <h4>{{ $t('page.noBlock') }}.</h4>
   </div>
 </template>
@@ -134,17 +135,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-
-.builder-grid {
-  width: 100%;
-  padding: 0 10px 70px;
-
-  &.mobile {
-    width: 320px;
-    margin: 0 auto;
-  }
-}
-
-</style>

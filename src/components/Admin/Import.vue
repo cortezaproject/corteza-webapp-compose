@@ -18,7 +18,7 @@
         </h5>
       </b-form-file>
     </b-form-group>
-    <b-modal v-if="importObj" size="lg" v-model="show" id="importModal" scrollable>
+    <b-modal v-if="importObj" size="lg" v-model="show" id="importModal">
       <div slot="modal-title">
         <div>
           <h5>{{ $t(`${type}.import`) }}</h5>

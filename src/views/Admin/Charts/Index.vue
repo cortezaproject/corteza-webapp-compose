@@ -1,5 +1,5 @@
 <template>
-  <div class="scrollable">
+  <div class="mt-3">
     <b-container>
       <b-row>
         <b-col md="12">

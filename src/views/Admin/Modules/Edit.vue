@@ -1,9 +1,9 @@
 <template>
-  <div class="scrollable">
-    <b-container @submit.prevent="handleSave" tag="form" v-if="module">
+  <div class="mt-3">
+    <b-container @submit.prevent="handleSave" tag="form" v-if="module" class="pb-5">
       <b-row>
         <b-col md="12">
-          <b-card :title="$t('module.edit.title')">
+          <b-card :title="$t('module.edit.title')" class="mb-5">
             <div slot="header" class="text-right">
               <export :list="[this.module]" type="module" />
               <permissions-button v-if="module.canGrant" resource="compose:module-field:*" link />
@@ -53,7 +53,7 @@
               </table>
             </div>
           </b-card>
-        </b-col>>
+        </b-col>
       </b-row>
     </b-container>
     <b-modal

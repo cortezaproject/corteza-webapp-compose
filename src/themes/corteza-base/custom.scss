@@ -1,67 +1,13 @@
 /* stylelint-disable no-descending-specificity */
-html,
-body {
+html {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
 }
 
-.centering-wrap {
+body {
+  overflow: auto;
   height: 100vh;
-  display: flex;
-  flex-flow: column nowrap;
-}
-
-.scrollable {
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  margin-top: 10px;
-}
-
-.h-100 {
-  flex: 1 100%;
-  overflow: hidden;
-}
-
-.well {
-  min-height: 20px;
-  padding: 5px;
-  margin-bottom: 90px;
-  background-color: $white;
-}
-
-.navbar-default .navbar-nav > li.dropdown:hover > a,
-.navbar-default .navbar-nav > li.dropdown:hover > a:hover,
-.navbar-default .navbar-nav > li.dropdown:hover > a:focus {
-  background-color: rgb(231, 231, 231);
-  color: rgb(85, 85, 85);
-}
-
-label {
-  font-weight: 300;
-  color: $black;
-  margin-bottom: 0;
-}
-
-.form-check-label {
-  margin-left: 5px;
-}
-
-.form-control {
-  font-size: 14px;
-  color: $black;
-
-  &:focus,
-  &:active {
-    color: $black;
-    border-color: $primary;
-    box-shadow: none;
-  }
-
-  &::placeholder {
-    color: $secondary;
-  }
 }
 
 .modal-body {
@@ -217,17 +163,6 @@ input {
   thead {
     th {
       border-bottom: 1px solid $light;
-    }
-  }
-}
-
-table {
-  &.sticky-header {
-    th {
-      position: sticky;
-      top: -1px;
-      background: $white;
-      box-shadow: 0 1px $light;
     }
   }
 }

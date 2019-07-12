@@ -1,6 +1,6 @@
 <template>
-  <div class="scrollable">
-    <b-container @submit.prevent="handleSave" tag="form" v-if="trigger">
+  <div class="mt-3">
+    <b-container @submit.prevent="handleSave" tag="form" v-if="trigger" class="pb-5">
       <b-row>
         <b-col md="12" class="mb-1">
           <b-card :title="$t('trigger.edit.title')">
@@ -86,11 +86,11 @@
           </b-card>
         </b-col>
         <b-col md="12">
-          <b-card>
+          <b-card class="mb-5">
             <div id="trigger-manual" class="mb-5 text-justify" v-html="manualFromMd($t('trigger.manual', { joinArrays: '\n' }))"></div>
           </b-card>
         </b-col>
-      </b-row>>
+      </b-row>
     </b-container>
     <editor-toolbar :back-link="{name: 'admin.automation'}"
                     :hideDelete="!trigger.canDeleteTrigger"
