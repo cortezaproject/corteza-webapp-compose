@@ -2,7 +2,11 @@
   <div>
     <fieldset v-if="modules">
       <b-form-group>
-        <b-form-select v-model="moduleID" :options="modules" text-field="name" value-field="moduleID">
+        <b-form-select v-model="moduleID"
+                       :options="modules"
+                       text-field="name"
+                       class="mt-1"
+                       value-field="moduleID">
           <template slot="first">
             <option :value="null" disabled>{{ $t('chart.edit.modulePick') }}</option>
           </template>
@@ -10,8 +14,8 @@
       </b-form-group>
     </fieldset>
 
-    <div v-if="!!module" class="mt-1 report-config">
-      <div class="filter border px-3 py-2 mb-2">
+    <div v-if="!!module" class="mt-1">
+      <div class="border px-3 py-2 mb-2">
         <h5 class="mb-3">{{ $t('chart.edit.filter.label') }}</h5>
         <b-form-group>
           <b-form-select v-model="report.filter"
@@ -23,15 +27,15 @@
           </b-form-select>
           <b-form-checkbox plain v-model="customFilter">{{ $t('chart.edit.filter.customize') }}</b-form-checkbox>
           <b-form-textarea v-if="customFilter"
-                        v-model="report.filter"
-                        placeholder="a = 1 AND b > 2"></b-form-textarea>
+                           v-model="report.filter"
+                           placeholder="a = 1 AND b > 2"></b-form-textarea>
 
         </b-form-group>
       </div>
     </div>
 
-    <div v-if="!!module" class="report-config">
-      <div class="dimensions border px-3 py-2 mb-2">
+    <div v-if="!!module">
+      <div class="border px-3 py-2 mb-2">
         <fieldset v-for="(d,i) in dimensions" :key="'d'+i">
           <h5 class="mb-3"> {{ $t('chart.edit.dimension.label') }} </h5>
           <b-form-group horizontal :label-cols="2" breakpoint="md" :label="$t('chart.edit.dimension.fieldLabel')">
@@ -74,11 +78,11 @@
           <font-awesome-icon class="align-baseline text-secondary mr-2" v-if="metrics.length>1" :icon="['fas', 'grip-vertical']"></font-awesome-icon>
           <h5 class="mb-3 d-inline-block">{{ $t('chart.edit.metric.label') }}</h5>
           <b-button v-if="metrics.length>1" @click.prevent="metrics.splice(i)" variant="linke" class="text-danger align-baseline"><i class="action icon-trash"></i></b-button>
-          <b-form horizontal class="color-picker float-right" label="">
+          <b-form horizontal class="w-25 d-inline-block float-right">
               <b-form-input v-model="m.backgroundColor" type="color" ></b-form-input>
           </b-form>
 
-          <b-form-group horizontal :label-cols="2" breakpoint="md" :label="$t('chart.edit.metric.labelLabel')">
+          <b-form-group horizontal :label-cols="2" class="mt-1" breakpoint="md" :label="$t('chart.edit.metric.labelLabel')">
             <b-form-input v-model="m.label" :placeholder="$t('chart.edit.metric.labelPlaceholder')"></b-form-input>
           </b-form-group>
           <b-form-group horizontal :label-cols="2" breakpoint="md" :label="$t('chart.edit.metric.fieldLabel')">
@@ -109,10 +113,21 @@
             </b-form-select>
           </b-form-group>
           <b-form-group horizontal :label-cols="2" breakpoint="md" label="">
-            <b-form-checkbox plain v-model="m.axisType" value="logarithmic" unchecked-value="linear">{{ $t('chart.edit.metric.logarithmicScale') }}</b-form-checkbox><br />
-            <b-form-checkbox plain v-model="m.axisPosition" value="right" unchecked-value="left">{{ $t('chart.edit.metric.axisOnRight') }}</b-form-checkbox><br />
-            <b-form-checkbox plain v-model="m.beginAtZero" :value="true" :unchecked-value="false" checked>{{ $t('chart.edit.metric.axisScaleFromZero') }}</b-form-checkbox><br />
-            <b-form-checkbox plain v-model="m.fill" :value="true" :unchecked-value="false"
+            <b-form-checkbox plain
+                             v-model="m.axisType"
+                             value="logarithmic"
+                             unchecked-value="linear">{{ $t('chart.edit.metric.logarithmicScale') }}</b-form-checkbox>
+            <b-form-checkbox plain
+                             v-model="m.axisPosition"
+                             value="right"
+                             unchecked-value="left">{{ $t('chart.edit.metric.axisOnRight') }}</b-form-checkbox>
+            <b-form-checkbox plain
+                             v-model="m.beginAtZero"
+                             :value="true"
+                             :unchecked-value="false"
+                             checked>{{ $t('chart.edit.metric.axisScaleFromZero') }}</b-form-checkbox>
+            <b-form-checkbox plain v-model="m.fill"
+                             :value="true" :unchecked-value="false"
                              v-show="m.type === 'line'">{{ $t('chart.edit.metric.fillArea') }}</b-form-checkbox>
           </b-form-group>
         </fieldset>
@@ -225,26 +240,3 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-.report-config {
-  input.form-control[type="color"] {
-    padding: 0;
-    border: none;
-    height: 30px;
-    width: 30px;
-    background: transparent;
-  }
-
-  .main-fieldset {
-    border-top: 1px solid $light;
-
-    &:first-child {
-      border: none;
-    }
-
-    .fa-grip-vertical {
-      cursor: move;
-    }
-  }
-}
-</style>
