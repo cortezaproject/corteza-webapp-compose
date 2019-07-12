@@ -1,11 +1,11 @@
 <template>
-  <div class="container scrollable">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="well">
+  <b-container>
+    <b-row>
+      <b-col md="12">
+        <b-card>
           Configuration options (todo)
-        </div>
-      </div>
-    </div>
-  </div>
+        </b-card>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>

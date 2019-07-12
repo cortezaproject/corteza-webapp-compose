@@ -1,42 +1,45 @@
 <template>
-  <div>
-    <section v-if="!faker">{{ $t('module.recordGenerator.notUsable') }}</section>
-    <section class="container well" v-else-if="module">
-      <h2>{{ $t('module.recordGenerator.forModule') }} {{module.name}}</h2>
-
-      <form @submit.prevent="handleGenerate">
-        <b-input-group :prepend="$t('module.recordGenerator.howManyRecords')">
-          <b-form-input
-            type="number"
-            required
-            :disabled="disabled"
-            v-model="totalRecordsToCreate" variant="primary" />
-          <b-input-group-append>
-            <b-button type="submit"
-                      :disabled="disabled">{{ $t('module.recordGenerator.generate') }}</b-button>
-          </b-input-group-append>
-        </b-input-group>
-        <b-progress height="20px" class="mt-2" :max="parseInt(totalRecordsToCreate)" show-progress>
-          <b-progress-bar :value="recordsCreated/parseInt(totalRecordsToCreate)*100" variant="success"></b-progress-bar>
-        </b-progress>
-      </form>
-
-      <hr />
-      <h3>
-        <i18next path="module.recordGenerator.sampleRoll" tag="label">
-          <button @click="demo=recordFaker()">
-            {{ $t('module.recordGenerator.rollTheDice') }}
-          </button>
-        </i18next>
-      </h3>
-      <table border="1">
-        <tr v-for="(v,i) in demo" :key="i">
-          <td width="150">{{ v.name }}</td>
-          <th>{{ v.value }}</th>
-        </tr>
-      </table>
-    </section>
-  </div>
+  <b-container>
+    <b-row>
+      <b-col md="12">
+        <b-card v-if="!faker">{{ $t('module.recordGenerator.notUsable') }}>
+        </b-card>
+        <b-card>
+          <h4>{{ $t('module.recordGenerator.forModule') }} {{module.name}}</h4>
+          <b-form @submit.prevent="handleGenerate">
+            <b-input-group :prepend="$t('module.recordGenerator.howManyRecords')">
+              <b-form-input
+                type="number"
+                required
+                :disabled="disabled"
+                v-model="totalRecordsToCreate" variant="primary" />
+              <b-input-group-append>
+                <b-button type="submit"
+                          :disabled="disabled">{{ $t('module.recordGenerator.generate') }}</b-button>
+              </b-input-group-append>
+            </b-input-group>
+            <b-progress height="20px" class="mt-2" :max="parseInt(totalRecordsToCreate)" show-progress>
+              <b-progress-bar :value="recordsCreated/parseInt(totalRecordsToCreate)*100" variant="success"></b-progress-bar>
+            </b-progress>
+          </b-form>
+          <hr />
+          <h4>
+            <i18next path="module.recordGenerator.sampleRoll" tag="label">
+              <b-button @click="demo=recordFaker()" variant="dark">
+                {{ $t('module.recordGenerator.rollTheDice') }}
+              </b-button>
+            </i18next>
+          </h4>
+          <table border="1">
+            <tr v-for="(v,i) in demo" :key="i">
+              <td width="150">{{ v.name }}</td>
+              <th>{{ v.value }}</th>
+            </tr>
+          </table>
+        </b-card>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
@@ -147,17 +150,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-
-.well {
-  margin-bottom: 80px;
-}
-
-.alert {
-  position: absolute;
-  z-index: 1;
-  width: 100%;
-  box-shadow: 0 0 2px 0 rgba($secondary, 0.75);
-}
-</style>

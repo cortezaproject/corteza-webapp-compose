@@ -3,12 +3,11 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <div class="well">
+          <b-card :title="$t('page.edit.title')">
             <router-link :to="{name: 'admin.pages.builder'}"
-                         class="btn-url float-right">
+                         class="position-absolute fixed-top text-right p-2">
                          {{ $t('general.label.pageBuilder') }}</router-link>
-            <h2>{{ $t('page.edit.title') }}</h2>
-            <form @submit.prevent="handleSave()">
+            <b-form @submit.prevent="handleSave()">
               <input required type="hidden" v-model="page.pageID" id="id" />
               <label for="title">{{ $t('page.newPlaceholder') }}</label>
               <b-form-input required
@@ -25,8 +24,8 @@
                                v-model="page.visible"
                                id="visible">
                                {{ $t('page.edit.visible') }}?</b-form-checkbox>
-            </form>
-          </div>
+            </b-form>
+          </b-card>
         </div>
       </div>
     </div>

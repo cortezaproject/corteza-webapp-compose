@@ -2,7 +2,7 @@
   <tr>
     <td v-b-tooltip.hover
         :title="$t('module.edit.tooltip.dragAndDrop')"
-        class="handle text-center">
+        class="handle text-center align-middle">
         <font-awesome-icon :icon="['fas', 'sort']"
                            class="text-secondary"
                            :title="$t('module.edit.reorderFields')"></font-awesome-icon>
@@ -35,20 +35,20 @@
               variant="link">
         <font-awesome-icon :icon="['fas', 'wrench']"></font-awesome-icon></b-button>
     </td>
-    <td class="text-center">
+    <td class="text-center align-middle">
       <b-form-checkbox plain
                        v-model="field.isRequired"
                        :value="true"
                        class="pl-0"
                        :unchecked-value="false"></b-form-checkbox>
     </td>
-    <td class="text-center">
+    <td class="text-center align-middle">
       <b-form-checkbox plain
                        v-model="field.isPrivate"
                        :value="true"
                        :unchecked-value="false"></b-form-checkbox>
     </td>
-    <td class="text-right">
+    <td class="text-right align-middle">
       <confirmation-toggle @confirmed="$emit('delete')"
                            :no-prompt="!field.name"
                            class="confirmation-small">

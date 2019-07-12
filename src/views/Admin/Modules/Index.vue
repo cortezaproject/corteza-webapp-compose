@@ -1,15 +1,41 @@
 <template>
   <div class="scrollable">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="well table-responsive">
-            <permissions-button v-if="namespace.canGrant"
-                                resource="compose:module:*"
-                                class="float-right"
-                                link />
-            <export :list="sortedModules" type="module" class="float-right mr-2" />
-            <h2>{{ $t('module.title')}}</h2>
+    <b-container>
+      <b-row>
+        <b-col md="12">
+          <b-card class="mb-2">
+            <b-row align-v="center">
+              <b-col md="5">
+                <b-form v-if="namespace.canCreateModule"
+                      @submit.prevent="create">
+                  <b-form-group :label="$t('module.newLabel')">
+                    <b-input-group>
+                      <b-input required type="text"
+                               v-model="newModule.name"
+                               id="name"
+                               :placeholder="$t('module.newPlaceholder')" />
+                      <b-input-group-append>
+                        <b-button type="submit" variant="dark">{{ $t('general.label.create') }}</b-button>
+                      </b-input-group-append>
+                    </b-input-group>
+                  </b-form-group>
+                </b-form>
+              </b-col>
+              <b-col md="5">
+                <import v-if="namespace.canCreateModule"
+                        :namespace="namespace"
+                        variant="primary"
+                        type="module" />
+              </b-col>
+              <b-col md="2" class="text-right">
+                <export :list="sortedModules" type="module" />
+                <permissions-button v-if="namespace.canGrant"
+                                    resource="compose:module:*"
+                                    link />
+              </b-col>
+            </b-row>
+          </b-card>
+          <b-card :title="$t('module.title')">
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -56,27 +82,10 @@
                 </tr>
               </tbody>
             </table>
-            <form v-if="namespace.canCreateModule"
-                  class="mt-4"
-                  @submit.prevent="create">
-              <b-form-group :label="$t('module.newLabel')">
-                <b-input-group>
-                  <b-input required type="text"
-                         v-model="newModule.name"
-                         id="name"
-                         :placeholder="$t('module.newPlaceholder')" />
-                  <b-input-group-append>
-                    <b-button type="submit" variant="dark">{{ $t('general.label.create') }}</b-button>
-                  </b-input-group-append>
-                </b-input-group>
-              </b-form-group>
-            </form>
-            <import v-if="namespace.canCreateModule"
-                    :namespace="namespace" type="module" />
-          </div>
-        </div>
-      </div>
-    </div>
+          </b-card>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 

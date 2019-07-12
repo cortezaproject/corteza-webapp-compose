@@ -1,20 +1,22 @@
 <template>
-  <form ref="importForm" @submit.prevent class="import-form">
+  <b-form ref="importForm" @submit.prevent class="import-form">
     <b-form-group :label="$t(`${type}.import`)">
-      <b-input-group>
-        <input @change="loadFile" type="file" class="input-file" />
-        <b-button
+      <b-form-file>
+        <input @change="loadFile" type="file"/>
+          <b-input-group-append>
+            <b-button
               v-if="importObj && !processing"
-              variant="secondary"
+              variant="dark"
               @click="openModal">{{ $t('general.label.import') }}</b-button>
-        <b-button
+            <b-button
               v-if="importObj && processing"
-              variant="secondary"
+              variant="dark"
               @click="cancelImport">{{ $t('general.label.cancel') }}</b-button>
+          </b-input-group-append>
         <h5 v-if="processing" class="ml-2 mt-1 mb-0">
           {{ $t('general.label.processing') }}
         </h5>
-      </b-input-group>
+      </b-form-file>
     </b-form-group>
     <b-modal v-if="importObj" size="lg" v-model="show" id="importModal" scrollable>
       <div slot="modal-title">
@@ -44,7 +46,7 @@
             @click="jsonImport(importObj)">{{ $t('general.label.import') }}</b-button>
       </div>
     </b-modal>
-  </form>
+  </b-form>
 </template>
 
 <script>
@@ -167,10 +169,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.form-check {
-  line-height: 24px;
-  font-size: 17px;
-}
-</style>

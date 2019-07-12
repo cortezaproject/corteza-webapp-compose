@@ -1,62 +1,61 @@
 <template>
   <div class="scrollable">
-    <form @submit.prevent="handleSave" class="container" v-if="module">
-      <div class="row">
-        <div class="col-md-12 well">
-          <export :list="[this.module]" type="module" class="float-right" />
-          <h2>{{ $t('module.edit.title') }}</h2>
-          <b-form-group>
-            <label>{{ $t('module.newPlaceholder') }}</label>
-            <b-form-input required
-                          v-model="module.name"
-                          :placeholder="$t('module.newPlaceholder')"></b-form-input>
-          </b-form-group>
-          <div class="form-group">
-            <div class="title-bar">
-              <h5 class="mt-5">{{ $t('module.edit.manageRecordFields') }}</h5>
-              <div class="title-actions actions">
-                <permissions-button v-if="module.canGrant" resource="compose:module-field:*" link />
-              </div>
+    <b-container @submit.prevent="handleSave" tag="form" v-if="module">
+      <b-row>
+        <b-col md="12">
+          <b-card :title="$t('module.edit.title')">
+            <div slot="header" class="text-right">
+              <export :list="[this.module]" type="module" />
+              <permissions-button v-if="module.canGrant" resource="compose:module-field:*" link />
             </div>
-            <table class="table">
-              <thead>
-              <tr>
-                <th></th>
-                <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.name')" class="info">{{ $t('general.label.name') }}</th>
-                <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.title')" class="info">{{ $t('general.label.title') }}</th>
-                <th>{{ $t('general.label.type') }}</th>
-                <th v-b-tooltip.hover :title="$t('module.edit.tooltip.required')" class="info text-center">{{ $t('general.label.required') }}</th>
-                <th v-b-tooltip.hover :title="$t('module.edit.tooltip.sensitive')" class="info text-center">{{ $t('general.label.sensitive') }}</th>
-                <th class="text-center"></th>
-              </tr>
-              </thead>
-              <draggable v-model="module.fields" :options="{handle:'.handle'}" element="tbody">
-                <field-row-edit v-for="(field, index) in module.fields"
-                                @edit="handleFieldEdit(field)"
-                                @delete="module.fields.splice(index, 1)"
-                                :field="field"
-                                :canGrant="namespace.canGrant"
-                                :key="index"></field-row-edit>
-              </draggable>
-              <tr>
-                <th colspan="7">
-                  <b-button @click="handleNewField"
-                            variant="link">+ {{ $t('module.edit.newField') }}</b-button>
-                </th>
-              </tr>
-              <tbody>
+            <b-form-group>
+              <label>{{ $t('module.newPlaceholder') }}</label>
+              <b-form-input required
+                            v-model="module.name"
+                            :placeholder="$t('module.newPlaceholder')"></b-form-input>
+            </b-form-group>
+            <div class="form-group">
+                <h5 class="mt-1">{{ $t('module.edit.manageRecordFields') }}</h5>
+              <table class="table table-sm table-borderless">
+                <thead>
                 <tr>
-                  <th colspan="7">{{ $t('module.edit.systemFields') }}</th>
+                  <th></th>
+                  <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.name')" class="info">{{ $t('general.label.name') }}</th>
+                  <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.title')" class="info">{{ $t('general.label.title') }}</th>
+                  <th>{{ $t('general.label.type') }}</th>
+                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.required')" class="info text-center">{{ $t('general.label.required') }}</th>
+                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.sensitive')" class="info text-center">{{ $t('general.label.sensitive') }}</th>
+                  <th class="text-center"></th>
                 </tr>
-                <field-row-view v-for="(field, index) in module.systemFields()"
-                                :field="field"
-                                :key="index"></field-row-view>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </form>
+                </thead>
+                <draggable v-model="module.fields" :options="{handle:'.handle'}" element="tbody">
+                  <field-row-edit v-for="(field, index) in module.fields"
+                                  @edit="handleFieldEdit(field)"
+                                  @delete="module.fields.splice(index, 1)"
+                                  :field="field"
+                                  :canGrant="namespace.canGrant"
+                                  :key="index"></field-row-edit>
+                </draggable>
+                <tr>
+                  <th colspan="7">
+                    <b-button @click="handleNewField"
+                              variant="link">+ {{ $t('module.edit.newField') }}</b-button>
+                  </th>
+                </tr>
+                <tbody>
+                  <tr>
+                    <th colspan="7">{{ $t('module.edit.systemFields') }}</th>
+                  </tr>
+                  <field-row-view v-for="(field, index) in module.systemFields()"
+                                  :field="field"
+                                  :key="index"></field-row-view>
+                </tbody>
+              </table>
+            </div>
+          </b-card>
+        </b-col>>
+      </b-row>
+    </b-container>
     <b-modal
       v-if="updateField"
       :title="$t('module.edit.moduleFieldSettings')"

@@ -1,26 +1,50 @@
 <template>
   <div class="scrollable">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="well table-responsive">
-            <permissions-button v-if="namespace.canGrant"
-                                resource="compose:chart:*"
-                                class="float-right ml-2 mt-1 mr-3"
-                                link />
-            <export :list="sortedCharts" type="chart" class="float-right" />
-            <h2>{{ $t('chart.title')}}</h2>
+    <b-container>
+      <b-row>
+        <b-col md="12">
+          <b-card class="mb-2">
+            <b-row align-v="center">
+              <b-col md="5">
+                <b-form v-if="namespace.canCreateChart" @submit.prevent="create">
+                  <b-form-group :label="$t('chart.newLabel')">
+                    <b-input-group>
+                      <input required type="text" v-model="newChart.name" class="form-control" id="name" :placeholder="$t('chart.newPlaceholder')" />
+                      <b-input-group-append>
+                        <b-button type="submit" variant="dark">{{ $t('general.label.create') }}</b-button>
+                      </b-input-group-append>
+                    </b-input-group>
+                  </b-form-group>
+                </b-form>
+              </b-col>
+              <b-col md="5">
+                <import v-if="namespace.canCreateChart"
+                        :namespace="namespace" type="chart" />
+              </b-col>
+              <b-col md="2" class="text-right">
+                <export :list="sortedCharts" type="chart"/>
+                <permissions-button v-if="namespace.canGrant"
+                                    resource="compose:chart:*"
+                                    link />
+              </b-col>
+            </b-row>
+          </b-card>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col md="12">
+          <b-card :title="$t('chart.title')">
             <table class="table table-striped">
               <thead>
-                <tr>
-                  <table-sortable-column
-                    :label="$t('general.label.name')"
-                    name="name"
-                    :ascending="sortedByName"
-                    @sort="handleSort"/>
-                  <th></th>
-                  <th></th>
-                </tr>
+              <tr>
+                <table-sortable-column
+                  :label="$t('general.label.name')"
+                  name="name"
+                  :ascending="sortedByName"
+                  @sort="handleSort"/>
+                <th></th>
+                <th></th>
+              </tr>
               </thead>
               <tbody>
               <tr v-for="(chart) in sortedCharts" :key="chart.chartID">
@@ -41,22 +65,10 @@
               </tr>
               </tbody>
             </table>
-            <form v-if="namespace.canCreateChart" @submit.prevent="create" class="mt-4">
-              <b-form-group :label="$t('chart.newLabel')">
-                <b-input-group>
-                  <input required type="text" v-model="newChart.name" class="form-control" id="name" :placeholder="$t('chart.newPlaceholder')" />
-                  <b-input-group-append>
-                    <b-button type="submit" variant="dark">{{ $t('general.label.create') }}</b-button>
-                  </b-input-group-append>
-                </b-input-group>
-              </b-form-group>
-            </form>
-            <import v-if="namespace.canCreateChart"
-                    :namespace="namespace" type="chart" />
-          </div>
-        </div>
-      </div>
-    </div>
+          </b-card>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 <script>

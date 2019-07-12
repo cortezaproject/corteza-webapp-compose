@@ -1,44 +1,64 @@
 <template>
   <div class="scrollable">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="well table-responsive">
-            <permissions-button v-if="namespace.canGrant"
-                                resource="compose:trigger:*"
-                                class="float-right mt-1 ml-2 mr-3"
-                                link />
-            <export :list="sortedTriggers" type="trigger" class="float-right" />
-            <h2>{{ $t('trigger.title')}}</h2>
+    <b-container>
+      <b-row>
+        <b-col md="12">
+          <b-card class="mb-2">
+            <b-row align-v="center">
+              <b-col md="5">
+                <b-form v-if="namespace.canCreateTrigger" @submit.prevent="create">
+                  <b-form-group :label="$t('trigger.newLabel')">
+                    <b-input-group>
+                      <input required type="text" v-model="newTrigger.name" class="form-control" id="name" :placeholder="$t('trigger.newPlaceholder')" />
+                      <b-input-group-append>
+                        <b-button type="submit" variant="dark">{{ $t('general.label.create') }}</b-button>
+                      </b-input-group-append>
+                    </b-input-group>
+                  </b-form-group>
+                </b-form>
+              </b-col>
+              <b-col md="5">
+                <import v-if="namespace.canCreateTrigger"
+                        :namespace="namespace" type="trigger" />
+              </b-col>
+              <b-col md="2" class="text-right">
+                <export :list="sortedTriggers" type="trigger" />
+                <permissions-button v-if="namespace.canGrant"
+                                    resource="compose:trigger:*"
+                                    link />
+              </b-col>
+            </b-row>
+          </b-card>
+          <b-card :title="$t('trigger.title')">
             <table class="table table-striped">
               <thead>
-                <tr>
-                  <table-sortable-column
-                    :label="$t('general.label.name')"
-                    name="name"
-                    :ascending="sortedByName"
-                    @sort="handleSort"/>
+              <tr>
+                <table-sortable-column
+                  :label="$t('general.label.name')"
+                  name="name"
+                  :ascending="sortedByName"
+                  @sort="handleSort"/>
 
-                  <table-sortable-column
-                    :label="$t('general.label.status')"
-                    name="enabled"
-                    :ascending="sortedByEnabled"
-                    @sort="handleSort"/>
+                <table-sortable-column
+                  :label="$t('general.label.status')"
+                  name="enabled"
+                  :ascending="sortedByEnabled"
+                  @sort="handleSort"/>
 
-                  <table-sortable-column
-                    :label="$t('general.label.actions')"
-                    name="actions"
-                    :ascending="undefined"
-                    :sortDisabled="true"/>
+                <table-sortable-column
+                  :label="$t('general.label.actions')"
+                  name="actions"
+                  :ascending="undefined"
+                  :sortDisabled="true"/>
 
-                  <table-sortable-column
-                    :label="$t('general.label.updatedAt')"
-                    name="updatedAt"
-                    :ascending="sortedByUpdatedAt"
-                    @sort="handleSort"/>
+                <table-sortable-column
+                  :label="$t('general.label.updatedAt')"
+                  name="updatedAt"
+                  :ascending="sortedByUpdatedAt"
+                  @sort="handleSort"/>
 
-                  <th></th>
-                </tr>
+                <th></th>
+              </tr>
               </thead>
               <tbody>
               <tr v-for="(t, index) in sortedTriggers" :key="index">
@@ -58,22 +78,10 @@
               </tr>
               </tbody>
             </table>
-            <form v-if="namespace.canCreateTrigger" @submit.prevent="create" class="mt-4">
-              <b-form-group :label="$t('trigger.newLabel')">
-                <b-input-group>
-                  <input required type="text" v-model="newTrigger.name" class="form-control" id="name" :placeholder="$t('trigger.newPlaceholder')" />
-                  <b-input-group-append>
-                    <b-button type="submit" variant="dark">{{ $t('general.label.create') }}</b-button>
-                  </b-input-group-append>
-                </b-input-group>
-              </b-form-group>
-            </form>
-            <import v-if="namespace.canCreateTrigger"
-                    :namespace="namespace" type="trigger" />
-          </div>
-        </div>
-      </div>
-    </div>
+          </b-card>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 <script>

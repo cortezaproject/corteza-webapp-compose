@@ -1,11 +1,11 @@
 <template>
     <div>
-        <button
-            class="btn btn-outline"
+        <b-button
+            class="btn-outline"
             @click="$emit('select', type.block)"
             v-for="(type) in types"
             :disabled="!recordPage && type.recordPageOnly"
-            :key="type.label">{{type.label}}</button>
+            :key="type.label">{{type.label}}</b-button>
 
       <hr />
       <i>{{ $t('page.build.selectBlockFootnote') }}.</i>
@@ -54,22 +54,3 @@ export default {
   },
 }
 </script>
-<style scoped lang="scss">
-
-button {
-  height: 100px;
-  margin: 20px;
-  width: 160px;
-}
-
-.btn-outline {
-  border: 2px solid $primary;
-  font-size: 14px;
-  box-shadow: 0 0 3px 0 rgba($secondary, 0.75);
-  background: $white;
-
-  &:disabled {
-    border-color: $secondary;
-  }
-}
-</style>

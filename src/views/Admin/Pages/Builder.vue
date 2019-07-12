@@ -1,9 +1,9 @@
 <template>
-    <div class="builder scrollable" v-if="page">
+    <div class="d-flex scrollable" v-if="page">
       <grid :blocks.sync="page.blocks" editable>
         <template slot-scope="{ block, index }">
-          <div class="actions">
-            <a class="pr-1" @click="editBlock(block, index)">
+          <div class="text-right fixed-top mt-1">
+            <a class="pr-1 text-dark" @click="editBlock(block, index)">
               <i class="icon-edit"></i>
             </a>
             <a class="pr-1"  @click="page.blocks.splice(index,1)">
@@ -169,27 +169,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.builder {
-  overflow: hidden;
-  display: flex;
-  flex-flow: column nowrap;
-}
-
-.actions {
-  position: sticky;
-  z-index: 2;
-  margin-bottom: -25px;
-
-  a {
-    &:hover {
-      i {
-        color: $black;
-        opacity: 0.8;
-      }
-    }
-  }
-}
-
-</style>

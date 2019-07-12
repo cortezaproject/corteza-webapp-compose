@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-6 well">
+  <div>
     <fieldset v-if="modules">
       <b-form-group>
         <b-form-select v-model="moduleID" :options="modules" text-field="name" value-field="moduleID">

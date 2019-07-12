@@ -1,96 +1,97 @@
 <template>
   <div class="scrollable">
-    <form @submit.prevent="handleSave" class="container" v-if="trigger">
-      <div class="row">
-        <div class="col-md-12 well mb-1">
-          <export :list="[trigger]" type="trigger" class="float-right" />
-          <h2>{{ $t('trigger.edit.title') }}</h2>
-          <b-form-group horizontal
-                        :label="$t('trigger.edit.nameLabel')">
-            <b-form-input v-model="trigger.name"
-                          require
-                          :placeholder="$t('trigger.edit.namePlaceholder')"></b-form-input>
-          </b-form-group>
-
-          <b-form-group horizontal>
-            <b-form-checkbox v-model="trigger.enabled"
-                             :value="true"
-                             plain
-                             :unchecked-value="false">{{ $t('trigger.edit.enabled') }}</b-form-checkbox>
-          </b-form-group>
-
-          <b-form-group horizontal
-                        :label="$t('trigger.edit.primaryModule.label')">
-            <b-form-select v-model="trigger.moduleID"
-                           :options="modules"
-                           text-field="name"
-                           required
-                           value-field="moduleID"
-                           class="form-control">
-              <template slot="first"><option :value="null">{{ $t('trigger.edit.primaryModule.none') }}</option></template>
-            </b-form-select>
-          </b-form-group>
-
-          <b-form-group horizontal>
-            <b-button-group>
-              <b-button variant="outline-dark" @click="insertSample('LeadConversion')">{{ $t('trigger.edit.loadExampleConversion') }}</b-button>
-            </b-button-group>
-            <b-button class="float-right" variant="outline-dark" @click="insertSample('Default', true)">{{ $t('trigger.edit.reset') }}</b-button>
-          </b-form-group>
-
-          <b-form-group horizontal
-                        :label="$t('trigger.edit.codeLabel')">
-            <AceEditor :value="trigger.source"
-                       :fontSize="14"
-                       :showPrintMargin="false"
-                       :showGutter="true"
-                       :highlightActiveLine="true"
-                       :enableBasicAutocompletion="true"
-                       :minLines="10"
-                       :maxLines="30"
-                       width="100%"
-                       :editorProps="{$blockScrolling: true}"
-                       :onChange="onSourceEditorChange"
-                       :onBeforeLoad="onBeforeSourceEditorLoad"
-                       :onLoad="onSourceEditorLoad"
-                       mode="javascript"
-                       theme="monokai"
-                       ref="sourceEditor"
-                       name="editor" />
-          </b-form-group>
-
-          <b-form-group horizontal
-                        :label="$t('trigger.triggerCondition.label')">
-            <b-form-checkbox-group plain v-model="trigger.actions" stacked>
-              <b-form-checkbox value="manual">{{ $t('trigger.triggerCondition.manual') }}</b-form-checkbox>
-              <b-form-checkbox value="beforeCreate">{{ $t('trigger.triggerCondition.beforeCreate') }}</b-form-checkbox>
-              <b-form-checkbox value="afterCreate">{{ $t('trigger.triggerCondition.afterCreate') }}</b-form-checkbox>
-              <b-form-checkbox value="beforeUpdate">{{ $t('trigger.triggerCondition.beforeUpdate') }}</b-form-checkbox>
-              <b-form-checkbox value="afterUpdate">{{ $t('trigger.triggerCondition.afterUpdate') }}</b-form-checkbox>
-              <b-form-checkbox value="beforeDelete">{{ $t('trigger.triggerCondition.beforeDelete') }}</b-form-checkbox>
-              <b-form-checkbox value="afterDelete">{{ $t('trigger.triggerCondition.afterDelete') }}</b-form-checkbox>
-            </b-form-checkbox-group>
-          </b-form-group>
-        </div>
-        <div class="col-md-12 well mb-1">
-          <b-form-group horizontal
-                        :label="$t('trigger.testing.label')"
-                        :description="`${$t('trigger.testing.footnotePrimaryModule')}<br />${$t('trigger.testing.footnoteRecordChanges')}`">
-            <b-input-group>
-              <b-input-group-text slot="prepend">{{ $t('trigger.testing.recordID') }}</b-input-group-text>
-              <b-form-input v-model="test.recordID"
-                            :state="testRecordIDState"
-                            :disabled="!trigger.moduleID"></b-form-input>
-              <b-button @click.prevent="onRun"
-                        variant="dark"
-                        :disabled="testRecordIDState === false">{{ $t('trigger.testing.run') }}</b-button>
-            </b-input-group>
-          </b-form-group>
-        </div>
-        <div id="trigger-manual" class="col-md-12 manual well text-justify" v-html="manualFromMd($t('trigger.manual', { joinArrays: '\n' }))"></div>
-
-      </div>
-    </form>
+    <b-container @submit.prevent="handleSave" tag="form" v-if="trigger">
+      <b-row>
+        <b-col md="12" class="mb-1">
+          <b-card :title="$t('trigger.edit.title')">
+            <export :list="[trigger]" type="trigger" class="float-right" slot="header"/>
+            <b-form-group horizontal
+                          :label="$t('trigger.edit.nameLabel')">
+              <b-form-input v-model="trigger.name"
+                            require
+                            :placeholder="$t('trigger.edit.namePlaceholder')"></b-form-input>
+            </b-form-group>
+            <b-form-group horizontal>
+              <b-form-checkbox v-model="trigger.enabled"
+                               :value="true"
+                               plain
+                               :unchecked-value="false">{{ $t('trigger.edit.enabled') }}</b-form-checkbox>
+            </b-form-group>
+            <b-form-group horizontal
+                          :label="$t('trigger.edit.primaryModule.label')">
+              <b-form-select v-model="trigger.moduleID"
+                             :options="modules"
+                             text-field="name"
+                             required
+                             value-field="moduleID"
+                             class="form-control">
+                <template slot="first"><option :value="null">{{ $t('trigger.edit.primaryModule.none') }}</option></template>
+              </b-form-select>
+            </b-form-group>
+            <b-form-group horizontal>
+              <b-button-group>
+                <b-button variant="outline-dark" @click="insertSample('LeadConversion')">{{ $t('trigger.edit.loadExampleConversion') }}</b-button>
+              </b-button-group>
+              <b-button class="float-right" variant="outline-dark" @click="insertSample('Default', true)">{{ $t('trigger.edit.reset') }}</b-button>
+            </b-form-group>
+            <b-form-group horizontal
+                          :label="$t('trigger.edit.codeLabel')">
+              <AceEditor :value="trigger.source"
+                         :fontSize="14"
+                         :showPrintMargin="false"
+                         :showGutter="true"
+                         :highlightActiveLine="true"
+                         :enableBasicAutocompletion="true"
+                         :minLines="10"
+                         :maxLines="30"
+                         width="100%"
+                         :editorProps="{$blockScrolling: true}"
+                         :onChange="onSourceEditorChange"
+                         :onBeforeLoad="onBeforeSourceEditorLoad"
+                         :onLoad="onSourceEditorLoad"
+                         mode="javascript"
+                         theme="monokai"
+                         ref="sourceEditor"
+                         name="editor" />
+            </b-form-group>
+            <b-form-group horizontal
+                          :label="$t('trigger.triggerCondition.label')">
+              <b-form-checkbox-group plain v-model="trigger.actions" stacked>
+                <b-form-checkbox value="manual">{{ $t('trigger.triggerCondition.manual') }}</b-form-checkbox>
+                <b-form-checkbox value="beforeCreate">{{ $t('trigger.triggerCondition.beforeCreate') }}</b-form-checkbox>
+                <b-form-checkbox value="afterCreate">{{ $t('trigger.triggerCondition.afterCreate') }}</b-form-checkbox>
+                <b-form-checkbox value="beforeUpdate">{{ $t('trigger.triggerCondition.beforeUpdate') }}</b-form-checkbox>
+                <b-form-checkbox value="afterUpdate">{{ $t('trigger.triggerCondition.afterUpdate') }}</b-form-checkbox>
+                <b-form-checkbox value="beforeDelete">{{ $t('trigger.triggerCondition.beforeDelete') }}</b-form-checkbox>
+                <b-form-checkbox value="afterDelete">{{ $t('trigger.triggerCondition.afterDelete') }}</b-form-checkbox>
+              </b-form-checkbox-group>
+            </b-form-group>
+          </b-card>
+        </b-col>
+        <b-col md="12" class="mb-1">
+          <b-card>
+            <b-form-group horizontal
+                          :label="$t('trigger.testing.label')"
+                          :description="`${$t('trigger.testing.footnotePrimaryModule')}<br />${$t('trigger.testing.footnoteRecordChanges')}`">
+              <b-input-group>
+                <b-input-group-text slot="prepend">{{ $t('trigger.testing.recordID') }}</b-input-group-text>
+                <b-form-input v-model="test.recordID"
+                              :state="testRecordIDState"
+                              :disabled="!trigger.moduleID"></b-form-input>
+                <b-button @click.prevent="onRun"
+                          variant="dark"
+                          :disabled="testRecordIDState === false">{{ $t('trigger.testing.run') }}</b-button>
+              </b-input-group>
+            </b-form-group>
+          </b-card>
+        </b-col>
+        <b-col md="12">
+          <b-card>
+            <div id="trigger-manual" class="mb-5 text-justify" v-html="manualFromMd($t('trigger.manual', { joinArrays: '\n' }))"></div>
+          </b-card>
+        </b-col>
+      </b-row>>
+    </b-container>
     <editor-toolbar :back-link="{name: 'admin.automation'}"
                     :hideDelete="!trigger.canDeleteTrigger"
                     :hideSave="!trigger.canUpdateTrigger"
@@ -288,8 +289,3 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-.manual {
-  margin-bottom: 100px;
-}
-</style>

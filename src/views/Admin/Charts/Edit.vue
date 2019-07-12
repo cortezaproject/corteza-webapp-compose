@@ -1,36 +1,38 @@
 <template>
   <div class="scrollable">
-    <form @submit.prevent="handleSave" class="container well">
-      <div class="row">
-        <div class="col-md-12">
-          <export :list="[chart]" type="chart" class="float-right" />
-          <h2>{{ $t('chart.edit.title') }}</h2>
+    <b-container @submit.prevent="handleSave" tag="form">
+      <b-row>
+        <b-col md="12">
+          <b-card :title="$t('chart.edit.title')">
+            <export :list="[chart]" type="chart" class="float-right" slot="header"/>
+              <b-row>
+                <b-col md="6">
+                  <fieldset v-if="modules">
+                    <b-form-input v-model="chart.name" :placeholder="$t('chart.newPlaceholder')" class="mb-1"></b-form-input>
+                  </fieldset>
+                  <report v-for="(report, index) in chart.config.reports"
+                          :report.sync="report"
+                          :modules="modules"
+                          :key="'report_'+index"></report>
+                </b-col>
 
-          <fieldset v-if="modules">
-            <b-form-input v-model="chart.name" :placeholder="$t('chart.newPlaceholder')"></b-form-input>
-          </fieldset>
-        </div>
-      </div>
-      <div class="row">
-        <report v-for="(report, index) in chart.config.reports"
-                :report.sync="report"
-                :modules="modules"
-                :key="'report_'+index"></report>
-
-        <section class="col-md-6 mt-2">
-          <b-button @click.prevent="render"
-                    :disabled="!chart.isValid()"
-                    class="float-right"
-                    variant="outline-primary">{{ $t('chart.edit.loadData') }}</b-button>
-          <canvas ref="chart" width="200" height="200"></canvas>
-        </section>
-      </div>
-      <!-- not supporting multiple reports for now
-      <b-button @click.prevent="chart.config.reports.push(defaultReport)"
-                v-if="false"
-                class="float-right">+ Add report</b-button>
-      -->
-    </form>
+                <b-col md="6">
+                  <b-button @click.prevent="render"
+                            :disabled="!chart.isValid()"
+                            class="float-right"
+                            variant="outline-primary">{{ $t('chart.edit.loadData') }}</b-button>
+                  <canvas ref="chart" width="200" height="200"></canvas>
+                  <!-- not supporting multiple reports for now
+<b-button @click.prevent="chart.config.reports.push(defaultReport)"
+          v-if="false"
+          class="float-right">+ Add report</b-button>
+-->
+                </b-col>
+              </b-row>
+          </b-card>
+        </b-col>
+      </b-row>
+    </b-container>
     <editor-toolbar :back-link="{name: 'admin.charts'}"
                     :hideDelete="!chart.canDeleteChart"
                     :hideSave="!chart.canUpdateChart"

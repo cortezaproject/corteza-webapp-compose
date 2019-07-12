@@ -1,5 +1,5 @@
 <template>
-  <b-button v-if="list.length > 0" variant="link" class="p-0" @click="jsonExport(list, type)">
+  <b-button v-if="list.length > 0" variant="link" @click="jsonExport(list, type)">
     {{ $t('general.label.export') }}
   </b-button>
 </template>
