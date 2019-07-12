@@ -54,10 +54,10 @@
                 <td>
                   <time :datetime="chart.updatedAt" v-if="chart.updatedAt">{{ prettyDate(chart.updatedAt || chart.createdAt) }}</time>
                 </td>
-                <td class="actions text-right">
+                <td class="text-right">
                   <span v-if="chart.canUpdateChart || chart.canDeleteChart">
-                    <router-link :to="{name: 'admin.charts.edit', params: { chartID: chart.chartID }}" class="action">
-                      <i class="action icon-edit"></i>
+                    <router-link :to="{name: 'admin.charts.edit', params: { chartID: chart.chartID }}" class="text-dark pr-2">
+                      <i class="icon-edit"></i>
                     </router-link>
                   </span>
                   <permissions-button v-if="chart.canGrant" :title="chart.name" :resource="'compose:chart:'+chart.chartID" link />

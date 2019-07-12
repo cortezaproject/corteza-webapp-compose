@@ -1,5 +1,5 @@
 <template>
-  <b-navbar fixed="top" type="light">
+  <b-navbar fixed="top" class="bg-white border-bottom border-light shadow-sm">
     <b-navbar-brand>
       <b><router-link :to="{name: 'pages'}" class="nav-link">{{ namespace.name }}</router-link></b>
     </b-navbar-brand>
@@ -33,19 +33,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-
-.navbar {
-  background: $white;
-  margin-bottom: 0;
-  box-shadow: 0 0.1rem 0.2rem 0 rgba(30, 34, 36, 0.1);
-  border-bottom: 1px solid $light;
-
-  .nav-link {
-    .router-link-active {
-      color: $primary;
-    }
-  }
-}
-</style>

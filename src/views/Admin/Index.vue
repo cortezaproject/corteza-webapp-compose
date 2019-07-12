@@ -1,5 +1,5 @@
 <template>
-  <div class="scrollable pt-5" v-if="namespace.canManageNamespace">
+  <div class="pt-5" v-if="namespace.canManageNamespace">
     <admin-header :namespace="namespace"></admin-header>
     <router-view :namespace="namespace" />
   </div>

@@ -16,19 +16,19 @@
                     class="form-control"></b-form-input>
     </td>
     <td>
-      <input v-model="field.label"
+      <b-input v-model="field.label"
              type="text"
              class="form-control"/>
     </td>
-    <td class="type">
-      <select v-model="field.kind"
-              :disabled="disabled"
-              class="form-control"
-              @change="handleKindChange(field)">
+    <td>
+      <b-select v-model="field.kind"
+                :disabled="disabled"
+                class="w-75"
+                @change="handleKindChange(field)">
         <option v-for="fieldType in fieldsList"
                 :key="fieldType.kind"
                 :value="fieldType.kind">{{ fieldType.label||fieldType.kind }}</option>
-      </select>
+      </b-select>
       <b-button :disabled="!field.isConfigurable()"
               @click.prevent="$emit('edit')"
               class="pl-1 pr-0 text-secondary"
@@ -52,7 +52,7 @@
       <confirmation-toggle @confirmed="$emit('delete')"
                            :no-prompt="!field.name"
                            class="confirmation-small">
-        <i class="action icon-trash"></i>
+        <i class="icon-trash"></i>
       </confirmation-toggle>
       <permissions-button v-if="canGrant" :title="field.name" :resource="'compose:module-field:'+field.fieldID" link />
     </td>
@@ -106,41 +106,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-
-.handle {
-  cursor: grab;
-}
-
-/deep/ .confirmation-small {
-  .btn {
-    padding: 0 10px;
-  }
-
-  .btn-outline-danger {
-    border: none;
-  }
-
-  .btn-danger,
-  .btn-secondary {
-    font-size: 12px;
-  }
-}
-
-td {
-  &.type {
-    width: 200px;
-
-    select {
-      width: 160px;
-      display: inline-block;
-    }
-
-    button:disabled {
-      color: $secondary;
-      cursor: auto;
-    }
-  }
-}
-</style>

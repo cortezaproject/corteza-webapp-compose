@@ -66,10 +66,10 @@
                 <td>{{ $t(`trigger.status.${t.enabled}`) }}</td>
                 <td width="300"><small>{{ (t.actions || []).map(a => $t(`trigger.triggerCondition.${a}`)).join(', ') }}</small></td>
                 <td><time :datetime="t.updatedAt || t.createdAt" v-if="t.updatedAt || t.createdAt">{{ prettyDate(t.updatedAt || t.createdAt) }}</time></td>
-                <td class="actions text-right">
+                <td class="text-right">
                   <span v-if="t.canUpdateTrigger || t.canDeleteTrigger">
-                    <router-link :to="{name: 'admin.automation.edit', params: { triggerID: t.triggerID }}" class="action">
-                      <i class="action icon-edit"></i>
+                    <router-link :to="{name: 'admin.automation.edit', params: { triggerID: t.triggerID }}" class="text-dark pr-2">
+                      <i class="icon-edit"></i>
                     </router-link>
                   </span>
 

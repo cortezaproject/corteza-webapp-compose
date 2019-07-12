@@ -1,5 +1,5 @@
 <template>
-  <div class="toolbar text-center bg-white">
+  <div class="toolbar text-center bg-white w-100 fixed-bottom border-top border-primary p-3">
   <b-button pill variant="link"
             :to="backLink"
             v-if="backLink"
@@ -40,15 +40,3 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-// @todo to be removed, should be part of general style
-
-.toolbar {
-  padding: 15px;
-  width: 100%;
-  z-index: 5;
-  border-top: 1px solid $primary;
-  position: fixed;
-  bottom: 0;
-}
-</style>

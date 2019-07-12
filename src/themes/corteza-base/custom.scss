@@ -10,6 +10,15 @@ body {
   height: 100vh;
 }
 
+.confirmation-small {
+  display: inline-block;
+  min-width: 80px;
+
+  .btn-outline-danger {
+    border: none;
+  }
+}
+
 .modal-body {
   textarea {
     display: block;
@@ -19,10 +28,6 @@ body {
   .form-control {
     margin-bottom: 10px;
   }
-}
-
-li.dropdown:hover > .dropdown-menu {
-  display: block;
 }
 
 .vue-grid-layout {
