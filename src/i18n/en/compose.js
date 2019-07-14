@@ -177,6 +177,7 @@ export default {
       tooltip: {
         name: 'Must be a-z/A-Z, 0-9 or underscore',
         title: 'The name displayed in form input / data lists',
+        multi: 'Allows the field to hold multiple values',
         required: 'Required field',
         sensitive: 'Sensitive data',
       },

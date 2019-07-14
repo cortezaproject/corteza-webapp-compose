@@ -1,7 +1,9 @@
 <template>
   <b-form-group :label="field.label || field.name">
-    <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
-          <b-form-select :options="selectOptions" v-model="value[ctx.index]" />
+    <multi v-if="field.isMulti" :value.sync="value" :singleInput="true" v-slot="ctx">
+        <b-form-select v-if="false" :options="selectOptions" v-model="value[ctx.index]" />
+        <b-form-select v-if="false" @change="selectChange" :options="selectOptions" ref="singleSelect" />
+        <b-form-select v-if="true" :options="selectOptions" v-model="value" :select-size="6" multiple />
     </multi>
 
     <b-form-select
@@ -23,6 +25,14 @@ export default {
   computed: {
     selectOptions () {
       return this.field.options.options
+    },
+  },
+
+  methods: {
+    selectChange (value) {
+      this.value.push(value)
+      // Reset select
+      this.$refs.singleSelect.localValue = undefined
     },
   },
 }

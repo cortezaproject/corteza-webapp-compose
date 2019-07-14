@@ -38,7 +38,7 @@
     <td class="text-center align-middle">
       <b-form-checkbox plain
                        v-model="field.isMulti"
-                       :disabled="field.kind === 'Bool'"
+                       :disabled="!field.allowMulti()"
                        :value="true"
                        :unchecked-value="false"></b-form-checkbox>
     </td>

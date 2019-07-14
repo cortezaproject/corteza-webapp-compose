@@ -1,22 +1,32 @@
 <template>
   <div>
+    <div v-if="singleInput" class="mb-2">
+      <slot></slot>
+    </div>
     <draggable :list.sync="val">
-      <b-input-group v-for="(v, index) of val" :key="index">
-        <b-input-group-text>
+      <div v-for="(v, index) of val" :key="index">
+        <b-row no-gutters>
+          <b-col cols="1" class="center my-auto">
             <font-awesome-icon v-b-tooltip.hover
                               :icon="['fas', 'sort']"
                               :title="$t('general.tooltip.dragAndDrop')"
                               class="handle text-secondary" />
-        </b-input-group-text>
+          </b-col>
 
-        <slot v-bind:index="index"></slot>
+          <b-col cols="10">
+            <span v-if="singleInput">
+              {{ v }}
+            </span>
+            <slot v-else v-bind:index="index"></slot>
+          </b-col>
 
-        <b-input-group-text @click="removeValue(v)">
+          <b-col cols="1" @click="removeValue(v)" class="center my-auto">
             <i class="icon-cross text-secondary"></i>
-        </b-input-group-text>
-      </b-input-group >
+          </b-col>
+        </b-row>
+      </div>
     </draggable>
-    <b-button @click="val.push('')" variant="link" class="pl-0">+ {{ $t('general.label.addValue') }}</b-button>
+    <b-button v-if="!singleInput" @click="val.push('')" variant="link" class="pl-0">+ {{ $t('general.label.addValue') }}</b-button>
   </div>
 </template>
 <script>
@@ -32,6 +42,11 @@ export default {
       type: Array,
       required: true,
       default: () => [],
+    },
+
+    singleInput: {
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -56,6 +71,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.center {
+  width: 100%;
+  text-align: center;
+}
 .handle {
   cursor: grab;
 }
