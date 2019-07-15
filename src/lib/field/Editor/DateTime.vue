@@ -45,26 +45,14 @@ export default {
       },
       set (d) {
         if (d && d.length > 1) {
-          var dm = moment()
-          if (this.field.options.onlyDate) {
-            dm = moment(d, 'YYYY-MM-DD')
-            // check for valid dates as per rules
-            dm = checkFuturePast(dm,
-              this.field.options.onlyFutureValues,
-              this.field.options.onlyPastValues,
-              this.field.options.onlyDate,
-              this.field.options.onlyTime)
-            this.value = dm.format('YYYY-MM-DD')
-          } else {
-            dm = moment(d + ' ' + this.time, 'YYYY-MM-DD HH:mm')
-            // check for valid dates as per rules
-            dm = checkFuturePast(dm,
-              this.field.options.onlyFutureValues,
-              this.field.options.onlyPastValues,
-              this.field.options.onlyDate,
-              this.field.options.onlyTime)
-            this.value = dm.format('YYYY-MM-DD HH:mm')
-          }
+          let dm = moment(d + ' ' + this.time, 'YYYY-MM-DD HH:mm')
+          // check for valid dates as per rules
+          dm = checkFuturePast(dm,
+            this.field.options.onlyFutureValues,
+            this.field.options.onlyPastValues,
+            this.field.options.onlyDate,
+            this.field.options.onlyTime)
+          this.value = dm.format('YYYY-MM-DD HH:mm')
         }
       },
     },
@@ -77,14 +65,12 @@ export default {
       },
       set (t) {
         if (t && t.length > 1) {
-          var tm = moment()
-          if (this.field.options.onlyTime) {
-            tm = moment(t, 'HH:mm')
-            this.value = tm.format('HH:mm')
-          } else {
-            tm = moment(this.date + ' ' + t, 'YYYY-MM-DD HH:mm')
-            this.value = tm.format('YYYY-MM-DD HH:mm')
+          let date = '1970-01-01'
+          if (this.date) {
+            date = this.date
           }
+          let tm = moment(date + ' ' + t, 'YYYY-MM-DD HH:mm')
+          this.value = tm.format('YYYY-MM-DD HH:mm')
         }
       },
     },
