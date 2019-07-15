@@ -15,7 +15,7 @@
         <namespace-item v-else :namespace="n" />
       </div>
       <div v-if="canCreateNamespace" class="add-wrap col-md-6 col-lg-4 col-12 mt-4">
-        <router-link :to="{ name: 'namespace.edit' }">
+        <router-link :to="{ name: 'namespace.create' }">
           <div class="add-namespace">
             <label class="add-icon">
               <i class="icon-plus d-block m-auto" />

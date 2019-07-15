@@ -10,10 +10,12 @@ function r (name, path, component) {
 
 export default [
   r('root', '', 'Namespaces'),
-  r('namespace.edit', '/ns/:namespaceID?', 'Admin/Namespaces/Edit'),
+  r('namespace.create', '/admin/namespaces/create', 'Admin/Namespaces/Edit'),
+  r('namespace.edit', '/admin/namespaces/edit/:namespaceID', 'Admin/Namespaces/Edit'),
 
   {
-    ...r('namespace', '/ns/:slug/', 'Namespace'),
+    ...r('namespace', '/ns/:slug', 'Namespace'),
+    redirect: { name: 'pages' },
 
     children: [
       {
