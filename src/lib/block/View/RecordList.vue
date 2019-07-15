@@ -197,7 +197,7 @@ export default {
         }).filter(q => !!q).join(' OR ')
 
         if (this.prefilter) {
-          filter = `${this.prefilter} AND ${filter}`
+          filter = `(${this.prefilter}) AND (${filter})`
         }
         this.filter.page = 0
       }
