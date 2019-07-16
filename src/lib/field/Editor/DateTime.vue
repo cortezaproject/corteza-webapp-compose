@@ -39,38 +39,68 @@ export default {
             return ''
           }
 
-          return this.value.split(' ')[0] // we only want the date part
+          const split = this.value.split(' ')
+          if (split.length > 1) {
+            return split[0] // we only want the date part
+          } else if (split.length === 1) {
+            // If date is in the value
+            if (split[0].indexOf('-') > -1) {
+              return split[0]
+            }
+          }
         }
         return ''
       },
       set (d) {
         if (d && d.length > 1) {
-          let dm = moment(d + ' ' + this.time, 'YYYY-MM-DD HH:mm')
-          // check for valid dates as per rules
-          dm = checkFuturePast(dm,
-            this.field.options.onlyFutureValues,
-            this.field.options.onlyPastValues,
-            this.field.options.onlyDate,
-            this.field.options.onlyTime)
-          this.value = dm.format('YYYY-MM-DD HH:mm')
+          let dm = moment()
+          if (this.field.options.onlyDate) {
+            dm = moment(d, 'YYYY-MM-DD')
+            // check for valid dates as per rules
+            dm = checkFuturePast(dm,
+              this.field.options.onlyFutureValues,
+              this.field.options.onlyPastValues,
+              this.field.options.onlyDate,
+              this.field.options.onlyTime)
+            this.value = dm.format('YYYY-MM-DD')
+          } else {
+            dm = moment(d + ' ' + this.time, 'YYYY-MM-DD HH:mm')
+            // check for valid dates as per rules
+            dm = checkFuturePast(dm,
+              this.field.options.onlyFutureValues,
+              this.field.options.onlyPastValues,
+              this.field.options.onlyDate,
+              this.field.options.onlyTime)
+            this.value = dm.format('YYYY-MM-DD HH:mm')
+          }
         }
       },
     },
     time: {
       get () {
         if (this.value && this.value.length > 0) {
-          return this.value.split(' ')[1] // we only want the time part
+          const split = this.value.split(' ')
+          if (split.length > 1) {
+            return split[1] // we only want the time part
+          } else if (split.length === 1) {
+            // If we time is in the value
+            if (split[0].indexOf(':') > -1) {
+              return split[0]
+            }
+          }
         }
         return ''
       },
       set (t) {
         if (t && t.length > 1) {
-          let date = '1970-01-01'
-          if (this.date) {
-            date = this.date
+          let tm = moment()
+          if (this.field.options.onlyTime) {
+            tm = moment(t, 'HH:mm')
+            this.value = tm.format('HH:mm')
+          } else {
+            tm = moment(this.date + ' ' + t, 'YYYY-MM-DD HH:mm')
+            this.value = tm.format('YYYY-MM-DD HH:mm')
           }
-          let tm = moment(date + ' ' + t, 'YYYY-MM-DD HH:mm')
-          this.value = tm.format('YYYY-MM-DD HH:mm')
         }
       },
     },

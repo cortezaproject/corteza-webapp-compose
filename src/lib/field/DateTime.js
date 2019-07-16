@@ -31,7 +31,7 @@ export class DateTime {
     } else if (this.format.length > 0) {
       return m.format(this.format)
     } else if (this.onlyTime) {
-      return m.format('HH:mm')
+      return moment(value, 'HH:mm').format('HH:mm')
     } else if (this.onlyDate) {
       return m.format('YYYY-MM-DD')
     } else {
