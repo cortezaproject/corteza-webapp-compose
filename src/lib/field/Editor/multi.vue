@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="singleInput" class="mb-2">
-      <slot></slot>
+      <slot name="single"></slot>
     </div>
     <draggable :list.sync="val">
       <div v-for="(v, index) of val" :key="index">
@@ -14,10 +14,7 @@
           </b-col>
 
           <b-col cols="10">
-            <span v-if="singleInput">
-              {{ v }}
-            </span>
-            <slot v-else v-bind:index="index"></slot>
+            <slot v-bind:index="index"></slot>
           </b-col>
 
           <b-col cols="1" @click="removeValue(v)" class="center my-auto">
