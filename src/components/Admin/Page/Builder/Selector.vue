@@ -1,14 +1,16 @@
 <template>
-    <div>
+    <div class="d-flex flex-wrap">
         <b-button
-            class="btn-outline"
+            variant="outline-primary"
+            class="p-5 m-1 flex-fill"
             @click="$emit('select', type.block)"
             v-for="(type) in types"
             :disabled="!recordPage && type.recordPageOnly"
             :key="type.label">{{type.label}}</b-button>
-
-      <hr />
-      <i>{{ $t('page.build.selectBlockFootnote') }}.</i>
+      <div slot="modal-footer" class="w-100">
+        <hr />
+        <i>{{ $t('page.build.selectBlockFootnote') }}.</i>
+      </div>
     </div>
 </template>
 <script>
