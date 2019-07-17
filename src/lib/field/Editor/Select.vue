@@ -1,12 +1,12 @@
 <template>
   <b-form-group :label="field.label || field.name">
-    <multi v-if="field.isMulti" :value.sync="value" singleInput>
+    <multi v-if="field.isMulti" :value.sync="value" :singleInput="true">
       <template v-slot:single>
-        <b-form-select v-if="true" @change="selectChange" :options="selectOptions" ref="singleSelect" />
+        <b-form-select v-if="false" @change="selectChange" :options="selectOptions" ref="singleSelect" />
         <b-form-select v-if="false" :options="selectOptions" v-model="value" :select-size="6" multiple />
       </template>
       <template v-slot:default="ctx">
-        <b-form-select v-if="false" :options="selectOptions" v-model="value[ctx.index]" />
+        <b-form-select v-if="true" :options="selectOptions" v-model="value[ctx.index]" />
         <span v-else>{{ value[ctx.index] }}</span>
       </template>
     </multi>

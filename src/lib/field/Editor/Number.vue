@@ -1,6 +1,11 @@
 <template>
   <b-form-group :label="field.label || field.name" >
-    <b-input-group :prepend="field.options.prefix" :append="field.options.suffix">
+    <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
+      <b-input-group :prepend="field.options.prefix" :append="field.options.suffix">
+        <b-form-input type="number" v-model="value[ctx.index]"></b-form-input>
+      </b-input-group>
+    </multi>
+    <b-input-group v-else :prepend="field.options.prefix" :append="field.options.suffix">
       <b-form-input type="number" v-model="value"></b-form-input>
     </b-input-group>
     <b-form-text v-if="validate && errors">
