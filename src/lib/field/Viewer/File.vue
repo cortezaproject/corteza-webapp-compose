@@ -1,6 +1,6 @@
 <template>
   <list-loader kind="record"
-               :set="[value]"
+               :set="set"
                :namespace="namespace"
                :mode="field.options.mode"></list-loader>
 </template>
@@ -14,5 +14,11 @@ export default {
   },
 
   extends: base,
+
+  computed: {
+    set () {
+      return this.field.isMulti ? this.value : [this.value]
+    },
+  },
 }
 </script>

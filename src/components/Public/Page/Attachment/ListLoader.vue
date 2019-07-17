@@ -1,26 +1,34 @@
 <template>
   <div>
     <div v-if="mode === 'list'" class="list">
-      <div v-for="(a, index) in attachments" :key="a.attachmentID" v-if="a" class="item">
-        <div class="row">
-          <div class="col-sm-10">
-            <attachment-link :attachment="a" />
-            <i18next path="general.label.attachmentFileInfo" tag="label">
-              <span>{{ size(a) }}</span>
-              <span>{{ uploadedAt(a) }}</span>
-            </i18next>
-          </div>
-          <div class="col-sm-2 text-right">
-            <a :href="a.download"><font-awesome-icon :icon="['fas', 'download']"></font-awesome-icon></a>
-            <b-button variant="link"
-                      class="delete right inline"
-                      v-if="enableDelete"
-                      @click="deleteAttachment(index)">
-              <font-awesome-icon :icon="['far', 'trash-alt']" class="action"></font-awesome-icon>
-            </b-button>
+      <draggable :list.sync="attachments" :disabled="!enableOrder">
+        <div v-for="(a, index) in attachments" :key="a.attachmentID" v-if="a" class="item">
+          <div class="row no-gutters">
+            <div v-if="enableOrder" class="col-sm-1 my-auto text-center">
+              <font-awesome-icon v-b-tooltip.hover
+                              :icon="['fas', 'sort']"
+                              :title="$t('general.tooltip.dragAndDrop')"
+                              class="handle text-secondary" />
+            </div>
+            <div :class="{'col-sm-9': enableOrder, 'col-sm-10': !enableOrder}">
+              <attachment-link :attachment="a" />
+              <i18next path="general.label.attachmentFileInfo" tag="label">
+                <span>{{ size(a) }}</span>
+                <span>{{ uploadedAt(a) }}</span>
+              </i18next>
+            </div>
+            <div class="col-sm-2 text-right my-auto">
+              <a :href="a.download"><font-awesome-icon :icon="['fas', 'download']"></font-awesome-icon></a>
+              <b-button variant="link"
+                        class="delete right inline"
+                        v-if="enableDelete"
+                        @click="deleteAttachment(index)">
+                <font-awesome-icon :icon="['far', 'trash-alt']" class="action"></font-awesome-icon>
+              </b-button>
+            </div>
           </div>
         </div>
-      </div>
+      </draggable>
     </div>
 
     <div v-else-if="mode === 'grid'" class="grid">
@@ -66,16 +74,23 @@ import Attachment from 'corteza-webapp-compose/src/lib/attachment'
 import Namespace from 'corteza-webapp-compose/src/lib/namespace'
 import { PreviewInline, canPreview } from 'corteza-webapp-common/src/components/FilePreview/'
 import AttachmentLink from './Link'
+import draggable from 'vuedraggable'
 
 export default {
   components: {
     PreviewInline,
     AttachmentLink,
+    draggable,
   },
 
   props: {
     enableDelete: {
       type: Boolean,
+    },
+
+    enableOrder: {
+      type: Boolean,
+      default: false,
     },
 
     namespace: {
@@ -220,5 +235,9 @@ export default {
   img {
     cursor: pointer;
   }
+}
+
+.handle {
+  cursor: grab;
 }
 </style>

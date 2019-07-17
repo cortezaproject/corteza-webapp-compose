@@ -5,6 +5,7 @@
                  :set.sync="set"
                  :namespace="namespace"
                  enable-delete
+                 enable-order
                  mode="list"></list-loader>
   </b-form-group>
 </template>
