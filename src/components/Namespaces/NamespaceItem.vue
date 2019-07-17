@@ -19,7 +19,7 @@
       <div :class="{'options actions': namespace.canUpdateNamespace, 'no-edit': !namespace.canUpdateNamespace}">
         <span v-if="namespace.canUpdateNamespace">
           <router-link :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }" class="p-0 float-right">
-            <i class="icon-edit"></i>
+            <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
           </router-link>
         </span>
       </div>

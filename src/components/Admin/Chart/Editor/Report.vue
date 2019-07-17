@@ -77,7 +77,9 @@
         <fieldset v-for="(m,i) in metrics" :key="'m'+i" class="main-fieldset">
           <font-awesome-icon class="align-baseline text-secondary mr-2" v-if="metrics.length>1" :icon="['fas', 'grip-vertical']"></font-awesome-icon>
           <h5 class="mb-3 d-inline-block">{{ $t('chart.edit.metric.label') }}</h5>
-          <b-button v-if="metrics.length>1" @click.prevent="metrics.splice(i)" variant="link" class="text-danger align-baseline"><i class="icon-trash"></i></b-button>
+          <b-button v-if="metrics.length>1" @click.prevent="metrics.splice(i)" variant="link" class="text-danger align-baseline">
+            <font-awesome-icon :icon="['far', 'trash-alt']"></font-awesome-icon>
+          </b-button>
           <b-form horizontal class="w-25 d-inline-block float-right">
               <b-form-input v-model="m.backgroundColor" type="color" ></b-form-input>
           </b-form>

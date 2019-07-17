@@ -15,7 +15,9 @@
             <b-button variant="link"
                       class="delete right inline"
                       v-if="enableDelete"
-                      @click="deleteAttachment(index)"><i class="action icon-trash"></i></b-button>
+                      @click="deleteAttachment(index)">
+              <font-awesome-icon :icon="['far', 'trash-alt']" class="action"></font-awesome-icon>
+            </b-button>
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@
       <b-navbar id="public_header" type="light" toggleable="md">
           <b-navbar-toggle target="public_nav_collapse">
             <label>
-              <i class="icon-menu4"></i>
+              <font-awesome-icon :icon="['fas', 'bars']"></font-awesome-icon>
             </label>
           </b-navbar-toggle>
           <b-collapse is-nav id="public_nav_collapse" :class="{ visible }" class="mt-2 mw-100 flex-grow-1" @show="toggleNav(true)" @hide="toggleNav(false)">

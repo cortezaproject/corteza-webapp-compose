@@ -74,7 +74,7 @@
                        class="mr-2 text-dark">{{ $t('general.label.pageBuilder') }}</b-button>
                     <span v-if="m.canUpdateModule || m.canDeleteModule">
                       <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="mr-2 text-dark">
-                       <i class="icon-edit"></i>
+                        <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
                       </router-link>
                     </span>
                     <permissions-button v-if="m.canGrant" :title="m.name" :resource="'compose:module:'+m.moduleID" link />

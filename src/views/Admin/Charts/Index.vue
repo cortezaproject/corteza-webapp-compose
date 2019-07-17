@@ -57,7 +57,7 @@
                 <td class="text-right">
                   <span v-if="chart.canUpdateChart || chart.canDeleteChart">
                     <router-link :to="{name: 'admin.charts.edit', params: { chartID: chart.chartID }}" class="text-dark pr-2">
-                      <i class="icon-edit"></i>
+                      <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
                     </router-link>
                   </span>
                   <permissions-button v-if="chart.canGrant" :title="chart.name" :resource="'compose:chart:'+chart.chartID" link />

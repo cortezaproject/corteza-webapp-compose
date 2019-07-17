@@ -69,7 +69,7 @@
                 <td class="text-right">
                   <span v-if="t.canUpdateTrigger || t.canDeleteTrigger">
                     <router-link :to="{name: 'admin.automation.edit', params: { triggerID: t.triggerID }}" class="text-dark pr-2">
-                      <i class="icon-edit"></i>
+                      <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
                     </router-link>
                   </span>
 

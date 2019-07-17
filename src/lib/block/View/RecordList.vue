@@ -39,7 +39,8 @@
             <td class="text-right">
               <router-link
                 :to="{ name: 'page.record', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
-                <i class="action icon-search"></i></router-link>
+                <font-awesome-icon :icon="['fas', 'search']"></font-awesome-icon>
+              </router-link>
             </td>
           </tr>
         </tbody>
@@ -253,19 +254,7 @@ export default {
   }
 }
 
-.action {
-  visibility: hidden;
-}
-
 table {
-  tr {
-    &:hover {
-      .action {
-        visibility: visible;
-      }
-    }
-  }
-
   &.sortable thead th {
     cursor: pointer;
   }

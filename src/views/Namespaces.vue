@@ -17,9 +17,7 @@
       <div v-if="canCreateNamespace" class="add-wrap col-md-6 col-lg-4 col-12 mt-4">
         <router-link :to="{ name: 'namespace.create' }">
           <div class="add-namespace">
-            <label class="add-icon">
-              <i class="icon-plus d-block m-auto" />
-            </label>
+            <span class="add-icon">+</span>
             <label class="add-text text-center d-block">
                 {{ $t('namespace.create') }}
             </label>
@@ -85,7 +83,8 @@ export default {
   text-align: center;
 
   .add-icon {
-    height: 100px;
+    font-size: 80px;
+    height: 110px;
     line-height: 100px;
     display: block;
     text-align: center;

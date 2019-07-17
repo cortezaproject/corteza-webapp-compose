@@ -52,7 +52,7 @@
       <confirmation-toggle @confirmed="$emit('delete')"
                            :no-prompt="!field.name"
                            class="confirmation-small">
-        <i class="icon-trash"></i>
+        <font-awesome-icon :icon="['far', 'trash-alt']"></font-awesome-icon>
       </confirmation-toggle>
       <permissions-button v-if="canGrant" :title="field.name" :resource="'compose:module-field:'+field.fieldID" link />
     </td>

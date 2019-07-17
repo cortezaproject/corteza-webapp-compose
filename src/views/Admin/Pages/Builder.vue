@@ -4,11 +4,9 @@
         <template slot-scope="{ block, index }">
           <div class="text-right fixed-top mt-1">
             <a class="pr-1 text-dark" @click="editBlock(block, index)">
-              <i class="icon-edit"></i>
+              <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
             </a>
-            <a class="pr-1"  @click="page.blocks.splice(index,1)">
-              <i class="icon-x"></i>
-            </a>
+            <a class="pr-1"  @click="page.blocks.splice(index,1)">X</a>
           </div>
           <block-preview :block="block"
                          :namespace="namespace"

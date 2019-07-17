@@ -32,7 +32,7 @@
           </b-input-group-append>
           <b-input-group-append>
             <b-button @click.prevent="o.buttons.splice(i,1)" variant="link" class="text-danger">
-              <i class="icon-trash"></i>
+              <font-awesome-icon :icon="['far', 'trash-alt']"></font-awesome-icon>
             </b-button>
           </b-input-group-append>
         </b-input-group>
