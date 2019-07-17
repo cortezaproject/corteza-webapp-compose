@@ -7,7 +7,7 @@
             v-for="(type) in types"
             :disabled="!recordPage && type.recordPageOnly"
             :key="type.label">{{type.label}}</b-button>
-      <div slot="modal-footer" class="w-100">
+      <div class="w-100">
         <hr />
         <i>{{ $t('page.build.selectBlockFootnote') }}.</i>
       </div>

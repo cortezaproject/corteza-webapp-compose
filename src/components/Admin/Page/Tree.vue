@@ -30,7 +30,7 @@
           <router-link v-if="item.canUpdatePage"
                        :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
                        class="mr-2 text-dark d-inline-block edit">
-            <i class="icon-edit" v-if="item.moduleID === '0'"></i>
+            <font-awesome-icon :icon="['far', 'edit']" v-if="item.moduleID === '0'"></font-awesome-icon>
           </router-link>
          <permissions-button v-if="namespace.canGrant"
                              :title="item.title"

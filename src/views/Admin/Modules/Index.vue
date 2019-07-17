@@ -56,11 +56,11 @@
               </thead>
               <tbody>
                 <tr v-for="(m, index) in sortedModules" :key="index">
-                  <td>
+                  <td class="align-middle">
                     <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}"
                                  class="text-dark">{{ m.name }}</router-link>
                   </td>
-                  <td><time :datetime="m.updatedAt" v-if="m.updatedAt">{{ prettyDate(m.updatedAt || m.createdAt) }}</time></td>
+                  <td class="align-middle"><time :datetime="m.updatedAt" v-if="m.updatedAt">{{ prettyDate(m.updatedAt || m.createdAt) }}</time></td>
                   <td class="text-right">
                     <b-button
                       v-if="recordPage(m.moduleID)"

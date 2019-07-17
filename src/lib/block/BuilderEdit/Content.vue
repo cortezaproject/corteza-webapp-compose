@@ -63,7 +63,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .ql-snow.ql-toolbar button {
-    width: 27px;
+  /deep/ .ql-toolbar {
+    &.ql-snow {
+      .ql-formats {
+        margin-right: 0;
+      }
+
+      .ql-picker-label {
+        margin-top: -5px;
+      }
+    }
+  }
+
+  /deep/ .ql-editor {
+    min-height: 150px;
   }
 </style>

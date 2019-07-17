@@ -31,7 +31,7 @@
           :edit-mode="editMode"
           v-if="record"
           @reload="loadRecord()" />
-    <b-modal id="deleteRecord" :title="$t('block.record.deleteRecord')" @ok="handleDelete" :ok-title="$t('general.label.delete')" ok-variant="danger">
+    <b-modal size="lg" id="deleteRecord" :title="$t('block.record.deleteRecord')" @ok="handleDelete" :ok-title="$t('general.label.delete')" ok-variant="danger">
       <div class="d-block text-center">
         <h3>{{ $t('block.record.confirmDelete') }}</h3>
       </div>

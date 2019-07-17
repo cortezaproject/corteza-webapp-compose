@@ -26,7 +26,7 @@
       </grid-item>
     </grid-layout>
   </div>
-  <div v-else class="no-builder-grid container text-center">
+  <div v-else class="no-builder-grid pt-5 container text-center">
     <h4>{{ $t('page.noBlock') }}.</h4>
   </div>
 </template>

@@ -63,7 +63,7 @@
       </b-form-group>
       <b-form-group horizontal v-if="feed.moduleID && getModuleByID(feed.moduleID)" class="feed-config">
         <b-input-group>
-          <b-input-group-append class="w-25" is-text>{{ $t('general.label.title') }}</b-input-group-append>
+          <b-input-group-append is-text>{{ $t('general.label.title') }}</b-input-group-append>
           <b-form-select v-model="feed.titleField" :options="textualFields(feed.moduleID) | optionizeFields">
             <template slot="first">
               <option disabled :value="null">{{ $t('block.calendar.noField') }}</option>
@@ -72,7 +72,7 @@
         </b-input-group>
 
         <b-input-group>
-          <b-input-group-append class="w-25" is-text>{{ $t('block.calendar.eventStart') }}</b-input-group-append>
+          <b-input-group-append is-text>{{ $t('block.calendar.eventStart') }}</b-input-group-append>
           <b-form-select v-model="feed.startField" :options="datetimeFields(feed.moduleID) | optionizeFields">
             <template slot="first">
               <option disabled :value="null">{{ $t('block.calendar.noField') }}</option>
@@ -81,7 +81,7 @@
         </b-input-group>
 
         <b-input-group>
-          <b-input-group-append class="w-25" is-text>{{ $t('block.calendar.eventEnd') }}</b-input-group-append>
+          <b-input-group-append is-text>{{ $t('block.calendar.eventEnd') }}</b-input-group-append>
           <b-form-select v-model="feed.endField" :options="datetimeFields(feed.moduleID) | optionizeFields">
             <template slot="first">
               <option :value="null">{{ $t('block.calendar.noFieldOneHour') }}</option>

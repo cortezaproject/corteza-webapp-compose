@@ -62,6 +62,7 @@
       :ok-title="$t('general.label.saveAndClose')"
       ok-variant="dark"
       ok-only
+      size="lg"
       @ok="handleFieldSave(updateField)"
       @hide="updateField=null"
       :visible="!!updateField">
