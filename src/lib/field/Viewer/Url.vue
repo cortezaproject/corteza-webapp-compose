@@ -1,6 +1,14 @@
 <template>
+  <div v-if="field.isMulti">
+    <div v-for="(v, index) of value" :key="index">
+      <span v-if="field.options.outputPlain">{{ getUrlValue(index) }}</span>
+      <span v-else><a :href="getUrlValue(index)" target="_blank">{{ getUrlValue(index) }}</a></span>
+    </div>
+  </div>
+  <div v-else>
     <span v-if="field.options.outputPlain">{{ urlValue }}</span>
     <span v-else><a :href="urlValue" target="_blank">{{ urlValue }}</a></span>
+  </div>
 </template>
 <script>
 import base from './base'
@@ -8,17 +16,19 @@ import { trimUrlFragment, trimUrlQuery, trimUrlPath, onlySecureUrl } from 'corte
 
 export default {
   extends: base,
-  computed: {
-    urlValue: {
-      get () {
-      // run through all the attributes
-        var value = this.value
 
-        return this.fixUrl(value)
-      },
+  computed: {
+    urlValue () {
+      return this.getUrlValue()
     },
   },
+
   methods: {
+    getUrlValue (index = undefined) {
+      const value = index !== undefined ? this.value[index] : this.value
+      return this.fixUrl(value)
+    },
+
     fixUrl (value) {
       // run through all the attributes
       if (this.field.options.trimFragment) {

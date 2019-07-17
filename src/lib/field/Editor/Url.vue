@@ -1,7 +1,17 @@
 <template>
   <b-form-group :label="field.label || field.name">
+    <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
+      <b-form-input
+        type="url"
+        placeholder="Example URL: https://example.com"
+        :value="getUrlValue(ctx.index)"
+        @change="setUrlValue($event, ctx.index)"></b-form-input>
+    </multi>
+
     <b-form-input
+      v-else
       type="url"
+      placeholder="Example URL: https://example.com"
       v-model="urlValue"></b-form-input>
 
     <b-form-text v-if="validate && errors">
@@ -18,19 +28,28 @@ export default {
   computed: {
     urlValue: {
       get () {
-        // run through all the attributes
-        var value = this.value
-
-        return this.fixUrl(value)
+        return this.getUrlValue()
       },
 
       set (value) {
-        // run through all the attributes
-        this.value = this.fixUrl(value)
+        this.setUrlValue(value)
       },
     },
   },
   methods: {
+    getUrlValue (index = undefined) {
+      const value = index !== undefined ? this.value[index] : this.value
+      return this.fixUrl(value)
+    },
+
+    setUrlValue (event, index = undefined) {
+      if (this.field.isMulti) {
+        this.value[index] = this.fixUrl(event)
+      } else {
+        this.value = this.fixUrl(event)
+      }
+    },
+
     fixUrl (value) {
       // run through all the attributes
       if (this.field.options.trimFragment) {
