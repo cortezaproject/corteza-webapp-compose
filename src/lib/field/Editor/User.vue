@@ -1,6 +1,42 @@
 <template>
   <b-form-group :label="field.label || field.name">
-    <vue-select :options="users"
+    <multi v-if="field.isMulti" :value.sync="value" :singleInput="false">
+      <template v-slot:single>
+        <vue-select v-if="false"
+                    :options="users"
+                    @search="search"
+                    option-value="userID"
+                    option-text="label"
+                    :placeholder="$t('field.kind.user.suggestionPlaceholder')"
+                    @input="selectChange($event)"
+                    ref="singleSelect">
+        </vue-select>
+        <vue-select v-else-if="false"
+                    :options="users"
+                    @search="search"
+                    option-value="userID"
+                    option-text="label"
+                    :placeholder="$t('field.kind.user.suggestionPlaceholder')"
+                    multiple
+                    v-model="multipleSelected">
+        </vue-select>
+      </template>
+      <template v-slot:default="ctx">
+        <vue-select v-if="true"
+                    :options="users"
+                    @search="search"
+                    option-value="userID"
+                    option-text="label"
+                    :placeholder="$t('field.kind.user.suggestionPlaceholder')"
+                    :value="getUser(ctx.index)"
+                    @input="setUser($event, ctx.index)">
+        </vue-select>
+        <span v-else>{{ getUser(ctx.index).label }}</span>
+      </template>
+    </multi>
+
+    <vue-select v-else
+                :options="users"
                 @search="search"
                 option-value="userID"
                 option-text="label"
@@ -37,32 +73,61 @@ export default {
       allUsers: 'user/set',
     }),
 
-    selected: {
+    // This is used in the case of using the multiple select option
+    multipleSelected: {
       get () {
-        if (this.value) {
-          this.findUserByID(this.value)
-        }
-
-        return this.users.find(v => v.value === this.value) || { value: this.value, label: this.value }
+        return this.value.map(value => this.users.find(v => v.value === value) || { value: value, label: value })
       },
 
-      set ({ value } = {}) {
-        if (value) {
-          this.value = value
-        }
+      set (value) {
+        this.value = value.map(v => v.value)
+      },
+    },
+
+    selected: {
+      get () {
+        return this.getUser()
+      },
+
+      set (value) {
+        this.setUser(value)
       },
     },
   },
 
   beforeMount () {
-    if (!this.value && this.field.options.presetWithAuthenticated) {
+    if ((!this.value || this.value.length === 0) && this.field.options.presetWithAuthenticated) {
       // This (ID) was not converted yet
       let { ID, userID } = this.$auth.user
-      this.value = userID || ID
+      if (this.field.isMulti) {
+        this.value.push(userID || ID)
+      } else {
+        this.value = userID || ID
+      }
     }
   },
 
   methods: {
+    getUser (index = undefined) {
+      const value = index !== undefined ? this.value[index] : this.value
+      if (value) {
+        this.findUserByID(value)
+      }
+
+      return this.users.find(v => v.value === value) || { value: value, label: value }
+    },
+
+    setUser (event, index = undefined) {
+      if (event) {
+        const { value } = event
+        if (index !== undefined) {
+          this.value[index] = value
+        } else {
+          this.value = value
+        }
+      }
+    },
+
     convert ({ userID, email, name, username }) {
       return {
         value: userID,
@@ -80,6 +145,12 @@ export default {
       if (!this.users.find(v => v.value === userID)) {
         this.users.push(this.convert(this.findByID(userID)))
       }
+    },
+
+    selectChange (event) {
+      this.value.push(event.value)
+      // Cant mutate props so we use magic(refs)
+      this.$refs.singleSelect.mutableValue = null
     },
   },
 }
