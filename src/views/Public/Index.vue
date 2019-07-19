@@ -4,8 +4,7 @@
                    :namespace="namespace"
                    @toggleNav="navVisible = $event" />
     <router-view :namespace="namespace"
-                 :page="page"
-                 :class="routerViewClass" />
+                 :page="page" />
   </div>
 </template>
 
@@ -77,15 +76,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-.compose-content {
-  padding-left: 0;
-  transition: padding-left 0.3s;
-
-  &.padded {
-    padding-left: 250px;
-  }
-}
-
-</style>

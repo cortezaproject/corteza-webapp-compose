@@ -24,9 +24,9 @@
     </div>
 
     <div v-else-if="mode === 'grid'" class="grid">
-      <div v-for="a in attachments" :key="a.attachmentID" v-if="a" class="item">
-        <attachment-link :attachment="a">
-          <font-awesome-icon :icon="['far', 'file-'+ext(a)]"></font-awesome-icon>
+      <div v-for="a in attachments" :key="a.attachmentID" v-if="a" class="p-2">
+        <attachment-link :attachment="a" class="d-block">
+          <font-awesome-icon :icon="['far', 'file-'+ext(a)]" class="text-dark float-left mr-2"></font-awesome-icon>
           {{a.name}}
         </attachment-link>
         <i18next path="general.label.attachmentFileInfo" tag="label">
@@ -37,7 +37,7 @@
     </div>
 
     <div v-else-if="mode === 'single' || 'gallery'" class="single gallery">
-      <div v-for="(a) in attachments" :key="a.attachmentID" v-if="a" class="item mb-2">
+      <div v-for="(a) in attachments" :key="a.attachmentID" v-if="a" class="mb-2">
         <preview-inline
           v-if="canPreview(a)"
           @openPreview="openLightbox({ ...a, ...$event })"
@@ -207,46 +207,19 @@ export default {
 </script>
 <style lang="scss" scoped>
 
-.fa-download {
-  color: $black;
-  font-size: 12px;
-  margin-right: 2px;
-  vertical-align: baseline;
-}
-
-.list {
-  .item {
-    min-height: 30px;
-  }
-}
-
 .grid {
-  .item {
-    padding: 10px 0;
-
-    a {
-      display: block;
-      line-height: 13px;
-    }
-
-    .svg-inline--fa {
-      color: #000;
-      font-size: 30px;
-      float: left;
-      margin-right: 10px;
-    }
+  .svg-inline--fa {
+    font-size: 40px;
   }
 }
 
 .single {
-  .item {
-    .svg-inline--fa {
-      font-size: 40px;
-    }
+  .svg-inline--fa {
+    font-size: 40px;
+  }
 
-    img {
-      cursor: pointer;
-    }
+  img {
+    cursor: pointer;
   }
 }
 </style>

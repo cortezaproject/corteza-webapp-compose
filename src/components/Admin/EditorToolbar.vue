@@ -1,5 +1,5 @@
 <template>
-  <div class="toolbar text-center bg-white w-100 fixed-bottom border-top border-primary p-3">
+  <div class="text-center bg-white w-100 fixed-bottom border-top border-primary p-3">
   <b-button pill variant="link"
             :to="backLink"
             v-if="backLink"

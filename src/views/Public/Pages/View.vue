@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!!page" class="scrollable">
+  <div v-if="!!page">
     <router-view :namespace="namespace"
                  :page="page"
                  v-if="recordID || createPage" />

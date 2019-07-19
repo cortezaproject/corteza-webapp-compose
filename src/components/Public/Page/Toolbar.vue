@@ -1,5 +1,5 @@
 <template>
-  <div class="toolbar text-center">
+  <div class="text-center">
     <b-button variant="link"
               class="float-left"
               @click.prevent="$router.back()">
@@ -31,15 +31,3 @@ export default {
   },
 }
 </script>
-<style scoped lang="scss">
-
-.toolbar {
-  background: $white;
-  padding: 15px;
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  z-index: 5;
-  border-top: 1px solid $primary;
-}
-</style>

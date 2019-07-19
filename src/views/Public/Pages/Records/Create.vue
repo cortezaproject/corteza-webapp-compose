@@ -1,5 +1,5 @@
 <template>
-  <div class="view">
+  <div>
     <toolbar :back-link="{name: 'admin.pages'}"
              :read-only="!module.canUpdateRecord"
              :hide-delete="true">
