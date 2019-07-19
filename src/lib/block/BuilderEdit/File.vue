@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-form-group horizontal
-                  :description="$t('field.kind.file.view.modePlaceholder')"
+                  :description="$t('field.kind.file.view.modeFootnote')"
                   :label="$t('field.kind.file.view.modeLabel')">
       <b-form-radio-group v-model="options.mode"
                           buttons
