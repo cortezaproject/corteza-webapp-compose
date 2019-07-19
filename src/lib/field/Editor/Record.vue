@@ -34,7 +34,7 @@
                     :value="getRecord(ctx.index)"
                     @input="setRecord($event, ctx.index)">
         </vue-select>
-        <span v-else>{{ multipleSelected[ctx.index].label }}</span>
+        <span v-else>{{ (multipleSelected[ctx.index] || {}).label }}</span>
       </template>
     </multi>
 

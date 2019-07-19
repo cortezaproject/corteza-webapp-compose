@@ -56,10 +56,19 @@ export default {
 
     format (index = 0) {
       if (this.relRecords[index]) {
+        let value = ''
         if (this.field.options.labelField) {
-          return this.relRecords[index].values[this.field.options.labelField]
+          value = this.relRecords[index].values[this.field.options.labelField]
+        } else {
+          value = this.relRecords[index].recordID
         }
-        return this.relRecords[index].recordID
+        if (value && value.length > 0) {
+          if (Array.isArray(value)) {
+            return value.join('\n')
+          } else {
+            return value
+          }
+        }
       }
       return null
     },

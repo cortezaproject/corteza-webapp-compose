@@ -67,10 +67,9 @@ export default {
     getTime (index = undefined) {
       if (this.value && this.value.length > 0) {
         let dt = []
-        if (index !== undefined) {
-          dt = this.value[index].split(' ')
-        } else {
-          dt = this.value.split(' ')
+        const value = index !== undefined ? this.value[index] : this.value
+        if (value) {
+          dt = value.split(' ')
         }
 
         if (dt.length > 1) {
