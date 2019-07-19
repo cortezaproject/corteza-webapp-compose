@@ -18,7 +18,8 @@
           </b-col>
 
           <b-col cols="1" @click="removeValue(v)" class="center my-auto">
-            <i class="icon-cross text-secondary"></i>
+            <font-awesome-icon :icon="['fas', 'times']"
+                              class="text-secondary" />
           </b-col>
         </b-row>
       </div>
@@ -72,6 +73,7 @@ export default {
   width: 100%;
   text-align: center;
 }
+
 .handle {
   cursor: grab;
 }
