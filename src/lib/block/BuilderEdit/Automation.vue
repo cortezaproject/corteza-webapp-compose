@@ -1,32 +1,37 @@
 <template>
   <fieldset class="form-group">
-    <b-form-group :label="$t('block.automation.manualTrigger')" horizontal :description="$t('block.automation.triggerFootnote')">
+    <b-form-group :label="$t('block.automation.manualTrigger')"
+                  horizontal
+                  :description="$t('block.automation.triggerFootnote')">
       <b-input-group>
-        <b-form-select v-model="selectedTriggerID" :options="triggerOptions">
+        <b-form-select v-model="selectedTriggerID"
+                       :options="triggerOptions">
           <template slot="first">
-            <option disabled :value="null">{{ $t('block.automation.pickTrigger') }}</option>
+            <option disabled
+                    :value="null">{{ $t('block.automation.pickTrigger') }}</option>
           </template>
         </b-form-select>
         <b-input-group-append>
-          <b-button @click.prevent="handleAddButton" variant="dark">{{ $t('general.label.add') }}</b-button>
+          <b-button @click.prevent="handleAddButton"
+                    variant="dark">{{ $t('general.label.add') }}</b-button>
         </b-input-group-append>
       </b-input-group>
     </b-form-group>
-    <b-form-group :label="$t('general.label.buttons')" :description="$t('block.automation.buttonFootnote')" horizontal v-show="o.buttons.length > 0">
+    <b-form-group :label="$t('general.label.buttons')"
+                  :description="$t('block.automation.buttonFootnote')"
+                  horizontal
+                  v-show="o.buttons.length > 0">
       <draggable
         :list.sync="o.buttons"
         :options="{ group: 'fields' }">
-        <b-input-group class="mb-2" v-for="(b,i) in o.buttons" :key="b.triggerID">
+        <b-input-group class="mb-2"
+                       v-for="(b,i) in o.buttons"
+                       :key="b.triggerID">
           <b-input-group-prepend is-text>
             <font-awesome-icon :icon="['fas', 'grip-vertical']" class="text-secondary"></font-awesome-icon>
           </b-input-group-prepend>
-          <div class="btn-name">
             <b-form-input class="mb-0" v-model="b.label" placeholder="button label"></b-form-input>
-            <b-input-group-append is-text>
-              {{ $t('block.automation.trigger') }} "{{ (findTriggerByID(b.triggerID) || {}).name }}"
-            </b-input-group-append>
-          </div>
-          <b-input-group-append class="btn-color">
+          <b-input-group-append class="w-25">
             <b-form-select v-model="b.variant" :options="variantOptions">
             </b-form-select>
           </b-input-group-append>
@@ -35,6 +40,9 @@
               <font-awesome-icon :icon="['far', 'trash-alt']"></font-awesome-icon>
             </b-button>
           </b-input-group-append>
+          <p class="text-muted w-100">
+            {{ $t('block.automation.trigger') }}: "{{ (findTriggerByID(b.triggerID) || {}).name }}"
+          </p>
         </b-input-group>
       </draggable>
     </b-form-group>
@@ -133,28 +141,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.fa-grip-vertical {
-  cursor: move;
-}
-
-.input-group-append {
-  z-index: 0;
-
-  .input-group-text {
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
-
-.btn-name {
-  width: calc(100% - 75px);
-}
-
-.btn-color {
-  flex-grow: 1;
-}
-
-</style>
