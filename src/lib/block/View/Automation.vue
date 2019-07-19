@@ -1,9 +1,9 @@
 <template>
-    <div class="flex flex-wrap">
+    <div class="d-flex flex-wrap">
       <b-button v-for="(b) in options.buttons"
                 :key="b.triggerID"
                 :variant="b.variant || 'primary'"
-                class="flex-grow-1 mb-1"
+                class="m-1 flex-fill"
                 @click.prevent="runTriggers({ triggerID: b.triggerID, action: 'manual', module, record, namespace })">{{ b.label }}</b-button>
     </div>
 </template>

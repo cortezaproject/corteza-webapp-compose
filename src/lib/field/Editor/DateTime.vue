@@ -2,10 +2,12 @@
   <b-form-group :label="field.label || field.name">
     <b-form-input v-if="!field.options.onlyTime"
                   type="date"
+                  class="d-inline w-50"
                   v-b-tooltip.hover :title="$t(dateRule)"
                   v-model="date" />
     <b-form-input v-if="!field.options.onlyDate"
                   type="time"
+                  class="d-inline w-50"
                   v-model="time" />
 
     <b-form-text v-if="validate && errors">
@@ -107,18 +109,3 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="scss">
-
-input[type='date'] {
-  width: calc(((100% / 3) *2) - 10px);
-  display: inline-block;
-  margin-right: 10px;
-}
-
-input[type='time'] {
-  width: calc(100% / 3);
-  display: inline-block;
-}
-
-</style>

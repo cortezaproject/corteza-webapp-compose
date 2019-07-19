@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center">
+  <div class="text-center bg-white w-100 fixed-bottom border-top border-primary p-3">
     <b-button variant="link"
               class="float-left"
               @click.prevent="$router.back()">
