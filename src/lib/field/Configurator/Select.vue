@@ -9,6 +9,14 @@
       <b-form-input plain v-model="newOption" @keypress.enter.prevent="handleAddOption" size="sm" :placeholder="$t('field.kind.select.optionRemove')"></b-form-input>
       <button @click.prevent="handleAddOption" :disabled="newOption.length === 0" class="btn-url">+ {{ $t('field.kind.select.optionAdd') }}</button>
     </div>
+    <div v-if="f.isMulti" class="form-group">
+      <label class="d-block">{{ $t('field.kind.select.optionType.label') }}</label>
+      <b-form-radio-group
+        v-model="f.options.selectType"
+        :options="selectOptions"
+        stacked
+      ></b-form-radio-group>
+    </div>
   </div>
 </template>
 
@@ -21,6 +29,11 @@ export default {
   data () {
     return {
       newOption: '',
+      selectOptions: [
+        { text: this.$t('field.kind.select.optionType.default'), value: 'default' },
+        { text: this.$t('field.kind.select.optionType.multiple'), value: 'multiple' },
+        { text: this.$t('field.kind.select.optionType.each'), value: 'each' },
+      ],
     }
   },
 

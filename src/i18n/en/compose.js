@@ -606,10 +606,17 @@ export default {
       },
       select: {
         label: 'Select',
+        placeholder: 'Select an option by clicking here',
         optionsLabel: 'Options to select from',
         optionRemove: 'Remove',
         optionAdd: 'Add',
         optionPlaceholder: 'Add more',
+        optionType: {
+          label: 'Multiple value input type',
+          default: 'Single input',
+          each: 'Input for each value',
+          multiple: 'Multiple select',
+        },
       },
       number: {
         label: 'Number',

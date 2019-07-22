@@ -5,8 +5,9 @@ export class Select {
     this.merge(def)
   }
 
-  merge ({ options } = {}) {
+  merge ({ options, selectType } = {}) {
     this.options = options || []
+    this.selectType = selectType ? (typeof selectType === 'string' ? selectType : 'default') : 'default'
 
     return this
   }
@@ -14,6 +15,7 @@ export class Select {
   export () {
     return {
       options: this.options,
+      selectType: this.selectType,
     }
   }
 }

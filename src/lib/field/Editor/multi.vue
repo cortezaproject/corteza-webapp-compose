@@ -19,7 +19,7 @@
 
           <b-col cols="1" @click="removeValue(v)" class="center my-auto">
             <font-awesome-icon :icon="['fas', 'times']"
-                              class="text-secondary" />
+                              class="pointer text-secondary" />
           </b-col>
         </b-row>
       </div>
@@ -76,5 +76,9 @@ export default {
 
 .handle {
   cursor: grab;
+}
+
+.pointer {
+  cursor: pointer;
 }
 </style>

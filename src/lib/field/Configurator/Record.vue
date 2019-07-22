@@ -29,6 +29,14 @@
                      :disabled="!module">
       </b-form-select>
     </div>
+    <div v-if="f.isMulti" class="form-group">
+      <label class="d-block">{{ $t('field.kind.select.optionType.label') }}</label>
+      <b-form-radio-group
+        v-model="f.options.selectType"
+        :options="selectOptions"
+        stacked
+      ></b-form-radio-group>
+    </div>
   </div>
 </template>
 
@@ -44,6 +52,11 @@ export default {
   data () {
     return {
       selected: null,
+      selectOptions: [
+        { text: this.$t('field.kind.select.optionType.default'), value: 'default' },
+        { text: this.$t('field.kind.select.optionType.multiple'), value: 'multiple' },
+        { text: this.$t('field.kind.select.optionType.each'), value: 'each' },
+      ],
     }
   },
 
@@ -69,6 +82,7 @@ export default {
     'f.options.moduleID' () {
       this.f.options.labelField = undefined
       this.f.options.queryFields = []
+      this.f.options.selectType = 'default'
     },
   },
 

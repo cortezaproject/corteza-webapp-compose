@@ -1,8 +1,8 @@
 <template>
   <b-form-group :label="field.label || field.name">
-    <multi v-if="field.isMulti" :value.sync="value" :singleInput="false">
+    <multi v-if="field.isMulti" :value.sync="value" :singleInput="field.options.selectType !== 'each'">
       <template v-slot:single>
-        <vue-select v-if="false"
+        <vue-select v-if="field.options.selectType === 'default'"
                     :options="users"
                     @search="search"
                     option-value="userID"
@@ -11,7 +11,7 @@
                     @input="selectChange($event)"
                     ref="singleSelect">
         </vue-select>
-        <vue-select v-else-if="false"
+        <vue-select v-else-if="field.options.selectType === 'multiple'"
                     :options="users"
                     @search="search"
                     option-value="userID"
@@ -22,7 +22,7 @@
         </vue-select>
       </template>
       <template v-slot:default="ctx">
-        <vue-select v-if="true"
+        <vue-select v-if="field.options.selectType === 'each'"
                     :options="users"
                     @search="search"
                     option-value="userID"
