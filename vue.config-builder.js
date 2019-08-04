@@ -33,6 +33,10 @@ module.exports = ({ appName, appLabel, version, theme, packageAlias, root = path
     lintOnSave: true,
     runtimeCompiler: true,
 
+    transpileDependencies: [
+      /^[\\/]node_modules[\\/]corteza-webapp-/,
+    ],
+
     configureWebpack: {
       // other webpack options to merge in ...
       plugins: [
