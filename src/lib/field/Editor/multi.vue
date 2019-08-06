@@ -4,9 +4,9 @@
       <slot name="single"></slot>
     </div>
     <draggable :list.sync="val">
-      <div v-for="(v, index) of val" :key="index">
+      <div v-for="(v, index) of val" :key="index" class="mb-1">
         <b-row no-gutters>
-          <b-col cols="1" class="center my-auto">
+          <b-col cols="1" class="center my-auto pr-2">
             <font-awesome-icon v-b-tooltip.hover
                               :icon="['fas', 'sort']"
                               :title="$t('general.tooltip.dragAndDrop')"
@@ -17,14 +17,21 @@
             <slot v-bind:index="index"></slot>
           </b-col>
 
-          <b-col cols="1" @click="removeValue(v)" class="center my-auto">
+          <b-col v-if="removable" cols="1" @click="removeValue(index)" class="center my-auto pl-2">
             <font-awesome-icon :icon="['fas', 'times']"
                               class="pointer text-secondary" />
           </b-col>
         </b-row>
       </div>
     </draggable>
-    <b-button v-if="!singleInput" @click="val.push('')" variant="link" class="pl-0">+ {{ $t('general.label.addValue') }}</b-button>
+    <b-row v-if="!singleInput" no-gutters >
+      <b-col cols="1" @click="val.push('')"  class="center my-auto pr-2 plus text-secondary">
+        +
+      </b-col>
+      <b-col cols="5">
+        <b-button @click="val.push('')" variant="link" class="p-0">{{ $t('general.label.addValue') }}</b-button>
+      </b-col>
+    </b-row>
   </div>
 </template>
 <script>
@@ -40,6 +47,11 @@ export default {
       type: Array,
       required: true,
       default: () => [],
+    },
+
+    removable: {
+      type: Boolean,
+      default: true,
     },
 
     singleInput: {
@@ -61,8 +73,10 @@ export default {
   },
 
   methods: {
-    removeValue (value) {
-      this.val = this.val.filter(v => v !== value)
+    removeValue (index) {
+      if (index > -1) {
+        this.val.splice(index, 1)
+      }
     },
   },
 
@@ -79,6 +93,11 @@ export default {
 }
 
 .pointer {
+  cursor: pointer;
+}
+
+.plus {
+  font-size: 15px;
   cursor: pointer;
 }
 </style>
