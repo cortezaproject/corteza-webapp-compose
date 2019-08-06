@@ -1,6 +1,6 @@
 <template>
   <b-form-group :label="field.label || field.name">
-    <multi v-if="field.isMulti" :value.sync="value" :singleInput="field.options.selectType !== 'each'">
+    <multi v-if="field.isMulti" :value.sync="value" :singleInput="field.options.selectType !== 'each'" :removable="field.options.selectType !== 'multiple'">
       <template v-slot:single>
         <vue-select v-if="field.options.selectType === 'default'"
                     :options="options"
@@ -77,7 +77,7 @@ export default {
 
   computed: {
     options () {
-      return (this.query ? this.records : this.latest).map(this.convert)
+      return (this.query ? this.records : this.latest).map(this.convert).filter(v => v)
     },
 
     module () {
@@ -161,9 +161,14 @@ export default {
       let label = value
       if (this.field.options.labelField) {
         label = r.values[this.field.options.labelField]
-      }
+        if (label && label.length > 0) {
+          if (Array.isArray(label)) {
+            label = label.join(', ')
+          }
 
-      return { value, label }
+          return { value, label }
+        }
+      }
     },
 
     search (query) {
@@ -187,7 +192,7 @@ export default {
       const namespaceID = this.namespace.namespaceID
       const moduleID = this.field.options.moduleID
       if (moduleID) {
-        this.$ComposeAPI.recordList({ namespaceID, moduleID, sort: this.sortString() }).then(({ set }) => {
+        this.$ComposeAPI.recordList({ namespaceID, moduleID }).then(({ set }) => {
           this.latest = set.map(r => new Record(this.module, r))
         })
       }

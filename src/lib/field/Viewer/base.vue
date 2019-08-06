@@ -42,7 +42,7 @@ export default {
 
     formatted () {
       if (this.field.isMulti) {
-        return this.value.join('\n')
+        return this.value.join(this.field.options.multiDelimiter)
       }
       return this.value
     },

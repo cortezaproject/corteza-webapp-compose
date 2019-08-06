@@ -21,7 +21,7 @@ export default {
         return this.value.map(v => {
           let user = this.findByID(v)
           return user ? (this.field.options.formatter(user) || v) : this.$t('field.kind.user.na')
-        }).join('\n')
+        }).join(this.field.options.multiDelimiter)
       }
       return this.user ? (this.field.options.formatter(this.user) || this.value) : this.$t('field.kind.user.na')
     },

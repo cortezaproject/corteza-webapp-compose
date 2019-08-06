@@ -569,6 +569,16 @@ export default {
   },
   field: {
     noPermission: 'No permission to read field value',
+    options: {
+      multiDelimiter: {
+        label: 'Multiple value delimiter',
+        customLabel: 'Or use a custom delimiter',
+        customPlaceholder: 'Enter a custom delimiter',
+        newline: 'Each value in a new line',
+        comma: 'Separated by a comma',
+        custom: 'A custom delimiter',
+      },
+    },
     system: {
       ownedBy: 'Owned by',
       createdBy: 'Created by',

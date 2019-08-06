@@ -64,7 +64,7 @@ export default {
         }
         if (value && value.length > 0) {
           if (Array.isArray(value)) {
-            return value.join('\n')
+            return value.join(this.field.options.multiDelimiter)
           } else {
             return value
           }
