@@ -36,7 +36,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.2",
     "@panter/vue-i18next": "^0.15.0",
     "axios": "^0.18.0",
-    "bootstrap-vue": "^2.0.0-rc.20",
+    "bootstrap-vue": "^2.0.0-rc.27",
     "c3": "^0.6.11",
     "chart.js": "^2.7.3",
     "corteza-webapp-common": "cortezaproject/corteza-webapp-common.git#master",
