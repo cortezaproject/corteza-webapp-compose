@@ -1,99 +1,79 @@
 <template>
-  <div class="mt-3">
-    <b-container @submit.prevent="handleSave" tag="form" v-if="trigger" class="pb-5">
+  <div class="mt-3" v-if="script">
+    <b-container @submit.prevent="handleSave" tag="form" class="pb-5">
       <b-row>
         <b-col md="12" class="mb-1">
-          <b-card :title="$t('trigger.edit.title')">
-            <export :list="[trigger]" type="trigger" class="float-right" slot="header"/>
-            <b-form-group horizontal
-                          :label="$t('trigger.edit.nameLabel')">
-              <b-form-input v-model="trigger.name"
-                            require
-                            :placeholder="$t('trigger.edit.namePlaceholder')"></b-form-input>
-            </b-form-group>
-            <b-form-group horizontal>
-              <b-form-checkbox v-model="trigger.enabled">
-                {{ $t('trigger.edit.enabled') }}
-              </b-form-checkbox>
-            </b-form-group>
-            <b-form-group horizontal
-                          :label="$t('trigger.edit.primaryModule.label')">
-              <b-form-select v-model="trigger.moduleID"
-                             :options="modules"
-                             text-field="name"
-                             required
-                             value-field="moduleID"
-                             class="form-control">
-                <template slot="first"><option :value="null">{{ $t('trigger.edit.primaryModule.none') }}</option></template>
-              </b-form-select>
-            </b-form-group>
-            <b-form-group horizontal>
-              <b-button-group>
-                <b-button variant="outline-dark" @click="insertSample('LeadConversion')">{{ $t('trigger.edit.loadExampleConversion') }}</b-button>
-              </b-button-group>
-              <b-button class="float-right" variant="outline-dark" @click="insertSample('Default', true)">{{ $t('trigger.edit.reset') }}</b-button>
-            </b-form-group>
-            <b-form-group horizontal
-                          :label="$t('trigger.edit.codeLabel')">
-              <AceEditor :value="trigger.source"
-                         :fontSize="14"
-                         :showPrintMargin="false"
-                         :showGutter="true"
-                         :highlightActiveLine="true"
-                         :enableBasicAutocompletion="true"
-                         :minLines="10"
-                         :maxLines="30"
-                         width="100%"
-                         :editorProps="{$blockScrolling: true}"
-                         :onChange="onSourceEditorChange"
-                         :onBeforeLoad="onBeforeSourceEditorLoad"
-                         :onLoad="onSourceEditorLoad"
-                         mode="javascript"
-                         theme="monokai"
-                         ref="sourceEditor"
-                         name="editor" />
-            </b-form-group>
-            <b-form-group horizontal
-                          :label="$t('trigger.triggerCondition.label')">
-              <b-form-checkbox-group v-model="trigger.actions" stacked>
-                <b-form-checkbox value="manual">{{ $t('trigger.triggerCondition.manual') }}</b-form-checkbox>
-                <b-form-checkbox value="beforeCreate">{{ $t('trigger.triggerCondition.beforeCreate') }}</b-form-checkbox>
-                <b-form-checkbox value="afterCreate">{{ $t('trigger.triggerCondition.afterCreate') }}</b-form-checkbox>
-                <b-form-checkbox value="beforeUpdate">{{ $t('trigger.triggerCondition.beforeUpdate') }}</b-form-checkbox>
-                <b-form-checkbox value="afterUpdate">{{ $t('trigger.triggerCondition.afterUpdate') }}</b-form-checkbox>
-                <b-form-checkbox value="beforeDelete">{{ $t('trigger.triggerCondition.beforeDelete') }}</b-form-checkbox>
-                <b-form-checkbox value="afterDelete">{{ $t('trigger.triggerCondition.afterDelete') }}</b-form-checkbox>
-              </b-form-checkbox-group>
-            </b-form-group>
-          </b-card>
-        </b-col>
-        <b-col md="12" class="mb-1">
-          <b-card>
-            <b-form-group horizontal
-                          :label="$t('trigger.testing.label')"
-                          :description="`${$t('trigger.testing.footnotePrimaryModule')}<br />${$t('trigger.testing.footnoteRecordChanges')}`">
-              <b-input-group>
-                <b-input-group-text slot="prepend">{{ $t('trigger.testing.recordID') }}</b-input-group-text>
-                <b-form-input v-model="test.recordID"
-                              :state="testRecordIDState"
-                              :disabled="!trigger.moduleID"></b-form-input>
-                <b-button @click.prevent="onRun"
-                          variant="dark"
-                          :disabled="testRecordIDState === false">{{ $t('trigger.testing.run') }}</b-button>
-              </b-input-group>
-            </b-form-group>
-          </b-card>
-        </b-col>
-        <b-col md="12">
-          <b-card class="mb-5">
-            <div id="trigger-manual" class="mb-5 text-justify" v-html="manualFromMd($t('trigger.manual', { joinArrays: '\n' }))"></div>
+          <b-card :title="$t('automation.edit.title')">
+            <export :list="[script]" type="script" class="float-right" slot="header"/>
+
+            <b-tabs>
+              <b-tab :title="$t('automation.edit.settingsTabLabel')">
+                <b-form class="m-3">
+                  <b-form-group horizontal
+                                :label="$t('automation.edit.nameLabel')">
+                    <b-form-input v-model="script.name"
+                                  require
+                                  :placeholder="$t('automation.edit.namePlaceholder')"></b-form-input>
+                  </b-form-group>
+                  <b-form-group horizontal>
+                    <b-form-checkbox v-model="script.critical" checked @change="onCriticalChange">
+                      {{ $t('automation.edit.criticalLabel') }}
+                      <b-form-text>{{ $t('automation.edit.criticalHelp') }}</b-form-text>
+                    </b-form-checkbox>
+                    <b-form-checkbox v-model="script.async" :disabled="script.critical">
+                      {{ $t('automation.edit.asyncLabel') }}
+                      <b-form-text>{{ $t('automation.edit.asyncHelp') }}</b-form-text>
+                    </b-form-checkbox>
+                    <b-form-checkbox v-model="script.runInUA">
+                      {{ $t('automation.edit.runInUALabel') }}
+                      <b-form-text>{{ $t('automation.edit.runInUAHelp') }}</b-form-text>
+                    </b-form-checkbox>
+                    <b-form-checkbox v-model="script.enabled" checked>
+                      {{ $t('automation.edit.enabledLabel') }}
+                      <b-form-text>{{ $t('automation.edit.enabledHelp') }}</b-form-text>
+                    </b-form-checkbox>
+                    {{ script.checked }}
+                  </b-form-group>
+                  <b-form-group horizontal
+                                :label="$t('automation.edit.timeoutLabel')">
+                    <b-form-input type="number"
+                                  number
+                                  :placeholder="$t('automation.edit.timeoutPlaceholder')"
+                                  v-model="script.timeout"></b-form-input>
+                    <b-form-text>{{ $t('automation.edit.timeoutHelp') }}</b-form-text>
+                  </b-form-group>
+                </b-form>
+              </b-tab>
+              <b-tab :title="$t('automation.edit.codeTabLabel')">
+                <AceEditor :value="script.source"
+                           :fontSize="14"
+                           :showPrintMargin="false"
+                           :showGutter="true"
+                           :highlightActiveLine="true"
+                           :enableBasicAutocompletion="true"
+                           :minLines="10"
+                           :maxLines="30"
+                           width="100%"
+                           :editorProps="{$blockScrolling: true}"
+                           :onChange="onSourceEditorChange"
+                           :onBeforeLoad="onBeforeSourceEditorLoad"
+                           :onLoad="onSourceEditorLoad"
+                           mode="javascript"
+                           theme="monokai"
+                           ref="sourceEditor"
+                           name="editor" />
+              </b-tab>
+              <b-tab :title="$t('automation.edit.triggersTabLabel')">
+
+              </b-tab>
+            </b-tabs>
           </b-card>
         </b-col>
       </b-row>
     </b-container>
     <editor-toolbar :back-link="{name: 'admin.automation'}"
-                    :hideDelete="!trigger.canDeleteTrigger"
-                    :hideSave="!trigger.canUpdateTrigger"
+                    :hideDelete="!script.canDelete"
+                    :hideSave="!script.canUpdate"
                     @delete="handleDelete"
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
@@ -102,8 +82,8 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Trigger from 'corteza-webapp-compose/src/lib/trigger'
-import Record from 'corteza-webapp-compose/src/lib/record'
+// import AutomationScript from 'corteza-webapp-common/src/lib/types/shared/automation-script'
+// import Record from 'corteza-webapp-compose/src/lib/record'
 import * as TriggerCodeSamples from 'corteza-webapp-compose/src/triggers/samples'
 import triggerRunner from 'corteza-webapp-compose/src/mixins/trigger_runner'
 import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
@@ -113,8 +93,6 @@ import 'brace/theme/monokai'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import RecordField from 'corteza-webapp-compose/src/lib/field/Editor/Record'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
-
-const md = require('markdown-it')('commonmark')
 
 export default {
   components: {
@@ -130,7 +108,7 @@ export default {
   ],
 
   props: {
-    triggerID: {
+    scriptID: {
       type: String,
       required: true,
     },
@@ -144,7 +122,7 @@ export default {
   data () {
     return {
       editor: null,
-      trigger: null,
+      script: null,
       test: {
         recordID: null,
       },
@@ -155,37 +133,26 @@ export default {
     ...mapGetters({
       modules: 'module/set',
     }),
-
-    manualFromMd () {
-      return (mdRaw) => md.render(mdRaw)
-    },
-
-    testRecordIDState () {
-      if (!this.trigger.moduleID || !this.test.recordID) {
-        return null
-      }
-
-      return /^\d+$/.test(this.test.recordID)
-    },
   },
 
   created () {
-    this.findTriggerByID({ triggerID: this.triggerID }).then((t) => {
-      this.trigger = new Trigger(t)
+    const { namespaceID } = this.namespace
+    this.findScriptByID({ namespaceID, scriptID: this.scriptID }).then((s) => {
+      this.script = s
     })
   },
 
   methods: {
     ...mapActions({
-      findTriggerByID: 'trigger/findByID',
-      findModuleByID: 'module/findByID',
-      updateTrigger: 'trigger/update',
-      deleteTrigger: 'trigger/delete',
+      findScriptByID: 'automationScript/findByID',
+      updateScript: 'automationScript/update',
+      deleteScript: 'automationScript/delete',
     }),
 
     handleSave ({ closeOnSuccess = false } = {}) {
-      this.updateTrigger(this.trigger).then((trigger) => {
-        this.trigger = trigger
+      const { namespaceID } = this.namespace
+      this.updateScript({ namespaceID, ...this.script }).then((script) => {
+        this.script = script
         this.raiseSuccessAlert(this.$t('notification.automation.saved'))
         if (closeOnSuccess) {
           this.redirect()
@@ -194,7 +161,8 @@ export default {
     },
 
     handleDelete () {
-      this.deleteTrigger(this.trigger).then(() => {
+      const { namespaceID } = this.namespace
+      this.deleteTrigger({ namespaceID, ...this.script }).then(() => {
         this.raiseSuccessAlert(this.$t('notification.automation.deleted'))
         this.redirect()
       }).catch(this.defaultErrorHandler(this.$t('notification.automation.deleteFailed')))
@@ -205,7 +173,7 @@ export default {
     },
 
     onSourceEditorChange (value) {
-      this.trigger.source = value
+      this.script.source = value
     },
 
     onBeforeSourceEditorLoad (brace) {
@@ -226,8 +194,14 @@ export default {
       this.editor = brace
 
       // Add default sample to unconfigured triggers
-      if (!this.trigger.moduleID && !this.trigger.source) {
+      if (!this.script.moduleID && !this.script.source) {
         this.insertSample('Default')
+      }
+    },
+
+    onCriticalChange () {
+      if (this.script.critical) {
+        this.script.async = false
       }
     },
 
@@ -243,48 +217,48 @@ export default {
       this.$router.push({ name: 'admin.automation' })
     },
 
-    run () {
-      const ctx = {
-        record: undefined,
-        module: undefined,
-      }
-
-      // Original promise is simple, just return
-      // default, empty context
-      let p = Promise.resolve(ctx)
-
-      if (this.trigger.moduleID) {
-        if (!this.test.recordID) {
-          this.raiseWarningAlert(this.$t('notification.automation.invalidRecordID'))
-          return
-        }
-
-        // When primary module is set and there is a valid record present,
-        // override the promise, preload module & record
-        p = this.findModuleByID({ moduleID: this.trigger.moduleID })
-          .then(m => {
-            // Set loaded module to context
-            ctx.module = m
-            const { namespaceID, moduleID } = m
-
-            // And load record from the given params
-            return this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID: this.test.recordID })
-          })
-          .then(r => {
-            // Properly convert record and update context
-            ctx.record = new Record(ctx.module, r)
-            return ctx
-          })
-      }
-
-      p.then(ctx => {
-        // Whatever the context & promise are, continue and run the trigger.
-        this.trigger
-          .run(this.triggerContext(ctx))
-          .catch(this.defaultErrorHandler(this.$t('notification.automation.execFailed')))
-          .then(() => this.raiseSuccessAlert(this.$t('notification.automation.executed')))
-      })
-    },
+    // run () {
+    //   const ctx = {
+    //     record: undefined,
+    //     module: undefined,
+    //   }
+    //
+    //   // Original promise is simple, just return
+    //   // default, empty context
+    //   let p = Promise.resolve(ctx)
+    //
+    //   if (this.script.moduleID) {
+    //     if (!this.test.recordID) {
+    //       this.raiseWarningAlert(this.$t('notification.automation.invalidRecordID'))
+    //       return
+    //     }
+    //
+    //     // When primary module is set and there is a valid record present,
+    //     // override the promise, preload module & record
+    //     p = this.findModuleByID({ moduleID: this.script.moduleID })
+    //       .then(m => {
+    //         // Set loaded module to context
+    //         ctx.module = m
+    //         const { namespaceID, moduleID } = m
+    //
+    //         // And load record from the given params
+    //         return this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID: this.test.recordID })
+    //       })
+    //       .then(r => {
+    //         // Properly convert record and update context
+    //         ctx.record = new Record(ctx.module, r)
+    //         return ctx
+    //       })
+    //   }
+    //
+    //   p.then(ctx => {
+    //     // Whatever the context & promise are, continue and run the script.
+    //     this.script
+    //       .run(this.scriptContext(ctx))
+    //       .catch(this.defaultErrorHandler(this.$t('notification.automation.execFailed')))
+    //       .then(() => this.raiseSuccessAlert(this.$t('notification.automation.executed')))
+    //   })
+    // },
   },
 }
 </script>

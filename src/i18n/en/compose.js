@@ -309,43 +309,53 @@ export default {
       },
     },
   },
-  trigger: {
-    title: 'List of triggers',
-    newLabel: 'Create a new trigger',
-    newPlaceholder: 'Trigger name',
-    import: 'Import trigger(s)',
+  automation: {
+    title: 'List of automation script',
+    newLabel: 'Create a new script',
+    newPlaceholder: 'Script name',
+    import: 'Import automation script(s)',
+
+    list: {
+      unnamed: '(Unnamed script)',
+      column: {
+        label: {
+          async: 'Async.',
+          runAs: 'Run As',
+          runInUA: 'In browser',
+          critical: 'Critical',
+          enabled: 'Enabled',
+        },
+      },
+    },
+
     edit: {
-      title: 'Automation',
+      settingsTabLabel: 'Settings',
+
+      title: 'Automation script',
+
       nameLabel: 'Name',
-      namePlaceholder: 'Automation name',
-      enabled: '$t(trigger.status.true)',
-      primaryModule: {
-        label: 'Primary module',
-        none: '(no primary module)',
-      },
-      loadExampleConversion: 'Load conversion example',
-      reset: 'Reset',
-      codeLabel: 'Code',
-      code: {
-        label: 'Code',
-        comment1: 'Automation triggers will help you manage your records',
-        comment2: 'It is a simple JavaScript engine that runs custom code that triggers manually',
-        comment3: 'or automatically before/after certain record events (create, update, delete)',
-      },
-    },
-    status: {
-      true: 'Enabled',
-      false: 'Disabled',
-    },
-    triggerCondition: {
-      label: 'Actions that trigger the automation...',
-      manual: 'manually, when user clicks a button on a page',
-      beforeCreate: 'before record is created',
-      afterCreate: 'after record is created',
-      beforeUpdate: 'before record is updated',
-      afterUpdate: 'after record is updated',
-      beforeDelete: 'before record is deleted',
-      afterDelete: 'after record is deleted',
+      namePlaceholder: 'Automation script name',
+
+      criticalLabel: 'Critical script',
+      criticalHelp: 'Wait until this script is executed. In case of errors, abort execution of other scripts and before* trigger',
+
+      asyncLabel: 'Run this script asynchronously',
+      asyncHelp: 'Do not wait for results and ignore errors. Incompatible with critical flag.',
+
+      runInUALabel: 'Run in browser',
+      runInUAHelp: 'Run this script in user\'s browser (user-agent). ' +
+        'Running scripts in a browser is a less reliable but allows better interaction with the user and ability to write' +
+        ' interactive scripts and automation flows.',
+
+      enabledLabel: 'Script is enabled',
+      enabledHelp: 'Disabled scripts will be ignored',
+
+      timeoutLabel: 'Script execution timeout',
+      timeoutPlaceholder: '1500',
+      timeoutHelp: 'How much time do we wait before aborting the script? Value in milliseconds (1000ms = 1s).',
+
+      codeTabLabel: 'Code',
+      triggersTabLabel: 'Triggers',
     },
     testing: {
       label: 'Testing trigger',
@@ -354,31 +364,6 @@ export default {
       footnotePrimaryModule: 'When trigger has primary module selected, record ID is needed for tests to run properly.',
       footnoteRecordChanges: 'Changes to records are ignored if not explicitly saved (through $C.api.record.save or $C.api.record.delete)',
     },
-    manual: [
-      '## Record Automation Manual',
-      '### Trigger logic and behaviour',
-      '#### "Manual" triggers',
-      'An enabled automation rule with "manually, when user clicks a button on a page" checked can be inserted as a button in an "automation block" on a page. If the page type is a "record page", the primary module of the automation rule must match the module of the record page.',
-      '___',
-      '#### "Before" triggers',
-      'An enabled automation rule with "before record is created", "before record is updated" or "before record is deleted" checked, can prevent the creation, update or deletion of the record.',
-      '',
-      'If an error/exception (`throw new Exception(\'Some error\')`) or *non true* value is returned (`return false`), the following action is canceled and the record is not created, updated or deleted.',
-      '___',
-      '#### "After" triggers',
-      'An enabled automation rule with "after record is created", "after record is updated" or "after record is deleted" checked is executed after a successful creation, update or deletion.',
-      '',
-      'In case of creation or update, the new data of the record can be accessed in the automation code, but on deletion will return record data from before deletion.',
-      '___',
-      '#### Order of execution',
-      '1\\. Enabled automation rules with "Before" triggers',
-      '',
-      '2\\. Enabled automation rules with "After" triggers',
-      '* Enabled automation rules with a primary module are only executed when the module detects a record creation, update or deletion.',
-      '* Enabled automation rules without primary module are executed whenever there is any record creation, update or deletion.',
-      '* When there are multiple enabled automation rules that match at the same time (for example, two automation rules with "after update" triggers with the same primary module), the order of execution cannot be guaranteed. Errors that occur in a specific automation rule do not affect other automation rules that match.',
-      '* Enabled automation rules with "Manual" trigger are only executed manually by users.',
-    ],
   },
   general: {
     label: {
@@ -446,9 +431,9 @@ export default {
       all: 'all pages',
       specific: 'page "{{target}}"',
     },
-    trigger: {
-      all: 'all triggers',
-      specific: 'trigger "{{target}}"',
+    'automation-script': {
+      all: 'all automation scripts',
+      specific: 'automation script "{{target}}"',
     },
     chart: {
       all: 'all charts',
@@ -513,21 +498,36 @@ export default {
         description: 'Default: deny',
       },
     },
-    'compose-trigger': {
+    'compose-automation-script': {
       read: {
-        title: 'Read any trigger',
-        specific: 'Read trigger "{{target}}"',
+        title: 'Read any script',
+        specific: 'Read script "{{target}}"',
         description: 'Default: deny',
       },
       update: {
-        title: 'Update any trigger',
-        specific: 'Update trigger "{{target}}"',
+        title: 'Update any script',
+        specific: 'Update script "{{target}}"',
         description: 'Default: deny',
       },
       'delete': {
-        title: 'Delete any trigger',
-        specific: 'Delete trigger "{{target}}"',
+        title: 'Delete any script',
+        specific: 'Delete script "{{target}}"',
         description: 'Default: deny',
+      },
+      'set-critical': {
+        title: 'Change "critical" property',
+        specific: 'Change "critical" property on script "{{target}}"',
+        description: 'Default: allowed if script update is allowed',
+      },
+      'set-async': {
+        title: 'Change "asynchronous" property',
+        specific: 'Change "asynchronous" property on script "{{target}}"',
+        description: 'Default: allowed if script update is allowed',
+      },
+      'set-runner': {
+        title: 'Change "runner" property',
+        specific: 'Change "runner" property on script "{{target}}"',
+        description: 'Default: allowed if script update is allowed',
       },
     },
     'compose-module': {

@@ -48,7 +48,7 @@ export default [
           r('admin.charts.edit', 'charts/:chartID/edit', 'Admin/Charts/Edit'),
 
           r('admin.automation', 'automation', 'Admin/Automation/Index'),
-          r('admin.automation.edit', 'automation/:triggerID/edit', 'Admin/Automation/Edit'),
+          r('admin.automation.edit', 'automation/:scriptID/edit', 'Admin/Automation/Edit'),
 
           r('admin.configuration', 'configuration', 'Admin/Configuration/Index'),
         ],
