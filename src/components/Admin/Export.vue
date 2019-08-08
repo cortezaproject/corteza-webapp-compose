@@ -1,5 +1,6 @@
 <template>
   <b-button v-if="list.length > 0" variant="link" @click="jsonExport(list, type)">
+    <font-awesome-icon :icon="['fas', 'cloud-download-alt']"></font-awesome-icon>
     {{ $t('general.label.export') }}
   </b-button>
 </template>
