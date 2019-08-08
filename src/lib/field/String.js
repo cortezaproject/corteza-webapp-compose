@@ -3,9 +3,10 @@ export class String {
     this.merge(def)
   }
 
-  merge ({ multiLine, useRichTextEditor } = {}) {
+  merge ({ multiLine, useRichTextEditor, multiDelimiter } = {}) {
     this.multiLine = !!multiLine
     this.useRichTextEditor = !!useRichTextEditor
+    this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : this.multiDelimiter
 
     return this
   }

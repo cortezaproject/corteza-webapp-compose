@@ -64,7 +64,7 @@ export default {
         }
         if (value && value.length > 0) {
           if (Array.isArray(value)) {
-            return value.join(this.field.options.multiDelimiter)
+            return value.join(', ')
           } else {
             return value
           }
@@ -93,7 +93,7 @@ export default {
       const value = this.field.isMulti ? this.value : [this.value]
       const exists = this.relRecords.find(r => r.recordID === value)
       if (value && !exists) {
-        this.findModuleByID({ moduleID: this.field.options.moduleID })
+        this.findModuleByID({ moduleID: this.field.options.moduleID, namespaceID: this.namespace.namespaceID })
           .then(m => {
             for (let v of value) {
               if (v) {

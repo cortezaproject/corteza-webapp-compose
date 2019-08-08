@@ -58,9 +58,6 @@ export default class Field {
 
       this.kind = kind
       this.options = kinds[kind] ? new kinds[kind](options || {}) : {}
-
-      // General options for all fields
-      this.options.multiDelimiter = (options || {}).multiDelimiter || '\n'
     }
 
     return this

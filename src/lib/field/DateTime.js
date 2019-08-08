@@ -8,13 +8,14 @@ export class DateTime {
     this.merge(def)
   }
 
-  merge ({ format, onlyDate, onlyTime, onlyPastValues, onlyFutureValues, outputRelative } = {}) {
+  merge ({ format, onlyDate, onlyTime, onlyPastValues, onlyFutureValues, outputRelative, multiDelimiter } = {}) {
     this.format = format || ''
     this.onlyDate = !!onlyDate
     this.onlyTime = !!onlyTime
     this.onlyPastValues = !!onlyPastValues
     this.onlyFutureValues = !!onlyFutureValues
     this.outputRelative = !!outputRelative
+    this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : this.multiDelimiter
 
     return this
   }

@@ -58,6 +58,7 @@ import base from './base'
 import { VueSelect } from 'vue-select'
 import Record from 'corteza-webapp-compose/src/lib/record'
 import _ from 'lodash'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -76,13 +77,17 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      getModuleByID: 'module/getByID',
+    }),
+
     options () {
       return (this.query ? this.records : this.latest).map(this.convert).filter(v => v)
     },
 
     module () {
       if (this.field.options.moduleID !== '0') {
-        return this.$store.getters['module/getByID'](this.field.options.moduleID)
+        return this.getModuleByID(this.field.options.moduleID)
       } else {
         return undefined
       }

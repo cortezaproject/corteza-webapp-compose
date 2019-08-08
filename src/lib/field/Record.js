@@ -6,11 +6,12 @@ export class Record {
     this.merge(def)
   }
 
-  merge ({ moduleID, labelField, queryFields, selectType } = {}) {
+  merge ({ moduleID, labelField, queryFields, selectType, multiDelimiter } = {}) {
     this.moduleID = moduleID ? (typeof moduleID === 'string' ? moduleID : undefined) : this.moduleID
     this.labelField = labelField || this.labelField || undefined
     this.queryFields = queryFields || this.queryFields || []
     this.selectType = selectType ? (typeof selectType === 'string' ? selectType : 'default') : 'default'
+
     return this
   }
 

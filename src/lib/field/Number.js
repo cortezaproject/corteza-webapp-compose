@@ -5,11 +5,12 @@ export class Number {
     this.merge(def)
   }
 
-  merge ({ format, prefix, suffix, precision } = {}) {
+  merge ({ format, prefix, suffix, precision, multiDelimiter } = {}) {
     this.format = format || this.format || 0
     this.prefix = prefix || this.prefix || ''
     this.suffix = suffix || this.suffix || ''
     this.precision = this.precision || 0
+    this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : this.multiDelimiter
 
     switch (typeof precision) {
       case 'string':

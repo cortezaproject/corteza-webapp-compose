@@ -5,9 +5,10 @@ export class Select {
     this.merge(def)
   }
 
-  merge ({ options, selectType } = {}) {
+  merge ({ options, selectType, multiDelimiter } = {}) {
     this.options = options || []
     this.selectType = selectType ? (typeof selectType === 'string' ? selectType : 'default') : 'default'
+    this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : this.multiDelimiter
 
     return this
   }
