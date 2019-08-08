@@ -1,6 +1,6 @@
 import './index.scss'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faSort, faSortUp, faSortDown, faWrench, faGripVertical, faDownload, faFileExport, faSearch, faBars } from '@fortawesome/free-solid-svg-icons'
+import { faSort, faSortUp, faSortDown, faWrench, faGripVertical, faDownload, faFileExport, faSearch, faBars, faCloudDownloadAlt } from '@fortawesome/free-solid-svg-icons'
 import { faEye, faFileAlt, faFileWord, faFilePdf, faFilePowerpoint, faFileArchive, faFileExcel, faFileVideo, faFileImage, faEdit, faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 
 library.add(
@@ -24,4 +24,5 @@ library.add(
   faTrashAlt,
   faSearch,
   faBars,
+  faCloudDownloadAlt,
 )

@@ -1,14 +1,19 @@
 <template>
-  <div :class="blockClass">
-    <h2>{{ block.title }}</h2>
-    <p v-if="block.description">{{ block.description }}</p>
-    <div>
+  <b-card class="h-100 border-0"
+          :class="blockClass"
+          :header="block.title"
+          :sub-title="block.description"
+          header-class="sticky-top p-2"
+          :header-bg-variant="block.style.variants.headerBg"
+          :header-text-variant="block.style.variants.headerText"
+          :body-bg-variant="block.style.variants.bodyBg">
+    <b-card-text>
       <component :is="block.kind"
                  :options="block.options"
                  :module="module"
                  :namespace="namespace"/>
-    </div>
-  </div>
+    </b-card-text>
+  </b-card>
 </template>
 
 <script>
@@ -38,18 +43,11 @@ export default {
 
   computed: {
     blockClass () {
-      let c = ['block', this.block.kind]
-
-      if (this.block.theme) {
-        c.push('theme-' + this.block.theme)
-      }
-
-      return c
+      return [
+        'block',
+        this.block.kind,
+      ]
     },
   },
 }
 </script>
-<style lang="scss" scoped>
-// @todo to be removed, should be part of general style
-@import "corteza-webapp-compose/src/themes/corteza-base/components/blocks.scss";
-</style>

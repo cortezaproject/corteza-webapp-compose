@@ -46,7 +46,7 @@
         </tbody>
       </table>
     </div>
-    <div class="position-sticky border-top pt-1" v-if="!options.hidePaging">
+    <div class="position-sticky fixed-bottom bg-white border-top pt-1" v-if="!options.hidePaging">
       <pagination
           :records="filter.count"
           :per-page="filter.perPage"

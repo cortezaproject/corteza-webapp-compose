@@ -1,39 +1,57 @@
 <template>
-  <form class="col-12">
-    <fieldset class="form-group">
-      <div class="form-group">
-        <label for="title">{{ $t('block.general.titleLabel') }}</label>
-        <input
-          v-model="block.title"
-          type="text"
-          class="form-control form-control-sm"
-          id="title"
-          :placeholder="$t('block.general.titlePlaceholder')">
+  <div class="container">
+    <b-form-group for="title" :label="$t('block.general.titleLabel')">
+      <b-form-input
+        v-model="block.title"
+        type="text"
+        class="form-control form-control-sm"
+        id="title"
+        :placeholder="$t('block.general.titlePlaceholder')">
+      </b-form-input>
+    </b-form-group>
+    <b-form-group for="description" :label="$t('block.general.descriptionLabel')">
+      <b-form-input
+        v-model="block.description"
+        type="text"
+        class="form-control form-control-sm"
+        id="description"
+        :placeholder="$t('block.general.descriptionPlaceholder')">
+      </b-form-input>
+    </b-form-group>
+    <div class="row">
+      <div class="col-sm-8">
+        <b-form-group for="color" :label="$t('block.general.headerStyle')">
+          <b-form-select id="color"
+                         v-model="block.style.variants.headerBg"
+                         :options="bgVariants"/>
+        </b-form-group>
+        <b-form-group>
+          <b-form-radio-group
+            v-model="block.style.variants.headerText"
+            :options="textVariants"
+          ></b-form-radio-group>
+        </b-form-group>
+        <b-form-group for="color" :label="$t('block.general.bodyStyle')">
+          <b-form-select id="color"
+                         v-model="block.style.variants.bodyBg"
+                         :options="bgVariants"/>
+        </b-form-group>
       </div>
-
-      <div class="form-group">
-        <label for="description">{{ $t('block.general.descriptionLabel') }}</label>
-        <input
-          v-model="block.description"
-          type="text"
-          class="form-control form-control-sm"
-          id="description"
-          :placeholder="$t('block.general.descriptionPlaceholder')">
+      <div class="col-sm-4 d-flex flex-column">
+          <label>{{ $t('block.general.preview') }}</label>
+          <p :class="blockClass" class="p-2 mb-0">{{ $t('block.general.previewHeader') }}</p>
+          <div :class="'bg-'+block.style.variants.bodyBg" class=" p-2 flex-grow-1">
+            {{ $t('block.general.previewBody') }}
+          </div>
       </div>
-     <div class="form-group">
-       <label for="color">{{ $t('block.general.headerStyle') }}</label>
-       <b-form-select id="color" v-model="block.theme" :options="options" class="mb-3" />
-       <div :class="'theme-'+block.theme">
-         <h2>{{ $t('block.general.previewHeader') }}</h2>
-       </div>
-     </div>
-    </fieldset>
+    </div>
+    <hr>
     <component :is="block.kind"
                :namespace="namespace"
                :module="module"
                :page="page"
                :options.sync="block.options"/>
-  </form>
+  </div>
 </template>
 
 <script>
@@ -68,29 +86,30 @@ export default {
 
   data () {
     return {
-      options: [
-        { value: '', text: this.$t('block.general.style.default') },
-        { value: 'red-light', text: this.$t('block.general.style.redLight') },
-        { value: 'red-dark', text: this.$t('block.general.style.redDark') },
-        { value: 'green-light', text: this.$t('block.general.style.greenLight') },
-        { value: 'green-dark', text: this.$t('block.general.style.greenDark') },
-        { value: 'blue-light', text: this.$t('block.general.style.blueLight') },
-        { value: 'blue-dark', text: this.$t('block.general.style.blueDark') },
-        { value: 'grey-light', text: this.$t('block.general.style.greyLight') },
-        { value: 'grey-dark', text: this.$t('block.general.style.greyDark') },
-        { value: 'yellow-dark', text: this.$t('block.general.style.yellowDark') },
+      bgVariants: [
+        { value: 'primary', text: this.$t('block.general.style.default') },
+        { value: 'secondary', text: this.$t('block.general.style.secondary') },
+        { value: 'white', text: this.$t('block.general.style.white') },
+        { value: 'light', text: this.$t('block.general.style.light') },
+        { value: 'dark', text: this.$t('block.general.style.dark') },
+        { value: 'success', text: this.$t('block.general.style.success') },
+        { value: 'warning', text: this.$t('block.general.style.warning') },
+        { value: 'danger', text: this.$t('block.general.style.danger') },
+      ],
+      textVariants: [
+        { value: 'dark', text: this.$t('block.general.style.darkText') },
+        { value: 'white', text: this.$t('block.general.style.whiteText') },
       ],
     }
   },
+
+  computed: {
+    blockClass () {
+      return [
+        'bg-' + this.block.style.variants.headerBg,
+        'text-' + this.block.style.variants.headerText,
+      ]
+    },
+  },
 }
 </script>
-
-<style lang="scss" scoped>
-// @todo to be removed, should be part of general style
-@import "corteza-webapp-compose/src/themes/corteza-base/components/blocks.scss";
-
-h2 {
-  font-size: 15px;
-  padding: 5px 10px;
-}
-</style>

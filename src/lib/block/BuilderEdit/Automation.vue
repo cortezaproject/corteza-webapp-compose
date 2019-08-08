@@ -69,12 +69,11 @@ export default {
       variantOptions: [
         { value: 'primary', text: this.$t('block.automation.primaryButton') },
         { value: 'secondary', text: this.$t('block.automation.secondaryButton') },
+        { value: 'light', text: this.$t('block.automation.lightButton') },
+        { value: 'dark', text: this.$t('block.automation.darkButton') },
         { value: 'success', text: this.$t('block.automation.successButton') },
         { value: 'danger', text: this.$t('block.automation.dangerButton') },
         { value: 'warning', text: this.$t('block.automation.warningButton') },
-        { value: 'info', text: this.$t('block.automation.infoButton') },
-        { value: 'light', text: this.$t('block.automation.lightButton') },
-        { value: 'dark', text: this.$t('block.automation.darkButton') },
       ],
     }
   },
