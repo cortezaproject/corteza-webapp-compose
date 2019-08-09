@@ -52,7 +52,7 @@ export default {
             this.namespace = this.$store.getters['namespace/getByUrlPart'](slug)
           }).catch(this.errHandler)
         }).catch(() => {
-          window.location = '/auth'
+          this.$auth.open()
         })
       },
     },

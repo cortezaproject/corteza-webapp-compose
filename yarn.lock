@@ -4194,9 +4194,10 @@ corejs-upgrade-webpack-plugin@^2.0.0:
 
 corteza-webapp-common@cortezaproject/corteza-webapp-common.git#master:
   version "2019.3.17"
-  resolved "https://codeload.github.com/cortezaproject/corteza-webapp-common/tar.gz/33e1f963b1e0b7b27afbd878f1e66ea1ad251c91"
+  resolved "https://codeload.github.com/cortezaproject/corteza-webapp-common/tar.gz/9c1a8d5cfdc6a10620b04bdeea51512782981616"
   dependencies:
     axios "^0.18.1"
+    diff "^3.5.0"
     mime-types "^2.1.24"
     pdfjs-dist "^2.0.943"
 
@@ -5081,7 +5082,7 @@ dezalgo@^1.0.0, dezalgo@~1.0.3:
     asap "^2.0.0"
     wrappy "1"
 
-diff@3.5.0:
+diff@3.5.0, diff@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/diff/-/diff-3.5.0.tgz#800c0dd1e0a8bfbc95835c202ad220fe317e5a12"
   integrity sha512-A46qtFgd+g7pDZinpnwiRJtxbC1hpgf0uzP3iG89scHk0AUC7A1TGxf5OiiOUv/JMZR8GOt8hL900hV0bOy5xA==

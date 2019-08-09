@@ -51,7 +51,7 @@ export default {
   created () {
     if (process.env.NODE_ENV !== 'development') {
       // Not in development mode, move away from here
-      window.location = '/auth'
+      this.$auth.open()
     }
 
     this.newJWT = this.$auth.JWT

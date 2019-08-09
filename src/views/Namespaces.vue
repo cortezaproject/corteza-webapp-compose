@@ -67,7 +67,7 @@ export default {
         })
       }).catch(errHandler)
     }).catch((e) => {
-      window.location = '/auth'
+      this.$auth.open()
     })
   },
 
