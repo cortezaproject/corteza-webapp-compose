@@ -40,6 +40,7 @@ export default class Module {
     this.canReadRecord = typeof args.canReadRecord === 'boolean' ? args.canReadRecord : false
     this.canUpdateRecord = typeof args.canUpdateRecord === 'boolean' ? args.canUpdateRecord : false
     this.canDeleteRecord = typeof args.canDeleteRecord === 'boolean' ? args.canDeleteRecord : false
+    this.canManageAutomationTriggers = typeof args.canManageAutomationTriggers === 'boolean' ? args.canManageAutomationTriggers : false
     this.canGrant = typeof args.canGrant === 'boolean' ? args.canGrant : false
 
     // Properly convert old meta data that contained fields:

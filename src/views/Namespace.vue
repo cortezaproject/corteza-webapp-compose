@@ -78,9 +78,8 @@ export default {
           this.$store.dispatch('page/load', p)
             .catch(this.errHandler),
 
-          // @port this t
-          // this.$store.dispatch('trigger/load', p)
-          //   .catch(this.errHandler),
+          this.$store.dispatch('uaScript/load', p)
+            .catch(this.errHandler),
 
           this.$store.dispatch('user/load')
             .catch(this.errHandler),

@@ -1,12 +1,12 @@
 <template>
-  <div class="mt-3" v-if="script">
+  <div class="mt-3 mb-4" v-if="script">
     <b-container @submit.prevent="handleSave" tag="form" class="pb-5">
       <b-row>
         <b-col md="12" class="mb-1">
           <b-card :title="$t('automation.edit.title')">
             <export :list="[script]" type="script" class="float-right" slot="header"/>
 
-            <b-tabs>
+            <b-tabs v-model="activeTab">
               <b-tab :title="$t('automation.edit.settingsTabLabel')">
                 <b-form class="m-3">
                   <b-form-group horizontal
@@ -63,8 +63,13 @@
                            ref="sourceEditor"
                            name="editor" />
               </b-tab>
-              <b-tab :title="$t('automation.edit.triggersTabLabel')">
-
+              <b-tab :title="$t('automation.edit.scheduledTriggers.tabLabel')" v-if="false">
+                @todo intervals & deferred
+              </b-tab>
+              <b-tab :title="$t('automation.edit.recordTriggers.tabLabel', [countEnabledRecordTriggers])" :disabled="modules.length === 0">
+                <the-record-triggers class="mt-3"
+                                     :modules="modules"
+                                     :triggers.sync="triggers" />
               </b-tab>
             </b-tabs>
           </b-card>
@@ -82,24 +87,23 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-// import AutomationScript from 'corteza-webapp-common/src/lib/types/shared/automation-script'
-// import Record from 'corteza-webapp-compose/src/lib/record'
+import AutomationTrigger from 'corteza-webapp-common/src/lib/types/shared/automation-trigger'
 import * as TriggerCodeSamples from 'corteza-webapp-compose/src/triggers/samples'
-import triggerRunner from 'corteza-webapp-compose/src/mixins/trigger_runner'
+import triggerRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
 import { Ace as AceEditor } from 'vue2-brace-editor'
 import 'brace/mode/javascript'
 import 'brace/theme/monokai'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
-import RecordField from 'corteza-webapp-compose/src/lib/field/Editor/Record'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
+import TheRecordTriggers from 'corteza-webapp-compose/src/components/Admin/Automation/TheRecordTriggers'
 
 export default {
   components: {
+    TheRecordTriggers,
     ConfirmationToggle,
     AceEditor,
     EditorToolbar,
-    RecordField,
     Export,
   },
 
@@ -121,8 +125,11 @@ export default {
 
   data () {
     return {
+      activeTab: 2,
+
       editor: null,
       script: null,
+      triggers: [],
       test: {
         recordID: null,
       },
@@ -133,13 +140,18 @@ export default {
     ...mapGetters({
       modules: 'module/set',
     }),
+
+    countEnabledRecordTriggers () {
+      return this.triggers.reduce((v, t) => { return v + (t.isValid() ? 1 : 0) }, 0)
+    },
   },
 
   created () {
     const { namespaceID } = this.namespace
     this.findScriptByID({ namespaceID, scriptID: this.scriptID }).then((s) => {
       this.script = s
-    })
+      return this.loadTriggers()
+    }).catch(this.defaultErrorHandler(this.$t('notification.automation.loadFailed')))
   },
 
   methods: {
@@ -149,9 +161,24 @@ export default {
       deleteScript: 'automationScript/delete',
     }),
 
+    async loadTriggers () {
+      const p = {
+        namespaceID: this.namespace.namespaceID,
+        scriptID: this.scriptID,
+        incDeleted: true,
+        perPage: 0,
+      }
+
+      this.triggers = []
+      return this.$ComposeAPI.automationTriggerList(p).then(({ set, filter }) => {
+        this.triggers = set.map(t => new AutomationTrigger(t))
+        console.log(this.triggers)
+      })
+    },
+
     handleSave ({ closeOnSuccess = false } = {}) {
       const { namespaceID } = this.namespace
-      this.updateScript({ namespaceID, ...this.script }).then((script) => {
+      this.updateScript({ namespaceID, ...this.script, triggers: this.triggers }).then((script) => {
         this.script = script
         this.raiseSuccessAlert(this.$t('notification.automation.saved'))
         if (closeOnSuccess) {
@@ -170,6 +197,17 @@ export default {
 
     onRun () {
       this.run()
+    },
+
+    triggerComponent (t) {
+      switch (t.event) {
+        case 'manual':
+        case 'deferred':
+        case 'interval':
+          return `trigger-${t.event}`
+        default:
+          return `trigger-event`
+      }
     },
 
     onSourceEditorChange (value) {

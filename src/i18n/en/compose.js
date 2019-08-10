@@ -344,10 +344,10 @@ export default {
 
       runInUALabel: 'Run in browser',
       runInUAHelp: 'Run this script in user\'s browser (user-agent). ' +
-        'Running scripts in a browser is a less reliable but allows better interaction with the user and ability to write' +
+        'Less reliable but allows better interaction with the user and ability to write' +
         ' interactive scripts and automation flows.',
 
-      enabledLabel: 'Script is enabled',
+      enabledLabel: 'Enabled',
       enabledHelp: 'Disabled scripts will be ignored',
 
       timeoutLabel: 'Script execution timeout',
@@ -355,7 +355,24 @@ export default {
       timeoutHelp: 'How much time do we wait before aborting the script? Value in milliseconds (1000ms = 1s).',
 
       codeTabLabel: 'Code',
-      triggersTabLabel: 'Triggers',
+
+      scheduledTriggers: {
+        tabLabel: 'Scheduled',
+      },
+
+      recordTriggers: {
+        tabLabel: 'Record triggers ({{0}})',
+
+        filterPlaceholder: 'Filter module list',
+
+        manualNoCondition: 'Manual run for this script (not module specific)',
+        manual: 'manual',
+        before: 'before',
+        after: 'after',
+        create: 'create',
+        update: 'update',
+        delete: 'delete',
+      },
     },
     testing: {
       label: 'Testing trigger',
@@ -514,20 +531,12 @@ export default {
         specific: 'Delete script "{{target}}"',
         description: 'Default: deny',
       },
-      'set-critical': {
-        title: 'Change "critical" property',
-        specific: 'Change "critical" property on script "{{target}}"',
-        description: 'Default: allowed if script update is allowed',
-      },
-      'set-async': {
-        title: 'Change "asynchronous" property',
-        specific: 'Change "asynchronous" property on script "{{target}}"',
-        description: 'Default: allowed if script update is allowed',
-      },
-      'set-runner': {
-        title: 'Change "runner" property',
-        specific: 'Change "runner" property on script "{{target}}"',
-        description: 'Default: allowed if script update is allowed',
+    },
+    'compose-automation-trigger': {
+      run: {
+        title: 'Run any trigger (on any script)',
+        specific: 'Manually run this trigger',
+        description: 'Default: allow',
       },
     },
     'compose-module': {
