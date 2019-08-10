@@ -9,6 +9,7 @@ import page from './page'
 import chart from './chart'
 import user from './user'
 import automationScript from './automation-script'
+import uaScript from './ua-script'
 
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
@@ -20,5 +21,6 @@ export default new Vuex.Store({
     chart: chart(ComposeAPI),
     user: user(SystemAPI),
     automationScript: automationScript(ComposeAPI),
+    uaScript: uaScript(ComposeAPI),
   },
 })
