@@ -5,7 +5,7 @@ import sinon from 'sinon'
 
 import triggerRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
-import Module from 'corteza-webapp-common/src/lib/types/compose/module'
+import Module from 'corteza-webapp-compose/src/lib/module'
 import UserAgentScript from 'corteza-webapp-common/src/lib/types/shared/automation-ua-script'
 
 chai.use(chaiAsPromised)

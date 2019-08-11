@@ -72,7 +72,7 @@ import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
 import ExporterModal from 'corteza-webapp-compose/src/components/Public/Record/ExporterModal'
 import Pagination from 'vue-pagination-2'
 import _ from 'lodash'
-import Record from 'corteza-webapp-compose/src/lib/record'
+import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 
 export default {
   components: {

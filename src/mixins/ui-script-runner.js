@@ -1,5 +1,5 @@
 import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
-import Module from 'corteza-webapp-common/src/lib/types/compose/module'
+import Module from 'corteza-webapp-compose/src/lib/module'
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 import UserAgentScript from 'corteza-webapp-common/src/lib/types/shared/automation-ua-script'
 import { ComposeObject } from 'corteza-webapp-common/src/lib/types/compose/common'
@@ -36,7 +36,9 @@ export default {
 
       return this.runScriptsByEvent('beforeCreate', moduleID, ctx, this.stdRecordEventProcessor)
         .then(({ $record }) => this.$ComposeAPI.recordCreate($record))
-        .then(($record) => {
+        .then((apiResponse) => {
+          let $record = new Record($module, apiResponse)
+
           $record.execHooks({ action: 'create', record: $record })
 
           // Update context with new data from before* scripts
@@ -62,10 +64,13 @@ export default {
         $record,
       }
 
+      console.dir($record)
+
       return this.runScriptsByEvent('beforeUpdate', moduleID, ctx, this.stdRecordEventProcessor)
         .then(({ $record }) => this.$ComposeAPI.recordUpdate($record))
-        .then(($record) => {
-          $record.execHooks($record, { action: 'update', record: $record })
+        .then((apiResponse) => {
+          let $record = new Record($module, apiResponse)
+          $record.execHooks({ action: 'update', record: $record })
 
           // Update context with new data from before* scripts
           return { ...ctx, $record }
@@ -118,6 +123,7 @@ export default {
       const scripts = this.getMatchingUAScripts(event, condition) || []
 
       for (var s of scripts) {
+        console.debug('Running script', { s })
         var result = await this.run(s, ctx)
 
         if (!result) {
@@ -125,6 +131,7 @@ export default {
           return Promise.reject(Error('aborted'))
         }
 
+        console.debug('Script completed', { result })
         ctx = processor(ctx, result)
       }
 

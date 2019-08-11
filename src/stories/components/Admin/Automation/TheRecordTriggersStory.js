@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/vue'
 import i18nInit from '@/i18n'
 import { withKnobs } from '@storybook/addon-knobs'
 import RecordEventsTable from '@components/Admin/Automation/TheRecordTriggers'
-import Module from 'corteza-webapp-common/src/lib/types/compose/module'
+import Module from 'corteza-webapp-compose/src/lib/module'
 import AutomationTrigger from 'corteza-webapp-common/src/lib/types/shared/automation-trigger'
 
 const story = storiesOf('Admin|Automation', module)

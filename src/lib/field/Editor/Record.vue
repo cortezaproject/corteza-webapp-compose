@@ -55,7 +55,7 @@
 <script>
 import base from './base'
 import { VueSelect } from 'vue-select'
-import Record from 'corteza-webapp-compose/src/lib/record'
+import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
 

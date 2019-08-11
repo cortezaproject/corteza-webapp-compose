@@ -125,7 +125,7 @@ export default {
 
   data () {
     return {
-      activeTab: 2,
+      activeTab: 0,
 
       editor: null,
       script: null,

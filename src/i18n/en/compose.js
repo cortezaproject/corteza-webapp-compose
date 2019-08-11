@@ -352,7 +352,7 @@ export default {
 
       timeoutLabel: 'Script execution timeout',
       timeoutPlaceholder: '1500',
-      timeoutHelp: 'How much time do we wait before aborting the script? Value in milliseconds (1000ms = 1s).',
+      timeoutHelp: 'How much time do we wait before aborting the script? Value in milliseconds (1000ms = 1s). It defaults (when 0) to 2s with 30s as maximum. Consult with your administrator for exact numbers and limitations.',
 
       codeTabLabel: 'Code',
 
