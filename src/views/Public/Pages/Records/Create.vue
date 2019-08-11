@@ -18,7 +18,7 @@
 </template>
 <script>
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
-import triggerRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
+import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 import Namespace from 'corteza-webapp-compose/src/lib/namespace'
 import Page from 'corteza-webapp-compose/src/lib/page'
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
@@ -33,7 +33,7 @@ export default {
   },
 
   mixins: [
-    triggerRunner,
+    uiScriptRunner,
   ],
 
   props: {

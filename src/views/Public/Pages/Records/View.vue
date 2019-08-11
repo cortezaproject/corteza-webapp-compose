@@ -42,7 +42,7 @@
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
 import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
-import triggerRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
+import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 import Toolbar from 'corteza-webapp-compose/src/components/Public/Page/Toolbar'
 import Namespace from 'corteza-webapp-compose/src/lib/namespace'
 import Page from 'corteza-webapp-compose/src/lib/page'
@@ -57,7 +57,7 @@ export default {
   },
 
   mixins: [
-    triggerRunner,
+    uiScriptRunner,
   ],
 
   props: {

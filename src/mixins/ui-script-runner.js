@@ -11,6 +11,7 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters({
+      getScriptByID: 'uaScript/getByID',
       getMatchingUAScripts: 'uaScript/getMatching',
       modules: 'module/set',
       pages: 'page/set',
@@ -109,7 +110,7 @@ export default {
     },
 
     /**
-     * Returns matching scripts
+     * Runs all matching scripts (by event & condition)
      *
      * @param {string} event
      * @param {string} condition
@@ -121,24 +122,13 @@ export default {
       const scripts = this.getMatchingUAScripts(event, condition) || []
 
       for (var s of scripts) {
-        if (s.async) {
-          // Execute async script, ignore the results
-          // and go to the next script right away
-          setTimeout(async () => {
-            await this.run(s, ctx)
-          }, 0)
+        let result = await this.runScript(s, ctx)
+
+        if (result === undefined) {
+          // Async script
           continue
         }
 
-        // console.debug('Running script', { s })
-        var result = await this.run(s, ctx)
-
-        if (!result) {
-          // Abort!
-          return Promise.reject(Error('aborted'))
-        }
-
-        // console.debug('Script completed', { result })
         ctx = processor(ctx, result)
       }
 
@@ -146,20 +136,61 @@ export default {
       return Promise.resolve(ctx)
     },
 
+    async runScripByID (scriptID, ctx = {}) {
+      return this.runScript(this.getScriptByID(scriptID))
+    },
+
     /**
-     * Runs (through eval) script and resolves the results
+     * Script runner
      *
-     * Async scripts resolve right away
+     * Runs script:
+     * !async:
+     *   will resolve (result of a script) after script is executed
+     *   can reject if script is aborted (return false for example)
      *
-     * @param script
-     * @param ctx
-     * @returns {Promise<Promise<unknown>>}
+     * async:
+     *   will always resolve with undefined
+     *
+     * @param {UserAgentScript} script
+     * @param {Object} ctx
+     * @returns {Promise}
      */
-    async run (script, ctx = {}) {
+    async runScript (script, ctx = {}) {
       if (!(script instanceof UserAgentScript)) {
         throw new ReferenceError(`Expecting UserAgentScript object (got ${typeof script})`)
       }
 
+      if (script.async) {
+        // Execute async script, ignore the results
+        // and go to the next script right away
+        setTimeout(async () => {
+          await this.execScriptCode(script.source, ctx, script)
+        }, 0)
+        return Promise.resolve(undefined)
+      }
+
+      // console.debug('Running script', { s })
+      var result = await this.execScriptCode(script.source, ctx, script)
+
+      if (!result) {
+        // Abort!
+        return Promise.reject(Error('aborted'))
+      }
+
+      return Promise.resolve(result)
+    },
+
+    /**
+     * Runs (through eval) script and resolves the results
+     *
+     * Function is async because we have no idea what happens inside the script.
+     * Async allows us to resolve returned promises properly.
+     *
+     * @param {String} code
+     * @param {Object} ctx
+     * @returns {Promise}
+     */
+    async execScriptCode (code, ctx = {}, { name, scriptID } = {}) {
       return new Promise(async (resolve, reject) => {
         try {
           // eval() does not play well with loaded classes
@@ -180,7 +211,7 @@ export default {
           // Cleanup
           evalClassLoader += `_classes=undefined;`
 
-          const source = `${evalClassLoader}\n(function() {\n'use strict'; ${script.source};\n})()`
+          const source = `${evalClassLoader}\n(function() {\n'use strict'; ${code};\n})()`
           // @todo console
 
           /* eslint-disable no-unused-vars */
@@ -224,6 +255,8 @@ export default {
 
           resolve(this.castResult(rval, { $record }))
         } catch (e) {
+          console.error(e)
+          console.dir({ scriptID, name, code })
           return reject(e)
         }
       })

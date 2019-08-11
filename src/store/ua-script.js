@@ -22,8 +22,12 @@ export default function (ComposeAPI) {
         return (event, condition) => state.set.filter(s => s.Match(event, condition))
       },
 
-      getByScriptID (state) {
-        return (scriptID) => state.set.filter(s => s.scriptID === scriptID)
+      getByID (state) {
+        return (scriptID) => state.set.find(s => s.scriptID === scriptID)
+      },
+
+      manual (state) {
+        return state.set.filter(({ events }) => events['manual'] && events['manual'].length > 0)
       },
     },
 
@@ -32,7 +36,8 @@ export default function (ComposeAPI) {
         commit(types.pending)
         return ComposeAPI.moduleUaScripts({ namespaceID }).then(({ set }) => {
           if (set && set.length > 0) {
-            commit(types.set, set.map(n => new UserAgentScript(n)))
+            // Add to set and freeze the object -- we will not change it. Ever.
+            commit(types.set, set.map(n => Object.freeze(new UserAgentScript(n))))
           }
 
           commit(types.completed)

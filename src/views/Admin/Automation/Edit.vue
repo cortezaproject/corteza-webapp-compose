@@ -89,7 +89,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import AutomationTrigger from 'corteza-webapp-common/src/lib/types/shared/automation-trigger'
 import * as TriggerCodeSamples from 'corteza-webapp-compose/src/triggers/samples'
-import triggerRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
+import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
 import { Ace as AceEditor } from 'vue2-brace-editor'
 import 'brace/mode/javascript'
@@ -108,7 +108,7 @@ export default {
   },
 
   mixins: [
-    triggerRunner,
+    uiScriptRunner,
   ],
 
   props: {

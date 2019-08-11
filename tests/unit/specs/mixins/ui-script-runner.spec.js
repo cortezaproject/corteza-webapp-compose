@@ -3,7 +3,7 @@ import chai, { expect } from 'chai'
 import chaiAsPromised from 'chai-as-promised'
 import sinon from 'sinon'
 
-import triggerRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
+import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 import Module from 'corteza-webapp-compose/src/lib/module'
 import UserAgentScript from 'corteza-webapp-common/src/lib/types/shared/automation-ua-script'
@@ -16,7 +16,7 @@ describe('mixins/ui-script-runner.js', () => {
   let mixin
 
   beforeEach(() => {
-    mixin = { ...triggerRunner.methods }
+    mixin = { ...uiScriptRunner.methods }
 
     // These are in fact computed props,
     // but since we are testing mixin methods,
@@ -31,7 +31,7 @@ describe('mixins/ui-script-runner.js', () => {
     }
   })
 
-  const exec = async (source, ctx) => mixin.run(new UserAgentScript({ source }), ctx)
+  const execScriptCode = async (code, ctx) => mixin.execScriptCode(code, ctx)
 
   afterEach(() => {
     sinon.restore()
@@ -77,36 +77,36 @@ describe('mixins/ui-script-runner.js', () => {
     const ctx = { $record: new Record(new Module()) }
 
     it('void/undefined return', async () => {
-      expect(await exec('return')).is.undefined
+      expect(await execScriptCode('return')).is.undefined
     })
 
     it('falsy return', async () => {
-      expect(await exec('return false')).is.false
+      expect(await execScriptCode('return false')).is.false
     })
 
     it('true w/o context', async () => {
-      expect(await exec('return true')).is.undefined
+      expect(await execScriptCode('return true')).is.undefined
     })
 
     it('void w/ context', async () => {
-      expect(await exec('', ctx)).is.instanceof(Record)
+      expect(await execScriptCode('', ctx)).is.instanceof(Record)
     })
 
     it('true w/ context', async () => {
-      expect(await exec('return true', ctx)).is.instanceof(Record)
+      expect(await execScriptCode('return true', ctx)).is.instanceof(Record)
     })
 
     it('rejection with returned promise', () => {
-      expect(exec(`return new Promise((resolve,reject) => { reject('niet')})`)).to.be.rejectedWith('niet')
+      expect(execScriptCode(`return new Promise((resolve,reject) => { reject('niet')})`)).to.be.rejectedWith('niet')
     })
 
     it.skip('rejection w/o returned promise', () => {
       // @todo skip for now, raises UnhandledPromiseRejectionWarning:
-      expect(exec(`new Promise((resolve,reject) => { reject('niet')})`)).to.be.rejectedWith('niet')
+      expect(execScriptCode(`new Promise((resolve,reject) => { reject('niet')})`)).to.be.rejectedWith('niet')
     })
 
     it('throw', () => {
-      expect(exec(`throw Error('simple')`)).to.be.rejectedWith(Error, 'simple')
+      expect(execScriptCode(`throw Error('simple')`)).to.be.rejectedWith(Error, 'simple')
     })
   })
 
@@ -114,7 +114,7 @@ describe('mixins/ui-script-runner.js', () => {
     it('should call recordRead when FindRecordByID is used (explicit module)', async () => {
       mixin.$ComposeAPI.recordRead = sinon.fake.resolves(new Record(M, { recordID: '555' }))
 
-      let result = await exec(`return FindRecordByID('123', new Module({ moduleID: '321', namespaceID: '99' }))`)
+      let result = await execScriptCode(`return FindRecordByID('123', new Module({ moduleID: '321', namespaceID: '99' }))`)
 
       sinon.assert.calledWith(mixin.$ComposeAPI.recordRead, {
         recordID: '123',
@@ -128,7 +128,7 @@ describe('mixins/ui-script-runner.js', () => {
     it('should call recordRead when FindRecordByID is used (using $module)', async () => {
       mixin.$ComposeAPI.recordRead = sinon.fake.resolves(new Record(M, { recordID: '555' }))
 
-      let result = await exec(`return FindRecordByID('123')`, {
+      let result = await execScriptCode(`return FindRecordByID('123')`, {
         $module: new Module({ moduleID: '321', namespaceID: '99' }),
       })
 

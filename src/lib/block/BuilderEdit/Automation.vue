@@ -1,14 +1,14 @@
 <template>
   <fieldset class="form-group">
-    <b-form-group :label="$t('block.automation.manualTrigger')"
+    <b-form-group :label="$t('block.automation.manualScript')"
                   horizontal
-                  :description="$t('block.automation.triggerFootnote')">
+                  :description="$t('block.automation.scriptFootnote')">
       <b-input-group>
-        <b-form-select v-model="selectedTriggerID"
-                       :options="triggerOptions">
+        <b-form-select v-model="selectedScriptID"
+                       :options="scriptOptions">
           <template slot="first">
             <option disabled
-                    :value="null">{{ $t('block.automation.pickTrigger') }}</option>
+                    :value="null">{{ $t('block.automation.pickScript') }}</option>
           </template>
         </b-form-select>
         <b-input-group-append>
@@ -26,7 +26,7 @@
         :options="{ group: 'fields' }">
         <b-input-group class="mb-2"
                        v-for="(b,i) in o.buttons"
-                       :key="b.triggerID">
+                       :key="b.scriptID">
           <b-input-group-prepend is-text>
             <font-awesome-icon :icon="['fas', 'grip-vertical']" class="text-secondary"></font-awesome-icon>
           </b-input-group-prepend>
@@ -41,7 +41,7 @@
             </b-button>
           </b-input-group-append>
           <p class="text-muted w-100">
-            {{ $t('block.automation.trigger') }}: "{{ (findTriggerByID(b.triggerID) || {}).name }}"
+            {{ $t('block.automation.script') }}: "{{ (getScriptByID(b.triggerID || b.scriptID) || {}).name }}"
           </p>
         </b-input-group>
       </draggable>
@@ -49,7 +49,7 @@
   </fieldset>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import base from './base'
 import draggable from 'vuedraggable'
 
@@ -64,7 +64,7 @@ export default {
 
   data () {
     return {
-      selectedTriggerID: null,
+      selectedScriptID: null,
       charts: [],
       variantOptions: [
         { value: 'primary', text: this.$t('block.automation.primaryButton') },
@@ -80,29 +80,31 @@ export default {
 
   computed: {
     ...mapGetters({
-      triggers: 'trigger/set',
+      manualScripts: 'uaScript/manual',
+      getScriptByID: 'uaScript/getByID',
     }),
 
-    triggerOptions () {
-      return this.triggers.filter(t => {
-        if (t.actions.find(a => a === 'manual') === undefined) {
-          // Exclude non-manual triggers
-          return false
-        }
+    scriptOptions () {
+      const anyModule = '0'
+      const condition = this.module ? this.module.moduleID : anyModule
 
-        return true
-      }).map(t => {
+      return this.manualScripts.map(s => {
         // Already used?
-        const used = (this.o.buttons.find(b => b.triggerID === t.triggerID) !== undefined)
+        const used = (this.o.buttons.find(
+          // fallback to triggerID (old structure)
+          ({ scriptID, triggerID }) => (scriptID || triggerID) === s.scriptID) !== undefined
+        )
 
-        // Compatible?
-        const cmpt = (!this.module || t.moduleID === this.module.moduleID)
+        const cc = s.events['manual']
+
+        // Compatible with module on this page?
+        const isCompatible = (cc.indexOf(condition) !== -1 || cc.indexOf(anyModule) !== -1)
 
         return {
-          value: t.triggerID,
-          text: t.name,
-          disabled: !t.enabled || used || !cmpt,
-          t,
+          value: s.scriptID,
+          text: s.name,
+          disabled: used || !isCompatible,
+          t: s,
         }
       })
     },
@@ -110,7 +112,7 @@ export default {
 
   created () {
     const { namespaceID } = this.namespace
-    this.$store.dispatch('trigger/load', { namespaceID })
+    this.loadScripts({ namespaceID })
 
     const variants = ['primary', 'light', 'success', 'danger', 'secondary', 'warning', 'info', 'dark']
     this.o.buttons.map(b => {
@@ -121,21 +123,19 @@ export default {
   },
 
   methods: {
-    findTriggerByID (triggerID) {
-      return this.triggers.find(t => t.triggerID === triggerID)
-    },
+    ...mapActions({
+      loadScripts: 'uaScript/load',
+    }),
 
     handleAddButton () {
-      const t = this.findTriggerByID(this.selectedTriggerID)
-      if (!t) return
-
+      const { scriptID, name } = this.getScriptByID(this.selectedScriptID)
       this.o.buttons.push({
-        triggerID: t.triggerID,
-        label: t.name,
+        scriptID,
+        label: name,
         variant: 'primary',
       })
 
-      this.selectedTriggerID = null
+      this.selectedScriptID = null
     },
   },
 }

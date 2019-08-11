@@ -4,18 +4,18 @@
                 :key="b.triggerID"
                 :variant="b.variant || 'primary'"
                 class="m-1 flex-fill"
-                @click.prevent="runTriggers({ triggerID: b.triggerID, action: 'manual', module, record, namespace })">{{ b.label }}</b-button>
+                @click.prevent="onAutomationButtonClick(b.triggerID)">{{ b.label }}</b-button>
     </div>
 </template>
 <script>
 import base from './base'
-import triggerRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
+import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 
 export default {
   extends: base,
 
   mixins: [
-    triggerRunner,
+    uiScriptRunner,
   ],
 
   created () {
@@ -25,6 +25,16 @@ export default {
         b.variant = 'primary'
       }
     })
+  },
+
+  methods: {
+    onAutomationButtonClick (scriptID) {
+      this.runScripByID(scriptID, {
+        $module: this.module,
+        $record: this.record,
+        $namespace: this.namespace,
+      })
+    },
   },
 }
 </script>

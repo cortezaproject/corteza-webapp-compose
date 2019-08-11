@@ -1,6 +1,6 @@
 <script>
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
-import triggerRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
+import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 import ViewRecord from './View'
 
 export default {
@@ -13,7 +13,7 @@ export default {
   extends: ViewRecord,
 
   mixins: [
-    triggerRunner,
+    uiScriptRunner,
   ],
 
   data () {

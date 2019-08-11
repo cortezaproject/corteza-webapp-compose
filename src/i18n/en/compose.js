@@ -75,10 +75,10 @@ export default {
     },
     automation: {
       label: 'Automation',
-      trigger: 'Trigger',
-      manualTrigger: 'Manual triggers',
-      pickTrigger: 'Pick a trigger',
-      triggerFootnote: 'Select from the list of manual triggers. Disabled and incompatible (different module) triggers are disabled.',
+      script: 'Script',
+      manualScript: 'Manual scripts',
+      pickScript: 'Pick a script',
+      scriptFootnote: 'Select from the list of manual scripts. Disabled and incompatible (different module) scripts are disabled.',
       button: 'Buttons',
       primaryButton: 'Primary button',
       secondaryButton: 'Secondary button',
@@ -87,7 +87,7 @@ export default {
       dangerButton: 'Danger button',
       warningButton: 'Warning button',
       darkButton: 'Dark button',
-      buttonFootnote: 'A list of manual triggers, accessible via click on a button (rename and reorder as you see fit)',
+      buttonFootnote: 'A list of manual scripts, accessible via click on a button (rename and reorder as you see fit)',
     },
     recordList: {
       label: 'Record list',
