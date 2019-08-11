@@ -220,6 +220,42 @@ describe('mixins/ui-script-runner.js', () => {
         // Original value should be kept intact
         expect(R.ownedBy).is.equal('*')
       })
+
+      it('sync scripts w/ before triggers should prevent execution of main task', async () => {
+        const R = new Record(M, { recordID: '66' })
+
+        mixin.getMatchingUAScripts = (event) => {
+          if (event === 'before' + tc.event) {
+            // Simple script that modifies record's owner
+            return [new UserAgentScript({ source: `return false` })]
+          }
+        }
+        // fake resolving on delete
+        mixin.$ComposeAPI['record' + tc.event] = sinon.fake.resolves(R)
+
+        // Run the chain
+        expect(mixin[tc.event.toLocaleLowerCase() + 'Record']({}, M, R)).to.be.rejectedWith(Error, 'aborted')
+
+        expect(mixin.$ComposeAPI['record' + tc.event].notCalled).to.be.true
+      })
+
+      it('async scripts w/ before triggers should be not prevent execution of main task', async () => {
+        const R = new Record(M, { recordID: '66' })
+
+        mixin.getMatchingUAScripts = (event) => {
+          if (event === 'before' + tc.event) {
+            // Simple script that modifies record's owner
+            return [new UserAgentScript({ source: `return false`, async: true })]
+          }
+        }
+        // fake resolving on delete
+        mixin.$ComposeAPI['record' + tc.event] = sinon.fake.resolves(R)
+
+        // Run the chain
+        await mixin[tc.event.toLocaleLowerCase() + 'Record']({}, M, R)
+
+        sinon.assert.calledOnce(mixin.$ComposeAPI['record' + tc.event])
+      })
     })
   }
 })

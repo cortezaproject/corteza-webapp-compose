@@ -64,8 +64,6 @@ export default {
         $record,
       }
 
-      console.dir($record)
-
       return this.runScriptsByEvent('beforeUpdate', moduleID, ctx, this.stdRecordEventProcessor)
         .then(({ $record }) => this.$ComposeAPI.recordUpdate($record))
         .then((apiResponse) => {
@@ -123,7 +121,16 @@ export default {
       const scripts = this.getMatchingUAScripts(event, condition) || []
 
       for (var s of scripts) {
-        console.debug('Running script', { s })
+        if (s.async) {
+          // Execute async script, ignore the results
+          // and go to the next script right away
+          setTimeout(async () => {
+            await this.run(s, ctx)
+          }, 0)
+          continue
+        }
+
+        // console.debug('Running script', { s })
         var result = await this.run(s, ctx)
 
         if (!result) {
@@ -131,7 +138,7 @@ export default {
           return Promise.reject(Error('aborted'))
         }
 
-        console.debug('Script completed', { result })
+        // console.debug('Script completed', { result })
         ctx = processor(ctx, result)
       }
 
@@ -154,12 +161,6 @@ export default {
       }
 
       return new Promise(async (resolve, reject) => {
-        if (script.async) {
-          // Async call, resolve right away
-          // @todo test how this behaves in UA env
-          resolve()
-        }
-
         try {
           // eval() does not play well with loaded classes
           // this workaround stores them in _classes obj
@@ -213,9 +214,8 @@ export default {
             $record,
           })
 
-          // Keeping `crust` for BC.
           // @todo can we wrap it in proxy and use some kind of console warning?
-          /* eslint-disable no-unused-vars */
+          // Keeping `crust` & `$C`  for BC.
           const $C = this.buildLegacyContext({})
           const crust = $C
 

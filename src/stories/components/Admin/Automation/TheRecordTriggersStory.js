@@ -45,8 +45,6 @@ const triggers = { default: Array.apply(0, Array(maxTriggers)).map((a, index) =>
   })
 }) }
 
-console.dir(triggers)
-
 story.add('Record events trigger table', () => ({
   components: { RecordEventsTable },
   i18n: i18nInit(),
