@@ -4,12 +4,15 @@
                 :key="b.triggerID"
                 :variant="b.variant || 'primary'"
                 class="m-1 flex-fill"
-                @click.prevent="onAutomationButtonClick(b.triggerID)">{{ b.label }}</b-button>
+                @click.prevent="onAutomationButtonClick(b.triggerID || b.scriptID)">{{ b.label }}</b-button>
     </div>
 </template>
 <script>
 import base from './base'
 import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
+import Record from 'corteza-webapp-common/src/lib/types/compose/record'
+import Module from 'corteza-webapp-common/src/lib/types/compose/module'
+import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 
 export default {
   extends: base,
@@ -29,10 +32,23 @@ export default {
 
   methods: {
     onAutomationButtonClick (scriptID) {
+      console.debug('manually running script', scriptID)
+
       this.runScripByID(scriptID, {
-        $module: this.module,
-        $record: this.record,
-        $namespace: this.namespace,
+        $namespace: new Namespace(this.namespace),
+        $module: new Module(this.module),
+        $record: new Record(this.module, this.record),
+      }).then((rval) => {
+        if (rval instanceof Record) {
+          // This applies changes to the record.
+          //
+          // This is done because references work as we want them
+          this.record.setValues(rval.values)
+        }
+      }).catch(({ message }) => {
+        if (message) {
+          this.raiseWarningAlert(message)
+        }
       })
     },
   },

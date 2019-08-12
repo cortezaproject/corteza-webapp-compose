@@ -535,8 +535,8 @@ export default {
     'compose-automation-trigger': {
       run: {
         title: 'Run any trigger (on any script)',
-        specific: 'Manually run this trigger',
-        description: 'Default: allow',
+        specific: 'Can run this trigger',
+        description: 'Controls ability to run scripts through manual (or user-invoked) triggers either explicitly or implicitly through browser (Scripts, runnable in User-Agent). Other kinds of automation scripts and triggers that run implicitly on the backend are always executed. Default: allow',
       },
     },
     'compose-module': {

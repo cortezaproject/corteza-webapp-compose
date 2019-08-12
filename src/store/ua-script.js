@@ -34,7 +34,7 @@ export default function (ComposeAPI) {
     actions: {
       async load ({ commit, getters }, { namespaceID } = {}) {
         commit(types.pending)
-        return ComposeAPI.moduleUaScripts({ namespaceID }).then(({ set }) => {
+        return ComposeAPI.automationScriptRunnable({ namespaceID }).then(({ set }) => {
           if (set && set.length > 0) {
             // Add to set and freeze the object -- we will not change it. Ever.
             commit(types.set, set.map(n => Object.freeze(new UserAgentScript(n))))

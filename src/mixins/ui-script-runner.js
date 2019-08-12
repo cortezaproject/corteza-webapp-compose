@@ -137,7 +137,34 @@ export default {
     },
 
     async runScripByID (scriptID, ctx = {}) {
-      return this.runScript(this.getScriptByID(scriptID))
+      const script = this.getScriptByID(scriptID)
+
+      if (script.runInUA) {
+        // Running script in a browser
+        return this.runScript(script, ctx)
+      } else {
+        // Sending script-run request to the backend
+        // and prepare to cast received values
+        const payload = {
+          scriptID,
+
+          // Send IDs
+          namespaceID: ctx.$namespace.namespaceID,
+          moduleID: ctx.$module.moduleID,
+
+          // Send the record itself, serialized
+          record: { ...ctx.$record, module: undefined, values: ctx.$record.serializeValues() },
+        }
+
+        return this.$ComposeAPI.automationScriptRun(payload).then(rval => {
+          if (rval.recordID) {
+            // Assuming Record
+            return new Record(ctx.$module, rval)
+          }
+
+          return undefined
+        })
+      }
     },
 
     /**
