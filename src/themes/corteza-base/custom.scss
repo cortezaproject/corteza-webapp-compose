@@ -28,6 +28,10 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
 
+  .card-header {
+    border-bottom-width: 2px;
+  }
+
   &:not(.vue-grid-placeholder) {
     background: #fff;
   }
@@ -35,6 +39,11 @@ body {
   &.resizing {
     opacity: 0.9;
   }
+}
+
+.vs__dropdown-toggle {
+  border-radius: 0;
+  height: 35px;
 }
 
 .table {
