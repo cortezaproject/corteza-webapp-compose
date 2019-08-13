@@ -19,10 +19,10 @@ export default {
       descriptionLabel: '$t(general.label.description)',
       descriptionPlaceholder: 'Block description',
       preview: 'Preview:',
-      previewHeader: 'Header',
       previewBody: 'Body',
-      headerStyle: 'Block header background and text',
-      bodyStyle: 'Block body background',
+      headerStyle: 'Block header style',
+      bodyStyle: 'Block body style',
+      border: 'Show border',
       style: {
         default: 'Primary variant',
         secondary: 'Secondary variant',
@@ -32,8 +32,11 @@ export default {
         success: 'Success variant',
         warning: 'Warning variant',
         danger: 'Danger variant',
-        whiteText: 'White text',
-        darkText: 'Dark text',
+        whiteBg: 'White background',
+        lightBg: 'Light background',
+        darkBg: 'Dark background',
+        noBorder: 'No border',
+
       },
     },
     file: {

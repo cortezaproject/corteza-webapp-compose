@@ -24,8 +24,8 @@ export default class Block {
 
     this.style = {
       variants: {
-        headerBg: 'primary',
-        headerText: 'dark',
+        headerBg: 'white',
+        headerText: 'primary',
         bodyBg: 'white',
         border: 'primary',
 

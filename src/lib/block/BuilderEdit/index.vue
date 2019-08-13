@@ -22,24 +22,31 @@
       <div class="col-sm-8">
         <b-form-group for="color" :label="$t('block.general.headerStyle')">
           <b-form-select id="color"
-                         v-model="block.style.variants.headerBg"
-                         :options="bgVariants"/>
+                         v-model="block.style.variants.headerText"
+                         :options="textVariants"/>
         </b-form-group>
         <b-form-group>
           <b-form-radio-group
-            v-model="block.style.variants.headerText"
-            :options="textVariants"
+            v-model="block.style.variants.headerBg"
+            :options="bgVariants"
           ></b-form-radio-group>
+          <b-form-checkbox
+            v-model="block.style.variants.border"
+            class="mt-2"
+            unchecked-value="0"
+            :value="block.style.variants.headerText"
+          >{{ $t('block.general.border') }}</b-form-checkbox>
         </b-form-group>
         <b-form-group for="color" :label="$t('block.general.bodyStyle')">
-          <b-form-select id="color"
-                         v-model="block.style.variants.bodyBg"
-                         :options="bgVariants"/>
+          <b-form-radio-group id="color"
+                              v-model="block.style.variants.bodyBg"
+                              :options="bgVariants"/>
         </b-form-group>
       </div>
-      <div class="col-sm-4 d-flex flex-column">
+      <div class="col-sm-4 d-flex flex-column rounded-sm">
           <label>{{ $t('block.general.preview') }}</label>
-          <p :class="blockClass" class="p-2 mb-0">{{ $t('block.general.previewHeader') }}</p>
+          <p class="p-2 mb-0 border-bottom" :class="blockClass" >{{ block.title }}</p>
+          <small class="px-2">{{ block.description }}</small>
           <div :class="'bg-'+block.style.variants.bodyBg" class=" p-2 flex-grow-1">
             {{ $t('block.general.previewBody') }}
           </div>
@@ -86,7 +93,7 @@ export default {
 
   data () {
     return {
-      bgVariants: [
+      textVariants: [
         { value: 'primary', text: this.$t('block.general.style.default') },
         { value: 'secondary', text: this.$t('block.general.style.secondary') },
         { value: 'white', text: this.$t('block.general.style.white') },
@@ -96,9 +103,15 @@ export default {
         { value: 'warning', text: this.$t('block.general.style.warning') },
         { value: 'danger', text: this.$t('block.general.style.danger') },
       ],
-      textVariants: [
-        { value: 'dark', text: this.$t('block.general.style.darkText') },
-        { value: 'white', text: this.$t('block.general.style.whiteText') },
+      bgVariants: [
+        { value: 'white', text: this.$t('block.general.style.whiteBg') },
+        { value: 'light', text: this.$t('block.general.style.lightBg') },
+        { value: 'dark', text: this.$t('block.general.style.darkBg') },
+      ],
+      borderVariants: [
+        { value: '0', text: this.$t('block.general.style.noBorder') },
+        { value: 'light', text: this.$t('block.general.style.lightBg') },
+        { value: 'dark', text: this.$t('block.general.style.darkBg') },
       ],
     }
   },
@@ -106,8 +119,9 @@ export default {
   computed: {
     blockClass () {
       return [
-        'bg-' + this.block.style.variants.headerBg,
         'text-' + this.block.style.variants.headerText,
+        'bg-' + this.block.style.variants.headerBg,
+        'border-' + this.block.style.variants.border,
       ]
     },
   },

@@ -9,10 +9,12 @@
                  :is-draggable="!!editable"
                  :use-css-transforms="true"
                  :cols="cols"
+                 :margin="[20, 20]"
                  class="mb-5"
                  :responsive="true">
       <grid-item v-for="(item, index) in grid"
                  :key="item.i"
+                 class="shadow rounded-lg"
                  ref="items"
                  :x="item.x"
                  :y="item.y"

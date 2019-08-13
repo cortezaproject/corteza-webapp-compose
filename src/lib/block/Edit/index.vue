@@ -4,9 +4,10 @@
     :class="blockClass"
     :header="block.title"
     :sub-title="block.description"
-    header-class="sticky-top p-2"
+    header-class="sticky-top h5"
     :header-bg-variant="block.style.variants.headerBg"
     :header-text-variant="block.style.variants.headerText"
+    :header-border-variant="block.style.variants.border"
     :body-bg-variant="block.style.variants.bodyBg">
     <div>
       <component :is="block.kind"
@@ -54,13 +55,10 @@ export default {
 
   computed: {
     blockClass () {
-      let c = ['block', this.block.kind]
-
-      if (this.block.theme) {
-        c.push('theme-' + this.block.theme)
-      }
-
-      return c
+      return [
+        'block',
+        this.block.kind,
+      ]
     },
   },
 }
