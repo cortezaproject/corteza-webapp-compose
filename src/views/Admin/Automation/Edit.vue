@@ -387,12 +387,13 @@ export default {
       }
 
       this.$ComposeAPI.automationScriptTest(payload).then(rval => {
-        // let record = this.castCorredorResponse(rval)
-
         this.testResponseErr = null
         this.testResponse = JSON.stringify(rval, null, '  ')
       }).catch(err => {
-        console.error(err)
+        if (err.message) {
+          err = err.message
+        }
+
         this.testResponseErr = err
         this.testResponse = null
       })
