@@ -26,7 +26,7 @@ let props = {
 
   record: {
     values: {
-      CaseNumber: '1',
+      CaseNumber: ['1', '2', '3'],
     },
   },
 }
@@ -68,7 +68,7 @@ number.add('Viewer', () => ({
     },
   },
 
-  template: '<viewer :field="field" :namespace="namespace" :record="record" />',
+  template: '<viewer :field="field" :namespace="namespace" :record="recordObject" />',
   i18n: i18n(),
 }))
 
@@ -93,6 +93,6 @@ number.add('Editor', () => ({
     },
   },
 
-  template: '<editor :field="field" :namespace="namespace" :record="record" />',
+  template: '<editor :field="field" :namespace="namespace" :record="recordObject" />',
   i18n: i18n(),
 }))

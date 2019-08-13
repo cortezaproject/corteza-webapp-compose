@@ -1,5 +1,5 @@
 <template>
-  <div v-if="field.isMulti" class="form-group mt-4">
+  <b-form-group v-if="field.isMulti" class="mt-4">
     <label class="d-block">{{ $t('field.options.multiDelimiter.label') }}</label>
     <b-form-radio-group
       v-model="field.options.multiDelimiter"
@@ -9,7 +9,7 @@
 
     <label for="custom-delimiter">{{ $t('field.options.multiDelimiter.customLabel') }}</label>
     <b-form-input id="custom-delimiter" v-model="field.options.multiDelimiter" :placeholder="$t('field.options.multiDelimiter.customPlaceholder')"></b-form-input>
-  </div>
+  </b-form-group>
 </template>
 
 <script>

@@ -49,7 +49,7 @@ bool.add('Viewer', () => ({
     },
   },
 
-  template: '<viewer :field="field" :namespace="namespace" :record="record" />',
+  template: '<viewer :field="field" :namespace="namespace" :record="recordObject" />',
   i18n: i18n(),
 }))
 
@@ -70,6 +70,6 @@ bool.add('Editor', () => ({
     },
   },
 
-  template: '<editor :field="field" :namespace="namespace" :record="record" />',
+  template: '<editor :field="field" :namespace="namespace" :record="recordObject" />',
   i18n: i18n(),
 }))

@@ -74,7 +74,7 @@ email.add('Viewer', () => ({
     },
   },
 
-  template: '<viewer :field="field" :namespace="namespace" :record="record" />',
+  template: '<viewer :field="field" :namespace="namespace" :record="recordObject" />',
   i18n: i18n(),
 }))
 
@@ -103,6 +103,6 @@ email.add('Editor', () => ({
     },
   },
 
-  template: '<editor :field="field" :namespace="namespace" :record="record" />',
+  template: '<editor :field="field" :namespace="namespace" :record="recordObject" />',
   i18n: i18n(),
 }))

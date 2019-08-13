@@ -45,6 +45,12 @@ const multiHandler = () => {
   return props
 }
 
+const modeHandler = () => {
+  const modes = ['grid', 'list', 'single', 'gallery']
+  props.field.options.mode = modes[(modes.indexOf(field.options.mode) + 1) % modes.length]
+  return props
+}
+
 file.addDecorator(withKnobs)
 
 file.add('Viewer', () => ({
@@ -59,6 +65,10 @@ file.add('Viewer', () => ({
       default: button('Toggle multiple values', multiHandler),
     },
 
+    mode: {
+      default: button('Cycle mode', modeHandler),
+    },
+
     fieldObject: {
       default: object('Field', props.field),
     },
@@ -68,7 +78,7 @@ file.add('Viewer', () => ({
     },
   },
 
-  template: '<viewer :field="field" :namespace="namespace" :record="record" />',
+  template: '<viewer :field="field" :namespace="namespace" :record="recordObject" />',
   i18n: i18n(),
 }))
 
@@ -93,6 +103,6 @@ file.add('Editor', () => ({
     },
   },
 
-  template: '<editor :field="field" :namespace="namespace" :record="record" />',
+  template: '<editor :field="field" :namespace="namespace" :record="recordObject" />',
   i18n: i18n(),
 }))

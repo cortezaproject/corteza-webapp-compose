@@ -1,14 +1,18 @@
 <template>
   <div>
-    <div class="form-group"><b-form-checkbox plain v-model="f.options.presetWithAuthenticated">{{ $t('field.kind.user.presetWithCurrentUser') }}</b-form-checkbox></div>
-    <div v-if="f.isMulti" class="form-group">
+    <b-form-group>
+      <b-form-checkbox plain v-model="f.options.presetWithAuthenticated">
+        {{ $t('field.kind.user.presetWithCurrentUser') }}
+      </b-form-checkbox>
+    </b-form-group>
+    <b-form-group>
       <label class="d-block">{{ $t('field.kind.select.optionType.label') }}</label>
       <b-form-radio-group
         v-model="f.options.selectType"
         :options="selectOptions"
         stacked
       ></b-form-radio-group>
-    </div>
+    </b-form-group>
   </div>
 </template>
 

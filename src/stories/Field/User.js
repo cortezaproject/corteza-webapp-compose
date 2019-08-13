@@ -59,7 +59,7 @@ const multiHandler = () => {
 
 const selectTypeHandler = () => {
   const selectOptions = ['default', 'multiple', 'each']
-  field.options.selectType = selectOptions[(selectOptions.indexOf(field.options.selectType) + 1) % 3]
+  props.field.options.selectType = selectOptions[(selectOptions.indexOf(field.options.selectType) + 1) % selectOptions.length]
   return props
 }
 
@@ -86,7 +86,7 @@ userStory.add('Viewer', () => ({
     },
   },
 
-  template: '<viewer :field="field" :namespace="namespace" :record="record" />',
+  template: '<viewer :field="field" :namespace="namespace" :record="recordObject" />',
   i18n: i18n(),
   store: store,
 }))
@@ -116,7 +116,7 @@ userStory.add('Editor', () => ({
     },
   },
 
-  template: '<editor :field="field" :namespace="namespace" :record="record" />',
+  template: '<editor :field="field" :namespace="namespace" :record="recordObject" />',
   i18n: i18n(),
   store: store,
 }))

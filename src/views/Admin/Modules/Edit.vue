@@ -14,45 +14,45 @@
                             v-model="module.name"
                             :placeholder="$t('module.newPlaceholder')"></b-form-input>
             </b-form-group>
-            <div class="form-group">
-                <h5 class="mt-1">{{ $t('module.edit.manageRecordFields') }}</h5>
-                <table class="table table-sm table-borderless">
-                  <thead>
+            <b-form-group>
+              <h5 class="mt-1">{{ $t('module.edit.manageRecordFields') }}</h5>
+              <table class="table table-sm table-borderless">
+                <thead>
+                <tr>
+                  <th></th>
+                  <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.name')" class="info">{{ $t('general.label.name') }}</th>
+                  <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.title')" class="info">{{ $t('general.label.title') }}</th>
+                  <th>{{ $t('general.label.type') }}</th>
+                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.multi')" class="info text-center">{{ $t('general.label.multi') }}</th>
+                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.required')" class="info text-center">{{ $t('general.label.required') }}</th>
+                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.sensitive')" class="info text-center">{{ $t('general.label.sensitive') }}</th>
+                  <th class="text-center"></th>
+                </tr>
+                </thead>
+                <draggable v-model="module.fields" :options="{handle:'.handle'}" element="tbody">
+                  <field-row-edit v-for="(field, index) in module.fields"
+                                  @edit="handleFieldEdit(field)"
+                                  @delete="module.fields.splice(index, 1)"
+                                  :field="field"
+                                  :canGrant="namespace.canGrant"
+                                  :key="index"></field-row-edit>
+                </draggable>
+                <tr>
+                  <th colspan="7">
+                    <b-button @click="handleNewField"
+                              variant="link">+ {{ $t('module.edit.newField') }}</b-button>
+                  </th>
+                </tr>
+                <tbody>
                   <tr>
-                    <th></th>
-                    <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.name')" class="info">{{ $t('general.label.name') }}</th>
-                    <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.title')" class="info">{{ $t('general.label.title') }}</th>
-                    <th>{{ $t('general.label.type') }}</th>
-                    <th v-b-tooltip.hover :title="$t('module.edit.tooltip.multi')" class="info text-center">{{ $t('general.label.multi') }}</th>
-                    <th v-b-tooltip.hover :title="$t('module.edit.tooltip.required')" class="info text-center">{{ $t('general.label.required') }}</th>
-                    <th v-b-tooltip.hover :title="$t('module.edit.tooltip.sensitive')" class="info text-center">{{ $t('general.label.sensitive') }}</th>
-                    <th class="text-center"></th>
+                    <th colspan="7">{{ $t('module.edit.systemFields') }}</th>
                   </tr>
-                  </thead>
-                  <draggable v-model="module.fields" :options="{handle:'.handle'}" element="tbody">
-                    <field-row-edit v-for="(field, index) in module.fields"
-                                    @edit="handleFieldEdit(field)"
-                                    @delete="module.fields.splice(index, 1)"
-                                    :field="field"
-                                    :canGrant="namespace.canGrant"
-                                    :key="index"></field-row-edit>
-                  </draggable>
-                  <tr>
-                    <th colspan="7">
-                      <b-button @click="handleNewField"
-                                variant="link">+ {{ $t('module.edit.newField') }}</b-button>
-                    </th>
-                  </tr>
-                  <tbody>
-                    <tr>
-                      <th colspan="7">{{ $t('module.edit.systemFields') }}</th>
-                    </tr>
-                    <field-row-view v-for="(field, index) in module.systemFields()"
-                                    :field="field"
-                                    :key="index"></field-row-view>
-                  </tbody>
-                </table>
-            </div>
+                  <field-row-view v-for="(field, index) in module.systemFields()"
+                                  :field="field"
+                                  :key="index"></field-row-view>
+                </tbody>
+              </table>
+            </b-form-group>
           </b-card>
         </b-col>
       </b-row>
