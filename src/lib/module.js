@@ -36,7 +36,7 @@ export default class Module {
     this.updatedAt = updatedAt || this.updatedAt
     this.canUpdateModule = typeof args.canUpdateModule === 'boolean' ? args.canUpdateModule : false
     this.canDeleteModule = typeof args.canDeleteModule === 'boolean' ? args.canDeleteModule : false
-    this.canCreateRecord = typeof args.canCreateRecord === 'boolean' ? args.canUpdateModule : false
+    this.canCreateRecord = typeof args.canCreateRecord === 'boolean' ? args.canCreateRecord : false
     this.canReadRecord = typeof args.canReadRecord === 'boolean' ? args.canReadRecord : false
     this.canUpdateRecord = typeof args.canUpdateRecord === 'boolean' ? args.canUpdateRecord : false
     this.canDeleteRecord = typeof args.canDeleteRecord === 'boolean' ? args.canDeleteRecord : false
