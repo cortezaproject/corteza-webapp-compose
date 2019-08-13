@@ -6,7 +6,7 @@ export default function (ComposeAPI) {
     client: ComposeAPI,
     epm: 'automationScript',
     Type: AutomationScript,
-    primaryKey: 'triggerID',
+    primaryKey: 'scriptID',
   }
 
   return {

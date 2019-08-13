@@ -41,7 +41,7 @@
             </b-button>
           </b-input-group-append>
           <p class="text-muted w-100">
-            {{ $t('block.automation.script') }}: "{{ (getScriptByID(b.triggerID || b.scriptID) || {}).name }}"
+            {{ $t('block.automation.script') }}: "{{ (getScriptByID(b.scriptID || b.triggerID) || {}).name }}"
           </p>
         </b-input-group>
       </draggable>

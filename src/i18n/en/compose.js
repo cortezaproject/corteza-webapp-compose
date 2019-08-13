@@ -375,11 +375,18 @@ export default {
       },
     },
     testing: {
-      label: 'Testing trigger',
+      parametersHeadline: 'Parameters & payload:',
+      resultsHeadline: 'Results:',
       recordID: 'Record ID',
-      run: 'Run test',
-      footnotePrimaryModule: 'When trigger has primary module selected, record ID is needed for tests to run properly.',
-      footnoteRecordChanges: 'Changes to records are ignored if not explicitly saved (through $C.api.record.save or $C.api.record.delete)',
+      moduleID: 'Module ID',
+      modulePickerPlaceholder: 'Select module for this script',
+      load: 'Load',
+      testInCorredor: 'Test in Corredor',
+      testInBrowser: 'Test in Browser',
+      warning: 'Testing can affect your records if scripts use API (eg: SaveRecord, DeleteRecord, ...). Executing ' +
+        'same script in browser and in Corredor should produce the same results in most cases but output will most ' +
+        'likely be formatted differently.',
+      recordPreloadText: 'Fill payload with existing record:',
     },
   },
   general: {

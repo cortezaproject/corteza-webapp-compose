@@ -53,15 +53,98 @@
                            :enableBasicAutocompletion="true"
                            :minLines="10"
                            :maxLines="30"
-                           width="100%"
                            :editorProps="{$blockScrolling: true}"
                            :onChange="onSourceEditorChange"
                            :onBeforeLoad="onBeforeSourceEditorLoad"
                            :onLoad="onSourceEditorLoad"
+                           width="100%"
                            mode="javascript"
                            theme="monokai"
-                           ref="sourceEditor"
-                           name="editor" />
+                           name="scriptSource"/>
+
+                <b-row class="mt-3">
+                  <b-col cols="6">{{ $t('automation.testing.parametersHeadline') }}</b-col>
+                  <b-col cols="6">{{ $t('automation.testing.resultsHeadline') }}</b-col>
+                </b-row>
+
+                <b-row class="mt-1">
+                  <b-col cols="6">
+                    <vue-select :options="modules"
+                                :reduce="m => m.moduleID"
+                                label="name"
+                                :placeholder="$t('automation.testing.modulePickerPlaceholder')"
+                                v-model="testModuleID">??</vue-select>
+                  </b-col>
+                  <b-col cols="6">
+                    <b-button-group>
+                      <b-button type="button"
+                                @click="onClickRunTestInCorredor"
+                                :variant="script.runInUA ? 'link':'primary'">{{ $t('automation.testing.testInCorredor') }}</b-button>
+                      <b-button type="button"
+                                @click="onClickRunTestInBrowser"
+                                :variant="script.runInUA ? 'primary':'link'">{{ $t('automation.testing.testInBrowser') }}</b-button>
+                    </b-button-group>
+                  </b-col>
+                </b-row>
+                <b-row class="mt-1">
+                  <b-col cols="6">
+                    <div v-if="testPayloadErr">
+                      <b-button variant="link" class="float-right" @click="testPayloadErr=null">Clear error</b-button>
+                      <pre class="text-danger">{{ testPayloadErr }}</pre>
+                    </div>
+                    <AceEditor v-else
+                               :value="testPayload"
+                               :fontSize="14"
+                               :showPrintMargin="false"
+                               :showGutter="true"
+                               :highlightActiveLine="true"
+                               :enableBasicAutocompletion="true"
+                               :minLines="20"
+                               :maxLines="20"
+                               :onChange="onTestRecordEditorChange"
+                               width="100%"
+                               mode="json"
+                               theme="monokai"
+                               name="testPayload" />
+                  </b-col>
+                  <b-col cols="6">
+                    <div v-if="testResponseErr">
+                      <pre class="text-danger">{{ testResponseErr }}</pre>
+                    </div>
+                    <AceEditor v-else
+                               :value="testResponse"
+                               :fontSize="14"
+                               :showPrintMargin="false"
+                               :showGutter="true"
+                               :highlightActiveLine="false"
+                               :enableBasicAutocompletion="false"
+                               :minLines="20"
+                               :maxLines="20"
+                               :readOnly="true"
+                               width="100%"
+                               mode="json"
+                               theme="monokai"
+                               name="testResponse"/>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col cols="6">
+                    <b-input-group>
+                      <b-input-group-text>{{ $t('automation.testing.recordPreloadText') }}</b-input-group-text>
+                      <b-input v-model="testPayloadID"
+                               :disabled="!testModuleID"
+                               type="number"
+                               :placeholder="$t('automation.testing.recordID')" />
+                      <b-button type="button"
+                                :disabled="!testModuleID || !testPayloadID"
+                                @click="onLoadTestRecord"
+                                variant="primary">{{ $t('automation.testing.load') }}</b-button>
+                    </b-input-group>
+                  </b-col>
+                  <b-col cols="6">
+                    <div><i18next path="automation.testing.warning" /></div>
+                  </b-col>
+                </b-row>
               </b-tab>
               <b-tab :title="$t('automation.edit.scheduledTriggers.tabLabel')" v-if="false">
                 @todo intervals & deferred
@@ -87,12 +170,15 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { VueSelect } from 'vue-select'
+import Module from 'corteza-webapp-common/src/lib/types/compose/module'
+import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 import AutomationTrigger from 'corteza-webapp-common/src/lib/types/shared/automation-trigger'
-import * as TriggerCodeSamples from 'corteza-webapp-compose/src/triggers/samples'
 import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
 import { Ace as AceEditor } from 'vue2-brace-editor'
 import 'brace/mode/javascript'
+import 'brace/mode/json'
 import 'brace/theme/monokai'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
@@ -105,6 +191,7 @@ export default {
     AceEditor,
     EditorToolbar,
     Export,
+    VueSelect,
   },
 
   mixins: [
@@ -125,20 +212,25 @@ export default {
 
   data () {
     return {
-      activeTab: 0,
+      activeTab: 1,
 
       editor: null,
       script: null,
       triggers: [],
-      test: {
-        recordID: null,
-      },
+
+      testModuleID: null,
+      testPayloadID: null,
+      testPayload: `{"record":{}}`,
+      testResponse: '',
+      testPayloadErr: null,
+      testResponseErr: null,
     }
   },
 
   computed: {
     ...mapGetters({
       modules: 'module/set',
+      getModuleByID: 'module/getByID',
     }),
 
     countEnabledRecordTriggers () {
@@ -172,7 +264,6 @@ export default {
       this.triggers = []
       return this.$ComposeAPI.automationTriggerList(p).then(({ set, filter }) => {
         this.triggers = set.map(t => new AutomationTrigger(t))
-        console.log(this.triggers)
       })
     },
 
@@ -195,10 +286,6 @@ export default {
       }).catch(this.defaultErrorHandler(this.$t('notification.automation.deleteFailed')))
     },
 
-    onRun () {
-      this.run()
-    },
-
     triggerComponent (t) {
       switch (t.event) {
         case 'manual':
@@ -210,8 +297,14 @@ export default {
       }
     },
 
-    onSourceEditorChange (value) {
-      this.script.source = value
+    // Brace editor does not support v-model
+    onSourceEditorChange (source) {
+      this.script.source = source
+    },
+
+    // Brace editor does not support v-model
+    onTestRecordEditorChange (testPayloadPayload) {
+      this.testPayload = testPayloadPayload
     },
 
     onBeforeSourceEditorLoad (brace) {
@@ -230,11 +323,6 @@ export default {
 
       // Link brace to component's data so we have access to it later
       this.editor = brace
-
-      // Add default sample to unconfigured triggers
-      if (!this.script.moduleID && !this.script.source) {
-        this.insertSample('Default')
-      }
     },
 
     onCriticalChange () {
@@ -243,60 +331,89 @@ export default {
       }
     },
 
-    insertSample (key, reset = false) {
-      if (reset) {
-        this.editor.session.setValue(TriggerCodeSamples[key])
-      } else {
-        this.editor.session.insert(this.editor.getCursorPosition(), TriggerCodeSamples[key])
+    onLoadTestRecord () {
+      this.$ComposeAPI.recordRead({
+        namespaceID: this.namespace.namespaceID,
+        moduleID: this.testModuleID,
+        recordID: this.testPayloadID,
+      }).then(record => {
+        this.testPayloadErr = null
+        this.testPayload = JSON.stringify({ record }, null, '  ')
+      }).catch(err => {
+        this.testPayload = null
+        this.testPayloadErr = err
+      })
+    },
+
+    onClickRunTestInBrowser () {
+      const payload = {
+        namespace: this.namespace,
+        module: this.testModuleID ? new Module(this.getModuleByID(this.testModuleID)) : undefined,
+        ...this.parseTestPayload(),
       }
+
+      // We must convert the record struct from payload to something usable:
+      if (payload.module && payload.record) {
+        payload.record = new Record(payload.module, payload.record)
+      }
+
+      this.execScriptCode(this.script.source, payload).then(rval => {
+        this.testResponseErr = null
+
+        if (rval instanceof Record) {
+          rval = {
+            record: {
+              ...rval,
+              module: undefined,
+              values: rval.serializeValues(),
+            }
+          }
+        }
+
+        this.testResponse = JSON.stringify(rval, null, '  ')
+      }).catch(err => {
+        console.error(err)
+        this.testResponseErr = err
+        this.testResponse = null
+      })
+    },
+
+    onClickRunTestInCorredor () {
+      const payload = {
+        source: this.script.source,
+        namespaceID: this.namespace.namespaceID,
+        moduleID: this.testModuleID,
+        ...this.parseTestPayload(),
+      }
+
+      this.$ComposeAPI.automationScriptTest(payload).then(rval => {
+        // let record = this.castCorredorResponse(rval)
+
+        this.testResponseErr = null
+        this.testResponse = JSON.stringify(rval, null, '  ')
+      }).catch(err => {
+        console.error(err)
+        this.testResponseErr = err
+        this.testResponse = null
+      })
+    },
+
+    parseTestPayload () {
+      if (this.testPayload) {
+        try {
+          return JSON.parse(this.testPayload)
+        } catch ({ message }) {
+          this.raiseWarningAlert(`Could not parse payload JSON: ${message}.`)
+          return false
+        }
+      }
+
+      return {}
     },
 
     redirect () {
       this.$router.push({ name: 'admin.automation' })
     },
-
-    // run () {
-    //   const ctx = {
-    //     record: undefined,
-    //     module: undefined,
-    //   }
-    //
-    //   // Original promise is simple, just return
-    //   // default, empty context
-    //   let p = Promise.resolve(ctx)
-    //
-    //   if (this.script.moduleID) {
-    //     if (!this.test.recordID) {
-    //       this.raiseWarningAlert(this.$t('notification.automation.invalidRecordID'))
-    //       return
-    //     }
-    //
-    //     // When primary module is set and there is a valid record present,
-    //     // override the promise, preload module & record
-    //     p = this.findModuleByID({ moduleID: this.script.moduleID })
-    //       .then(m => {
-    //         // Set loaded module to context
-    //         ctx.module = m
-    //         const { namespaceID, moduleID } = m
-    //
-    //         // And load record from the given params
-    //         return this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID: this.test.recordID })
-    //       })
-    //       .then(r => {
-    //         // Properly convert record and update context
-    //         ctx.record = new Record(ctx.module, r)
-    //         return ctx
-    //       })
-    //   }
-    //
-    //   p.then(ctx => {
-    //     // Whatever the context & promise are, continue and run the script.
-    //     this.script
-    //       .run(this.scriptContext(ctx))
-    //       .catch(this.defaultErrorHandler(this.$t('notification.automation.execFailed')))
-    //       .then(() => this.raiseSuccessAlert(this.$t('notification.automation.executed')))
-    //   })
-    // },
   },
 }
 </script>

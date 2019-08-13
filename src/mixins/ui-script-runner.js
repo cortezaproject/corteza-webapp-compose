@@ -1,5 +1,5 @@
 import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
-import Module from 'corteza-webapp-compose/src/lib/module'
+import Module from 'corteza-webapp-common/src/lib/types/compose/module'
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 import UserAgentScript from 'corteza-webapp-common/src/lib/types/shared/automation-ua-script'
 import { ComposeObject } from 'corteza-webapp-common/src/lib/types/compose/common'
@@ -27,26 +27,26 @@ export default {
      * @param {Record} record
      * @returns {Promise<unknown>}
      */
-    async createRecord ($namespace, $module, $record) {
-      const { moduleID } = $module
+    async createRecord (namespace, module, record) {
+      const { moduleID } = module
       const ctx = {
-        $namespace,
-        $module,
-        $record,
+        namespace,
+        module,
+        record,
       }
 
       return this.runScriptsByEvent('beforeCreate', moduleID, ctx, this.stdRecordEventProcessor)
-        .then(({ $record }) => this.$ComposeAPI.recordCreate($record))
+        .then(({ record }) => this.$ComposeAPI.recordCreate(record))
         .then((apiResponse) => {
-          let $record = new Record($module, apiResponse)
+          let record = new Record(module, apiResponse)
 
-          $record.execHooks({ action: 'create', record: $record })
+          record.execHooks({ action: 'create', record: record })
 
           // Update context with new data from before* scripts
-          return { ...ctx, $record }
+          return { ...ctx, record }
         })
         .then((ctx) => this.runScriptsByEvent('afterCreate', moduleID, ctx, this.stdRecordEventProcessor))
-        .then(({ $record }) => $record)
+        .then(({ record }) => record)
     },
 
     /**
@@ -57,25 +57,25 @@ export default {
      * @param {Record} record
      * @returns {Promise<unknown>}
      */
-    async updateRecord ($namespace, $module, $record) {
-      const { moduleID } = $module
+    async updateRecord (namespace, module, record) {
+      const { moduleID } = module
       const ctx = {
-        $namespace,
-        $module,
-        $record,
+        namespace,
+        module,
+        record,
       }
 
       return this.runScriptsByEvent('beforeUpdate', moduleID, ctx, this.stdRecordEventProcessor)
-        .then(({ $record }) => this.$ComposeAPI.recordUpdate($record))
+        .then(({ record }) => this.$ComposeAPI.recordUpdate(record))
         .then((apiResponse) => {
-          let $record = new Record($module, apiResponse)
-          $record.execHooks({ action: 'update', record: $record })
+          let record = new Record(module, apiResponse)
+          record.execHooks({ action: 'update', record: record })
 
           // Update context with new data from before* scripts
-          return { ...ctx, $record }
+          return { ...ctx, record }
         })
         .then((ctx) => this.runScriptsByEvent('afterUpdate', moduleID, ctx, this.stdRecordEventProcessor))
-        .then(({ $record }) => $record)
+        .then(({ record }) => record)
     },
 
     /**
@@ -86,27 +86,27 @@ export default {
      * @param {Record} record
      * @returns {Promise<void>}
      */
-    async deleteRecord ($namespace, $module, $record) {
-      const { moduleID } = $module
+    async deleteRecord (namespace, module, record) {
+      const { moduleID } = module
       const ctx = {
-        $namespace,
-        $module,
-        $record,
+        namespace,
+        module,
+        record,
       }
 
       return this.runScriptsByEvent('beforeDelete', moduleID, ctx, this.stdRecordEventProcessor)
-        .then(({ $record }) => {
-          this.$ComposeAPI.recordDelete($record)
+        .then(({ record }) => {
+          this.$ComposeAPI.recordDelete(record)
 
           // Update context with new data from before* scripts
-          return { ...ctx, $record }
+          return { ...ctx, record }
         })
         .then((ctx) => this.runScriptsByEvent('afterDelete', moduleID, ctx, this.stdRecordEventProcessor))
         .then(() => Promise.resolve(null))
     },
 
     stdRecordEventProcessor (ctx, result) {
-      return { ...ctx, $record: result }
+      return { ...ctx, record: result }
     },
 
     /**
@@ -122,7 +122,7 @@ export default {
       const scripts = this.getMatchingUAScripts(event, condition) || []
 
       for (var s of scripts) {
-        let result = await this.runScript(s, ctx)
+        let result = await this.runUAScript(s, ctx)
 
         if (result === undefined) {
           // Async script
@@ -136,30 +136,41 @@ export default {
       return Promise.resolve(ctx)
     },
 
+    /**
+     * Loads script and runs it (in UA or Corredor, depends on the script's runInUA flag)
+     *
+     * It normalizes return value from both realms:
+     * Backend will return an key-value struct { record, ...} that we extract, cast and return
+     * UA runner returns record (or whatever else we'll support directly
+     *
+     *
+     * @param scriptID
+     * @param ctx
+     * @returns {Promise<PromiseLike<any> | Promise<any>|*|Promise>}
+     */
     async runScripByID (scriptID, ctx = {}) {
       const script = this.getScriptByID(scriptID)
 
       if (script.runInUA) {
         // Running script in a browser
-        return this.runScript(script, ctx)
+        return this.runUAScript(script, ctx)
       } else {
         // Sending script-run request to the backend
         // and prepare to cast received values
         const payload = {
-          scriptID,
-
           // Send IDs
-          namespaceID: ctx.$namespace.namespaceID,
-          moduleID: ctx.$module.moduleID,
+          scriptID,
+          namespaceID: ctx.namespace.namespaceID,
+          moduleID: ctx.module.moduleID,
 
           // Send the record itself, serialized
-          record: { ...ctx.$record, module: undefined, values: ctx.$record.serializeValues() },
+          record: { ...ctx.record, module: undefined, values: ctx.record.serializeValues() },
         }
 
-        return this.$ComposeAPI.automationScriptRun(payload).then(rval => {
-          if (rval.recordID) {
-            // Assuming Record
-            return new Record(ctx.$module, rval)
+        return this.$ComposeAPI.automationScriptRun(payload).then(({ record }) => {
+          if (record) {
+            // Assuming type Record
+            return new Record(ctx.module, record)
           }
 
           return undefined
@@ -182,7 +193,7 @@ export default {
      * @param {Object} ctx
      * @returns {Promise}
      */
-    async runScript (script, ctx = {}) {
+    async runUAScript (script, ctx = {}) {
       if (!(script instanceof UserAgentScript)) {
         throw new ReferenceError(`Expecting UserAgentScript object (got ${typeof script})`)
       }
@@ -196,7 +207,6 @@ export default {
         return Promise.resolve(undefined)
       }
 
-      // console.debug('Running script', { s })
       var result = await this.execScriptCode(script.source, ctx, script)
 
       if (!result) {
@@ -212,6 +222,9 @@ export default {
      *
      * Function is async because we have no idea what happens inside the script.
      * Async allows us to resolve returned promises properly.
+     *
+     * Inside scripts we use $record, $module, $namespace for variables
+     * that hold current record/module/namespace.
      *
      * @param {String} code
      * @param {Object} ctx
@@ -242,9 +255,9 @@ export default {
           // @todo console
 
           /* eslint-disable no-unused-vars */
-          const $namespace = ctx.$namespace ? new Namespace(ctx.$namespace) : undefined
-          const $module = ctx.$module ? new Module(ctx.$module) : undefined
-          const $record = ctx.$record ? new Record(ctx.$record) : undefined
+          const $namespace = ctx.namespace ? new Namespace(ctx.namespace) : undefined
+          const $module = ctx.module ? new Module(ctx.module) : undefined
+          const $record = ctx.record ? new Record(ctx.record) : undefined
 
           // Map all helper functions to local scope
           const {
@@ -280,10 +293,9 @@ export default {
           /* eslint-disable no-eval */
           let rval = await eval(source)
 
-          resolve(this.castResult(rval, { $record }))
+          resolve(this.castResult(rval, { record: $record }))
         } catch (e) {
           console.error(e)
-          console.dir({ scriptID, name, code })
           return reject(e)
         }
       })
@@ -325,8 +337,8 @@ export default {
 
       // Value was not explicitly returned,
       // pick one of ctx values (by order of importance)
-      if (ctx.$record instanceof Record) {
-        return ctx.$record
+      if (ctx.record instanceof Record) {
+        return ctx.record
       }
 
       // Script was not aborted but there is really nothing

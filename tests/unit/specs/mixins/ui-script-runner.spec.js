@@ -66,7 +66,7 @@ describe('mixins/ui-script-runner.js', () => {
 
     it('should return $record from context when not false', () => {
       const R = new Record(M)
-      expect(mixin.castResult(true, { $record: R })).to.equal(R)
+      expect(mixin.castResult(true, { record: R })).to.equal(R)
     })
   })
 
@@ -74,7 +74,7 @@ describe('mixins/ui-script-runner.js', () => {
     // we need to keep UA & corredor scripts as compatible as possible
     // keep in sync with Corredor executor test!
 
-    const ctx = { $record: new Record(new Module()) }
+    const ctx = { record: new Record(new Module()) }
 
     it('void/undefined return', async () => {
       expect(await execScriptCode('return')).is.undefined
@@ -129,7 +129,7 @@ describe('mixins/ui-script-runner.js', () => {
       mixin.$ComposeAPI.recordRead = sinon.fake.resolves(new Record(M, { recordID: '555' }))
 
       let result = await execScriptCode(`return FindRecordByID('123')`, {
-        $module: new Module({ moduleID: '321', namespaceID: '99' }),
+        module: new Module({ moduleID: '321', namespaceID: '99' }),
       })
 
       sinon.assert.calledWith(mixin.$ComposeAPI.recordRead, {

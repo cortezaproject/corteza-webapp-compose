@@ -1,10 +1,10 @@
 <template>
     <div class="d-flex flex-wrap">
       <b-button v-for="(b) in options.buttons"
-                :key="b.triggerID"
+                :key="b.scriptID || b.triggerID"
                 :variant="b.variant || 'primary'"
                 class="m-1 flex-fill"
-                @click.prevent="onAutomationButtonClick(b.triggerID || b.scriptID)">{{ b.label }}</b-button>
+                @click.prevent="onAutomationButtonClick(b.scriptID || b.triggerID)">{{ b.label }}</b-button>
     </div>
 </template>
 <script>
@@ -35,9 +35,9 @@ export default {
       console.debug('manually running script', scriptID)
 
       this.runScripByID(scriptID, {
-        $namespace: new Namespace(this.namespace),
-        $module: new Module(this.module),
-        $record: new Record(this.module, this.record),
+        namespace: new Namespace(this.namespace),
+        module: new Module(this.module),
+        record: new Record(this.module, this.record),
       }).then((rval) => {
         if (rval instanceof Record) {
           // This applies changes to the record.

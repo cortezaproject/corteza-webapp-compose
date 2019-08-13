@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-wrap">
     <b-button v-for="(b) in options.buttons"
-              :key="b.triggerID"
+              :key="b.scriptID || b.triggerID"
               :variant="b.variant || 'primary'"
               class="m-1 flex-fill"
     >{{ b.label }}
