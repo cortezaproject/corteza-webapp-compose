@@ -6,7 +6,7 @@
      :href="attachment.download"><slot>{{ attachment.name }}</slot></a>
 </template>
 <script>
-import { canPreview } from 'corteza-webapp-common/src/lib/file_preview'
+import { canPreview } from 'corteza-webapp-common/src/components/FilePreview/'
 
 export default {
   props: {
@@ -18,12 +18,10 @@ export default {
 
   computed: {
     canPreview () {
-      return (a) => {
-        const meta = a.meta || {}
-        const type = (meta.preview || meta.original || {}).mimetype
-        const src = (a.meta.original && a.meta.original.ext === 'pdf' ? a.download : a.previewUrl)
-        return canPreview({ type, src, name: a.name })
-      }
+      const meta = this.attachment.meta || {}
+      const type = (meta.preview || meta.original || {}).mimetype
+      const src = (this.attachment.meta.original && this.attachment.meta.original.ext === 'pdf' ? this.attachment.download : this.attachment.previewUrl)
+      return canPreview({ type, src, name: this.attachment.name })
     },
   },
 

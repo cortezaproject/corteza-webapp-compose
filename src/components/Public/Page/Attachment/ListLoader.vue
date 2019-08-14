@@ -42,7 +42,7 @@
           v-if="canPreview(a)"
           @openPreview="openLightbox({ ...a, ...$event })"
           :src="inlineUrl(a)"
-          :meta="(a.meta.preview || {}).image || {}"
+          :meta="a.meta"
           :name="a.name"
           :alt="a.name"
           :preview-style="{ width: 'unset' }"
@@ -64,8 +64,7 @@ import numeral from 'numeral'
 import moment from 'moment'
 import Attachment from 'corteza-webapp-compose/src/lib/attachment'
 import Namespace from 'corteza-webapp-compose/src/lib/namespace'
-import { canPreview } from 'corteza-webapp-common/src/lib/file_preview'
-import { PreviewInline } from 'corteza-webapp-common/src/components/FilePreview/index'
+import { PreviewInline, canPreview } from 'corteza-webapp-common/src/components/FilePreview/'
 import AttachmentLink from './Link'
 
 export default {

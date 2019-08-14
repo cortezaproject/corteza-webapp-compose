@@ -5,6 +5,7 @@
     :name="(attachment || {}).name"
     :alt="(attachment || {}).name"
     :labels="previewLabels"
+    :meta="(attachment || {}).meta"
     @close="attachment=undefined">
 
     <p slot="header.left" class="m-0">
@@ -59,10 +60,11 @@ export default {
 
   created () {
     window.addEventListener('keyup', this.onKeyUp)
-    this.$root.$on('showAttachmentsModal', ({ url, download, name, pdf = undefined }) => {
+    this.$root.$on('showAttachmentsModal', ({ url, download, name, pdf = undefined, meta }) => {
       this.attachment = {
         pdf,
         download,
+        meta,
         src: url,
         name: name,
         caption: name,
