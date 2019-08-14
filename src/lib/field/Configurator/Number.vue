@@ -18,7 +18,7 @@
     </div>
     <div>
       <p>{{ $t('field.kind.number.examplesLabel') }}</p>
-      <table style="width:100%;">
+      <table style="width: 100%;">
         <tr>
           <th>{{ $t('field.kind.number.exampleInput') }}</th>
           <th>{{ $t('field.kind.number.exampleFormat') }}</th>
