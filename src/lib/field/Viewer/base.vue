@@ -1,14 +1,13 @@
 <template>
   <span v-if="valueOnly">
-    <div>{{ formatted }}</div>
+    <div :class="{'multiline': field.isMulti}">{{ formatted }}</div>
   </span>
   <div v-else>
     <label>{{ field.label || field.name }}</label>
-    <div>{{ formatted }}</div>
+    <div :class="{'multiline': field.isMulti}">{{ formatted }}</div>
   </div>
 </template>
 <script>
-
 export default {
   props: {
     namespace: {
@@ -42,8 +41,17 @@ export default {
     },
 
     formatted () {
+      if (this.field.isMulti) {
+        return this.value.join(this.field.options.multiDelimiter)
+      }
       return this.value
     },
   },
 }
 </script>
+
+<style>
+.multiline {
+  white-space: pre-line;
+}
+</style>

@@ -6,7 +6,7 @@
 
       <form class="col-12">
         <fieldset class="form-group">
-          <div class="form-group">
+          <b-form-group>
             <label for="name">{{ $t('namespace.name.label') }}</label>
             <input
               v-model="namespace.name"
@@ -14,9 +14,9 @@
               class="form-control form-control-lg"
               id="name"
               :placeholder="$t('namespace.name.placeholder')">
-          </div>
+          </b-form-group>
 
-          <div class="form-group">
+          <b-form-group>
             <label for="subtitle">{{ $t('namespace.subtitle.label') }}</label>
             <input
               v-model="namespace.meta.subtitle"
@@ -24,9 +24,9 @@
               class="form-control"
               id="subtitle"
               :placeholder="$t('namespace.subtitle.placeholder')">
-          </div>
+          </b-form-group>
 
-          <div class="form-group">
+          <b-form-group>
             <label for="description">{{ $t('namespace.description.label') }}</label>
             <textarea
               v-model="namespace.meta.description"
@@ -34,10 +34,10 @@
               class="form-control"
               id="description"
               :placeholder="$t('namespace.description.placeholder')" />
-          </div>
+          </b-form-group>
 
           <div class="row no-gutters">
-            <div class="col-12 col-md-7 form-group">
+            <b-form-group class="col-12 col-md-7">
               <label for="slug">{{ $t('namespace.slug.label') }}</label>
               <input
                 v-model="namespace.slug"
@@ -46,7 +46,7 @@
                 id="slug"
                 :placeholder="$t('namespace.slug.placeholder')">
               <i class="desc">{{ $t('namespace.slug.description') }}</i>
-            </div>
+            </b-form-group>
 
             <div class="col-6 col-md-2 enabled form-check">
               <input

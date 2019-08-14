@@ -8,13 +8,14 @@ export class DateTime {
     this.merge(def)
   }
 
-  merge ({ format, onlyDate, onlyTime, onlyPastValues, onlyFutureValues, outputRelative } = {}) {
+  merge ({ format, onlyDate, onlyTime, onlyPastValues, onlyFutureValues, outputRelative, multiDelimiter } = {}) {
     this.format = format || ''
     this.onlyDate = !!onlyDate
     this.onlyTime = !!onlyTime
     this.onlyPastValues = !!onlyPastValues
     this.onlyFutureValues = !!onlyFutureValues
     this.outputRelative = !!outputRelative
+    this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : '\n'
 
     return this
   }
@@ -31,7 +32,7 @@ export class DateTime {
     } else if (this.format.length > 0) {
       return m.format(this.format)
     } else if (this.onlyTime) {
-      return moment(value, 'HH:mm').format('HH:mm')
+      return moment(value, ['YYYY-MM-DD HH:mm', 'YYYY-MM-DD', 'HH:mm']).format('HH:mm')
     } else if (this.onlyDate) {
       return m.format('YYYY-MM-DD')
     } else {

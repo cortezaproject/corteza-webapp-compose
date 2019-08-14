@@ -14,8 +14,8 @@
                             v-model="module.name"
                             :placeholder="$t('module.newPlaceholder')"></b-form-input>
             </b-form-group>
-            <div class="form-group">
-                <h5 class="mt-1">{{ $t('module.edit.manageRecordFields') }}</h5>
+            <b-form-group>
+              <h5 class="mt-1">{{ $t('module.edit.manageRecordFields') }}</h5>
               <table class="table table-sm table-borderless">
                 <thead>
                 <tr>
@@ -23,6 +23,7 @@
                   <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.name')" class="info">{{ $t('general.label.name') }}</th>
                   <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.title')" class="info">{{ $t('general.label.title') }}</th>
                   <th>{{ $t('general.label.type') }}</th>
+                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.multi')" class="info text-center">{{ $t('general.label.multi') }}</th>
                   <th v-b-tooltip.hover :title="$t('module.edit.tooltip.required')" class="info text-center">{{ $t('general.label.required') }}</th>
                   <th v-b-tooltip.hover :title="$t('module.edit.tooltip.sensitive')" class="info text-center">{{ $t('general.label.sensitive') }}</th>
                   <th class="text-center"></th>
@@ -51,7 +52,7 @@
                                   :key="index"></field-row-view>
                 </tbody>
               </table>
-            </div>
+            </b-form-group>
           </b-card>
         </b-col>
       </b-row>

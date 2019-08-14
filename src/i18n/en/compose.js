@@ -177,9 +177,9 @@ export default {
       tooltip: {
         name: 'Must be a-z/A-Z, 0-9 or underscore',
         title: 'The name displayed in form input / data lists',
+        multi: 'Allows the field to hold multiple values',
         required: 'Required field',
         sensitive: 'Sensitive data',
-        dragAndDrop: 'Drag and drop to change order',
       },
     },
     recordGenerator: {
@@ -360,6 +360,7 @@ export default {
       title: 'Title',
       description: 'Description',
       type: 'Type',
+      multi: 'Multiple values',
       required: 'Required',
       sensitive: 'Sensitive',
       updatedAt: '$t(field.system.updatedAt)',
@@ -373,6 +374,7 @@ export default {
       saveAndPreview: 'Save and Preview',
       add: 'Add',
       addNew: 'Add new',
+      addValue: 'Add new value',
       close: 'Close',
       delete: 'Delete',
       back: 'Back',
@@ -389,6 +391,9 @@ export default {
       import: 'Import',
       export: 'Export',
       cancel: 'Cancel',
+    },
+    tooltip: {
+      dragAndDrop: 'Drag and drop to change order',
     },
   },
   permission: {
@@ -564,6 +569,16 @@ export default {
   },
   field: {
     noPermission: 'No permission to read field value',
+    options: {
+      multiDelimiter: {
+        label: 'Multiple value delimiter',
+        customLabel: 'Or use a custom delimiter',
+        customPlaceholder: 'Enter a custom delimiter',
+        newline: 'Each value in a new line',
+        comma: 'Separated by a comma',
+        custom: 'A custom delimiter',
+      },
+    },
     system: {
       ownedBy: 'Owned by',
       createdBy: 'Created by',
@@ -601,10 +616,17 @@ export default {
       },
       select: {
         label: 'Select',
+        placeholder: 'Select an option by clicking here',
         optionsLabel: 'Options to select from',
         optionRemove: 'Remove',
         optionAdd: 'Add',
         optionPlaceholder: 'Add more',
+        optionType: {
+          label: 'Multiple value input type',
+          default: 'Single input',
+          each: 'Input for each value',
+          multiple: 'Multiple select',
+        },
       },
       number: {
         label: 'Number',

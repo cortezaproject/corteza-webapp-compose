@@ -6,8 +6,9 @@ export class Email {
     this.merge(def)
   }
 
-  merge ({ outputPlain } = {}) {
+  merge ({ outputPlain, multiDelimiter } = {}) {
     this.outputPlain = !!outputPlain
+    this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : '\n'
 
     return this
   }

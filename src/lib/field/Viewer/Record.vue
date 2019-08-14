@@ -1,8 +1,21 @@
 <template>
   <div v-if="valid">
     <label v-if="!valueOnly">{{ field.label || field.name }}</label>
-    <div v-if="linkToRecord"><router-link :to="linkToRecord">{{ formatted }}</router-link></div>
-    <div v-else>{{ formatted }}</div>
+    <div v-if="field.isMulti">
+      <span v-for="(r, index) of value" :key="index">
+        <span v-if="index" v-html="getDelimiter" />
+        <span v-if="linkToRecord(index)">
+          <router-link :to="linkToRecord(index)">{{ format(index) }}</router-link>
+        </span>
+        <span v-else>
+          {{ format(index) }}
+        </span>
+      </span>
+    </div>
+    <div v-else>
+      <div v-if="linkToRecord()"><router-link :to="linkToRecord()">{{ format() }}</router-link></div>
+      <div v-else>{{ format() }}</div>
+    </div>
   </div>
 </template>
 <script>
@@ -15,7 +28,7 @@ export default {
 
   data () {
     return {
-      relRecord: undefined,
+      relRecords: [],
     }
   },
 
@@ -25,46 +38,26 @@ export default {
     }),
 
     valid () {
-      return !!this.relRecord
-    },
-
-    formatted () {
-      if (this.valid) {
-        if (this.field.options.labelField) {
-          return this.relRecord.values[this.field.options.labelField]
+      if (this.relRecords.length > 0) {
+        for (let record of this.relRecords) {
+          if (!record) {
+            return false
+          }
         }
-        return this.relRecord.recordID
+        return true
       }
+      return false
     },
 
-    linkToRecord () {
-      const recordPage = this.pages.find(p => p.moduleID === this.field.options.moduleID)
-
-      if (!recordPage) {
-        return null
+    getDelimiter () {
+      if (this.field.options.multiDelimiter === '\n') {
+        return '<br>'
       }
-
-      return {
-        name: 'page.record',
-        params: {
-          pageID: recordPage.pageID,
-          recordID: this.relRecord.recordID,
-        },
-      }
-    },
-  },
-
-  watch: {
-    value () {
-      this.load()
+      return this.field.options.multiDelimiter
     },
   },
 
   mounted () {
-    this.load()
-  },
-
-  updated () {
     this.load()
   },
 
@@ -73,17 +66,63 @@ export default {
       findModuleByID: 'module/findByID',
     }),
 
+    format (index = 0) {
+      if (this.relRecords[index]) {
+        let value = ''
+        if (this.field.options.labelField) {
+          value = this.relRecords[index].values[this.field.options.labelField]
+        } else {
+          value = this.relRecords[index].recordID
+        }
+        if (value && value.length > 0) {
+          if (Array.isArray(value)) {
+            return value.join(', ')
+          } else {
+            return value
+          }
+        }
+      }
+      return null
+    },
+
+    linkToRecord (index = 0) {
+      const recordPage = this.pages.find(p => p.moduleID === this.field.options.moduleID)
+      const recordID = (this.relRecords[index] || {}).recordID
+      if (!recordPage || !recordID) {
+        return null
+      }
+
+      return {
+        name: 'page.record',
+        params: {
+          pageID: recordPage.pageID,
+          recordID: recordID,
+        },
+      }
+    },
+
     load () {
-      if (this.value && this.value !== (this.relRecord || {}).recordID) {
-        this.findModuleByID({ moduleID: this.field.options.moduleID })
+      const value = this.field.isMulti ? this.value : [this.value]
+      const exists = this.relRecords.find(r => r.recordID === value)
+      if (value && !exists) {
+        this.findModuleByID({ moduleID: this.field.options.moduleID, namespaceID: this.namespace.namespaceID })
           .then(m => {
-            this.$ComposeAPI.recordRead({ namespaceID: m.namespaceID, moduleID: m.moduleID, recordID: this.value })
-              .then(r => {
-                // In case record isn't found, this if prevents an infinite fetch loop
-                if (r) {
-                  this.relRecord = new Record(m, r)
-                }
-              })
+            for (let v of value) {
+              if (v) {
+                let record = { recordID: v }
+                this.$ComposeAPI.recordRead({ namespaceID: m.namespaceID, moduleID: m.moduleID, recordID: v })
+                  .then(r => {
+                    // In case record isn't found, this if prevents an infinite fetch loop
+                    if (r) {
+                      record = r
+                    }
+                    this.relRecords.push(new Record(m, record))
+                  })
+                  .catch(e => {
+                    this.relRecords.push(new Record(m, record))
+                  })
+              }
+            }
           })
       }
     },

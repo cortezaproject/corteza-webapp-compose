@@ -88,6 +88,10 @@ export default class Field {
     return this.options && Object.keys(this.options).length > 0
   }
 
+  allowMulti () {
+    return this.kind !== 'Bool'
+  }
+
   export () {
     return {
       name: this.name,

@@ -14,6 +14,7 @@ module.exports = async ({ config, mode }) => {
   });
 
   config.resolve.alias["@"] = path.join(path.resolve(__dirname, '../'), 'src')
+  config.resolve.alias["corteza-webapp-compose"] = path.resolve(__dirname, '../'),
   config.resolve.alias["@components"] = path.join(path.resolve(__dirname, '../'), 'src/components')
 
   // Return the altered config

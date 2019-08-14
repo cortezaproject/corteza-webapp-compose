@@ -1,6 +1,45 @@
 <template>
   <b-form-group :label="field.label || field.name">
-    <vue-select :options="options"
+    <multi v-if="field.isMulti" :value.sync="value" :singleInput="field.options.selectType !== 'each'" :removable="field.options.selectType !== 'multiple'">
+      <template v-slot:single>
+        <vue-select v-if="field.options.selectType === 'default'"
+                    :options="options"
+                    :disabled="!module"
+                    @search="search"
+                    option-value="recordID"
+                    option-text="label"
+                    :placeholder="$t('field.kind.record.suggestionPlaceholder')"
+                    @input="selectChange($event)"
+                    ref="singleSelect">
+        </vue-select>
+        <vue-select v-else-if="field.options.selectType === 'multiple'"
+                    :options="options"
+                    :disabled="!module"
+                    @search="search"
+                    option-value="recordID"
+                    option-text="label"
+                    :placeholder="$t('field.kind.record.suggestionPlaceholder')"
+                    multiple
+                    v-model="multipleSelected">
+        </vue-select>
+      </template>
+      <template v-slot:default="ctx">
+        <vue-select v-if="field.options.selectType === 'each'"
+                    :options="options"
+                    :disabled="!module"
+                    @search="search"
+                    option-value="recordID"
+                    option-text="label"
+                    :placeholder="$t('field.kind.record.suggestionPlaceholder')"
+                    :value="getRecord(ctx.index)"
+                    @input="setRecord($event, ctx.index)">
+        </vue-select>
+        <span v-else>{{ (multipleSelected[ctx.index] || {}).label }}</span>
+      </template>
+    </multi>
+
+    <vue-select v-else
+                :options="options"
                 :disabled="!module"
                 @search="search"
                 option-value="recordID"
@@ -19,6 +58,7 @@ import base from './base'
 import { VueSelect } from 'vue-select'
 import Record from 'corteza-webapp-compose/src/lib/record'
 import _ from 'lodash'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -37,33 +77,41 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      getModuleByID: 'module/getByID',
+    }),
+
     options () {
-      return (this.query ? this.records : this.latest).map(this.convert)
+      return (this.query ? this.records : this.latest).map(this.convert).filter(v => v)
     },
 
     module () {
       if (this.field.options.moduleID !== '0') {
-        return this.$store.getters['module/getByID'](this.field.options.moduleID)
+        return this.getModuleByID(this.field.options.moduleID)
       } else {
         return undefined
       }
     },
 
-    selected: {
+    multipleSelected: {
       get () {
-        this.findByID(this.value)
-        return this.convert(this.valueRecord)
+        return this.value.map(v => this.convert(this.latest.find(r => r.recordID === v)))
       },
 
-      set (v) {
-        let { value } = v || {}
-        if (value && value !== this.value) {
-          // Set selected to value
-          this.value = value
-
-          // Find selected and copy it to so we can show it
-          this.valueRecord = this.records.find(r => r.recordID === value)
+      set (value) {
+        if (value.length !== this.value.length) {
+          this.value = value.map(v => v.value)
         }
+      },
+    },
+
+    selected: {
+      get () {
+        return this.getRecord()
+      },
+
+      set (value) {
+        this.setRecord(value)
       },
     },
   },
@@ -85,18 +133,47 @@ export default {
   },
 
   methods: {
+    getRecord (index = undefined) {
+      const value = index !== undefined ? this.value[index] : this.value
+      if (value) {
+        return this.convert(this.latest.find(r => r.recordID === value))
+      }
+    },
+
+    setRecord (event, index = undefined) {
+      const crtValue = index !== undefined ? this.value[index] : this.value
+      let trueValue = ''
+      let { value } = event || {}
+      if (value && value !== crtValue) {
+        // Set selected to value
+        trueValue = value
+      }
+
+      if (index !== undefined) {
+        this.value[index] = trueValue
+      } else {
+        this.value = trueValue
+        // Find selected and copy it to so we can show it
+        this.valueRecord = this.records.find(r => r.recordID === trueValue)
+      }
+    },
+
     convert (r) {
       if (!r || !r.values) {
         return null
       }
-
       const value = r.recordID
       let label = value
       if (this.field.options.labelField) {
         label = r.values[this.field.options.labelField]
-      }
+        if (label && label.length > 0) {
+          if (Array.isArray(label)) {
+            label = label.join(', ')
+          }
 
-      return { value, label }
+          return { value, label }
+        }
+      }
     },
 
     search (query) {
@@ -120,7 +197,7 @@ export default {
       const namespaceID = this.namespace.namespaceID
       const moduleID = this.field.options.moduleID
       if (moduleID) {
-        this.$ComposeAPI.recordList({ namespaceID, moduleID, sort: this.sortString() }).then(({ set }) => {
+        this.$ComposeAPI.recordList({ namespaceID, moduleID }).then(({ set }) => {
           this.latest = set.map(r => new Record(this.module, r))
         })
       }
@@ -132,13 +209,21 @@ export default {
 
     // Fetches record if not already present
     findByID (recordID) {
-      const namespaceID = this.namespace.namespaceID
-      const moduleID = this.field.options.moduleID
-      if (moduleID && recordID && (this.valueRecord || {}).recordID !== recordID) {
-        this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID }).then(r => {
+      if (recordID) {
+        if ((this.valueRecord || {}).recordID !== recordID) {
+          let r = this.latest.find(record => record.recordID === recordID)
           this.valueRecord = new Record(this.module, r)
-        })
+          return this.valueRecord
+        } else {
+          return this.valueRecord
+        }
       }
+    },
+
+    selectChange (event) {
+      this.value.push(event.value)
+      // Cant mutate props so we use magic(refs)
+      this.$refs.singleSelect.mutableValue = null
     },
   },
 }

@@ -19,6 +19,7 @@ export class File {
     this.allowDocuments = !!allowDocuments
     this.maxSize = maxSize || this.maxSize
     this.mode = (mode && modes.includes(mode)) ? mode : 'list'
+
     return this
   }
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="form-group">
+    <b-form-group>
       <label class="d-block">{{ $t('field.kind.record.moduleLabel') }}</label>
       <b-form-select v-model="f.options.moduleID"
                      :options="modules"
@@ -9,9 +9,9 @@
                      class="form-control">
         <template slot="first"><option disabled :value="undefined">{{ $t('field.kind.record.modulePlaceholder') }}</option></template>
       </b-form-select>
-    </div>
+    </b-form-group>
 
-    <div class="form-group">
+    <b-form-group>
       <label class="d-block">{{ $t('field.kind.record.recordFieldLabel') }}</label>
       <b-form-select v-model="f.options.labelField"
                      class="form-control"
@@ -19,8 +19,8 @@
                      :disabled="!module">
         <template slot="first"><option disabled :value="undefined">{{ $t('field.kind.record.recordFieldPlaceholder') }}</option></template>
       </b-form-select>
-    </div>
-    <div class="form-group">
+    </b-form-group>
+    <b-form-group>
       <label class="d-block">{{ $t('field.kind.record.queryFieldsLabel') }}</label>
       <b-form-select v-model="f.options.queryFields"
                      class="form-control"
@@ -28,7 +28,15 @@
                      multiple
                      :disabled="!module">
       </b-form-select>
-    </div>
+    </b-form-group>
+    <b-form-group>
+      <label class="d-block">{{ $t('field.kind.select.optionType.label') }}</label>
+      <b-form-radio-group
+        v-model="f.options.selectType"
+        :options="selectOptions"
+        stacked
+      ></b-form-radio-group>
+    </b-form-group>
   </div>
 </template>
 
@@ -44,6 +52,11 @@ export default {
   data () {
     return {
       selected: null,
+      selectOptions: [
+        { text: this.$t('field.kind.select.optionType.default'), value: 'default' },
+        { text: this.$t('field.kind.select.optionType.multiple'), value: 'multiple' },
+        { text: this.$t('field.kind.select.optionType.each'), value: 'each' },
+      ],
     }
   },
 
@@ -69,6 +82,7 @@ export default {
     'f.options.moduleID' () {
       this.f.options.labelField = undefined
       this.f.options.queryFields = []
+      this.f.options.selectType = 'default'
     },
   },
 

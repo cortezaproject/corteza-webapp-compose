@@ -5,8 +5,11 @@ export class User {
     this.merge(def)
   }
 
-  merge ({ presetWithAuthenticated } = {}) {
+  merge ({ presetWithAuthenticated, selectType, multiDelimiter } = {}) {
     this.presetWithAuthenticated = this.presetWithAuthenticated || !!presetWithAuthenticated
+    this.selectType = selectType ? (typeof selectType === 'string' ? selectType : 'default') : 'default'
+    this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : '\n'
+
     return this
   }
 
@@ -17,6 +20,7 @@ export class User {
   export () {
     return {
       presetWithAuthenticated: this.presetWithAuthenticated,
+      selectType: this.selectType,
     }
   }
 }

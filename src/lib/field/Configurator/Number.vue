@@ -1,21 +1,21 @@
 <template>
   <div>
-    <div class="form-group">
+    <b-form-group>
       <label class="d-block">{{ $t('field.kind.number.prefixLabel') }}</label>
       <b-form-input v-model="f.options.prefix" :placeholder="$t('field.kind.number.prefixPlaceholder')"></b-form-input>
-    </div>
-    <div class="form-group">
+    </b-form-group>
+    <b-form-group>
       <label class="d-block">{{ $t('field.kind.number.suffixLabel') }}</label>
       <b-form-input v-model="f.options.suffix" :placeholder="$t('field.kind.number.suffixPlaceholder')"></b-form-input>
-    </div>
-    <div class="form-group">
+    </b-form-group>
+    <b-form-group>
       <label class="d-block">{{ $t('field.kind.number.precisionLabel') }}</label>
       <b-form-input v-model="f.options.precision" :placeholder="$t('field.kind.number.precisionPlaceholder')" type="number" min="0" max="6"></b-form-input>
-    </div>
-    <div class="form-group">
+    </b-form-group>
+    <b-form-group>
       <label class="d-block">{{ $t('field.kind.number.formatLabel') }}</label>
       <b-form-input v-model="f.options.format" :placeholder="$t('field.kind.number.formatPlaceholder')"></b-form-input>
-    </div>
+    </b-form-group>
     <div>
       <p>{{ $t('field.kind.number.examplesLabel') }}</p>
       <table style="width: 100%;">

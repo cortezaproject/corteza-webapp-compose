@@ -1,6 +1,10 @@
 <template>
   <b-form-group :label="field.label || field.name">
-    <b-form-input type="email" v-model="value"></b-form-input>
+    <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
+      <b-form-input type="email" v-model="value[ctx.index]"></b-form-input>
+    </multi>
+
+    <b-form-input v-else type="email" v-model="value"></b-form-input>
 
     <b-form-text v-if="validate && errors">
       <div v-for="(error, i) in errors" :key="i">{{ error }}</div>

@@ -5,12 +5,13 @@ export class Url {
     this.merge(def)
   }
 
-  merge ({ trimFragment, trimQuery, trimPath, onlySecure, outputPlain } = {}) {
+  merge ({ trimFragment, trimQuery, trimPath, onlySecure, outputPlain, multiDelimiter } = {}) {
     this.trimFragment = !!trimFragment
     this.trimQuery = !!trimQuery
     this.trimPath = !!trimPath
     this.onlySecure = !!onlySecure
     this.outputPlain = !!outputPlain
+    this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : '\n'
 
     return this
   }

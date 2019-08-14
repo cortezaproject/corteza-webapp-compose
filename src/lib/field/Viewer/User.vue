@@ -17,6 +17,12 @@ export default {
     }),
 
     formatted () {
+      if (this.field.isMulti) {
+        return this.value.map(v => {
+          let user = this.findByID(v)
+          return user ? (this.field.options.formatter(user) || v) : this.$t('field.kind.user.na')
+        }).join(this.field.options.multiDelimiter)
+      }
       return this.user ? (this.field.options.formatter(this.user) || this.value) : this.$t('field.kind.user.na')
     },
   },
@@ -33,7 +39,7 @@ export default {
 
   methods: {
     load () {
-      if (this.value && this.value !== (this.user || {}).userID) {
+      if (this.value && this.value !== (this.user || {}).userID && !this.field.isMulti) {
         this.user = this.findByID(this.value)
       }
     },
