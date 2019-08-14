@@ -13,7 +13,7 @@
            :placeholder="$t('general.label.search')" />
     <div class="table-responsive">
       <table class="table sticky-header table-hover" :class="{sortable: !options.hideSorting}">
-        <thead v-if="!options.hideHeader">
+        <thead v-if="!options.hideHeader" class="border-bottom">
           <tr >
             <th v-for="(col) in columns" :key="'header:'+col.name" @click="handleSort(col.name)" class="text-nowrap">
               {{ col.label || col.name }}

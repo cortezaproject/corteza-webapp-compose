@@ -29,7 +29,7 @@ body {
   overflow-y: auto;
 
   .card-header {
-    border-bottom-width: 2px;
+    border-bottom-width: 3px;
   }
 
   &:not(.vue-grid-placeholder) {
@@ -44,18 +44,6 @@ body {
 .vs__dropdown-toggle {
   border-radius: 0;
   height: 35px;
-}
-
-.table {
-  td {
-    word-break: break-word;
-  }
-
-  thead {
-    th {
-      border-bottom: 1px solid $light;
-    }
-  }
 }
 
 .ns-logo {
