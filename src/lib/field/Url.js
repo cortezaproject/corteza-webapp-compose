@@ -11,7 +11,7 @@ export class Url {
     this.trimPath = !!trimPath
     this.onlySecure = !!onlySecure
     this.outputPlain = !!outputPlain
-    this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : this.multiDelimiter
+    this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : '\n'
 
     return this
   }

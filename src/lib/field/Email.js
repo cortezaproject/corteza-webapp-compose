@@ -8,7 +8,7 @@ export class Email {
 
   merge ({ outputPlain, multiDelimiter } = {}) {
     this.outputPlain = !!outputPlain
-    this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : this.multiDelimiter
+    this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : '\n'
 
     return this
   }

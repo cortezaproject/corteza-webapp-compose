@@ -15,7 +15,7 @@ export class DateTime {
     this.onlyPastValues = !!onlyPastValues
     this.onlyFutureValues = !!onlyFutureValues
     this.outputRelative = !!outputRelative
-    this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : this.multiDelimiter
+    this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : '\n'
 
     return this
   }

@@ -11,6 +11,7 @@ export class Record {
     this.labelField = labelField || this.labelField || undefined
     this.queryFields = queryFields || this.queryFields || []
     this.selectType = selectType ? (typeof selectType === 'string' ? selectType : 'default') : 'default'
+    this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : '\n'
 
     return this
   }

@@ -8,7 +8,7 @@ export class User {
   merge ({ presetWithAuthenticated, selectType, multiDelimiter } = {}) {
     this.presetWithAuthenticated = this.presetWithAuthenticated || !!presetWithAuthenticated
     this.selectType = selectType ? (typeof selectType === 'string' ? selectType : 'default') : 'default'
-    this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : this.multiDelimiter
+    this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : '\n'
 
     return this
   }
