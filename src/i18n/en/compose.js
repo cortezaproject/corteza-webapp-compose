@@ -134,7 +134,7 @@ export default {
       },
       export: {
         selectFields: 'Select fields you want to export:',
-        limitations: 'CSV support limitations: only the first multi value will be exported',
+        limitations: 'CSV export limitation: only the first value in the multi value fields will be exported',
         rangeBy: 'Set range by:',
         dateRange: 'Select date range:',
       },

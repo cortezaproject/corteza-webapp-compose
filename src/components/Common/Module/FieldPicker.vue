@@ -42,9 +42,6 @@
 <script>
 import draggable from 'vuedraggable'
 
-const disabledFileTypes = ['User', 'Record', 'File']
-const enabledSystemFields = ['createdAt', 'updatedAt']
-
 export default {
   components: {
     draggable,
@@ -76,9 +73,6 @@ export default {
   computed: {
     selectedFields: {
       get () {
-        if (this.export) {
-          return this.fields.filter(f => disabledFileTypes.indexOf(f.kind) < 0)
-        }
         return this.fields
       },
 
@@ -89,6 +83,8 @@ export default {
 
     allFields () {
       if (this.export) {
+        const disabledFileTypes = ['User', 'Record', 'File']
+        const enabledSystemFields = ['createdAt', 'updatedAt']
         const moduleFields = this.module.fields.filter(f => disabledFileTypes.indexOf(f.kind) < 0)
         const systemFields = this.module.systemFields().filter(f => enabledSystemFields.indexOf(f.name) !== -1)
         return [ ...moduleFields, ...systemFields ]

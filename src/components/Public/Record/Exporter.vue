@@ -1,46 +1,53 @@
 <template>
-  <b-container fluid>
-    <b-form-group>
-      <label>{{ $t('block.recordList.export.selectFields') }}</label>
-      <field-picker v-if="module" :module="module" :fields.sync="fields" export/>
-      <i>{{ $t('block.recordList.export.limitations') }}</i>
-    </b-form-group>
-    <b-form-group>
-       <b-form-radio-group
-          v-model="exportType"
-          :options="exportTypeOptions"
+  <b-card header-bg-variant="white" footer-bg-variant="white">
+    <b-container fluid class="p-0">
+      <b-form-group>
+        <label>{{ $t('block.recordList.export.selectFields') }}</label>
+        <field-picker v-if="module" :module="module" :fields.sync="fields" export/>
+        <i>{{ $t('block.recordList.export.limitations') }}</i>
+      </b-form-group>
+      <b-form-group>
+        <b-form-radio-group
+          v-model="rangeType"
+          :options="rangeTypeOptions"
           stacked />
-    </b-form-group>
-    <b-row no-gutters>
-      <b-col cols="4">
-        <b-form-group
-          v-if="exportType === 'range'"
-          label-cols="5"
-          :label="$t('block.recordList.export.rangeBy')">
-          <b-form-select
-            v-model="rangeBy"
-            :options="rangeByOptions" />
-        </b-form-group>
-      </b-col>
-    </b-row>
-    <b-row v-if="exportType === 'range'" no-gutters>
-      <b-col cols="4">
-        <b-form-group
-          label-cols="5"
-          :label="$t('block.recordList.export.dateRange')">
+      </b-form-group>
+      <b-row no-gutters>
+        <b-col cols="5">
+          <b-form-group
+            v-if="rangeType === 'range'"
+            label-cols="5"
+            :label="$t('block.recordList.export.rangeBy')">
             <b-form-select
-              v-model="range"
-              :options="dateRangeOptions" />
-        </b-form-group>
-      </b-col>
-      <b-col cols="2" class="ml-5">
-        <b-form-input type="date" v-model="start" />
-      </b-col>
-      <b-col cols="2" class="ml-2">
-        <b-form-input type="date" v-model="end" />
-      </b-col>
-    </b-row>
-  </b-container>
+              v-model="rangeBy"
+              :options="rangeByOptions" />
+          </b-form-group>
+        </b-col>
+      </b-row>
+      <b-row v-if="rangeType === 'range'" no-gutters>
+        <b-col cols="5">
+          <b-form-group
+            label-cols="5"
+            :label="$t('block.recordList.export.dateRange')">
+              <b-form-select
+                v-model="range"
+                :options="dateRangeOptions" />
+          </b-form-group>
+        </b-col>
+        <b-col cols="3" class="ml-5">
+          <b-form-input type="date" v-model="start" />
+        </b-col>
+        <b-col cols="3" class="ml-2">
+          <b-form-input type="date" v-model="end" />
+        </b-col>
+      </b-row>
+    </b-container>
+    <div slot="footer" class="footer">
+      <span class="mr-auto my-auto">43 records ready for export</span>
+      <b-button @click="$emit('exportJSON', getAttributes)" variant="dark" class="mr-2">JSON Export</b-button>
+      <b-button @click="$emit('exportCSV', getAttributes)" variant="dark">CSV Export</b-button>
+    </div>
+  </b-card>
 </template>
 
 <script>
@@ -93,7 +100,7 @@ export default {
 
   data () {
     return {
-      exportTypeOptions: [
+      rangeTypeOptions: [
         { value: 'all', text: 'Export all records' },
         { value: 'range', text: 'Set date range' },
       ],
@@ -113,9 +120,23 @@ export default {
   },
 
   computed: {
+    getAttributes () {
+      return {
+        fields: this.fields,
+        rangeBy: this.rangeBy,
+        rangeType: this.rangeType,
+        date: {
+          range: this.range,
+          start: this.start,
+          end: this.end,
+        },
+      }
+    },
+
     fields: {
       get () {
-        return this.preselectedFields
+        const disabledFileTypes = ['User', 'Record', 'File']
+        return this.preselectedFields.filter(f => disabledFileTypes.indexOf(f.kind) < 0)
       },
 
       set (fields) {
@@ -134,13 +155,13 @@ export default {
       },
     },
 
-    exportType: {
+    rangeType: {
       get () {
         return this.selectionType
       },
 
-      set (exportType) {
-        this.$emit('update:selectionType', exportType)
+      set (rangeType) {
+        this.$emit('update:selectionType', rangeType)
         this.$emit('change')
       },
     },
@@ -215,3 +236,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.footer {
+  display: flex;
+}
+</style>

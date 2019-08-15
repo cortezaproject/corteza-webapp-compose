@@ -67,6 +67,21 @@ const dateRangeOptions = {
 
 const exporter = storiesOf('Components/Public/Record/Exporter', module)
 
+function Modal () {
+  return {
+    template: `
+      <div>
+        <b-button v-b-modal.exportModal>Open export modal</b-button>
+        <b-modal :visible="true" size="lg" id="exportModal" title="Export" hide-footer body-class="p-0">
+          <story/>
+        </b-modal>
+      </div>
+    `,
+  }
+}
+
+exporter.addDecorator(Modal)
+
 exporter.addDecorator(withKnobs)
 
 exporter.add('Exporter', () => ({
@@ -92,20 +107,22 @@ exporter.add('Exporter', () => ({
       default: select('Date range', dateRangeOptions, props.dateRange),
     },
     startDate: {
-      default: text('Start date("YYYY-MM-DD")', ''),
+      default: text('Start date ("YYYY-MM-DD")', ''),
     },
     endDate: {
-      default: text('End date("YYYY-MM-DD")', ''),
+      default: text('End date ("YYYY-MM-DD")', ''),
     },
   },
 
-  template: `<exporter 
-              :module="module"
-              :preselectedFields.sync="preselectedFields"
-              :selectionType.sync="selectionType"
-              :filterRangeBy.sync="filterRangeBy"
-              :dateRange.sync="dateRange"
-              :startDate.sync="startDate"
-              :endDate.sync="endDate" />`,
+  template: `<Modal>
+              <exporter 
+                :module="module"
+                :preselectedFields.sync="preselectedFields"
+                :selectionType.sync="selectionType"
+                :filterRangeBy.sync="filterRangeBy"
+                :dateRange.sync="dateRange"
+                :startDate.sync="startDate"
+                :endDate.sync="endDate" />
+              </Modal>`,
   i18n: i18n(),
 }))
