@@ -131,6 +131,9 @@
             <b-form-checkbox v-model="m.fill"
                              :value="true" :unchecked-value="false"
                              v-show="m.type === 'line'">{{ $t('chart.edit.metric.fillArea') }}</b-form-checkbox>
+
+            <b-form-checkbox v-model="m.fixTooltips"
+                             :value="true" :unchecked-value="false">{{ $t('chart.edit.metric.fixTooltips') }}</b-form-checkbox>
           </b-form-group>
         </fieldset>
       </draggable>
