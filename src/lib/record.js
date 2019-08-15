@@ -39,10 +39,10 @@ export default class Record {
     this.merge(def)
   }
 
-  merge ({ recordID, namespaceID, values, createdAt, updatedAt, ownerdBy, createdBy, updatedBy, deletedBy }) {
+  merge ({ recordID, namespaceID, values, createdAt, updatedAt, ownedBy, createdBy, updatedBy, deletedBy }) {
     this.recordID = typeof recordID === 'string' ? recordID : this.recordID || ''
     this.namespaceID = typeof namespaceID === 'string' ? namespaceID : this.namespaceID || ''
-    this.ownerdBy = typeof ownerdBy === 'string' ? ownerdBy : this.ownerdBy || ''
+    this.ownedBy = typeof ownedBy === 'string' ? ownedBy : this.ownedBy || ''
     this.createdBy = typeof createdBy === 'string' ? createdBy : this.createdBy || ''
     this.updatedBy = typeof updatedBy === 'string' ? updatedBy : this.updatedBy || ''
     this.deletedBy = typeof deletedBy === 'string' ? deletedBy : this.deletedBy || ''
