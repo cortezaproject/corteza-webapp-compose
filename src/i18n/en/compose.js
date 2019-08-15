@@ -137,6 +137,9 @@ export default {
         limitations: 'CSV export limitation: only the first value in the multi value fields will be exported',
         rangeBy: 'Set range by:',
         dateRange: 'Select date range:',
+        recordCount: '{{count}} records ready for export',
+        json: 'JSON Export',
+        csv: 'CSV Export',
       },
     },
     record: {

@@ -2,7 +2,7 @@ import { storiesOf } from '@storybook/vue'
 import Module from 'corteza-webapp-compose/src/lib/module'
 import Exporter from 'corteza-webapp-compose/src/components/Public/Record/Exporter'
 import i18n from 'corteza-webapp-compose/src/i18n'
-import { withKnobs, object, select, text } from '@storybook/addon-knobs'
+import { withKnobs, object, select, text, number } from '@storybook/addon-knobs'
 
 let fields = [
   {
@@ -39,11 +39,14 @@ let props = {
       name: 'FirstName',
     },
   ],
+  recordCount: 43,
 
   selectionType: 'all',
   filterRangeBy: 'createdAt',
 
   dateRange: 'lastMonth',
+  startDate: '',
+  endDate: '',
 }
 
 const selectionTypeOptions = {
@@ -94,8 +97,8 @@ exporter.add('Exporter', () => ({
   },
 
   props: {
-    preselectedFields: {
-      default: object('Preselected fields', props.preselectedFields),
+    recordCount: {
+      default: number('Record count', props.recordCount),
     },
     selectionType: {
       default: select('Selection type', selectionTypeOptions, props.selectionType),
@@ -107,22 +110,24 @@ exporter.add('Exporter', () => ({
       default: select('Date range', dateRangeOptions, props.dateRange),
     },
     startDate: {
-      default: text('Start date ("YYYY-MM-DD")', ''),
+      default: text('Start date ("YYYY-MM-DD")', props.startDate),
     },
     endDate: {
-      default: text('End date ("YYYY-MM-DD")', ''),
+      default: text('End date ("YYYY-MM-DD")', props.endDate),
+    },
+    preselectedFields: {
+      default: object('Preselected fields', props.preselectedFields),
     },
   },
 
-  template: `<Modal>
-              <exporter 
-                :module="module"
-                :preselectedFields.sync="preselectedFields"
-                :selectionType.sync="selectionType"
-                :filterRangeBy.sync="filterRangeBy"
-                :dateRange.sync="dateRange"
-                :startDate.sync="startDate"
-                :endDate.sync="endDate" />
-              </Modal>`,
+  template: `<exporter 
+              :module="module"
+              :preselectedFields="preselectedFields"
+              :recordCount="recordCount"
+              :selectionType="selectionType"
+              :filterRangeBy="filterRangeBy"
+              :dateRange="dateRange"
+              :startDate="startDate"
+              :endDate="endDate" />`,
   i18n: i18n(),
 }))
