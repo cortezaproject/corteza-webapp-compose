@@ -132,6 +132,12 @@ export default {
         recordsPerPage: '{{0}} records are shown per page.',
         moduleNotSelected: 'Block with table of records, module not selected.',
       },
+      export: {
+        selectFields: 'Select fields you want to export:',
+        limitations: 'CSV support limitations: only the first multi value will be exported',
+        rangeBy: 'Set range by:',
+        dateRange: 'Select date range:',
+      },
     },
     record: {
       label: 'Record',

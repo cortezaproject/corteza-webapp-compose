@@ -18,7 +18,7 @@
       </i>
     </fieldset>
 
-    <field-selector v-if="recordListModule" :module="recordListModule" :fields.sync="o.fields" />
+    <field-picker v-if="recordListModule" :module="recordListModule" :fields.sync="o.fields" />
 
     <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.newLabel')">
         <b-form-checkbox v-model="o.hideAddButton">
@@ -62,13 +62,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import base from './base'
-import FieldSelector from './inc/FieldSelector'
+import FieldPicker from 'corteza-webapp-compose/src/components/Common/Module/FieldPicker'
 
 export default {
   name: 'RecordList',
 
   components: {
-    FieldSelector,
+    FieldPicker,
   },
 
   extends: base,

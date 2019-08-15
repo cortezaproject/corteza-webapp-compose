@@ -4,18 +4,18 @@
       <label>{{ $t('block.recordList.module') }}</label>
       <input v-if="module" class="form-control" type="text" v-model="module.name" readonly>
     </fieldset>
-    <field-selector v-if="module" :module="module" :fields.sync="o.fields" />
+    <field-picker v-if="module" :module="module" :fields.sync="o.fields" />
   </div>
 </template>
 <script>
 import base from './base'
-import FieldSelector from './inc/FieldSelector'
+import FieldPicker from 'corteza-webapp-compose/src/components/Common/Module/FieldPicker'
 
 export default {
   name: 'Record',
 
   components: {
-    FieldSelector,
+    FieldPicker,
   },
 
   extends: base,
