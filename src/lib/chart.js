@@ -181,7 +181,9 @@ export default class Chart {
   buildOptions () {
     const plugins = new Set()
     let options = {
-      animation: false,
+      animation: {
+        duration: 500,
+      },
     }
 
     let datasets = []
