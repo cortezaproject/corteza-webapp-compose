@@ -1,70 +1,58 @@
 <template>
-  <div class="scrollable">
-    <div class="container">
-      <h1 v-if="isEdit" class="text-center mt-4">{{ $t('namespace.edit', {name: namespace.name}) }}</h1>
-      <h1 v-else class="text-center mt-4">{{ $t('namespace.create') }}</h1>
+  <b-container>
+    <h1 class="text-center mt-4">
+      {{ getTitle }}
+      <permissions-button
+        v-if="isEdit && namespace.canGrant"
+        :title="namespace.name"
+        :resource="'compose:namespace:'+namespace.namespaceID"
+        link />
 
-      <form class="col-12">
-        <fieldset class="form-group">
-          <b-form-group>
-            <label for="name">{{ $t('namespace.name.label') }}</label>
-            <input
-              v-model="namespace.name"
+    </h1>
+    <b-form>
+      <b-form-group :label="$t('namespace.name.label')">
+        <b-form-input
+          v-model="namespace.name"
+          type="text"
+          required
+          :state="!!namespace.name"
+          :placeholder="$t('namespace.name.placeholder')" />
+
+      </b-form-group>
+      <b-row align-v="center">
+        <b-col cols="6">
+          <b-form-group :label="$t('namespace.slug.label')" :description="$t('namespace.slug.description')">
+            <b-form-input
+              v-model="namespace.slug"
               type="text"
-              class="form-control form-control-lg"
-              id="name"
-              :placeholder="$t('namespace.name.placeholder')">
+              :state="!!namespace.slug"
+              :placeholder="$t('namespace.slug.placeholder')" />
+
           </b-form-group>
+        </b-col>
+        <b-col cols="6">
+          <b-form-checkbox v-model="namespace.enable" size="lg">
+            {{ $t('namespace.enabled.label') }}
+          </b-form-checkbox>
+        </b-col>
+      </b-row>
+      <b-form-group :label="$t('namespace.subtitle.label')">
+        <b-form-input
+          v-model="namespace.meta.subtitle"
+          type="text"
+          :placeholder="$t('namespace.subtitle.placeholder')" />
 
-          <b-form-group>
-            <label for="subtitle">{{ $t('namespace.subtitle.label') }}</label>
-            <input
-              v-model="namespace.meta.subtitle"
-              type="text"
-              class="form-control"
-              id="subtitle"
-              :placeholder="$t('namespace.subtitle.placeholder')">
-          </b-form-group>
+      </b-form-group>
 
-          <b-form-group>
-            <label for="description">{{ $t('namespace.description.label') }}</label>
-            <textarea
-              v-model="namespace.meta.description"
-              rows="3"
-              class="form-control"
-              id="description"
-              :placeholder="$t('namespace.description.placeholder')" />
-          </b-form-group>
+      <b-form-group :label="$t('namespace.description.label')">
+        <b-form-textarea
+          v-model="namespace.meta.description"
+          :placeholder="$t('namespace.description.placeholder')"
+          rows="3"
+          max-rows="5" />
 
-          <div class="row no-gutters">
-            <b-form-group class="col-12 col-md-7">
-              <label for="slug">{{ $t('namespace.slug.label') }}</label>
-              <input
-                v-model="namespace.slug"
-                type="text"
-                class="form-control form-control-sm"
-                id="slug"
-                :placeholder="$t('namespace.slug.placeholder')">
-              <i class="desc">{{ $t('namespace.slug.description') }}</i>
-            </b-form-group>
-
-            <div class="col-6 col-md-2 enabled form-check">
-              <input
-                v-model="namespace.enabled"
-                type="checkbox"
-                class="form-check-input"
-                id="enabled">
-              <label for="enabled">{{ $t('namespace.enabled.label') }}</label>
-            </div>
-
-            <div v-if="isEdit && namespace.canGrant" class="col-6 col-md-3 permissions actions">
-              {{ $t('namespace.setPermissions') }}
-              <permissions-button :title="namespace.name" :resource="'compose:namespace:'+namespace.namespaceID" link />
-            </div>
-          </div>
-        </fieldset>
-      </form>
-    </div>
+      </b-form-group>
+    </b-form>
     <editor-toolbar :back-link="{name: 'root'}"
                     :hideDelete="!canDelete"
                     :hideSave="!canSave"
@@ -73,7 +61,7 @@
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
     </editor-toolbar>
     <permissions-modal />
-  </div>
+  </b-container>
 </template>
 
 <script>
@@ -94,6 +82,10 @@ export default {
   },
 
   computed: {
+    getTitle () {
+      return this.isEdit ? this.$t('namespace.edit', { name: this.namespace.name }) : this.$t('namespace.create')
+    },
+
     isEdit () {
       return !!this.namespace.namespaceID
     },
@@ -159,23 +151,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.enabled {
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.permissions {
-  text-align: center;
-  margin-bottom: 8px;
-}
-
-.row {
-  align-items: center;
-}
-
-.desc {
-  color: $secondary;
-}
-</style>

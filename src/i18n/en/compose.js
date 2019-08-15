@@ -715,12 +715,12 @@ export default {
       placeholder: 'Enter namespace subtitle',
     },
     slug: {
-      label: 'Slug',
-      placeholder: 'Enter namespace slug',
-      description: 'A slug is a short name for the namespace. It\'s used in the URL.',
+      label: 'Short name',
+      placeholder: 'Enter a short name for the namespace',
+      description: 'The short name will be used in the URL',
     },
     enabled: {
-      label: 'Enabled',
+      label: 'Enable namespace',
     },
   },
   preview: {
