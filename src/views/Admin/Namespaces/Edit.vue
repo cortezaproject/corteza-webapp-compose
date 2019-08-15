@@ -31,7 +31,7 @@
           </b-form-group>
         </b-col>
         <b-col cols="6">
-          <b-form-checkbox v-model="namespace.enable" size="lg">
+          <b-form-checkbox v-model="namespace.enabled" size="lg">
             {{ $t('namespace.enabled.label') }}
           </b-form-checkbox>
         </b-col>
