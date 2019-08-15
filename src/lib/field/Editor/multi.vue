@@ -6,7 +6,7 @@
     <draggable :list.sync="val">
       <div v-for="(v, index) of val" :key="index" class="mb-1">
         <b-row no-gutters>
-          <b-col cols="1" class="center my-auto pr-2">
+          <b-col cols="1" class="text-center my-auto pr-3">
             <font-awesome-icon v-b-tooltip.hover
                               :icon="['fas', 'sort']"
                               :title="$t('general.tooltip.dragAndDrop')"
@@ -17,15 +17,15 @@
             <slot v-bind:index="index"></slot>
           </b-col>
 
-          <b-col v-if="removable" cols="1" @click="removeValue(index)" class="center my-auto pl-2">
+          <b-col v-if="removable" cols="1" @click="removeValue(index)" class="text-center my-auto pl-3">
             <font-awesome-icon :icon="['fas', 'times']"
                               class="pointer text-secondary" />
           </b-col>
         </b-row>
       </div>
     </draggable>
-    <b-row v-if="!singleInput" no-gutters >
-      <b-col cols="1" @click="val.push('')"  class="center my-auto pr-2 plus text-secondary">
+    <b-row v-if="!singleInput" no-gutters class="mt-2" >
+      <b-col cols="1" @click="val.push('')" class="text-center my-auto pr-3 h5 text-secondary pointer">
         +
       </b-col>
       <b-col cols="5">
@@ -83,21 +83,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.center {
-  width: 100%;
-  text-align: center;
-}
-
 .handle {
   cursor: grab;
 }
 
 .pointer {
-  cursor: pointer;
-}
-
-.plus {
-  font-size: 15px;
   cursor: pointer;
 }
 </style>
