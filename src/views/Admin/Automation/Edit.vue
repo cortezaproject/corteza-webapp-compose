@@ -72,8 +72,9 @@
                     <vue-select :options="modules"
                                 :reduce="m => m.moduleID"
                                 label="name"
+                                :key="testModuleID"
                                 :placeholder="$t('automation.testing.modulePickerPlaceholder')"
-                                v-model="testModuleID">??</vue-select>
+                                v-model="testModuleID"></vue-select>
                   </b-col>
                   <b-col cols="6">
                     <b-button-group>
@@ -173,6 +174,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { VueSelect } from 'vue-select'
 import Module from 'corteza-webapp-common/src/lib/types/compose/module'
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
+import execInUA from 'corteza-webapp-common/src/lib/automation-scripts/exec-in-ua'
 import AutomationTrigger from 'corteza-webapp-common/src/lib/types/shared/automation-trigger'
 import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
@@ -243,6 +245,15 @@ export default {
     this.findScriptByID({ namespaceID, scriptID: this.scriptID }).then((s) => {
       this.script = s
       return this.loadTriggers()
+    }).then(() => {
+      // Make script writer's life easeier
+      // and preselect module from first valid trigger
+      for (let { enabled = true, condition } of this.triggers) {
+        if (enabled && condition !== '0') {
+          this.testModuleID = condition
+          break
+        }
+      }
     }).catch(this.defaultErrorHandler(this.$t('notification.automation.loadFailed')))
   },
 
@@ -346,18 +357,21 @@ export default {
     },
 
     onClickRunTestInBrowser () {
-      const payload = {
+      const ctx = {
         namespace: this.namespace,
         module: this.testModuleID ? new Module(this.getModuleByID(this.testModuleID)) : undefined,
         ...this.parseTestPayload(),
       }
 
       // We must convert the record struct from payload to something usable:
-      if (payload.module && payload.record) {
-        payload.record = new Record(payload.module, payload.record)
+      if (ctx.module && ctx.record) {
+        ctx.record = new Record(ctx.module, ctx.record)
       }
 
-      this.execScriptCode(this.script.source, payload).then(rval => {
+      // Override stuff that might hurt our testing/dev environment:
+      ctx.routePusher = (params) => { console.log('routePusher', params) }
+
+      execInUA(this.script.source, ctx).then(rval => {
         this.testResponseErr = null
 
         if (rval instanceof Record) {
@@ -366,7 +380,7 @@ export default {
               ...rval,
               module: undefined,
               values: rval.serializeValues(),
-            }
+            },
           }
         }
 

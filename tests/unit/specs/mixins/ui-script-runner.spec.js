@@ -23,15 +23,12 @@ describe('mixins/ui-script-runner.js', () => {
     // we can just fake them as any other method
     mixin.getMatchingUAScripts = sinon.fake()
     mixin.modules = sinon.fake()
-    mixin.pages = sinon.fake()
     mixin.$ComposeAPI = {
       recordCreate: sinon.fake(),
       recordUpdate: sinon.fake(),
       recordDelete: sinon.fake(),
     }
   })
-
-  const execScriptCode = async (code, ctx) => mixin.execScriptCode(code, ctx)
 
   afterEach(() => {
     sinon.restore()
@@ -44,101 +41,6 @@ describe('mixins/ui-script-runner.js', () => {
       await mixin.runScriptsByEvent('EVENT', '42')
 
       sinon.assert.calledWith(mixin.getMatchingUAScripts, 'EVENT', '42')
-    })
-  })
-
-  describe('results caster', () => {
-    it('should return false when rval is false', () => {
-      expect(mixin.castResult(false)).to.be.false
-    })
-
-    it('should return promise when result is a promise', () => {
-      expect(mixin.castResult(new Promise(() => 'resolved :)'))).to.be.instanceof(Promise)
-    })
-
-    it('should cast to Record', () => {
-      expect(mixin.castResult(new Record(M))).to.be.instanceof(Record)
-    })
-
-    it('should cast to Module', () => {
-      expect(mixin.castResult(M)).to.be.instanceof(Module)
-    })
-
-    it('should return $record from context when not false', () => {
-      const R = new Record(M)
-      expect(mixin.castResult(true, { record: R })).to.equal(R)
-    })
-  })
-
-  describe('simple script runner operations', () => {
-    // we need to keep UA & corredor scripts as compatible as possible
-    // keep in sync with Corredor executor test!
-
-    const ctx = { record: new Record(new Module()) }
-
-    it('void/undefined return', async () => {
-      expect(await execScriptCode('return')).is.undefined
-    })
-
-    it('falsy return', async () => {
-      expect(await execScriptCode('return false')).is.false
-    })
-
-    it('true w/o context', async () => {
-      expect(await execScriptCode('return true')).is.undefined
-    })
-
-    it('void w/ context', async () => {
-      expect(await execScriptCode('', ctx)).is.instanceof(Record)
-    })
-
-    it('true w/ context', async () => {
-      expect(await execScriptCode('return true', ctx)).is.instanceof(Record)
-    })
-
-    it('rejection with returned promise', () => {
-      expect(execScriptCode(`return new Promise((resolve,reject) => { reject('niet')})`)).to.be.rejectedWith('niet')
-    })
-
-    it.skip('rejection w/o returned promise', () => {
-      // @todo skip for now, raises UnhandledPromiseRejectionWarning:
-      expect(execScriptCode(`new Promise((resolve,reject) => { reject('niet')})`)).to.be.rejectedWith('niet')
-    })
-
-    it('throw', () => {
-      expect(execScriptCode(`throw Error('simple')`)).to.be.rejectedWith(Error, 'simple')
-    })
-  })
-
-  describe('access to helper functions', () => {
-    it('should call recordRead when FindRecordByID is used (explicit module)', async () => {
-      mixin.$ComposeAPI.recordRead = sinon.fake.resolves(new Record(M, { recordID: '555' }))
-
-      let result = await execScriptCode(`return FindRecordByID('123', new Module({ moduleID: '321', namespaceID: '99' }))`)
-
-      sinon.assert.calledWith(mixin.$ComposeAPI.recordRead, {
-        recordID: '123',
-        moduleID: '321',
-        namespaceID: '99',
-      })
-
-      expect(result).instanceOf(Record)
-    })
-
-    it('should call recordRead when FindRecordByID is used (using $module)', async () => {
-      mixin.$ComposeAPI.recordRead = sinon.fake.resolves(new Record(M, { recordID: '555' }))
-
-      let result = await execScriptCode(`return FindRecordByID('123')`, {
-        module: new Module({ moduleID: '321', namespaceID: '99' }),
-      })
-
-      sinon.assert.calledWith(mixin.$ComposeAPI.recordRead, {
-        recordID: '123',
-        moduleID: '321',
-        namespaceID: '99',
-      })
-
-      expect(result).instanceOf(Record)
     })
   })
 
@@ -184,7 +86,7 @@ describe('mixins/ui-script-runner.js', () => {
         expect(mixin.getMatchingUAScripts.getCall(1).args[1]).to.equal(M.moduleID)
       })
 
-      it('script before* event should be able to modify the record ' + tc.event.toLocaleLowerCase(), async () => {
+      it('only script before* event should be able to modify the record that is sent to the API', async () => {
         const R = new Record(M, { recordID: '66', ownedBy: '*' })
         expect(R.ownedBy).is.equal('*')
 
@@ -204,24 +106,31 @@ describe('mixins/ui-script-runner.js', () => {
 
         // Run the chain
         if (tc.expectRecord) {
+          // Handling create & update tests, API returns the record
           mixin.$ComposeAPI['record' + tc.event] = sinon.fake(async (record) => Promise.resolve(record))
+
           let result = await mixin[tc.event.toLocaleLowerCase() + 'Record']({}, M, R)
+
           expect(result).is.instanceOf(Record)
           expect(result.ownedBy).is.equal('*before*after*')
         } else {
+          // Handling delete test, API does not return the record
           mixin.$ComposeAPI['record' + tc.event] = sinon.fake.resolves(null)
-          expect(await mixin[tc.event.toLocaleLowerCase() + 'Record']({}, M, R)).is.null
+
+          let result = await mixin[tc.event.toLocaleLowerCase() + 'Record']({}, M, R)
+
+          expect(result).is.null
         }
+
+        // Original value should be kept intact
+        expect(R.ownedBy).is.equal('*')
 
         // Record, sent to the API should only have *before* value
         let [argRecord] = mixin.$ComposeAPI['record' + tc.event].args[0]
         expect(argRecord.ownedBy).is.equal('*before*')
-
-        // Original value should be kept intact
-        expect(R.ownedBy).is.equal('*')
       })
 
-      it('sync scripts w/ before triggers should prevent execution of main task', async () => {
+      it('sync scripts w/ before triggers should prevent record sending to the API', async () => {
         const R = new Record(M, { recordID: '66' })
 
         mixin.getMatchingUAScripts = (event) => {
