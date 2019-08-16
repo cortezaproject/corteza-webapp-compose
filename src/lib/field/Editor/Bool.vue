@@ -1,10 +1,6 @@
 <template>
   <b-form-group>
-    <b-form-checkbox
-        :value="true"
-        :unchecked-value="false"
-        v-model="value"
-        plain>
+    <b-form-checkbox v-model="value">
       {{ field.label || field.name }}
     </b-form-checkbox>
 

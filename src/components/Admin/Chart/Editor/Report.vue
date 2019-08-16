@@ -25,7 +25,7 @@
               <option :value="null">{{ $t('chart.edit.filter.noFilter') }}</option>
             </template>
           </b-form-select>
-          <b-form-checkbox plain v-model="customFilter">{{ $t('chart.edit.filter.customize') }}</b-form-checkbox>
+          <b-form-checkbox v-model="customFilter">{{ $t('chart.edit.filter.customize') }}</b-form-checkbox>
           <b-form-textarea v-if="customFilter"
                            v-model="report.filter"
                            placeholder="a = 1 AND b > 2"></b-form-textarea>
@@ -58,13 +58,13 @@
             </b-form-select>
           </b-form-group>
           <b-form-group horizontal :label-cols="2" breakpoint="md">
-            <b-form-checkbox plain v-model="d.skipMissing">{{ $t('chart.edit.dimension.skipMissingValues') }}</b-form-checkbox>
+            <b-form-checkbox v-model="d.skipMissing">{{ $t('chart.edit.dimension.skipMissingValues') }}</b-form-checkbox>
           </b-form-group>
           <b-form-group v-if="!d.skipMissing" horizontal :label-cols="2" breakpoint="md" :label="$t('chart.edit.dimension.defaultValueLabel')" :description="$t('chart.edit.dimension.defaultValueFootnote')">
             <b-form-input v-model="d.default" :type="defaultValueInputType(d)"></b-form-input>
           </b-form-group>
           <b-form-group horizontal :label-cols="2" breakpoint="md" label="">
-            <b-form-checkbox plain v-model="d.autoSkip" :value="true" :unchecked-value="false">{{ $t('chart.edit.dimension.calculateLabelCount') }}</b-form-checkbox><br />
+            <b-form-checkbox v-model="d.autoSkip" :value="true" :unchecked-value="false">{{ $t('chart.edit.dimension.calculateLabelCount') }}</b-form-checkbox><br />
           </b-form-group>
 
           <!--<b-form-group horizontal v-if="d.field && isTemporalField(d.field)">-->
@@ -115,20 +115,20 @@
             </b-form-select>
           </b-form-group>
           <b-form-group horizontal :label-cols="2" breakpoint="md" label="">
-            <b-form-checkbox plain
+            <b-form-checkbox
                              v-model="m.axisType"
                              value="logarithmic"
                              unchecked-value="linear">{{ $t('chart.edit.metric.logarithmicScale') }}</b-form-checkbox>
-            <b-form-checkbox plain
+            <b-form-checkbox
                              v-model="m.axisPosition"
                              value="right"
                              unchecked-value="left">{{ $t('chart.edit.metric.axisOnRight') }}</b-form-checkbox>
-            <b-form-checkbox plain
+            <b-form-checkbox
                              v-model="m.beginAtZero"
                              :value="true"
                              :unchecked-value="false"
                              checked>{{ $t('chart.edit.metric.axisScaleFromZero') }}</b-form-checkbox>
-            <b-form-checkbox plain v-model="m.fill"
+            <b-form-checkbox v-model="m.fill"
                              :value="true" :unchecked-value="false"
                              v-show="m.type === 'line'">{{ $t('chart.edit.metric.fillArea') }}</b-form-checkbox>
           </b-form-group>

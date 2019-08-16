@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div><b-form-checkbox plain v-model="f.options.outputPlain">{{ $t('field.kind.email.preventToLink') }}</b-form-checkbox></div>
+    <div><b-form-checkbox v-model="f.options.outputPlain">{{ $t('field.kind.email.preventToLink') }}</b-form-checkbox></div>
   </div>
 </template>
 

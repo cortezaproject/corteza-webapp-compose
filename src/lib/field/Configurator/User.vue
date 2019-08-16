@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-form-group>
-      <b-form-checkbox plain v-model="f.options.presetWithAuthenticated">
+      <b-form-checkbox v-model="f.options.presetWithAuthenticated">
         {{ $t('field.kind.user.presetWithCurrentUser') }}
       </b-form-checkbox>
     </b-form-group>

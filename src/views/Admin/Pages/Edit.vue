@@ -20,7 +20,7 @@
                                :placeholder="$t('page.edit.pageDescription')"
                                class="mb-2"
                                rows="8"></b-form-textarea>
-              <b-form-checkbox plain
+              <b-form-checkbox
                                v-model="page.visible"
                                id="visible">
                                {{ $t('page.edit.visible') }}?</b-form-checkbox>

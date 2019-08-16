@@ -12,10 +12,9 @@
                             :placeholder="$t('trigger.edit.namePlaceholder')"></b-form-input>
             </b-form-group>
             <b-form-group horizontal>
-              <b-form-checkbox v-model="trigger.enabled"
-                               :value="true"
-                               plain
-                               :unchecked-value="false">{{ $t('trigger.edit.enabled') }}</b-form-checkbox>
+              <b-form-checkbox v-model="trigger.enabled">
+                {{ $t('trigger.edit.enabled') }}
+              </b-form-checkbox>
             </b-form-group>
             <b-form-group horizontal
                           :label="$t('trigger.edit.primaryModule.label')">
@@ -56,7 +55,7 @@
             </b-form-group>
             <b-form-group horizontal
                           :label="$t('trigger.triggerCondition.label')">
-              <b-form-checkbox-group plain v-model="trigger.actions" stacked>
+              <b-form-checkbox-group v-model="trigger.actions" stacked>
                 <b-form-checkbox value="manual">{{ $t('trigger.triggerCondition.manual') }}</b-form-checkbox>
                 <b-form-checkbox value="beforeCreate">{{ $t('trigger.triggerCondition.beforeCreate') }}</b-form-checkbox>
                 <b-form-checkbox value="afterCreate">{{ $t('trigger.triggerCondition.afterCreate') }}</b-form-checkbox>

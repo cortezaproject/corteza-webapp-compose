@@ -21,11 +21,7 @@
     <field-selector v-if="recordListModule" :module="recordListModule" :fields.sync="o.fields" />
 
     <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.newLabel')">
-        <b-form-checkbox :value="true"
-                         :unchecked-value="false"
-                         plain
-                         v-model="o.hideAddButton">
-
+        <b-form-checkbox v-model="o.hideAddButton">
           {{ $t('block.recordList.record.hideAddButton') }}
         </b-form-checkbox>
     </b-form-group>
@@ -40,10 +36,9 @@
             <code>${userID}</code>
           </i18next>
         </b-form-text>
-      <b-form-checkbox :value="true"
-                       :unchecked-value="false"
-                       plain
-                       v-model="o.hideSearch">{{ $t('block.recordList.record.prefilterHideSearch') }}</b-form-checkbox>
+      <b-form-checkbox v-model="o.hideSearch">
+        {{ $t('block.recordList.record.prefilterHideSearch') }}
+      </b-form-checkbox>
     </b-form-group>
     <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.presortLabel')">
       <b-form-textarea :value="true"
@@ -52,17 +47,15 @@
       <b-form-text>
         {{ $t('block.recordList.record.presortFootnote') }}
       </b-form-text>
-      <b-form-checkbox :value="true"
-                       :unchecked-value="false"
-                       plain
-                       v-model="o.hideSorting">{{ $t('block.recordList.record.presortHideSort') }}</b-form-checkbox>
+      <b-form-checkbox v-model="o.hideSorting">
+        {{ $t('block.recordList.record.presortHideSort') }}
+      </b-form-checkbox>
     </b-form-group>
     <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.perPage')">
       <b-form-input type="number" v-model.number="o.perPage"></b-form-input>
-      <b-form-checkbox :value="true"
-                       :unchecked-value="false"
-                       plain
-                       v-model="o.hidePaging">{{ $t('block.recordList.record.hidePaging') }}</b-form-checkbox>
+      <b-form-checkbox v-model="o.hidePaging">
+        {{ $t('block.recordList.record.hidePaging') }}
+      </b-form-checkbox>
     </b-form-group>
   </div>
 </template>

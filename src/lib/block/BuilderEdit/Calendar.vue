@@ -3,21 +3,21 @@
 
     <b-form-group horizontal
                   :label="$t('block.calendar.calendarHeader')">
-      <b-form-checkbox plain
+      <b-form-checkbox
                        v-model="o.header.hide"
                        :value="true"
                        :unchecked-value="false">{{ $t('block.calendar.hideHeader') }}</b-form-checkbox>
-      <b-form-checkbox plain
+      <b-form-checkbox
                        v-model="o.header.hidePrevNext"
                        :disabled="o.header.hide"
                        value="true"
                        :unchecked-value="false">{{ $t('block.calendar.hideNavigation') }}</b-form-checkbox>
-      <b-form-checkbox plain
+      <b-form-checkbox
                        v-model="o.header.hideToday"
                        :disabled="o.header.hide"
                        :value="true"
                        :unchecked-value="false">{{ $t('block.calendar.hideToday') }}</b-form-checkbox>
-      <b-form-checkbox plain
+      <b-form-checkbox
                        v-model="o.header.hideTitle"
                        :disabled="o.header.hide"
                        :value="true"
@@ -89,7 +89,7 @@
           </b-form-select>
         </b-input-group>
 
-        <b-form-checkbox plain v-model="feed.allDay" :value="true" :unchecked-value="false">{{ $t('block.calendar.eventAllDay') }}</b-form-checkbox><br />
+        <b-form-checkbox v-model="feed.allDay" :value="true" :unchecked-value="false">{{ $t('block.calendar.eventAllDay') }}</b-form-checkbox><br />
       </b-form-group>
     </div>
     <b-button @click.prevent="handleAddButton" class="btn btn-url">{{ $t('block.calendar.addEventsSource') }}</b-button>
