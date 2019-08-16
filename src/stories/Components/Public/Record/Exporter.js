@@ -2,7 +2,7 @@ import { storiesOf } from '@storybook/vue'
 import Module from 'corteza-webapp-compose/src/lib/module'
 import Exporter from 'corteza-webapp-compose/src/components/Public/Record/Exporter'
 import i18n from 'corteza-webapp-compose/src/i18n'
-import { withKnobs, object, select, text, number } from '@storybook/addon-knobs'
+import { withKnobs, object, select, text, number, boolean } from '@storybook/addon-knobs'
 
 let fields = [
   {
@@ -39,6 +39,8 @@ let props = {
       name: 'FirstName',
     },
   ],
+  allowJSON: true,
+  allowCSV: true,
   recordCount: 43,
 
   selectionType: 'all',
@@ -97,6 +99,12 @@ exporter.add('Exporter', () => ({
   },
 
   props: {
+    allowJSON: {
+      default: boolean('Allow JSON export', props.allowJSON),
+    },
+    allowCSV: {
+      default: boolean('Allow CSV export', props.allowCSV),
+    },
     recordCount: {
       default: number('Record count', props.recordCount),
     },
@@ -123,6 +131,8 @@ exporter.add('Exporter', () => ({
   template: `<exporter 
               :module="module"
               :preselectedFields="preselectedFields"
+              :allowJSON="allowJSON"
+              :allowCSV="allowCSV"
               :recordCount="recordCount"
               :selectionType="selectionType"
               :filterRangeBy="filterRangeBy"

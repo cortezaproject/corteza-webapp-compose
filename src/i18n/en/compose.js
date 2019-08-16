@@ -133,6 +133,7 @@ export default {
         moduleNotSelected: 'Block with table of records, module not selected.',
       },
       export: {
+        allow: 'Allow records export',
         selectFields: 'Select fields you want to export:',
         limitations: 'CSV export limitation: only the first value in the multi value fields will be exported',
         rangeBy: 'Set range by:',

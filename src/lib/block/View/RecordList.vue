@@ -11,6 +11,11 @@
            v-model="query"
            class="float-right mw-100 mb-1"
            :placeholder="$t('general.label.search')" />
+    <exporter-modal
+      v-if="options.allowExport"
+      :module="recordListModule"
+      :records="records"
+      class="float-right mt-1" />
     <div class="table-responsive">
       <table class="table sticky-header table-hover" :class="{sortable: !options.hideSorting}">
         <thead v-if="!options.hideHeader" class="border-bottom">
@@ -61,6 +66,7 @@
 import { mapGetters } from 'vuex'
 import base from './base'
 import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
+import ExporterModal from 'corteza-webapp-compose/src/components/Public/Record/ExporterModal'
 import Pagination from 'vue-pagination-2'
 import _ from 'lodash'
 import Record from 'corteza-webapp-compose/src/lib/record'
@@ -69,12 +75,14 @@ export default {
   components: {
     Pagination,
     FieldViewer,
+    ExporterModal,
   },
 
   extends: base,
 
   data () {
     return {
+      showExportModal: false,
       prefilter: null,
       sortColumn: '',
       query: null,

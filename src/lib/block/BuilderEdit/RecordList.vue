@@ -57,6 +57,11 @@
         {{ $t('block.recordList.record.hidePaging') }}
       </b-form-checkbox>
     </b-form-group>
+    <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('general.label.export')" class="mt-4">
+      <b-form-checkbox v-model="o.allowExport" class="mt-2">
+        {{ $t('block.recordList.export.allow') }}
+      </b-form-checkbox>
+    </b-form-group>
   </div>
 </template>
 <script>

@@ -43,24 +43,28 @@
       </b-row>
     </b-container>
     <div slot="footer" class="d-flex">
-      <span class="mr-auto my-auto">{{ $t('block.recordList.export.recordCount', { count: recordCount}) }}</span>
-      <b-button
-        v-if="allowJSON"
-        :disabled="fields.length === 0"
-        @click="$emit('exportJSON', { ...fields, ...filter })"
-        variant="dark"
-        class="mr-2">
+      <span v-if="!!recordCount" class="my-auto">
+        {{ $t('block.recordList.export.recordCount', { count: recordCount}) }}
+      </span>
+      <span class="ml-auto">
+        <b-button
+          v-if="allowJSON"
+          :disabled="fields.length === 0 && !!recordCount"
+          @click="$emit('exportJSON', { ...fields, ...filter })"
+          variant="dark"
+          class="mr-2">
 
-        {{ $t('block.recordList.export.json') }}
-      </b-button>
-      <b-button
-        v-if="allowCSV"
-        :disabled="fields.length === 0"
-        @click="$emit('exportCSV', { ...fields, ...filter })"
-        variant="dark">
+          {{ $t('block.recordList.export.json') }}
+        </b-button>
+        <b-button
+          v-if="allowCSV"
+          :disabled="fields.length === 0 && !!recordCount"
+          @click="$emit('exportCSV', { ...fields, ...filter })"
+          variant="dark">
 
-        {{ $t('block.recordList.export.csv') }}
-      </b-button>
+          {{ $t('block.recordList.export.csv') }}
+        </b-button>
+      </span>
     </div>
   </b-card>
 </template>
@@ -95,7 +99,7 @@ export default {
     },
     recordCount: {
       type: Number,
-      required: true,
+      default: 0,
     },
     selectionType: {
       type: String,
