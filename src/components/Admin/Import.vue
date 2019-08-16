@@ -1,49 +1,45 @@
 <template>
   <b-form ref="importForm" @submit.prevent class="import-form">
     <b-form-group :label="$t(`${type}.import`)">
-      <b-form-file>
-        <input @change="loadFile" type="file"/>
-          <b-input-group-append>
-            <b-button
-              v-if="importObj && !processing"
-              variant="dark"
-              @click="openModal">{{ $t('general.label.import') }}</b-button>
-            <b-button
-              v-if="importObj && processing"
-              variant="dark"
-              @click="cancelImport">{{ $t('general.label.cancel') }}</b-button>
-          </b-input-group-append>
-        <h5 v-if="processing" class="ml-2 mt-1 mb-0">
+      <b-input-group>
+        <b-form-file @change="loadFile" />
+        <b-button v-if="importObj && !processing" variant="dark" @click="openModal">
+          {{ $t('general.label.import') }}
+        </b-button>
+        <b-button v-if="importObj && processing" variant="dark" @click="cancelImport">
+          {{ $t('general.label.cancel') }}
+        </b-button>
+        <h6 v-if="processing" class="my-auto ml-3 ">
           {{ $t('general.label.processing') }}
-        </h5>
-      </b-form-file>
+        </h6>
+      </b-input-group>
     </b-form-group>
-    <b-modal v-if="importObj" size="lg" v-model="show" id="importModal">
-      <div slot="modal-title">
-        <div>
-          <h5>{{ $t(`${type}.import`) }}</h5>
-          <b-button
-              variant="secondary"
-              pill
-              @click="selectAll(true)">{{ $t('field.selector.selectAll') }}</b-button>
-          <b-button
-              class="ml-2"
-              variant="secondary"
-              pill
-              @click="selectAll(false)">{{ $t('field.selector.unselectAll') }}</b-button>
-        </div>
-      </div>
-      <div v-for="(o, index) in importObj.list" :key="`${o.name || o.title}-${index}`" class="form-check">
-        <label class="form-check-label" :for="`${o.name || o.title}-${index}`">
-          <input type="checkbox" :true-value="true" :false-value="false" class="form-check-input"  v-model="o.import" :id="`${o.name || o.title}-${index}`">
-          {{ o.name || o.title }}
-        </label>
-      </div>
+    <b-modal v-if="importObj" size="lg" v-model="show" id="importModal" :title="$t(`${type}.import`)">
+      <b-container class="p-0">
+        <b-row no-gutters class="mb-3">
+          <b-button variant="secondary" @click="selectAll(true)">
+            {{ $t('field.selector.selectAll') }}
+          </b-button>
+          <b-button class="ml-2" variant="secondary" @click="selectAll(false)">
+            {{ $t('field.selector.unselectAll') }}
+          </b-button>
+        </b-row>
+        <b-row no-gutters>
+          <b-col cols="3" v-for="(o, index) in importObj.list" :key="index" class="form-check">
+              <b-form-checkbox v-model="o.import">
+                {{ o.name || o.title }}
+              </b-form-checkbox>
+          </b-col>
+        </b-row>
+      </b-container>
       <div slot="modal-footer">
         <b-button
             :disabled="!importObj.list.filter(i => i.import).length > 0"
             variant="primary"
-            @click="jsonImport(importObj)">{{ $t('general.label.import') }}</b-button>
+            @click="jsonImport(importObj)">
+
+            {{ $t('general.label.import') }}
+        </b-button>
       </div>
     </b-modal>
   </b-form>
