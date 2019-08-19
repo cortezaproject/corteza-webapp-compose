@@ -1,6 +1,24 @@
 import * as kinds from './loader'
 import i18next from 'i18next'
 
+const stdEmptyCheck = (value) => {
+  if (Array.isArray(value)) {
+    if (!value.length) {
+      return true
+    }
+    return value.reduce((acc, v) => {
+      if (typeof v === 'string') {
+        return acc || !v
+      }
+      return acc || (v === undefined)
+    }, false)
+  }
+  if (typeof value === 'string') {
+    return !value
+  }
+  return value === undefined
+}
+
 export default class Field {
   constructor (def = {}) {
     this.merge(def)
@@ -71,7 +89,7 @@ export default class Field {
   //
   // Returns an array of Error objects
   validate (value) {
-    if (this.isRequired && (this.options.isEmpty ? this.options.isEmpty(value) : !value)) {
+    if (this.isRequired && (this.options.isEmpty ? this.options.isEmpty(value) : stdEmptyCheck(value))) {
       return [i18next.t('notification.field.missingRequired')]
     }
 
