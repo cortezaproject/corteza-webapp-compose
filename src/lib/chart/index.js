@@ -110,13 +110,15 @@ export const predefinedFilters = [
     text: `recordsCreatedLastMonth` },
 ]
 
+export { default as ChartComponent } from './Component'
+
 dimensionFunctions.lookup = (d) => dimensionFunctions.find(f => d.modifier === f.value)
 dimensionFunctions.convert = (d) => (dimensionFunctions.lookup(d) || {}).convert(d.field)
 
 // Makes a standarised alias from modifier or dimension report option
 const makeAlias = ({ alias, aggregate, modifier, field }) => alias || `${aggregate || modifier || 'none'}_${field}`
 
-export default class Chart {
+export class Chart {
   constructor (def = {}) {
     this.merge(def)
   }
@@ -151,30 +153,54 @@ export default class Chart {
 
   // Static validation of reports (metrics, dimensions, fields set)
   isValid () {
-    const stdListCheck = (list) => list.length > 0 && list.every(i => !!i)
-    const dimCheck = ({ field }) => !!field
-    const mtrCheck = ({ field, aggregate }) => (!!field && (field === 'count' || !!aggregate))
+    const dimCheck = ({ field, modifier }) => {
+      if (!field) {
+        throw new Error(i18next.t('notification.chart.invalidConfig.missingDimensionsField'))
+      }
+      if (!modifier) {
+        throw new Error(i18next.t('notification.chart.invalidConfig.missingDimensionsModifier'))
+      }
+    }
 
-    return stdListCheck(this.config.reports.map(({ moduleID, dimensions, metrics }) => {
+    const mtrCheck = ({ field, aggregate, type }) => {
+      if (!field) {
+        throw new Error(i18next.t('notification.chart.invalidConfig.missingMetricsField'))
+      }
+      if (field !== 'count' && !aggregate) {
+        throw new Error(i18next.t('notification.chart.invalidConfig.missingMetricsAggregate'))
+      }
+      if (!type) {
+        throw new Error(i18next.t('notification.chart.invalidConfig.missingMetricsType'))
+      }
+    }
+
+    if (!this.config.reports || !this.config.reports.length) {
+      throw new Error(i18next.t('notification.chart.invalidConfig.missingReports'))
+    }
+    this.config.reports.map(({ moduleID, dimensions, metrics }) => {
       if (!moduleID) {
-        console.debug('Invalid chart config: moduleID not set')
-        return false
+        throw new Error(i18next.t('notification.chart.invalidConfig.missingModuleID'))
       }
 
       // Expecting all dimensions to have defined fields
-      if (!stdListCheck(dimensions.map(dimCheck))) {
-        console.debug('Invalid chart config: no dimensions')
-        return false
-      }
+      dimensions.forEach(dimCheck)
 
       // Expecting all metrics to have defined fields
-      if (!stdListCheck(metrics.map(mtrCheck))) {
-        console.debug('Invalid chart config: no metrics')
-        return false
-      }
+      metrics.forEach(mtrCheck)
+    })
 
-      return true
-    }))
+    return true
+  }
+
+  prepData ({ labels, metrics } = {}, base = {}) {
+    if (labels) {
+      base.labels = labels
+    }
+
+    metrics.forEach((metric, index) => {
+      const ds = base.datasets[index]
+      ds.data = metric
+    })
   }
 
   // Builds renderer (only ChartJS supported) options
@@ -187,6 +213,7 @@ export default class Chart {
     }
 
     let datasets = []
+    let baseType
 
     this.config.reports.forEach(r => {
       if (!options.scales) options.scales = { xAxes: [], yAxes: [] }
@@ -233,8 +260,11 @@ export default class Chart {
         }
       })
 
-      datasets.push(...r.metrics.map(({ field, fill, aggregate, label, type, backgroundColor, fixTooltips }) => {
+      datasets.push(...r.metrics.map(({ field, fill, aggregate, label, type, backgroundColor, fixTooltips, ...rr }) => {
         const alias = makeAlias({ field, aggregate })
+        if (baseType === undefined) {
+          baseType = type
+        }
 
         if (typeof backgroundColor === 'string') {
           const c = backgroundColor
@@ -284,7 +314,7 @@ export default class Chart {
       }))
     })
 
-    return { type: 'bar', options, plugins: Array.from(plugins), data: { datasets } }
+    return { type: baseType, options, plugins: Array.from(plugins), data: { datasets } }
   }
 
   async fetchReports ({ reporter }) {
@@ -390,3 +420,5 @@ export default class Chart {
     return copy
   }
 }
+
+export default Chart

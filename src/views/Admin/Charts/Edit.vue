@@ -17,11 +17,26 @@
                 </b-col>
 
                 <b-col md="6">
-                  <b-button @click.prevent="render"
-                            :disabled="!chart.isValid()"
+                  <b-button v-if="!error"
+                            @click.prevent="update"
+                            :disabled="processing"
                             class="float-right"
                             variant="outline-primary">{{ $t('chart.edit.loadData') }}</b-button>
-                  <canvas ref="chart" width="200" height="200"></canvas>
+                  <b-alert :show="error"
+                           variant="warning">
+
+                    {{ error }}
+                  </b-alert>
+
+                  <chart-component v-if="chart"
+                                   :chart="chart"
+                                   :reporter="reporter"
+                                   ref="chart"
+                                   width="200"
+                                   height="200"
+                                   @error="error=$event"
+                                   @updated="onUpdated" />
+
                   <!-- not supporting multiple reports for now
 <b-button @click.prevent="chart.config.reports.push(defaultReport)"
           v-if="false"
@@ -47,11 +62,10 @@ import { mapGetters, mapActions } from 'vuex'
 import draggable from 'vuedraggable'
 import Report from 'corteza-webapp-compose/src/components/Admin/Chart/Editor/Report'
 import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
-import Chart from 'corteza-webapp-compose/src/lib/chart.js'
-import ChartJS from 'chart.js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Namespace from 'corteza-webapp-compose/src/lib/namespace'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
+import { Chart, ChartComponent } from 'corteza-webapp-compose/src/lib/chart'
 
 const defaultReport = {
   moduleID: undefined,
@@ -66,6 +80,7 @@ export default {
     draggable,
     EditorToolbar,
     Export,
+    ChartComponent,
   },
 
   props: {
@@ -83,7 +98,8 @@ export default {
   data () {
     return {
       chart: new Chart(),
-      chartRenderer: null,
+      error: null,
+      processing: false,
     }
   },
 
@@ -94,15 +110,6 @@ export default {
 
     defaultReport () {
       return Object.assign({}, defaultReport)
-    },
-  },
-
-  watch: {
-    'chart.config': {
-      deep: true,
-      handler: function () {
-        this.updateRenderer()
-      },
     },
   },
 
@@ -120,69 +127,17 @@ export default {
       deleteChart: 'chart/delete',
     }),
 
-    async render () {
-      const { namespaceID } = this.namespace
-      this.updateRenderer({ forceFetch: true })
-
-      // Update chart data
-      this.chart.fetchReports({ reporter: (r) => this.$ComposeAPI.recordReport({ namespaceID, ...r }) }).then(({ labels, metrics }) => {
-        if (labels) {
-          this.chartRenderer.data.labels = labels
-        }
-
-        metrics.forEach((metric, index) => {
-          this.chartRenderer.data.datasets[index].data = metric
-        })
-
-        this.chartRenderer.update()
-      })
+    reporter (r) {
+      return this.$ComposeAPI.recordReport({ namespaceID: this.namespace.namespaceID, ...r })
     },
 
-    updateRenderer ({ forceFetch = false } = {}) {
-      if (!this.chart.isValid()) {
-        return
-      }
+    update () {
+      this.processing = true
+      this.$refs.chart.updateChart()
+    },
 
-      const opt = this.chart.buildOptions()
-
-      if (!opt) {
-        this.raiseWarningAlert(this.$t('notification.chart.optionsBuildFailed'))
-      }
-
-      let refetch = !this.chartRenderer || forceFetch
-
-      if (this.chartRenderer) {
-        // Verify if we need to reinitialize chart renderer
-        if (this.chartRenderer.data.datasets.length !== opt.data.datasets.length) {
-          this.chartRenderer = undefined
-        }
-      }
-
-      if (!this.chartRenderer) {
-        refetch = true
-        this.chartRenderer = new ChartJS(this.$refs.chart.getContext('2d'), opt)
-      } else {
-        this.chartRenderer.options = opt.options
-        opt.data.datasets.forEach((dataset, index) => {
-          Object.assign(this.chartRenderer.data.datasets[index], dataset)
-        })
-      }
-
-      if (refetch) {
-        const { namespaceID } = this.namespace
-        // Update chart data
-        this.chart.fetchReports({ reporter: (r) => this.$ComposeAPI.recordReport({ namespaceID, ...r }) }).then(({ labels, metrics }) => {
-          if (labels) {
-            this.chartRenderer.data.labels = labels
-          }
-
-          metrics.forEach((metric, index) => {
-            this.chartRenderer.data.datasets[index].data = metric
-          })
-        })
-      }
-
-      this.chartRenderer.update()
+    onUpdated () {
+      this.processing = false
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {
