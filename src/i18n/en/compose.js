@@ -767,6 +767,15 @@ export default {
       unsupportedRenderer: 'Unsupported renderer: {{version}}',
       saved: 'Chart saved',
       deleted: 'Chart deleted',
+      invalidConfig: {
+        missingDimensionsField: 'Dimensions field not defined',
+        missingDimensionsModifier: 'Dimensions modifier not defined',
+        missingMetricsField: 'Metrics field not defined',
+        missingMetricsAggregate: 'Metrics aggregate not defined',
+        missingMetricsType: 'Metrics chart type not defined',
+        missingReports: 'Reports not defined',
+        missingModuleID: 'Module not defined',
+      },
     },
     record: {
       listLoadFailed: 'Could not load record list',
