@@ -100,7 +100,7 @@ export default {
           tm = tm.format('YYYY-MM-DD HH:mm')
         }
         if (index !== undefined) {
-          this.value[index] = tm
+          this.value = Object.assign([], this.value, { [index]: tm })
         } else {
           this.value = tm
         }
@@ -157,7 +157,7 @@ export default {
         }
 
         if (index !== undefined) {
-          this.value[index] = dm
+          this.value = Object.assign([], this.value, { [index]: dm })
         } else {
           this.value = dm
         }

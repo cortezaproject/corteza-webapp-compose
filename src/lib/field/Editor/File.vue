@@ -7,6 +7,10 @@
                  enable-delete
                  enable-order
                  mode="list"></list-loader>
+
+    <b-form-text v-if="validate && errors">
+      <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
+    </b-form-text>
   </b-form-group>
 </template>
 <script>
