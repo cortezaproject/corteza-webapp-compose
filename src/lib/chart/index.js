@@ -3,6 +3,7 @@ import moment from 'moment'
 import i18next from 'i18next'
 import ChartJs from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
+import { toRGBA, rgbaRegex } from 'corteza-webapp-compose/src/common/scripts'
 
 // plugin is registered globally by default
 // will change with https://github.com/chartjs/chartjs-plugin-datalabels/issues/42
@@ -31,6 +32,12 @@ export const chartTypes = [
   },
   { text: 'bar',
     value: 'bar',
+  },
+  { text: 'pie',
+    value: 'pie',
+  },
+  { text: 'doughnut',
+    value: 'doughnut',
   },
 ]
 
@@ -111,6 +118,27 @@ export const predefinedFilters = [
 ]
 
 export { default as ChartComponent } from './Component'
+
+const isRadialChart = ({ type }) => type === 'doughnut' || type === 'pie'
+const defaultBGColor = 'rgba(165, 165, 165, 1)'
+export function makeColorSteps (base, steps) {
+  if (!steps) {
+    return base
+  }
+
+  let pts = rgbaRegex.exec(base)
+  if (!pts || pts.length < 4) {
+    throw new Error(i18next.t('notification.color.RGBA.invalid'))
+  }
+  pts = pts.slice(1).map(parseFloat)
+  const a = pts.pop()
+
+  const rtr = []
+  for (let i = 0; i < steps; i++) {
+    rtr.push(toRGBA(pts.map(p => (p - i * (p / steps))).concat([a])))
+  }
+  return rtr
+}
 
 dimensionFunctions.lookup = (d) => dimensionFunctions.find(f => d.modifier === f.value)
 dimensionFunctions.convert = (d) => (dimensionFunctions.lookup(d) || {}).convert(d.field)
@@ -200,6 +228,10 @@ export class Chart {
     metrics.forEach((metric, index) => {
       const ds = base.datasets[index]
       ds.data = metric
+      if (isRadialChart(ds)) {
+        ds.backgroundColor = makeColorSteps(ds.backgroundColor || defaultBGColor, ds.data.length)
+        ds.hoverBackgroundColor = ds.backgroundColor
+      }
     })
   }
 
@@ -226,27 +258,30 @@ export class Chart {
         },
       }
 
-      options.scales.xAxes = r.dimensions.map((d, i) => {
-        const ticks = {
-          autoSkip: !!d.autoSkip,
-        }
-        const timeDimensionUnit = (dimensionFunctions.lookup(d) || {}).time
+      if (r.metrics.find(m => !isRadialChart(m))) {
+        options.scales.xAxes = r.dimensions.map((d, i) => {
+          const ticks = {
+            autoSkip: !!d.autoSkip,
+          }
+          const timeDimensionUnit = (dimensionFunctions.lookup(d) || {}).time
 
-        if (timeDimensionUnit) {
-          return {
-            type: 'time',
-            time: timeDimensionUnit,
-            ticks,
+          if (timeDimensionUnit) {
+            return {
+              type: 'time',
+              time: timeDimensionUnit,
+              ticks,
+            }
+          } else {
+            return {
+              ticks,
+            }
           }
-        } else {
-          return {
-            ticks,
-          }
-        }
-      })
+        })
+      }
 
       options.scales.yAxes = r.metrics.map((m, i) => {
         return {
+          display: !isRadialChart(m),
           id: `y-axis-metric-${makeAlias(m)}`,
           type: m.axisType || 'linear',
           position: m.axisPosition || 'left',
@@ -300,7 +335,7 @@ export class Chart {
             },
             datalabels: {
               display: true,
-              align: 'top',
+              align: 'end',
               anchor: 'end',
               color: 'black',
               font: {

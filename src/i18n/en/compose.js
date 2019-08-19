@@ -279,6 +279,8 @@ export default {
           placeholder: 'Select metric output',
           line: 'Line',
           bar: 'Bar',
+          pie: 'Pie',
+          doughnut: 'Doughnut',
         },
       },
     },
@@ -734,6 +736,11 @@ export default {
     },
   },
   notification: {
+    color: {
+      RGBA: {
+        invalid: 'Invalid RGBA color format',
+      },
+    },
     general: {
       composeAccessNotAllowed: 'Not allowed to access Compose',
     },
