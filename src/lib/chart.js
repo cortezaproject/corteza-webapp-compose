@@ -1,6 +1,12 @@
 import _ from 'lodash'
 import moment from 'moment'
 import i18next from 'i18next'
+import ChartJs from 'chart.js'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
+
+// plugin is registered globally by default
+// will change with https://github.com/chartjs/chartjs-plugin-datalabels/issues/42
+ChartJs.plugins.unregister(ChartDataLabels)
 
 const defDimension = () => Object.assign({}, { conditions: {} })
 const defMetrics = () => Object.assign({}, {})
@@ -173,14 +179,25 @@ export default class Chart {
 
   // Builds renderer (only ChartJS supported) options
   buildOptions () {
+    const plugins = new Set()
     let options = {
-      animation: false,
+      animation: {
+        duration: 500,
+      },
     }
 
     let datasets = []
 
     this.config.reports.forEach(r => {
       if (!options.scales) options.scales = { xAxes: [], yAxes: [] }
+
+      // can't disable tooltips on dataset level, so this is required
+      options.tooltips = {
+        filter: ({ datasetIndex }, { datasets }) => {
+          // enabled can be undefined, so it must be checked against false
+          return ((datasets[datasetIndex] || {}).tooltips || {}).enabled !== false
+        },
+      }
 
       options.scales.xAxes = r.dimensions.map((d, i) => {
         const ticks = {
@@ -216,7 +233,7 @@ export default class Chart {
         }
       })
 
-      datasets.push(...r.metrics.map(({ field, fill, aggregate, label, type, backgroundColor }) => {
+      datasets.push(...r.metrics.map(({ field, fill, aggregate, label, type, backgroundColor, fixTooltips }) => {
         const alias = makeAlias({ field, aggregate })
 
         if (typeof backgroundColor === 'string') {
@@ -228,18 +245,51 @@ export default class Chart {
         fill = !!fill
         if (!label) label = field
 
-        return {
+        let d = {
           yAxisID: `y-axis-metric-${alias}`,
           label,
           lineTension: 0,
           type,
           fill,
           backgroundColor,
+          datalabels: {
+            // disables fixed tooltips
+            display: false,
+          },
+          tooltips: {
+            enabled: true,
+          },
         }
+
+        if (fixTooltips) {
+          plugins.add(ChartDataLabels)
+          d = {
+            ...d,
+            tooltips: {
+              enabled: false,
+            },
+            datalabels: {
+              display: true,
+              align: 'top',
+              anchor: 'end',
+              color: 'black',
+              font: {
+                weight: 'bold',
+              },
+            },
+          }
+        }
+
+        return d
       }))
     })
 
-    return { type: 'bar', options, data: { datasets } }
+    return {
+      type: 'bar',
+      options,
+      plugins: Array.from(plugins),
+      data: { datasets },
+    }
   }
 
   async fetchReports ({ reporter }) {

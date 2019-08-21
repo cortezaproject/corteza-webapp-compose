@@ -262,6 +262,7 @@ export default {
         axisOnRight: 'Place axis on the right side',
         axisScaleFromZero: 'Always begin axis scale at zero',
         fillArea: 'Fill area below the line',
+        fixTooltips: 'Always show tooltips',
         add: 'Add metric',
         function: {
           label: 'Function',
