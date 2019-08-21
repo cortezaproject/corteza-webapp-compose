@@ -45,12 +45,11 @@
                 option-value="recordID"
                 option-text="label"
                 :placeholder="$t('field.kind.record.suggestionPlaceholder')"
-                v-model="selected">
+                v-model="selected"></vue-select>
 
-      <b-form-text v-if="validate && errors">
-        <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
-      </b-form-text>
-    </vue-select>
+    <b-form-text v-if="validate && errors">
+      <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
+    </b-form-text>
   </b-form-group>
 </template>
 <script>

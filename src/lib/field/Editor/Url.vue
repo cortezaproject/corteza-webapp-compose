@@ -4,15 +4,18 @@
       <b-form-input
         type="url"
         placeholder="Example URL: https://example.com"
-        :value="getUrlValue(ctx.index)"
-        @change="setUrlValue($event, ctx.index)"></b-form-input>
+        :formatter="fixUrl"
+        lazy-formatter
+        v-model="value[ctx.index]"></b-form-input>
     </multi>
 
     <b-form-input
       v-else
       type="url"
       placeholder="Example URL: https://example.com"
-      v-model="urlValue"></b-form-input>
+      :formatter="fixUrl"
+      lazy-formatter
+      v-model="value"></b-form-input>
 
     <b-form-text v-if="validate && errors">
       <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
@@ -25,31 +28,7 @@ import { trimUrlFragment, trimUrlQuery, trimUrlPath, onlySecureUrl } from 'corte
 
 export default {
   extends: base,
-  computed: {
-    urlValue: {
-      get () {
-        return this.getUrlValue()
-      },
-
-      set (value) {
-        this.setUrlValue(value)
-      },
-    },
-  },
   methods: {
-    getUrlValue (index = undefined) {
-      const value = index !== undefined ? this.value[index] : this.value
-      return this.fixUrl(value)
-    },
-
-    setUrlValue (event, index = undefined) {
-      if (this.field.isMulti) {
-        this.value[index] = this.fixUrl(event)
-      } else {
-        this.value = this.fixUrl(event)
-      }
-    },
-
     fixUrl (value) {
       // run through all the attributes
       if (this.field.options.trimFragment) {
