@@ -141,6 +141,20 @@ export default {
         recordCount: '{{count}} records ready for export',
         json: 'JSON Export',
         csv: 'CSV Export',
+
+        all: 'Export all records',
+        inRange: 'Set date range',
+
+        filter: {
+          createdAt: 'Record created',
+          updatedAt: 'Record updated',
+          lastMonth: 'Last month',
+          thisMonth: 'This month',
+          lastWeek: 'Last week',
+          thisWeek: 'This week',
+          today: 'Today',
+          custom: 'Custom',
+        },
       },
     },
     record: {

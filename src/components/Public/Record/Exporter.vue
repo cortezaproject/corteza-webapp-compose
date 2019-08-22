@@ -3,7 +3,13 @@
     <b-container fluid class="p-0">
       <b-form-group>
         <label>{{ $t('block.recordList.export.selectFields') }}</label>
-        <field-picker v-if="module" :module="module" :fields.sync="selectedFields" export/>
+        <field-picker
+          v-if="module"
+          :module="module"
+          :system-fields="systemFields"
+          :disabled-types="disabledTypes"
+          :fields.sync="selectedFields"/>
+
         <i>{{ $t('block.recordList.export.limitations') }}</i>
       </b-form-group>
       <b-form-group>
@@ -11,6 +17,7 @@
           v-model="rangeType"
           :options="rangeTypeOptions"
           stacked />
+
       </b-form-group>
       <b-row no-gutters>
         <b-col cols="5">
@@ -21,6 +28,7 @@
             <b-form-select
               v-model="rangeBy"
               :options="rangeByOptions" />
+
           </b-form-group>
         </b-col>
       </b-row>
@@ -32,6 +40,7 @@
               <b-form-select
                 v-model="range"
                 :options="dateRangeOptions" />
+
           </b-form-group>
         </b-col>
         <b-col cols="3" class="ml-5">
@@ -49,8 +58,8 @@
       <span class="ml-auto">
         <b-button
           v-if="allowJSON"
-          :disabled="fields.length === 0 && !!recordCount"
-          @click="$emit('exportJSON', { ...fields, ...filter })"
+          :disabled="exportDisabled"
+          @click="doExport('json')"
           variant="dark"
           class="mr-2">
 
@@ -58,8 +67,8 @@
         </b-button>
         <b-button
           v-if="allowCSV"
-          :disabled="fields.length === 0 && !!recordCount"
-          @click="$emit('exportCSV', { ...fields, ...filter })"
+          :disabled="exportDisabled"
+          @click="doExport('csv')"
           variant="dark">
 
           {{ $t('block.recordList.export.csv') }}
@@ -72,8 +81,7 @@
 <script>
 import FieldPicker from 'corteza-webapp-compose/src/components/Common/Module/FieldPicker'
 import moment from 'moment'
-
-const disabledFileTypes = ['User', 'Record', 'File']
+const fmtDate = (d) => d.format('YYYY-MM-DD')
 
 export default {
   components: {
@@ -101,7 +109,7 @@ export default {
       type: Number,
       default: 0,
     },
-    selectionType: {
+    filterRangeType: {
       type: String,
       default: 'all',
     },
@@ -121,41 +129,82 @@ export default {
       type: String,
       default: null,
     },
+    systemFields: {
+      type: Array,
+      default: () => ['createdAt', 'updatedAt'],
+    },
+    disabledTypes: {
+      type: Array,
+      default: () => ['User', 'Record', 'File'],
+    },
   },
 
   data () {
     return {
-
-      fields: this.preselectedFields.filter(f => disabledFileTypes.indexOf(f.kind) < 0),
+      fields: [],
       filter: {
-        rangeType: this.selectionType,
-        rangeBy: this.filterRangeBy,
+        rangeType: null,
+        rangeBy: null,
         date: {
-          range: this.dateRange,
-          start: this.startDate,
-          end: this.endDate,
+          range: null,
+          start: null,
+          end: null,
         },
       },
-      rangeTypeOptions: [
-        { value: 'all', text: 'Export all records' },
-        { value: 'range', text: 'Set date range' },
-      ],
-      rangeByOptions: [
-        { value: 'createdAt', text: 'Record created' },
-        { value: 'updatedAt', text: 'Record updated' },
-      ],
-      dateRangeOptions: [
-        { value: 'lastMonth', text: 'Last month' },
-        { value: 'thisMonth', text: 'This month' },
-        { value: 'lastWeek', text: 'Last week' },
-        { value: 'thisWeek', text: 'This week' },
-        { value: 'today', text: 'Today' },
-        { value: 'custom', text: 'Custom' },
-      ],
     }
   },
 
   computed: {
+    // These should be computed, because of i18n
+    rangeTypeOptions () {
+      return [
+        { value: 'all',
+          text: this.$t('block.recordList.export.all'),
+        },
+        { value: 'range',
+          text: this.$t('block.recordList.export.inRange'),
+        },
+      ]
+    },
+
+    rangeByOptions () {
+      return [
+        { value: 'createdAt',
+          text: this.$t('block.recordList.export.filter.createdAt'),
+        },
+        { value: 'updatedAt',
+          text: this.$t('block.recordList.export.filter.updatedAt'),
+        },
+      ]
+    },
+
+    dateRangeOptions () {
+      return [
+        { value: 'lastMonth',
+          text: this.$t('block.recordList.export.filter.lastMonth'),
+        },
+        { value: 'thisMonth',
+          text: this.$t('block.recordList.export.filter.thisMonth'),
+        },
+        { value: 'lastWeek',
+          text: this.$t('block.recordList.export.filter.lastWeek'),
+        },
+        { value: 'thisWeek',
+          text: this.$t('block.recordList.export.filter.thisWeek'),
+        },
+        { value: 'today',
+          text: this.$t('block.recordList.export.filter.today'),
+        },
+        { value: 'custom',
+          text: this.$t('block.recordList.export.filter.custom'),
+        },
+      ]
+    },
+
+    exportDisabled () {
+      return this.fields.length === 0 || !this.recordCount
+    },
+
     selectedFields: {
       get () {
         return this.fields
@@ -173,7 +222,6 @@ export default {
 
       set (rangeBy) {
         this.filter.rangeBy = rangeBy
-        this.$emit('change', this.filter)
       },
     },
 
@@ -184,7 +232,6 @@ export default {
 
       set (rangeType) {
         this.filter.rangeType = rangeType
-        this.$emit('change', this.filter)
       },
     },
 
@@ -195,99 +242,139 @@ export default {
 
       set (range) {
         this.filter.date.range = range
-        this.$emit('change', this.filter)
+        if (range !== 'custom') {
+          this.filter.date.start = this.calcStart(moment(), range)
+          this.filter.date.end = this.calcEnd(moment(), range)
+        }
       },
-
     },
 
     start: {
       get () {
-        let date = ''
-        const { range } = this.filter.date
-        if (range === 'custom') {
-          return this.filter.date.start
-        } else if (range === 'lastMonth') {
-          date = moment().subtract('1', 'months').startOf('month')
-        } else if (range === 'thisMonth') {
-          date = moment().startOf('month')
-        } else if (range === 'lastWeek') {
-          date = moment().subtract('1', 'week').startOf('week')
-        } else if (range === 'thisWeek') {
-          date = moment().startOf('week')
-        } else if (range === 'today') {
-          date = moment().startOf('day')
-        }
-        return date.format('YYYY-MM-DD')
+        return this.filter.date.start
       },
 
       set (start) {
         this.filter.date.start = start
         this.filter.date.range = 'custom'
-        this.$emit('change', this.filter)
       },
     },
 
     end: {
       get () {
-        let date = ''
-        const { range } = this.filter.date
-        if (range === 'custom') {
-          return this.filter.date.end
-        } else if (range === 'lastMonth') {
-          date = moment().subtract('1', 'months').endOf('month')
-        } else if (range === 'thisMonth') {
-          date = moment().endOf('month')
-        } else if (range === 'lastWeek') {
-          date = moment().subtract('1', 'week').endOf('week')
-        } else if (range === 'thisWeek') {
-          date = moment().endOf('week')
-        } else if (range === 'today') {
-          date = moment().endOf('day')
-        }
-        return date.format('YYYY-MM-DD')
+        return this.filter.date.end
       },
 
       set (end) {
         this.filter.date.end = end
         this.filter.date.range = 'custom'
-        this.$emit('change', this.filter)
       },
     },
   },
 
   // Watchers needed for storybook
   watch: {
-    preselectedFields (value) {
-      this.fields = value.filter(f => disabledFileTypes.indexOf(f.kind) < 0)
+    filter: {
+      handler: function (nv) {
+        this.$emit('change', this.filter)
+      },
+      deep: true,
     },
 
-    selectionType (value) {
-      this.filter.rangeType = value
+    preselectedFields: {
+      handler: function (value) {
+        this.fields = value.filter(f => this.disabledTypes.indexOf(f.kind) < 0)
+      },
+      immediate: true,
     },
 
-    filterRangeBy (value) {
-      this.filter.rangeBy = value
+    filterRangeType: {
+      handler: function (value) {
+        this.filter.rangeType = value
+      },
+      immediate: true,
     },
 
-    dateRange (value) {
-      this.filter.date.range = value
+    filterRangeBy: {
+      handler: function (value) {
+        this.filter.rangeBy = value
+      },
+      immediate: true,
     },
 
-    startDate (value) {
-      this.filter.date.start = value
-      this.filter.date.range = 'custom'
+    startDate: {
+      handler: function (value) {
+        this.start = value
+      },
     },
 
-    endDate (value) {
-      this.filter.date.end = value
-      this.filter.date.range = 'custom'
+    endDate: {
+      handler: function (value) {
+        this.end = value
+      },
+    },
+
+    dateRange: {
+      handler: function (value) {
+        this.range = value
+      },
     },
   },
 
-  created () {
+  mounted () {
     if (this.startDate || this.endDate) {
-      this.filter.date.range = 'custom'
+      this.start = this.startDate
+      this.end = this.endDate
+    } else {
+      this.range = this.dateRange
     }
+  },
+
+  methods: {
+    calcStart (m, range) {
+      if (range === 'lastMonth') {
+        return fmtDate(m.subtract('1', 'months').startOf('month'))
+      } else if (range === 'thisMonth') {
+        return fmtDate(m.startOf('month'))
+      } else if (range === 'lastWeek') {
+        return fmtDate(m.subtract('1', 'week').startOf('week'))
+      } else if (range === 'thisWeek') {
+        return fmtDate(m.startOf('week'))
+      } else if (range === 'today') {
+        return fmtDate(m.startOf('day'))
+      } else {
+        throw new Error('notification.datePreset.undefined')
+      }
+    },
+
+    calcEnd (m, range) {
+      if (range === 'lastMonth') {
+        return fmtDate(m.subtract('1', 'months').endOf('month'))
+      } else if (range === 'thisMonth') {
+        return fmtDate(m.endOf('month'))
+      } else if (range === 'lastWeek') {
+        return fmtDate(m.subtract('1', 'week').endOf('week'))
+      } else if (range === 'thisWeek') {
+        return fmtDate(m.endOf('week'))
+      } else if (range === 'today') {
+        return fmtDate(m.endOf('day'))
+      } else {
+        throw new Error('notification.datePreset.undefined')
+      }
+    },
+
+    makeFilters (filters) {
+      // @todo
+      return ''
+    },
+
+    doExport (kind) {
+      this.$emit('export', {
+        ext: kind,
+        fields: this.fields.map(({ name }) => name),
+        filters: this.makeFilters(this.filter),
+      })
+    },
   },
 }
 </script>
