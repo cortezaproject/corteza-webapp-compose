@@ -57,6 +57,16 @@ export default {
       type: Array,
       required: true,
     },
+
+    disabledTypes: {
+      type: Array,
+      default: () => [],
+    },
+
+    systemFields: {
+      type: Array,
+      default: null,
+    },
   },
 
   data () {
@@ -77,18 +87,26 @@ export default {
     },
 
     allFields () {
-      return [ ...this.module.fields, ...this.module.systemFields() ]
+      const mFields = this.module.fields
+        .filter(({ kind }) => !this.disabledTypes.find(t => t === kind))
+
+      let sysFields = this.module.systemFields()
+      if (this.systemFields) {
+        sysFields = sysFields.filter(({ name }) => this.systemFields.find(sf => sf === name))
+      }
+      return [
+        ...mFields,
+        ...sysFields,
+      ]
     },
 
     availableFields () {
       const fields = [ ...this.allFields ]
 
-      if (this.fields.length > 0) {
-        // Remove selected fields
-        return fields.filter(a => { return this.fields.findIndex(f => a.name === f.name) === -1 })
-      }
-
-      return fields
+      // Remove selected fields
+      return fields.filter(a =>
+        !this.fields.find(f => a.name === f.name)
+      )
     },
   },
 

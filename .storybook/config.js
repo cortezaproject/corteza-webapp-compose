@@ -14,6 +14,7 @@ function loadStories() {
   require('../src/stories/Field/Url')
   require('../src/stories/Field/Record')
   require('../src/stories/Field/User')
+  require('../src/stories/Components/Public/Record/Exporter')
   //req.keys().forEach(filename => req(filename))
 }
 

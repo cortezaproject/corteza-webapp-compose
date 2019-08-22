@@ -18,7 +18,7 @@
       </i>
     </fieldset>
 
-    <field-selector v-if="recordListModule" :module="recordListModule" :fields.sync="o.fields" />
+    <field-picker v-if="recordListModule" :module="recordListModule" :fields.sync="o.fields" />
 
     <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.newLabel')">
         <b-form-checkbox v-model="o.hideAddButton">
@@ -57,18 +57,23 @@
         {{ $t('block.recordList.record.hidePaging') }}
       </b-form-checkbox>
     </b-form-group>
+    <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('general.label.export')" class="mt-4">
+      <b-form-checkbox v-model="o.allowExport" class="mt-2">
+        {{ $t('block.recordList.export.allow') }}
+      </b-form-checkbox>
+    </b-form-group>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import base from './base'
-import FieldSelector from './inc/FieldSelector'
+import FieldPicker from 'corteza-webapp-compose/src/components/Common/Module/FieldPicker'
 
 export default {
   name: 'RecordList',
 
   components: {
-    FieldSelector,
+    FieldPicker,
   },
 
   extends: base,

@@ -132,6 +132,30 @@ export default {
         recordsPerPage: '{{0}} records are shown per page.',
         moduleNotSelected: 'Block with table of records, module not selected.',
       },
+      export: {
+        allow: 'Allow records export',
+        selectFields: 'Select fields you want to export:',
+        limitations: 'CSV export limitation: only the first value in the multi value fields will be exported',
+        rangeBy: 'Set range by:',
+        dateRange: 'Select date range:',
+        recordCount: '{{count}} records ready for export',
+        json: 'JSON Export',
+        csv: 'CSV Export',
+
+        all: 'Export all records',
+        inRange: 'Set date range',
+
+        filter: {
+          createdAt: 'Record created',
+          updatedAt: 'Record updated',
+          lastMonth: 'Last month',
+          thisMonth: 'This month',
+          lastWeek: 'Last week',
+          thisWeek: 'This week',
+          today: 'Today',
+          custom: 'Custom',
+        },
+      },
     },
     record: {
       label: 'Record',
