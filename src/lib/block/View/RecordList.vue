@@ -177,12 +177,12 @@ export default {
         ...e,
         namespaceID,
         moduleID,
-        filename: '',
+        filename: 'export',
       }
 
       const url = new URL(`${this.$ComposeAPI.baseURL}${this.$ComposeAPI.recordExportEndpoint(e)}`)
       const fields = e.fields.reduce((acc, cur) => `${acc}&fields[]=${cur}`, '')
-      url.search = `${fields}&filter=${e.filters || ''}&jwt=${this.$auth.user.JWT}`
+      url.search = `${fields}&filter=${e.filters || ''}&jwt=${this.$auth.JWT}`
       window.open(url.toString())
     },
 

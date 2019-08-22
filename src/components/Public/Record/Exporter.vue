@@ -370,10 +370,10 @@ export default {
 
       let start, end
       if (date.start) {
-        start = `${rangeBy} >= "${date.start}"`
+        start = `${rangeBy}>='${date.start}'`
       }
       if (date.end) {
-        end = `${rangeBy} <= "${date.end}"`
+        end = `${rangeBy}<='${date.end}'`
       }
 
       if (start && end) {

@@ -94,7 +94,7 @@ describe('components/Public/Record/Exporter.vue', () => {
             rangeBy: 'created_at',
             date: { start: 'start', end: null }
           },
-          'created_at >= "start"',
+          'created_at>=\'start\'',
         ],
         [
           {
@@ -102,14 +102,14 @@ describe('components/Public/Record/Exporter.vue', () => {
             rangeBy: 'updated_at',
             date: { start: null, end: 'end' }
           },
-          'updated_at <= "end"',
+          'updated_at<=\'end\'',
         ],
         [
           {
             rangeBy: 'updated_at',
             date: { start: 'start', end: 'end' }
           },
-          'updated_at >= "start" AND updated_at <= "end"',
+          'updated_at>=\'start\' AND updated_at<=\'end\'',
         ],
       ]
 
