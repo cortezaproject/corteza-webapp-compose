@@ -4,7 +4,7 @@
       <b-row>
         <b-col md="12" class="mb-1">
           <b-card :title="$t('automation.edit.title')">
-            <export :list="[script]" type="script" class="float-right" slot="header"/>
+            <!-- <export :list="[script]" type="script" class="float-right" slot="header"/> -->
 
             <b-tabs v-model="activeTab">
               <b-tab :title="$t('automation.edit.settingsTabLabel')">
@@ -16,6 +16,10 @@
                                   :placeholder="$t('automation.edit.namePlaceholder')"></b-form-input>
                   </b-form-group>
                   <b-form-group horizontal>
+                    <b-form-checkbox v-model="script.enabled" checked>
+                      {{ $t('automation.edit.enabledLabel') }}
+                      <b-form-text>{{ $t('automation.edit.enabledHelp') }}</b-form-text>
+                    </b-form-checkbox>
                     <b-form-checkbox v-model="script.critical" checked @change="onCriticalChange">
                       {{ $t('automation.edit.criticalLabel') }}
                       <b-form-text>{{ $t('automation.edit.criticalHelp') }}</b-form-text>
@@ -28,19 +32,37 @@
                       {{ $t('automation.edit.runInUALabel') }}
                       <b-form-text>{{ $t('automation.edit.runInUAHelp') }}</b-form-text>
                     </b-form-checkbox>
-                    <b-form-checkbox v-model="script.enabled" checked>
-                      {{ $t('automation.edit.enabledLabel') }}
-                      <b-form-text>{{ $t('automation.edit.enabledHelp') }}</b-form-text>
-                    </b-form-checkbox>
-                    {{ script.checked }}
+
                   </b-form-group>
+
                   <b-form-group horizontal
                                 :label="$t('automation.edit.timeoutLabel')">
-                    <b-form-input type="number"
-                                  number
-                                  :placeholder="$t('automation.edit.timeoutPlaceholder')"
-                                  v-model="script.timeout"></b-form-input>
+                    <b-input-group>
+                      <b-form-input type="number"
+                                    number
+                                    min="0"
+                                    max="60000"
+                                    trim
+                                    :placeholder="$t('automation.edit.timeoutPlaceholder')"
+                                    v-model="script.timeout"></b-form-input>
+                      <b-input-group-append><b-input-group-text>ms</b-input-group-text></b-input-group-append>
+                    </b-input-group>
                     <b-form-text>{{ $t('automation.edit.timeoutHelp') }}</b-form-text>
+                  </b-form-group>
+
+                  <b-form-group horizontal
+                                v-if="canModifySecurty"
+                                :label="$t('automation.edit.securityLabel')">
+                    <vue-select :options="users"
+                                :reduce="u => u.userID"
+                                @search="onUserSearch"
+                                label="email"
+                                :key="script.runAs"
+                                :disabled="script.runInUA"
+                                :placeholder="$t('automation.edit.userPickerPlaceholder')"
+                                v-model="script.runAs"></vue-select>
+                    <b-form-text>{{ $t('automation.edit.runAsHelp') }}</b-form-text>
+                    <b-button @click="preloadRunner($auth.user.userID)">{{ $t('automation.edit.runAsCurrentUser', { user: $auth.user.name || $auth.user.email }) }}</b-button>
                   </b-form-group>
                 </b-form>
               </b-tab>
@@ -170,9 +192,10 @@
   </div>
 </template>
 <script>
+import _ from 'lodash'
 import { mapGetters, mapActions } from 'vuex'
 import { VueSelect } from 'vue-select'
-import Module from 'corteza-webapp-common/src/lib/types/compose/module'
+import Module from 'corteza-webapp-compose/src/lib/module'
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 import execInUA from 'corteza-webapp-common/src/lib/automation-scripts/exec-in-ua'
 import AutomationTrigger from 'corteza-webapp-common/src/lib/types/shared/automation-trigger'
@@ -214,11 +237,13 @@ export default {
 
   data () {
     return {
-      activeTab: 1,
+      activeTab: 0,
 
       editor: null,
       script: null,
       triggers: [],
+
+      users: [],
 
       testModuleID: null,
       testPayloadID: null,
@@ -232,11 +257,16 @@ export default {
   computed: {
     ...mapGetters({
       modules: 'module/set',
+      pages: 'page/set',
       getModuleByID: 'module/getByID',
     }),
 
     countEnabledRecordTriggers () {
       return this.triggers.reduce((v, t) => { return v + (t.isValid() ? 1 : 0) }, 0)
+    },
+
+    canModifySecurty () {
+      return (this.script.scroptID && this.script.canGrant) || this.namespace.canGrant
     },
   },
 
@@ -244,6 +274,7 @@ export default {
     const { namespaceID } = this.namespace
     this.findScriptByID({ namespaceID, scriptID: this.scriptID }).then((s) => {
       this.script = s
+      this.preloadRunner(s.runAs)
       return this.loadTriggers()
     }).then(() => {
       // Make script writer's life easeier
@@ -280,6 +311,11 @@ export default {
 
     handleSave ({ closeOnSuccess = false } = {}) {
       const { namespaceID } = this.namespace
+
+      if (!this.script.runAs) {
+        this.script.runAs = '0'
+      }
+
       this.updateScript({ namespaceID, ...this.script, triggers: this.triggers }).then((script) => {
         this.script = script
         this.raiseSuccessAlert(this.$t('notification.automation.saved'))
@@ -295,6 +331,40 @@ export default {
         this.raiseSuccessAlert(this.$t('notification.automation.deleted'))
         this.redirect()
       }).catch(this.defaultErrorHandler(this.$t('notification.automation.deleteFailed')))
+    },
+
+    /**
+     *
+     * @param {string} query
+     * @param {function} loading
+     */
+    onUserSearch (query, loading) {
+      if (query.length > 2) {
+        loading(true)
+        this.userSearch(this, query, loading)
+      }
+    },
+
+    userSearch: _.debounce((vm, query, loading) => {
+      vm.$SystemAPI.userList({ query }).then(({ set }) => {
+        vm.users = set
+        loading(false)
+      })
+    }),
+
+    preloadRunner (userID) {
+      if (userID) {
+        // We need to trick <v-select> component into re-rendering when
+        // we find the selected runner/user
+        this.script.runAs = ''
+
+        this.$SystemAPI.userRead({ userID }).then((u) => {
+          this.users.push(u)
+
+          // Set the value back and force <v-select> to re-render
+          this.script.runAs = userID
+        })
+      }
     },
 
     triggerComponent (t) {
@@ -358,6 +428,10 @@ export default {
 
     onClickRunTestInBrowser () {
       const ctx = {
+        ComposeAPI: this.$ComposeAPI,
+        MessagingAPI: this.$MessagingAPI,
+        SystemAPI: this.$SystemAPI,
+
         namespace: this.namespace,
         module: this.testModuleID ? new Module(this.getModuleByID(this.testModuleID)) : undefined,
         ...this.parseTestPayload(),
@@ -370,6 +444,8 @@ export default {
 
       // Override stuff that might hurt our testing/dev environment:
       ctx.routePusher = (params) => { console.log('routePusher', params) }
+      ctx.emitter = (name, params) => { console.log(name, params) }
+      ctx.pages = this.pages
 
       execInUA(this.script.source, ctx).then(rval => {
         this.testResponseErr = null

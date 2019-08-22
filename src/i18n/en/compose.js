@@ -350,6 +350,11 @@ export default {
       enabledLabel: 'Enabled',
       enabledHelp: 'Disabled scripts will be ignored',
 
+      securityLabel: 'Security',
+      runAsHelp: 'Scripts can be ran with with privileges of the user running it (user/runner not set) or with privileges of a predefined user (user/runner selected). Incompatible with "run-in-browser".',
+      userPickerPlaceholder: 'Select user',
+      runAsCurrentUser: 'Run as "{{ user }}"',
+
       timeoutLabel: 'Script execution timeout',
       timeoutPlaceholder: '1500',
       timeoutHelp: 'How much time do we wait before aborting the script? Value in milliseconds (1000ms = 1s). It defaults (when 0) to 2s with 30s as maximum. Consult with your administrator for exact numbers and limitations.',

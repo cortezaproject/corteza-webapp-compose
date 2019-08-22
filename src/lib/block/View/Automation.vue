@@ -11,7 +11,7 @@
 import base from './base'
 import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
-import Module from 'corteza-webapp-common/src/lib/types/compose/module'
+import Module from 'corteza-webapp-compose/src/lib/module'
 import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 
 export default {
