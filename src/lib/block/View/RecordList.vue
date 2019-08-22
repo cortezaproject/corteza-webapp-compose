@@ -11,11 +11,14 @@
            v-model="query"
            class="float-right mw-100 mb-1"
            :placeholder="$t('general.label.search')" />
+
     <exporter-modal
       v-if="options.allowExport"
       :module="recordListModule"
       :records="records"
+      @export="onExport"
       class="float-right mt-1" />
+
     <div class="table-responsive">
       <table class="table sticky-header table-hover" :class="{sortable: !options.hideSorting}">
         <thead v-if="!options.hideHeader" class="border-bottom">
@@ -168,6 +171,21 @@ export default {
   },
 
   methods: {
+    onExport (e) {
+      const { namespaceID, moduleID } = this.filter || {}
+      e = {
+        ...e,
+        namespaceID,
+        moduleID,
+        filename: '',
+      }
+
+      const url = new URL(`${this.$ComposeAPI.baseURL}${this.$ComposeAPI.recordExportEndpoint(e)}`)
+      const fields = e.fields.reduce((acc, cur) => `${acc}&fields[]=${cur}`, '')
+      url.search = `${fields}&filter=${e.filters || ''}&jwt=${this.$auth.user.JWT}`
+      window.open(url.toString())
+    },
+
     fetch (params = this.filter) {
       params.moduleID = this.options.moduleID
       params.namespaceID = this.namespace.namespaceID

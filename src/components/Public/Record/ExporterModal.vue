@@ -12,7 +12,11 @@
       hide-footer
       body-class="p-0">
 
-      <exporter :module="module" :recordCount="records.length" />
+      <exporter
+        :module="module"
+        :recordCount="records.length"
+        v-on="$listeners" />
+
     </b-modal>
   </div>
 </template>

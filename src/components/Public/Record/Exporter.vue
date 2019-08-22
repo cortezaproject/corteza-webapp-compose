@@ -115,7 +115,7 @@ export default {
     },
     filterRangeBy: {
       type: String,
-      default: 'createdAt',
+      default: 'created_at',
     },
     dateRange: {
       type: String,
@@ -169,10 +169,10 @@ export default {
 
     rangeByOptions () {
       return [
-        { value: 'createdAt',
+        { value: 'created_at',
           text: this.$t('block.recordList.export.filter.createdAt'),
         },
-        { value: 'updatedAt',
+        { value: 'updated_at',
           text: this.$t('block.recordList.export.filter.updatedAt'),
         },
       ]
@@ -363,9 +363,23 @@ export default {
       }
     },
 
-    makeFilters (filters) {
-      // @todo
-      return ''
+    makeFilters ({ rangeType, rangeBy, date }) {
+      if (rangeType === 'all') {
+        return ''
+      }
+
+      let start, end
+      if (date.start) {
+        start = `${rangeBy} >= "${date.start}"`
+      }
+      if (date.end) {
+        end = `${rangeBy} <= "${date.end}"`
+      }
+
+      if (start && end) {
+        return `${start} AND ${end}`
+      }
+      return start || end
     },
 
     doExport (kind) {

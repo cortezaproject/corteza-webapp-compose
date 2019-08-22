@@ -66,17 +66,63 @@ describe('components/Public/Record/Exporter.vue', () => {
     })
   })
 
-  it('prep export request', () => {
-    propsData.fields = [
-      { name: 'f1' },
-      { name: 'f2' },
-    ]
-    const wrap = mountExporter()
+  describe('prep export request payload', () => {
+    it('no filter', () => {
+      propsData.fields = [
+        { name: 'f1' },
+        { name: 'f2' },
+      ]
+      const wrap = mountExporter()
 
-    expect(wrap.emitted().export).to.be.undefined
-    wrap.vm.doExport('kind')
-    const e = wrap.emitted().export.pop().pop()
-    expect(e).to.have.keys(['ext', 'fields', 'filters'])
+      expect(wrap.emitted().export).to.be.undefined
+      wrap.vm.doExport('kind')
+      const e = wrap.emitted().export.pop().pop()
+      expect(e).to.have.keys(['ext', 'fields', 'filters'])
+    })
+
+    it('filter', () => {
+      let cases = [
+        [
+          {
+            rangeType: 'all',
+          },
+          '',
+        ],
+        [
+          {
+            rangeType: 'range',
+            rangeBy: 'created_at',
+            date: { start: 'start', end: null }
+          },
+          'created_at >= "start"',
+        ],
+        [
+          {
+            rangeType: 'range',
+            rangeBy: 'updated_at',
+            date: { start: null, end: 'end' }
+          },
+          'updated_at <= "end"',
+        ],
+        [
+          {
+            rangeBy: 'updated_at',
+            date: { start: 'start', end: 'end' }
+          },
+          'updated_at >= "start" AND updated_at <= "end"',
+        ],
+      ]
+
+      const wrap = mountExporter()
+
+      for (const [filter, expected] of cases) {
+        // console.log(filter)
+        wrap.setData({ filter })
+        wrap.vm.doExport()
+        const e = wrap.emitted().export.pop().pop()
+        expect(e.filters).to.eq(expected)
+      }
+    })
   })
 
   it('determine if export disabled', () => {
