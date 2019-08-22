@@ -43,8 +43,8 @@ let props = {
   allowCSV: true,
   recordCount: 43,
 
-  selectionType: 'all',
-  filterRangeBy: 'createdAt',
+  filterRangeType: 'all',
+  filterRangeBy: 'created_at',
 
   dateRange: 'lastMonth',
   startDate: '',
@@ -57,8 +57,8 @@ const selectionTypeOptions = {
 }
 
 const rangeTypeOptions = {
-  Created: 'createdAt',
-  Updated: 'updatedAt',
+  Created: 'created_at',
+  Updated: 'updated_at',
 }
 
 const dateRangeOptions = {
@@ -108,8 +108,8 @@ exporter.add('Exporter', () => ({
     recordCount: {
       default: number('Record count', props.recordCount),
     },
-    selectionType: {
-      default: select('Selection type', selectionTypeOptions, props.selectionType),
+    filterRangeType: {
+      default: select('Selection type', selectionTypeOptions, props.filterRangeType),
     },
     filterRangeBy: {
       default: select('Filter range by', rangeTypeOptions, props.filterRangeBy),
@@ -134,7 +134,7 @@ exporter.add('Exporter', () => ({
               :allowJSON="allowJSON"
               :allowCSV="allowCSV"
               :recordCount="recordCount"
-              :selectionType="selectionType"
+              :filterRangeType="filterRangeType"
               :filterRangeBy="filterRangeBy"
               :dateRange="dateRange"
               :startDate="startDate"
