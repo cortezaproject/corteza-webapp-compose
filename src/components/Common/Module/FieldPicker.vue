@@ -58,9 +58,14 @@ export default {
       required: true,
     },
 
-    export: {
-      type: Boolean,
-      default: false,
+    disabledTypes: {
+      type: Array,
+      default: () => [],
+    },
+
+    systemFields: {
+      type: Array,
+      default: null,
     },
   },
 
@@ -82,25 +87,26 @@ export default {
     },
 
     allFields () {
-      if (this.export) {
-        const disabledFileTypes = ['User', 'Record', 'File']
-        const enabledSystemFields = ['createdAt', 'updatedAt']
-        const moduleFields = this.module.fields.filter(f => disabledFileTypes.indexOf(f.kind) < 0)
-        const systemFields = this.module.systemFields().filter(f => enabledSystemFields.indexOf(f.name) !== -1)
-        return [ ...moduleFields, ...systemFields ]
+      const mFields = this.module.fields
+        .filter(({ kind }) => !this.disabledTypes.find(t => t === kind))
+
+      let sysFields = this.module.systemFields()
+      if (this.systemFields) {
+        sysFields = sysFields.filter(({ name }) => this.systemFields.find(sf => sf === name))
       }
-      return [ ...this.module.fields, ...this.module.systemFields() ]
+      return [
+        ...mFields,
+        ...sysFields,
+      ]
     },
 
     availableFields () {
       const fields = [ ...this.allFields ]
 
-      if (this.fields.length > 0) {
-        // Remove selected fields
-        return fields.filter(a => { return this.fields.findIndex(f => a.name === f.name) === -1 })
-      }
-
-      return fields
+      // Remove selected fields
+      return fields.filter(a =>
+        !this.fields.find(f => a.name === f.name)
+      )
     },
   },
 
