@@ -27,8 +27,8 @@ export default class Namespace {
       typeof args.canCreateModule === 'boolean' ? args.canCreateModule : false
     this.canCreatePage =
       typeof args.canCreatePage === 'boolean' ? args.canCreatePage : false
-    this.canCreateTrigger =
-      typeof args.canCreateTrigger === 'boolean' ? args.canCreateTrigger : false
+    this.canCreateAutomationScript =
+      typeof args.canCreateAutomationScript === 'boolean' ? args.canCreateAutomationScript : false
     this.canDeleteNamespace =
       typeof args.canDeleteNamespace === 'boolean' ? args.canDeleteNamespace : false
     this.canUpdateNamespace =

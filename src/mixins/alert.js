@@ -17,6 +17,7 @@ export default {
 
     defaultErrorHandler (prefix) {
       return (err = {}) => {
+        console.error(err)
         this.raiseWarningAlert(err.message ? (this.$t(prefix) + ': ' + this.$t(err.message)) : this.$t(prefix))
       }
     },

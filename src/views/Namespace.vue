@@ -78,7 +78,7 @@ export default {
           this.$store.dispatch('page/load', p)
             .catch(this.errHandler),
 
-          this.$store.dispatch('trigger/load', p)
+          this.$store.dispatch('uaScript/load', p)
             .catch(this.errHandler),
 
           this.$store.dispatch('user/load')

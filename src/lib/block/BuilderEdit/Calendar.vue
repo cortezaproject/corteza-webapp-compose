@@ -149,18 +149,6 @@ export default {
     handleAddButton () {
       this.o.feeds.push({})
     },
-
-    // handleAddButton () {
-    //   const t = this.findTriggerByID(this.selectedTriggerID)
-    //   if (!t) return
-    //
-    //   this.o.buttons.push({
-    //     triggerID: t.triggerID,
-    //     label: t.name,
-    //   })
-    //
-    //   this.selectedTriggerID = null
-    // },
   },
 }
 </script>

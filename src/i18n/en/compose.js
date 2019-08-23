@@ -75,10 +75,10 @@ export default {
     },
     automation: {
       label: 'Automation',
-      trigger: 'Trigger',
-      manualTrigger: 'Manual triggers',
-      pickTrigger: 'Pick a trigger',
-      triggerFootnote: 'Select from the list of manual triggers. Disabled and incompatible (different module) triggers are disabled.',
+      script: 'Script',
+      manualScript: 'Manual scripts',
+      pickScript: 'Pick a script',
+      scriptFootnote: 'Select from the list of manual scripts. Disabled and incompatible (different module) scripts are disabled.',
       button: 'Buttons',
       primaryButton: 'Primary button',
       secondaryButton: 'Secondary button',
@@ -87,7 +87,7 @@ export default {
       dangerButton: 'Danger button',
       warningButton: 'Warning button',
       darkButton: 'Dark button',
-      buttonFootnote: 'A list of manual triggers, accessible via click on a button (rename and reorder as you see fit)',
+      buttonFootnote: 'A list of manual scripts, accessible via click on a button (rename and reorder as you see fit)',
     },
     recordList: {
       label: 'Record list',
@@ -309,76 +309,90 @@ export default {
       },
     },
   },
-  trigger: {
-    title: 'List of triggers',
-    newLabel: 'Create a new trigger',
-    newPlaceholder: 'Trigger name',
-    import: 'Import trigger(s)',
+  automation: {
+    title: 'List of automation script',
+    newLabel: 'Create a new script',
+    newPlaceholder: 'Script name',
+    import: 'Import automation script(s)',
+
+    list: {
+      unnamed: '(Unnamed script)',
+      column: {
+        label: {
+          async: 'Async.',
+          runAs: 'Run As',
+          runInUA: 'In browser',
+          critical: 'Critical',
+          enabled: 'Enabled',
+        },
+      },
+    },
+
     edit: {
-      title: 'Automation',
+      settingsTabLabel: 'Settings',
+
+      title: 'Automation script',
+
       nameLabel: 'Name',
-      namePlaceholder: 'Automation name',
-      enabled: '$t(trigger.status.true)',
-      primaryModule: {
-        label: 'Primary module',
-        none: '(no primary module)',
+      namePlaceholder: 'Automation script name',
+
+      criticalLabel: 'Critical script',
+      criticalHelp: 'Wait until this script is executed. In case of errors, abort execution of other scripts and before* trigger',
+
+      asyncLabel: 'Run this script asynchronously',
+      asyncHelp: 'Do not wait for results and ignore errors. Incompatible with critical flag.',
+
+      runInUALabel: 'Run in browser',
+      runInUAHelp: 'Run this script in user\'s browser (user-agent). ' +
+        'Less reliable but allows better interaction with the user and ability to write' +
+        ' interactive scripts and automation flows.',
+
+      enabledLabel: 'Enabled',
+      enabledHelp: 'Disabled scripts will be ignored',
+
+      securityLabel: 'Security',
+      runAsHelp: 'Scripts can be ran with with privileges of the user running it (user/runner not set) or with privileges of a predefined user (user/runner selected). Incompatible with "run-in-browser".',
+      userPickerPlaceholder: 'Select user',
+      runAsCurrentUser: 'Run as "{{ user }}"',
+
+      timeoutLabel: 'Script execution timeout',
+      timeoutPlaceholder: '1500',
+      timeoutHelp: 'How much time do we wait before aborting the script? Value in milliseconds (1000ms = 1s). It defaults (when 0) to 2s with 30s as maximum. Consult with your administrator for exact numbers and limitations.',
+
+      codeTabLabel: 'Code',
+
+      scheduledTriggers: {
+        tabLabel: 'Scheduled',
       },
-      loadExampleConversion: 'Load conversion example',
-      reset: 'Reset',
-      codeLabel: 'Code',
-      code: {
-        label: 'Code',
-        comment1: 'Automation triggers will help you manage your records',
-        comment2: 'It is a simple JavaScript engine that runs custom code that triggers manually',
-        comment3: 'or automatically before/after certain record events (create, update, delete)',
+
+      recordTriggers: {
+        tabLabel: 'Record triggers ({{0}})',
+
+        filterPlaceholder: 'Filter module list',
+
+        manualNoCondition: 'Manual run for this script (not module specific)',
+        manual: 'manual',
+        before: 'before',
+        after: 'after',
+        create: 'create',
+        update: 'update',
+        delete: 'delete',
       },
-    },
-    status: {
-      true: 'Enabled',
-      false: 'Disabled',
-    },
-    triggerCondition: {
-      label: 'Actions that trigger the automation...',
-      manual: 'manually, when user clicks a button on a page',
-      beforeCreate: 'before record is created',
-      afterCreate: 'after record is created',
-      beforeUpdate: 'before record is updated',
-      afterUpdate: 'after record is updated',
-      beforeDelete: 'before record is deleted',
-      afterDelete: 'after record is deleted',
     },
     testing: {
-      label: 'Testing trigger',
+      parametersHeadline: 'Parameters & payload:',
+      resultsHeadline: 'Results:',
       recordID: 'Record ID',
-      run: 'Run test',
-      footnotePrimaryModule: 'When trigger has primary module selected, record ID is needed for tests to run properly.',
-      footnoteRecordChanges: 'Changes to records are ignored if not explicitly saved (through $C.api.record.save or $C.api.record.delete)',
+      moduleID: 'Module ID',
+      modulePickerPlaceholder: 'Select module for this script',
+      load: 'Load',
+      testInCorredor: 'Test in Corredor',
+      testInBrowser: 'Test in Browser',
+      warning: 'Testing can affect your records if scripts use API (eg: SaveRecord, DeleteRecord, ...). Executing ' +
+        'same script in browser and in Corredor should produce the same results in most cases but output will most ' +
+        'likely be formatted differently.',
+      recordPreloadText: 'Fill payload with existing record:',
     },
-    manual: [
-      '## Record Automation Manual',
-      '### Trigger logic and behaviour',
-      '#### "Manual" triggers',
-      'An enabled automation rule with "manually, when user clicks a button on a page" checked can be inserted as a button in an "automation block" on a page. If the page type is a "record page", the primary module of the automation rule must match the module of the record page.',
-      '___',
-      '#### "Before" triggers',
-      'An enabled automation rule with "before record is created", "before record is updated" or "before record is deleted" checked, can prevent the creation, update or deletion of the record.',
-      '',
-      'If an error/exception (`throw new Exception(\'Some error\')`) or *non true* value is returned (`return false`), the following action is canceled and the record is not created, updated or deleted.',
-      '___',
-      '#### "After" triggers',
-      'An enabled automation rule with "after record is created", "after record is updated" or "after record is deleted" checked is executed after a successful creation, update or deletion.',
-      '',
-      'In case of creation or update, the new data of the record can be accessed in the automation code, but on deletion will return record data from before deletion.',
-      '___',
-      '#### Order of execution',
-      '1\\. Enabled automation rules with "Before" triggers',
-      '',
-      '2\\. Enabled automation rules with "After" triggers',
-      '* Enabled automation rules with a primary module are only executed when the module detects a record creation, update or deletion.',
-      '* Enabled automation rules without primary module are executed whenever there is any record creation, update or deletion.',
-      '* When there are multiple enabled automation rules that match at the same time (for example, two automation rules with "after update" triggers with the same primary module), the order of execution cannot be guaranteed. Errors that occur in a specific automation rule do not affect other automation rules that match.',
-      '* Enabled automation rules with "Manual" trigger are only executed manually by users.',
-    ],
   },
   general: {
     label: {
@@ -446,9 +460,9 @@ export default {
       all: 'all pages',
       specific: 'page "{{target}}"',
     },
-    trigger: {
-      all: 'all triggers',
-      specific: 'trigger "{{target}}"',
+    'automation-script': {
+      all: 'all automation scripts',
+      specific: 'automation script "{{target}}"',
     },
     chart: {
       all: 'all charts',
@@ -513,21 +527,28 @@ export default {
         description: 'Default: deny',
       },
     },
-    'compose-trigger': {
+    'compose-automation-script': {
       read: {
-        title: 'Read any trigger',
-        specific: 'Read trigger "{{target}}"',
+        title: 'Read any script',
+        specific: 'Read script "{{target}}"',
         description: 'Default: deny',
       },
       update: {
-        title: 'Update any trigger',
-        specific: 'Update trigger "{{target}}"',
+        title: 'Update any script',
+        specific: 'Update script "{{target}}"',
         description: 'Default: deny',
       },
       'delete': {
-        title: 'Delete any trigger',
-        specific: 'Delete trigger "{{target}}"',
+        title: 'Delete any script',
+        specific: 'Delete script "{{target}}"',
         description: 'Default: deny',
+      },
+    },
+    'compose-automation-trigger': {
+      run: {
+        title: 'Run any trigger (on any script)',
+        specific: 'Can run this trigger',
+        description: 'Controls ability to run scripts through manual (or user-invoked) triggers either explicitly or implicitly through browser (Scripts, runnable in User-Agent). Other kinds of automation scripts and triggers that run implicitly on the backend are always executed. Default: allow',
       },
     },
     'compose-module': {

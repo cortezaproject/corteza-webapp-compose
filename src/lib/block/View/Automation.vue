@@ -1,21 +1,24 @@
 <template>
     <div class="d-flex flex-wrap">
       <b-button v-for="(b) in options.buttons"
-                :key="b.triggerID"
+                :key="b.scriptID || b.triggerID"
                 :variant="b.variant || 'primary'"
                 class="m-1 flex-fill"
-                @click.prevent="runTriggers({ triggerID: b.triggerID, action: 'manual', module, record, namespace })">{{ b.label }}</b-button>
+                @click.prevent="onAutomationButtonClick(b.scriptID || b.triggerID)">{{ b.label }}</b-button>
     </div>
 </template>
 <script>
 import base from './base'
-import triggerRunner from 'corteza-webapp-compose/src/mixins/trigger_runner'
+import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
+import Record from 'corteza-webapp-common/src/lib/types/compose/record'
+import Module from 'corteza-webapp-compose/src/lib/module'
+import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 
 export default {
   extends: base,
 
   mixins: [
-    triggerRunner,
+    uiScriptRunner,
   ],
 
   created () {
@@ -25,6 +28,29 @@ export default {
         b.variant = 'primary'
       }
     })
+  },
+
+  methods: {
+    onAutomationButtonClick (scriptID) {
+      console.debug('manually running script', scriptID)
+
+      this.runScripByID(scriptID, {
+        namespace: new Namespace(this.namespace),
+        module: new Module(this.module),
+        record: new Record(this.module, this.record),
+      }).then((rval) => {
+        if (rval instanceof Record) {
+          // This applies changes to the record.
+          //
+          // This is done because references work as we want them
+          this.record.setValues(rval.values)
+        }
+      }).catch(({ message }) => {
+        if (message) {
+          this.raiseWarningAlert(message)
+        }
+      })
+    },
   },
 }
 </script>

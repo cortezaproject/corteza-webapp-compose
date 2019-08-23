@@ -6,10 +6,15 @@
           <b-card class="mb-2">
             <b-row align-v="center">
               <b-col md="5">
-                <b-form v-if="namespace.canCreateTrigger" @submit.prevent="create">
-                  <b-form-group :label="$t('trigger.newLabel')">
+                <b-form v-if="namespace.canCreateAutomationScript" @submit.prevent="create">
+                  <b-form-group :label="$t('automation.newLabel')">
                     <b-input-group>
-                      <input required type="text" v-model="newTrigger.name" class="form-control" id="name" :placeholder="$t('trigger.newPlaceholder')" />
+                      <input required
+                             type="text"
+                             v-model="newScript.name"
+                             class="form-control"
+                             id="name"
+                             :placeholder="$t('automation.newPlaceholder')" />
                       <b-input-group-append>
                         <b-button type="submit" variant="dark">{{ $t('general.label.create') }}</b-button>
                       </b-input-group-append>
@@ -18,18 +23,18 @@
                 </b-form>
               </b-col>
               <b-col md="5">
-                <import v-if="namespace.canCreateTrigger"
-                        :namespace="namespace" type="trigger" />
+                <import v-if="namespace.canCreateScript"
+                        :namespace="namespace" type="script" />
               </b-col>
               <b-col md="2" class="text-right">
-                <export :list="sortedTriggers" type="trigger" />
+                <export :list="sortedScripts" type="script" />
                 <permissions-button v-if="namespace.canGrant"
-                                    resource="compose:trigger:*"
+                                    resource="compose:automation-script:*"
                                     link />
               </b-col>
             </b-row>
           </b-card>
-          <b-card :title="$t('trigger.title')">
+          <b-card :title="$t('automation.title')">
             <table class="table table-striped">
               <thead>
               <tr>
@@ -40,16 +45,28 @@
                   @sort="handleSort"/>
 
                 <table-sortable-column
-                  :label="$t('general.label.status')"
-                  name="enabled"
-                  :ascending="sortedByEnabled"
+                  :label="$t('automation.list.column.label.async')"
+                  name="async"
+                  :ascending="sortedByAsync"
                   @sort="handleSort"/>
 
                 <table-sortable-column
-                  :label="$t('general.label.actions')"
-                  name="actions"
-                  :ascending="undefined"
-                  :sortDisabled="true"/>
+                  :label="$t('automation.list.column.label.runInUA')"
+                  name="runInUA"
+                  :ascending="sortedByRunInUA"
+                  @sort="handleSort"/>
+
+                <table-sortable-column
+                  :label="$t('automation.list.column.label.critical')"
+                  name="critical"
+                  :ascending="sortedByCritical"
+                  @sort="handleSort"/>
+
+                <table-sortable-column
+                  :label="$t('automation.list.column.label.enabled')"
+                  name="enabled"
+                  :ascending="sortedByEnabled"
+                  @sort="handleSort"/>
 
                 <table-sortable-column
                   :label="$t('general.label.updatedAt')"
@@ -61,19 +78,24 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(t, index) in sortedTriggers" :key="index">
-                <td>{{ t.name }}</td>
-                <td>{{ $t(`trigger.status.${t.enabled}`) }}</td>
-                <td width="300"><small>{{ (t.actions || []).map(a => $t(`trigger.triggerCondition.${a}`)).join(', ') }}</small></td>
-                <td><time :datetime="t.updatedAt || t.createdAt" v-if="t.updatedAt || t.createdAt">{{ prettyDate(t.updatedAt || t.createdAt) }}</time></td>
+              <tr v-for="(s, index) in sortedScripts" :key="index">
+                <td>{{ s.name || $t('automation.list.unnamed') }}</td>
+                <td><font-awesome-icon :icon="['fas', 'check']" v-if="s.async"></font-awesome-icon></td>
+                <td><font-awesome-icon :icon="['fas', 'check']" v-if="s.runInUA"></font-awesome-icon></td>
+                <td><font-awesome-icon :icon="['fas', 'check']" v-if="s.critical"></font-awesome-icon></td>
+                <td><font-awesome-icon :icon="['fas', 'check']" v-if="s.enabled"></font-awesome-icon></td>
+                <td><time :datetime="s.updatedAt || s.createdAt" v-if="s.updatedAt || s.createdAt">{{ prettyDate(s.updatedAt || s.createdAt) }}</time></td>
                 <td class="text-right">
-                  <span v-if="t.canUpdateTrigger || t.canDeleteTrigger">
-                    <router-link :to="{name: 'admin.automation.edit', params: { triggerID: t.triggerID }}" class="text-dark pr-2">
+                  <span v-if="s.canUpdate || s.canDelete">
+                    <router-link :to="{name: 'admin.automation.edit', params: { scriptID: s.scriptID }}" class="text-dark pr-2">
                       <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
                     </router-link>
                   </span>
-
-                  <permissions-button v-if="t.canGrant" :title="t.name" :resource="'compose:trigger:'+t.triggerID" link />
+                  <permissions-button v-if="s.canGrant"
+                                      :title="s.name"
+                                      :resource="'compose:automation-script:'+s.scriptID"
+                                      button-variant="success"
+                                      link />
                 </td>
               </tr>
               </tbody>
@@ -86,8 +108,8 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Trigger from 'corteza-webapp-compose/src/lib/trigger'
 import TableSortableColumn from 'corteza-webapp-compose/src/components/Admin/TableSortableColumn'
+import AutomationScript from 'corteza-webapp-common/src/lib/types/shared/automation-script'
 import tableSort from 'corteza-webapp-compose/src/mixins/table_sort'
 import Import from 'corteza-webapp-compose/src/components/Admin/Import'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
@@ -111,19 +133,30 @@ export default {
   },
 
   data () {
-    const { namespaceID } = this.namespace
     return {
-      newTrigger: new Trigger({ namespaceID }),
+      newScript: new AutomationScript(),
     }
   },
 
   computed: {
     ...mapGetters({
-      triggers: 'trigger/set',
+      scripts: 'automationScript/set',
     }),
 
     sortedByName () {
       return this.isSortedBy('name', true)
+    },
+
+    sortedByAsync () {
+      return this.isSortedBy('async')
+    },
+
+    sortedByRunInUA () {
+      return this.isSortedBy('runInUA')
+    },
+
+    sortedByCritical () {
+      return this.isSortedBy('critical')
     },
 
     sortedByEnabled () {
@@ -134,26 +167,26 @@ export default {
       return this.isSortedBy('updatedAt')
     },
 
-    sortedTriggers () {
-      return this.sortedItems([...this.triggers])
+    sortedScripts () {
+      return this.sortedItems([...this.scripts])
     },
   },
 
   created () {
     const { namespaceID } = this.namespace
-    this.loadTriggers({ namespaceID, force: true })
+    this.loadScripts({ namespaceID, perPage: 0, force: true, clear: true })
   },
 
   methods: {
     ...mapActions({
-      loadTriggers: 'trigger/load',
-      createTrigger: 'trigger/create',
+      loadScripts: 'automationScript/load',
+      createScript: 'automationScript/create',
     }),
 
     create () {
-      this.createTrigger(this.newTrigger).then(t => {
-        this.newTrigger = new Trigger()
-        this.$router.push({ name: 'admin.automation.edit', params: { triggerID: t.triggerID } })
+      const { namespaceID } = this.namespace
+      this.createScript({ namespaceID, ...this.newScript }).then(t => {
+        this.$router.push({ name: 'admin.automation.edit', params: { scriptID: t.scriptID } })
       })
     },
   },

@@ -47,7 +47,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Trigger from 'corteza-webapp-compose/src/lib/trigger'
+// import Trigger from 'corteza-webapp-compose/src/lib/trigger'
 import Chart from 'corteza-webapp-compose/src/lib/chart'
 import Module from 'corteza-webapp-compose/src/lib/module'
 
@@ -72,7 +72,7 @@ export default {
       classes: {
         'module': Module,
         'chart': Chart,
-        'trigger': Trigger,
+        // 'trigger': Trigger,
       },
     }
   },

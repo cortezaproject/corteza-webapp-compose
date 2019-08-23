@@ -6,7 +6,7 @@ import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Create from 'corteza-webapp-compose/src/views/Public/Pages/Records/Create'
 import Namespace from 'corteza-webapp-compose/src/lib/namespace'
 import Module from 'corteza-webapp-compose/src/lib/module'
-import Record from 'corteza-webapp-compose/src/lib/record'
+import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 import Page from 'corteza-webapp-compose/src/lib/page'
 import Vuex from 'vuex'
 

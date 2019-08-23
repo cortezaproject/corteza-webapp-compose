@@ -3,7 +3,7 @@
 
 import { expect } from 'chai'
 import { extractSocialUrl, getTwitterHandle } from 'corteza-webapp-compose/src/lib/block/SocialFeed'
-import Record from 'corteza-webapp-compose/src/lib/record'
+import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 import Module from 'corteza-webapp-compose/src/lib/module'
 
 let should = require('chai').should()

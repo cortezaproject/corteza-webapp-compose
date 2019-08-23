@@ -21,7 +21,7 @@ export default {
       required: true,
     },
     ascending: {
-      type: Boolean,
+      type: [Boolean, Function],
     },
 
     sortDisabled: {
@@ -38,7 +38,7 @@ export default {
     sort (asc) {
       const fieldObject = {
         name: this.name,
-        ascending: asc,
+        ascending: typeof asc === 'function' ? asc(this.name, true) : asc,
       }
       this.$emit('sort', fieldObject)
     },
