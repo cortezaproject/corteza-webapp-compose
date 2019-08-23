@@ -16,7 +16,7 @@ steps:
   - name: build
     image: cortezaproject/corteza-webapp-builder
     commands:
-      - yarn build
+      - yarn build --modern
 
     when:
       ref:

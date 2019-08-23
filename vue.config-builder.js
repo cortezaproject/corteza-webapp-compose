@@ -21,7 +21,6 @@ module.exports = ({ appName, appLabel, version, theme, packageAlias, root = path
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
           chunks: 'all',
         },
       },
@@ -52,7 +51,7 @@ module.exports = ({ appName, appLabel, version, theme, packageAlias, root = path
 
     chainWebpack: config => {
       // Do not copy config files (deployment procedure will do that)
-      config.plugin('copy').tap(options => {
+      config.plugins.has('copy') && config.plugin('copy').tap(options => {
         options[0][0].ignore.push('config*js')
         return options
       })
