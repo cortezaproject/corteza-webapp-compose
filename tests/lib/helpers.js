@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import { createLocalVue, shallowMount as sm } from '@vue/test-utils'
-import sinon from 'sinon'
 
 Vue.config.ignoredElements = [
   'font-awesome-icon',
@@ -11,9 +10,6 @@ Vue.config.ignoredElements = [
 export const writeableWindowLocation = ({ path: value = '/' } = {}) => Object.defineProperty(window, 'location', { writable: true, value })
 
 export const mount = (component, params = {}) => shallowMount(component, { ...params })
-
-export const stdReject = () => sinon.stub().rejects({ message: 'err' })
-export const networkReject = () => sinon.stub().rejects({ message: 'Network Error' })
 
 export const shallowMount = (component, { mocks = {}, stubs = [], ...options } = {}) => {
   let localVue = createLocalVue()

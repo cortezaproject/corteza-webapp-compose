@@ -3,14 +3,9 @@ import { expect } from 'chai'
 import Exporter from 'corteza-webapp-compose/src/components/Public/Record/Exporter'
 import Module from 'corteza-webapp-compose/src/lib/module'
 import { shallowMount } from 'corteza-webapp-compose/tests/lib/helpers'
-import sinon from 'sinon'
 import moment from 'moment'
 
 describe('components/Public/Record/Exporter.vue', () => {
-  afterEach(() => {
-    sinon.restore()
-  })
-
   const mm = () => moment("2019-08-22")
   let propsData
   beforeEach(() => {
