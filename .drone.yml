@@ -18,13 +18,21 @@ steps:
     commands:
       - yarn build
 
+    when:
+      ref:
+        - refs/heads/master
+        - refs/heads/beta
+        - refs/heads/feature-*
+        - refs/tags/20??.*.*
+      events: [ tag, push ]
+
   - name: pack
     image: cortezaproject/corteza-webapp-builder
     volumes:
       - name: webapp-build
         path: /var/build
     commands:
-      - tar -cjf /var/build/$DRONE_REPO_NAME-$DRONE_BRANCH.tar.bz2 -C dist/ .
+      - tar -cjf /var/build/$DRONE_REPO_NAME-${DRONE_TAG=${DRONE_BRANCH}}.tar.bz2 -C dist/ .
 
   - name: trigger
     image: plugins/downstream
@@ -33,19 +41,15 @@ steps:
       server: https://drone.crust.tech
       token:
         from_secret: drone_token
+      params:
+        - "APP_VERSION=${DRONE_TAG=${DRONE_BRANCH}}"
       repositories:
         # Dynamically constructs Drone repo name that will be notified
         #  - namespace (cortezaproject/crusttech),
-        #  - removing suffix (auth) from repo name (corteza-webapp..., crust-webapp...)
-        - "${DRONE_REPO_NAMESPACE}/${DRONE_REPO_NAME%%-compose}@${DRONE_BRANCH}"
+        #  - removing suffix (admin) from repo name (corteza-webapp..., crust-webapp...)
+        - "${DRONE_REPO_NAMESPACE}/${DRONE_REPO_NAME%%-compose}"
 
 trigger:
-  branch:
-    - master
-  refs:
-    - refs/tags/v20??.*
-  event:
-    - push
 
 volumes:
   - name: webapp-build
