@@ -587,6 +587,11 @@ export default {
         specific: 'Delete record of module "{{target}}"',
         description: 'Default: deny',
       },
+      'automation-trigger-manage': {
+        title: 'Can manage automation triggers on any module',
+        specific: 'Can manage automation triggers on module "{{target}}"',
+        description: 'Default: deny',
+      },
     },
     'compose-module-field': {
       'record-value-read': {
