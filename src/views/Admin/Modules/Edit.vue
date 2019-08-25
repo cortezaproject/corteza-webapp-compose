@@ -31,9 +31,9 @@
                 </thead>
                 <draggable v-model="module.fields" :options="{handle:'.handle'}" element="tbody">
                   <field-row-edit v-for="(field, index) in module.fields"
-                                  @edit="handleFieldEdit(field)"
+                                  @edit="handleFieldEdit(module.fields[index])"
                                   @delete="module.fields.splice(index, 1)"
-                                  :field="field"
+                                  v-model="module.fields[index]"
                                   :canGrant="namespace.canGrant"
                                   :key="index"></field-row-edit>
                 </draggable>
@@ -152,7 +152,7 @@ export default {
 
     handleSave ({ closeOnSuccess = false } = {}) {
       this.updateModule(this.module).then((module) => {
-        this.module = module
+        this.module = new Module({ ...module })
         this.raiseSuccessAlert(this.$t('notification.module.saved'))
         if (closeOnSuccess) {
           this.redirect()

@@ -353,7 +353,7 @@ export default {
     }),
 
     preloadRunner (userID) {
-      if (userID) {
+      if (!!userID && userID != '0') {
         // We need to trick <v-select> component into re-rendering when
         // we find the selected runner/user
         this.script.runAs = ''

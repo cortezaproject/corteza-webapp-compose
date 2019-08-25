@@ -8,7 +8,7 @@
                            :title="$t('module.edit.reorderFields')"></font-awesome-icon>
     </td>
     <td>
-      <b-form-input v-model="field.name"
+      <b-form-input v-model="value.name"
                     required
                     :readonly="disabled"
                     :state="checkFieldName"
@@ -16,48 +16,47 @@
                     class="form-control"></b-form-input>
     </td>
     <td>
-      <b-input v-model="field.label"
+      <b-input v-model="value.label"
              type="text"
              class="form-control"/>
     </td>
     <td>
-      <b-select v-model="field.kind"
+      <b-select v-model="value.kind"
                 :disabled="disabled"
-                class="w-75"
-                @change="handleKindChange(field)">
+                class="w-75">
         <option v-for="fieldType in fieldsList"
                 :key="fieldType.kind"
                 :value="fieldType.kind">{{ fieldType.label||fieldType.kind }}</option>
       </b-select>
-      <b-button :disabled="!field.isConfigurable()"
+      <b-button :disabled="!value.isConfigurable()"
               @click.prevent="$emit('edit')"
               class="pl-1 pr-0 text-secondary"
               variant="link">
         <font-awesome-icon :icon="['fas', 'wrench']"></font-awesome-icon></b-button>
     </td>
     <td class="text-center align-middle">
-      <b-form-checkbox v-model="field.isMulti"
-                       :disabled="!field.allowMulti()"
+      <b-form-checkbox v-model="value.isMulti"
+                       :disabled="!value.allowMulti()"
                        :value="true"
                        :unchecked-value="false"></b-form-checkbox>
     </td>
     <td class="text-center align-middle">
-      <b-form-checkbox v-model="field.isRequired"
+      <b-form-checkbox v-model="value.isRequired"
                        :value="true"
                        :unchecked-value="false"></b-form-checkbox>
     </td>
     <td class="text-center align-middle">
-      <b-form-checkbox v-model="field.isPrivate"
+      <b-form-checkbox v-model="value.isPrivate"
                        :value="true"
                        :unchecked-value="false"></b-form-checkbox>
     </td>
     <td class="text-right align-middle">
       <confirmation-toggle @confirmed="$emit('delete')"
-                           :no-prompt="!field.name"
+                           :no-prompt="!value.name"
                            class="confirmation-small">
         <font-awesome-icon :icon="['far', 'trash-alt']"></font-awesome-icon>
       </confirmation-toggle>
-      <permissions-button v-if="canGrant" :title="field.name" :resource="'compose:module-field:'+field.fieldID" link />
+      <permissions-button v-if="canGrant" :title="value.name" :resource="'compose:module-field:'+value.fieldID" link />
     </td>
   </tr>
 </template>
@@ -72,7 +71,7 @@ export default {
   },
 
   props: {
-    field: {
+    value: {
       type: Object,
       required: true,
     },
@@ -93,12 +92,16 @@ export default {
 
   computed: {
     checkFieldName () {
-      return this.field.name.length > 1 && /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(this.field.name) ? null : false
+      if (this.disabled) {
+        return null
+      }
+
+      return this.value.name.length > 1 && /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(this.value.name) ? null : false
     },
 
     disabled () {
       // @todo count number of records and disable if > 0
-      return false
+      return this.value.fieldID !== '0'
     },
   },
 
