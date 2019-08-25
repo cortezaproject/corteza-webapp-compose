@@ -145,7 +145,7 @@ export default {
       delete (c.config.renderer.data)
 
       this.updateChart(c).then((chart) => {
-        this.chart = chart
+        this.chart = new Chart(chart)
         this.raiseSuccessAlert(this.$t('notification.chart.saved'))
         if (closeOnSuccess) {
           this.redirect()
