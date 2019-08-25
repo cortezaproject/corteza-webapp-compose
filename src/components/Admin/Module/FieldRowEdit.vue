@@ -36,21 +36,18 @@
         <font-awesome-icon :icon="['fas', 'wrench']"></font-awesome-icon></b-button>
     </td>
     <td class="text-center align-middle">
-      <b-form-checkbox
-                       v-model="field.isMulti"
+      <b-form-checkbox v-model="field.isMulti"
                        :disabled="!field.allowMulti()"
                        :value="true"
                        :unchecked-value="false"></b-form-checkbox>
     </td>
-    <td class="text-center">
-      <b-form-checkbox
-                       v-model="field.isRequired"
+    <td class="text-center align-middle">
+      <b-form-checkbox v-model="field.isRequired"
                        :value="true"
                        :unchecked-value="false"></b-form-checkbox>
     </td>
     <td class="text-center align-middle">
-      <b-form-checkbox
-                       v-model="field.isPrivate"
+      <b-form-checkbox v-model="field.isPrivate"
                        :value="true"
                        :unchecked-value="false"></b-form-checkbox>
     </td>
