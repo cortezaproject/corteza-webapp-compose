@@ -19,7 +19,7 @@
 <script>
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
 import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
-import Namespace from 'corteza-webapp-compose/src/lib/namespace'
+import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 import Page from 'corteza-webapp-compose/src/lib/page'
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 import Toolbar from 'corteza-webapp-compose/src/components/Public/Page/Toolbar'

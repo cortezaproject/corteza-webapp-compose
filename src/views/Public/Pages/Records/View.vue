@@ -44,7 +44,7 @@ import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/Conf
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 import Toolbar from 'corteza-webapp-compose/src/components/Public/Page/Toolbar'
-import Namespace from 'corteza-webapp-compose/src/lib/namespace'
+import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 import Page from 'corteza-webapp-compose/src/lib/page'
 
 export default {

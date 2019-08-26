@@ -1,4 +1,4 @@
-import Namespace from 'corteza-webapp-compose/src/lib/namespace'
+import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 
 const types = {
   pending: 'pending',

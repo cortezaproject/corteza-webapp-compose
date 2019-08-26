@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import Namespace from 'corteza-webapp-compose/src/lib/namespace'
+import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import { PermissionsModal } from 'corteza-webapp-common/components'
 

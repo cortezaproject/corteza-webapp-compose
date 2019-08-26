@@ -63,7 +63,7 @@ import draggable from 'vuedraggable'
 import Report from 'corteza-webapp-compose/src/components/Admin/Chart/Editor/Report'
 import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
-import Namespace from 'corteza-webapp-compose/src/lib/namespace'
+import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import { Chart, ChartComponent } from 'corteza-webapp-compose/src/lib/chart'
 

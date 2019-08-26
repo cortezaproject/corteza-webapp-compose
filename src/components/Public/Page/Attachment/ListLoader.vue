@@ -71,7 +71,7 @@
 import numeral from 'numeral'
 import moment from 'moment'
 import Attachment from 'corteza-webapp-compose/src/lib/attachment'
-import Namespace from 'corteza-webapp-compose/src/lib/namespace'
+import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 import { PreviewInline, canPreview } from 'corteza-webapp-common/src/components/FilePreview/'
 import AttachmentLink from './Link'
 import draggable from 'vuedraggable'

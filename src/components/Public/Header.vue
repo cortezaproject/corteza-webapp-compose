@@ -29,7 +29,7 @@
 import { mapGetters } from 'vuex'
 import MenuLevel from './MenuLevel'
 import navbarCollapse from 'corteza-webapp-compose/src/mixins/navbar_collapse'
-import Namespace from 'corteza-webapp-compose/src/lib/namespace'
+import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 import Page from 'corteza-webapp-compose/src/lib/page'
 
 export default {

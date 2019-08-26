@@ -71,7 +71,7 @@ import BlockPreview from 'corteza-webapp-compose/src/lib/block/BuilderPreview'
 import BlockEdit from 'corteza-webapp-compose/src/lib/block/BuilderEdit'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Page from 'corteza-webapp-compose/src/lib/page'
-import Namespace from 'corteza-webapp-compose/src/lib/namespace'
+import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 
 export default {
   components: {

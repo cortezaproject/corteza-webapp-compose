@@ -14,7 +14,7 @@
 <script>
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
 import AttachmentModal from 'corteza-webapp-compose/src/components/Public/Page/Attachment/Modal'
-import Namespace from 'corteza-webapp-compose/src/lib/namespace'
+import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 import Page from 'corteza-webapp-compose/src/lib/page'
 
 export default {

@@ -43,7 +43,7 @@
 <script>
 import draggable from 'vuedraggable'
 import PageTree from 'corteza-webapp-compose/src/components/Admin/Page/Tree'
-import Namespace from 'corteza-webapp-compose/src/lib/namespace'
+import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 
 export default {
   name: 'PageList',
