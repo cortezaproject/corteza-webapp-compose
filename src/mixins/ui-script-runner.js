@@ -193,6 +193,9 @@ export default {
         throw new ReferenceError(`Expecting UserAgentScript object (got ${typeof script})`)
       }
 
+      // Current user
+      ctx.authUser = this.$auth ? this.$auth.user : {}
+
       // Map API clients
       ctx.ComposeAPI = this.$ComposeAPI
       ctx.MessagingAPI = this.$MessagingAPI

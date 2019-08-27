@@ -4248,7 +4248,7 @@ corejs-upgrade-webpack-plugin@^2.0.0:
 
 corteza-webapp-common@cortezaproject/corteza-webapp-common.git#master:
   version "2019.9.0-rc.1"
-  resolved "https://codeload.github.com/cortezaproject/corteza-webapp-common/tar.gz/7c45b878da984f3cf4cbcdfc88b23f9a02a1a69a"
+  resolved "https://codeload.github.com/cortezaproject/corteza-webapp-common/tar.gz/e0d6520f9553605d5bf7da3aa72a62675c6a7f0b"
   dependencies:
     axios "0.19.0"
     diff "4.0.1"

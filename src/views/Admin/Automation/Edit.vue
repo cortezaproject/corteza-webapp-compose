@@ -428,6 +428,8 @@ export default {
 
     onClickRunTestInBrowser () {
       const ctx = {
+        authUser: this.$auth.user,
+
         ComposeAPI: this.$ComposeAPI,
         MessagingAPI: this.$MessagingAPI,
         SystemAPI: this.$SystemAPI,
