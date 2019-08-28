@@ -1,9 +1,26 @@
 <template>
   <div v-if="recordListModule">
     <span v-if="!options.hideAddButton && recordListModule.canCreateRecord">
-      <router-link
-                  class="btn-url d-inline-block mt-1"
-                  :to="{ name: 'page.record.create', params: { pageID: options.pageID, refRecord: record }, query: null }">+ {{ $t('block.recordList.addRecord') }}</router-link>
+      <router-link class="btn btn-sm btn-outline-primary float-left"
+                   :to="{
+                     name: 'page.record.create',
+                     params: { pageID: options.pageID, refRecord: record },
+                     query: null,
+                    }">
+
+          + {{ $t('block.recordList.addRecord') }}
+
+      </router-link>
+
+      <importer-modal :module="recordListModule"
+                      :namespace="namespace"
+                      class=" ml-1 float-left" />
+
+      <exporter-modal v-if="options.allowExport"
+                      :module="recordListModule"
+                      :records="records"
+                      @export="onExport"
+                      class="ml-1 float-left" />
     </span>
     <b-input v-if="!options.hideSearch"
            @keyup.enter.prevent="handleQuery"
@@ -11,13 +28,6 @@
            v-model="query"
            class="float-right mw-100 mb-1"
            :placeholder="$t('general.label.search')" />
-
-    <exporter-modal
-      v-if="options.allowExport"
-      :module="recordListModule"
-      :records="records"
-      @export="onExport"
-      class="float-right mt-1" />
 
     <div class="table-responsive">
       <table class="table sticky-header table-hover" :class="{sortable: !options.hideSorting}">
@@ -69,7 +79,8 @@
 import { mapGetters } from 'vuex'
 import base from './base'
 import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
-import ExporterModal from 'corteza-webapp-compose/src/components/Public/Record/ExporterModal'
+import ExporterModal from 'corteza-webapp-compose/src/components/Public/Record/Exporter'
+import ImporterModal from 'corteza-webapp-compose/src/components/Public/Record/Importer'
 import Pagination from 'vue-pagination-2'
 import _ from 'lodash'
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
@@ -79,6 +90,7 @@ export default {
     Pagination,
     FieldViewer,
     ExporterModal,
+    ImporterModal,
   },
 
   extends: base,
