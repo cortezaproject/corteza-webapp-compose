@@ -1,11 +1,11 @@
 /* eslint-disable */
 import { expect } from 'chai'
-import Exporter from 'corteza-webapp-compose/src/components/Public/Record/Exporter'
+import FieldPicker from 'corteza-webapp-compose/src/components/Public/Record/Exporter/FieldPicker'
 import Module from 'corteza-webapp-compose/src/lib/module'
 import { shallowMount } from 'corteza-webapp-compose/tests/lib/helpers'
 import moment from 'moment'
 
-describe('components/Public/Record/Exporter.vue', () => {
+describe('components/Public/Record/Exporter/FieldPicker.vue', () => {
   const mm = () => moment("2019-08-22")
   let propsData
   beforeEach(() => {
@@ -14,7 +14,7 @@ describe('components/Public/Record/Exporter.vue', () => {
     }
   })
 
-  const mountExporter = (opt) => shallowMount(Exporter, {
+  const mountExporter = (opt) => shallowMount(FieldPicker, {
     propsData,
     ...opt,
   })
@@ -50,13 +50,13 @@ describe('components/Public/Record/Exporter.vue', () => {
 
     it('range start', () => {
       for (const tc of cases) {
-        expect(Exporter.methods.calcStart(mm(), tc.range)).to.eq(tc.start)
+        expect(FieldPicker.methods.calcStart(mm(), tc.range)).to.eq(tc.start)
       }
     })
 
     it('range end', () => {
       for (const tc of cases) {
-        expect(Exporter.methods.calcEnd(mm(), tc.range)).to.eq(tc.end)
+        expect(FieldPicker.methods.calcEnd(mm(), tc.range)).to.eq(tc.end)
       }
     })
   })
@@ -128,7 +128,7 @@ describe('components/Public/Record/Exporter.vue', () => {
       [[ {} ], 1, false],
     ]
     for (const [ fields, recordCount, expected ] of cases) {
-      expect(Exporter.computed.exportDisabled
+      expect(FieldPicker.computed.exportDisabled
           .call({ fields, recordCount })).to.eq(expected)
 
     }
