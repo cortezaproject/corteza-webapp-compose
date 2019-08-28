@@ -1,4 +1,4 @@
-import Module from 'corteza-webapp-compose/src/lib/module.js'
+import Module from 'corteza-webapp-compose/src/lib/module'
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 import UserAgentScript from 'corteza-webapp-common/src/lib/types/shared/automation-ua-script'
 import execInUA from 'corteza-webapp-common/src/lib/automation-scripts/exec-in-ua'
@@ -20,27 +20,31 @@ export default {
      * @param {Namespace} namespace
      * @param {Module} module
      * @param {Record} record
-     * @returns {Promise<unknown>}
+     * @returns {Promise<Record>}
      */
     async createRecord (namespace, module, record) {
       const { moduleID } = module
       const ctx = {
-        namespace,
-        module,
-        record,
+        $namespace: namespace,
+        $module: module,
+        $record: record,
       }
 
-      return this.runScriptsByEvent('beforeCreate', moduleID, ctx, this.stdRecordEventProcessor)
-        // unpacking record to make sure we're not carrying any references with us
-        .then(({ record }) => this.$ComposeAPI.recordCreate({ ...record }))
-        .then((apiResponse) => {
-          let record = new Record(module, apiResponse)
+      return this
+        // automation (running UA scripts on beforeCreate event)
+        .runScriptsByEvent('beforeCreate', moduleID, ctx, this.stdRecordEventProcessor)
 
-          // Update context with new data from before* scripts
-          return { ...ctx, record }
-        })
-        .then((ctx) => this.runScriptsByEvent('afterCreate', moduleID, ctx, this.stdRecordEventProcessor))
-        .then(({ record }) => record)
+        // send record to the API
+        .then(({ $record }) => this.$ComposeAPI.recordCreate($record))
+
+        // convert record we got back from the API
+        .then((record) => new Record(module, record))
+
+        // automation (running UA scripts on afterCreate event)
+        .then($record => this.runScriptsByEvent('afterCreate', moduleID, { ...ctx, $record }, this.stdRecordEventProcessor))
+
+        // Extract & return record
+        .then(({ $record }) => $record)
     },
 
     /**
@@ -49,27 +53,31 @@ export default {
      * @param {Namespace} namespace
      * @param {Module} module
      * @param {Record} record
-     * @returns {Promise<unknown>}
+     * @returns {Promise<Record>}
      */
     async updateRecord (namespace, module, record) {
       const { moduleID } = module
       const ctx = {
-        namespace,
-        module,
-        record,
+        $namespace: namespace,
+        $module: module,
+        $record: record,
       }
 
-      return this.runScriptsByEvent('beforeUpdate', moduleID, ctx, this.stdRecordEventProcessor)
-        // unpacking record to make sure we're not carrying any references with us
-        .then(({ record }) => this.$ComposeAPI.recordUpdate({ ...record }))
-        .then((apiResponse) => {
-          let record = new Record(module, apiResponse)
+      return this
+        // automation (running UA scripts on beforeUpdate event)
+        .runScriptsByEvent('beforeUpdate', moduleID, ctx, this.stdRecordEventProcessor)
 
-          // Update context with new data from before* scripts
-          return { ...ctx, record }
-        })
-        .then((ctx) => this.runScriptsByEvent('afterUpdate', moduleID, ctx, this.stdRecordEventProcessor))
-        .then(({ record }) => record)
+        // send record to the API
+        .then(({ $record }) => this.$ComposeAPI.recordUpdate($record))
+
+        // convert record we got back from the API
+        .then((record) => new Record(module, record))
+
+        // automation (running UA scripts on afterUpdate event)
+        .then($record => this.runScriptsByEvent('afterUpdate', moduleID, { ...ctx, $record }, this.stdRecordEventProcessor))
+
+        // Extract & return record
+        .then(({ $record }) => $record)
     },
 
     /**
@@ -78,30 +86,45 @@ export default {
      * @param {Namespace} namespace
      * @param {Module} module
      * @param {Record} record
-     * @returns {Promise<void>}
+     * @returns {Promise<null>}
      */
     async deleteRecord (namespace, module, record) {
       const { moduleID } = module
       const ctx = {
-        namespace,
-        module,
-        record,
+        $namespace: namespace,
+        $module: module,
+        $record: record,
       }
 
-      return this.runScriptsByEvent('beforeDelete', moduleID, ctx, this.stdRecordEventProcessor)
-        .then(({ record }) => {
-          // unpacking record to make sure we're not carrying any references with us
-          this.$ComposeAPI.recordDelete({ ...record })
+      return this
+        // automation (running UA scripts on beforeDelete event)
+        .runScriptsByEvent('beforeDelete', moduleID, ctx, this.stdRecordEventProcessor)
 
-          // Update context with new data from before* scripts
-          return { ...ctx, record }
-        })
-        .then((ctx) => this.runScriptsByEvent('afterDelete', moduleID, ctx, this.stdRecordEventProcessor))
-        .then(() => Promise.resolve(null))
+        // send delete request
+        .then(({ $record }) => this.$ComposeAPI.recordDelete($record))
+
+        // automation (running UA scripts on afterDelete event)
+        // no record is returned on-delete event, so we'll reuse the old one
+        // (we also create new instance to avoid ref leak)
+        .then(() => this.runScriptsByEvent('afterDelete', moduleID, { ...ctx, $record: new Record(module, record) }, this.stdRecordEventProcessor))
+
+        // return null
+        .then(() => null)
     },
 
+    /**
+     * Record event processor
+     *
+     * Used as a runScriptsByEvent callback to process results and map them back to context
+     *
+     * Used as a param for
+     * @param ctx
+     * @param result
+     * @returns {{record: *}}
+     */
     stdRecordEventProcessor (ctx, result) {
-      return { ...ctx, record: result }
+      throw Error('SHOULD NOT BE CALLED ANYMORE')
+      // return { ...ctx, $record: result }
     },
 
     /**
@@ -111,24 +134,22 @@ export default {
      * @param {string} condition
      * @param {Object} ctx
      * @param {Function} processor - result processor
-     * @returns {Promise<(*|Promise<Promise<unknown>>)[]>}
+     * @returns {Promise<(*>)[]>}
      */
     async runScriptsByEvent (event, condition, ctx = {}, processor = (ctx, result) => ctx) {
       const scripts = this.getMatchingUAScripts(event, condition) || []
 
-      for (var s of scripts) {
+      for (let s of scripts) {
         let result = await this.runUAScript(s, ctx)
 
-        if (result === undefined) {
+        if (result === false) {
           // Async script
-          continue
+          return false
         }
-
-        ctx = processor(ctx, result)
       }
 
       // Run all matching scripts and then resolve the promise
-      return Promise.resolve(ctx)
+      return ctx
     },
 
     /**

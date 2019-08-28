@@ -428,20 +428,20 @@ export default {
 
     onClickRunTestInBrowser () {
       const ctx = {
-        authUser: this.$auth.user,
+        $authUser: this.$auth.user,
 
         ComposeAPI: this.$ComposeAPI,
         MessagingAPI: this.$MessagingAPI,
         SystemAPI: this.$SystemAPI,
 
-        namespace: this.namespace,
-        module: this.testModuleID ? new Module(this.getModuleByID(this.testModuleID)) : undefined,
+        $namespace: this.namespace,
+        $module: this.testModuleID ? new Module(this.getModuleByID(this.testModuleID)) : undefined,
         ...this.parseTestPayload(),
       }
 
       // We must convert the record struct from payload to something usable:
-      if (ctx.module && ctx.record) {
-        ctx.record = new Record(ctx.module, ctx.record)
+      if (ctx.$module && ctx.$record) {
+        ctx.$record = new Record(ctx.$module, ctx.$record)
       }
 
       // Override stuff that might hurt our testing/dev environment:

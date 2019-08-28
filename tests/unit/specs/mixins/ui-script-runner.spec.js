@@ -11,7 +11,12 @@ import UserAgentScript from 'corteza-webapp-common/src/lib/types/shared/automati
 chai.use(chaiAsPromised)
 
 describe('mixins/ui-script-runner.js', () => {
-  const M = new Module({ moduleID: 555 })
+  const M = new Module({
+    moduleID: 555,
+    fields: [
+      { name: 'str', type: 'string' },
+    ],
+  })
 
   let mixin
 
@@ -62,7 +67,7 @@ describe('mixins/ui-script-runner.js', () => {
         mixin.$ComposeAPI['record' + tc.event] = sinon.fake.resolves(R)
 
         // Run the chain
-        await mixin[tc.event.toLocaleLowerCase() + 'Record']({}, M, R)
+        await mixin[tc.event.toLocaleLowerCase() + 'Record']({}, M, new Record(M, R))
 
         sinon.assert.calledWithMatch(mixin.$ComposeAPI['record' + tc.event], R)
       })
@@ -87,22 +92,23 @@ describe('mixins/ui-script-runner.js', () => {
       })
 
       it('only script before* event should be able to modify the record that is sent to the API', async () => {
-        const R = new Record(M, { recordID: '66', ownedBy: '*' })
+        const R = new Record(M, { recordID: '66', ownedBy: '*', values: { str: '*' } })
         expect(R.ownedBy).is.equal('*')
 
         mixin.getMatchingUAScripts = (event) => {
           if (event === 'before' + tc.event) {
             // Simple script that modifies record's owner
-            return [new UserAgentScript({ source: `$record.ownedBy += 'before*'` })]
+            return [new UserAgentScript({ source: `$record.ownedBy += 'before*'; $record.values.str += 'before*'` })]
           }
 
           if (event === 'after' + tc.event) {
             // Simple script that modifies record's owner
-            return [new UserAgentScript({ source: `$record.ownedBy += 'after*'` })]
+            return [new UserAgentScript({ source: `$record.ownedBy += 'after*'; $record.values.str += 'after*'` })]
           }
         }
 
         expect(R.ownedBy).is.equal('*')
+        expect(R.values.str).is.equal('*')
 
         // Run the chain
         if (tc.expectRecord) {
@@ -113,21 +119,20 @@ describe('mixins/ui-script-runner.js', () => {
 
           expect(result).is.instanceOf(Record)
           expect(result.ownedBy).is.equal('*before*after*')
+          expect(result.values.str).is.equal('*before*after*')
         } else {
           // Handling delete test, API does not return the record
           mixin.$ComposeAPI['record' + tc.event] = sinon.fake.resolves(null)
 
           let result = await mixin[tc.event.toLocaleLowerCase() + 'Record']({}, M, R)
 
-          expect(result).is.null
+          expect(result).is.equal(null)
         }
-
-        // Original value should be kept intact
-        expect(R.ownedBy).is.equal('*')
 
         // Record, sent to the API should only have *before* value
         let [argRecord] = mixin.$ComposeAPI['record' + tc.event].args[0]
         expect(argRecord.ownedBy).is.equal('*before*')
+        expect(argRecord.values.str).is.equal('*before*')
       })
 
       it('sync scripts w/ before triggers should prevent record sending to the API', async () => {
