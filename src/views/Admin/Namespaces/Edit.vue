@@ -15,7 +15,7 @@
           v-model="namespace.name"
           type="text"
           required
-          :state="!!namespace.name"
+          :state="nameState"
           :placeholder="$t('namespace.name.placeholder')" />
 
       </b-form-group>
@@ -25,7 +25,7 @@
             <b-form-input
               v-model="namespace.slug"
               type="text"
-              :state="!!namespace.slug"
+              :state="slugState"
               :placeholder="$t('namespace.slug.placeholder')" />
 
           </b-form-group>
@@ -87,32 +87,40 @@ export default {
     },
 
     isEdit () {
-      return !!this.namespace.namespaceID
+      return this.namespace && !!this.namespace.namespaceID
+    },
+
+    slugState () {
+      return this.namespace ? this.namespace.slug.length > 0 : null
+    },
+
+    nameState () {
+      return this.namespace ? this.namespace.name.length > 0 : null
     },
 
     canDelete () {
       if (this.isEdit) {
         return this.namespace.canDeleteNamespace
       }
+
       return false
     },
 
     canSave () {
-      if (this.isEdit) {
-        return this.namespace.canUpdateNamespace && !!this.namespace.name && !!this.namespace.slug
+      if (this.isEdit && !this.namespace.canUpdateNamespace) {
+        return false
       }
+
       return !!this.namespace.name && !!this.namespace.slug
     },
   },
 
   created () {
-    this.namespace.namespaceID = this.$route.params.namespaceID
-    this.fetchNamespace()
+    this.fetchNamespace(this.$route.params.namespaceID)
   },
 
   methods: {
-    fetchNamespace () {
-      const { namespaceID } = this.namespace
+    fetchNamespace (namespaceID) {
       if (namespaceID) {
         this.$store.dispatch('namespace/findByID', { namespaceID: namespaceID }).then((ns) => {
           this.namespace = new Namespace(ns)
@@ -124,20 +132,21 @@ export default {
       const { namespaceID, name, slug, enabled, meta } = this.namespace
       if (this.isEdit) {
         this.$store.dispatch('namespace/update', { namespaceID, name, slug, enabled, meta }).then((ns) => {
+          this.namespace = new Namespace(ns)
+
           this.raiseSuccessAlert(this.$t('notification.namespace.saved'))
           if (closeOnSuccess) {
             this.$router.push({ name: 'root' })
           }
-          this.fetchNamespace()
         }).catch(this.raiseWarningAlert(this.$t('notification.namespace.saveFailed')))
       } else {
         this.$store.dispatch('namespace/create', { name, slug, enabled, meta }).then((ns) => {
-          this.namespace.namespaceID = ns.namespaceID
+          this.namespace = new Namespace(ns)
+
           this.raiseSuccessAlert(this.$t('notification.namespace.saved'))
           if (closeOnSuccess) {
             this.$router.push({ name: 'root' })
           }
-          this.fetchNamespace()
         }).catch(this.raiseWarningAlert(this.$t('notification.namespace.createFailed')))
       }
     },
