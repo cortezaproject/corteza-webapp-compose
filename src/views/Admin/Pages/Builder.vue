@@ -55,6 +55,7 @@
                       :hideDelete="!page.canDeletePage"
                       :hideSave="!page.canUpdatePage"
                       @save="handleSave()"
+                      @delete="handleDeletePage"
                       @saveAndClose="handleSave({ closeOnSuccess: true })">
         <b-button v-if="page.canUpdatePage" pill variant="outline-secondary" class="mr-1" v-b-modal.createBlockSelector>+ {{ $t('page.build.addBlock') }}</b-button>
         <b-button v-if="page.canUpdatePage" pill variant="outline-secondary" class="mr-1" @click.prevent="handleSave({ previewOnSuccess: true })">{{ $t('general.label.saveAndPreview') }}</b-button>
@@ -165,6 +166,12 @@ export default {
           this.page = new Page(page)
         }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))
       })
+    },
+
+    handleDeletePage () {
+      this.$ComposeAPI.pageDelete(this.page).then(() => {
+        this.$router.push({ name: 'admin.pages' })
+      }).catch(this.defaultErrorHandler(this.$t('notification.page.deleteFailed')))
     },
   },
 }
