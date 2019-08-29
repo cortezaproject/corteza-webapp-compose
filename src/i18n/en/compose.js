@@ -166,7 +166,7 @@ export default {
         pickModuleField: 'Pick a module field',
         progress: '{{completed}}/{{entryCount}} rows',
         success: 'Import successful',
-        fail: 'Something went wrong during the import. Please try again: {{failReason}}',
+        failed: 'Import failed, please try again. Reason: {{failReason}}',
         onError: 'If any record fails to import:',
         onErrorFail: 'Cancel import',
         onErrorSkip: 'Skip record',
