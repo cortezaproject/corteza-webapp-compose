@@ -427,6 +427,15 @@ export default {
     },
 
     onClickRunTestInBrowser () {
+      let $module
+      let { record = {}, module } = this.parseTestPayload()
+
+      if (module) {
+        $module = new Module(module)
+      } else {
+        $module = this.testModuleID ? new Module(this.getModuleByID(this.testModuleID)) : undefined
+      }
+
       const ctx = {
         $authUser: this.$auth.user,
 
@@ -435,8 +444,8 @@ export default {
         SystemAPI: this.$SystemAPI,
 
         $namespace: this.namespace,
-        $module: this.testModuleID ? new Module(this.getModuleByID(this.testModuleID)) : undefined,
-        ...this.parseTestPayload(),
+        $module,
+        $record: new Record($module, record),
       }
 
       // We must convert the record struct from payload to something usable:
@@ -451,18 +460,7 @@ export default {
 
       execInUA(this.script.source, ctx).then(rval => {
         this.testResponseErr = null
-
-        if (rval instanceof Record) {
-          rval = {
-            record: {
-              ...rval,
-              module: undefined,
-              values: rval.serializeValues(),
-            },
-          }
-        }
-
-        this.testResponse = JSON.stringify(rval, null, '  ')
+        this.testResponse = JSON.stringify({ ...ctx.$record, module: undefined }, null, '  ')
       }).catch(err => {
         console.error(err)
         this.testResponseErr = err
