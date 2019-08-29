@@ -37,7 +37,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.2",
     "@panter/vue-i18next": "^0.15.0",
     "axios": "^0.18.0",
-    "bootstrap-vue": "^2.0.0-rc.27",
+    "bootstrap-vue": "^2.0.0-rc.28",
     "c3": "^0.6.11",
     "chart.js": "^2.7.3",
     "chartjs-plugin-datalabels": "^0.6.0",

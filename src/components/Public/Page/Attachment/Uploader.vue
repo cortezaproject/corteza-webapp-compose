@@ -7,11 +7,19 @@
     @vdropzone-success="onSuccess"
     @vdropzone-upload-progress="onUploadProgress"
     :options="dzOptions">
-    <div class="bg-light uploading text-center position-relative py-2" v-if="active">
-      <div class="bg-primary h-100 progress-bar position-absolute mt-n2" :style="progresBarStyle"></div>
-      {{ $t('general.label.uploading') }} {{ active.file.name }} ({{ size(active.file) }})
+    <div class="w-100 h-100 position-relative bg-light">
+      <template v-if="active">
+        <div class="bg-primary h-100 progress-bar position-absolute"
+             :style="progresBarStyle"></div>
+
+        <span class="d-flex align-items-center h-100 w-100 uploading justify-content-center position-relative py-2">
+          {{ $t('general.label.uploading') }} {{ active.file.name }} ({{ size(active.file) }})
+        </span>
+      </template>
+      <div v-else
+           class="d-flex align-items-center h-100 w-100 p-2 droparea justify-content-center mb-2">{{ label || $t('general.label.dropFiles') }}</div>
+
     </div>
-    <div class="bg-light p-2 droparea text-center mb-2" v-else>{{ $t('general.label.dropFiles') }}</div>
   </vue-dropzone>
 </template>
 <script>
@@ -29,6 +37,14 @@ export default {
     endpoint: {
       type: String,
       required: true,
+    },
+    acceptedFiles: {
+      type: String,
+      default: null,
+    },
+    label: {
+      type: String,
+      default: null,
     },
   },
 
@@ -53,6 +69,7 @@ export default {
         disablePreview: true,
         uploadMultiple: false,
         parallelUploads: 1,
+        acceptedFiles: this.acceptedFiles,
         headers: {
           // https://github.com/enyo/dropzone/issues/1154
           'Cache-Control': '',
@@ -96,20 +113,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#dropzone /deep/ .dz-message {
+  height: 100%;
+}
+
 div {
   .droparea {
     cursor: pointer;
+  }
+
+  .progress-bar {
+    width: 0;
+    opacity: 0.3;
   }
 
   .uploading {
     background-size: 100% 100%;
     background-position: right bottom;
     cursor: wait;
-
-    .progress-bar {
-      width: 0;
-      opacity: 0.3;
-    }
   }
 }
 </style>

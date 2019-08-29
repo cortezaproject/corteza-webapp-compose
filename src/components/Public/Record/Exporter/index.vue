@@ -1,7 +1,9 @@
 <template>
   <div>
-    <b-button @click="toggleModal" variant="link">
-      <font-awesome-icon :icon="['fas', 'cloud-download-alt']" />
+    <b-button @click="toggleModal"
+              size="sm"
+              variant="outline-primary">
+
       {{ $t('general.label.export') }}
     </b-button>
     <b-modal
@@ -12,7 +14,7 @@
       hide-footer
       body-class="p-0">
 
-      <exporter
+      <field-picker
         :module="module"
         :recordCount="records.length"
         v-on="$listeners" />
@@ -22,11 +24,11 @@
 </template>
 
 <script>
-import Exporter from 'corteza-webapp-compose/src/components/Public/Record/Exporter'
+import FieldPicker from './FieldPicker'
 
 export default {
   components: {
-    Exporter,
+    FieldPicker,
   },
 
   props: {
