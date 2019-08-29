@@ -112,3 +112,12 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+.confirmation-small {
+  min-width: 80px;
+
+  /deep/.btn-outline-danger {
+    border: none;
+  }
+}
+</style>

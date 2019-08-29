@@ -20,6 +20,7 @@
         ref="myQuillEditor"></quill-editor>
       <textarea
         v-else-if="field.options.multiLine"
+        class="w-100"
         v-model="value"></textarea>
 
       <b-form-input
