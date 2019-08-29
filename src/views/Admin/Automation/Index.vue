@@ -27,7 +27,7 @@
                         :namespace="namespace" type="script" />
               </b-col>
               <b-col md="2" class="text-right">
-                <export :list="sortedScripts" type="script" />
+<!--                <export :list="sortedScripts" type="script" />-->
                 <permissions-button v-if="namespace.canGrant"
                                     resource="compose:automation-script:*"
                                     link />

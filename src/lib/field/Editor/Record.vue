@@ -119,7 +119,7 @@ export default {
     'field.options': {
       deep: true,
       handler () {
-        // We need to daly loading for abit
+        // Delay loading of referenced records for a bit
         _.throttle((e) => {
           this.loadLatest()
         }, 500)()
