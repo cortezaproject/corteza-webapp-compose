@@ -81,7 +81,7 @@ describe('components/Public/Record/Exporter/FieldPicker.vue', () => {
           {
             rangeType: 'all',
           },
-          '',
+          undefined,
         ],
         [
           {
