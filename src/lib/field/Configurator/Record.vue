@@ -29,7 +29,7 @@
                      :disabled="!module">
       </b-form-select>
     </b-form-group>
-    <b-form-group>
+    <b-form-group v-if="field.isMulti">
       <label class="d-block">{{ $t('field.kind.select.optionType.label') }}</label>
       <b-form-radio-group
         v-model="f.options.selectType"
