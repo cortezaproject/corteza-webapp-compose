@@ -92,7 +92,7 @@ export default {
       // has anything selected && all selected rows have mapped module fields
       const selected = this.rows.filter(({ selected }) => selected)
       const named = selected.filter(({ moduleField }) => !!moduleField)
-      return selected.length && selected.length === named.length
+      return !!selected.length && selected.length === named.length
     },
 
     tableFields () {

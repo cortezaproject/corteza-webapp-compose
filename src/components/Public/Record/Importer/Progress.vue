@@ -36,34 +36,51 @@ export default {
       required: true,
       default: () => ({}),
     },
+
+    noPool: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data () {
     return {
-      progress: this.session.progress,
+      progress: this.session.progress || {},
     }
   },
 
   watch: {
-    progress ({ finishedAt, failed }) {
-      if (finishedAt && failed) {
-        window.clearTimeout(toHandle)
-        this.$emit('importFailed', this.progress)
-      } else if (finishedAt) {
-        window.clearTimeout(toHandle)
-      }
+    progress: {
+      handler: function ({ finishedAt, failed }) {
+        if (finishedAt && failed) {
+          this.clearTimeout()
+          this.$emit('importFailed', this.progress)
+        } else if (finishedAt) {
+          this.clearTimeout()
+        }
+      },
+      immediate: true,
     },
   },
 
   mounted () {
-    this.pool()
+    if (!this.noPool) {
+      this.pool()
+    }
   },
 
   beforeDestroy () {
-    window.clearTimeout(toHandle)
+    this.clearTimeout()
   },
 
   methods: {
+    clearTimeout () {
+      if (toHandle !== null) {
+        window.clearTimeout(toHandle)
+        toHandle = null
+      }
+    },
+
     pool () {
       this.$ComposeAPI.recordImportProgress(this.session)
         .then(({ progress }) => {

@@ -91,7 +91,7 @@ export default {
 
     fileUploaded () {
       this.$emit('fileUploaded', {
-        ...this.session,
+        ...this.session || {},
         onError: this.onError,
       })
     },
