@@ -365,7 +365,7 @@ export default {
 
     makeFilters ({ rangeType, rangeBy, date }) {
       if (rangeType === 'all') {
-        return ''
+        return undefined
       }
 
       let start, end

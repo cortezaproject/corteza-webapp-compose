@@ -84,6 +84,7 @@ import ImporterModal from 'corteza-webapp-compose/src/components/Public/Record/I
 import Pagination from 'vue-pagination-2'
 import _ from 'lodash'
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
+import { make } from 'corteza-webapp-common/src/lib/url'
 
 export default {
   components: {
@@ -192,10 +193,16 @@ export default {
         filename: 'export',
       }
 
-      const url = new URL(`${this.$ComposeAPI.baseURL}${this.$ComposeAPI.recordExportEndpoint(e)}`)
-      const fields = e.fields.reduce((acc, cur) => `${acc}&fields[]=${cur}`, '')
-      url.search = `${fields}&filter=${e.filters || ''}&jwt=${this.$auth.JWT}`
-      window.open(url.toString())
+      const url = make({
+        url: `${this.$ComposeAPI.baseURL}${this.$ComposeAPI.recordExportEndpoint(e)}`,
+        query: {
+          fields: e.fields,
+          filter: e.filters,
+          jwt: this.$auth.JWT,
+        },
+      })
+
+      window.open(url)
     },
 
     fetch (params = this.filter) {

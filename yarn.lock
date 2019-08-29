@@ -4247,13 +4247,14 @@ corejs-upgrade-webpack-plugin@^2.0.0:
     webpack "^4.38.0"
 
 corteza-webapp-common@cortezaproject/corteza-webapp-common.git#master:
-  version "2019.9.0-rc.2"
-  resolved "https://codeload.github.com/cortezaproject/corteza-webapp-common/tar.gz/9011f15c78d96bef521d736e993df5d684cb710e"
+  version "2019.9.0-rc.5"
+  resolved "https://codeload.github.com/cortezaproject/corteza-webapp-common/tar.gz/cd046e1f157a63a5c546d5e93645038bcaac504e"
   dependencies:
     axios "0.19.0"
     diff "4.0.1"
     mime-types "2.1.24"
     pdfjs-dist "2.1.266"
+    qs "^6.8.0"
     v-photoswipe "https://github.com/tjerman/v-photoswipe#master"
     vm2 "^3.8.2"
 
@@ -11187,6 +11188,11 @@ qs@6.7.0, qs@^6.6.0:
   version "6.7.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
   integrity sha512-VCdBRNFTX1fyE7Nb6FYoURo/SPe62QCaAyzJvUjwRaIsc+NePBEniHlvxFmmX56+HZphIGtV0XeCirBtpDrTyQ==
+
+qs@^6.8.0:
+  version "6.8.0"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.8.0.tgz#87b763f0d37ca54200334cd57bb2ef8f68a1d081"
+  integrity sha512-tPSkj8y92PfZVbinY1n84i1Qdx75lZjMQYx9WZhnkofyxzw2r7Ho39G3/aEvSUdebxpnnM4LZJCtvE/Aq3+s9w==
 
 qs@~6.5.2:
   version "6.5.2"
