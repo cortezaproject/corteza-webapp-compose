@@ -17,7 +17,7 @@ describe('Create', () => {
 
   it('properly links passed record reference', () => {
     const namespace = new Namespace({namespaceID: '3003'})
-    const refRecModule = new Module({moduleID: '2002'})
+    const refRecModule = new Module({moduleID: '2002', fields: [ { name: 'dummy' } ]})
     const refRecord = new Record(refRecModule, { recordID: '1000' })
 
     const store = new Vuex.Store({ modules: { module: {

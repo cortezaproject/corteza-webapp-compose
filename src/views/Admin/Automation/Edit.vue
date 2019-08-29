@@ -428,12 +428,17 @@ export default {
 
     onClickRunTestInBrowser () {
       let $module
+      let $record
       let { record = {}, module } = this.parseTestPayload()
 
       if (module) {
         $module = new Module(module)
       } else {
         $module = this.testModuleID ? new Module(this.getModuleByID(this.testModuleID)) : undefined
+      }
+
+      if (record && $module) {
+        $record = new Record($module, record)
       }
 
       const ctx = {
@@ -445,7 +450,7 @@ export default {
 
         $namespace: this.namespace,
         $module,
-        $record: new Record($module, record),
+        $record,
       }
 
       // We must convert the record struct from payload to something usable:
