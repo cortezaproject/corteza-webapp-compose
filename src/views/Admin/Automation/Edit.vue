@@ -163,6 +163,10 @@
                                 @click="onLoadTestRecord"
                                 variant="primary">{{ $t('automation.testing.load') }}</b-button>
                     </b-input-group>
+
+                    <b-button variant="link"
+                              :disabled="!testModuleID"
+                              @click="useLastRecord">Use last record</b-button>
                   </b-col>
                   <b-col cols="6">
                     <div><i18next path="automation.testing.warning" /></div>
@@ -266,7 +270,7 @@ export default {
     },
 
     canModifySecurty () {
-      return (this.script.scroptID && this.script.canGrant) || this.namespace.canGrant
+      return (this.script.scriptID && this.script.canGrant) || this.namespace.canGrant
     },
   },
 
@@ -307,6 +311,22 @@ export default {
       return this.$ComposeAPI.automationTriggerList(p).then(({ set, filter }) => {
         this.triggers = set.map(t => new AutomationTrigger(t))
       })
+    },
+
+    useLastRecord () {
+      if (this.testModuleID) {
+        this.$ComposeAPI.recordList({
+          moduleID: this.testModuleID,
+          namespaceID: this.namespace.namespaceID,
+          sort: 'recordID ASC',
+          page: 1,
+          perPage: 1,
+        }).then(({ set }) => {
+          if (set.length > 0) {
+            this.testPayloadID = set[0].recordID
+          }
+        })
+      }
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {
