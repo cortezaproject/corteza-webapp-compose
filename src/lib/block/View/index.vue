@@ -4,6 +4,7 @@
     :class="blockClass"
     :header="block.title"
     :sub-title="block.description"
+    body-class="card-body"
     header-class="sticky-top h5"
     :header-bg-variant="block.style.variants.headerBg"
     :header-text-variant="block.style.variants.headerText"
@@ -117,3 +118,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.card-body {
+  height: calc(100% - 47px);
+}
+</style>
