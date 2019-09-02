@@ -343,6 +343,12 @@ export class Chart {
               },
             },
           }
+
+          if (isRadialChart({ type })) {
+            d.datalabels.align = 'start'
+            d.datalabels.textStrokeColor = '#ffffff'
+            d.datalabels.textStrokeWidth = 3
+          }
         }
 
         return d
