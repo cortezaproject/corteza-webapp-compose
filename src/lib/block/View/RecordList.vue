@@ -274,7 +274,7 @@ export default {
     },
 
     handlePageChange (page) {
-      this.fetch({ ...this.filter, page: page - 1 })
+      this.fetch({ ...this.filter, page })
     },
   },
 }
