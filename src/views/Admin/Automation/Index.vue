@@ -48,24 +48,28 @@
                   :label="$t('automation.list.column.label.async')"
                   name="async"
                   :ascending="sortedByAsync"
+                  class="text-center"
                   @sort="handleSort"/>
 
                 <table-sortable-column
                   :label="$t('automation.list.column.label.runInUA')"
                   name="runInUA"
                   :ascending="sortedByRunInUA"
+                  class="text-center"
                   @sort="handleSort"/>
 
                 <table-sortable-column
                   :label="$t('automation.list.column.label.critical')"
                   name="critical"
                   :ascending="sortedByCritical"
+                  class="text-center"
                   @sort="handleSort"/>
 
                 <table-sortable-column
                   :label="$t('automation.list.column.label.enabled')"
                   name="enabled"
                   :ascending="sortedByEnabled"
+                  class="text-center"
                   @sort="handleSort"/>
 
                 <table-sortable-column
@@ -80,10 +84,10 @@
               <tbody>
               <tr v-for="(s, index) in sortedScripts" :key="index">
                 <td>{{ s.name || $t('automation.list.unnamed') }}</td>
-                <td><font-awesome-icon :icon="['fas', 'check']" v-if="s.async"></font-awesome-icon></td>
-                <td><font-awesome-icon :icon="['fas', 'check']" v-if="s.runInUA"></font-awesome-icon></td>
-                <td><font-awesome-icon :icon="['fas', 'check']" v-if="s.critical"></font-awesome-icon></td>
-                <td><font-awesome-icon :icon="['fas', 'check']" v-if="s.enabled"></font-awesome-icon></td>
+                <td class="text-center"><font-awesome-icon :icon="['fas', 'check']" v-if="s.async"></font-awesome-icon></td>
+                <td class="text-center"><font-awesome-icon :icon="['fas', 'check']" v-if="s.runInUA"></font-awesome-icon></td>
+                <td class="text-center"><font-awesome-icon :icon="['fas', 'check']" v-if="s.critical"></font-awesome-icon></td>
+                <td class="text-center"><font-awesome-icon :icon="['fas', 'check']" v-if="s.enabled"></font-awesome-icon></td>
                 <td><time :datetime="s.updatedAt || s.createdAt" v-if="s.updatedAt || s.createdAt">{{ prettyDate(s.updatedAt || s.createdAt) }}</time></td>
                 <td class="text-right">
                   <span v-if="s.canUpdate || s.canDelete">
