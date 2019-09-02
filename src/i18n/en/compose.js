@@ -23,6 +23,7 @@ export default {
       headerStyle: 'Block header style',
       bodyStyle: 'Block body style',
       border: 'Show border',
+      module: 'Module',
       style: {
         default: 'Primary variant',
         secondary: 'Secondary variant',
@@ -37,6 +38,34 @@ export default {
         darkBg: 'Dark background',
         noBorder: 'No border',
 
+      },
+    },
+    recordOrganizer: {
+      label: 'Record organizer',
+      noRecords: 'No records in module linked with record organizer. Drag and drop records here.',
+      labelField: {
+        label: 'Label field',
+        footnote: 'Field value will be used as record label',
+      },
+      descriptionField: {
+        label: 'Description field',
+        footnote: 'Field value will be used as record description',
+      },
+      presortField: {
+        label: 'Record sort field',
+        footnote: 'Records will be sorted based on this field',
+      },
+      settingField: {
+        label: 'Setting field',
+        footnote: 'Field whose value will change when a record is moved into the record organizer',
+      },
+      settingValue: {
+        label: 'Setting field value',
+        footnote: 'Value that will be set to the setting field',
+      },
+      preview: {
+        label: 'Record Organizer block for module {{0}}. Label field {{1}}, Description field {{2}}. Setting field {{1}}, Sorted by {{3}}.',
+        moduleNotSelected: 'Record Organizer block. Module not selected.',
       },
     },
     file: {
@@ -91,8 +120,6 @@ export default {
     },
     recordList: {
       label: 'Record list',
-      module: 'Module',
-      modulePick: 'Pick a module',
       moduleFootnote: 'Disabled modules on the list do not have {{0}} available.',
       recordPages: 'record pages',
       addRecord: 'Add new record',
@@ -451,6 +478,7 @@ export default {
       export: 'Export',
       cancel: 'Cancel',
       next: 'Next',
+      none: 'None',
     },
     tooltip: {
       dragAndDrop: 'Drag and drop to change order',

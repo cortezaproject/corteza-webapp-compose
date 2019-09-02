@@ -1,16 +1,17 @@
 <template>
   <div>
     <fieldset class="form-group">
-      <label for="select-module">{{ $t('block.recordList.module') }}</label>
-      <select v-model="o.moduleID" required class="form-control" id="select-module">
-        <option disabled selected>---</option>
+      <label for="select-module">{{ $t('block.general.module') }}</label>
+       <b-form-select v-model="o.moduleID" required>
+        <option :value="undefined">{{ $t('general.label.none') }}</option>
         <option
           v-for="module in modules"
           :key="module.moduleID"
-          :disabled="!modulePageID[module.moduleID]"
-          :value="module.moduleID"
-        >{{ module.name }}</option>
-      </select>
+          :value="module.moduleID">
+
+          {{ module.name }}
+        </option>
+      </b-form-select>
       <i>
         <i18next path="block.recordList.moduleFootnote" tag="label">
           <router-link :to="{ name: 'admin.pages'}">{{ $t('block.recordList.recordPages') }}</router-link>

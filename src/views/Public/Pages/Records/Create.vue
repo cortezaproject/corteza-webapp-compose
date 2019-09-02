@@ -51,6 +51,12 @@ export default {
       type: Object,
       required: false,
     },
+
+    values: {
+      type: Object,
+      required: false,
+      default: () => ({}),
+    },
   },
 
   data () {
@@ -68,7 +74,7 @@ export default {
   },
 
   created () {
-    this.record = new Record(this.module, {})
+    this.record = new Record(this.module, { values: this.values })
 
     if (this.refRecord) {
       // Record create form called from a related records block,
