@@ -239,6 +239,9 @@ export class Chart {
   buildOptions () {
     const plugins = new Set()
     let options = {
+      // Allow chart to consume entire container
+      responsive: true,
+      maintainAspectRatio: false,
       animation: {
         duration: 500,
       },

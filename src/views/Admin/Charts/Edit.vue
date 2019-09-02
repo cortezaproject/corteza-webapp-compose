@@ -28,14 +28,17 @@
                     {{ error }}
                   </b-alert>
 
-                  <chart-component v-if="chart"
-                                   :chart="chart"
-                                   :reporter="reporter"
-                                   ref="chart"
-                                   width="200"
-                                   height="200"
-                                   @error="error=$event"
-                                   @updated="onUpdated" />
+                  <div class="chart-preview w-100 h-100">
+                    <chart-component v-if="chart"
+                                     :chart="chart"
+                                     :reporter="reporter"
+                                     ref="chart"
+                                     width="200"
+                                     height="200"
+                                     @error="error=$event"
+                                     @updated="onUpdated" />
+
+                  </div>
 
                   <!-- not supporting multiple reports for now
 <b-button @click.prevent="chart.config.reports.push(defaultReport)"
@@ -166,3 +169,9 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+.chart-preview {
+  max-height: 50vh;
+}
+
+</style>

@@ -1,5 +1,7 @@
 <template>
-  <canvas ref="chartCanvas"></canvas>
+  <div class="w-100 h-100">
+    <canvas ref="chartCanvas"></canvas>
+  </div>
 </template>
 
 <script>
