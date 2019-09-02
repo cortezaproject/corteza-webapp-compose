@@ -44,6 +44,11 @@ body {
   height: 35px;
 }
 
+.vs__clear,
+.vs__open-indicator{
+  fill: $secondary;
+}
+
 .ns-logo {
   i {
     background-image: url($logo);
