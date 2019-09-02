@@ -30,6 +30,12 @@ body {
   &.resizing {
     opacity: 0.9;
   }
+
+  .Chart {
+    .card-body {
+      padding: 0;
+    }
+  }
 }
 
 .vs__dropdown-toggle {
