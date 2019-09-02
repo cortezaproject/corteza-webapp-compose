@@ -115,19 +115,36 @@
             </b-form-select>
           </b-form-group>
           <b-form-group horizontal :label-cols="2" breakpoint="md" label="">
-            <b-form-checkbox
-                             v-model="m.axisType"
-                             value="logarithmic"
-                             unchecked-value="linear">{{ $t('chart.edit.metric.logarithmicScale') }}</b-form-checkbox>
-            <b-form-checkbox
-                             v-model="m.axisPosition"
-                             value="right"
-                             unchecked-value="left">{{ $t('chart.edit.metric.axisOnRight') }}</b-form-checkbox>
-            <b-form-checkbox
-                             v-model="m.beginAtZero"
-                             :value="true"
-                             :unchecked-value="false"
-                             checked>{{ $t('chart.edit.metric.axisScaleFromZero') }}</b-form-checkbox>
+            <template v-if="hasRelativeDisplay(m)">
+              <b-form-checkbox v-model="m.relativeValue"
+                               :value="true"
+                               :unchecked-value="false">{{ $t('chart.edit.metric.relative') }}</b-form-checkbox>
+
+              <template v-if="m.relativeValue">
+                <b-form-group horizontal
+                              breakpoint="md"
+                              :label="$t('chart.edit.metric.relativePrecision')">
+
+                  <b-form-input v-model="m.relativePrecision"
+                                type="number"
+                                placeholder="2" />
+                </b-form-group>
+              </template>
+            </template>
+
+            <template v-else>
+              <b-form-checkbox v-model="m.axisType"
+                               value="logarithmic"
+                               unchecked-value="linear">{{ $t('chart.edit.metric.logarithmicScale') }}</b-form-checkbox>
+              <b-form-checkbox v-model="m.axisPosition"
+                               value="right"
+                               unchecked-value="left">{{ $t('chart.edit.metric.axisOnRight') }}</b-form-checkbox>
+              <b-form-checkbox v-model="m.beginAtZero"
+                               :value="true"
+                               :unchecked-value="false"
+                               checked>{{ $t('chart.edit.metric.axisScaleFromZero') }}</b-form-checkbox>
+            </template>
+
             <b-form-checkbox v-model="m.fill"
                              :value="true" :unchecked-value="false"
                              v-show="m.type === 'line'">{{ $t('chart.edit.metric.fillArea') }}</b-form-checkbox>
@@ -145,7 +162,13 @@
 <script>
 import draggable from 'vuedraggable'
 import { VueSelect } from 'vue-select'
-import { chartTypes, aggregateFunctions, dimensionFunctions, predefinedFilters } from 'corteza-webapp-compose/src/lib/chart'
+import {
+  chartTypes,
+  hasRelativeDisplay,
+  aggregateFunctions,
+  dimensionFunctions,
+  predefinedFilters,
+} from 'corteza-webapp-compose/src/lib/chart'
 
 export default {
   name: 'Report',
@@ -236,6 +259,8 @@ export default {
   },
 
   methods: {
+    hasRelativeDisplay,
+
     isTemporalField (name) {
       if (name === 'created_at') {
         return true

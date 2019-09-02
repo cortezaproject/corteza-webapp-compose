@@ -329,6 +329,8 @@ export default {
         axisScaleFromZero: 'Always begin axis scale at zero',
         fillArea: 'Fill area below the line',
         fixTooltips: 'Always show tooltips',
+        relative: 'Show relative value',
+        relativePrecision: 'Precision:',
         add: 'Add metric',
         function: {
           label: 'Function',

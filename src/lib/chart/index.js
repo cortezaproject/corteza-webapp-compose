@@ -119,7 +119,9 @@ export const predefinedFilters = [
 
 export { default as ChartComponent } from './Component'
 
-const isRadialChart = ({ type }) => type === 'doughnut' || type === 'pie'
+export const isRadialChart = ({ type }) => type === 'doughnut' || type === 'pie'
+export const hasRelativeDisplay = ({ type }) => isRadialChart({ type })
+
 const defaultBGColor = 'rgba(165, 165, 165, 1)'
 export function makeColorSteps (base, steps) {
   if (!steps) {
@@ -145,6 +147,24 @@ dimensionFunctions.convert = (d) => (dimensionFunctions.lookup(d) || {}).convert
 
 // Makes a standarised alias from modifier or dimension report option
 const makeAlias = ({ alias, aggregate, modifier, field }) => alias || `${aggregate || modifier || 'none'}_${field}`
+
+export const makeDataLabel = ({
+  prefix = '',
+  value = 0,
+  dataset = {},
+  relativeValue = false,
+  relativePrecision = 2,
+  suffix = '',
+}) => {
+  if (relativeValue && hasRelativeDisplay(dataset)) {
+    // get relative value
+    const total = dataset.data.reduce((acc, cur) => acc + cur, 0)
+    value = (value / total * 100).toFixed(parseInt(relativePrecision || 2))
+    suffix = suffix || '%'
+  }
+
+  return `${prefix ? prefix + ': ' : ''}${(value)}${suffix}`
+}
 
 export class Chart {
   constructor (def = {}) {
@@ -259,6 +279,21 @@ export class Chart {
           // enabled can be undefined, so it must be checked against false
           return ((datasets[datasetIndex] || {}).tooltips || {}).enabled !== false
         },
+
+        callbacks: {
+          label: ({ datasetIndex, index }, { datasets, labels }) => {
+            // get the concerned dataset
+            const dataset = datasets[datasetIndex]
+
+            return makeDataLabel({
+              prefix: labels[index],
+              value: dataset.data[index],
+              dataset,
+              relativeValue: dataset.tooltips.relativeValue,
+              relativePrecision: dataset.tooltips.relativePrecision,
+            })
+          },
+        },
       }
 
       if (r.metrics.find(m => !isRadialChart(m))) {
@@ -298,7 +333,7 @@ export class Chart {
         }
       })
 
-      datasets.push(...r.metrics.map(({ field, fill, aggregate, label, type, backgroundColor, fixTooltips, ...rr }) => {
+      datasets.push(...r.metrics.map(({ field, fill, aggregate, label, type, backgroundColor, fixTooltips, relativeValue, relativePrecision, ...rr }) => {
         const alias = makeAlias({ field, aggregate })
         if (baseType === undefined) {
           baseType = type
@@ -326,6 +361,8 @@ export class Chart {
           },
           tooltips: {
             enabled: true,
+            relativeValue,
+            relativePrecision,
           },
         }
 
@@ -343,6 +380,15 @@ export class Chart {
               color: 'black',
               font: {
                 weight: 'bold',
+              },
+
+              formatter: (value, { dataset, dataIndex }) => {
+                return makeDataLabel({
+                  value,
+                  dataset,
+                  relativeValue,
+                  relativePrecision,
+                })
               },
             },
           }
