@@ -69,7 +69,7 @@
           :records="filter.count"
           :per-page="filter.perPage"
           @paginate="handlePageChange"
-          :page="filter.page + 1"
+          :page="filter.page"
           :options="{ texts: { count: $t('block.recordList.pagination') } }" />
     </div>
   </div>
