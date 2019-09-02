@@ -14,7 +14,7 @@
 
       <importer-modal :module="recordListModule"
                       :namespace="namespace"
-                      class=" ml-1 float-left" />
+                      class="ml-1 float-left" />
 
       <exporter-modal v-if="options.allowExport"
                       :module="recordListModule"
@@ -68,6 +68,7 @@
       <pagination
           :records="filter.count"
           :per-page="filter.perPage"
+          class="float-left"
           @paginate="handlePageChange"
           :page="filter.page"
           :options="{ texts: { count: $t('block.recordList.pagination') } }" />
@@ -283,15 +284,6 @@ export default {
 <style lang="scss" scoped>
 /deep/ .VuePagination {
   .pagination {
-    float: right;
-
-    .page-item {
-      .page-link {
-        outline: none;
-        box-shadow: none;
-      }
-    }
-
     .VuePagination__pagination-item-prev-chunk,
     .VuePagination__pagination-item-next-chunk {
       display: none;

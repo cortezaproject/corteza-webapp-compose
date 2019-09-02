@@ -96,7 +96,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  /deep/ ul .exist-li .sortable-tree .content {
-    background: rgba(0, 0, 0, 0.03);
+  /deep/ .exist-li {
+    .content {
+      background: rgba(0, 0, 0, 0.03);
+    }
   }
 </style>
