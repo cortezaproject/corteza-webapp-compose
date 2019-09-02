@@ -31,9 +31,10 @@ body {
     opacity: 0.9;
   }
 
-  .Chart {
+  .Chart,
+  .Calendar {
     .card-body {
-      padding: 0;
+      padding: 10px;
     }
   }
 }
