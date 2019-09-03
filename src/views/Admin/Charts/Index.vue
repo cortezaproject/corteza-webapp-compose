@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-3">
+  <div class="mt-3 w-100 pb-5 vh-100 overflow-auto flex-grow-1">
     <b-container>
       <b-row>
         <b-col md="12">

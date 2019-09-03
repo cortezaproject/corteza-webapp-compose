@@ -1,5 +1,5 @@
 <template>
-  <div class="centering-wrap inactive-area" v-if="$auth.is()">
+  <div class="centering-wrap inactive-area d-flex" v-if="$auth.is()">
     <div class="alert-holder">
       <b-alert v-for="(a,i) in alerts"
                :variant=" a.variant || 'info'"
@@ -9,6 +9,7 @@
                @dismiss-count-down="a.countdown=$event"
                @dismissed="alerts.splice(i, 0)">{{ a.message }}</b-alert>
     </div>
+    <namespace-sidebar></namespace-sidebar>
     <router-view v-if="loaded && namespace"
                  :namespace="namespace" />
     <div class="loader" v-else></div>
@@ -19,12 +20,14 @@
 
 <script>
 import { PermissionsModal } from 'corteza-webapp-common/components'
+import NamespaceSidebar from 'corteza-webapp-compose/src/components/Namespaces/NamespaceSidebar'
 
 export default {
   name: 'Namespace',
 
   components: {
     PermissionsModal,
+    NamespaceSidebar,
   },
 
   props: {

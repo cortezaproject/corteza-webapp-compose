@@ -1,6 +1,6 @@
 <template>
-  <div class="mt-3">
-    <b-container>
+  <div class="mt-3 w-100 pb-5 vh-100 overflow-auto flex-grow-1">
+    <b-container class="pb-5">
       <b-row>
         <b-col md="12">
           <b-card :title="$t('page.edit.title')">
