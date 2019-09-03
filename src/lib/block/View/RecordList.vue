@@ -68,7 +68,6 @@
       <pagination
           :records="filter.count"
           :per-page="filter.perPage"
-          class="float-left"
           @paginate="handlePageChange"
           :page="filter.page"
           :options="{ texts: { count: $t('block.recordList.pagination') } }" />
@@ -284,6 +283,8 @@ export default {
 <style lang="scss" scoped>
 /deep/ .VuePagination {
   .pagination {
+    float: right;
+
     .VuePagination__pagination-item-prev-chunk,
     .VuePagination__pagination-item-next-chunk {
       display: none;
