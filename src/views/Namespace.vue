@@ -9,7 +9,10 @@
                @dismiss-count-down="a.countdown=$event"
                @dismissed="alerts.splice(i, 0)">{{ a.message }}</b-alert>
     </div>
-    <namespace-sidebar></namespace-sidebar>
+    <namespace-sidebar :namespaces="namespaces"
+                       :namespace="namespace"
+                       class="d-none d-md-block"
+                        v-if="namespaces.length > 1"></namespace-sidebar>
     <router-view v-if="loaded && namespace"
                  :namespace="namespace" />
     <div class="loader" v-else></div>
@@ -21,6 +24,7 @@
 <script>
 import { PermissionsModal } from 'corteza-webapp-common/components'
 import NamespaceSidebar from 'corteza-webapp-compose/src/components/Namespaces/NamespaceSidebar'
+import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 
 export default {
   name: 'Namespace',
@@ -43,6 +47,7 @@ export default {
       error: '',
       alerts: [], // { variant: 'info', message: 'foo' },
       namespace: null,
+      namespaces: [],
     }
   },
 
@@ -97,9 +102,18 @@ export default {
   created () {
     this.error = ''
     this.handleAlert((alert) => this.alerts.push(alert))
+
+    this.namespaceLoader()
+      .catch(this.errHandler)
   },
 
   methods: {
+    async namespaceLoader () {
+      return this.$ComposeAPI.namespaceList().then(({ set }) => {
+        this.namespaces = set.map(ns => new Namespace(ns))
+      })
+    },
+
     // Error handler for Promise
     errHandler (error) {
       switch ((error.response || {}).status) {
