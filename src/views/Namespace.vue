@@ -57,7 +57,15 @@ export default {
       handler (slug) {
         this.$auth.check(this.$SystemAPI).then(() => {
           this.$store.dispatch('namespace/load').then(() => {
-            this.namespace = this.$store.getters['namespace/getByUrlPart'](slug)
+            const ns = this.$store.getters['namespace/getByUrlPart'](slug)
+            if (ns) {
+              return ns
+            }
+            return this.$store.dispatch('namespace/load', { force: true }).then(() => {
+              return this.$store.getters['namespace/getByUrlPart'](slug)
+            })
+          }).then(namespace => {
+            this.namespace = namespace
           }).catch(this.errHandler)
         }).catch(() => {
           this.$auth.open()
