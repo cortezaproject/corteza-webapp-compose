@@ -1,7 +1,7 @@
 <template>
-  <div class="mt-3">
+  <div class="mt-3 w-100 pb-5 vh-100 overflow-auto flex-grow-1">
     <b-container @submit.prevent="handleSave" tag="form" class="pb-5">
-      <b-row>
+      <b-row class="pb-5">
         <b-col md="12">
           <b-card :title="$t('chart.edit.title')" class="mb-5">
             <export :list="[chart]" type="chart" class="float-right" slot="header"/>

@@ -1,6 +1,6 @@
 <template>
-    <header class="mb-5">
-      <b-navbar id="public_header" type="light" toggleable="md" fixed="top" class="border-bottom border-light shadow-sm">
+    <header class="w-100">
+      <b-navbar id="public_header" type="light" toggleable="md" class="border-bottom border-light shadow-sm">
           <b-navbar-toggle target="public_nav_collapse">
             <label>
               <font-awesome-icon :icon="['fas', 'bars']"></font-awesome-icon>

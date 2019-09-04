@@ -1,7 +1,7 @@
 <template>
-  <div class="mt-3 mb-4" v-if="script">
+  <div class="mt-3 w-100 pb-5 vh-100 overflow-auto flex-grow-1" v-if="script">
     <b-container @submit.prevent="handleSave" tag="form" class="pb-5">
-      <b-row>
+      <b-row class="pb-5">
         <b-col md="12" class="mb-1">
           <b-card :title="$t('automation.edit.title')">
             <!-- <export :list="[script]" type="script" class="float-right" slot="header"/> -->
