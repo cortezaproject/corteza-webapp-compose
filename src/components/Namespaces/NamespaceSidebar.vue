@@ -3,6 +3,7 @@
     <b-list-group class="vh-100 bg-white overflow-auto">
       <b-list-group-item class="p-2 sticky-top">
         <b-form-input placeholder="Search"
+                      :formatter="preProcess"
                       v-model="filter" />
 
       </b-list-group-item>
@@ -68,7 +69,7 @@ export default {
       this.namespaces.forEach(ns => {
         if (this.pinned[ns.namespaceID]) {
           rtr.pinned.push(ns)
-        } else if (!this.filter || `${ns.name}${ns.slug}${ns.namespaceID}`.indexOf(this.filter) > -1) {
+        } else if (!this.filter || `${ns.name}${ns.slug}${ns.namespaceID}`.toLowerCase().indexOf(this.filter) > -1) {
           rtr.regular.push(ns)
         }
       })
@@ -84,6 +85,10 @@ export default {
   },
 
   methods: {
+    preProcess (value) {
+      return (value || '').toLowerCase()
+    },
+
     removePin ({ namespaceID }) {
       this.$delete(this.pinned, namespaceID)
     },
