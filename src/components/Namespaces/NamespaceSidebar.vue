@@ -13,7 +13,8 @@
                           :key="ns.namespaceID"
                           :to="{ name: 'namespace', params: ns }"
                           class="p-2"
-                          active-class="bg-white text-primary border-transparent">
+                          active-class="bg-white text-primary border-transparent"
+                          @click="removePin(ns)">
 
           <span class="text-truncate d-block">
                 {{ ns.name }}
@@ -54,7 +55,7 @@ export default {
   data () {
     return {
       filter: null,
-      pinned: new Set(),
+      pinned: {},
     }
   },
 
@@ -65,7 +66,7 @@ export default {
         regular: [],
       }
       this.namespaces.forEach(ns => {
-        if (this.pinned.has(ns.namespaceID)) {
+        if (this.pinned[ns.namespaceID]) {
           rtr.pinned.push(ns)
         } else if (!this.filter || `${ns.name}${ns.slug}${ns.namespaceID}`.indexOf(this.filter) > -1) {
           rtr.regular.push(ns)
@@ -83,9 +84,12 @@ export default {
   },
 
   methods: {
+    removePin ({ namespaceID }) {
+      this.$delete(this.pinned, namespaceID)
+    },
+
     pinNamespace (namespaceID) {
-      console.log({ namespaceID })
-      this.pinned.add(namespaceID)
+      this.$set(this.pinned, namespaceID, true)
     },
   },
 }
