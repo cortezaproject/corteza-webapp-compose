@@ -102,9 +102,14 @@ export default {
   created () {
     this.error = ''
     this.handleAlert((alert) => this.alerts.push(alert))
+    this.$root.$on('namespaces.listLoad', this.namespaceLoader)
 
     this.namespaceLoader()
       .catch(this.errHandler)
+  },
+
+  beforeDestroy () {
+    this.$root.$off('namespaces.listLoad', this.namespaceLoader)
   },
 
   methods: {
