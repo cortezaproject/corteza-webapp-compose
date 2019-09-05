@@ -1,5 +1,5 @@
 <template>
-  <b-form-group :label="field.label || field.name">
+  <b-form-group :label="label">
     <multi v-if="field.isMulti" :value.sync="value" :singleInput="field.options.selectType !== 'each'">
       <template v-slot:single>
         <b-form-select v-if="field.options.selectType === 'default'" @change="selectChange" :options="selectOptions" ref="singleSelect" >

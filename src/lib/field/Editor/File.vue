@@ -1,5 +1,5 @@
 <template>
-  <b-form-group :label="field.label || field.name">
+  <b-form-group :label="label">
     <uploader :endpoint="endpoint" @uploaded="appendAttachment" />
     <list-loader kind="record"
                  :set.sync="set"

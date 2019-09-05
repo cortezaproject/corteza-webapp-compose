@@ -1,7 +1,7 @@
 <template>
   <div>
     <fieldset class="form-group">
-      <label>{{ field.label || field.name }}</label>
+      <label>{{ label }}</label>
       <div>{{ value }}</div>
     </fieldset>
   </div>
@@ -34,6 +34,11 @@ export default {
       type: Boolean,
       default: true,
     },
+
+    valueOnly: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
@@ -54,6 +59,13 @@ export default {
         this.record.values[this.field.name] = value
         this.$emit('update:record', this.record)
       },
+    },
+
+    label () {
+      if (this.valueOnly) {
+        return ''
+      }
+      return this.field.label || this.field.name
     },
 
     errors () {
