@@ -1,5 +1,5 @@
 <template>
-  <b-form-group :label="field.label || field.name" >
+  <b-form-group :label="label" >
     <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
       <b-input-group :prepend="field.options.prefix" :append="field.options.suffix">
         <b-form-input type="number" v-model="value[ctx.index]"></b-form-input>
