@@ -166,7 +166,7 @@ export default {
 
       return this.$ComposeAPI.recordList(params).then(({ filter, set }) => {
         this.records = set.map(r => new Record(this.recordOrganizerModule, r))
-      }).catch(this.defaultErrorHandler(this.$t('notification.record.listLoadFailed')))
+      })
     },
   },
 }
