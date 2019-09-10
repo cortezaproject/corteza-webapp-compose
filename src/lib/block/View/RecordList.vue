@@ -32,7 +32,7 @@
     <div class="table-responsive">
       <table class="table sticky-header table-hover" :class="{sortable: !options.hideSorting}">
         <thead v-if="!options.hideHeader" class="border-bottom">
-          <tr >
+          <tr>
             <th v-for="(col) in columns" :key="'header:'+col.name" @click="handleSort(col.name)" class="text-nowrap">
               {{ col.label || col.name }}
               <span v-if="!options.hideSorting" class="ml-1">
@@ -45,7 +45,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(row) in records" :key="row.recordID">
+          <router-link tag="tr" v-for="(row) in records" :key="row.recordID" :to="{ name: 'page.record', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
             <td v-if="!recordListModule.canReadRecord">
               <i class="text-secondary">{{ $t('block.recordList.record.noPermission') }}</i>
             </td>
@@ -60,7 +60,7 @@
                 <font-awesome-icon :icon="['fas', 'search']"></font-awesome-icon>
               </router-link>
             </td>
-          </tr>
+          </router-link>
         </tbody>
       </table>
     </div>
@@ -293,7 +293,7 @@ export default {
 }
 
 table {
-  &.sortable thead th {
+  tr {
     cursor: pointer;
   }
 }
