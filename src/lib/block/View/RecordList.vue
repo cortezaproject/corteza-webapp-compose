@@ -41,7 +41,7 @@
                 <font-awesome-icon v-else-if="isSortedBy(col.name) === 'DESC'" :icon="['fas', 'sort-down']"></font-awesome-icon>
               </span>
             </th>
-            <th></th>
+            <th v-if="recordListModule.canUpdateRecord"></th>
           </tr>
         </thead>
         <tbody>
@@ -54,10 +54,10 @@
               <field-viewer v-else-if="col.canReadRecordValue" :field="col" value-only :record="row" :namespace="namespace"/>
               <i v-else class="text-secondary">{{ $t('field.noPermission') }}</i>
             </td>
-            <td class="text-right">
+            <td v-if="recordListModule.canUpdateRecord" class="text-right">
               <router-link
-                :to="{ name: 'page.record', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
-                <font-awesome-icon :icon="['fas', 'search']"></font-awesome-icon>
+                :to="{ name: 'page.record.edit', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
+                <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
               </router-link>
             </td>
           </router-link>
