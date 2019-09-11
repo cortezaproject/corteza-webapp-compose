@@ -86,8 +86,8 @@ recordOrganizer.add('RecordOrganizer', () => ({
 
   template: `
             <div class="row h-100">
-              <viewer :block="block1" :namespace="namespace" :page="page" class="m-3 h-75 w-25" />
-              <viewer :block="block2" :namespace="namespace" :page="page" class="m-3 h-100 w-25" />
+              <viewer :block="block1" :namespace="namespace" :page="page" class="m-3 w-25" />
+              <viewer :block="block2" :namespace="namespace" :page="page" class="m-3 w-25" />
             </div>`,
   i18n: i18n(),
 }))

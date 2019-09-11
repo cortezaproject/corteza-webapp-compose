@@ -1,36 +1,40 @@
 <template>
-  <div class="h-100">
-    <i v-if="!recordOrganizerModule.canReadRecord" class="text-secondary">{{ $t('block.recordList.record.noPermission') }}</i>
-    <div v-else class="h-100">
-      <i v-if="!records.length" class="text-secondary">{{ $t('block.recordOrganizer.noRecords') }}</i>
+  <div>
+    <i v-if="!recordOrganizerModule.canReadRecord" class="text-secondary d-block">{{ $t('block.recordList.record.noPermission') }}</i>
+    <div v-else>
+      <b-button @click.prevent="createNewRecord()"
+                :disabled="!recordOrganizerModule.canCreateRecord"
+                size="sm"
+                variant="outline-primary"
+                class="mb-2">
+        + {{ $t('block.recordList.addRecord') }}
+      </b-button>
+      <i v-if="!records.length" class="text-secondary d-block">{{ $t('block.recordOrganizer.noRecords') }}</i>
       <draggable v-model="records"
                 :disabled="!recordOrganizerModule.canUpdateRecord"
                 :group="{ name: getModuleID, put: checkDrop() }"
-                :class="{ 'organizer': true, 'empty': !records.length }"
                 @change="setSettingValue">
 
         <b-card v-for="(record, index) in records"
                 :key="record.recordID"
                 :class="{ 'mb-2': true, 'grab': recordOrganizerModule.canUpdateRecord }"
                 border-variant="primary">
-
           <b-card-title>
-            <field-viewer v-if="getTitleField(index).canReadRecordValue" :field="getTitleField(index)" :record="record" :namespace="namespace" valueOnly />
-            <i v-else class="text-secondary h">{{ $t('field.noPermission') }}</i>
+            <field-viewer v-if="getTitleField(index).canReadRecordValue"
+                          :field="getTitleField(index)"
+                          :record="record"
+                          :namespace="namespace" valueOnly />
+            <i v-else class="text-secondary h6">{{ $t('field.noPermission') }}</i>
           </b-card-title>
           <b-card-text>
-            <field-viewer v-if="getDescriptionField(index).canReadRecordValue" :field="getDescriptionField(index)" :record="record" :namespace="namespace" valueOnly/>
+            <field-viewer v-if="getDescriptionField(index).canReadRecordValue"
+                          :field="getDescriptionField(index)"
+                          :record="record"
+                          :namespace="namespace" valueOnly/>
             <i v-else class="text-secondary h6">{{ $t('field.noPermission') }}</i>
           </b-card-text>
         </b-card>
       </draggable>
-      <b-button @click.prevent="createNewRecord()"
-                :disabled="!recordOrganizerModule.canCreateRecord"
-                size="sm"
-                variant="outline-primary"
-                class="mt-2">
-        + {{ $t('block.recordList.addRecord') }}
-      </b-button>
     </div>
   </div>
 </template>
@@ -175,14 +179,5 @@ export default {
 <style lang="scss" scoped>
 .grab {
   cursor: grab;
-}
-
-.organizer {
-  overflow-y: auto;
-  height: calc(100% - 30px);
-}
-
-.empty {
-  height: calc(100% - 70px);
 }
 </style>
