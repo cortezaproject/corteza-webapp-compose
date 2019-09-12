@@ -1,7 +1,8 @@
 <template>
   <div v-if="recordListModule">
-    <span v-if="!options.hideAddButton && recordListModule.canCreateRecord">
-      <router-link class="btn btn-sm btn-outline-primary float-left"
+    <span v-if="!options.hideAddButton">
+      <router-link v-if="recordListModule.canCreateRecord"
+                   class="btn btn-sm btn-outline-primary float-left"
                    :to="{
                      name: 'page.record.create',
                      params: { pageID: options.pageID, refRecord: record },
@@ -12,7 +13,8 @@
 
       </router-link>
 
-      <importer-modal :module="recordListModule"
+      <importer-modal v-if="recordListModule.canCreateRecord"
+                      :module="recordListModule"
                       :namespace="namespace"
                       class="ml-1 float-left" />
 
