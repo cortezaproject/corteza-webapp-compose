@@ -451,6 +451,8 @@ export default {
       export: 'Export',
       cancel: 'Cancel',
       next: 'Next',
+      makeDefault: 'Make default',
+      removeDefault: 'Remove default',
     },
     tooltip: {
       dragAndDrop: 'Drag and drop to change order',

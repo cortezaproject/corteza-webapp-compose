@@ -5,6 +5,21 @@
         <div>{{ $t('field.kind.select.optionsLabel') }}</div>
         <div v-for="(option, index) in f.options.options" :key="index">
           <b-form-input plain v-model="f.options.options[index]" size="sm"></b-form-input>
+          <b-button v-if="!isDefault(option)"
+                    @click="asDefault(option)"
+                    variant="info"
+                    size="sm">
+
+            {{ $t('general.label.makeDefault') }}
+          </b-button>
+          <b-button v-else
+                    @click="asDefault(undefined)"
+                    variant="warning"
+                    size="sm">
+
+            {{ $t('general.label.removeDefault') }}
+          </b-button>
+
           <button @click.prevent="f.options.options.splice(index, 1)" class="btn-url">{{ $t('field.kind.select.optionRemove') }}</button>
         </div>
         <b-form-input plain v-model="newOption" @keypress.enter.prevent="handleAddOption" size="sm" :placeholder="$t('field.kind.select.optionRemove')"></b-form-input>
@@ -48,11 +63,25 @@ export default {
   },
 
   methods: {
+    asDefault (value) {
+      if (value === undefined) {
+        this.$set(this.f, 'defaultValue', undefined)
+      } else {
+        this.$set(this.f, 'defaultValue', [
+          { name: this.f.name, value },
+        ])
+      }
+    },
+
     handleAddOption () {
       if (this.newOption.length > 0) {
         this.f.options.options.push(this.newOption)
         this.newOption = ''
       }
+    },
+
+    isDefault (option) {
+      return (this.f.defaultValue || []).find(({ value }) => value === option)
     },
   },
 }
