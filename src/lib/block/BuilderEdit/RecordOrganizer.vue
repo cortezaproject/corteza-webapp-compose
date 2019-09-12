@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-form-group>
-      <label for="select-module">{{ $t('block.general.module') }}</label>
+      <label>{{ $t('block.general.module') }}</label>
       <b-form-select v-model="o.moduleID" required>
         <option disabled :value="undefined">{{ $t('general.label.none') }}</option>
         <option
@@ -34,7 +34,7 @@
       <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.prefilterLabel')">
         <b-form-textarea :value="true"
                         :placeholder="$t('block.recordList.record.prefilterPlaceholder')"
-                        v-model="o.prefilter"></b-form-textarea>
+                        v-model.trim="o.filter"></b-form-textarea>
           <b-form-text>
             <i18next path="block.recordList.record.prefilterFootnote" tag="label">
               <code>${recordID}</code>
@@ -48,7 +48,7 @@
         <b-form-select v-model="o.labelField">
           <option :value="undefined">{{ $t('general.label.none') }}</option>
           <option
-            v-for="(field, index) in sortableFields"
+            v-for="(field, index) in selectedModule.fields"
             :key="index"
             :value="field.name">
 
@@ -62,7 +62,7 @@
         <b-form-select v-model="o.descriptionField">
           <option :value="undefined">{{ $t('general.label.none') }}</option>
           <option
-            v-for="(field, index) in sortableFields"
+            v-for="(field, index) in selectedModule.fields"
             :key="index"
             :value="field.name">
 
@@ -72,43 +72,42 @@
         <b-form-text class="text-secondary small">{{ $t('block.recordOrganizer.descriptionField.footnote') }}</b-form-text>
       </b-form-group>
 
-      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordOrganizer.presortField.label')">
-        <b-form-select v-model="o.presortField">
+      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordOrganizer.positionField.label')">
+        <b-form-select v-model="o.positionField">
           <option :value="undefined">{{ $t('general.label.none') }}</option>
           <option
-            v-for="(field, index) in sortableFields.filter(f => f.name !== o.settingField)"
+            v-for="(field, index) in positionFields"
             :key="index"
             :value="field.name">
 
-            {{ field.label || field.name }} ({{ field.kind }})
+            {{ field.label || field.name }}
           </option>
         </b-form-select>
-        <b-form-text class="text-secondary small">{{ $t('block.recordOrganizer.presortField.footnote') }}</b-form-text>
+        <b-form-text class="text-secondary small">{{ $t('block.recordOrganizer.positionField.footnote') }}</b-form-text>
       </b-form-group>
 
-      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordOrganizer.settingField.label')">
-        <b-form-select v-model="o.settingField">
+      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordOrganizer.groupField.label')">
+        <b-form-select v-model="o.groupField">
           <option :value="undefined">{{ $t('general.label.none') }}</option>
           <option
-            v-for="(field, index) in sortableFields.filter(f => f.name !== o.presortField)"
+            v-for="(field, index) in groupFields"
             :key="index"
             :value="field.name">
 
-            {{ field.label || field.name }} ({{ field.kind }})
+            {{ field.label || field.name }}
           </option>
         </b-form-select>
-        <b-form-text class="text-secondary small">{{ $t('block.recordOrganizer.settingField.footnote') }}</b-form-text>
+        <b-form-text class="text-secondary small">{{ $t('block.recordOrganizer.groupField.footnote') }}</b-form-text>
       </b-form-group>
 
-      <b-form-group v-if="!!o.settingField" horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordOrganizer.settingValue.label')">
-        <field-editor
-          class="mb-0"
-          valueOnly
-          :namespace="namespace"
-          :field="getSettingField"
-          :record.sync="handleMockRecord" />
+      <b-form-group horizontal
+                    v-if="o.groupField"
+                    :label-cols="3"
+                    breakpoint="md"
+                    :label="$t('block.recordOrganizer.group.label')">
+        <b-form-input v-model="o.group" />
 
-        <b-form-text class="text-secondary small">{{ $t('block.recordOrganizer.settingValue.footnote') }}</b-form-text>
+        <b-form-text class="text-secondary small">{{ $t('block.recordOrganizer.group.footnote') }}</b-form-text>
       </b-form-group>
     </div>
   </div>
@@ -117,6 +116,7 @@
 import { mapGetters } from 'vuex'
 import FieldEditor from 'corteza-webapp-compose/src/lib/field/Editor'
 import base from './base'
+import { RecordOrganizer } from './../RecordOrganizer'
 
 export default {
   name: 'RecordOrganizer',
@@ -129,8 +129,7 @@ export default {
 
   data () {
     return {
-      disabledSortableTypes: [],
-      mockRecord: null,
+      mockRecord: { values: {} },
     }
   },
 
@@ -143,74 +142,72 @@ export default {
       get () {
         return this.mockRecord
       },
+
       set (record) {
-        this.o.settingValue = record.values[this.getSettingField.name]
+        this.o.group = record.values[this.groupField]
         this.mockRecord = record
       },
     },
 
-    getSelectedModule () {
+    selectedModule () {
       return this.modules.find(m => m.moduleID === this.o.moduleID)
     },
 
     allFields () {
       if (this.o.moduleID) {
-        const selectedModule = this.getSelectedModule
-
         return [
-          ...selectedModule.fields,
-          ...selectedModule.systemFields(),
+          ...this.selectedModule.fields,
+          ...this.selectedModule.systemFields(),
         ]
       }
       return []
     },
 
-    sortableFields () {
-      return this.allFields.filter(({ kind }) => !this.disabledSortableTypes.find(t => t === kind))
+    positionFields () {
+      return this.selectedModule.fields.filter(({ kind, isMulti }) => kind === 'Number' && !isMulti)
     },
 
-    getSettingField () {
+    groupFields () {
+      return this.selectedModule.fields.filter(({ kind, isMulti }) => kind === 'String' && !isMulti)
+    },
+
+    group () {
       return this.allFields.find(f => f.name === this.o.settingField)
     },
   },
 
   watch: {
-    'o.settingField': {
-      handler (settingValue) {
-        if (settingValue) {
-          if (this.getSettingField.isMulti) {
-            this.o.settingValue = []
+    'o.groupField': {
+      handler (group) {
+        if (group) {
+          if (this.group.isMulti) {
+            this.o.group = []
           } else {
-            this.o.settingValue = undefined
+            this.o.group = undefined
           }
-          this.setMockRecord(settingValue)
+          this.setMockRecord(group)
         }
       },
     },
     'o.moduleID': {
       handler (moduleID) {
-        this.o.labelField = undefined
-        this.o.descriptionField = undefined
-        this.o.prefilter = undefined
-        this.o.presortField = undefined
-        this.o.settingField = undefined
-        this.o.settingValue = undefined
+        this.o = new RecordOrganizer({ moduleID })
       },
     },
   },
 
   created () {
-    this.setMockRecord(this.o.settingField)
+    this.setMockRecord(this.o.groupField)
   },
 
   methods: {
-    setMockRecord (settingField) {
+    setMockRecord (groupField) {
       let record = {
         values: {},
       }
 
-      if (settingField) {
-        record.values[settingField] = this.o.settingValue
+      if (groupField) {
+        record.values[groupField] = this.o.group
       }
       this.mockRecord = record
     },

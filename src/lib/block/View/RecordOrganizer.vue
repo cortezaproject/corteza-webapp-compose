@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <i v-if="!recordOrganizerModule.canReadRecord" class="text-secondary d-block">{{ $t('block.recordList.record.noPermission') }}</i>
-    <div v-else>
-      <b-button @click.prevent="createNewRecord()"
-                :disabled="!recordOrganizerModule.canCreateRecord"
+  <div class="h-100">
+    <i v-if="!roModule.canReadRecord" class="text-secondary d-block">{{ $t('block.recordList.record.noPermission') }}</i>
+    <div v-else class="h-100">
+      <b-button @click.prevent="createNewRecord"
+                :disabled="!canAddRecord"
                 size="sm"
                 variant="outline-primary"
                 class="mb-2">
@@ -11,29 +11,32 @@
       </b-button>
       <i v-if="!records.length" class="text-secondary d-block">{{ $t('block.recordOrganizer.noRecords') }}</i>
       <draggable v-model="records"
-                :disabled="!recordOrganizerModule.canUpdateRecord"
-                :group="{ name: getModuleID, put: checkDrop() }"
-                @change="setSettingValue">
+                :disabled="!canReposition"
+                :group="{ name: moduleID, put: canReposition }"
+                class="h-100"
+                @change="onDrop">
 
-        <b-card v-for="(record, index) in records"
-                :key="record.recordID"
-                :class="{ 'mb-2': true, 'grab': recordOrganizerModule.canUpdateRecord }"
-                border-variant="primary">
+        <router-link tag="b-card"
+                     v-for="record in records"
+                     :key="record.recordID"
+                     :class="{ 'mb-2': true, 'grab': canReposition }"
+                     :to="{ name: 'page.record', params: { pageID: options.pageID, recordID: record.recordID }, query: null }"
+                     border-variant="primary">
           <b-card-title>
-            <field-viewer v-if="getTitleField(index).canReadRecordValue"
-                          :field="getTitleField(index)"
+            <field-viewer v-if="titleField.canReadRecordValue"
+                          :field="titleField"
                           :record="record"
                           :namespace="namespace" valueOnly />
             <i v-else class="text-secondary h6">{{ $t('field.noPermission') }}</i>
           </b-card-title>
           <b-card-text>
-            <field-viewer v-if="getDescriptionField(index).canReadRecordValue"
-                          :field="getDescriptionField(index)"
+            <field-viewer v-if="descriptionField.canReadRecordValue"
+                          :field="descriptionField"
                           :record="record"
                           :namespace="namespace" valueOnly/>
             <i v-else class="text-secondary h6">{{ $t('field.noPermission') }}</i>
           </b-card-text>
-        </b-card>
+        </router-link>
       </draggable>
     </div>
   </div>
@@ -44,7 +47,7 @@ import { mapGetters } from 'vuex'
 import base from './base'
 import draggable from 'vuedraggable'
 import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
-import Record from 'corteza-webapp-common/src/lib/types/compose/record'
+import { RecordOrganizer } from '../RecordOrganizer'
 
 export default {
   components: {
@@ -71,106 +74,169 @@ export default {
       pages: 'page/set',
     }),
 
-    recordOrganizerModule () {
-      return this.getModuleByID(this.options.moduleID)
+    ro () {
+      return new RecordOrganizer(this.options)
     },
 
-    getModuleID () {
-      return this.options.moduleID
+    roModule () {
+      return this.getModuleByID(this.moduleID)
+    },
+
+    roRecordPage () {
+      return this.pages.find(p => p.moduleID === this.moduleID)
+    },
+
+    moduleID () {
+      return this.ro.moduleID
+    },
+
+    titleField () {
+      const { labelField } = this.options
+
+      if (!labelField) {
+        return {}
+      }
+
+      return this.roModule.fields.find(f => f.name === labelField) || {}
+    },
+
+    descriptionField () {
+      const { descriptionField } = this.options
+
+      if (!descriptionField) {
+        return {}
+      }
+
+      return this.roModule.fields.find(f => f.name === descriptionField) || {}
+    },
+
+    positionField () {
+      const { positionField } = this.options
+
+      if (!positionField) {
+        return {}
+      }
+
+      return this.roModule.fields.find(f => f.name === positionField) || {}
+    },
+
+    canReposition () {
+      return this.roModule.canUpdateRecord && this.positionField.canUpdateRecordValue
+    },
+
+    canAddRecord () {
+      return this.roModule.canCreateRecord && this.roRecordPage
     },
   },
 
   beforeMount () {
-    if (!this.options.moduleID) {
+    if (!this.ro.moduleID) {
       // Make sure block is properly configured
       throw Error(this.$t('notification.record.moduleOrPageNotSet'))
     }
 
-    /* eslint-disable no-template-curly-in-string */
-    if (!this.record) {
-      // If there is no current record and we are using recordID/ownerID variable in (pre)filter
-      // we should disable the block
-      if ((this.options.prefilter || '').includes('${record')) {
-        throw Error(this.$t('notification.record.invalidRecordVar'))
-      }
-
-      if ((this.options.prefilter || '').includes('${ownerID}')) {
-        throw Error(this.$t('notification.record.invalidOwnerVar'))
-      }
-    }
-
-    this.filter.sort = this.options.presortField
-    this.filter.filter = this.options.prefilter
-
-    if (this.options.prefilter) {
-      // Little magic here: prefilter is wraped with backticks and evaluated
-      // this allows us to us ${record.values....}, ${recordID}, ${ownerID}, ${userID} in prefilter string;
-      // hence the /hanging/ record, recordID, ownerID and userID variables
-      this.prefilter = (function (prefilter, { record, recordID, ownerID, userID }) {
-        /* eslint-disable no-eval */
-        return eval('`' + prefilter + '`')
-      })(this.options.prefilter, {
-        record: this.record,
-        recordID: (this.record || {}).recordID || 0,
-        ownerID: (this.record || {}).userID || 0,
-        userID: (this.$auth.user || {}).userID || 0,
+    if (this.roModule) {
+      this.ro.fetchRecords(this.$ComposeAPI, this.roModule, this.expandFilter()).then(rr => {
+        this.records = rr
       })
-
-      this.filter.filter = this.prefilter
-    }
-
-    if (this.recordOrganizerModule) {
-      this.fetch()
     }
   },
 
   methods: {
-    getTitleField (index) {
-      const { labelField } = this.options
-      return this.recordOrganizerModule.fields.find(f => f.name === labelField)
-    },
-
-    getDescriptionField (index) {
-      const { descriptionField } = this.options
-      return this.recordOrganizerModule.fields.find(f => f.name === descriptionField)
-    },
-
-    checkDrop () {
-      const { settingField } = this.options
-      return this.recordOrganizerModule.fields.find(f => f.name === settingField).canUpdateRecordValue
-    },
-
-    setSettingValue ({ added }) {
+    onDrop ({ added, moved, ...foo }) {
       if (added) {
-        const record = added.element
-        const { settingField, settingValue } = this.options
-        record.values[settingField] = settingValue
-        const { namespaceID, moduleID, recordID, values } = record
-        this.$ComposeAPI.recordUpdate({ namespaceID, moduleID, recordID, values }).then(record => {
-          this.fetch()
-        })
+        this.reorganize(added)
+      } else if (moved) {
+        this.reposition(moved)
       }
     },
 
-    reorderRecords (event) {
-      // console.log(event)
+    reorganize ({ element: record, newIndex }) {
+      // Move record to a different position in a different group
+      this.ro.moveRecord(
+        this.$ComposeAPI,
+        record,
+        this.calcNewPosition(record, newIndex),
+        this.ro.group,
+      )
+    },
+
+    reposition ({ element: record, newIndex }) {
+      // Move record to a different position in the same group
+      this.ro.moveRecord(
+        this.$ComposeAPI,
+        record,
+        this.calcNewPosition(record, newIndex),
+      )
+    },
+
+    /**
+     * Calculates optimal position value for dropped record
+     */
+    calcNewPosition (record, newPosition = 0) {
+      if (newPosition <= 0) {
+        // Dropped in first place, easy-breezy
+        return 0
+      }
+
+      let total = this.records.length
+      if (newPosition > total) {
+        // Dropped at the end,
+        // make sure we don't put it too far away
+        return total
+      }
+
+      // Find position field on the record placed before the drop position
+      // fallback to 1
+      return parseInt(this.records[newPosition - 1].values[this.ro.positionField] || 0) + 1
     },
 
     createNewRecord () {
-      const { moduleID, settingField, settingValue } = this.options
-      const recordPageID = this.pages.find(p => p.moduleID === moduleID).pageID
+      const { positionField, groupField } = this.options
+
+      console.log(this.roRecordPage)
+      if (!this.roRecordPage) {
+        // can not create record without a record page
+        return
+      }
+
+      let { pageID } = this.roRecordPage
+
       let values = {}
-      values[settingField] = settingValue
-      this.$router.push({ name: 'page.record.create', params: { pageID: recordPageID, values: values } })
+      values[positionField] = groupField
+      this.$router.push({ name: 'page.record.create', params: { pageID, values: values } })
     },
 
-    fetch (params = this.filter) {
-      params.moduleID = this.options.moduleID
-      params.namespaceID = this.namespace.namespaceID
+    expandFilter () {
+      /* eslint-disable no-template-curly-in-string */
+      if (!this.record) {
+        // If there is no current record and we are using recordID/ownerID variable in (pre)filter
+        // we should disable the block
+        if ((this.ro.filter || '').includes('${record')) {
+          throw Error(this.$t('notification.record.invalidRecordVar'))
+        }
 
-      return this.$ComposeAPI.recordList(params).then(({ filter, set }) => {
-        this.records = set.map(r => new Record(this.recordOrganizerModule, r))
-      })
+        if ((this.ro.filter || '').includes('${ownerID}')) {
+          throw Error(this.$t('notification.record.invalidOwnerVar'))
+        }
+      }
+
+      if (this.ro.filter) {
+        // Little magic here: filter is wraped with backticks and evaluated
+        // this allows us to us ${record.values....}, ${recordID}, ${ownerID}, ${userID} in filter string;
+        // hence the /hanging/ record, recordID, ownerID and userID variables
+        return (function (filter, { record, recordID, ownerID, userID }) {
+          /* eslint-disable no-eval */
+          return eval('`' + filter + '`')
+        })(this.ro.filter, {
+          record: this.record,
+          recordID: (this.record || {}).recordID || 0,
+          ownerID: (this.record || {}).userID || 0,
+          userID: (this.$auth.user || {}).userID || 0,
+        })
+      }
+
+      return ''
     },
   },
 }

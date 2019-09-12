@@ -4,8 +4,8 @@
         <code>{{ getModule.name || this.options.moduleID }}</code>
         <code>{{ this.options.labelField || $t('general.label.none') }}</code>
         <code>{{ this.options.descriptionField || $t('general.label.none') }}</code>
-        <code>{{ this.options.settingField || $t('general.label.none') }}</code>
-        <code>{{ this.options.sortedBy || $t('general.label.none') }}</code>
+        <code>{{ this.options.groupField || $t('general.label.none') }}</code>
+        <code>{{ this.options.positionField || $t('general.label.none') }}</code>
       </i18next>
       <span v-else>
         {{ $t('block.recordOrganizer.preview.moduleNotSelected') }}

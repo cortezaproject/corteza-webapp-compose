@@ -51,20 +51,20 @@ export default {
         label: 'Description field',
         footnote: 'Field value will be used as record description',
       },
-      presortField: {
+      positionField: {
         label: 'Record sort field',
         footnote: 'Records will be sorted based on this field',
       },
-      settingField: {
-        label: 'Setting field',
+      groupField: {
+        label: 'Key field',
         footnote: 'Field whose value will change when a record is moved into the record organizer',
       },
-      settingValue: {
-        label: 'Setting field value',
-        footnote: 'Value that will be set to the setting field',
+      group: {
+        label: 'Key value',
+        footnote: 'Value that will be set to the key field',
       },
       preview: {
-        label: 'Record Organizer block for module {{0}}. Label field {{1}}, Description field {{2}}. Setting field {{1}}, Sorted by {{3}}.',
+        label: 'Record Organizer block for module {{0}}. Label field {{1}}, Description field {{2}}. Value setting field: {{3}}, Sorted by position field: {{4}}.',
         moduleNotSelected: 'Record Organizer block. Module not selected.',
       },
     },
