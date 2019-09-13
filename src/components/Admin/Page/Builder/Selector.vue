@@ -51,6 +51,9 @@ export default {
         { label: this.$t('block.file.label'),
           recordPageOnly: false,
           block: new Block({ kind: 'File' }) },
+        { label: this.$t('block.recordOrganizer.label'),
+          recordPageOnly: false,
+          block: new Block({ kind: 'RecordOrganizer' }) },
       ],
     }
   },

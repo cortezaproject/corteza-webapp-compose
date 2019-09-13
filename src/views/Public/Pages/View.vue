@@ -5,6 +5,7 @@
                  v-if="recordID || createPage" />
 
     <grid :namespace="namespace"
+          class="vh-100 overflow-auto flex-grow-1"
           :page="page" v-else />
 
     <attachment-modal />

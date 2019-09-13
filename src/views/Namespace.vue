@@ -1,5 +1,5 @@
 <template>
-  <div class="centering-wrap inactive-area" v-if="$auth.is()">
+  <div class="centering-wrap inactive-area d-flex" v-if="$auth.is()">
     <div class="alert-holder">
       <b-alert v-for="(a,i) in alerts"
                :variant=" a.variant || 'info'"
@@ -9,6 +9,10 @@
                @dismiss-count-down="a.countdown=$event"
                @dismissed="alerts.splice(i, 0)">{{ a.message }}</b-alert>
     </div>
+    <namespace-sidebar :namespaces="namespaces"
+                       :namespace="namespace"
+                       class="d-none d-md-block"
+                        v-if="namespaces.length > 1"></namespace-sidebar>
     <router-view v-if="loaded && namespace"
                  :namespace="namespace" />
     <div class="loader" v-else></div>
@@ -19,12 +23,15 @@
 
 <script>
 import { PermissionsModal } from 'corteza-webapp-common/components'
+import NamespaceSidebar from 'corteza-webapp-compose/src/components/Namespaces/NamespaceSidebar'
+import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 
 export default {
   name: 'Namespace',
 
   components: {
     PermissionsModal,
+    NamespaceSidebar,
   },
 
   props: {
@@ -40,6 +47,7 @@ export default {
       error: '',
       alerts: [], // { variant: 'info', message: 'foo' },
       namespace: null,
+      namespaces: [],
     }
   },
 
@@ -49,7 +57,15 @@ export default {
       handler (slug) {
         this.$auth.check(this.$SystemAPI).then(() => {
           this.$store.dispatch('namespace/load').then(() => {
-            this.namespace = this.$store.getters['namespace/getByUrlPart'](slug)
+            const ns = this.$store.getters['namespace/getByUrlPart'](slug)
+            if (ns) {
+              return ns
+            }
+            return this.$store.dispatch('namespace/load', { force: true }).then(() => {
+              return this.$store.getters['namespace/getByUrlPart'](slug)
+            })
+          }).then(namespace => {
+            this.namespace = namespace
           }).catch(this.errHandler)
         }).catch(() => {
           this.$auth.open()
@@ -94,9 +110,23 @@ export default {
   created () {
     this.error = ''
     this.handleAlert((alert) => this.alerts.push(alert))
+    this.$root.$on('namespaces.listLoad', this.namespaceLoader)
+
+    this.namespaceLoader()
+      .catch(this.errHandler)
+  },
+
+  beforeDestroy () {
+    this.$root.$off('namespaces.listLoad', this.namespaceLoader)
   },
 
   methods: {
+    async namespaceLoader () {
+      return this.$ComposeAPI.namespaceList().then(({ set }) => {
+        this.namespaces = set.map(ns => new Namespace(ns))
+      })
+    },
+
     // Error handler for Promise
     errHandler (error) {
       switch ((error.response || {}).status) {

@@ -1,31 +1,35 @@
 <template>
-  <main class="container">
-    <h1 class="text-center mt-4">
-      {{ $t('namespace.title') }}
-      <permissions-button v-if="canGrant" resource="compose:namespace:*" link />
-    </h1>
+  <main class="w-100 flex-grow">
+    <div class="vh-100 overflow-auto flex-grow-1">
+      <h1 class="text-center mt-4">
+        {{ $t('namespace.title') }}
+        <permissions-button v-if="canGrant" resource="compose:namespace:*" link />
+      </h1>
 
-    <div v-if="loaded" class="m-2 row">
-      <div class="col-md-6 col-lg-4 col-12 mt-4" v-for="(n) in namespaces" :key="n.namespaceID">
-        <div v-if="n.enabled">
-          <router-link :to="{ name: 'pages', params: { slug: (n.slug || n.namespaceID) } }">
-            <namespace-item :namespace="n" />
-          </router-link>
-        </div>
-        <namespace-item v-else :namespace="n" />
-      </div>
-      <div v-if="canCreateNamespace" class="add-wrap col-md-6 col-lg-4 col-12 mt-4">
-        <router-link :to="{ name: 'namespace.create' }">
-          <div class="add-namespace">
-            <span class="add-icon">+</span>
-            <label class="add-text text-center d-block">
-                {{ $t('namespace.create') }}
-            </label>
+      <b-container v-if="loaded" class="pb-5">
+        <b-row>
+          <div class="col-md-6 col-lg-4 col-12 mt-4" v-for="(n) in namespaces" :key="n.namespaceID">
+            <div v-if="n.enabled">
+              <router-link :to="{ name: 'pages', params: { slug: (n.slug || n.namespaceID) } }">
+                <namespace-item :namespace="n" />
+              </router-link>
+            </div>
+            <namespace-item v-else :namespace="n" />
           </div>
-        </router-link>
-      </div>
+          <div v-if="canCreateNamespace" class="add-wrap col-md-6 col-lg-4 col-12 mt-4">
+            <router-link :to="{ name: 'namespace.create' }">
+              <div class="add-namespace">
+                <span class="add-icon">+</span>
+                <label class="add-text text-center d-block">
+                    {{ $t('namespace.create') }}
+                </label>
+              </div>
+            </router-link>
+          </div>
+        </b-row>
+      </b-container>
+      <permissions-modal />
     </div>
-    <permissions-modal />
   </main>
 </template>
 <script>

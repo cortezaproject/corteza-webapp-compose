@@ -1,7 +1,8 @@
 <template>
   <div v-if="recordListModule">
-    <span v-if="!options.hideAddButton && recordListModule.canCreateRecord">
-      <router-link class="btn btn-sm btn-outline-primary float-left"
+    <span v-if="!options.hideAddButton">
+      <router-link v-if="recordListModule.canCreateRecord"
+                   class="btn btn-sm btn-outline-primary float-left"
                    :to="{
                      name: 'page.record.create',
                      params: { pageID: options.pageID, refRecord: record },
@@ -12,7 +13,8 @@
 
       </router-link>
 
-      <importer-modal :module="recordListModule"
+      <importer-modal v-if="recordListModule.canCreateRecord"
+                      :module="recordListModule"
                       :namespace="namespace"
                       class="ml-1 float-left" />
 
@@ -32,7 +34,7 @@
     <div class="table-responsive">
       <table class="table sticky-header table-hover" :class="{sortable: !options.hideSorting}">
         <thead v-if="!options.hideHeader" class="border-bottom">
-          <tr >
+          <tr>
             <th v-for="(col) in columns" :key="'header:'+col.name" @click="handleSort(col.name)" class="text-nowrap">
               {{ col.label || col.name }}
               <span v-if="!options.hideSorting" class="ml-1">
@@ -41,11 +43,11 @@
                 <font-awesome-icon v-else-if="isSortedBy(col.name) === 'DESC'" :icon="['fas', 'sort-down']"></font-awesome-icon>
               </span>
             </th>
-            <th></th>
+            <th v-if="recordListModule.canUpdateRecord"></th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(row) in records" :key="row.recordID">
+          <router-link tag="tr" v-for="(row) in records" :key="row.recordID" :to="{ name: 'page.record', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
             <td v-if="!recordListModule.canReadRecord">
               <i class="text-secondary">{{ $t('block.recordList.record.noPermission') }}</i>
             </td>
@@ -54,13 +56,13 @@
               <field-viewer v-else-if="col.canReadRecordValue" :field="col" value-only :record="row" :namespace="namespace"/>
               <i v-else class="text-secondary">{{ $t('field.noPermission') }}</i>
             </td>
-            <td class="text-right">
+            <td v-if="recordListModule.canUpdateRecord" class="text-right">
               <router-link
-                :to="{ name: 'page.record', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
-                <font-awesome-icon :icon="['fas', 'search']"></font-awesome-icon>
+                :to="{ name: 'page.record.edit', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
+                <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
               </router-link>
             </td>
-          </tr>
+          </router-link>
         </tbody>
       </table>
     </div>
@@ -293,7 +295,7 @@ export default {
 }
 
 table {
-  &.sortable thead th {
+  tr {
     cursor: pointer;
   }
 }

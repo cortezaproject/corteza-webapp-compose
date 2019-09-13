@@ -1,5 +1,5 @@
 <template>
-  <b-navbar fixed="top" class="bg-white border-bottom border-light shadow-sm">
+  <b-navbar class="bg-white border-bottom border-light shadow-sm">
     <b-navbar-brand>
       <b><router-link :to="{name: 'pages'}" class="nav-link">{{ namespace.name }}</router-link></b>
     </b-navbar-brand>

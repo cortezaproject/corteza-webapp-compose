@@ -1,5 +1,5 @@
 <template>
-  <b-form-group :label="field.label || field.name">
+  <b-form-group :label="label">
     <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
       <b-form-input v-if="!field.options.onlyTime"
                     type="date"

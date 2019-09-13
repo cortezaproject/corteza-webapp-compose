@@ -1,6 +1,6 @@
 <template>
   <b-card
-    class="h-100 border-0"
+    class="h-100 border-0 overflow-auto"
     :class="blockClass"
     :header="block.title"
     :sub-title="block.description"

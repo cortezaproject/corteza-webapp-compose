@@ -9,8 +9,16 @@ module.exports = async ({ config, mode }) => {
   // Make whatever fine-grained changes you need
   config.module.rules.push({
     test: /\.scss$/,
-    use: ['style-loader', 'css-loader', 'sass-loader'],
-    include: path.resolve(__dirname, '../'),
+    use: [
+      'vue-style-loader',
+      'css-loader',
+      {
+        loader: 'sass-loader',
+        options: {
+          data: `@import "@/themes/corteza-base/variables.scss";`
+        }
+      }
+    ],
   });
 
   config.resolve.alias["@"] = path.join(path.resolve(__dirname, '../'), 'src')
