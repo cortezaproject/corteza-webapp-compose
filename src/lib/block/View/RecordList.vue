@@ -67,12 +67,11 @@
       </table>
     </div>
     <div class="position-sticky fixed-bottom bg-white border-top pt-1" v-if="!options.hidePaging">
-      <pagination
-          :records="filter.count"
-          :per-page="filter.perPage"
-          @paginate="handlePageChange"
-          :page="filter.page"
-          :options="{ texts: { count: $t('block.recordList.pagination') } }" />
+      <pagination :records="filter.count"
+                  :per-page="filter.perPage"
+                  @paginate="handlePageChange"
+                  :page="filter.page"
+                  :options="{ texts: { count: $t('block.recordList.pagination') } }" />
     </div>
   </div>
   <div v-else>{{ $t('general.label.loading') }}...</div>
@@ -247,7 +246,7 @@ export default {
         if (this.prefilter) {
           filter = `(${this.prefilter}) AND (${filter})`
         }
-        this.filter.page = 0
+        this.filter.page = 1
       }
 
       this.fetch({ ...this.filter, filter })
