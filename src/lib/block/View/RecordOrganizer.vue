@@ -1,14 +1,7 @@
 <template>
   <div class="h-100">
     <i v-if="!roModule.canReadRecord" class="text-secondary d-block">{{ $t('block.recordList.record.noPermission') }}</i>
-    <div v-else class="h-100">
-      <b-button @click.prevent="createNewRecord"
-                :disabled="!canAddRecord"
-                size="sm"
-                variant="outline-primary"
-                class="mb-2">
-        + {{ $t('block.recordList.addRecord') }}
-      </b-button>
+    <div v-else class="h-100 mb-5">
       <i v-if="!records.length" class="text-secondary d-block">{{ $t('block.recordOrganizer.noRecords') }}</i>
       <draggable v-model="records"
                 :disabled="!canReposition"
@@ -38,6 +31,15 @@
           </b-card-text>
         </router-link>
       </draggable>
+      <b-card-footer footer-bg-variant="white"
+                     class="fixed-bottom">
+        <b-button @click.prevent="createNewRecord"
+                  :disabled="!canAddRecord"
+                  size="sm"
+                  variant="outline-primary">
+          + {{ $t('block.recordList.addRecord') }}
+        </b-button>
+      </b-card-footer>
     </div>
   </div>
 </template>
