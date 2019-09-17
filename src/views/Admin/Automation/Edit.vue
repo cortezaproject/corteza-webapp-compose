@@ -173,13 +173,15 @@
                   </b-col>
                 </b-row>
               </b-tab>
-              <b-tab :title="$t('automation.edit.scheduledTriggers.tabLabel')" v-if="false">
-                @todo intervals & deferred
-              </b-tab>
               <b-tab :title="$t('automation.edit.recordTriggers.tabLabel', [countEnabledRecordTriggers])" :disabled="modules.length === 0">
                 <the-record-triggers class="mt-3"
                                      :modules="modules"
                                      :triggers.sync="triggers" />
+              </b-tab>
+              <b-tab :title="$t('automation.edit.scheduledTriggers.tabLabel')">
+                <the-deferred-triggers class="mt-3"
+                                       :modules="modules"
+                                       :triggers.sync="triggers" />
               </b-tab>
             </b-tabs>
           </b-card>
@@ -212,9 +214,11 @@ import 'brace/theme/monokai'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import TheRecordTriggers from 'corteza-webapp-compose/src/components/Admin/Automation/TheRecordTriggers'
+import TheDeferredTriggers from 'corteza-webapp-compose/src/components/Admin/Automation/TheDeferredTriggers'
 
 export default {
   components: {
+    TheDeferredTriggers,
     TheRecordTriggers,
     ConfirmationToggle,
     AceEditor,
