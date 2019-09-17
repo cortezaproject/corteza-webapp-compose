@@ -11,7 +11,7 @@
     </div>
     <namespace-sidebar :namespaces="namespaces"
                        :namespace="namespace"
-                       class="d-none d-md-block"
+                       class="d-none"
                         v-if="namespaces.length > 1"></namespace-sidebar>
     <router-view v-if="loaded && namespace"
                  :namespace="namespace" />
