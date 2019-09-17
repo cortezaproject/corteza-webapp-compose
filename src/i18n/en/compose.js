@@ -407,6 +407,10 @@ export default {
 
       scheduledTriggers: {
         tabLabel: 'Scheduled',
+        schedule: 'Schedules:',
+        scheduleAdd: 'Add Schedule',
+        interval: 'Intervals:',
+        intervalAdd: 'Add Interval',
       },
 
       recordTriggers: {
