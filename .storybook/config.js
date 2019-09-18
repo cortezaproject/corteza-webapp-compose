@@ -16,6 +16,7 @@ function loadStories() {
   require('../src/stories/Field/User')
   require('../src/stories/Components/Public/Record/Exporter')
   require('../src/stories/Block/RecordOrganizer')
+  require('../src/stories/corteza-webapp-common/components/Input')
   //req.keys().forEach(filename => req(filename))
 }
 
