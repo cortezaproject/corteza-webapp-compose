@@ -16,6 +16,12 @@
                      class="confirmation-small d-inline-block ml-3">
 
               <font-awesome-icon :icon="['far', 'trash-alt']" />
+              <template slot="yes">
+                {{ $t('general.label.yes') }}
+              </template>
+              <template slot="no">
+                {{ $t('general.label.no') }}
+              </template>
             </confirm>
           </div>
         </b-form-group>
@@ -43,6 +49,12 @@
                      class="confirmation-small d-inline-block ml-3">
 
               <font-awesome-icon :icon="['far', 'trash-alt']" />
+              <template slot="yes">
+                {{ $t('general.label.yes') }}
+              </template>
+              <template slot="no">
+                {{ $t('general.label.no') }}
+              </template>
             </confirm>
           </div>
         </b-form-group>
