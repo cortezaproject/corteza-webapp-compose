@@ -88,7 +88,7 @@ export default {
         return false
       }
 
-      return tt(this.tree, this.pageID) || []
+      return tt(this.tree, this.page.pageID) || []
     },
   },
 
