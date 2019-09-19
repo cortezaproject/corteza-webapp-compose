@@ -12,7 +12,7 @@
     <namespace-sidebar :namespaces="namespaces"
                        :namespace="namespace"
                        class="d-none"
-                        v-if="namespaces.length > 1"></namespace-sidebar>
+                        v-if="showNSSideBar &&namespaces.length > 1"></namespace-sidebar>
     <router-view v-if="loaded && namespace"
                  :namespace="namespace" />
     <div class="loader" v-else></div>
@@ -43,6 +43,7 @@ export default {
 
   data () {
     return {
+      showNSSideBar: !!window.SHOW_NAMESPACE_PANEL,
       loaded: false,
       error: '',
       alerts: [], // { variant: 'info', message: 'foo' },
