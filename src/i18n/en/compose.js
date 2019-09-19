@@ -796,7 +796,7 @@ export default {
   },
   namespace: {
     clickOpen: 'Click to open',
-    title: 'Compose Namespaces',
+    title: 'Low Code Namespaces',
     create: 'Create namespace',
     edit: 'Edit "{{name}}"',
     disabled: 'Namespace is disabled',
