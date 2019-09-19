@@ -347,7 +347,7 @@ export default {
 
     handleDelete () {
       const { namespaceID } = this.namespace
-      this.deleteTrigger({ namespaceID, ...this.script }).then(() => {
+      this.deleteScript({ namespaceID, ...this.script }).then(() => {
         this.raiseSuccessAlert(this.$t('notification.automation.deleted'))
         this.redirect()
       }).catch(this.defaultErrorHandler(this.$t('notification.automation.deleteFailed')))
