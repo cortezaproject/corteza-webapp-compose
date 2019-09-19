@@ -82,9 +82,10 @@ import base from './base'
 import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
 import ExporterModal from 'corteza-webapp-compose/src/components/Public/Record/Exporter'
 import ImporterModal from 'corteza-webapp-compose/src/components/Public/Record/Importer'
+import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 import Pagination from 'vue-pagination-2'
 import _ from 'lodash'
-import Record from 'corteza-webapp-common/src/lib/types/compose/record'
+import { RecordList } from '../RecordList'
 import { make } from 'corteza-webapp-common/src/lib/url'
 
 export default {
@@ -120,6 +121,10 @@ export default {
     ...mapGetters({
       getModuleByID: 'module/getByID',
     }),
+
+    rl () {
+      return new RecordList(this.options)
+    },
 
     // Returns module, configured for this record list
     recordListModule () {
@@ -187,7 +192,9 @@ export default {
     }
 
     if (this.recordListModule) {
-      this.fetch()
+      this.rl.fetch(this.$ComposeAPI, this.recordListModule, this.filter).then(rr => {
+        this.recordsRaw = rr
+      })
     }
   },
 
@@ -211,17 +218,6 @@ export default {
       })
 
       window.open(url)
-    },
-
-    fetch (params = this.filter) {
-      params.moduleID = this.options.moduleID
-      params.namespaceID = this.namespace.namespaceID
-
-      return this.$ComposeAPI.recordList(params).then(({ filter = {}, set: records = [] }) => {
-        this.filter = filter
-        this.filter.filter = this.filter.query
-        this.recordsRaw = records
-      }).catch(this.defaultErrorHandler(this.$t('notification.record.listLoadFailed')))
     },
 
     handleQueryThrottled: _.throttle(function (e) { this.handleQuery(e) }, 500),
@@ -255,8 +251,9 @@ export default {
         }
         this.filter.page = 1
       }
-
-      this.fetch({ ...this.filter, filter })
+      this.rl.fetch(this.$ComposeAPI, this.recordListModule, { ...this.filter, filter }).then(rr => {
+        this.records = rr
+      })
     },
 
     handleSort (fieldName) {
@@ -267,7 +264,9 @@ export default {
       let sort = this.sortColumn === fieldName ? fieldName + ' DESC' : fieldName
       this.sortColumn = sort
 
-      this.fetch({ ...this.filter, sort })
+      this.rl.fetch(this.$ComposeAPI, this.recordListModule, { ...this.filter, sort }).then(rr => {
+        this.records = rr
+      })
     },
 
     isSortedBy (name) {
@@ -282,7 +281,9 @@ export default {
     },
 
     handlePageChange (page) {
-      this.fetch({ ...this.filter, page })
+      this.rl.fetch(this.$ComposeAPI, this.recordListModule, { ...this.filter, page }).then(rr => {
+        this.records = rr
+      })
     },
   },
 }

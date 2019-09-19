@@ -1,21 +1,33 @@
+import { PropCast, ID } from 'corteza-webapp-common/src/lib/types/common'
+
 export class RecordList {
-  constructor (def = {}) {
-    this.merge(def)
+  constructor (o = {}) {
+    this.pageID = PropCast(ID, o.pageID)
+    this.moduleID = PropCast(ID, o.moduleID)
+    this.prefilter = PropCast(String, o.prefilter)
+    this.presort = PropCast(String, o.presort)
+    this.fields = o.fields
+    this.hideHeader = !!o.hideHeader
+    this.hideAddButton = !!o.hideAddButton
+    this.hideSearch = !!o.hideSearch
+    this.hidePaging = !!o.hidePaging
+    this.hideSorting = !!o.hideSorting
+    this.allowExport = !!o.allowExport
+    this.perPage = o.perPage === 'number' ? o.perPage : 20
   }
 
-  merge ({ pageID, moduleID, fields, hideAddButton, hideHeader, hideSearch, hidePaging, hideSorting, prefilter, presort, perPage, allowExport } = {}) {
-    this.pageID = pageID || undefined
-    this.moduleID = moduleID || undefined
-    this.fields = fields || []
-    this.hideHeader = !!hideHeader
-    this.hideAddButton = !!hideAddButton
-    this.hideSearch = !!hideSearch
-    this.hidePaging = !!hidePaging
-    this.hideSorting = !!hideSorting
-    this.allowExport = !!allowExport
-    this.prefilter = prefilter
-    this.presort = presort
-    this.perPage = typeof perPage === 'number' ? perPage : 20
-    return this
+  async fetch ($ComposeAPI, recordListModule, filter) {
+    if (module.moduleID !== this.moduleID) {
+      throw Error('Module incompatible, module mismatch')
+    }
+
+    filter.moduleID = this.moduleID
+    filter.namespaceID = recordListModule.namespaceID
+
+    return $ComposeAPI
+      .recordList(filter)
+      .then(({ filter = {}, set: records = [] }) => {
+        return records
+      })
   }
 }
