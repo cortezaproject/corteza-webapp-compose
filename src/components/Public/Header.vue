@@ -1,12 +1,16 @@
 <template>
-    <header class="w-100">
-      <b-navbar id="public_header" type="light" toggleable="md" class="border-bottom border-light shadow-sm">
-          <b-navbar-toggle target="public_nav_collapse">
+    <header class="w-100 border-right">
+      <b-navbar id="public_header" type="light" toggleable="md" class="border-bottom border-light shadow-sm bg-white">
+          <b-navbar-toggle target="public_nav_collapse" class="border-0">
             <label>
               <font-awesome-icon :icon="['fas', 'bars']"></font-awesome-icon>
             </label>
           </b-navbar-toggle>
-          <b-collapse is-nav id="public_nav_collapse" :class="{ visible }" class="mt-2 mw-100 flex-grow-1" @show="toggleNav(true)" @hide="toggleNav(false)">
+          <b-collapse is-nav id="public_nav_collapse"
+                      :class="{ visible }"
+                      class="mw-100 flex-grow-1 position-absolute bg-white border-left"
+                      @show="toggleNav(true)"
+                      @hide="toggleNav(false)">
             <menu-level id="menu_lvl_1"
                         :pages="pages"
                         :selectedPath="selectedPath"
@@ -17,7 +21,7 @@
               </li>
             </menu-level>
           </b-collapse>
-        <span class="page-title text-nowrap position-absolute" v-if="page">{{ page.title }}</span>
+        <span class="page-title text-nowrap position-absolute d-block d-md-none ml-5" v-if="page">{{ page.title }}</span>
         <router-link v-if="namespace.canManageNamespace"
                      :to="{ name: 'admin' }"
                      id="public_nav_to_admin_pannel"
@@ -174,25 +178,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-header {
-  border-right: 1px solid $light;
-}
-
 .navbar {
-  background: $navbar-bg;
   height: $navbar-height;
 }
 
 .page-title {
-  left: 50px;
   max-width: calc(100vw - 150px);
   overflow: hidden;
 }
 
 .navbar-toggler {
-  border: none;
-
   &:focus,
   &:hover {
     outline: none;
@@ -229,43 +224,12 @@ header {
 }
 
 @media (max-width: 768px) {
-  #public_nav_collapse_0 {
-    width: 100%;
-
-    & > span {
-      display: none;
-    }
-
-    & > ul {
-      padding-left: 0;
-    }
-  }
-
   .navbar-collapse {
-    position: absolute;
+    z-index: 1;
     top: $navbar-height;
-    left: calc(0 - #{$sidebar-width});
     width: $sidebar-width;
-    max-width: 100%;
-    transition: all 0.3s;
     height: $sidebar-height;
-    overflow-y: scroll;
-    background: $navbar-bg;
-
-    &.visible {
-      left: 0;
-      border-left: 1px solid $light;
-    }
-
-    &.collapsing {
-      height: $sidebar-height;
-    }
-  }
-}
-
-@media (min-width: 768px) {
-  .page-title {
-    visibility: hidden;
+    overflow-y: auto;
   }
 }
 </style>

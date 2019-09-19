@@ -193,6 +193,10 @@ ul {
     background-color: rgba($navbar-active-border, 0.15);
   }
 
+  .selected {
+    border-bottom: none;
+  }
+
   ul {
     position: relative;
 
