@@ -340,7 +340,8 @@ export default {
         this.script.runAs = '0'
       }
 
-      this.updateScript({ namespaceID, ...this.script, triggers: this.triggers }).then((script) => {
+      const triggers = this.triggers.filter(({ createdAt, enabled }) => createdAt || enabled)
+      this.updateScript({ namespaceID, ...this.script, triggers }).then((script) => {
         this.script = script
         this.raiseSuccessAlert(this.$t('notification.automation.saved'))
         if (closeOnSuccess) {
