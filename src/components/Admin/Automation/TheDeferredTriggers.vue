@@ -12,7 +12,7 @@
                        class="d-inline-block"
                        @input="enableByIndex(resource, 'deferred', $event, i)" />
 
-            <confirm @confirmed="removeByIndex(resource, 'deferred', i)"
+            <confirm @confirmed="disableByIndex(resource, 'deferred', i)"
                      class="confirmation-small d-inline-block ml-3">
 
               <font-awesome-icon :icon="['far', 'trash-alt']" />
@@ -45,7 +45,7 @@
                       class="d-inline-block"
                       @input="enableByIndex(resource, 'interval', $event, i)" />
 
-            <confirm @confirmed="removeByIndex(resource, 'interval', i)"
+            <confirm @confirmed="disableByIndex(resource, 'interval', i)"
                      class="confirmation-small d-inline-block ml-3">
 
               <font-awesome-icon :icon="['far', 'trash-alt']" />
@@ -104,11 +104,11 @@ export default {
 
   computed: {
     getSchedules () {
-      return this.triggers.filter(({ event }) => event === 'deferred')
+      return this.triggers.filter(({ event, enabled }) => enabled && event === 'deferred')
     },
 
     getIntervals () {
-      return this.triggers.filter(({ event }) => event === 'interval')
+      return this.triggers.filter(({ event, enabled }) => enabled && event === 'interval')
     },
   },
 
