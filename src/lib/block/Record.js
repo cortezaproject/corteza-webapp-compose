@@ -1,11 +1,8 @@
-export class Record {
-  constructor (def = {}) {
-    this.merge(def)
-  }
+import { PropCast, ID } from 'corteza-webapp-common/src/lib/types/common'
 
-  merge ({ moduleID, fields } = {}) {
-    this.moduleID = moduleID || undefined
-    this.fields = fields || []
-    return this
+export class Record {
+  constructor (o = {}) {
+    this.moduleID = PropCast(ID, o.moduleID)
+    this.fields = o.fields || []
   }
 }

@@ -10,13 +10,8 @@ export const modes = [
 ]
 
 export class File {
-  constructor (def = {}) {
-    this.merge(def)
-  }
-
-  merge ({ mode, attachments = [] } = {}) {
-    this.mode = (mode && modes.includes(mode)) ? mode : 'list'
-    this.attachments = attachments || this.attachments
-    return this
+  constructor (o = {}) {
+    this.mode = (o.mode && modes.includes(o.mode)) ? o.mode : 'list'
+    this.attachments = o.attachments || this.attachments || []
   }
 }

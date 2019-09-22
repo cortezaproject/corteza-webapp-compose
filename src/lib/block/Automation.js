@@ -1,10 +1,5 @@
 export class Automation {
-  constructor (def = {}) {
-    this.merge(def)
-  }
-
-  merge ({ buttons } = {}) {
-    this.buttons = buttons || this.buttons || []
-    return this
+  constructor (o = {}) {
+    this.buttons = o.buttons || this.buttons || []
   }
 }

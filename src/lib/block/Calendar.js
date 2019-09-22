@@ -1,15 +1,11 @@
+import { PropCast } from 'corteza-webapp-common/src/lib/types/common'
 import i18next from 'i18next'
 
 export class Calendar {
-  constructor (def = {}) {
-    this.merge(def)
-  }
-
-  merge ({ feeds, header, defaultView } = {}) {
-    this.feeds = feeds || this.feeds || []
-    this.defaultView = defaultView || this.defaultView || undefined
-    this.header = header || this.header || {}
-    return this
+  constructor (o = {}) {
+    this.defaultView = PropCast(String, o.defaultView) || this.defaultView || undefined
+    this.feeds = o.feeds || this.feeds || []
+    this.header = o.header || this.header || {}
   }
 
   availableViews () {

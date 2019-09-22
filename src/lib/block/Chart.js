@@ -1,10 +1,7 @@
-export class Chart {
-  constructor (def = {}) {
-    this.merge(def)
-  }
+import { PropCast, ID } from 'corteza-webapp-common/src/lib/types/common'
 
-  merge ({ chartID } = {}) {
-    this.chartID = chartID
-    return this
+export class Chart {
+  constructor (o = {}) {
+    this.chartID = PropCast(ID, o.chartID)
   }
 }

@@ -1,14 +1,11 @@
-export class SocialFeed {
-  constructor (def = {}) {
-    this.merge(def)
-  }
+import { PropCast, ID } from 'corteza-webapp-common/src/lib/types/common'
 
-  merge ({ moduleID, fields, profileSourceField, profileUrl } = {}) {
-    this.moduleID = moduleID || undefined
-    this.fields = fields || []
-    this.profileSourceField = profileSourceField || undefined
-    this.profileUrl = profileUrl || undefined
-    return this
+export class SocialFeed {
+  constructor (o = {}) {
+    this.moduleID = PropCast(ID, o.moduleID)
+    this.fields = o.fields || []
+    this.profileSourceField = PropCast(String, o.profileSourceField)
+    this.profileUrl = PropCast(String, o.profileUrl)
   }
 }
 
