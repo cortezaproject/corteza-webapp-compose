@@ -51,7 +51,6 @@ describe('lib/block/View/RecordList', () => {
     it('Don\'t render any records if module is not defined', () => {
       $ComposeAPI.recordList = sinon.mock().resolves({ set: records })
       const wrap = mountRL()
-      wrap.vm.fetch()
 
       expect(wrap.findAll('table tbody tr')).to.have.length(0)
     })

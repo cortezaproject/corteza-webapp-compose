@@ -17,7 +17,7 @@ export class RecordList {
   }
 
   async fetch ($ComposeAPI, recordListModule, filter) {
-    if (module.moduleID !== this.moduleID) {
+    if (recordListModule.moduleID !== this.moduleID) {
       throw Error('Module incompatible, module mismatch')
     }
 
