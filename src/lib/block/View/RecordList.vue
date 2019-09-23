@@ -112,7 +112,7 @@ export default {
         filter: '',
       },
 
-      records: [],
+      recordsRaw: [],
     }
   },
 
@@ -132,6 +132,13 @@ export default {
 
     columns () {
       return this.recordListModule.filterFields(this.options.fields)
+    },
+
+    records () {
+      if (!this.recordListModule) {
+        return []
+      }
+      return this.recordsRaw.map(r => new Record(this.recordListModule, r))
     },
   },
 
@@ -210,10 +217,10 @@ export default {
       params.moduleID = this.options.moduleID
       params.namespaceID = this.namespace.namespaceID
 
-      return this.$ComposeAPI.recordList(params).then(({ filter, set }) => {
+      return this.$ComposeAPI.recordList(params).then(({ filter = {}, set: records = [] }) => {
         this.filter = filter
         this.filter.filter = this.filter.query
-        this.records = set.map(r => new Record(this.recordListModule, r))
+        this.recordsRaw = records
       }).catch(this.defaultErrorHandler(this.$t('notification.record.listLoadFailed')))
     },
 

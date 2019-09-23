@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { createLocalVue, shallowMount as sm } from '@vue/test-utils'
+import alertMixin from 'corteza-webapp-compose/src/mixins/alert'
 
 Vue.config.ignoredElements = [
   'font-awesome-icon',
@@ -17,6 +18,7 @@ export const shallowMount = (component, { mocks = {}, stubs = [], ...options } =
   return sm(component, {
     localVue,
     stubs: ['router-view', 'router-link', ...stubs],
+    mixins: [ alertMixin ],
     mocks: {
       $t: (e) => e,
       $SystemAPI: {},
