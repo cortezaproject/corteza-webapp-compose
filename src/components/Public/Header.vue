@@ -25,7 +25,7 @@
         <router-link v-if="namespace.canManageNamespace"
                      :to="{ name: 'admin' }"
                      id="public_nav_to_admin_pannel"
-                     class="nav-link mw-100 text-nowrap">{{ $t('navigation.adminPanel') }}</router-link>
+                     class="nav-link mw-100 text-nowrap position-absolute">{{ $t('navigation.adminPanel') }}</router-link>
       </b-navbar>
     </header>
 </template>
@@ -192,6 +192,10 @@ export default {
   &:hover {
     outline: none;
   }
+}
+
+#public_nav_to_admin_pannel {
+  right: 0;
 }
 
 #public_nav_collapse {
