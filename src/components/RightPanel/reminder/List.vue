@@ -95,7 +95,7 @@ export default {
 
     stdSort (a, b) {
       if (!a.remindAtTime) {
-        return 1
+        return -1
       }
       if (!b.remindAtTime) {
         return 0

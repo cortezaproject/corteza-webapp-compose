@@ -38,6 +38,10 @@ export default {
     this.$root.$on('rightPanel.toggle', this.setState)
   },
 
+  beforeDestroy () {
+    this.$root.$off('rightPanel.toggle', this.setState)
+  },
+
   methods: {
     setState (s) {
       this.visible = s
