@@ -11,7 +11,7 @@
     </div>
     <namespace-sidebar :namespaces="namespaces"
                        :namespace="namespace"
-                       class="d-none"
+                       class="d-block"
                         v-if="showNSSideBar &&namespaces.length > 1"></namespace-sidebar>
     <router-view v-if="loaded && namespace"
                  :namespace="namespace" />
