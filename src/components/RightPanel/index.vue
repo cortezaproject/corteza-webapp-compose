@@ -3,7 +3,8 @@
            name="right-panel"
            class="bg-white overflow-auto pb-5"
            :width="250"
-           v-bind="$attrs">
+           v-bind="$attrs"
+           :visible.sync="visible">
 
     <reminder v-bind="$props" />
   </sidebar>
@@ -20,12 +21,28 @@ export default {
   },
   inheritAttrs: false,
 
+  data () {
+    return {
+      visible: false,
+    }
+  },
+
   props: {
     namespaceID: {
       type: String,
       required: true,
     },
   },
+
+  mounted () {
+    this.$root.$on('rightPanel.toggle', this.setState)
+  },
+
+  methods: {
+    setState (s) {
+      this.visible = s
+    }
+  }
 }
 
 </script>

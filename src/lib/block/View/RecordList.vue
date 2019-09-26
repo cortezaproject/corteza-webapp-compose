@@ -216,6 +216,7 @@ export default {
       }
       let resource = `compose:record:${record.recordID}`
       this.$root.$emit('reminder.create', { payload, resource })
+      this.$root.$emit('rightPanel.toggle', true)
     },
     onExport (e) {
       const { namespaceID, moduleID } = this.filter || {}
