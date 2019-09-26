@@ -21,17 +21,17 @@ export default {
   },
   inheritAttrs: false,
 
-  data () {
-    return {
-      visible: false,
-    }
-  },
-
   props: {
     namespaceID: {
       type: String,
       required: true,
     },
+  },
+
+  data () {
+    return {
+      visible: false,
+    }
   },
 
   mounted () {
@@ -41,8 +41,8 @@ export default {
   methods: {
     setState (s) {
       this.visible = s
-    }
-  }
+    },
+  },
 }
 
 </script>
