@@ -443,7 +443,27 @@ export default {
     },
   },
   general: {
+    reminder: {
+      listLabel: 'List of reminders',
+      add: 'Add a new reminder',
+      dismiss: 'Dismiss',
+      snooze: 'Snooze',
+      edit: {
+        titleLabel: 'Title',
+        titlePlaceholder: 'Title',
+        notesLabel: 'Notes',
+        notesPlaceholder: 'Notes',
+        remindAtLabel: 'Remind At',
+        remindAtNone: 'Don\'t set a time',
+        assigneeLabel: 'Assignee',
+        assigneePlaceholder: 'Myself (default)',
+      },
+    },
+
     label: {
+      timeMinute: '{{t}}min',
+      timeHour: '{{t}}h',
+
       openBookmarks: 'Open bookmarks',
       buttons: 'Buttons',
       name: 'Name',
