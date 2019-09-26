@@ -56,7 +56,14 @@
               <field-viewer v-else-if="col.canReadRecordValue" :field="col" value-only :record="row" :namespace="namespace"/>
               <i v-else class="text-secondary">{{ $t('field.noPermission') }}</i>
             </td>
-            <td v-if="recordListModule.canUpdateRecord" class="text-right">
+            <td v-if="recordListModule.canUpdateRecord"
+                class="text-right d-flex align-items-center">
+
+              <b-button variant="link"
+                        @click.prevent="createReminder(row)">
+
+                <font-awesome-icon :icon="['far', 'bell']" />
+              </b-button>
               <router-link
                 :to="{ name: 'page.record.edit', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
                 <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
@@ -199,6 +206,17 @@ export default {
   },
 
   methods: {
+    createReminder (record) {
+      let payload = {
+        link: {
+          namespaceSlug: this.namespace.slug,
+          pageID: this.options.pageID,
+          moduleID: record.moduleID,
+        },
+      }
+      let resource = `compose:record:${record.recordID}`
+      this.$root.$emit('reminder.create', { payload, resource })
+    },
     onExport (e) {
       const { namespaceID, moduleID } = this.filter || {}
       e = {
