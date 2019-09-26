@@ -22,10 +22,16 @@
             </menu-level>
           </b-collapse>
         <span class="page-title text-nowrap position-absolute d-block d-md-none ml-5" v-if="page">{{ page.title }}</span>
-        <router-link v-if="namespace.canManageNamespace"
-                     :to="{ name: 'admin' }"
-                     id="public_nav_to_admin_pannel"
-                     class="nav-link mw-100 text-nowrap position-absolute">{{ $t('navigation.adminPanel') }}</router-link>
+
+        <div id="right-nav-opts"
+             class="position-absolute d-flex align-items-center">
+          <router-link v-if="namespace.canManageNamespace"
+                      :to="{ name: 'admin' }"
+                      class="nav-link mw-100 text-nowrap">{{ $t('navigation.adminPanel') }}</router-link>
+
+          <hamburger-menu class="d-none d-md-block mr-2"
+                          name="right-panel" />
+        </div>
       </b-navbar>
     </header>
 </template>
@@ -35,10 +41,12 @@ import MenuLevel from './MenuLevel'
 import navbarCollapse from 'corteza-webapp-compose/src/mixins/navbar_collapse'
 import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 import Page from 'corteza-webapp-compose/src/lib/page'
+import HamburgerMenu from 'corteza-webapp-common/src/components/Sidebar/HamburgerMenu'
 
 export default {
   components: {
     MenuLevel,
+    HamburgerMenu,
   },
 
   mixins: [ navbarCollapse ],
@@ -97,7 +105,7 @@ export default {
       const nav = document.getElementById('menu_lvl_1')
       const bb = document.getElementById('public_header')
       const collapse = document.getElementById('public_nav_collapse_0')
-      const customCollapser = document.getElementById('public_nav_to_admin_pannel')
+      const customCollapser = document.getElementById('right-nav-opts')
 
       setTimeout(() => { this.collapser(nav, bb, collapse, customCollapser) }, 1)
       window.onresize = () => {
@@ -194,7 +202,7 @@ export default {
   }
 }
 
-#public_nav_to_admin_pannel {
+#right-nav-opts {
   right: 0;
 }
 
