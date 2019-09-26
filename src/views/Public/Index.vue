@@ -1,5 +1,5 @@
 <template>
-  <div class="centering-wrap inactive-area w-100 flex-grow">
+  <div class="centering-wrap inactive-area w-100 flex-grow-1">
     <public-header :page="page"
                    :namespace="namespace"
                    @toggleNav="navVisible = $event" />
