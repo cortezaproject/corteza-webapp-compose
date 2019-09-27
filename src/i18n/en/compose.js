@@ -509,6 +509,8 @@ export default {
       removeDefault: 'Remove default',
       none: 'None',
       handle: 'Handle',
+      general: 'General',
+      enabled: 'Enabled',
     },
     placeholder: {
       handle: 'handle (a - z, 0 - 9, underscore, dash)',
@@ -702,6 +704,7 @@ export default {
   },
   field: {
     noPermission: 'No permission to read field value',
+    defaultValue: 'Default field value',
     options: {
       multiDelimiter: {
         label: 'Multiple value delimiter',
