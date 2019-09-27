@@ -487,6 +487,10 @@ export default {
       makeDefault: 'Make default',
       removeDefault: 'Remove default',
       none: 'None',
+      handle: 'Handle',
+    },
+    placeholder: {
+      handle: 'handle (a - z, 0 - 9, underscore, dash)',
     },
     tooltip: {
       dragAndDrop: 'Drag and drop to change order',
