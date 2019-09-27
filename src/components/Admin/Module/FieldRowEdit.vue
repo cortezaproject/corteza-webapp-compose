@@ -27,17 +27,17 @@
                 :value="fieldType.kind">{{ fieldType.label||fieldType.kind }}</option>
       </b-select>
     </td>
-    <td class="d-flex justify-content-around align-items-center">
+    <td class="d-flex justify-content-between align-items-center">
       <b-button :disabled="!value.isConfigurable()"
               @click.prevent="$emit('edit')"
-              class="pl-1 pr-0 text-secondary small"
+              class="pl-1 pr-0 text-secondary"
               variant="link">
         <font-awesome-icon :icon="['fas', 'wrench']"></font-awesome-icon>
       </b-button>
-      <permissions-button v-if="canGrant" :title="value.name" :resource="'compose:module-field:'+value.fieldID" class="small text-center" link/>
+      <permissions-button v-if="canGrant" :title="value.name" :resource="'compose:module-field:'+value.fieldID" class="text-center" link/>
       <confirmation-toggle @confirmed="$emit('delete')"
                            :no-prompt="!value.name"
-                           class="confirmation small">
+                           class="confirmation-small">
         <font-awesome-icon :icon="['far', 'trash-alt']"></font-awesome-icon>
       </confirmation-toggle>
     </td>
@@ -101,11 +101,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.small {
+.confirmation-small {
   min-width: 80px;
-}
 
-.confirmation {
   /deep/.btn-outline-danger {
     border: none;
   }
