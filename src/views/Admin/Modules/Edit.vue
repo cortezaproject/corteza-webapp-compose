@@ -30,10 +30,7 @@
                   <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.name')" class="info">{{ $t('general.label.name') }}</th>
                   <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.title')" class="info">{{ $t('general.label.title') }}</th>
                   <th>{{ $t('general.label.type') }}</th>
-                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.multi')" class="info text-center">{{ $t('general.label.multi') }}</th>
-                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.required')" class="info text-center">{{ $t('general.label.required') }}</th>
-                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.sensitive')" class="info text-center">{{ $t('general.label.sensitive') }}</th>
-                  <th class="text-center"></th>
+                  <th></th>
                 </tr>
                 </thead>
                 <draggable v-model="module.fields" :options="{handle:'.handle'}" element="tbody">
@@ -69,12 +66,15 @@
       v-if="updateField"
       :title="$t('module.edit.moduleFieldSettings')"
       :ok-title="$t('general.label.saveAndClose')"
+      :cancel-title="$t('general.label.close')"
       ok-variant="dark"
-      ok-only
+      cancel-variant="link"
       size="lg"
       @ok="handleFieldSave(updateField)"
       @hide="updateField=null"
-      :visible="!!updateField">
+      :visible="!!updateField"
+      body-class="p-0 border-top-0"
+      hide-header>
       <field-configurator :field.sync="updateField" />
     </b-modal>
     <editor-toolbar :back-link="{name: 'admin.modules'}"

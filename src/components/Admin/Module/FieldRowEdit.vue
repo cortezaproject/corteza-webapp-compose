@@ -21,42 +21,25 @@
              class="form-control"/>
     </td>
     <td>
-      <b-select v-model="value.kind"
-                :disabled="disabled"
-                class="w-75">
+      <b-select v-model="value.kind" :disabled="disabled">
         <option v-for="fieldType in fieldsList"
                 :key="fieldType.kind"
                 :value="fieldType.kind">{{ fieldType.label||fieldType.kind }}</option>
       </b-select>
+    </td>
+    <td class="d-flex justify-content-around align-items-center">
       <b-button :disabled="!value.isConfigurable()"
               @click.prevent="$emit('edit')"
-              class="pl-1 pr-0 text-secondary"
+              class="pl-1 pr-0 text-secondary small"
               variant="link">
-        <font-awesome-icon :icon="['fas', 'wrench']"></font-awesome-icon></b-button>
-    </td>
-    <td class="text-center align-middle">
-      <b-form-checkbox v-model="value.isMulti"
-                       :disabled="!value.allowMulti()"
-                       :value="true"
-                       :unchecked-value="false"></b-form-checkbox>
-    </td>
-    <td class="text-center align-middle">
-      <b-form-checkbox v-model="value.isRequired"
-                       :value="true"
-                       :unchecked-value="false"></b-form-checkbox>
-    </td>
-    <td class="text-center align-middle">
-      <b-form-checkbox v-model="value.isPrivate"
-                       :value="true"
-                       :unchecked-value="false"></b-form-checkbox>
-    </td>
-    <td class="text-right align-middle">
+        <font-awesome-icon :icon="['fas', 'wrench']"></font-awesome-icon>
+      </b-button>
+      <permissions-button v-if="canGrant" :title="value.name" :resource="'compose:module-field:'+value.fieldID" class="small text-center" link/>
       <confirmation-toggle @confirmed="$emit('delete')"
                            :no-prompt="!value.name"
-                           class="confirmation-small">
+                           class="confirmation small">
         <font-awesome-icon :icon="['far', 'trash-alt']"></font-awesome-icon>
       </confirmation-toggle>
-      <permissions-button v-if="canGrant" :title="value.name" :resource="'compose:module-field:'+value.fieldID" link />
     </td>
   </tr>
 </template>
@@ -118,9 +101,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.confirmation-small {
+.small {
   min-width: 80px;
+}
 
+.confirmation {
   /deep/.btn-outline-danger {
     border: none;
   }

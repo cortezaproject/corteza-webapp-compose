@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <span class="text-center">
     <span v-if="!inConfirmation">
       <b-button variant="outline-danger" size="sm" @click.prevent="onPrompt" :disabled="disabled"><slot></slot></b-button>
     </span>
