@@ -60,6 +60,22 @@ export default {
       return this.module.filterFields(this.options.fields)
     },
   },
+
+  created () {
+    if (!this.record.recordID) {
+      this.fields.forEach(f => {
+        let { name, defaultValue, isMulti } = f
+        if (defaultValue) {
+          if (isMulti) {
+            defaultValue = defaultValue.map(v => v.value)
+          } else {
+            defaultValue = defaultValue[0].value
+          }
+          this.record.values[name] = defaultValue
+        }
+      })
+    }
+  },
 }
 </script>
 <style scoped lang="scss">
