@@ -252,7 +252,7 @@ export default {
         this.filter.page = 1
       }
       this.rl.fetch(this.$ComposeAPI, this.recordListModule, { ...this.filter, filter }).then(rr => {
-        this.records = rr
+        this.recordsRaw = rr
       })
     },
 
@@ -265,7 +265,7 @@ export default {
       this.sortColumn = sort
 
       this.rl.fetch(this.$ComposeAPI, this.recordListModule, { ...this.filter, sort }).then(rr => {
-        this.records = rr
+        this.recordsRaw = rr
       })
     },
 
@@ -282,7 +282,7 @@ export default {
 
     handlePageChange (page) {
       this.rl.fetch(this.$ComposeAPI, this.recordListModule, { ...this.filter, page }).then(rr => {
-        this.records = rr
+        this.recordsRaw = rr
       })
     },
   },
