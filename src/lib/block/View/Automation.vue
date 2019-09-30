@@ -35,9 +35,9 @@ export default {
       console.debug('manually running script', scriptID)
 
       this.runScripByID(scriptID, {
-        namespace: new Namespace(this.namespace),
-        module: new Module(this.module),
-        record: new Record(this.module, this.record),
+        $namespace: new Namespace(this.namespace),
+        $module: new Module(this.module),
+        $record: new Record(this.module, this.record),
       }).then((rval) => {
         if (rval instanceof Record) {
           // This applies changes to the record.
