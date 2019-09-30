@@ -57,11 +57,10 @@
               <i v-else class="text-secondary">{{ $t('field.noPermission') }}</i>
             </td>
             <td v-if="recordListModule.canUpdateRecord"
-                class="text-right d-flex align-items-center">
+                class="text-right">
 
               <b-button variant="link"
                         @click.prevent="createReminder(row)">
-
                 <font-awesome-icon :icon="['far', 'bell']" />
               </b-button>
               <router-link
