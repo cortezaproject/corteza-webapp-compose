@@ -60,16 +60,6 @@ export default [
 
   r('auth', '/auth', 'Auth'),
 
-  // @todo migrate to storybook
-  // {
-  //   path: '/storybook',
-  //   redirect: 'field-types',
-  //   component: view('Admin/Index'),
-  //   children: [
-  //     { path: 'field-types', name: 'storybook.field-types', component: view('Storybook/FieldTypes') },
-  //   ],
-  // },
-
   // When everything else fails, go to namespaces
   { path: '*', redirect: { name: 'root' } },
 ]
