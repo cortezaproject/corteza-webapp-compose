@@ -27,30 +27,54 @@
                 :value="fieldType.kind">{{ fieldType.label||fieldType.kind }}</option>
       </b-select>
     </td>
-    <td class="d-flex justify-content-between align-items-center">
+    <td class="text-center align-middle">
+      <b-form-checkbox v-model="value.isMulti"
+                       :disabled="!value.allowMulti()"
+                       :value="true"
+                       :unchecked-value="false"></b-form-checkbox>
+    </td>
+    <td class="text-center align-middle">
+      <b-form-checkbox v-model="value.isRequired"
+                       :value="true"
+                       :unchecked-value="false"></b-form-checkbox>
+    </td>
+    <td class="text-center align-middle">
+      <b-form-checkbox v-model="value.isPrivate"
+                       :value="true"
+                       :unchecked-value="false"></b-form-checkbox>
+    </td>
+    <td class="d-flex justify-content-around align-items-center mt-1">
       <b-button :disabled="!value.isConfigurable()"
-              @click.prevent="$emit('edit')"
-              class="pl-1 pr-0 text-secondary"
-              variant="link">
+                @click.prevent="$emit('edit')"
+                class="pl-1 pr-0 text-secondary"
+                variant="link">
+
         <font-awesome-icon :icon="['fas', 'wrench']"></font-awesome-icon>
       </b-button>
-      <permissions-button v-if="canGrant" :title="value.name" :resource="'compose:module-field:'+value.fieldID" class="text-center" link/>
-      <confirmation-toggle @confirmed="$emit('delete')"
-                           :no-prompt="!value.name"
-                           class="confirmation-small">
+      <confirm @confirmed="$emit('delete')"
+               :no-prompt="!value.name"
+               class="confirmation-small">
+
         <font-awesome-icon :icon="['far', 'trash-alt']"></font-awesome-icon>
-      </confirmation-toggle>
+        <template v-slot:yes>
+          {{ $t('general.label.yes') }}
+        </template>
+        <template v-slot:no>
+          {{ $t('general.label.no') }}
+        </template>
+      </confirm>
+      <permissions-button v-if="canGrant" :title="value.name" :resource="'compose:module-field:'+value.fieldID" link/>
     </td>
   </tr>
 </template>
 
 <script>
-import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
+import Confirm from 'corteza-webapp-common/src/components/Input/Confirm'
 import fieldList from 'corteza-webapp-compose/src/lib/field/list'
 
 export default {
   components: {
-    ConfirmationToggle,
+    Confirm,
   },
 
   props: {

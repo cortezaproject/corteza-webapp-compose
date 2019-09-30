@@ -1,23 +1,25 @@
 <template>
   <div>
     <b-form-checkbox v-model="field.isRequired"
-                      :value="true"
-                      :unchecked-value="false">
+                     :value="true"
+                     :unchecked-value="false">
 
       {{ $t('general.label.required') }}
     </b-form-checkbox>
     <b-form-checkbox v-model="field.isPrivate"
-                      :value="true"
-                      :unchecked-value="false">
-      {{ $t('general.label.sensitive') }}
+                     :value="true"
+                     :unchecked-value="false">
+      {{ $t('general.label.private') }}
     </b-form-checkbox>
-    <b-form-group :label="$t('field.defaultValue')" class="mt-3">
-      <field-editor
-          class="mb-0"
-          valueOnly
-          :namespace="mockNamespace"
-          :field="mockField"
-          :record.sync="mockRecord" />
+    <b-form-group v-if="mockField.kind"
+                  :label="$t('field.defaultValue')"
+                  class="mt-3">
+
+      <field-editor class="mb-0"
+                    valueOnly
+                    :namespace="mockNamespace"
+                    :field="mockField"
+                    :record.sync="mockRecord" />
     </b-form-group>
   </div>
 </template>
@@ -36,6 +38,7 @@ export default {
     field: {
       type: Object,
       required: true,
+      default: () => ({}),
     },
   },
 
@@ -100,22 +103,24 @@ export default {
 
   created () {
     // Get namespaceID
-    this.mockNamespace.namespaceID = this.getModuleByID(this.$route.params.moduleID).namespaceID
+    if (this.field.kind === 'Record') {
+      this.mockNamespace.namespaceID = this.getModuleByID(this.$route.params.moduleID).namespaceID
+    }
 
     // Transform to frontend value struct
     let { defaultValue, isMulti } = this.field
-    if (!defaultValue) defaultValue = []
-    if (defaultValue.length > 0) {
-      if (isMulti) {
-        defaultValue = defaultValue.map(v => v.value)
-      } else {
-        defaultValue = defaultValue[0].value
-      }
+    if (!defaultValue) {
+      defaultValue = []
+    }
+    if (isMulti) {
+      defaultValue = defaultValue.map(v => v.value)
+    } else {
+      defaultValue = (defaultValue[0] || {}).value
     }
     this.mockRecord.values.defaultValue = defaultValue
     this.mockField = new Field(this.field)
     this.mockField.isRequired = false
-    this.mockField.isSensitive = false
+    this.mockField.isPrivate = false
     this.mockField.name = 'defaultValue'
   },
 }

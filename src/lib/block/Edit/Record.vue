@@ -63,8 +63,7 @@ export default {
 
   created () {
     if (!this.record.recordID) {
-      this.fields.forEach(f => {
-        let { name, defaultValue, isMulti } = f
+      this.fields.forEach(({ name, defaultValue, isMulti }) => {
         if (defaultValue) {
           if (isMulti) {
             defaultValue = defaultValue.map(v => v.value)

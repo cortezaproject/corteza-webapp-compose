@@ -30,6 +30,9 @@
                   <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.name')" class="info">{{ $t('general.label.name') }}</th>
                   <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.title')" class="info">{{ $t('general.label.title') }}</th>
                   <th>{{ $t('general.label.type') }}</th>
+                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.multi')" class="info text-center">{{ $t('general.label.multi') }}</th>
+                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.required')" class="info text-center">{{ $t('general.label.required') }}</th>
+                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.private')" class="info text-center">{{ $t('general.label.private') }}</th>
                   <th></th>
                 </tr>
                 </thead>
@@ -64,17 +67,16 @@
     </b-container>
     <b-modal
       v-if="updateField"
-      :title="$t('module.edit.moduleFieldSettings')"
+      :title="modalTitle"
       :ok-title="$t('general.label.saveAndClose')"
-      :cancel-title="$t('general.label.close')"
+      ok-only
       ok-variant="dark"
-      cancel-variant="link"
       size="lg"
       @ok="handleFieldSave(updateField)"
       @hide="updateField=null"
       :visible="!!updateField"
       body-class="p-0 border-top-0"
-      hide-header>
+      header-class="px-3 pt-3 pb-0 border-bottom-0">
       <field-configurator :field.sync="updateField" />
     </b-modal>
     <editor-toolbar :back-link="{name: 'admin.modules'}"
@@ -136,6 +138,11 @@ export default {
     handleState () {
       return handleState(this.module)
     },
+
+    modalTitle () {
+      const { name } = this.updateField
+      return name ? this.$t('module.edit.specificFieldSettings', { name: this.updateField.name }) : this.$t('module.edit.moduleFieldSettings')
+    },
   },
 
   created () {
@@ -159,7 +166,7 @@ export default {
     }),
 
     handleNewField () {
-      this.module.fields.push(new Field())
+      this.module.fields.push(new Field({ kind: 'String' }))
     },
 
     handleFieldEdit (field) {
