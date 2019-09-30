@@ -43,10 +43,10 @@ const blocksToGrid = blocks => {
     return {
       i,
 
-      x: block.x,
-      y: block.y,
-      w: block.width,
-      h: block.height,
+      x: block.xywh[0],
+      y: block.xywh[1],
+      w: block.xywh[2],
+      h: block.xywh[3],
 
       block,
     }
@@ -124,15 +124,9 @@ export default {
     },
 
     handleLayoutUpdate (grid) {
-      // Emit change back with 'update:' prefix for .sync modifier to kick in.
-      this.$emit(
-        'update:blocks',
-        grid.map(({ x, y, w, h, block }) => {
-          const b = new Block(block)
-          b.merge({ x, y, width: w, height: h })
-          return b
-        })
-      )
+      this.$emit('update:blocks', grid.map(
+        ({ x, y, w, h, block }) => new Block({ ...block, xywh: [x, y, w, h] })
+      ))
     },
   },
 }

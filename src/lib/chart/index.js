@@ -171,10 +171,11 @@ export class Chart {
     this.merge(def)
   }
 
-  merge ({ chartID, namespaceID, name, config, ...args }) {
+  merge ({ chartID, namespaceID, name, handle, config, ...args }) {
     this.chartID = typeof chartID === 'string' ? chartID : this.chartID || null
     this.namespaceID = typeof namespaceID === 'string' ? namespaceID : this.namespaceID || ''
     this.name = typeof name === 'string' ? name : this.name || ''
+    this.handle = typeof handle === 'string' ? handle : this.handle || ''
     this.canUpdateChart = typeof args.canUpdateChart === 'boolean' ? args.canUpdateChart : false
     this.canDeleteChart = typeof args.canDeleteChart === 'boolean' ? args.canDeleteChart : false
     this.canGrant = typeof args.canGrant === 'boolean' ? args.canGrant : false

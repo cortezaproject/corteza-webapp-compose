@@ -17,14 +17,12 @@ steps:
     image: cortezaproject/corteza-webapp-builder
     commands:
       - yarn build --modern
-
     when:
       ref:
         - refs/heads/master
         - refs/heads/beta
         - refs/heads/feature-*
         - refs/tags/20??.*.*
-      events: [ tag, push ]
 
   - name: pack
     image: cortezaproject/corteza-webapp-builder
@@ -32,6 +30,7 @@ steps:
       - name: webapp-build
         path: /var/build
     commands:
+      # produces something like: "corteza-webapp-compose-master.tar.bz2 "
       - tar -cjf /var/build/$DRONE_REPO_NAME-${DRONE_TAG=${DRONE_BRANCH}}.tar.bz2 -C dist/ .
 
   - name: trigger
@@ -48,8 +47,6 @@ steps:
         #  - namespace (cortezaproject/crusttech),
         #  - removing suffix (admin) from repo name (corteza-webapp..., crust-webapp...)
         - "${DRONE_REPO_NAMESPACE}/${DRONE_REPO_NAME%%-compose}"
-
-trigger:
 
 volumes:
   - name: webapp-build

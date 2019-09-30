@@ -9,6 +9,7 @@
                 <b-col md="6">
                   <fieldset v-if="modules">
                     <b-form-input v-model="chart.name" :placeholder="$t('chart.newPlaceholder')" class="mb-1"></b-form-input>
+                    <b-form-input v-model="chart.handle" :placeholder="$t('general.placeholder.handle')" :state="handleState" class="mb-1"></b-form-input>
                   </fieldset>
                   <report v-for="(report, index) in chart.config.reports"
                           :report.sync="report"
@@ -69,6 +70,7 @@ import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToo
 import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import { Chart, ChartComponent } from 'corteza-webapp-compose/src/lib/chart'
+import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 
 const defaultReport = {
   moduleID: undefined,
@@ -113,6 +115,10 @@ export default {
 
     defaultReport () {
       return Object.assign({}, defaultReport)
+    },
+
+    handleState () {
+      return handleState(this.page)
     },
   },
 

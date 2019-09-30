@@ -9,13 +9,17 @@
                          {{ $t('general.label.pageBuilder') }}</router-link>
             <b-form @submit.prevent="handleSave()">
               <input required type="hidden" v-model="page.pageID" id="id" />
-              <label for="title">{{ $t('page.newPlaceholder') }}</label>
+              <label>{{ $t('page.newPlaceholder') }}</label>
               <b-form-input required
                             v-model="page.title"
-                            id="title"
                             class="mb-2"
                             :placeholder="$t('page.newPlaceholder')"></b-form-input>
-              <label for="title">{{ $t('general.label.description') }}</label>
+              <label>{{ $t('general.label.handle') }}</label>
+              <b-form-input v-model="page.handle"
+                            :state="handleState"
+                            class="mb-2"
+                            :placeholder="$t('general.placeholder.handle')"></b-form-input>
+              <label>{{ $t('general.label.description') }}</label>
               <b-form-textarea v-model="page.description"
                                :placeholder="$t('page.edit.pageDescription')"
                                class="mb-2"
@@ -44,6 +48,7 @@ import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/Conf
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 import Page from 'corteza-webapp-compose/src/lib/page'
+import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 
 export default {
   name: 'PageEdit',
@@ -70,6 +75,12 @@ export default {
       modulesList: [],
       page: new Page(),
     }
+  },
+
+  computed: {
+    handleState () {
+      return handleState(this.page)
+    },
   },
 
   created () {

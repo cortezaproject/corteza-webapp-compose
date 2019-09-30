@@ -15,6 +15,13 @@
                             :placeholder="$t('module.newPlaceholder')"></b-form-input>
             </b-form-group>
             <b-form-group>
+              <label>{{ $t('general.label.handle') }}</label>
+              <b-form-input v-model="module.handle"
+                            :state="handleState"
+                            class="mb-2"
+                            :placeholder="$t('general.placeholder.handle')"></b-form-input>
+            </b-form-group>
+            <b-form-group>
               <h5 class="mt-1">{{ $t('module.edit.manageRecordFields') }}</h5>
               <table class="table table-sm table-borderless">
                 <thead>
@@ -90,6 +97,7 @@ import Field from 'corteza-webapp-compose/src/lib/field'
 import Module from 'corteza-webapp-compose/src/lib/module'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
+import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 
 export default {
   components: {
@@ -119,6 +127,12 @@ export default {
       updateField: null,
       module: new Module(),
     }
+  },
+
+  computed: {
+    handleState () {
+      return handleState(this.module)
+    },
   },
 
   created () {
