@@ -1,5 +1,6 @@
 <template>
   <div class="centering-wrap inactive-area d-flex" v-if="$auth.is()">
+    <toaster :toasts="toasts" />
     <div class="alert-holder">
       <b-alert v-for="(a,i) in alerts"
                :variant=" a.variant || 'info'"
@@ -11,7 +12,7 @@
     </div>
     <namespace-sidebar :namespaces="namespaces"
                        :namespace="namespace"
-                       class="d-none"
+                       class="d-block"
                         v-if="showNSSideBar &&namespaces.length > 1"></namespace-sidebar>
     <router-view v-if="loaded && namespace"
                  :namespace="namespace" />
@@ -25,11 +26,14 @@
 import { PermissionsModal } from 'corteza-webapp-common/components'
 import NamespaceSidebar from 'corteza-webapp-compose/src/components/Namespaces/NamespaceSidebar'
 import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import Toaster from 'corteza-webapp-common/src/components/Toaster'
+import moment from 'moment'
 
 export default {
   name: 'Namespace',
 
   components: {
+    Toaster,
     PermissionsModal,
     NamespaceSidebar,
   },
@@ -49,6 +53,7 @@ export default {
       alerts: [], // { variant: 'info', message: 'foo' },
       namespace: null,
       namespaces: [],
+      toasts: [],
     }
   },
 
@@ -112,13 +117,29 @@ export default {
     this.error = ''
     this.handleAlert((alert) => this.alerts.push(alert))
     this.$root.$on('namespaces.listLoad', this.namespaceLoader)
+    this.$root.$on('reminder.show', this.showReminder)
 
     this.namespaceLoader()
       .catch(this.errHandler)
   },
 
+  mounted () {
+    this.$nextTick(() => {
+      this.$Reminder.init({
+        emitter: this.$root,
+        filter: {
+          assignedTo: this.$auth.user.userID,
+          scheduledOnly: true,
+          excludeDismissed: true,
+        },
+      })
+    })
+  },
+
   beforeDestroy () {
+    this.$Reminder.stop()
     this.$root.$off('namespaces.listLoad', this.namespaceLoader)
+    this.$root.$off('reminder.show', this.showReminder)
   },
 
   methods: {
@@ -136,6 +157,81 @@ export default {
       }
 
       return Promise.reject(error)
+    },
+
+    removeToast (id) {
+      const i = this.toasts.findIndex(r => r.id === id)
+      if (i > -1) {
+        this.toasts.splice(i, 1)
+      }
+    },
+
+    onReminderHide ({ reminderID }) {
+      // Dismiss
+      this.$SystemAPI.reminderDismiss({ reminderID })
+        .then(() => {
+          this.removeToast(reminderID)
+          this.$root.$emit('reminder.updated', reminderID)
+        })
+    },
+
+    // Duration is in ms
+    onReminderSnooze ({ reminderID }, { duration }) {
+      const remindAt = moment().add(duration, 'ms').toISOString()
+      this.$SystemAPI.reminderSnooze({ reminderID, remindAt })
+        .then(() => {
+          this.removeToast(reminderID)
+          this.$root.$emit('reminder.updated', reminderID)
+        })
+    },
+
+    showReminder (r) {
+      const i = this.toasts.findIndex(({ id }) => id === r.id)
+      if (i > -1 && (!r.editedAt || r.editedAt === this.toasts[i].editedAt)) {
+        // Same reminder; no need to push it again
+        console.debug('reminder.ignore')
+        return
+      }
+
+      r.options = {
+        variant: 'warning',
+        'no-auto-hide': true,
+        ...r.options,
+      }
+
+      r.addAction('dismiss', {
+        cb: this.onReminderHide,
+        kind: 'Button',
+        label: `<b>${this.$t('general.reminder.dismiss')}</b>`,
+        options: {
+          variant: 'warning',
+          class: [ 'float-right' ],
+        },
+      })
+
+      r.addAction('snooze', {
+        cb: this.onReminderSnooze,
+        label: `<b>${this.$t('general.reminder.snooze')}</b>`,
+        kind: 'Dropdown',
+        options: {
+          variant: 'outline-warning',
+          class: [ 'float-left' ],
+          items: [
+            { kind: 'item-button', label: this.$t('general.label.timeMinute', { t: 5 }), value: { duration: 1000 * 60 * 5 } },
+            { kind: 'item-button', label: this.$t('general.label.timeMinute', { t: 15 }), value: { duration: 1000 * 60 * 15 } },
+            { kind: 'item-button', label: this.$t('general.label.timeMinute', { t: 30 }), value: { duration: 1000 * 60 * 30 } },
+            { kind: 'item-button', label: this.$t('general.label.timeHour', { t: 1 }), value: { duration: 1000 * 60 * 60 * 1 } },
+            { kind: 'item-button', label: this.$t('general.label.timeHour', { t: 2 }), value: { duration: 1000 * 60 * 60 * 2 } },
+            { kind: 'item-button', label: this.$t('general.label.timeHour', { t: 24 }), value: { duration: 1000 * 60 * 60 * 24 } },
+          ],
+        },
+      })
+
+      if (i > -1) {
+        this.toasts.splice(i, 1, r)
+      } else {
+        this.toasts.push(r)
+      }
     },
   },
 }

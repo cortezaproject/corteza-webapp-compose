@@ -108,6 +108,10 @@ ul {
   &.root {
     li {
       display: inline-block;
+
+      a {
+        padding: 14px;
+      }
     }
   }
 

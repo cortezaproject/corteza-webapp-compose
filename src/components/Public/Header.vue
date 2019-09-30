@@ -1,14 +1,17 @@
 <template>
     <header class="w-100 border-right">
-      <b-navbar id="public_header" type="light" toggleable="md" class="border-bottom border-light shadow-sm bg-white">
+      <b-navbar id="public_header" type="light" toggleable="md" class="border-bottom border-light shadow-sm bg-white align-self-end">
           <b-navbar-toggle target="public_nav_collapse" class="border-0">
             <label>
               <font-awesome-icon :icon="['fas', 'bars']"></font-awesome-icon>
             </label>
           </b-navbar-toggle>
+        <router-link to="to" class="d-none d-md-block text-dark mx-2">
+          <font-awesome-icon :icon="['fas', 'bars']"></font-awesome-icon>
+        </router-link>
           <b-collapse is-nav id="public_nav_collapse"
                       :class="{ visible }"
-                      class="mw-100 flex-grow-1 position-absolute bg-white border-left"
+                      class="mw-100 flex-grow-1 bg-white"
                       @show="toggleNav(true)"
                       @hide="toggleNav(false)">
             <menu-level id="menu_lvl_1"
@@ -22,10 +25,16 @@
             </menu-level>
           </b-collapse>
         <span class="page-title text-nowrap position-absolute d-block d-md-none ml-5" v-if="page">{{ page.title }}</span>
-        <router-link v-if="namespace.canManageNamespace"
-                     :to="{ name: 'admin' }"
-                     id="public_nav_to_admin_pannel"
-                     class="nav-link mw-100 text-nowrap position-absolute">{{ $t('navigation.adminPanel') }}</router-link>
+
+        <div id="right-nav-opts"
+             class="position-absolute d-flex align-items-center">
+          <router-link v-if="namespace.canManageNamespace"
+                      :to="{ name: 'admin' }"
+                      class="nav-link mw-100 text-nowrap">{{ $t('navigation.adminPanel') }}</router-link>
+
+          <hamburger-menu class="d-none d-md-block mr-2"
+                          name="right-panel" />
+        </div>
       </b-navbar>
     </header>
 </template>
@@ -35,10 +44,12 @@ import MenuLevel from './MenuLevel'
 import navbarCollapse from 'corteza-webapp-compose/src/mixins/navbar_collapse'
 import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 import Page from 'corteza-webapp-compose/src/lib/page'
+import HamburgerMenu from 'corteza-webapp-common/src/components/Sidebar/HamburgerMenu'
 
 export default {
   components: {
     MenuLevel,
+    HamburgerMenu,
   },
 
   mixins: [ navbarCollapse ],
@@ -97,7 +108,7 @@ export default {
       const nav = document.getElementById('menu_lvl_1')
       const bb = document.getElementById('public_header')
       const collapse = document.getElementById('public_nav_collapse_0')
-      const customCollapser = document.getElementById('public_nav_to_admin_pannel')
+      const customCollapser = document.getElementById('right-nav-opts')
 
       setTimeout(() => { this.collapser(nav, bb, collapse, customCollapser) }, 1)
       window.onresize = () => {
@@ -194,7 +205,7 @@ export default {
   }
 }
 
-#public_nav_to_admin_pannel {
+#right-nav-opts {
   right: 0;
 }
 
@@ -234,6 +245,7 @@ export default {
     width: $sidebar-width;
     height: $sidebar-height;
     overflow-y: auto;
+    position: absolute;
   }
 }
 </style>
