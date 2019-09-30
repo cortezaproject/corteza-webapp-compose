@@ -1,33 +1,33 @@
 <template>
   <div>
-    <h5 class="sticky-top bg-white p-1">
+    <h5 class="sticky-top bg-white p-1 mb-0">
       {{ $t('general.reminder.listLabel') }}
     </h5>
 
     <!-- Active reminders -->
-    <b-form-group class="p-2">
+    <b-form-group class="p-2 mb-0">
       <b-form v-for="r in remindersActive"
               :key="r.reminderID"
-              class="d-flex align-items-baseline">
-
-        <span class="flex-grow-1 text-dark d-flex align-items-center reminder">
+              class="checkbox d-flex align-items-center py-1 border-bottom text-justify">
+        <font-awesome-icon :icon="['far', 'square']" class="text-secondary"></font-awesome-icon>
+        <font-awesome-icon :icon="['fas', 'check']" class="text-primary"></font-awesome-icon>
+        <div class="flex-grow-1 text-dark d-flex align-items-center reminder">
           <b-form-checkbox size="sm"
-                           name="some-radios"
                            class="checkbox"
-                           @change="dismiss($event, r)" />
-
+                           @change="dismiss($event, r)">
           {{ r.payload.title }}
-        </span>
-
-        <font-awesome-icon v-if="r.remindAt"
-                           :icon="['far', 'bell']"
-                           class="mr-1 small"
-                           v-b-tooltip.hover
-                           :title="makeTooltip(r)" />
-
+          </b-form-checkbox>
+        </div>
         <font-awesome-icon v-if="r.snoozeCount"
                            :icon="['far', 'clock']"
-                           class="mr-1 small" />
+                           class="ml-2 small" />
+
+        <font-awesome-icon v-else-if="r.remindAt"
+                           :icon="['far', 'bell']"
+                           class="ml-2 small"
+                           v-b-tooltip.hover
+                           :title="makeTooltip(r)" />
+        <span v-else class="pr-3"> </span>
 
         <!-- @note currently, edit is disabled -->
         <!-- <b-button variant="link"
@@ -41,22 +41,17 @@
 
     <!-- Dismissed reminders -->
     <b-list-group class="p-2 pb-5">
-      <b-form v-for="r in remindersDismissed"
+      <div v-for="r in remindersDismissed"
               :key="r.reminderID"
-              class="d-flex align-items-baseline">
-
-        <b-form-checkbox size="sm"
-                         name="some-radios"
-                         class="flex-grow-1"
-                         disabled
-                         :checked="true">
-          <s>{{ r.payload.title }}</s>
-        </b-form-checkbox>
-      </b-form>
+              class="d-flex align-items-center">
+        <font-awesome-icon :icon="['fas', 'check']" class="text-primary mr-1"></font-awesome-icon>
+        <s class="text-secondary small flex-grow-1 py-1 pr-3 border-bottom text-justify">{{ r.payload.title }}</s>
+      </div>
     </b-list-group>
 
-    <div class="position-sticky text-center bg-white py-1" style="bottom: 0;">
-      <b-button @click="$emit('edit')">
+    <div class="position-sticky text-center bg-white py-1 fixed-bottom">
+      <b-button @click="$emit('edit')"
+                size="sm">
         + {{ $t('general.reminder.add') }}
       </b-button>
     </div>
@@ -112,15 +107,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.reminder {
-  .checkbox {
+.checkbox {
+  .fa-check {
     opacity: 0;
-    transition: opacity 0.1s;
+    margin-right: -14px;
+    margin-left: -14px;
   }
 
-  &:hover .checkbox {
-    opacity: 1;
+  &:hover {
+    .fa-check {
+      opacity: 1;
+      transition: opacity 0.1s;
+    }
+
+    .fa-square {
+      opacity: 0;
+      transition: opacity 0.1s;
+    }
+  }
+
+  /deep/ .custom-control-label {
+    &::before,
+    &::after {
+      display: none;
+      background: none;
+    }
   }
 }
-
 </style>

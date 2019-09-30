@@ -444,7 +444,7 @@ export default {
   },
   general: {
     reminder: {
-      listLabel: 'List of reminders',
+      listLabel: 'Reminders',
       add: 'Add a new reminder',
       dismiss: 'Dismiss',
       snooze: 'Snooze',
@@ -453,8 +453,8 @@ export default {
         titlePlaceholder: 'Title',
         notesLabel: 'Notes',
         notesPlaceholder: 'Notes',
-        remindAtLabel: 'Remind At',
-        remindAtNone: 'Don\'t set a time',
+        remindAtLabel: 'Notify me',
+        remindAtNone: 'Never',
         assigneeLabel: 'Assignee',
         assigneePlaceholder: 'Myself (default)',
       },
