@@ -42,6 +42,7 @@
                                   @delete="module.fields.splice(index, 1)"
                                   v-model="module.fields[index]"
                                   :canGrant="namespace.canGrant"
+                                  :hasRecords="hasRecords"
                                   :key="index"></field-row-edit>
                 </draggable>
                 <tr>
@@ -98,6 +99,7 @@ import Module from 'corteza-webapp-compose/src/lib/module'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
+import { RecordList } from 'corteza-webapp-compose/src/lib/block/RecordList'
 
 export default {
   components: {
@@ -126,6 +128,7 @@ export default {
     return {
       updateField: null,
       module: new Module(),
+      hasRecords: false,
     }
   },
 
@@ -139,6 +142,12 @@ export default {
     this.findModuleByID({ moduleID: this.moduleID }).then((module) => {
       // Make a copy so that we do not change store item by ref
       this.module = new Module({ ...module })
+      const rl = new RecordList({ moduleID: this.module.moduleID })
+      rl.fetch(this.$ComposeAPI, this.module, {}).then(records => {
+        if (records.length > 0) {
+          this.hasRecords = true
+        }
+      })
     })
   },
 

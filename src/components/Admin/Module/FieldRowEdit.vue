@@ -80,6 +80,12 @@ export default {
       type: Boolean,
       required: false,
     },
+
+    hasRecords: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
 
   data () {
@@ -100,8 +106,7 @@ export default {
     },
 
     disabled () {
-      // @todo count number of records and disable if > 0
-      return this.value.fieldID !== '0'
+      return this.value.fieldID !== '0' && this.hasRecords
     },
   },
 
