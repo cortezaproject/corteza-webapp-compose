@@ -1,18 +1,19 @@
 <template>
   <div>
+    <grid :namespace="namespace"
+          :page="page"
+          :record="record"
+          v-if="record" edit-mode />
     <toolbar :back-link="{name: 'admin.pages'}"
              :read-only="!module.canUpdateRecord"
              :hide-delete="true">
+      <div class="d-inline-block text-white">_</div>
       <b-button v-if="module.canCreateRecord"
                 variant="primary"
                 class="float-right"
                 :disabled="!record.isValid()"
                 @click.prevent="handleCreate">{{ $t('general.label.save') }}</b-button>
     </toolbar>
-    <grid :namespace="namespace"
-          :page="page"
-          :record="record"
-          v-if="record" edit-mode />
   </div>
 </template>
 <script>

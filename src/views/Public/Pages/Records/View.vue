@@ -1,5 +1,11 @@
 <template>
   <div :class="[editMode ? 'edit': 'view']">
+    <grid :namespace="namespace"
+          :page="page"
+          :record="record"
+          :edit-mode="editMode"
+          v-if="record"
+          @reload="loadRecord()" />
     <toolbar :back-link="{name: 'pages'}"
              :hide-delete="!module.canDeleteRecord"
              :read-only="!module.canUpdateRecord"
@@ -22,12 +28,6 @@
               >{{ $t('general.label.save') }}</b-button>
 
     </toolbar>
-    <grid :namespace="namespace"
-          :page="page"
-          :record="record"
-          :edit-mode="editMode"
-          v-if="record"
-          @reload="loadRecord()" />
     <b-modal size="lg" id="deleteRecord" :title="$t('block.record.deleteRecord')" @ok="handleDelete" :ok-title="$t('general.label.delete')" ok-variant="danger">
       <div class="d-block text-center">
         <h3>{{ $t('block.record.confirmDelete') }}</h3>
