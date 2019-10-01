@@ -171,22 +171,28 @@ export default {
         // Running script in a browser
         return this.runUAScript(script, ctx)
       } else {
+        const {
+          $record,
+          $namespace,
+          $module,
+        } = ctx
+
         // Sending script-run request to the backend
         // and prepare to cast received values
         const payload = {
           // Send IDs
           scriptID,
-          namespaceID: ctx.namespace.namespaceID,
-          moduleID: ctx.module.moduleID,
+          namespaceID: $namespace.namespaceID,
+          moduleID: $module.moduleID,
 
           // Send the record payload, serialized
-          record: { ...ctx.record, module: undefined, values: ctx.record.serializeValues() },
+          record: { ...$record, module: undefined, values: $record.serializeValues() },
         }
 
         return this.$ComposeAPI.automationScriptRun(payload).then(({ record }) => {
           if (record) {
             // Assuming type Record
-            return new Record(ctx.module, record)
+            return new Record($module, record)
           }
 
           return undefined
