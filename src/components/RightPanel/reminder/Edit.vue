@@ -48,8 +48,7 @@
         <b-form-group v-if="reminder.payload.link"
                       :label="$t('general.reminder.routesTo')">
 
-          <t-link :link="reminder.payload.link"
-                  :resource="reminder.resource" />
+          <t-link :toast="reminder" />
         </b-form-group>
       </b-form>
     </b-list-group-item>
@@ -68,6 +67,7 @@
 import moment from 'moment'
 import { VueSelect } from 'vue-select'
 import { TLink } from 'corteza-webapp-common/src/components/Toaster/display'
+import Reminder from 'corteza-webapp-common/src/lib/types/shared/reminder'
 
 export default {
 
@@ -162,7 +162,7 @@ export default {
   watch: {
     edit: {
       handler: function () {
-        this.reminder = JSON.parse(JSON.stringify(this.edit))
+        this.reminder = new Reminder(this.edit)
       },
       deep: true,
       immediate: true,
