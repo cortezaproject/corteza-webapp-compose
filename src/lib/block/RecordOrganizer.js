@@ -67,9 +67,7 @@ export class RecordOrganizer {
       args: Object.keys(args).map(name => ({ name, value: String(args[name]) })),
     }
 
-    console.table(params.args)
-    return $ComposeAPI
-      .recordExec(params)
+    return $ComposeAPI.recordExec(params)
   }
 
   /**
