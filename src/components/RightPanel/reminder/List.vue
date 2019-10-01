@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h5 class="sticky-top bg-white p-1 mb-0">
+  <div class="border-left">
+    <h5 class="sticky-top bg-white p-2 mb-0">
       {{ $t('general.reminder.listLabel') }}
     </h5>
 
@@ -8,14 +8,13 @@
     <b-form-group class="p-2 mb-0">
       <b-form v-for="r in remindersActive"
               :key="r.reminderID"
-              class="checkbox d-flex align-items-center py-1 border-bottom text-justify">
-        <font-awesome-icon :icon="['far', 'square']" class="text-secondary"></font-awesome-icon>
-        <font-awesome-icon :icon="['fas', 'check']" class="text-primary"></font-awesome-icon>
-        <div class="flex-grow-1 text-dark d-flex align-items-center reminder">
+              class="checkbox d-flex align-items-baseline py-1 border-bottom text-justify">
+        <div class="flex-grow-1 text-dark d-flex reminder">
           <b-form-checkbox size="sm"
                            class="checkbox"
                            @change="dismiss($event, r)">
-          {{ r.payload.title }}
+            <font-awesome-icon :icon="['fas', 'check']" class="text-primary mr-1"></font-awesome-icon>
+            {{ r.payload.title }}
           </b-form-checkbox>
         </div>
         <font-awesome-icon v-if="r.snoozeCount"
@@ -43,14 +42,15 @@
     <b-list-group class="p-2 pb-5">
       <div v-for="r in remindersDismissed"
               :key="r.reminderID"
-              class="d-flex align-items-center">
-        <font-awesome-icon :icon="['fas', 'check']" class="text-primary mr-1"></font-awesome-icon>
+              class="d-flex align-items-baseline">
+        <font-awesome-icon :icon="['fas', 'check']" class="text-primary mr-1 mt-1"></font-awesome-icon>
         <s class="text-secondary small flex-grow-1 py-1 pr-3 border-bottom text-justify">{{ r.payload.title }}</s>
       </div>
     </b-list-group>
 
     <div class="position-sticky text-center bg-white py-1 fixed-bottom">
       <b-button @click="$emit('edit')"
+                variant="outline-primary"
                 size="sm">
         + {{ $t('general.reminder.add') }}
       </b-button>
@@ -107,11 +107,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.fixed-bottom {
+  z-index: 1;
+}
+
 .checkbox {
   .fa-check {
     opacity: 0;
-    margin-right: -14px;
-    margin-left: -14px;
+    margin-left: -20px;
   }
 
   &:hover {
@@ -124,13 +127,13 @@ export default {
       opacity: 0;
       transition: opacity 0.1s;
     }
-  }
 
-  /deep/ .custom-control-label {
-    &::before,
-    &::after {
-      display: none;
-      background: none;
+    /deep/ .custom-control-label {
+      &::before,
+      &::after {
+        display: none;
+        background: none;
+      }
     }
   }
 }

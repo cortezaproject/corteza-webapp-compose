@@ -57,7 +57,7 @@
               <i v-else class="text-secondary">{{ $t('field.noPermission') }}</i>
             </td>
             <td v-if="recordListModule.canUpdateRecord"
-                class="text-right">
+                class="text-right text-nowrap">
 
               <b-button variant="link"
                         @click.prevent="createReminder(row)">
