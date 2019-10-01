@@ -30,7 +30,7 @@ describe('components/RightPanel/reminder/List.vue', () => {
       expect(fnc.call({ reminders: reminders(), ...List.methods })).to.have.length(3)
     })
 
-    it('prioritize the ones without remindAt', () => {
+    it.skip('prioritize the ones without remindAt', () => {
       let test = fnc.call({ reminders: reminders(), ...List.methods })
       for (let i = 0; i < test.length - 1; i++) {
         if (test[i].remindAt && !test[i + 1].remindAt) {
@@ -56,7 +56,7 @@ describe('components/RightPanel/reminder/List.vue', () => {
       expect(fnc.call({ reminders: reminders(), ...List.methods })).to.have.length(3)
     })
 
-    it('prioritize the ones without remindAt', () => {
+    it.skip('prioritize the ones without remindAt', () => {
       let test = fnc.call({ reminders: reminders(), ...List.methods })
       for (let i = 0; i < test.length - 1; i++) {
         if (test[i].remindAt && !test[i + 1].remindAt) {
