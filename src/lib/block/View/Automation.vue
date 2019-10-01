@@ -45,10 +45,11 @@ export default {
           // This is done because references work as we want them
           this.record.setValues(rval.values)
         }
-      }).catch(({ message }) => {
-        if (message) {
-          this.raiseWarningAlert(message)
+      }).catch(e => {
+        if (e.message) {
+          this.raiseWarningAlert(e.message)
         }
+        throw e
       })
     },
   },
