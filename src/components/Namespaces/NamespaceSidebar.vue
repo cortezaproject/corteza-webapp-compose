@@ -1,46 +1,55 @@
 <template>
-  <aside>
-    <b-list-group class="vh-100 bg-white overflow-auto">
-      <b-list-group-item class="p-2 sticky-top">
-        <b-form-input placeholder="Search"
-                      :formatter="preProcess"
-                      v-model="filter" />
+  <sidebar position="left"
+           name="ns-sidebar"
+           class="bg-white overflow-auto"
+           :visible.sync="visible">
 
-      </b-list-group-item>
+    <b-list-group-item class="p-2 sticky-top"
+                       slot="header">
 
-      <div v-if="filteredNamespaces.pinned.length"
-           class="border-bottom">
-        <b-list-group-item v-for="ns in filteredNamespaces.pinned"
-                          :key="ns.namespaceID"
-                          :to="{ name: 'namespace', params: ns }"
-                          class="p-2"
-                          active-class="active text-primary border-top-0 border-bottom-0"
-                          @click="removePin(ns)">
+      <b-form-input placeholder="Search"
+                    :formatter="preProcess"
+                    v-model="filter" />
 
-          <span class="text-truncate d-block">
-                {{ ns.name }}
-          </span>
-        </b-list-group-item>
-      </div>
+    </b-list-group-item>
 
-      <b-list-group-item v-for="ns in filteredNamespaces.regular"
-                         :key="ns.namespaceID"
-                         :to="{ name: 'namespace', params: ns }"
-                         class="p-2"
-                         active-class="active text-primary border-top-0 border-bottom-0">
+    <div v-if="filteredNamespaces.pinned.length"
+         class="border-bottom">
+
+      <b-list-group-item v-for="ns in filteredNamespaces.pinned"
+                        :key="ns.namespaceID"
+                        :to="{ name: 'namespace', params: ns }"
+                        class="p-2"
+                        active-class="active text-primary border-top-0 border-bottom-0"
+                        @click="removePin(ns)">
 
         <span class="text-truncate d-block">
               {{ ns.name }}
         </span>
       </b-list-group-item>
-    </b-list-group>
-  </aside>
+    </div>
+
+    <b-list-group-item v-for="ns in filteredNamespaces.regular"
+                        :key="ns.namespaceID"
+                        :to="{ name: 'namespace', params: ns }"
+                        class="p-2"
+                        active-class="active text-primary border-top-0 border-bottom-0">
+
+      <span class="text-truncate d-block">
+            {{ ns.name }}
+      </span>
+    </b-list-group-item>
+  </sidebar>
 </template>
 
 <script>
+import Sidebar from 'corteza-webapp-common/src/components/Sidebar'
 import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 
 export default {
+  components: {
+    Sidebar,
+  },
   props: {
     namespaces: {
       type: Array,
@@ -57,6 +66,7 @@ export default {
     return {
       filter: null,
       pinned: {},
+      visible: false,
     }
   },
 

@@ -1,14 +1,15 @@
 <template>
     <header class="w-100 border-right">
       <b-navbar id="public_header" type="light" toggleable="md" class="border-bottom border-light shadow-sm bg-white align-self-end">
-          <b-navbar-toggle target="public_nav_collapse" class="border-0">
-            <label>
-              <font-awesome-icon :icon="['fas', 'bars']"></font-awesome-icon>
-            </label>
-          </b-navbar-toggle>
-        <router-link to="to" class="d-none d-md-block text-dark mx-2">
-          <font-awesome-icon :icon="['fas', 'bars']"></font-awesome-icon>
-        </router-link>
+        <b-navbar-toggle target="public_nav_collapse" class="border-0">
+          <label>
+            <font-awesome-icon :icon="['fas', 'bars']"></font-awesome-icon>
+          </label>
+        </b-navbar-toggle>
+
+        <hamburger-menu class="d-none d-md-block text-dark mx-2"
+                        name="ns-sidebar" />
+
           <b-collapse is-nav id="public_nav_collapse"
                       :class="{ visible }"
                       class="mw-100 flex-grow-1 bg-white"
