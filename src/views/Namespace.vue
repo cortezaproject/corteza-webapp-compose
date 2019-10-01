@@ -196,6 +196,7 @@ export default {
       r.options = {
         variant: 'warning',
         'no-auto-hide': true,
+        solid: true,
         ...r.options,
       }
 
@@ -212,7 +213,7 @@ export default {
       r.addAction('snooze', {
         cb: this.onReminderSnooze,
         label: `<b>${this.$t('general.reminder.snooze')}</b>`,
-        kind: 'Dropdown',
+        kind: 'Select',
         options: {
           variant: 'outline-warning',
           class: [ 'float-left' ],
