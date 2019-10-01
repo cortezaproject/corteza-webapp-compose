@@ -8,7 +8,7 @@
     <b-form-group class="p-2 mb-0">
       <b-form v-for="r in remindersActive"
               :key="r.reminderID"
-              class="checkbox d-flex align-items-baseline py-1 border-bottom text-justify">
+              class="checkbox d-flex align-items-baseline py-1 border-bottom">
         <div class="flex-grow-1 text-dark d-flex reminder">
           <b-form-checkbox size="sm"
                            class="checkbox"
@@ -45,7 +45,7 @@
               :key="r.reminderID"
               class="d-flex align-items-baseline">
         <font-awesome-icon :icon="['fas', 'check']" class="text-primary mr-1 mt-1"></font-awesome-icon>
-        <s class="text-secondary small flex-grow-1 py-1 pr-3 border-bottom text-justify">
+        <s class="text-secondary small flex-grow-1 py-1 pr-3 border-bottom">
           {{ r.payload.title || r.linkLabel }}
         </s>
       </div>
