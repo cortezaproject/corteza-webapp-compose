@@ -27,7 +27,7 @@ export class RecordList {
     return $ComposeAPI
       .recordList(filter)
       .then(({ filter = {}, set: records = [] }) => {
-        return records
+        return { records, filter }
       })
   }
 }

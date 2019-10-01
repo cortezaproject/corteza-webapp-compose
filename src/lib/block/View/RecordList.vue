@@ -113,7 +113,7 @@ export default {
 
       filter: {
         count: 0,
-        page: 0,
+        page: 1,
         perPage: 20,
         sort: '',
         filter: '',
@@ -198,8 +198,9 @@ export default {
     }
 
     if (this.recordListModule) {
-      this.rl.fetch(this.$ComposeAPI, this.recordListModule, this.filter).then(rr => {
-        this.recordsRaw = rr
+      this.rl.fetch(this.$ComposeAPI, this.recordListModule, this.filter).then(({ records, filter }) => {
+        this.recordsRaw = records
+        this.filter.count = filter.count
       })
     }
   },
@@ -274,8 +275,9 @@ export default {
         }
         this.filter.page = 1
       }
-      this.rl.fetch(this.$ComposeAPI, this.recordListModule, { ...this.filter, filter }).then(rr => {
-        this.recordsRaw = rr
+      this.rl.fetch(this.$ComposeAPI, this.recordListModule, { ...this.filter, filter }).then(({ records, filter }) => {
+        this.recordsRaw = records
+        this.filter.count = filter.count
       })
     },
 
@@ -287,8 +289,9 @@ export default {
       let sort = this.sortColumn === fieldName ? fieldName + ' DESC' : fieldName
       this.sortColumn = sort
 
-      this.rl.fetch(this.$ComposeAPI, this.recordListModule, { ...this.filter, sort }).then(rr => {
-        this.recordsRaw = rr
+      this.rl.fetch(this.$ComposeAPI, this.recordListModule, { ...this.filter, sort }).then(({ records, filter }) => {
+        this.recordsRaw = records
+        this.filter.count = filter.count
       })
     },
 
@@ -304,8 +307,10 @@ export default {
     },
 
     handlePageChange (page) {
-      this.rl.fetch(this.$ComposeAPI, this.recordListModule, { ...this.filter, page }).then(rr => {
-        this.recordsRaw = rr
+      this.rl.fetch(this.$ComposeAPI, this.recordListModule, { ...this.filter, page }).then(({ records, filter }) => {
+        this.recordsRaw = records
+        this.filter.count = filter.count
+        this.filter.page = page
       })
     },
   },
