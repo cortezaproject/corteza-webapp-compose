@@ -15,7 +15,9 @@
                            @change="dismiss($event, r)">
             <font-awesome-icon :icon="['fas', 'check']" class="text-primary mr-1"></font-awesome-icon>
 
-            {{ r.payload.title || r.linkLabel }}
+            <span class="text-break">
+              {{ r.payload.title || r.link || rlLabel(r) || r.linkLabel }}
+            </span>
           </b-form-checkbox>
         </div>
         <font-awesome-icon v-if="r.snoozeCount"
@@ -46,7 +48,9 @@
               class="d-flex align-items-baseline">
         <font-awesome-icon :icon="['fas', 'check']" class="text-primary mr-1 mt-1"></font-awesome-icon>
         <s class="text-secondary small flex-grow-1 py-1 pr-3 border-bottom">
-          {{ r.payload.title || r.linkLabel }}
+          <span class="text-break">
+            {{ r.payload.title || r.link || rlLabel(r) || r.linkLabel }}
+          </span>
         </s>
       </div>
     </b-list-group>
@@ -85,6 +89,16 @@ export default {
   },
 
   methods: {
+    // Determine abs. link for given router-link
+    rlLabel (r) {
+      const rl = r.routerLink
+      if (!rl) {
+        return
+      }
+
+      return `${document.location.origin}${this.$router.options.base}${this.$router.resolve(rl).href}`
+    },
+
     dismiss (checked, r) {
       if (checked) {
         this.$emit('dismiss', r)
