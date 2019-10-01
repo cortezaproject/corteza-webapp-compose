@@ -45,7 +45,9 @@
               :key="r.reminderID"
               class="d-flex align-items-baseline">
         <font-awesome-icon :icon="['fas', 'check']" class="text-primary mr-1 mt-1"></font-awesome-icon>
-        <s class="text-secondary small flex-grow-1 py-1 pr-3 border-bottom text-justify">{{ r.payload.title }}</s>
+        <s class="text-secondary small flex-grow-1 py-1 pr-3 border-bottom text-justify">
+          {{ r.payload.title || r.linkLabel }}
+        </s>
       </div>
     </b-list-group>
 
