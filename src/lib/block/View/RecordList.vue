@@ -206,7 +206,12 @@ export default {
 
   methods: {
     createReminder (record) {
+      // Determine initial reminder title
+      const tField = (this.options.fields.find(({ name }) => !!record.values[name]) || {}).name
+      let title = record.values[tField]
+
       let payload = {
+        title,
         link: {
           namespaceSlug: this.namespace.slug,
           pageID: this.options.pageID,

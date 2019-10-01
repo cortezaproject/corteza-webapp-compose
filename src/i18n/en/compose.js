@@ -448,6 +448,7 @@ export default {
       add: 'Add a new reminder',
       dismiss: 'Dismiss',
       snooze: 'Snooze',
+      routesTo: 'Includes link to:',
       edit: {
         titleLabel: 'Title',
         titlePlaceholder: 'Title',

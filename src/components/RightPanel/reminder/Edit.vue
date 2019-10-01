@@ -44,6 +44,13 @@
                       v-model="assignedTo" />
 
         </b-form-group>
+
+        <b-form-group v-if="reminder.payload.link"
+                      :label="$t('general.reminder.routesTo')">
+
+          <t-link :link="reminder.payload.link"
+                  :resource="reminder.resource" />
+        </b-form-group>
       </b-form>
     </b-list-group-item>
     <div class="position-sticky text-center bg-white py-1 fixed-bottom">
@@ -60,11 +67,13 @@
 <script>
 import moment from 'moment'
 import { VueSelect } from 'vue-select'
+import { TLink } from 'corteza-webapp-common/src/components/Toaster/display'
 
 export default {
 
   components: {
     VueSelect,
+    TLink,
   },
   props: {
     edit: {
@@ -88,7 +97,7 @@ export default {
   data () {
     return {
       // Do this, so we don't edit the original object
-      reminder: JSON.parse(JSON.stringify(this.edit)),
+      reminder: {},
     }
   },
 
@@ -147,6 +156,16 @@ export default {
         }
         return { userID, label }
       })
+    },
+  },
+
+  watch: {
+    edit: {
+      handler: function () {
+        this.reminder = JSON.parse(JSON.stringify(this.edit))
+      },
+      deep: true,
+      immediate: true,
     },
   },
 
