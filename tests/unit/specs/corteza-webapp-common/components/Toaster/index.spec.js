@@ -2,7 +2,7 @@
 import { expect } from 'chai'
 import Toaster from 'corteza-webapp-common/src/components/Toaster'
 import Toast from 'corteza-webapp-common/src/lib/types/shared/reminder'
-import { TButton, TDropdown } from 'corteza-webapp-common/src/components/Toaster/actions'
+import { Button, Dropdown } from 'corteza-webapp-common/src/components/Toaster/actions'
 import { TLink } from 'corteza-webapp-common/src/components/Toaster/display'
 import { shallowMount } from 'corteza-webapp-compose/tests/lib/helpers'
 
@@ -45,8 +45,8 @@ describe('components/Toaster/index.vue', () => {
       const wrap = mounToaster()
 
       // @note; Toaster uses toast's x button as hide handler
-      expect(wrap.findAll(TButton)).to.have.length(1)
-      expect(wrap.findAll(TDropdown)).to.have.length(1)
+      expect(wrap.findAll(Button)).to.have.length(1)
+      expect(wrap.findAll(Dropdown)).to.have.length(1)
     })
   })
 
