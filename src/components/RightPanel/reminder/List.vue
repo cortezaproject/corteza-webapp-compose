@@ -14,7 +14,8 @@
                            class="checkbox"
                            @change="dismiss($event, r)">
             <font-awesome-icon :icon="['fas', 'check']" class="text-primary mr-1"></font-awesome-icon>
-            {{ r.payload.title }}
+
+            {{ r.payload.title || r.linkLabel }}
           </b-form-checkbox>
         </div>
         <font-awesome-icon v-if="r.snoozeCount"
