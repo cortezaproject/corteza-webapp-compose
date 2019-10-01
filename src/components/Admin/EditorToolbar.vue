@@ -1,17 +1,17 @@
 <template>
   <div class="text-center bg-white w-100 fixed-bottom border-top border-primary p-3">
-  <b-button pill variant="link"
+  <b-button variant="link"
             :to="backLink"
             v-if="backLink"
             class="float-left">&#171; {{ $t('general.label.backWithoutSave') }}</b-button>
   <slot></slot>
   <confirmation-toggle v-if="!hideDelete"
                        @confirmed="$emit('delete')">{{ $t('general.label.delete') }}</confirmation-toggle>
-  <b-button v-if="!hideSave" pill
+  <b-button v-if="!hideSave"
             variant="primary"
             @click.prevent="$emit('save')"
             class="float-right">{{ $t('general.label.save') }}</b-button>
-  <b-button v-if="!hideSave" pill
+  <b-button v-if="!hideSave"
             variant="primary" @click.prevent="$emit('saveAndClose')"
             class="float-right mr-1">{{ $t('general.label.saveAndClose') }}</b-button>
 </div>

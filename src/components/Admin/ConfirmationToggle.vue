@@ -1,11 +1,11 @@
 <template>
   <span>
     <span v-if="!inConfirmation">
-      <b-button pill variant="outline-danger" size="sm" @click.prevent="onPrompt" :disabled="disabled"><slot></slot></b-button>
+      <b-button variant="outline-danger" size="sm" @click.prevent="onPrompt" :disabled="disabled"><slot></slot></b-button>
     </span>
     <span v-if="inConfirmation">
-      <b-button pill variant="danger" size="sm" class="mr-1" @click.prevent="onConfirmation()">{{ $t('general.label.yes') }}</b-button>
-      <b-button pill size="sm" @click.prevent="inConfirmation=false">{{ $t('general.label.no') }}</b-button>
+      <b-button variant="danger" size="sm" class="mr-1" @click.prevent="onConfirmation()">{{ $t('general.label.yes') }}</b-button>
+      <b-button size="sm" @click.prevent="inConfirmation=false">{{ $t('general.label.no') }}</b-button>
     </span>
   </span>
 </template>

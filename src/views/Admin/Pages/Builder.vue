@@ -57,8 +57,8 @@
                       @save="handleSave()"
                       @delete="handleDeletePage"
                       @saveAndClose="handleSave({ closeOnSuccess: true })">
-        <b-button v-if="page.canUpdatePage" pill variant="outline-secondary" class="mr-1" v-b-modal.createBlockSelector>+ {{ $t('page.build.addBlock') }}</b-button>
-        <b-button v-if="page.canUpdatePage" pill variant="outline-secondary" class="mr-1" @click.prevent="handleSave({ previewOnSuccess: true })">{{ $t('general.label.saveAndPreview') }}</b-button>
+        <b-button v-if="page.canUpdatePage" variant="outline-secondary" class="mr-1" v-b-modal.createBlockSelector>+ {{ $t('page.build.addBlock') }}</b-button>
+        <b-button v-if="page.canUpdatePage" variant="outline-secondary" class="mr-1" @click.prevent="handleSave({ previewOnSuccess: true })">{{ $t('general.label.saveAndPreview') }}</b-button>
       </editor-toolbar>
     </div>
 </template>

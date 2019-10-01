@@ -4,7 +4,6 @@
              :read-only="!module.canUpdateRecord"
              :hide-delete="true">
       <b-button v-if="module.canCreateRecord"
-                pill
                 variant="primary"
                 class="float-right"
                 :disabled="!record.isValid()"
