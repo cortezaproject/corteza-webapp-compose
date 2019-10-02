@@ -5,12 +5,6 @@ import { mapGetters } from 'vuex'
 export default {
   extends: base,
 
-  data () {
-    return {
-      user: undefined,
-    }
-  },
-
   computed: {
     ...mapGetters({
       findByID: 'user/findByID',
@@ -19,11 +13,10 @@ export default {
     formatted () {
       if (this.field.isMulti) {
         return this.value.map(v => {
-          let user = this.findByID(v)
-          return user ? (this.field.options.formatter(user) || v) : this.$t('field.kind.user.na')
+          return (this.field.options.formatter(this.findByID(v)) || v) || this.$t('field.kind.user.na')
         }).join(this.field.options.multiDelimiter)
       }
-      return this.user ? (this.field.options.formatter(this.user) || this.value) : this.$t('field.kind.user.na')
+      return (this.field.options.formatter(this.findByID(this.value)) || this.value) || this.$t('field.kind.user.na')
     },
   },
 
@@ -39,8 +32,14 @@ export default {
 
   methods: {
     load () {
-      if (this.value && this.value !== (this.user || {}).userID && !this.field.isMulti) {
-        this.user = this.findByID(this.value)
+      if (this.value && this.value !== (this.user || {}).userID) {
+        if (this.field.isMulti) {
+          this.value.forEach(v => {
+            this.$store.dispatch('user/findUserByID', v)
+          })
+        } else {
+          this.$store.dispatch('user/findUserByID', this.value)
+        }
       }
     },
   },
