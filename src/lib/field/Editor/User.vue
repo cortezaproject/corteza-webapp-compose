@@ -50,9 +50,9 @@
   </b-form-group>
 </template>
 <script>
+import _ from 'lodash'
 import base from './base'
 import { VueSelect } from 'vue-select'
-import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -68,11 +68,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      findByID: 'user/findByID',
-      allUsers: 'user/set',
-    }),
-
     // This is used in the case of using the multiple select option
     multipleSelected: {
       get () {
@@ -137,13 +132,19 @@ export default {
 
     search (query) {
       if (query) {
-        this.users = this.allUsers.map(this.convert)
+        this.debouncedSearch(this, query)
       }
     },
 
-    findUserByID (userID) {
+    debouncedSearch: _.debounce((vm, query) => {
+      vm.$SystemAPI.userList({ query }).then(({ set }) => {
+        vm.users = set.map(vm.convert)
+      })
+    }, 300),
+
+    async findUserByID (userID) {
       if (!this.users.find(v => v.value === userID)) {
-        this.users.push(this.convert(this.findByID(userID)))
+        this.users.push(this.convert(await this.$SystemAPI.userRead({ userID })))
       }
     },
 

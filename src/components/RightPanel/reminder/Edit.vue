@@ -39,8 +39,10 @@
 
         <b-form-group :label="$t('general.reminder.edit.assigneeLabel')">
           <vue-select :options="assignees"
+                      @search="searchAssignees"
                       option-value="userID"
                       option-text="label"
+                      :placeholder="$t('field.kind.user.suggestionPlaceholder')"
                       v-model="assignedTo" />
 
         </b-form-group>
@@ -64,6 +66,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import moment from 'moment'
 import { VueSelect } from 'vue-select'
 import { TLink } from 'corteza-webapp-common/src/components/Toaster/display'
@@ -98,6 +101,7 @@ export default {
     return {
       // Do this, so we don't edit the original object
       reminder: {},
+      assignees: [{ userID: this.myID, label: this.$t('general.reminder.edit.assigneePlaceholder') }],
     }
   },
 
@@ -133,7 +137,11 @@ export default {
       get: function () {
         return this.assignees.find(({ userID }) => userID === this.reminder.assignedTo)
       },
-      set: function ({ userID }) {
+      set: function (user) {
+        let userID
+        if (user) {
+          userID = user.userID
+        }
         this.$set(this.reminder, 'assignedTo', userID)
       },
     },
@@ -147,15 +155,6 @@ export default {
         { value: 1000 * 60 * 60 * 2, text: this.$t('general.label.timeHour', { t: 2 }) },
         { value: 1000 * 60 * 60 * 24, text: this.$t('general.label.timeHour', { t: 24 }) },
       ]
-    },
-
-    assignees () {
-      return this.users.map(({ userID, name: label }) => {
-        if (userID === this.myID) {
-          return { userID, label: this.$t('general.reminder.edit.assigneePlaceholder') }
-        }
-        return { userID, label }
-      })
     },
   },
 
@@ -192,6 +191,23 @@ export default {
       }
       this.$set(this.reminder.payload, f, v)
     },
+
+    searchAssignees (query) {
+      if (query) {
+        this.debouncedSearch(this, query)
+      }
+    },
+
+    debouncedSearch: _.debounce((vm, query) => {
+      vm.$SystemAPI.userList({ query }).then(({ set }) => {
+        vm.assignees = set.map(({ userID, name: label }) => {
+          if (userID === vm.myID) {
+            return { userID, label: vm.$t('general.reminder.edit.assigneePlaceholder') }
+          }
+          return { userID, label }
+        })
+      })
+    }, 300),
   },
 }
 </script>
