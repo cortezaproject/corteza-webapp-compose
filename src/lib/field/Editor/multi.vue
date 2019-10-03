@@ -3,7 +3,7 @@
     <div v-if="singleInput" class="mb-2">
       <slot name="single"></slot>
     </div>
-    <draggable :list.sync="val">
+    <draggable :list.sync="val" handle=".handle">
       <div v-for="(v, index) of val" :key="index" class="mb-1">
         <b-row no-gutters>
           <b-col cols="1" class="text-center my-auto pr-3">
@@ -17,9 +17,10 @@
             <slot v-bind:index="index"></slot>
           </b-col>
 
-          <b-col v-if="removable" cols="1" @click="removeValue(index)" class="text-center my-auto pl-3">
+          <b-col v-if="removable" cols="1" class="text-center my-auto pl-3">
             <font-awesome-icon :icon="['fas', 'times']"
-                              class="pointer text-secondary" />
+                               @click="removeValue(index)"
+                               class="pointer text-secondary" />
           </b-col>
         </b-row>
       </div>

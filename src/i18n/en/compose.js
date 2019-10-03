@@ -240,6 +240,7 @@ export default {
       title: 'Edit module',
       manageRecordFields: 'Manage record fields',
       moduleFieldSettings: 'Module field settings',
+      specificFieldSettings: 'Field settings ({{name}})',
       newField: 'Add new field',
       systemFields: 'System fields:',
       reorderFields: 'Reorder fields',
@@ -248,7 +249,7 @@ export default {
         title: 'The name displayed in form input / data lists',
         multi: 'Allows the field to hold multiple values',
         required: 'Required field',
-        sensitive: 'Sensitive data',
+        private: 'Sensitive data',
       },
     },
     recordGenerator: {
@@ -473,9 +474,9 @@ export default {
       title: 'Title',
       description: 'Description',
       type: 'Type',
-      multi: 'Multiple values',
+      multi: 'Multiple',
       required: 'Required',
-      sensitive: 'Sensitive',
+      private: 'Private',
       updatedAt: '$t(field.system.updatedAt)',
       pageBuilder: 'Page builder',
       moduleName: 'Module name',
@@ -509,6 +510,8 @@ export default {
       removeDefault: 'Remove default',
       none: 'None',
       handle: 'Handle',
+      general: 'General',
+      enabled: 'Enabled',
     },
     placeholder: {
       handle: 'handle (a - z, 0 - 9, underscore, dash)',
@@ -702,6 +705,7 @@ export default {
   },
   field: {
     noPermission: 'No permission to read field value',
+    defaultValue: 'Default field value',
     options: {
       multiDelimiter: {
         label: 'Multiple value delimiter',

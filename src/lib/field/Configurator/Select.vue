@@ -10,19 +10,6 @@
                         v-model="f.options.options[index]"
                         size="sm"></b-form-input>
           <b-input-group-append>
-            <b-button v-if="!isDefault(option)"
-                      @click="asDefault(option)"
-                      variant="outline-primary"
-                      size="sm">
-              {{ $t('general.label.makeDefault') }}
-            </b-button>
-            <b-button v-else
-                      @click="asDefault(undefined)"
-                      variant="primary"
-                      size="sm">
-              {{ $t('general.label.removeDefault') }}
-            </b-button>
-
             <b-button @click.prevent="f.options.options.splice(index, 1)"
                       variant="outline-danger"
                       class="border-0">
@@ -82,25 +69,11 @@ export default {
   },
 
   methods: {
-    asDefault (value) {
-      if (value === undefined) {
-        this.$set(this.f, 'defaultValue', undefined)
-      } else {
-        this.$set(this.f, 'defaultValue', [
-          { name: this.f.name, value },
-        ])
-      }
-    },
-
     handleAddOption () {
       if (this.newOption.length > 0) {
         this.f.options.options.push(this.newOption)
         this.newOption = ''
       }
-    },
-
-    isDefault (option) {
-      return (this.f.defaultValue || []).find(({ value }) => value === option)
     },
   },
 }

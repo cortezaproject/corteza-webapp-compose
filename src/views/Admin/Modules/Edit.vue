@@ -32,8 +32,8 @@
                   <th>{{ $t('general.label.type') }}</th>
                   <th v-b-tooltip.hover :title="$t('module.edit.tooltip.multi')" class="info text-center">{{ $t('general.label.multi') }}</th>
                   <th v-b-tooltip.hover :title="$t('module.edit.tooltip.required')" class="info text-center">{{ $t('general.label.required') }}</th>
-                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.sensitive')" class="info text-center">{{ $t('general.label.sensitive') }}</th>
-                  <th class="text-center"></th>
+                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.private')" class="info text-center">{{ $t('general.label.private') }}</th>
+                  <th></th>
                 </tr>
                 </thead>
                 <draggable v-model="module.fields" :options="{handle:'.handle'}" element="tbody">
@@ -67,14 +67,16 @@
     </b-container>
     <b-modal
       v-if="updateField"
-      :title="$t('module.edit.moduleFieldSettings')"
+      :title="modalTitle"
       :ok-title="$t('general.label.saveAndClose')"
-      ok-variant="dark"
       ok-only
+      ok-variant="dark"
       size="lg"
       @ok="handleFieldSave(updateField)"
       @hide="updateField=null"
-      :visible="!!updateField">
+      :visible="!!updateField"
+      body-class="p-0 border-top-0"
+      header-class="px-3 pt-3 pb-0 border-bottom-0">
       <field-configurator :field.sync="updateField" />
     </b-modal>
     <editor-toolbar :back-link="{name: 'admin.modules'}"
@@ -136,6 +138,11 @@ export default {
     handleState () {
       return handleState(this.module)
     },
+
+    modalTitle () {
+      const { name } = this.updateField
+      return name ? this.$t('module.edit.specificFieldSettings', { name: this.updateField.name }) : this.$t('module.edit.moduleFieldSettings')
+    },
   },
 
   created () {
@@ -159,7 +166,7 @@ export default {
     }),
 
     handleNewField () {
-      this.module.fields.push(new Field())
+      this.module.fields.push(new Field({ kind: 'String' }))
     },
 
     handleFieldEdit (field) {

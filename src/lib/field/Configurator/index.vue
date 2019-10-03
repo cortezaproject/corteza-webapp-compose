@@ -1,29 +1,48 @@
+<template>
+  <b-tabs active-nav-item-class="bg-grey"
+          nav-wrapper-class="bg-white"
+          active-tab-class="tab-content"
+          card>
+
+    <b-tab active :title="$t('general.label.general')">
+      <basic :field="field" />
+    </b-tab>
+    <b-tab v-if="fieldComponent" :title="field.kind">
+      <component :is="fieldComponent" :field="field" />
+    </b-tab>
+    <b-tab :title="$t('general.label.multi')">
+      <multi :field="field" />
+    </b-tab>
+  </b-tabs>
+</template>
 <script>
 import base from './base'
 import * as Configurators from './loader'
 import multi from './multi'
+import basic from './basic'
 
 export default {
   components: {
     ...Configurators,
     multi,
+    basic,
   },
 
   extends: base,
 
-  render (createElement) {
-    const kind = this.field.kind.toLocaleLowerCase()
-    const keys = Object.keys(this.$options.components)
-    const i = keys.map(c => c.toLocaleLowerCase()).findIndex(c => c === kind)
-
-    if (i >= 0) {
-      return createElement('div', [
-        createElement(this.$options.components[keys[i]], { props: this.$props }),
-        createElement('multi', { props: this.$props }),
-      ])
-    } else {
-      // It's ok if field does not have a configurator, no biggie
-    }
+  computed: {
+    fieldComponent () {
+      // If field doesn't have a configurator, we show no field tab
+      return Configurators[this.field.kind]
+    },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.tab-content {
+  height: auto;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+</style>
