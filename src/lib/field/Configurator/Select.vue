@@ -1,30 +1,49 @@
 <template>
   <b-row no-gutters>
-    <b-col cols="10">
+    <b-col>
       <b-form-group>
         <div>{{ $t('field.kind.select.optionsLabel') }}</div>
-        <div v-for="(option, index) in f.options.options" :key="index">
-          <b-form-input plain v-model="f.options.options[index]" size="sm"></b-form-input>
-          <b-button v-if="!isDefault(option)"
-                    @click="asDefault(option)"
-                    variant="info"
-                    size="sm">
+        <b-input-group v-for="(option, index) in f.options.options"
+                       class="mb-1"
+                       :key="index">
+          <b-form-input plain
+                        v-model="f.options.options[index]"
+                        size="sm"></b-form-input>
+          <b-input-group-append>
+            <b-button v-if="!isDefault(option)"
+                      @click="asDefault(option)"
+                      variant="outline-primary"
+                      size="sm">
+              {{ $t('general.label.makeDefault') }}
+            </b-button>
+            <b-button v-else
+                      @click="asDefault(undefined)"
+                      variant="primary"
+                      size="sm">
+              {{ $t('general.label.removeDefault') }}
+            </b-button>
 
-            {{ $t('general.label.makeDefault') }}
-          </b-button>
-          <b-button v-else
-                    @click="asDefault(undefined)"
-                    variant="warning"
-                    size="sm">
+            <b-button @click.prevent="f.options.options.splice(index, 1)"
+                      variant="outline-danger"
+                      class="border-0">
+              <font-awesome-icon :icon="['far', 'trash-alt']"></font-awesome-icon>
+            </b-button>
+          </b-input-group-append>
+        </b-input-group>
 
-            {{ $t('general.label.removeDefault') }}
-          </b-button>
-
-          <button @click.prevent="f.options.options.splice(index, 1)" class="btn-url">{{ $t('field.kind.select.optionRemove') }}</button>
-        </div>
-        <b-form-input plain v-model="newOption" @keypress.enter.prevent="handleAddOption" size="sm" :placeholder="$t('field.kind.select.optionRemove')"></b-form-input>
-        <button @click.prevent="handleAddOption" :disabled="newOption.length === 0" class="btn-url">+ {{ $t('field.kind.select.optionAdd') }}</button>
+        <b-input-group>
+          <b-form-input plain v-model="newOption" @keypress.enter.prevent="handleAddOption" size="sm" :placeholder="$t('field.kind.select.optionRemove')"></b-form-input>
+          <b-input-group-append>
+            <b-button @click.prevent="handleAddOption"
+                      variant="primary"
+                      size="sm"
+                      :disabled="newOption.length === 0">
+              + {{ $t('field.kind.select.optionAdd') }}
+            </b-button>
+          </b-input-group-append>
+        </b-input-group>
       </b-form-group>
+
       <b-form-group>
         <label class="d-block">{{ $t('field.kind.select.optionType.label') }}</label>
         <b-form-radio-group
