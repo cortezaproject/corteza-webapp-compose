@@ -3,7 +3,7 @@
     <b-form-group>
       <label>{{ $t('block.general.module') }}</label>
       <b-form-select v-model="o.moduleID" required>
-        <option disabled :value="undefined">{{ $t('general.label.none') }}</option>
+        <option :value="undefined">{{ $t('general.label.none') }}</option>
         <option
           v-for="module in modules"
           :key="module.moduleID"
@@ -177,6 +177,7 @@ export default {
   },
 
   watch: {
+    /*
     'o.groupField': {
       handler (group) {
         if (group) {
@@ -189,6 +190,7 @@ export default {
         }
       },
     },
+     */
     'o.moduleID': {
       handler (moduleID) {
         this.o = new RecordOrganizer({ moduleID })
@@ -197,7 +199,7 @@ export default {
   },
 
   created () {
-    this.setMockRecord(this.o.groupField)
+    // this.setMockRecord(this.o.groupField)
   },
 
   methods: {

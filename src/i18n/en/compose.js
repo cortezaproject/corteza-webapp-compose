@@ -43,6 +43,7 @@ export default {
     recordOrganizer: {
       label: 'Record organizer',
       noRecords: 'No records in module linked with record organizer. Drag and drop records here.',
+      notConfigured: 'Record organizer is not configured correctly.',
       labelField: {
         label: 'Label field',
         footnote: 'Field value will be used as record label',

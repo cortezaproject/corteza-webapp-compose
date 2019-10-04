@@ -1,28 +1,30 @@
 <template>
   <div class="h-100">
-    <i v-if="!roModule.canReadRecord" class="text-secondary d-block">{{ $t('block.recordList.record.noPermission') }}</i>
+    <i v-if="!isConfigured" class="text-secondary d-block">{{ $t('block.recordOrganizer.notConfigured') }}</i>
+    <i v-else-if="!roModule.canReadRecord" class="text-secondary d-block">{{ $t('block.recordList.record.noPermission') }}</i>
     <div v-else class="h-100 mb-5">
       <i v-if="!records.length" class="text-secondary d-block">{{ $t('block.recordOrganizer.noRecords') }}</i>
       <draggable v-model="records"
-                :disabled="!canReposition"
-                :group="{ name: moduleID, put: canReposition }"
-                class="h-100"
-                @change="onDrop">
+                 :disabled="!canReposition"
+                 :group="{ name: moduleID, put: canReposition }"
+                 class="h-100"
+                 @change="onDrop">
 
         <router-link tag="b-card"
                      v-for="record in records"
                      :key="record.recordID"
                      :class="{ 'mb-2': true, 'grab': canReposition }"
-                     :to="{ name: 'page.record', params: { pageID: options.pageID, recordID: record.recordID }, query: null }"
+                     :to="{ name: 'page.record', params: { pageID: roRecordPage.pageID, recordID: record.recordID }, query: null }"
                      border-variant="primary">
-          <b-card-title>
+
+          <b-card-title v-if="titleField">
             <field-viewer v-if="titleField.canReadRecordValue"
                           :field="titleField"
                           :record="record"
                           :namespace="namespace" valueOnly />
             <i v-else class="text-secondary h6">{{ $t('field.noPermission') }}</i>
           </b-card-title>
-          <b-card-text>
+          <b-card-text v-if="descriptionField">
             <field-viewer v-if="descriptionField.canReadRecordValue"
                           :field="descriptionField"
                           :record="record"
@@ -96,7 +98,7 @@ export default {
       const { labelField } = this.options
 
       if (!labelField) {
-        return {}
+        return undefined
       }
 
       return this.roModule.fields.find(f => f.name === labelField) || {}
@@ -106,7 +108,7 @@ export default {
       const { descriptionField } = this.options
 
       if (!descriptionField) {
-        return {}
+        return undefined
       }
 
       return this.roModule.fields.find(f => f.name === descriptionField) || {}
@@ -123,11 +125,19 @@ export default {
     },
 
     canReposition () {
-      return this.roModule.canUpdateRecord && this.positionField.canUpdateRecordValue
+      if (this.positionField.fieldID) {
+        return this.roModule.canUpdateRecord && this.positionField.canUpdateRecordValue
+      } else {
+        return !!this.roModule.canUpdateRecord
+      }
     },
 
     canAddRecord () {
       return this.roModule.canCreateRecord && this.roRecordPage
+    },
+
+    isConfigured () {
+      return !!(this.titleField || this.descriptionField)
     },
   },
 
