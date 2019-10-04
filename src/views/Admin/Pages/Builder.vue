@@ -160,7 +160,7 @@ export default {
           if (closeOnSuccess) {
             this.$router.push({ name: 'admin.pages' })
           } else if (previewOnSuccess) {
-            this.$router.push({ name: 'page' })
+            this.$router.push({ name: 'page', params: { pageID: this.pageID } })
           }
 
           this.page = new Page(page)

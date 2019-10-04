@@ -56,15 +56,12 @@
               <field-viewer v-else-if="col.canReadRecordValue" :field="col" value-only :record="row" :namespace="namespace"/>
               <i v-else class="text-secondary">{{ $t('field.noPermission') }}</i>
             </td>
-            <td v-if="recordListModule.canUpdateRecord"
-                class="text-right text-nowrap">
-
+            <td class="text-right text-nowrap">
               <b-button variant="link"
                         @click.prevent="createReminder(row)">
                 <font-awesome-icon :icon="['far', 'bell']" />
               </b-button>
-              <router-link
-                :to="{ name: 'page.record.edit', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
+              <router-link v-if="recordListModule.canUpdateRecord" :to="{ name: 'page.record.edit', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
                 <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
               </router-link>
             </td>

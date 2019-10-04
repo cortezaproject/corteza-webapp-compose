@@ -4,12 +4,14 @@
     :data="{children:list}"
     element="ul"
     mixinParentKey="parent"
-    :class="{'list-group': true, 'grab': namespace.canCreatePage}"
+    class="list-group"
     @changePosition="handleChangePosition">
 
       <template slot-scope="{item}">
         <div class="wrap d-flex" v-if="item.pageID">
-          <div class="flex-fill ml-1">{{ item.title }}</div>
+          <div class="flex-fill ml-1" :class="{'grab': namespace.canCreatePage}">
+            {{ item.title }}
+          </div>
           <div class="prop-col text-left">
             <span v-if="item.moduleID !== '0'">{{ $t('page.recordPage') }}</span>
             <span v-else-if="item.visible">{{ $t('page.visible') }}</span>

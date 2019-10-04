@@ -1,8 +1,8 @@
 <template>
-  <div v-if="module" class="mb-1">
+  <div v-if="recordListModule" class="mb-1">
     <div>
       <i18next path="block.recordList.preview.recordFromModule" tag="label">
-        <code>{{ module.name || module.moduleID }}</code>
+        <code>{{ recordListModule.name || recordListModule.moduleID }}</code>
         <code>{{ selectedFields }}</code>
       </i18next>
     </div>
@@ -85,6 +85,13 @@ import base from './base'
 export default {
   extends: base,
   computed: {
+    recordListModule () {
+      const { moduleID } = this.options
+      if (moduleID) {
+        return this.$store.getters['module/getByID'](moduleID)
+      }
+    },
+
     selectedFields () {
       return this.options.fields.filter(f => !!f).map(f => f.name).join(', ')
     },
