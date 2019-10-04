@@ -34,7 +34,7 @@
             v-model="block.style.variants.border"
             class="mt-2"
             unchecked-value="0"
-            :value="block.style.variants.headerText"
+            :value="borderStyle"
           >{{ $t('block.general.border') }}</b-form-checkbox>
         </b-form-group>
         <b-form-group for="color" :label="$t('block.general.bodyStyle')">
@@ -108,21 +108,30 @@ export default {
         { value: 'light', text: this.$t('block.general.style.lightBg') },
         { value: 'dark', text: this.$t('block.general.style.darkBg') },
       ],
-      borderVariants: [
-        { value: '0', text: this.$t('block.general.style.noBorder') },
-        { value: 'light', text: this.$t('block.general.style.lightBg') },
-        { value: 'dark', text: this.$t('block.general.style.darkBg') },
-      ],
     }
   },
 
   computed: {
+    borderStyle () {
+      return this.block.style.variants.headerText
+    },
+
     blockClass () {
       return [
         'text-' + this.block.style.variants.headerText,
         'bg-' + this.block.style.variants.headerBg,
         'border-' + this.block.style.variants.border,
       ]
+    },
+  },
+
+  watch: {
+    'block.style.variants.headerText': {
+      handler (v) {
+        if (this.block.style.variants.border !== '0') {
+          this.block.style.variants.border = v
+        }
+      },
     },
   },
 }
