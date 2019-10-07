@@ -21,7 +21,7 @@
                  :w="item.w"
                  :h="item.h"
                  :i="item.i">
-        <slot :block="item.block"
+        <slot :block="blocks[item.i]"
               :index="index"
               v-on="$listeners"
               :bounding-rect="boundingRects[index]"></slot>
@@ -47,8 +47,6 @@ const blocksToGrid = blocks => {
       y: block.xywh[1],
       w: block.xywh[2],
       h: block.xywh[3],
-
-      block,
     }
   })
 }
