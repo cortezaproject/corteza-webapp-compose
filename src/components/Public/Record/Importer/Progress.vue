@@ -16,7 +16,6 @@
     </b-form-group>
 
     <div slot="footer">
-
       <span v-if="progress.finishedAt && !progress.failed"
             class="text-success">
 
@@ -57,8 +56,10 @@ export default {
           this.$emit('importFailed', this.progress)
         } else if (finishedAt) {
           this.clearTimeout()
+          this.$root.$emit('recordList.refresh', this.session)
         }
       },
+      deep: true,
       immediate: true,
     },
   },

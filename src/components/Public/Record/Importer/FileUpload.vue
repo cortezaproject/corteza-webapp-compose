@@ -10,7 +10,7 @@
       <uploader class="uploader"
                 accepted-files="application/json,text/csv"
                 :endpoint="endpoint"
-                :label="$t('block.recordList.import.dropzoneLabel')"
+                :label="dzLabel"
                 @uploaded="onUploaded" />
 
     </b-form-group>
@@ -68,6 +68,7 @@ export default {
     return {
       session: null,
       onError: 'FAIL',
+      sessionFile: null,
     }
   },
 
@@ -82,11 +83,20 @@ export default {
     canContinue () {
       return !!this.session
     },
+
+    dzLabel () {
+      if (this.sessionFile) {
+        return this.$t('block.recordList.import.dropzoneFileAdded', { name: this.sessionFile.name, count: this.session.progress.entryCount + 2 })
+      }
+
+      return this.$t('block.recordList.import.dropzoneLabel')
+    },
   },
 
   methods: {
-    onUploaded (e) {
+    onUploaded (e, f) {
       this.session = e
+      this.sessionFile = f
     },
 
     fileUploaded () {

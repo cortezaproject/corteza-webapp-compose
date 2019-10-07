@@ -102,7 +102,7 @@ export default {
 
     onSuccess (file, { response }) {
       this.active = null
-      this.$emit('uploaded', response)
+      this.$emit('uploaded', response, file)
     },
 
     onUploadProgress (file, progress, bytesSent) {

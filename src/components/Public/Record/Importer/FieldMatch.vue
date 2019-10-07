@@ -37,12 +37,18 @@
       </b-table>
     </b-form-group>
 
-    <div slot="footer"
-         class="text-right">
+    <div slot="footer">
+      <b-button variant="outline-dark"
+                @click="$emit('back')"
+                class="float-left">
+
+        {{ $t('general.label.back') }}
+      </b-button>
 
       <b-button variant="dark"
                 :disabled="!canContinue"
-                @click="nextStep">
+                @click="nextStep"
+                class="float-right">
 
         {{ $t('general.label.import') }}
       </b-button>

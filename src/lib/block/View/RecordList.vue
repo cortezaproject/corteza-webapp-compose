@@ -142,6 +142,8 @@ export default {
   created () {
     this.prepRecordList()
     this.updateRecordList(this.filter)
+
+    this.$root.$on('recordList.refresh', this.updateRecordList)
   },
 
   methods: {
@@ -295,7 +297,7 @@ export default {
     },
 
     // Helper to fetch records, update filter, ...
-    async updateRecordList (filter = {}) {
+    async updateRecordList (filter = this.filter) {
       if (this.recordListModule.moduleID !== this.options.moduleID) {
         throw Error('Module incompatible, module mismatch')
       }
