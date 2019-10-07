@@ -95,8 +95,7 @@ export default {
       if (!rl) {
         return
       }
-
-      return `${document.location.origin}${this.$router.options.base}${this.$router.resolve(rl).href}`
+      return `${document.location.origin}${this.$router.resolve(rl).href}`
     },
 
     dismiss (checked, r) {
