@@ -140,6 +140,10 @@ export default {
     },
 
     modalTitle () {
+      if (!this.updateField) {
+        return
+      }
+
       const { name } = this.updateField
       return name ? this.$t('module.edit.specificFieldSettings', { name: this.updateField.name }) : this.$t('module.edit.moduleFieldSettings')
     },
