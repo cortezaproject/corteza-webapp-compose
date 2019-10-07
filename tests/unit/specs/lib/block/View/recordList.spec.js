@@ -120,7 +120,75 @@ describe('lib/block/View/RecordList', () => {
   })
 
   // @todo...
-  it('record filtering')
+  describe('record filtering', () => {
+    let mod
+    beforeEach(() => {
+      sinon.stub(RecordList, 'created')
+    })
+
+    describe('boolean queries', () => {
+      beforeEach(() => {
+        propsData.options.fields = ['n1']
+        sinon.stub(RecordList.computed, 'recordListModule').returns(new Module({
+          moduleID: '200',
+          fields: [
+            { name: 'n1', kind: 'Bool' },
+          ],
+        }))
+      })
+
+      it ('true', () => {
+        const wrap = mountRL()
+        const cases = ['true', '1']
+
+        for (const c of cases) {
+          sinon.stub(wrap.vm, 'updateRecordList')
+          wrap.setData({ query: c })
+          wrap.vm.handleQuery()
+
+          sinon.assert.calledOnce(wrap.vm.updateRecordList)
+          const call = wrap.vm.updateRecordList.args.pop().pop()
+          expect(call.filter.replace(/ /g, '')).to.include(`n1='true'`)
+          wrap.vm.updateRecordList.restore()
+        }
+      })
+
+      it ('false', () => {
+        const wrap = mountRL()
+        const cases = ['false', '0']
+
+        for (const c of cases) {
+          sinon.stub(wrap.vm, 'updateRecordList')
+          wrap.setData({ query: c })
+          wrap.vm.handleQuery()
+
+          sinon.assert.calledOnce(wrap.vm.updateRecordList)
+          const call = wrap.vm.updateRecordList.args.pop().pop()
+          // @note do watch out that (vv) is removing spaces!
+          expect(call.filter.replace(/ /g, '')).to.include(`n1='false'ORn1ISNULL`)
+          wrap.vm.updateRecordList.restore()
+        }
+      })
+
+      it ('invalid', () => {
+        const wrap = mountRL()
+        const cases = [ '-1', undefined, null ]
+
+        for (const c of cases) {
+          sinon.stub(wrap.vm, 'updateRecordList')
+          wrap.setData({ query: c })
+          wrap.vm.handleQuery()
+
+          sinon.assert.calledOnce(wrap.vm.updateRecordList)
+          const call = wrap.vm.updateRecordList.args.pop().pop()
+          expect(call.filter).to.not.include(`true`)
+          expect(call.filter).to.not.include(`false`)
+          wrap.vm.updateRecordList.restore()
+        }
+      })
+    })
+  })
+
   it('record pagination')
   it('record sorting')
   it('create reminder')

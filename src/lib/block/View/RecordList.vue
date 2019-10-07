@@ -86,6 +86,20 @@ import _ from 'lodash'
 import { RecordList } from '../RecordList'
 import { make } from 'corteza-webapp-common/src/lib/url'
 
+// Helper to determine if and value for given bool query
+// == is intentional
+const toBoolean = (v) => {
+  /* eslint-disable eqeqeq */
+  if (v == 'false' || v == 0) {
+    return false
+  }
+  if (v == 'true' || v == 1) {
+    return true
+  }
+
+  return undefined
+}
+
 export default {
   components: {
     Pagination,
@@ -243,20 +257,31 @@ export default {
     // Merges prefilter with query
     handleQuery () {
       let filter
+      let q = (this.query || '').trim()
 
-      if (this.query && this.query.trim().length > 0) {
-        let numQuery, strQuery
-        numQuery = Number.parseFloat(this.query)
+      if (q && q.trim().length > 0) {
+        let numQuery, strQuery, boolQuery
+        numQuery = Number.parseFloat(q)
 
         // To SQL string
-        strQuery = this.query
+        strQuery = q
           .replace(/\*+$/, '')
           .replace(/\*/g, '%') + '%'
+
+        boolQuery = toBoolean(q)
 
         // When searching, always reset filter with prefilter + query
         filter = this.recordListModule.filterFields(this.options.fields).map(qf => {
           if (qf.kind === 'Number' && !isNaN(numQuery)) {
             return `${qf.name} = ${numQuery}`
+          }
+
+          if (qf.kind === 'Bool' && boolQuery !== undefined) {
+            if (boolQuery) {
+              return `${qf.name} = 'true'`
+            } else {
+              return `${qf.name} = 'false' OR ${qf.name} IS NULL`
+            }
           }
 
           if (['String', 'DateTime', 'Select', 'Url', 'Email'].includes(qf.kind)) {
