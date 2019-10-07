@@ -65,10 +65,10 @@
       </table>
     </div>
     <div class="position-sticky fixed-bottom bg-white border-top pt-1" v-if="!options.hidePaging">
-      <pagination :records="filter.count"
-                  :per-page="filter.perPage"
+      <pagination :records="filter.count || 0"
+                  :per-page="filter.perPage || 0"
                   @paginate="handlePageChange"
-                  :page="filter.page"
+                  :page="filter.page || 0"
                   :options="{ texts: { count: $t('block.recordList.pagination') } }" />
     </div>
   </div>
@@ -142,8 +142,13 @@ export default {
   created () {
     this.prepRecordList()
     this.updateRecordList(this.filter)
+  },
 
+  beforeMount () {
     this.$root.$on('recordList.refresh', this.updateRecordList)
+  },
+  beforeDestroy () {
+    this.$root.$off('recordList.refresh', this.updateRecordList)
   },
 
   methods: {
@@ -239,7 +244,7 @@ export default {
     handleQuery () {
       let filter
 
-      if (this.query.trim().length > 0) {
+      if (this.query && this.query.trim().length > 0) {
         let numQuery, strQuery
         numQuery = Number.parseFloat(this.query)
 

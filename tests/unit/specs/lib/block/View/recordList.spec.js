@@ -13,6 +13,14 @@ const records = [
   {recordID: '101', moduleID: '200', values: [{ name: 'n1', value: 'v1'},{ name: "n2", value: 'v2'}], namespaceID: '301' },
 ]
 
+const rspFilter = () => ({
+  count: 2,
+  page: 1,
+  perPage: 20,
+  sort: '',
+  filter: '',
+})
+
 let mod = new Module({
   moduleID: '200',
   fields: [
@@ -77,14 +85,6 @@ describe('lib/block/View/RecordList', () => {
       propsData.options.moduleID = '333'
     })
 
-    const rspFilter = () => ({
-      count: 2,
-      page: 1,
-      perPage: 20,
-      sort: '',
-      filter: '',
-    })
-
     it('on init -- prepare initial filter', () => {
       sinon.stub(RecordList.methods, 'updateRecordList')
       const wrap = mountRL()
@@ -108,13 +108,21 @@ describe('lib/block/View/RecordList', () => {
       sinon.assert.calledOnce($ComposeAPI.recordList)
       expect(wrap.vm.filter).to.deep.eq(rspFilter())
     })
+
+    it('should be able to refresh current query', async () => {
+      $ComposeAPI.recordList = sinon.stub().resolves({ set: [], filter: rspFilter() })
+      sinon.stub(RecordList, 'created')
+      const wrap = mountRL()
+      wrap.vm.$root.$emit('recordList.refresh')
+      await fp()
+      sinon.assert.calledOnce($ComposeAPI.recordList)
+    })
   })
 
   // @todo...
-  describe('record filtering', () => {
-    it('fallback to prefilter on empty query')
-    it('make numeric query')
-    it('make string query -- convert wildcards to sql wildcards')
-    it('join field queries')
-  })
+  it('record filtering')
+  it('record pagination')
+  it('record sorting')
+  it('create reminder')
+  it('handle export')
 })
