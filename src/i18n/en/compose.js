@@ -188,6 +188,8 @@ export default {
         to: 'Import to {{modulename}}',
         uploadFile: 'Upload the file you want to import (.csv or JSON format)',
         dropzoneLabel: 'Click or drop file here to upload (.csv or JSON)',
+        dropzoneFileAdded: '{{name}} was uploaded and is ready for import ({{count}} record)',
+        dropzoneFileAdded_plural: '{{name}} was uploaded and is ready for import ({{count}} records)',
         matchFields: 'match imported columns with existing ones',
         fileColumns: 'File columns',
         moduleFields: 'Module fields',

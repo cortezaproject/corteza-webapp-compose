@@ -14,21 +14,24 @@
              hide-footer
              body-class="p-0">
 
-      <component :is="stepComponent"
-                 v-bind="$props"
-                 :session="session"
-                 @fileUploaded="onFileUploaded"
-                 @fieldsMatched="onFieldsMatched"
-                 @importFailed="onImportFailed"
-                 v-on="$listeners">
+      <keep-alive>
+        <component :is="stepComponent"
+                  v-bind="$props"
+                  :session="session"
+                  @fileUploaded="onFileUploaded"
+                  @fieldsMatched="onFieldsMatched"
+                  @importFailed="onImportFailed"
+                  @back="onBack"
+                  v-on="$listeners">
 
-        <label v-if="progress.failed"
-               class="text-danger"
-               slot="uploadLabel">
+          <label v-if="progress.failed"
+                class="text-danger"
+                slot="uploadLabel">
 
-          {{ $t('block.recordList.import.failed', progress) }}
-        </label>
-      </component>
+            {{ $t('block.recordList.import.failed', progress) }}
+          </label>
+        </component>
+      </keep-alive>
     </b-modal>
   </div>
 </template>
@@ -77,6 +80,10 @@ export default {
       this.step = 0
       this.session = {}
       this.showModal = false
+    },
+
+    onBack () {
+      this.step = Math.max(0, this.step - 1)
     },
 
     onFileUploaded (e) {

@@ -1,8 +1,7 @@
 <template>
   <div v-if="recordListModule">
-    <span v-if="!options.hideAddButton">
-      <router-link v-if="recordListModule.canCreateRecord"
-                   class="btn btn-sm btn-outline-primary float-left"
+    <template v-if="!options.hideAddButton && recordListModule.canCreateRecord">
+      <router-link class="btn btn-sm btn-outline-primary float-left"
                    :to="{
                      name: 'page.record.create',
                      params: { pageID: options.pageID, refRecord: record },
@@ -10,22 +9,18 @@
                     }">
 
           + {{ $t('block.recordList.addRecord') }}
-
       </router-link>
-
-      <importer-modal v-if="recordListModule.canCreateRecord"
-                      :module="recordListModule"
+      <importer-modal :module="recordListModule"
                       :namespace="namespace"
                       class="ml-1 float-left" />
-
+    </template>
       <exporter-modal v-if="options.allowExport"
                       :module="recordListModule"
                       :records="records"
                       @export="onExport"
                       class="ml-1 float-left" />
-    </span>
+
     <b-input v-if="!options.hideSearch"
-           @keyup.enter.prevent="handleQuery"
            @keyup="handleQueryThrottled"
            v-model="query"
            class="float-right mw-100 mb-1"
@@ -70,10 +65,10 @@
       </table>
     </div>
     <div class="position-sticky fixed-bottom bg-white border-top pt-1" v-if="!options.hidePaging">
-      <pagination :records="filter.count"
-                  :per-page="filter.perPage"
+      <pagination :records="filter.count || 0"
+                  :per-page="filter.perPage || 0"
                   @paginate="handlePageChange"
-                  :page="filter.page"
+                  :page="filter.page || 0"
                   :options="{ texts: { count: $t('block.recordList.pagination') } }" />
     </div>
   </div>
@@ -103,18 +98,12 @@ export default {
 
   data () {
     return {
-      showExportModal: false,
       prefilter: null,
       sortColumn: '',
       query: null,
 
-      filter: {
-        count: 0,
-        page: 1,
-        perPage: 20,
-        sort: '',
-        filter: '',
-      },
+      // Initialized by prepRecordList()
+      filter: {},
 
       recordsRaw: [],
     }
@@ -150,59 +139,66 @@ export default {
     },
   },
 
+  created () {
+    this.prepRecordList()
+    this.updateRecordList(this.filter)
+  },
+
   beforeMount () {
-    if (!this.options.moduleID || !this.options.pageID) {
-      // Make sure block is properly configured
-      throw Error(this.$t('notification.record.moduleOrPageNotSet'))
-    }
-
-    /* eslint-disable no-template-curly-in-string */
-    if (!this.record) {
-      // If there is no current record and we are using recordID/ownerID variable in (pre)filter
-      // we should disable the block
-      if ((this.options.prefilter || '').includes('${record')) {
-        throw Error(this.$t('notification.record.invalidRecordVar'))
-      }
-
-      if ((this.options.prefilter || '').includes('${ownerID}')) {
-        throw Error(this.$t('notification.record.invalidOwnerVar'))
-      }
-    }
-
-    this.filter.sort = this.options.presort
-    this.filter.filter = this.options.prefilter
-    this.filter.perPage = this.options.perPage
-
-    if (this.options.prefilter) {
-      // Little magic here: prefilter is wraped with backticks and evaluated
-      // this allows us to us ${record.values....}, ${recordID}, ${ownerID}, ${userID} in prefilter string;
-      // hence the /hanging/ record, recordID, ownerID and userID variables
-      this.prefilter = (function (prefilter, { record, recordID, ownerID, userID }) {
-        /* eslint-disable no-eval */
-        return eval('`' + prefilter + '`')
-      })(this.options.prefilter, {
-        record: this.record,
-        recordID: (this.record || {}).recordID || 0,
-        ownerID: (this.record || {}).userID || 0,
-        userID: (this.$auth.user || {}).userID || 0,
-      })
-
-      this.filter.filter = this.prefilter
-    }
-
-    if (this.options.presort) {
-      this.handleSort(this.filter.sort)
-    }
-
-    if (this.recordListModule) {
-      this.rl.fetch(this.$ComposeAPI, this.recordListModule, this.filter).then(({ records, filter }) => {
-        this.recordsRaw = records
-        this.filter.count = filter.count
-      })
-    }
+    this.$root.$on('recordList.refresh', this.updateRecordList)
+  },
+  beforeDestroy () {
+    this.$root.$off('recordList.refresh', this.updateRecordList)
   },
 
   methods: {
+    prepRecordList () {
+      // Validate props
+      if (!this.options.moduleID || !this.options.pageID) {
+        throw Error(this.$t('notification.record.moduleOrPageNotSet'))
+      }
+
+      // If there is no current record and we are using recordID/ownerID variable in (pre)filter
+      // we should disable the block
+      /* eslint-disable no-template-curly-in-string */
+      if (!this.record) {
+        if ((this.options.prefilter || '').includes('${record')) {
+          throw Error(this.$t('notification.record.invalidRecordVar'))
+        }
+
+        if ((this.options.prefilter || '').includes('${ownerID}')) {
+          throw Error(this.$t('notification.record.invalidOwnerVar'))
+        }
+      }
+
+      // Initial filter
+      if (this.options.prefilter) {
+        this.prefilter = this.evaluatePrefilter(this.options.prefilter, {
+          record: this.record,
+          recordID: (this.record || {}).recordID || 0,
+          ownerID: (this.record || {}).userID || 0,
+          userID: (this.$auth.user || {}).userID || 0,
+        })
+      }
+
+      this.filter = {
+        count: 0,
+        page: this.options.page || 1,
+        perPage: this.options.perPage || 20,
+        sort: this.options.presort || '',
+        filter: this.prefilter || '',
+      }
+    },
+
+    // Evaluates the given prefilter. Allows JS template literal expressions
+    // such as id = ${recordID}
+    evaluatePrefilter (prefilter, { record, recordID, ownerID, userID }) {
+      return (function (prefilter) {
+        /* eslint-disable no-eval */
+        return eval('`' + prefilter + '`')
+      })(prefilter)
+    },
+
     createReminder (record) {
       // Determine initial reminder title
       const tField = (this.options.fields.find(({ name }) => !!record.values[name]) || {}).name
@@ -220,6 +216,7 @@ export default {
       this.$root.$emit('reminder.create', { payload, resource })
       this.$root.$emit('rightPanel.toggle', true)
     },
+
     onExport (e) {
       const { namespaceID, moduleID } = this.filter || {}
       e = {
@@ -242,19 +239,19 @@ export default {
     },
 
     handleQueryThrottled: _.throttle(function (e) { this.handleQuery(e) }, 500),
-    // handleQuery takes prefilter and merges it query expression over all columns we're showing
-    // ie: Return records that have strings in columns (fields) we're showing that start with <query> in case
-    //     of text or are exactly the same in case of numbers
+
+    // Merges prefilter with query
     handleQuery () {
-      let filter = this.prefilter
+      let filter
 
-      if (this.query.trim().length > 0) {
-        // Is this number we're searching?
-        const numQuery = Number.parseFloat(this.query)
+      if (this.query && this.query.trim().length > 0) {
+        let numQuery, strQuery
+        numQuery = Number.parseFloat(this.query)
 
-        // Replace * wildcard with SQL's % and append on at the end to enable
-        // fixed-prefix search by default
-        const strQuery = this.query.replace('*', '%') + '%'
+        // To SQL string
+        strQuery = this.query
+          .replace(/\*+$/, '')
+          .replace(/\*/g, '%') + '%'
 
         // When searching, always reset filter with prefilter + query
         filter = this.recordListModule.filterFields(this.options.fields).map(qf => {
@@ -265,17 +262,18 @@ export default {
           if (['String', 'DateTime', 'Select', 'Url', 'Email'].includes(qf.kind)) {
             return `${qf.name} LIKE '${strQuery}'`
           }
-        }).filter(q => !!q).join(' OR ')
+        }).filter(q => !!q)
+          .join(' OR ')
 
         if (this.prefilter) {
           filter = `(${this.prefilter}) AND (${filter})`
         }
-        this.filter.page = 1
+      } else {
+        filter = this.prefilter || ''
       }
-      this.rl.fetch(this.$ComposeAPI, this.recordListModule, { ...this.filter, filter }).then(({ records, filter }) => {
-        this.recordsRaw = records
-        this.filter.count = filter.count
-      })
+
+      this.filter.page = 1
+      this.updateRecordList({ ...this.filter, filter })
     },
 
     handleSort (fieldName) {
@@ -283,18 +281,14 @@ export default {
         return
       }
 
-      let sort = this.sortColumn === fieldName ? fieldName + ' DESC' : fieldName
-      this.sortColumn = sort
-
-      this.rl.fetch(this.$ComposeAPI, this.recordListModule, { ...this.filter, sort }).then(({ records, filter }) => {
-        this.recordsRaw = records
-        this.filter.count = filter.count
-      })
+      let sort = this.filter.sort === fieldName ? `${fieldName} DESC` : fieldName
+      this.updateRecordList({ ...this.filter, sort })
     },
 
     isSortedBy (name) {
-      if (this.sortColumn.includes(name)) {
-        if (this.sortColumn.includes('DESC')) {
+      const { sort = '' } = this.filter
+      if (sort.includes(name)) {
+        if (sort.includes('DESC')) {
           return 'DESC'
         } else {
           return 'ASC'
@@ -304,11 +298,28 @@ export default {
     },
 
     handlePageChange (page) {
-      this.rl.fetch(this.$ComposeAPI, this.recordListModule, { ...this.filter, page }).then(({ records, filter }) => {
-        this.recordsRaw = records
-        this.filter.count = filter.count
-        this.filter.page = page
-      })
+      this.updateRecordList({ ...this.filter, page })
+    },
+
+    // Helper to fetch records, update filter, ...
+    async updateRecordList (filter = this.filter) {
+      if (this.recordListModule.moduleID !== this.options.moduleID) {
+        throw Error('Module incompatible, module mismatch')
+      }
+
+      return this.$ComposeAPI.recordList({ ...this.recordListModule, ...filter })
+        .then(({ set, filter }) => {
+          this.recordsRaw = set
+          this.filter = {
+            ...this.filter,
+            ...filter,
+          }
+        })
+        .catch(this.stdErr)
+    },
+
+    stdErr (err) {
+      console.error(err)
     },
   },
 }
