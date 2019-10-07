@@ -154,7 +154,7 @@ export default {
       // Make a copy so that we do not change store item by ref
       this.module = new Module({ ...module })
       const rl = new RecordList({ moduleID: this.module.moduleID })
-      rl.fetch(this.$ComposeAPI, this.module, {}).then(records => {
+      rl.fetch(this.$ComposeAPI, this.module, {}).then(({ records }) => {
         if (records.length > 0) {
           this.hasRecords = true
         }
