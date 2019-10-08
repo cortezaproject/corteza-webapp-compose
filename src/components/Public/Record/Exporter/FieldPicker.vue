@@ -44,10 +44,10 @@
           </b-form-group>
         </b-col>
         <b-col cols="3" class="ml-5">
-          <b-form-input type="date" v-model="start" />
+          <b-form-input type="date" v-model="start" :max="end" @keydown.prevent=""/>
         </b-col>
         <b-col cols="3" class="ml-2">
-          <b-form-input type="date" v-model="end" />
+          <b-form-input type="date" v-model="end" :min="start" @keydown.prevent="" />
         </b-col>
       </b-row>
     </b-container>
