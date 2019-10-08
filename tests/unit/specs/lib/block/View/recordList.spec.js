@@ -119,16 +119,86 @@ describe('lib/block/View/RecordList', () => {
     })
   })
 
-  // @todo...
   describe('record filtering', () => {
-    let mod
     beforeEach(() => {
       sinon.stub(RecordList, 'created')
+      propsData.options.fields = ['n1']
+      propsData.options.pageID = '111'
+      propsData.options.moduleID = '200'
+    })
+
+    describe('textual queries', () => {
+      beforeEach(() => {
+        sinon.stub(RecordList.computed, 'recordListModule').returns(new Module({
+          moduleID: '200',
+          fields: [
+            { name: 'n1', kind: 'String' },
+          ],
+        }))
+      })
+
+      it('regular query', () => {
+        const wrap = mountRL()
+        const query = 'query'
+
+        sinon.stub(wrap.vm, 'updateRecordList')
+        wrap.setData({ query })
+        wrap.vm.handleQuery()
+
+        sinon.assert.calledOnce(wrap.vm.updateRecordList)
+        const cf = wrap.vm.updateRecordList.args.pop().pop().filter
+        expect(cf).to.include(`n1`)
+        expect(cf).to.include(`LIKE`)
+        expect(cf).to.include(`query%`)
+        wrap.vm.updateRecordList.restore()
+      })
+
+      it('wild cards', () => {
+        const wrap = mountRL()
+        const query = 'q*ery**'
+
+        sinon.stub(wrap.vm, 'updateRecordList')
+        wrap.setData({ query })
+        wrap.vm.handleQuery()
+
+        sinon.assert.calledOnce(wrap.vm.updateRecordList)
+        const cf = wrap.vm.updateRecordList.args.pop().pop().filter
+        expect(cf).to.include(`n1`)
+        expect(cf).to.include(`LIKE`)
+        expect(cf).to.include(`q%ery%`)
+        wrap.vm.updateRecordList.restore()
+      })
+    })
+
+    describe('numerical queries', () => {
+      beforeEach(() => {
+        sinon.stub(RecordList.computed, 'recordListModule').returns(new Module({
+          moduleID: '200',
+          fields: [
+            { name: 'n1', kind: 'Number' },
+          ],
+        }))
+      })
+
+      it('regular query', () => {
+        const wrap = mountRL()
+        const query = '123'
+
+        sinon.stub(wrap.vm, 'updateRecordList')
+        wrap.setData({ query })
+        wrap.vm.handleQuery()
+
+        sinon.assert.calledOnce(wrap.vm.updateRecordList)
+        const cf = wrap.vm.updateRecordList.args.pop().pop().filter
+        expect(cf).to.include(`n1`)
+        expect(cf).to.include(`=`)
+        expect(cf).to.include(`123`)
+        wrap.vm.updateRecordList.restore()
+      })
     })
 
     describe('boolean queries', () => {
       beforeEach(() => {
-        propsData.options.fields = ['n1']
         sinon.stub(RecordList.computed, 'recordListModule').returns(new Module({
           moduleID: '200',
           fields: [
@@ -147,8 +217,10 @@ describe('lib/block/View/RecordList', () => {
           wrap.vm.handleQuery()
 
           sinon.assert.calledOnce(wrap.vm.updateRecordList)
-          const call = wrap.vm.updateRecordList.args.pop().pop()
-          expect(call.filter.replace(/ /g, '')).to.include(`n1='true'`)
+          const call = wrap.vm.updateRecordList.args.pop().pop().filter
+          expect(call).to.include('n1')
+          expect(call).to.include('=')
+          expect(call).to.include('true')
           wrap.vm.updateRecordList.restore()
         }
       })
@@ -163,9 +235,14 @@ describe('lib/block/View/RecordList', () => {
           wrap.vm.handleQuery()
 
           sinon.assert.calledOnce(wrap.vm.updateRecordList)
-          const call = wrap.vm.updateRecordList.args.pop().pop()
-          // @note do watch out that (vv) is removing spaces!
-          expect(call.filter.replace(/ /g, '')).to.include(`n1='false'ORn1ISNULL`)
+          const call = wrap.vm.updateRecordList.args.pop().pop().filter
+          expect(call).to.include('n1')
+          expect(call).to.include('=')
+          expect(call).to.include('false')
+          expect(call).to.include('OR')
+          expect(call).to.include('n1')
+          expect(call).to.include('IS')
+          expect(call).to.include('NULL')
           wrap.vm.updateRecordList.restore()
         }
       })
@@ -187,10 +264,88 @@ describe('lib/block/View/RecordList', () => {
         }
       })
     })
+
+    it('include prefilter', () => {
+      sinon.stub(RecordList.computed, 'recordListModule').returns(mod)
+      propsData.options.prefilter = 'pref'
+      const wrap = mountRL()
+      sinon.stub(wrap.vm, 'updateRecordList')
+      wrap.vm.prepRecordList()
+      wrap.setData({ query: 'q' })
+      wrap.vm.handleQuery()
+
+      sinon.assert.calledOnce(wrap.vm.updateRecordList)
+      const cf = wrap.vm.updateRecordList.args.pop().pop().filter
+      expect(cf).to.include('pref')
+      expect(cf).to.include('AND')
+    })
   })
 
-  it('record pagination')
-  it('record sorting')
-  it('create reminder')
-  it('handle export')
+  describe('record sorting', () => {
+    beforeEach(() => {
+      propsData.options.fields = ['n1']
+      propsData.options.pageID = '111'
+      propsData.options.moduleID = '200'
+      sinon.stub(RecordList.computed, 'recordListModule').returns(new Module({
+        moduleID: '200',
+        fields: [
+          { name: 'n1', kind: 'String' },
+        ],
+      }))
+    })
+
+    it('Toggle ASC, DESC', () => {
+      const wrap = mountRL()
+      const cases = [
+        // field, sort field, desc
+        [ 'f1', 'f1', false ],
+        [ 'f1', 'f1', true ],
+        [ 'f1', 'f1', false ],
+      ]
+
+      for (const [ field, sort, desc ] of cases) {
+        sinon.stub(wrap.vm, 'updateRecordList')
+        wrap.vm.handleSort(field)
+        sinon.assert.calledOnce(wrap.vm.updateRecordList)
+        const cf = wrap.vm.updateRecordList.args.pop().pop().sort.toLowerCase()
+        expect(cf).to.include(sort)
+        if (desc) {
+          expect(cf).to.include('desc')
+        } else {
+          expect(cf).to.not.include('desc')
+        }
+        wrap.vm.filter.sort = cf
+        wrap.vm.updateRecordList.restore()
+      }
+    })
+
+    it('Reset on new field', () => {
+      const wrap = mountRL()
+      const cases = [
+        // field, sort field
+        [ 'f1', 'f1' ],
+        [ 'f2', 'f2' ],
+      ]
+
+      for (const [ field, sort ] of cases) {
+        sinon.stub(wrap.vm, 'updateRecordList')
+        wrap.vm.handleSort(field)
+        sinon.assert.calledOnce(wrap.vm.updateRecordList)
+        const cf = wrap.vm.updateRecordList.args.pop().pop().sort.toLowerCase()
+        expect(cf).to.include(sort)
+        expect(cf).to.not.include('desc')
+        wrap.vm.filter.sort = cf
+        wrap.vm.updateRecordList.restore()
+      }
+    })
+  })
+
+  it('create reminder', () => {
+    sinon.stub(RecordList, 'created')
+    const wrap = mountRL()
+    sinon.stub(wrap.vm.$root, '$emit')
+    wrap.vm.createReminder({ values: {} })
+
+    sinon.assert.called(wrap.vm.$root.$emit)
+  })
 })

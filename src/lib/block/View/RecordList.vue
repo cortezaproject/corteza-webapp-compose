@@ -83,7 +83,6 @@ import ImporterModal from 'corteza-webapp-compose/src/components/Public/Record/I
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 import Pagination from 'vue-pagination-2'
 import _ from 'lodash'
-import { RecordList } from '../RecordList'
 import { make } from 'corteza-webapp-common/src/lib/url'
 
 // Helper to determine if and value for given bool query
@@ -127,10 +126,6 @@ export default {
     ...mapGetters({
       getModuleByID: 'module/getByID',
     }),
-
-    rl () {
-      return new RecordList(this.options)
-    },
 
     // Returns module, configured for this record list
     recordListModule () {
@@ -215,7 +210,7 @@ export default {
 
     createReminder (record) {
       // Determine initial reminder title
-      const tField = (this.options.fields.find(({ name }) => !!record.values[name]) || {}).name
+      const tField = ((this.options.fields || []).find(({ name }) => !!record.values[name]) || {}).name
       let title = record.values[tField]
 
       let payload = {
