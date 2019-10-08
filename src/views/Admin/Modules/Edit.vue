@@ -82,6 +82,7 @@
     <editor-toolbar :back-link="{name: 'admin.modules'}"
                     :hideDelete="!module.canDeleteModule"
                     :hideSave="!module.canUpdateModule"
+                    :disable-save="!fieldsValid"
                     @delete="handleDelete"
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
@@ -137,6 +138,19 @@ export default {
   computed: {
     handleState () {
       return handleState(this.module)
+    },
+
+    fieldsValid () {
+      return this.module.fields.reduce((acc, f) => {
+        const fv = f.fieldValid()
+
+        // Allow, if any old fields are invalid (legacy support)
+        if (f.fieldID !== '0') {
+          return acc && true
+        }
+
+        return acc && fv
+      }, true)
     },
 
     modalTitle () {
