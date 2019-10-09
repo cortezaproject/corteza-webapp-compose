@@ -3,20 +3,26 @@
           footer-bg-variant="white">
 
     <b-form-group>
-      <label>{{ $t('block.recordList.import.matchFields') }}</label>
+      <label class="mb-4">
+        {{ $t('block.recordList.import.matchFields') }}
+      </label>
+
       <b-table small
                :fields="tableFields"
-               :items="rows">
+               :items="rows"
+               class="field-table">
 
         <template slot="HEAD[selected]">
-          <b-form-checkbox :checked="selectAll"
-                            @change="onSelectAll" />
+          <b-form-checkbox class="pr-0"
+                           :checked="selectAll"
+                           @change="onSelectAll" />
         </template>
 
         <template slot="[selected]"
                   slot-scope="data">
 
-          <b-form-checkbox v-model="data.item.selected" />
+          <b-form-checkbox class="pr-0"
+                           v-model="data.item.selected" />
         </template>
 
         <template slot="[moduleField]"
@@ -103,7 +109,7 @@ export default {
 
     tableFields () {
       return [
-        { key: 'selected', label: '' },
+        { key: 'selected', label: '', tdClass: 'picker' },
         { key: 'fileColumn', label: this.$t('block.recordList.import.fileColumns') },
         { key: 'moduleField', label: this.$t('block.recordList.import.moduleFields') },
       ]
@@ -155,3 +161,14 @@ export default {
 
 }
 </script>
+
+<style lang="scss" scoped>
+/deep/.picker {
+  width: 30px;
+}
+
+.field-table /deep/ th {
+  padding-bottom: 10px;
+}
+
+</style>

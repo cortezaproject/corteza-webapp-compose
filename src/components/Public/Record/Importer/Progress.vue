@@ -2,26 +2,30 @@
   <b-card header-bg-variant="white"
           footer-bg-variant="white">
 
-    <b-form-group>
+    <b-form-group class="my-4 mx-4">
       <b-progress :max="progress.entryCount"
                   show-value
                   show-progress
                   variant="primary"
                   height="80px">
 
-        <b-progress-bar :value="progress.completed">
-          {{ $t('block.recordList.import.progress', progress) }}
+        <b-progress-bar :value="progress.completed"
+                        class="progress-label"
+                        variant="primary">
+
+          <span class="font-weight-bold">{{ $t('block.recordList.import.progress') }}</span>
+          <span class="font-weight-bold">{{ $t('block.recordList.import.progressRatio', progress) }}</span>
         </b-progress-bar>
       </b-progress>
     </b-form-group>
 
-    <div slot="footer">
+    <b-form-group class="pt-5 mx-4 mb-0">
       <span v-if="progress.finishedAt && !progress.failed"
             class="text-success">
 
         {{ $t('block.recordList.import.success') }}
       </span>
-    </div>
+    </b-form-group>
   </b-card>
 </template>
 
@@ -92,3 +96,10 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.progress-label {
+  font-size: 15px;
+}
+
+</style>

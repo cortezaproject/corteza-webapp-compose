@@ -86,7 +86,7 @@ export default {
 
     dzLabel () {
       if (this.sessionFile) {
-        return this.$t('block.recordList.import.dropzoneFileAdded', { name: this.sessionFile.name, count: this.session.progress.entryCount + 2 })
+        return this.$t('block.recordList.import.dropzoneFileAdded', { name: this.sessionFile.name, count: this.session.progress.entryCount })
       }
 
       return this.$t('block.recordList.import.dropzoneLabel')
@@ -111,6 +111,6 @@ export default {
 
 <style lang="scss" scoped>
 .uploader {
-  height: 200px;
+  height: 130px;
 }
 </style>
