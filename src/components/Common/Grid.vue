@@ -123,7 +123,7 @@ export default {
 
     handleLayoutUpdate (grid) {
       this.$emit('update:blocks', grid.map(
-        ({ x, y, w, h, i, block }) => new Block({ ...this.blocks[i], xywh: [x, y, w, h] })
+        ({ x, y, w, h, i }) => new Block({ ...this.blocks[i], xywh: [ x, y, w, h ] })
       ))
     },
   },
