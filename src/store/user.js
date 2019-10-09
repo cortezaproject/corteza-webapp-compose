@@ -1,11 +1,8 @@
-import _ from 'lodash'
 import User from 'corteza-webapp-compose/src/lib/user'
 
 const types = {
   pending: 'pending',
   completed: 'completed',
-  addID: 'addID',
-  removeID: 'removeID',
   updateSet: 'updateSet',
 }
 
@@ -16,7 +13,6 @@ export default function (SystemAPI) {
     state: {
       pending: false,
       set: [],
-      userIDs: new Set(),
     },
 
     getters: {
@@ -36,7 +32,7 @@ export default function (SystemAPI) {
     },
 
     actions: {
-      async load ({ commit }) {
+      async load ({ commit, getters }) {
         commit(types.pending)
         SystemAPI.userList().then(({ set }) => {
           commit(types.updateSet, set)
@@ -44,26 +40,14 @@ export default function (SystemAPI) {
         })
       },
 
-      findUserByID ({ commit, getters }, userID) {
-        const user = getters.findByID(userID)
-        if (!user) {
-          commit(types.pending)
-          commit(types.addID, userID)
+      async fetchUsers ({ commit }, userID) {
+        commit(types.pending)
+        SystemAPI.userList({ userID }).then(({ set }) => {
+          console.log(set)
+          commit(types.updateSet, set)
           commit(types.completed)
-          this.dispatch('user/fetchUsers')
-        }
+        })
       },
-
-      fetchUsers: _.debounce(({ commit, state }) => {
-        [...state.userIDs].map(userID => {
-          commit(types.pending)
-          SystemAPI.userRead({ userID }).then(user => {
-            commit(types.removeID, userID)
-            commit(types.updateSet, [user])
-            commit(types.completed)
-          })
-        }, 200)
-      }),
     },
 
     mutations: {
@@ -73,14 +57,6 @@ export default function (SystemAPI) {
 
       [types.completed] (state) {
         state.pending = false
-      },
-
-      [types.addID] (state, userID) {
-        state.userIDs.add(userID)
-      },
-
-      [types.removeID] (state, userID) {
-        state.userIDs.delete(userID)
       },
 
       [types.updateSet] (state, set) {

@@ -82,6 +82,7 @@ import ExporterModal from 'corteza-webapp-compose/src/components/Public/Record/E
 import ImporterModal from 'corteza-webapp-compose/src/components/Public/Record/Importer'
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 import Pagination from 'vue-pagination-2'
+import users from 'corteza-webapp-compose/src/mixins/users'
 import _ from 'lodash'
 import { make } from 'corteza-webapp-common/src/lib/url'
 
@@ -108,6 +109,10 @@ export default {
   },
 
   extends: base,
+
+  mixins: [
+    users,
+  ],
 
   data () {
     return {
@@ -334,6 +339,7 @@ export default {
             ...this.filter,
             ...filter,
           }
+          this.fetchUsers(this.columns, this.records)
         })
         .catch(this.stdErr)
     },

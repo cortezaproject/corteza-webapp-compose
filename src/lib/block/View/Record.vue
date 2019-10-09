@@ -19,6 +19,7 @@
 import base from './base'
 import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
 import Exporter from 'corteza-webapp-compose/src/components/Public/Record/Exporter'
+import users from 'corteza-webapp-compose/src/mixins/users'
 
 export default {
   components: {
@@ -28,10 +29,18 @@ export default {
 
   extends: base,
 
+  mixins: [
+    users,
+  ],
+
   computed: {
     fields () {
       return this.module.filterFields(this.options.fields)
     },
+  },
+
+  created () {
+    this.fetchUsers(this.fields, [this.record])
   },
 }
 </script>

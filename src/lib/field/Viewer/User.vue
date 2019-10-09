@@ -19,29 +19,5 @@ export default {
       return (this.field.options.formatter(this.findByID(this.value)) || this.value) || this.$t('field.kind.user.na')
     },
   },
-
-  watch: {
-    value () {
-      this.load()
-    },
-  },
-
-  mounted () {
-    this.load()
-  },
-
-  methods: {
-    load () {
-      if (this.value && this.value !== (this.user || {}).userID) {
-        if (this.field.isMulti) {
-          this.value.forEach(v => {
-            this.$store.dispatch('user/findUserByID', v)
-          })
-        } else {
-          this.$store.dispatch('user/findUserByID', this.value)
-        }
-      }
-    },
-  },
 }
 </script>

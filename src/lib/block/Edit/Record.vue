@@ -26,12 +26,17 @@
 <script>
 import FieldEditor from 'corteza-webapp-compose/src/lib/field/Editor'
 import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
+import users from 'corteza-webapp-compose/src/mixins/users'
 
 export default {
   components: {
     FieldEditor,
     FieldViewer,
   },
+
+  mixins: [
+    users,
+  ],
 
   props: {
     options: {
@@ -63,7 +68,8 @@ export default {
 
   created () {
     if (!this.record.recordID) {
-      this.fields.forEach(({ name, defaultValue, isMulti }) => {
+      let userFields = []
+      this.fields.forEach(({ name, kind, defaultValue, isMulti }) => {
         if (defaultValue) {
           if (isMulti) {
             defaultValue = defaultValue.map(v => v.value)
@@ -72,7 +78,11 @@ export default {
           }
           this.record.values[name] = defaultValue
         }
+        if (kind === 'User') {
+          userFields.push({ name, isMulti })
+        }
       })
+      this.fetchUsers(userFields, [this.record])
     }
   },
 }
