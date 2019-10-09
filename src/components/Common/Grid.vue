@@ -39,14 +39,14 @@ import Block from 'corteza-webapp-compose/src/lib/block'
 import _ from 'lodash'
 
 const blocksToGrid = blocks => {
-  return blocks.map((block, i) => {
+  return blocks.map(({ xywh: [ x, y, w, h ] }, i) => {
     return {
       i,
 
-      x: block.xywh[0],
-      y: block.xywh[1],
-      w: block.xywh[2],
-      h: block.xywh[3],
+      x,
+      y,
+      w,
+      h,
     }
   })
 }
@@ -73,7 +73,7 @@ export default {
       rowHeight: 30,
 
       // all blocks in vue-grid friendly structure
-      grid: blocksToGrid(this.blocks),
+      grid: [],
 
       // attempt to solve responsive grid issues. 2 views: desktop and mobile
       cols: { lg: 12, md: 12, sm: 1, xs: 1, xxs: 1 },
@@ -89,7 +89,7 @@ export default {
         this.grid = blocksToGrid(blocks)
         this.recalculateBoundingRect()
       },
-
+      immediate: true,
       deep: true,
     },
   },
@@ -123,7 +123,7 @@ export default {
 
     handleLayoutUpdate (grid) {
       this.$emit('update:blocks', grid.map(
-        ({ x, y, w, h, block }) => new Block({ ...block, xywh: [x, y, w, h] })
+        ({ x, y, w, h, i, block }) => new Block({ ...this.blocks[i], xywh: [x, y, w, h] })
       ))
     },
   },
