@@ -51,6 +51,7 @@ import { mapGetters } from 'vuex'
 import base from './base'
 import draggable from 'vuedraggable'
 import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
+import users from 'corteza-webapp-compose/src/mixins/users'
 import { RecordOrganizer } from '../RecordOrganizer'
 
 export default {
@@ -60,6 +61,10 @@ export default {
   },
 
   extends: base,
+
+  mixins: [
+    users,
+  ],
 
   data () {
     return {
@@ -150,6 +155,8 @@ export default {
     if (this.roModule) {
       this.ro.fetchRecords(this.$ComposeAPI, this.roModule, this.expandFilter()).then(rr => {
         this.records = rr
+        const fields = [this.titleField, this.descriptionField]
+        this.fetchUsers(fields, this.records)
       })
     }
   },

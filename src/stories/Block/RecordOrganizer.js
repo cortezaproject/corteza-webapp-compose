@@ -3,6 +3,7 @@ import Viewer from 'corteza-webapp-compose/src/lib/block/View/'
 import i18n from 'corteza-webapp-compose/src/i18n'
 import store from '../store'
 import alert from 'corteza-webapp-compose/src/mixins/alert'
+import users from 'corteza-webapp-compose/src/mixins/users'
 import { withKnobs, object } from '@storybook/addon-knobs'
 
 let block1 = {
@@ -66,6 +67,7 @@ recordOrganizer.add('RecordOrganizer', () => ({
 
   mixins: [
     alert,
+    users,
   ],
 
   data () {
