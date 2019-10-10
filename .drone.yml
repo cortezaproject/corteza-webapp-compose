@@ -2,46 +2,28 @@ kind: pipeline
 name: Build & Pack
 
 steps:
-  - name: deps
+  - name: deps & test
     image: cortezaproject/corteza-webapp-builder
-    commands:
-      - yarn install
-
-  - name: test
-    image: cortezaproject/corteza-webapp-builder
-    commands:
-      - yarn lint
-      - yarn test:unit
+    commands: [ "yarn install", "yarn lint", "yarn test:unit" ]
 
   - name: build
     image: cortezaproject/corteza-webapp-builder
-    commands:
-      - yarn build --modern
-    when:
-      ref:
-        - refs/heads/master
-        - refs/heads/beta
-        - refs/heads/feature-*
-        - refs/tags/20??.*.*
+    commands: [ "yarn build --modern" ]
+    when: { ref: [ "refs/heads/master", "refs/heads/beta", "refs/heads/feature-*", "refs/tags/20??.*.*" ] }
 
   - name: pack
     image: cortezaproject/corteza-webapp-builder
-    volumes:
-      - name: webapp-build
-        path: /var/build
-    commands:
-      # produces something like: "corteza-webapp-compose-master.tar.bz2 "
-      - tar -cjf /var/build/$DRONE_REPO_NAME-${DRONE_TAG=${DRONE_BRANCH}}.tar.bz2 -C dist/ .
+    volumes: [ { name: webapp-build, path: /var/build} ]
+    # produces something like: "corteza-webapp-compose-master.tar.bz2 "
+    commands:  [ "tar -cjf /var/build/$DRONE_REPO_NAME-${DRONE_TAG=${DRONE_BRANCH}}.tar.bz2 -C dist/ ." ]
 
   - name: trigger
     image: plugins/downstream
     settings:
       fork: true
       server: https://drone.crust.tech
-      token:
-        from_secret: drone_token
-      params:
-        - "APP_VERSION=${DRONE_TAG=${DRONE_BRANCH}}"
+      token: { from_secret: drone_token }
+      params: [ "APP_VERSION=${DRONE_TAG=${DRONE_BRANCH}}" ]
       repositories:
         # Dynamically constructs Drone repo name that will be notified
         #  - namespace (cortezaproject/crusttech),
