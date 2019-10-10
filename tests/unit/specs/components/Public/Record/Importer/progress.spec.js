@@ -41,7 +41,7 @@ describe('components/Public/Record/Importer/Progress.vue', () => {
       const wrap = mountProgress()
       wrap.setData({ progress: { finishedAt: 'some time', failed: false, count: 1 } })
 
-      expect(wrap.find('div span.text-success').exists()).to.be.true
+      expect(wrap.find('span.text-success').exists()).to.be.true
     })
   })
 })
