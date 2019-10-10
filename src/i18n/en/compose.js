@@ -588,9 +588,9 @@ export default {
         specific: 'Create pages under namespace "{{target}}"',
         description: '',
       },
-      'trigger-create': {
-        title: 'Create triggers under any namespace',
-        specific: 'Create triggers under namespace "{{target}}"',
+      'automation-script-create': {
+        title: 'Create automation scripts under any namespace',
+        specific: 'Create automation scripts under namespace "{{target}}"',
         description: '',
       },
     },
