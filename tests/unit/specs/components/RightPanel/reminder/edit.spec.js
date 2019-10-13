@@ -40,24 +40,4 @@ describe('components/RightPanel/reminder/Edit.vue', () => {
       expect(evt.remindAt).to.be.undefined
     })
   })
-
-  describe('get assignee list', () => {
-    let users = [
-      { userID: '1', name: 'name' },
-      { userID: '2', name: 'name' },
-      { userID: '3', name: 'IsMe' },
-    ]
-    let meID = '3'
-
-    it('process list for vue-select', () => {
-      const test = Edit.computed.assignees.call({ users, meID })
-      expect(test).to.have.length(3)
-      expect(test[0]).to.have.keys([ 'userID', 'label' ])
-    })
-
-    it('Should treat me specially', () => {
-      const test = Edit.computed.assignees.call({ users, meID })
-      expect(test[2].label).to.not.eq('name')
-    })
-  })
 })

@@ -43,7 +43,6 @@ export default function (SystemAPI) {
       async fetchUsers ({ commit }, userID) {
         commit(types.pending)
         SystemAPI.userList({ userID }).then(({ set }) => {
-          console.log(set)
           commit(types.updateSet, set)
           commit(types.completed)
         })
