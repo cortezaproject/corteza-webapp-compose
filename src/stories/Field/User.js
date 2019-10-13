@@ -17,8 +17,6 @@ const store = new Vuex.Store({
   },
 })
 
-store.dispatch('user/load')
-
 let field = new Field({
   name: 'OwnerId',
   label: 'Account Owner',
