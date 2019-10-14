@@ -67,7 +67,7 @@ describe('mixins/ui-script-runner.js', () => {
         mixin.$ComposeAPI['record' + tc.event] = sinon.fake.resolves(R)
 
         // Run the chain
-        await mixin[tc.event.toLocaleLowerCase() + 'Record']({}, M, new Record(M, R))
+        await mixin[tc.event.toLocaleLowerCase() + 'Record']({}, M, R)
 
         sinon.assert.calledWithMatch(mixin.$ComposeAPI['record' + tc.event], R)
       })
