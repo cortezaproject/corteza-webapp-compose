@@ -1,5 +1,6 @@
 import * as kinds from './loader'
 import i18next from 'i18next'
+import { fieldValid, nameValid } from 'corteza-webapp-common/src/lib/types/compose/module-field'
 
 const stdEmptyCheck = (value) => {
   if (Array.isArray(value)) {
@@ -98,6 +99,14 @@ export default class Field {
     }
 
     return []
+  }
+
+  get nameValid () {
+    return nameValid
+  }
+
+  get fieldValid () {
+    return fieldValid
   }
 
   // Are there any properties defined inside options object?

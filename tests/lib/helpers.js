@@ -19,6 +19,9 @@ export const shallowMount = (component, { mocks = {}, stubs = [], ...options } =
     localVue,
     stubs: ['router-view', 'router-link', ...stubs],
     mixins: [ alertMixin ],
+    directives: {
+      'b-tooltip': () => {},
+    },
     mocks: {
       $t: (e) => e,
       $SystemAPI: {},

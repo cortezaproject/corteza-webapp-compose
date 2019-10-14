@@ -8,10 +8,12 @@
   <confirmation-toggle v-if="!hideDelete"
                        @confirmed="$emit('delete')">{{ $t('general.label.delete') }}</confirmation-toggle>
   <b-button v-if="!hideSave"
+            :disabled="disableSave"
             variant="primary"
             @click.prevent="$emit('save')"
             class="float-right">{{ $t('general.label.save') }}</b-button>
   <b-button v-if="!hideSave"
+            :disabled="disableSave"
             variant="primary" @click.prevent="$emit('saveAndClose')"
             class="float-right mr-1">{{ $t('general.label.saveAndClose') }}</b-button>
 </div>
@@ -36,6 +38,11 @@ export default {
     hideSave: {
       type: Boolean,
       required: false,
+    },
+    disableSave: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
 }

@@ -17,8 +17,8 @@
     </td>
     <td>
       <b-input v-model="value.label"
-             type="text"
-             class="form-control"/>
+               type="text"
+               class="form-control"/>
     </td>
     <td>
       <b-select v-model="value.kind" :disabled="disabled">
@@ -105,11 +105,7 @@ export default {
 
   computed: {
     checkFieldName () {
-      if (this.disabled) {
-        return null
-      }
-
-      return this.value.name.length > 1 && /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(this.value.name) ? null : false
+      return (this.disabled || this.value.nameValid()) ? null : false
     },
 
     disabled () {
