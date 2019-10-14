@@ -478,11 +478,6 @@ export default {
         $record,
       }
 
-      // We must convert the record struct from payload to something usable:
-      if (ctx.$module && ctx.$record) {
-        ctx.$record = new Record(ctx.$module, ctx.$record)
-      }
-
       // Override stuff that might hurt our testing/dev environment:
       ctx.routePusher = (params) => { console.log('routePusher', params) }
       ctx.emitter = (name, params) => { console.log(name, params) }
