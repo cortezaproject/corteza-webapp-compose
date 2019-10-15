@@ -30,7 +30,7 @@
         <div id="right-nav-opts"
              class="position-absolute d-flex align-items-center">
           <router-link v-if="namespace.canManageNamespace"
-                      :to="{ name: 'admin' }"
+                      :to="{ name: 'admin.modules' }"
                       class="nav-link mw-100 text-nowrap">{{ $t('navigation.adminPanel') }}</router-link>
 
           <hamburger-menu class="d-none d-md-block mr-2"

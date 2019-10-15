@@ -9,7 +9,7 @@ import SystemAPI from './system'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import '../themes/corteza-base/index.scss'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faSort, faSortUp, faSortDown, faWrench, faGripVertical, faDownload, faFileExport, faSearch, faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faSort, faSortUp, faSortDown, faWrench, faGripVertical, faDownload, faFileExport, faSearch, faBars, faTimes, faCheck, faExclamation } from '@fortawesome/free-solid-svg-icons'
 import { faEye, faFileAlt, faFileWord, faFilePdf, faFilePowerpoint, faFileArchive, faFileExcel, faFileVideo, faFileImage, faEdit, faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
@@ -37,14 +37,12 @@ library.add(
   faSearch,
   faBars,
   faTimes,
+  faCheck,
 )
+library.add(faExclamation)
 
 Vue.use(BootstrapVue)
 Vue.use(Vuex)
 
 Vue.prototype.$ComposeAPI = ComposeAPI
 Vue.prototype.$SystemAPI = SystemAPI
-
-Vue.prototype.$auth = {
-  JWT: '',
-}
