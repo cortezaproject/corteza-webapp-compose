@@ -110,7 +110,7 @@ export default {
 
       this.events = []
       this.options.feeds.forEach(feed => {
-        this.findModuleByID({ moduleID: feed.moduleID }).then((module) => {
+        this.findModuleByID({ namespaceID: this.namespace.namespaceID, moduleID: feed.moduleID }).then((module) => {
           // We will need this for redirecting user to record page
           const pageID = (this.pages.find(p => p.moduleID === module.moduleID) || {}).pageID
 
@@ -122,19 +122,19 @@ export default {
           }
 
           this.$ComposeAPI.recordList(params).then(({ filter, set }) => {
-            this.events.push(...set
+            this.events = set
               .map(r => new Record(module, r))
-              .filter(r => !!r.values[feed.startField])
+              .filter(r => !!r.values[feed.startField] || !!r[feed.startField])
               .map(r => {
                 return {
                   id: r.recordID,
                   title: r.values[feed.titleField] || r.recordID,
-                  start: r.values[feed.startField],
-                  end: feed.endField ? r.values[feed.endField] : null,
+                  start: r.values[feed.startField] || r[feed.startField],
+                  end: feed.endField ? (r.values[feed.endField] || r[feed.endField]) : null,
                   allDay: feed.allDay,
                   pageID,
                 }
-              }))
+              })
           }).catch(this.defaultErrorHandler(this.$t('notification.record.listLoadFailed')))
         })
       })
