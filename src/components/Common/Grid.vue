@@ -1,6 +1,6 @@
 <template>
   <div v-if="grid.length" class="w-100 pb-5 vh-100 overflow-auto flex-grow-1">
-    <grid-layout :layout.sync="grid"
+    <grid-layout :layout="grid"
                  @layout-updated="handleLayoutUpdate"
                  :col-num="12"
                  :row-height="rowHeight"
