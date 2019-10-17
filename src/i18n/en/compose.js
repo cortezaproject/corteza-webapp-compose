@@ -240,6 +240,8 @@ export default {
     newLabel: 'Create a new module:',
     newPlaceholder: '$t(general.label.moduleName)',
     recordPage: 'Record page for module',
+    recordListPage: 'Record List page for module',
+    recordList: 'Record List for module',
     import: 'Import module(s):',
     edit: {
       title: 'Edit module',

@@ -51,15 +51,64 @@
                               variant="link">+ {{ $t('module.edit.newField') }}</b-button>
                   </th>
                 </tr>
-                <tbody>
-                  <tr>
-                    <th colspan="7">{{ $t('module.edit.systemFields') }}</th>
-                  </tr>
-                  <field-row-view v-for="(field, index) in module.systemFields()"
-                                  :field="field"
-                                  :key="index"></field-row-view>
-                </tbody>
               </table>
+              <div class="d-flex mt-5">
+                <table class="w-50">
+                  <tbody>
+                    <tr>
+                      <th colspan="7">{{ $t('module.edit.systemFields') }}</th>
+                    </tr>
+                    <field-row-view v-for="(field, index) in module.systemFields()"
+                                    :field="field"
+                                    :key="index"></field-row-view>
+                  </tbody>
+                </table>
+                <div class="d-flex flex-column w-50">
+                  <b-row align-v="center" class="text-center justify-content-between mt-4">
+                    <b-col>
+                      <circle-step stepNumber="1" :done="!!recordListPage" small>
+                        <b-button v-if="!recordListPage" @click="handleRecordListCreation" :disabled="!namespace.canCreatePage" variant="outline-primary">
+                          Create Record List
+                        </b-button>
+                        <confirm v-else
+                                @confirmed="toRecordList('view')"
+                                @canceled="toRecordList('edit')"
+                                :disabled="!namespace.canManageNamespace"
+                                :borderless="false"
+                                variant="primary"
+                                variantOk="primary"
+                                variantCancel="outline-primary"
+                                size="md"
+                                sizeConfirm="md">
+
+                          Record List Page
+                          <template v-slot:yes>
+                            {{ $t('general.label.view') }}
+                          </template>
+                          <template v-slot:no>
+                            {{ $t('general.label.edit') }}
+                          </template>
+                        </confirm>
+                      </circle-step>
+                    </b-col>
+                    <b-col>
+                      <hr />
+                    </b-col>
+                    <b-col>
+                      <circle-step stepNumber="2" :done="!!recordPage" :disabled="!recordListPage" small>
+                        <b-button v-if="!recordPage" @click="handleRecordPageCreation" variant="outline-primary">
+                          Create Record Page
+                        </b-button>
+                        <router-link v-else :to="{ name: 'admin.pages.builder', params: { pageID: recordPage.pageID } }">
+                          <b-button :disabled="!namespace.canManageNamespace" variant="primary">
+                            Module Record Page
+                          </b-button>
+                        </router-link>
+                      </circle-step>
+                    </b-col>
+                  </b-row>
+                </div>
+              </div>
             </b-form-group>
           </b-card>
         </b-col>
@@ -91,7 +140,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import draggable from 'vuedraggable'
 import FieldConfigurator from 'corteza-webapp-compose/src/lib/field/Configurator'
 import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
@@ -99,10 +148,14 @@ import FieldRowEdit from 'corteza-webapp-compose/src/components/Admin/Module/Fie
 import FieldRowView from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowView'
 import Field from 'corteza-webapp-compose/src/lib/field'
 import Module from 'corteza-webapp-compose/src/lib/module'
+import Page from 'corteza-webapp-compose/src/lib/page'
+import Block from 'corteza-webapp-compose/src/lib/block'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 import { RecordList } from 'corteza-webapp-compose/src/lib/block/RecordList'
+import CircleStep from 'corteza-webapp-compose/src/components/Common/CircleStep'
+import Confirm from 'corteza-webapp-common/src/components/Input/Confirm'
 
 export default {
   components: {
@@ -113,6 +166,8 @@ export default {
     FieldRowView,
     EditorToolbar,
     Export,
+    CircleStep,
+    Confirm,
   },
 
   props: {
@@ -133,10 +188,15 @@ export default {
       module: new Module(),
       hasRecords: false,
       processing: false,
+      recordList: null,
     }
   },
 
   computed: {
+    ...mapGetters({
+      pages: 'page/set',
+    }),
+
     handleState () {
       return handleState(this.module)
     },
@@ -162,14 +222,24 @@ export default {
       const { name } = this.updateField
       return name ? this.$t('module.edit.specificFieldSettings', { name: this.updateField.name }) : this.$t('module.edit.moduleFieldSettings')
     },
+
+    recordPage () {
+      return this.pages.find(p => p.moduleID === this.moduleID)
+    },
+
+    recordListPage () {
+      return this.pages.find(p => {
+        return p.blocks.find(b => b.options.moduleID === this.moduleID)
+      })
+    },
   },
 
   created () {
     this.findModuleByID({ moduleID: this.moduleID }).then((module) => {
       // Make a copy so that we do not change store item by ref
       this.module = new Module({ ...module })
-      const rl = new RecordList({ moduleID: this.module.moduleID })
-      rl.fetch(this.$ComposeAPI, this.module, {}).then(({ records }) => {
+      this.recordList = new RecordList({ moduleID: this.module.moduleID })
+      this.recordList.fetch(this.$ComposeAPI, this.module, {}).then(({ records }) => {
         if (records.length > 0) {
           this.hasRecords = true
         }
@@ -182,6 +252,8 @@ export default {
       findModuleByID: 'module/findByID',
       updateModule: 'module/update',
       deleteModule: 'module/delete',
+      createPage: 'page/create',
+      updatePage: 'page/update',
     }),
 
     handleNewField () {
@@ -220,9 +292,72 @@ export default {
       }).catch(this.defaultErrorHandler(this.$t('notification.module.deleteFailed')))
     },
 
+    handleRecordPageCreation () {
+      const { name, moduleID } = this.module
+      const { namespaceID } = this.namespace
+
+      const payload = {
+        namespaceID,
+        title: `${this.$t('module.recordPage')} "${name || moduleID}"`,
+        moduleID,
+        selfID: this.recordListPage.pageID,
+        blocks: [],
+      }
+
+      this.createPage(payload).then(page => {
+        this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
+      }).catch(this.defaultErrorHandler(this.$t('notification.page.createFailed')))
+    },
+
+    handleRecordListCreation () {
+      const { name, moduleID } = this.module
+      const { namespaceID } = this.namespace
+
+      const payload = {
+        namespaceID,
+        title: `${this.$t('module.recordListPage')} "${name || moduleID}"`,
+        selfID: '0',
+        blocks: [],
+      }
+
+      this.createPage(payload).then(page => {
+        this.recordList.pageID = page.pageID
+        this.recordList.fields = []
+        this.recordList.title = `${this.$t('module.recordList')} "${name || moduleID}"`
+        const blocks = [
+          new Block({
+            xywh: [0, 0, 12, 16],
+            kind: 'RecordList',
+            options: this.recordList,
+          }),
+        ]
+
+        page = new Page({ ...page, blocks })
+
+        this.updatePage(page).then((page) => {
+          this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
+        })
+      }).catch(this.defaultErrorHandler(this.$t('notification.page.createFailed')))
+    },
+
     redirect () {
       this.$router.push({ name: 'admin.modules' })
+    },
+
+    toRecordList (to) {
+      const { pageID } = this.recordListPage || {}
+      if (to === 'view') {
+        this.$router.push({ name: 'page', params: { pageID: pageID } })
+      } else if (to === 'edit') {
+        this.$router.push({ name: 'admin.pages.builder', params: { pageID: pageID } })
+      }
     },
   },
 }
 </script>
+<style lang="scss" scoped>
+.steps {
+  padding: 0;
+  padding-top: 20vh;
+}
+</style>

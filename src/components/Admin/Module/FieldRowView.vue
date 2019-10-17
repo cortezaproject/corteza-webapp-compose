@@ -4,9 +4,6 @@
     <td>{{ field.name }}</td>
     <td>{{ field.label }}</td>
     <td>{{ field.kind }}</td>
-    <td class="text-center"></td>
-    <td class="text-center"></td>
-    <td class="text-center"></td>
   </tr>
 </template>
 
