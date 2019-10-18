@@ -10,10 +10,10 @@
                @dismiss-count-down="a.countdown=$event"
                @dismissed="alerts.splice(i, 0)">{{ a.message }}</b-alert>
     </div>
-    <namespace-sidebar :namespaces="namespaces"
+    <namespace-sidebar :namespaces="enabledNamespaces"
                        :namespace="namespace"
                        class="d-block"
-                        v-if="showNSSideBar &&namespaces.length > 1"></namespace-sidebar>
+                        v-if="showNSSideBar && enabledNamespaces.length > 1"></namespace-sidebar>
     <router-view v-if="loaded && namespace"
                  :namespace="namespace" />
     <div class="loader" v-else></div>
@@ -47,7 +47,7 @@ export default {
 
   data () {
     return {
-      showNSSideBar: !!window.SHOW_NAMESPACE_PANEL,
+      showNSSideBar: !window.SHOW_NAMESPACE_PANEL,
       loaded: false,
       error: '',
       alerts: [], // { variant: 'info', message: 'foo' },
@@ -55,6 +55,12 @@ export default {
       namespaces: [],
       toasts: [],
     }
+  },
+
+  computed: {
+    enabledNamespaces () {
+      return this.namespaces.filter(({ enabled }) => enabled)
+    },
   },
 
   watch: {
