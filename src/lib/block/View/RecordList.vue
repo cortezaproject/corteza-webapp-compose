@@ -42,25 +42,48 @@
           </tr>
         </thead>
         <tbody>
-          <router-link tag="tr" v-for="(row) in records" :key="row.recordID" :to="{ name: 'page.record', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
-            <td v-if="!recordListModule.canReadRecord">
-              <i class="text-secondary">{{ $t('block.recordList.record.noPermission') }}</i>
-            </td>
+          <tr
+            @click="onClickRow(row)"
+            tag="tr"
+            v-for="(row) in records"
+            :key="row.recordID"
+          >
+            <td v-if="!recordListModule.canReadRecord"></td>
             <td v-for="(col) in columns" :key="row.recordID+':'+col.name">
-              <span v-if="!recordListModule.canReadRecord"/>
-              <field-viewer v-else-if="col.canReadRecordValue" :field="col" value-only :record="row" :namespace="namespace"/>
+              <span v-if="!recordListModule.canReadRecord" />
+              <field-editor
+                v-else-if="row.recordID === editingID"
+                class="field"
+                :namespace="namespace"
+                :record.sync="row"
+                :field="col" />
+              <field-viewer
+                v-else-if="col.canReadRecordValue"
+                :field="col"
+                value-only
+                :record="row"
+                :namespace="namespace"
+              />
               <i v-else class="text-secondary">{{ $t('field.noPermission') }}</i>
             </td>
             <td class="text-right text-nowrap">
-              <b-button variant="link"
-                        @click.prevent="createReminder(row)">
+              <span v-if="row.recordID === editingID" class="btn-link btn__margin" @click.stop="cancelRecordChanges(row)">
+                <font-awesome-icon :icon="['fas', 'times']" />
+              </span>
+              <span v-if="row.recordID === editingID" class="btn-link btn__margin" @click.prevent="applyRecordChanges(row)">
+                <font-awesome-icon :icon="['fas', 'check']" />
+              </span>
+              <b-button v-if="row.recordID !== editingID" variant="link" @click.prevent="createReminder(row)">
                 <font-awesome-icon :icon="['far', 'bell']" />
               </b-button>
-              <router-link v-if="recordListModule.canUpdateRecord" :to="{ name: 'page.record.edit', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
+              <router-link
+                v-if="recordListModule.canUpdateRecord && row.recordID !== editingID"
+                :to="{ name: 'page.record.edit', params: { pageID: options.pageID, recordID: row.recordID }, query: null }"
+              >
                 <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
               </router-link>
             </td>
-          </router-link>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -85,6 +108,8 @@ import Pagination from 'vue-pagination-2'
 import users from 'corteza-webapp-compose/src/mixins/users'
 import _ from 'lodash'
 import { make } from 'corteza-webapp-common/src/lib/url'
+import FieldEditor from 'corteza-webapp-compose/src/lib/field/Editor'
+import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 
 // Helper to determine if and value for given bool query
 // == is intentional
@@ -106,12 +131,14 @@ export default {
     FieldViewer,
     ExporterModal,
     ImporterModal,
+    FieldEditor,
   },
 
   extends: base,
 
   mixins: [
     users,
+    uiScriptRunner,
   ],
 
   data () {
@@ -124,6 +151,10 @@ export default {
       filter: {},
 
       recordsRaw: [],
+      rowClicked: false,
+      editingID: null,
+      editingRowValues: null,
+      editingRow: null,
     }
   },
 
@@ -347,6 +378,54 @@ export default {
     stdErr (err) {
       console.error(err)
     },
+
+    onClickRow (row) {
+      /* Prevent row click when editing row */
+      if (this.editingID === row.recordID) {
+        return
+      }
+      /* Imitating double click event - set timeout of 250 ms  */
+      if (!this.rowClicked) {
+        this.rowClicked = true
+        const that = this
+        setTimeout(function () {
+          /* rowClicked  will be false if we doubleclicked under 250 ms */
+          if (that.rowClicked) {
+            that.$router.push({
+              name: 'page.record',
+              params: {
+                pageID: that.options.pageID,
+                recordID: row.recordID,
+              },
+              query: null,
+            })
+          }
+          that.rowClicked = false /* rowClicked initial state */
+        }, 250)
+        return
+      }
+      /* Double click - put row in edit mode */
+      if (this.rowClicked) {
+        this.editingID = row.recordID /* when editingID is not null, row will be in editing mode */
+        this.editingRowValues = { ...row.values } /* Remembering row values to be able do discard changes */
+        this.editingRow = row /* Create reference to Record instance */
+        this.rowClicked = false /* rowClicked initial state */
+      }
+    },
+
+    applyRecordChanges (row) {
+      /* TODO! the fist updateRecord's parameter should be namespace - however atm I don't know where to get it :/ */
+      this.updateRecord(null, row.module, row)
+        .then((record) => {
+          this.editingID = null
+        })
+        .catch(this.defaultErrorHandler(this.$t('notification.record.updateFailed')))
+    },
+
+    cancelRecordChanges () {
+      this.editingID = null
+      this.editingRow.values = this.editingRowValues
+    },
   },
 }
 </script>
@@ -372,4 +451,11 @@ table {
 input {
   width: 200px;
 }
+
+.btn {
+  &__margin {
+    margin: 0 2px 0 13px;
+  }
+}
+
 </style>
