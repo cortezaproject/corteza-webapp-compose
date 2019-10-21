@@ -169,7 +169,7 @@ export default {
       const { namespaceID } = this.namespace
       const payload = {
         namespaceID,
-        title: `${this.$t('module.recordPage')} "${module.name || moduleID}"`,
+        title: `${this.$t('module.forModule.recordPage')} "${module.name || moduleID}"`,
         moduleID,
         blocks: [],
       }

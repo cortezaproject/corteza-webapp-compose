@@ -10,6 +10,28 @@ export default {
     adminPanel: 'Admin panel',
     more: 'More',
   },
+  onboarding: {
+    message: {
+      noPages: 'It seems this namespace has no visible pages yet.',
+      startBuilding: 'Follow these steps to start building',
+      notifyAdministrator: 'Notify your system administrator',
+    },
+    step: {
+      optional: 'This step is optional!',
+      module: {
+        create: 'Create Module',
+        view: 'Your Modules',
+      },
+      chart: {
+        create: 'Make Chart',
+        view: 'Your Charts',
+      },
+      page: {
+        create: 'Build Page',
+        view: 'Your Pages',
+      },
+    },
+  },
   block: {
     general: {
       title: 'Add new block',
@@ -239,10 +261,12 @@ export default {
     title: 'List of modules',
     newLabel: 'Create a new module:',
     newPlaceholder: '$t(general.label.moduleName)',
-    recordPage: 'Record page for module',
-    recordListPage: 'Record List page for module',
-    recordList: 'Record List for module',
     import: 'Import module(s):',
+    forModule: {
+      recordPage: 'Record page for module',
+      recordListPage: 'Record List page for module',
+      recordList: 'Record List for module',
+    },
     edit: {
       title: 'Edit module',
       manageRecordFields: 'Manage record fields',
@@ -257,6 +281,16 @@ export default {
         multi: 'Allows the field to hold multiple values',
         required: 'Required field',
         private: 'Sensitive data',
+      },
+      step: {
+        recordList: {
+          create: 'Create Record List',
+          view: 'Record List Page',
+        },
+        recordPage: {
+          create: 'Create Record Page',
+          view: 'Module Record Page',
+        },
       },
     },
     recordGenerator: {
@@ -519,6 +553,7 @@ export default {
       handle: 'Handle',
       general: 'General',
       enabled: 'Enabled',
+      welcome: 'Welcome',
     },
     placeholder: {
       handle: 'handle (a - z, 0 - 9, underscore, dash)',

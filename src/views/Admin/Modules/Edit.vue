@@ -67,8 +67,12 @@
                   <b-row align-v="center" class="text-center justify-content-between mt-4">
                     <b-col>
                       <circle-step stepNumber="1" :done="!!recordListPage" small>
-                        <b-button v-if="!recordListPage" @click="handleRecordListCreation" :disabled="!namespace.canCreatePage" variant="outline-primary">
-                          Create Record List
+                        <b-button v-if="!recordListPage"
+                                  @click="handleRecordListCreation"
+                                  :disabled="!namespace.canCreatePage"
+                                  variant="outline-primary">
+
+                          {{ $t('module.edit.step.recordList.create') }}
                         </b-button>
                         <confirm v-else
                                 @confirmed="toRecordList('view')"
@@ -81,7 +85,7 @@
                                 size="md"
                                 sizeConfirm="md">
 
-                          Record List Page
+                          {{ $t('module.edit.step.recordList.view') }}
                           <template v-slot:yes>
                             {{ $t('general.label.view') }}
                           </template>
@@ -97,11 +101,11 @@
                     <b-col>
                       <circle-step stepNumber="2" :done="!!recordPage" :disabled="!recordListPage" small>
                         <b-button v-if="!recordPage" @click="handleRecordPageCreation" variant="outline-primary">
-                          Create Record Page
+                          {{ $t('module.edit.step.recordPage.create') }}
                         </b-button>
                         <router-link v-else :to="{ name: 'admin.pages.builder', params: { pageID: recordPage.pageID } }">
                           <b-button :disabled="!namespace.canManageNamespace" variant="primary">
-                            Module Record Page
+                            {{ $t('module.edit.step.recordPage.view') }}
                           </b-button>
                         </router-link>
                       </circle-step>
@@ -298,7 +302,7 @@ export default {
 
       const payload = {
         namespaceID,
-        title: `${this.$t('module.recordPage')} "${name || moduleID}"`,
+        title: `${this.$t('module.forModule.recordPage')} "${name || moduleID}"`,
         moduleID,
         selfID: this.recordListPage.pageID,
         blocks: [],
@@ -315,7 +319,7 @@ export default {
 
       const payload = {
         namespaceID,
-        title: `${this.$t('module.recordListPage')} "${name || moduleID}"`,
+        title: `${this.$t('module.forModule.recordListPage')} "${name || moduleID}"`,
         selfID: '0',
         blocks: [],
       }
@@ -323,7 +327,7 @@ export default {
       this.createPage(payload).then(page => {
         this.recordList.pageID = page.pageID
         this.recordList.fields = []
-        this.recordList.title = `${this.$t('module.recordList')} "${name || moduleID}"`
+        this.recordList.title = `${this.$t('module.forModule.recordList')} "${name || moduleID}"`
         const blocks = [
           new Block({
             xywh: [0, 0, 12, 16],

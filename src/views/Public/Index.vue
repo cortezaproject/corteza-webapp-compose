@@ -4,14 +4,14 @@
                    :namespace="namespace"
                    @toggleNav="navVisible = $event" />
     <div v-if="showSteps" class="d-flex flex-column m-5 vh-75">
-      <h1 class="display-3">Welcome!</h1>
+      <h1 class="display-3">{{ $t('general.label.welcome') }}!</h1>
       <p class="lead">
-        It seems this namespace has no visible pages yet.
+        {{ $t('onboarding.message.noPages') }}
         <span v-if="namespace.canManageNamespace">
-          Follow these steps to start building.
+          {{ $t('onboarding.message.startBuilding') }}
         </span>
         <span v-else>
-          Notify your system administrator!
+          {{ $t('onboarding.message.notifyAdministrator') }}
         </span>
       </p>
       <b-container v-if="namespace.canManageNamespace" fluid class="align-items-center border-top steps">
@@ -19,11 +19,11 @@
           <b-col>
             <circle-step stepNumber="1" :done="hasModules">
               <b-button v-if="!hasModules" @click="createNewModule" :disabled="!namespace.canCreateModule" variant="outline-primary" size="lg">
-                Create Module
+                {{ $t('onboarding.step.module.create') }}
               </b-button>
               <router-link v-else :to="{ name: 'admin.modules' }">
                 <b-button :disabled="!namespace.canManageNamespace" variant="primary" size="lg">
-                  Your Modules
+                {{ $t('onboarding.step.module.view') }}
                 </b-button>
               </router-link>
             </circle-step>
@@ -34,11 +34,11 @@
           <b-col>
             <circle-step :done="hasCharts" :disabled="!hasModules" optional>
               <b-button v-if="!hasCharts" @click="createNewChart" :disabled="!hasModules || !namespace.canCreateChart" variant="outline-primary" size="lg">
-                Make Chart
+                {{ $t('onboarding.step.chart.create') }}
               </b-button>
               <router-link v-else :to="{ name: 'admin.charts' }">
                 <b-button :disabled="!namespace.canManageNamespace" variant="primary" size="lg">
-                  Your Charts
+                {{ $t('onboarding.step.chart.view') }}
                 </b-button>
               </router-link>
             </circle-step>
@@ -49,11 +49,11 @@
           <b-col>
             <circle-step stepNumber="2" :done="hasPages" :disabled="!hasModules">
               <b-button v-if="!hasPages" @click="createNewPage" :disabled="!hasModules || !namespace.canCreatePage" variant="outline-primary" size="lg">
-                Build Page
+                {{ $t('onboarding.step.page.create') }}
               </b-button>
               <router-link v-else :to="{ name: 'admin.pages' }">
                 <b-button :disabled="!namespace.canManageNamespace" variant="primary" size="lg">
-                  Your Pages
+                {{ $t('onboarding.step.page.view') }}
                 </b-button>
               </router-link>
             </circle-step>

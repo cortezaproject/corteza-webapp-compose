@@ -43,7 +43,7 @@ export default {
   computed: {
     popoverContent () {
       if (this.optional) {
-        return 'This step is optional!'
+        return this.$t('onboarding.step.optional')
       } else {
         // If popover content is an empty string it doesnt show
         return ''
