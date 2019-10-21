@@ -2,18 +2,33 @@
 /* ESLint didn't like some expects */
 
 import { expect } from 'chai'
+import { createLocalVue } from '@vue/test-utils'
 import { shallowMount } from 'corteza-webapp-compose/tests/lib/helpers'
 import Edit from 'corteza-webapp-compose/src/views/Admin/Modules/Edit.vue'
 import Field from 'corteza-webapp-common/src/lib/types/compose/module-field'
 import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 import Module from 'corteza-webapp-compose/src/lib/module'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
+import Vuex from 'vuex'
 import sinon from 'sinon'
+
+const localVue = createLocalVue()
+localVue.use(Vuex)
 
 describe('views/Admin/Modules/Edit.vue', () => {
   afterEach(() => {
     sinon.restore()
   })
+
+  const store = new Vuex.Store({ modules: { page: {
+    namespaced: true,
+    state: {},
+    getters: {
+      set: () => {
+        return []
+      }
+    }
+  }}})
 
   let propsData
   beforeEach(() => {
@@ -24,6 +39,8 @@ describe('views/Admin/Modules/Edit.vue', () => {
   })
 
   const mountEdit = (opt) => shallowMount(Edit, {
+    store,
+    localVue,
     mocks: {},
     propsData,
     ...opt,
