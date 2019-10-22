@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import draggable from 'vuedraggable'
 import PageTree from 'corteza-webapp-compose/src/components/Admin/Page/Tree'
 import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
@@ -75,6 +76,10 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      createPage: 'page/create',
+    }),
+
     loadTree () {
       const { namespaceID } = this.namespace
       this.$ComposeAPI.pageTree({ namespaceID }).then((tree) => {
@@ -84,7 +89,7 @@ export default {
 
     handleAddPageFormSubmit () {
       const { namespaceID } = this.namespace
-      this.$ComposeAPI.pageCreate({ namespaceID, ...this.addPageFormData }).then((page) => {
+      this.createPage({ namespaceID, ...this.addPageFormData }).then((page) => {
         this.$router.push({ name: 'admin.pages.edit', params: { pageID: page.pageID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))
     },

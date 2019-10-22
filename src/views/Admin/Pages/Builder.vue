@@ -134,6 +134,7 @@ export default {
     ...mapActions({
       findPageByID: 'page/findByID',
       updatePage: 'page/update',
+      deletePage: 'page/delete',
     }),
 
     editBlock (block, index = undefined) {
@@ -172,7 +173,7 @@ export default {
     },
 
     handleDeletePage () {
-      this.$ComposeAPI.pageDelete(this.page).then(() => {
+      this.deletePage(this.page).then(() => {
         this.$router.push({ name: 'admin.pages' })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.deleteFailed')))
     },

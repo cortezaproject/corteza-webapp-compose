@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import SortableTree from 'vue-sortable-tree'
 import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 
@@ -89,6 +90,10 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      updatePage: 'page/update',
+    }),
+
     handleChangePosition ({ beforeParent, data, afterParent }) {
       const { namespaceID } = this.namespace
       const beforeID = beforeParent.parent ? beforeParent.pageID : '0'
@@ -109,7 +114,7 @@ export default {
         data.selfID = afterID
         data.namespaceID = namespaceID
 
-        this.$ComposeAPI.pageUpdate(data).then(() => {
+        this.updatePage(data).then(() => {
           reorder()
         }).catch(this.defaultErrorHandler(this.$t('notification.page.pageMoveFailed')))
       } else {

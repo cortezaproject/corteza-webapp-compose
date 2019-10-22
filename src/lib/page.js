@@ -22,6 +22,10 @@ export default class Page {
     this.canGrant = typeof args.canGrant === 'boolean' ? args.canGrant : false
   }
 
+  isRecordPage () {
+    return this.moduleID !== '0' && this.moduleID
+  }
+
   export () {
     return {
       title: this.title,
