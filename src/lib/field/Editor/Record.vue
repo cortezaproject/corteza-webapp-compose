@@ -68,7 +68,7 @@ export default {
 
   data () {
     return {
-      valueRecord: {},
+      fetchedRecords: [],
       records: [],
       latest: [], // set of 10 latest records for default list
       query: null,
@@ -94,7 +94,7 @@ export default {
 
     multipleSelected: {
       get () {
-        return this.value.map(v => this.convert(this.latest.find(r => r.recordID === v)))
+        return this.value.map(v => this.convert(this.fetchedRecords.find(r => r.recordID === v)))
       },
 
       set (value) {
@@ -151,7 +151,7 @@ export default {
     getRecord (index = undefined) {
       const value = index !== undefined ? this.value[index] : this.value
       if (value) {
-        return this.convert(this.latest.find(r => r.recordID === value))
+        return this.convert(this.fetchedRecords.find(r => r.recordID === value))
       }
     },
 
@@ -222,11 +222,13 @@ export default {
     fetchRecord (recordID) {
       const namespaceID = this.namespace.namespaceID
       const moduleID = this.field.options.moduleID
-      this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID }).then(record => {
-        this.latest.push(new Record(this.module, record))
-      }).catch(e => {
-        this.latest.push(new Record(this.module, { recordID }))
-      })
+      if (!this.fetchedRecords.find(r => r.recordID === recordID)) {
+        this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID }).then(record => {
+          this.fetchedRecords.push(new Record(this.module, record))
+        }).catch(e => {
+          this.fetchedRecords.push(new Record(this.module, { recordID }))
+        })
+      }
     },
 
     selectChange (event) {
