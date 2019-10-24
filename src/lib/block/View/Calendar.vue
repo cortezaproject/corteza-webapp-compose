@@ -1,17 +1,23 @@
 <template>
-  <full-calendar :events="events"
-                 :config="config"
-                 :key="calDep"></full-calendar>
+  <full-calendar v-if="calendar"
+                 :events="events"
+                 ref="fc"
+                 v-bind="config"
+                 @eventClick="handleEventClick" />
+
 </template>
+
 <script>
+import moment from 'moment'
 import { mapGetters, mapActions } from 'vuex'
 import base from './base'
-import { FullCalendar } from 'vue-full-calendar'
-import 'fullcalendar/dist/fullcalendar.css'
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
-import { Calendar } from 'corteza-webapp-compose/src/lib/block/Calendar'
+import FullCalendar from '@fullcalendar/vue'
+import { Calendar, cortezaTheme } from 'corteza-webapp-compose/src/lib/block/Calendar'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import listPlugin from '@fullcalendar/list'
 
-const locale = 'en'
 export default {
   components: {
     FullCalendar,
@@ -21,13 +27,8 @@ export default {
 
   data () {
     return {
-      // For the lack of better idea how to solve this...
-      // we're using this as calendar component key and changing
-      // it according to boundingRect.height (that is changed whenever
-      // window is resized. To overcome problems on mount, we increment
-      // this integer when component is mounted and then again .3sec later
-      calDep: 0,
       events: [],
+      calendar: undefined,
 
       loaded: {
         start: null,
@@ -42,55 +43,63 @@ export default {
     }),
 
     config () {
+      if (!this.calendar) {
+        return
+      }
+
       return {
-        header: this.header,
+        header: this.calendar.getHeader(),
         height: 'parent',
-        themeSystem: 'standard',
-        defaultView: this.options.defaultView || 'month',
+        themeSystem: 'corteza',
+        defaultView: this.calendar.defaultView,
         editable: false,
         eventLimit: true,
-        locale,
-        eventClick: this.handleEventClick,
-        viewRender: ({ start, end }) => {
-          this.loadEvents(start, end)
+        locale: this.calendar.locale,
+        // @todo could be loaded on demand
+        plugins: [
+          dayGridPlugin,
+          timeGridPlugin,
+          listPlugin,
+          cortezaTheme,
+        ],
+
+        buttonText: Calendar.availableViews()
+          .map(view => ({ view, label: this.$t(`block.calendar.view.${view}`) }))
+          .reduce((acc, cur) => {
+            acc[cur.view] = cur.label
+            return acc
+          }, {}),
+
+        // Listeners
+        datesRender: ({ view: { currentStart, currentEnd } = {} } = {}) => {
+          this.loadEvents(moment(currentStart), moment(currentEnd))
         },
       }
-    },
-
-    header () {
-      const cal = new Calendar(this.options)
-      const h = cal.header || {}
-      if (h.hide) return false
-
-      // Show view buttons only when 2 or more are selected
-      let right = false
-      if (h.views.length >= 2) {
-        right = cal.reorderViews(h.views).join(',')
-      }
-
-      const header = {
-        left: `${h.hidePrevNext ? '' : 'prev,next'} ${h.hideToday ? '' : 'today'}`.trim(),
-        center: `${h.hideTitle ? '' : 'title'}`,
-        right,
-      }
-
-      return header
     },
   },
 
   watch: {
-    'boundingRect.height' (v) {
-      this.calDep = v
+    options: {
+      handler: function (opts) {
+        this.calendar = new Calendar(opts)
+      },
+      immediate: true,
     },
-  },
 
-  mounted () {
-    this.$nextTick(() => {
-      this.calDep++
-      window.setTimeout(() => {
-        this.calDep++
-      }, 300)
-    })
+    'boundingRect.height': {
+      handler: function () {
+        // This is required, since vue-grid calculates grid item's dimensions
+        // inside mounted hook
+        setTimeout(() => {
+          const fc = this.$refs.fc
+          if (!fc) {
+            return
+          }
+          fc.getApi().windowResize({ target: window })
+        })
+      },
+      immediate: true,
+    },
   },
 
   methods: {
@@ -99,9 +108,11 @@ export default {
     }),
 
     loadEvents (start, end) {
+      if (!start || !end) {
+        return
+      }
+
       if (start.isSame(this.loaded.start) && end.isSame(this.loaded.end)) {
-        // loadEvents could be called multiple times with the same
-        // parameters, causing same events building up in the array.
         return
       }
 
@@ -118,11 +129,11 @@ export default {
           const params = {
             namespaceID: this.namespace.namespaceID,
             moduleID: module.moduleID,
-            filter: `date(${feed.endField || feed.startField}) >= '${start.toISOString()}' AND date(${feed.startField}) < '${end.toISOString()}'`,
+            filter: `date(${feed.startField}) >= '${start.toISOString()}' AND date(${feed.endField || feed.startField}) < '${end.toISOString()}'`,
           }
 
-          this.$ComposeAPI.recordList(params).then(({ filter, set }) => {
-            this.events = set
+          this.$ComposeAPI.recordList(params).then(({ set }) => {
+            this.events.push(...set
               .map(r => new Record(module, r))
               .filter(r => !!r.values[feed.startField] || !!r[feed.startField])
               .map(r => {
@@ -132,19 +143,31 @@ export default {
                   start: r.values[feed.startField] || r[feed.startField],
                   end: feed.endField ? (r.values[feed.endField] || r[feed.endField]) : null,
                   allDay: feed.allDay,
-                  pageID,
+
+                  extendedProps: {
+                    recordID: r.recordID,
+                    pageID,
+                  },
                 }
               })
+            )
           }).catch(this.defaultErrorHandler(this.$t('notification.record.listLoadFailed')))
         })
       })
     },
 
-    handleEventClick ({ id, pageID }) {
-      if (id && pageID) {
-        this.$router.push({ name: 'page.record', params: { pageID, recordID: id } })
+    handleEventClick ({ event: { extendedProps: { recordID, pageID } } }) {
+      if (recordID && pageID) {
+        this.$router.push({ name: 'page.record', params: { recordID, pageID } })
       }
     },
   },
 }
 </script>
+<style lang="scss" scoped>
+@import '~@fullcalendar/core/main.css';
+@import '~@fullcalendar/daygrid/main.css';
+@import '~@fullcalendar/timegrid/main.css';
+@import '~@fullcalendar/list/main.css';
+
+</style>
