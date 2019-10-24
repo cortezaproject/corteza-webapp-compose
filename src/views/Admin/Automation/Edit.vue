@@ -270,7 +270,7 @@ export default {
     }),
 
     countEnabledRecordTriggers () {
-      return this.triggers.reduce((v, t) => { return v + (t.isValid() ? 1 : 0) }, 0)
+      return this.triggers.reduce((v, t) => { return v + (t.isValid() && !t.isDeferred() ? 1 : 0) }, 0)
     },
 
     canModifySecurty () {
