@@ -7,8 +7,15 @@
                        class="mb-1"
                        :key="index">
           <b-form-input plain
-                        v-model="f.options.options[index]"
-                        size="sm"></b-form-input>
+                        v-model="f.options.options[index].value"
+                        size="sm"
+                        :placeholder="$t('field.kind.select.optionValuePlaceholder')" />
+
+          <b-form-input plain
+                        v-model="f.options.options[index].text"
+                        size="sm"
+                        :placeholder="$t('field.kind.select.optionLabelPlaceholder')" />
+
           <b-input-group-append>
             <b-button @click.prevent="f.options.options.splice(index, 1)"
                       variant="outline-danger"
@@ -19,12 +26,25 @@
         </b-input-group>
 
         <b-input-group>
-          <b-form-input plain v-model="newOption" @keypress.enter.prevent="handleAddOption" size="sm" :placeholder="$t('field.kind.select.optionRemove')"></b-form-input>
+          <b-form-input plain
+                        v-model="newOption.value"
+                        @keypress.enter.prevent="handleAddOption"
+                        size="sm"
+                        :placeholder="$t('field.kind.select.optionValuePlaceholder')"
+                        :state="newOptState" />
+
+          <b-form-input plain
+                        v-model="newOption.text"
+                        @keypress.enter.prevent="handleAddOption"
+                        size="sm"
+                        :placeholder="$t('field.kind.select.optionLabelPlaceholder')"
+                        :state="newOptState" />
+
           <b-input-group-append>
             <b-button @click.prevent="handleAddOption"
                       variant="primary"
                       size="sm"
-                      :disabled="newOption.length === 0">
+                      :disabled="newOptState === false || newEmpty">
               + {{ $t('field.kind.select.optionAdd') }}
             </b-button>
           </b-input-group-append>
@@ -51,13 +71,35 @@ export default {
 
   data () {
     return {
-      newOption: '',
+      newOption: { value: undefined, text: undefined },
       selectOptions: [
         { text: this.$t('field.kind.select.optionType.default'), value: 'default' },
         { text: this.$t('field.kind.select.optionType.multiple'), value: 'multiple' },
         { text: this.$t('field.kind.select.optionType.each'), value: 'each' },
       ],
     }
+  },
+
+  computed: {
+    /**
+     * Determines if newly entered option is empty
+     * @returns {Boolean}
+     */
+    newEmpty () {
+      return !this.newOption.text || !this.newOption.value
+    },
+
+    /**
+     * Determines the state of new select option
+     * @returns {Boolean|null}
+     */
+    newOptState () {
+      // No duplicates
+      if (this.f.options.options.find(({ text, value }) => text === this.newOption.text || value === this.newOption.value)) {
+        return false
+      }
+      return null
+    },
   },
 
   created () {
@@ -70,9 +112,9 @@ export default {
 
   methods: {
     handleAddOption () {
-      if (this.newOption.length > 0) {
+      if (this.newOption.value) {
         this.f.options.options.push(this.newOption)
-        this.newOption = ''
+        this.newOption = { value: undefined, text: undefined }
       }
     },
   },

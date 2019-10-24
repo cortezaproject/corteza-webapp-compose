@@ -9,7 +9,7 @@
       </template>
       <template v-slot:default="ctx">
         <b-form-select v-if="field.options.selectType === 'each'" :options="selectOptions" v-model="value[ctx.index]" />
-        <span v-else>{{ value[ctx.index] }}</span>
+        <span v-else>{{ findLabel(value[ctx.index]) }}</span>
       </template>
     </multi>
 
@@ -40,6 +40,15 @@ export default {
       this.value.push(value)
       // Reset select
       this.$refs.singleSelect.localValue = undefined
+    },
+
+    /**
+     * Helper to resolve a label for a gievn value
+     * @param {String} v Value in question
+     * @returns {String}
+     */
+    findLabel (v) {
+      return (this.selectOptions.find(({ value }) => value === v) || {}).text || v
     },
   },
 }
