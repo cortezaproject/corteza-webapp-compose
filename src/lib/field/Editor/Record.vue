@@ -70,7 +70,7 @@ export default {
     return {
       valueRecord: {},
       records: [],
-      latest: [], // set of 20 latest records for default list
+      latest: [], // set of 10 latest records for default list
       query: null,
     }
   },
@@ -99,7 +99,12 @@ export default {
 
       set (value) {
         if (value.length !== this.value.length) {
-          this.value = value.map(v => v.value)
+          this.value = value.map(({ value }) => {
+            if (!this.value.includes(value)) {
+              this.fetchRecord(value)
+            }
+            return value
+          })
         }
       },
     },
@@ -129,6 +134,17 @@ export default {
 
   created () {
     this.loadLatest()
+    const value = this.field.isMulti ? this.value : [this.value]
+    if (value) {
+      const { moduleID } = this.field.options
+      if (moduleID) {
+        for (let v of value) {
+          if (v) {
+            this.fetchRecord(v)
+          }
+        }
+      }
+    }
   },
 
   methods: {
@@ -141,19 +157,15 @@ export default {
 
     setRecord (event, index = undefined) {
       const crtValue = index !== undefined ? this.value[index] : this.value
-      let trueValue = ''
       let { value } = event || {}
       if (value && value !== crtValue) {
         // Set selected to value
-        trueValue = value
-      }
-
-      if (index !== undefined) {
-        this.value[index] = trueValue
-      } else {
-        this.value = trueValue
-        // Find selected and copy it to so we can show it
-        this.valueRecord = this.records.find(r => r.recordID === trueValue)
+        this.fetchRecord(value)
+        if (index !== undefined) {
+          this.value[index] = value
+        } else {
+          this.value = value
+        }
       }
     },
 
@@ -195,8 +207,9 @@ export default {
     loadLatest () {
       const namespaceID = this.namespace.namespaceID
       const moduleID = this.field.options.moduleID
+      const perPage = 10
       if (moduleID) {
-        this.$ComposeAPI.recordList({ namespaceID, moduleID }).then(({ set }) => {
+        this.$ComposeAPI.recordList({ namespaceID, moduleID, perPage }).then(({ set }) => {
           this.latest = set.map(r => new Record(this.module, r))
         })
       }
@@ -206,23 +219,24 @@ export default {
       return [this.field.options.labelField, 'updated_at DESC', 'created_at DESC'].filter(f => !!f).join(', ')
     },
 
-    // Fetches record if not already present
-    findByID (recordID) {
-      if (recordID) {
-        if ((this.valueRecord || {}).recordID !== recordID) {
-          let r = this.latest.find(record => record.recordID === recordID)
-          this.valueRecord = new Record(this.module, r)
-          return this.valueRecord
-        } else {
-          return this.valueRecord
-        }
-      }
+    fetchRecord (recordID) {
+      const namespaceID = this.namespace.namespaceID
+      const moduleID = this.field.options.moduleID
+      this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID }).then(record => {
+        this.latest.push(new Record(this.module, record))
+      }).catch(e => {
+        this.latest.push(new Record(this.module, { recordID }))
+      })
     },
 
     selectChange (event) {
-      this.value.push(event.value)
-      // Cant mutate props so we use magic(refs)
-      this.$refs.singleSelect.mutableValue = null
+      const { value } = event || {}
+      if (value) {
+        this.fetchRecord(value)
+        this.value.push(value)
+        // Cant mutate props so we use magic(refs)
+        this.$refs.singleSelect.mutableValue = null
+      }
     },
   },
 }

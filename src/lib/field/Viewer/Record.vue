@@ -1,20 +1,22 @@
 <template>
-  <div v-if="valid">
+  <div>
     <label v-if="!valueOnly">{{ field.label || field.name }}</label>
-    <div v-if="field.isMulti">
-      <span v-for="(r, index) of value" :key="index">
-        <span v-if="index" v-html="getDelimiter" />
-        <span v-if="linkToRecord(index)">
-          <router-link :to="linkToRecord(index)">{{ format(index) }}</router-link>
+    <div v-if="valid">
+      <div v-if="field.isMulti">
+        <span v-for="(r, index) of value" :key="index">
+          <span v-if="index && index !== value.length" v-html="getDelimiter" />
+          <span v-if="linkToRecord(index)">
+            <router-link :to="linkToRecord(index)">{{ format(index) }}</router-link>
+          </span>
+          <span v-else>
+            {{ format(index) }}
+          </span>
         </span>
-        <span v-else>
-          {{ format(index) }}
-        </span>
-      </span>
-    </div>
-    <div v-else>
-      <div v-if="linkToRecord()"><router-link :to="linkToRecord()">{{ format() }}</router-link></div>
-      <div v-else>{{ format() }}</div>
+      </div>
+      <div v-else>
+        <div v-if="linkToRecord()"><router-link :to="linkToRecord()">{{ format() }}</router-link></div>
+        <div v-else>{{ format() }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -103,27 +105,24 @@ export default {
 
     load () {
       const value = this.field.isMulti ? this.value : [this.value]
-      const exists = this.relRecords.find(r => r.recordID === value)
-      if (value && !exists) {
-        this.findModuleByID({ moduleID: this.field.options.moduleID, namespaceID: this.namespace.namespaceID })
-          .then(m => {
-            for (let v of value) {
-              if (v) {
-                let record = { recordID: v }
-                this.$ComposeAPI.recordRead({ namespaceID: m.namespaceID, moduleID: m.moduleID, recordID: v })
-                  .then(r => {
-                    // In case record isn't found, this if prevents an infinite fetch loop
-                    if (r) {
-                      record = r
-                    }
-                    this.relRecords.push(new Record(m, record))
-                  })
-                  .catch(e => {
-                    this.relRecords.push(new Record(m, record))
-                  })
-              }
+      if (value) {
+        const { namespaceID } = this.namespace
+        const { moduleID } = this.field.options
+        this.findModuleByID({ moduleID, namespaceID }).then(m => {
+          for (let v of value) {
+            if (v) {
+              let record = { recordID: v }
+              this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID: v }).then(r => {
+                if (r) {
+                  record = r
+                }
+                this.relRecords.push(new Record(m, record))
+              }).catch(e => {
+                this.relRecords.push(new Record(m, record))
+              })
             }
-          })
+          }
+        })
       }
     },
   },
