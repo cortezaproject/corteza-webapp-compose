@@ -115,7 +115,7 @@ export default {
     handleDelete () {
       this.deleteRecord(this.namespace, this.module, this.record)
         .then(() => {
-          this.$router.push({ name: 'page', params: { pageID: this.page.pageID } })
+          this.$router.push({ name: 'page.record.create', params: { pageID: this.page.pageID } })
         })
         .catch(this.defaultErrorHandler(this.$t('notification.record.deleteFailed')))
     },
