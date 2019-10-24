@@ -13,7 +13,7 @@ export class RecordList {
     this.hidePaging = !!o.hidePaging
     this.hideSorting = !!o.hideSorting
     this.allowExport = !!o.allowExport
-    this.perPage = o.perPage === 'number' ? o.perPage : 20
+    this.perPage = typeof o.perPage === 'number' ? o.perPage : 20
   }
 
   async fetch ($ComposeAPI, recordListModule, filter) {
