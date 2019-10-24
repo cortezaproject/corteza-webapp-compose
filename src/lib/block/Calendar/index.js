@@ -18,7 +18,7 @@ export class Calendar {
     this.feeds = o.feeds || []
     this.header = o.header || {}
     this.header = { ...this.header, views: Calendar.handleLegacyViews(this.header.views || []) }
-    this.locale = o.locale || 'en'
+    this.locale = o.locale || 'en-gb'
   }
 
   getHeader () {

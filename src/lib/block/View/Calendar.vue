@@ -29,6 +29,7 @@ export default {
     return {
       events: [],
       calendar: undefined,
+      locale: undefined,
 
       loaded: {
         start: null,
@@ -54,7 +55,7 @@ export default {
         defaultView: this.calendar.defaultView,
         editable: false,
         eventLimit: true,
-        locale: this.calendar.locale,
+        locale: this.locale,
         // @todo could be loaded on demand
         plugins: [
           dayGridPlugin,
@@ -82,6 +83,7 @@ export default {
     options: {
       handler: function (opts) {
         this.calendar = new Calendar(opts)
+        this.changeLocale(this.calendar.locale)
       },
       immediate: true,
     },
@@ -106,6 +108,16 @@ export default {
     ...mapActions({
       findModuleByID: 'module/findByID',
     }),
+
+    // @todo listen for i18next locale change, and reload
+    changeLocale (lng) {
+      // fc doesn't provide a en locale
+      if (lng === 'en') {
+        lng = 'en-gb'
+      }
+
+      this.locale = require(`@fullcalendar/core/locales/${lng}`)
+    },
 
     loadEvents (start, end) {
       if (!start || !end) {

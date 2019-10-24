@@ -4,8 +4,6 @@ import lngDetector from 'i18next-browser-languagedetector'
 import VueI18Next from '@panter/vue-i18next'
 import moment from 'moment'
 
-import '@fullcalendar/core/locales-all'
-
 import en from './en'
 
 // Initializes i18n options, registers
