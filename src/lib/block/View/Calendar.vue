@@ -155,6 +155,7 @@ export default {
                   start: r.values[feed.startField] || r[feed.startField],
                   end: feed.endField ? (r.values[feed.endField] || r[feed.endField]) : null,
                   allDay: feed.allDay,
+                  classNames: [ 'event', 'event-record' ],
 
                   extendedProps: {
                     recordID: r.recordID,
@@ -181,5 +182,17 @@ export default {
 @import '~@fullcalendar/daygrid/main.css';
 @import '~@fullcalendar/timegrid/main.css';
 @import '~@fullcalendar/list/main.css';
+
+/deep/.event {
+  &.event-record {
+    background-color: $primary;
+    color: $white;
+    border-color: $primary;
+
+    &:hover {
+      color: $white;
+    }
+  }
+}
 
 </style>
