@@ -26,7 +26,9 @@
         size="lg"
         @ok="updateBlocks"
         @hide="editor=null"
-        :visible="showCreator">
+        :visible="showCreator"
+        body-class="p-0 border-top-0"
+        header-class="p-3 pb-0 border-bottom-0">
         <block-edit v-if="showCreator"
                     :namespace="namespace"
                     :module="module"
@@ -39,11 +41,12 @@
         :ok-title="$t('general.label.saveAndClose')"
         ok-variant="dark"
         ok-only
-        centered
         size="lg"
         @ok="updateBlocks"
         @hide="editor=null"
-        :visible="showEditor">
+        :visible="showEditor"
+        body-class="p-0 border-top-0"
+        header-class="p-3 pb-0 border-bottom-0">
         <block-edit v-if="showEditor"
                     :namespace="namespace"
                     :module="module"

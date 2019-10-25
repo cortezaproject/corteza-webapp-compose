@@ -76,7 +76,7 @@
       @hide="updateField=null"
       :visible="!!updateField"
       body-class="p-0 border-top-0"
-      header-class="px-3 pt-3 pb-0 border-bottom-0">
+      header-class="p-3 pb-0 border-bottom-0">
       <field-configurator :field.sync="updateField" />
     </b-modal>
     <editor-toolbar :back-link="{name: 'admin.modules'}"

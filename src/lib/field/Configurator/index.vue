@@ -1,7 +1,7 @@
 <template>
   <b-tabs active-nav-item-class="bg-grey"
           nav-wrapper-class="bg-white"
-          active-tab-class="tab-content"
+          active-tab-class="tab-content h-auto overflow-auto"
           card>
 
     <b-tab active :title="$t('general.label.general')">
@@ -41,8 +41,6 @@ export default {
 
 <style lang="scss" scoped>
 .tab-content {
-  height: auto;
   max-height: 70vh;
-  overflow-y: auto;
 }
 </style>
