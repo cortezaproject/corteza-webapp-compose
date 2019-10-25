@@ -7,6 +7,7 @@ import Edit from 'corteza-webapp-compose/src/views/Admin/Modules/Edit.vue'
 import Field from 'corteza-webapp-common/src/lib/types/compose/module-field'
 import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 import Module from 'corteza-webapp-compose/src/lib/module'
+import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import sinon from 'sinon'
 
 describe('views/Admin/Modules/Edit.vue', () => {
@@ -71,6 +72,18 @@ describe('views/Admin/Modules/Edit.vue', () => {
         wrap.setData({ module: new Module({ fields }) })
         expect(wrap.vm.fieldsValid).to.be.true
       }
+    })
+  })
+
+  describe('on save', () => {
+    it('set processing flag during processing', async () => {
+      sinon.stub(Edit, 'created').returns(() => {})
+      sinon.stub(Edit.methods, 'updateModule').resolves(({ moduleID: '000' }))
+      const wrap = mountEdit()
+
+      const tb = wrap.find(EditorToolbar)
+      tb.vm.$emit('save')
+      expect(tb.props().disableSave).to.be.true
     })
   })
 })

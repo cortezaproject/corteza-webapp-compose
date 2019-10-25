@@ -82,7 +82,7 @@
     <editor-toolbar :back-link="{name: 'admin.modules'}"
                     :hideDelete="!module.canDeleteModule"
                     :hideSave="!module.canUpdateModule"
-                    :disable-save="!fieldsValid"
+                    :disable-save="!fieldsValid || processing"
                     @delete="handleDelete"
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
@@ -132,6 +132,7 @@ export default {
       updateField: null,
       module: new Module(),
       hasRecords: false,
+      processing: false,
     }
   },
 
@@ -199,6 +200,7 @@ export default {
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {
+      this.processing = true
       this.updateModule(this.module).then((module) => {
         this.module = new Module({ ...module })
         this.raiseSuccessAlert(this.$t('notification.module.saved'))
@@ -206,6 +208,9 @@ export default {
           this.redirect()
         }
       }).catch(this.defaultErrorHandler(this.$t('notification.module.saveFailed')))
+        .finally(() => {
+          this.processing = false
+        })
     },
 
     handleDelete () {
