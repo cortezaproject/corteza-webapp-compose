@@ -107,9 +107,8 @@ export default {
       const value = index !== undefined ? this.value[index] : this.value
       if (value) {
         this.findUserByID(value)
+        return this.users.find(v => v.value === value) || { value: value, label: value }
       }
-
-      return this.users.find(v => v.value === value) || { value: value, label: value }
     },
 
     setUser (event, index = undefined) {
