@@ -70,7 +70,7 @@ export default {
     if (!this.record.recordID) {
       let userFields = []
       this.fields.forEach(({ name, kind, defaultValue, isMulti }) => {
-        if (defaultValue) {
+        if (defaultValue && defaultValue.length > 0) {
           if (isMulti) {
             defaultValue = defaultValue.map(v => v.value)
           } else {
