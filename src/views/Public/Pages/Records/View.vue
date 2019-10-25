@@ -1,5 +1,12 @@
 <template>
   <div :class="[editMode ? 'edit': 'view']">
+    <b-alert v-if="isDeleted"
+             show
+             variant="info">
+
+      {{ $t('block.record.recordDeleted') }}
+    </b-alert>
+
     <grid :namespace="namespace"
           :page="page"
           :record="record"
@@ -7,8 +14,8 @@
           v-if="record"
           @reload="loadRecord()" />
     <toolbar :back-link="{name: 'pages'}"
-             :hide-delete="!module.canDeleteRecord"
-             :read-only="!module.canUpdateRecord"
+             :hide-delete="!module.canDeleteRecord || isDeleted"
+             :read-only="!module.canUpdateRecord || isDeleted"
              @delete="handleDelete"
              @save="handleUpdate()">
 
@@ -16,7 +23,7 @@
                 variant="outline-secondary mx-1"
                 @click.prevent="$router.push({ name: 'page.record.create', params: $route.params })">+ {{ $t('general.label.addNew') }}</b-button>
 
-      <b-button v-if="!editMode && module.canUpdateRecord"
+      <b-button v-if="!isDeleted && !editMode && module.canUpdateRecord"
                 variant="outline-secondary"
                 @click.prevent="$router.push({ name: 'page.record.edit', params: $route.params })" >{{ $t('general.label.edit') }}</b-button>
 
@@ -90,6 +97,17 @@ export default {
         return this.$store.getters['module/getByID'](this.page.moduleID)
       }
     },
+
+    /**
+     * Tells if given record is deleted; If record not provided, returns undefined
+     * @returns {Boolean|undefined}
+     */
+    isDeleted () {
+      if (!this.record) {
+        return
+      }
+      return !!this.record.deletedAt
+    },
   },
 
   watch: {
@@ -112,10 +130,14 @@ export default {
       }
     },
 
+    /**
+     * On delete, preserve user's view. Show a notification that the record
+     * has been deleted.
+     */
     handleDelete () {
       this.deleteRecord(this.namespace, this.module, this.record)
-        .then(() => {
-          this.$router.push({ name: 'page.record.create', params: { pageID: this.page.pageID } })
+        .then((e) => {
+          this.record.deletedAt = (new Date()).toISOString()
         })
         .catch(this.defaultErrorHandler(this.$t('notification.record.deleteFailed')))
     },

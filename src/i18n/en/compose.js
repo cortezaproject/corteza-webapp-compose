@@ -206,6 +206,7 @@ export default {
     record: {
       label: 'Record',
       deleteRecord: 'Delete record',
+      recordDeleted: 'This record was deleted',
       confirmDelete: 'Are you sure you want to delete this record?',
       preview: {
         fieldsFromModule: 'Single record block, displaying fields ({{0}}) from module {{1}}',
