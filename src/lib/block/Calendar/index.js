@@ -2,6 +2,7 @@ import { PropCast } from 'corteza-webapp-common/src/lib/types/common'
 
 export { default as cortezaTheme } from './theme'
 
+// Map of < V4 view names to >= V4 view names
 const legacyViewMapping = {
   month: 'dayGridMonth',
   agendaMonth: 'dayGridMonth',
@@ -12,6 +13,9 @@ const legacyViewMapping = {
   listDay: 'listDay',
 }
 
+/**
+ * Helper class to help define calendar's functionality
+ */
 export class Calendar {
   constructor (o = {}) {
     this.defaultView = Calendar.handleLegacyViews(PropCast(String, o.defaultView)) || 'dayGridMonth'
@@ -21,6 +25,10 @@ export class Calendar {
     this.locale = o.locale || 'en-gb'
   }
 
+  /**
+   * Generates a header object of fullcalendar
+   * @returns {Object}
+   */
   getHeader () {
     const h = this.header
     if (h.hide) {
@@ -42,6 +50,11 @@ export class Calendar {
     return header
   }
 
+  /**
+   * Provides a list of available views.
+   * @note When adding new ones, make sure included plugins support it.
+   * @returns {Array}
+   */
   static availableViews () {
     return [
       'dayGridMonth',
@@ -53,13 +66,21 @@ export class Calendar {
     ]
   }
 
-  // Reorder views according to availableViews array order
+  /**
+   * Reorder views according to available views array order.
+   * @param {Array} views Array of views to filter & sort
+   */
   reorderViews (views = []) {
     return Calendar.availableViews()
       .filter(v => views.find(fv => fv === v))
       .map(v => v)
   }
 
+  /**
+   * Converts old < V4 view names to >= V4 view names.
+   * @note It wil preserve fields that don't need to/can't be converted
+   * @param {Array} views Array of updated view names
+   */
   static handleLegacyViews (views) {
     if (!Array.isArray(views)) {
       return legacyViewMapping[views] || views

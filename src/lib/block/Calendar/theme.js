@@ -1,6 +1,9 @@
 import { BootstrapTheme } from '@fullcalendar/bootstrap'
 import { createPlugin } from '@fullcalendar/core'
 
+/**
+ * Fullcalendar corteza theme definition.
+ */
 export class CortezaTheme extends BootstrapTheme {}
 CortezaTheme.prototype.classes.widget = 'corteza-unthemed'
 CortezaTheme.prototype.classes.button = 'btn btn-outline-primary'

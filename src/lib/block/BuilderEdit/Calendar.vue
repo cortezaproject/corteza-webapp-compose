@@ -128,6 +128,10 @@ export default {
       getModuleByID: 'module/getByID',
     }),
 
+    /**
+     * Generates input-select's calendar view options
+     * @returns {Array}
+     */
     views () {
       return this.o.constructor.availableViews()
         .map(view => ({ value: view, text: this.$t(`block.calendar.view.${view}`) }))

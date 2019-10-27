@@ -64,6 +64,8 @@ export default {
           cortezaTheme,
         ],
 
+        // Use available views to define custom view labels.
+        // See src/i18n/en/compose.js for i18n definitons
         buttonText: Calendar.availableViews()
           .map(view => ({ view, label: this.$t(`block.calendar.view.${view}`) }))
           .reduce((acc, cur) => {
@@ -71,7 +73,7 @@ export default {
             return acc
           }, {}),
 
-        // Listeners
+        // Handle event fetching when view/date-range changes
         datesRender: ({ view: { currentStart, currentEnd } = {} } = {}) => {
           this.loadEvents(moment(currentStart), moment(currentEnd))
         },
@@ -110,6 +112,12 @@ export default {
     }),
 
     // @todo listen for i18next locale change, and reload
+    /**
+     * Helper method to load requested locale.
+     * See https://github.com/fullcalendar/fullcalendar/tree/master/packages/core/src/locales
+     * for a full list
+     * @param {String} lng Locale tag.
+     */
     changeLocale (lng) {
       // fc doesn't provide a en locale
       if (lng === 'en') {
@@ -119,6 +127,11 @@ export default {
       this.locale = require(`@fullcalendar/core/locales/${lng}`)
     },
 
+    /**
+     * Loads & preps fc events from `start` to `end` for all defined feeds.
+     * @param {Moment} start Start date
+     * @param {Moment} end End date
+     */
     loadEvents (start, end) {
       if (!start || !end) {
         return
@@ -169,6 +182,10 @@ export default {
       })
     },
 
+    /**
+     * Based on event type, perform some action.
+     * @param {Event} event Fullcalendar event object
+     */
     handleEventClick ({ event: { extendedProps: { recordID, pageID } } }) {
       if (recordID && pageID) {
         this.$router.push({ name: 'page.record', params: { recordID, pageID } })
