@@ -4,16 +4,6 @@ import lngDetector from 'i18next-browser-languagedetector'
 import VueI18Next from '@panter/vue-i18next'
 import moment from 'moment'
 
-// All Calendar locales we need
-// see https://github.com/fullcalendar/fullcalendar/tree/master/locales for full list
-// @todo test if and how this even works!?
-import 'fullcalendar/dist/locale/de.js'
-import 'fullcalendar/dist/locale/es.js'
-import 'fullcalendar/dist/locale/fr.js'
-import 'fullcalendar/dist/locale/it.js'
-import 'fullcalendar/dist/locale/es-us.js'
-import 'fullcalendar/dist/locale/en-gb.js'
-
 import en from './en'
 
 // Initializes i18n options, registers

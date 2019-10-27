@@ -32,7 +32,7 @@
                              button-variant="outline-secondary"
                              size="sm"
                              name="buttons2"
-                             :options="o.availableViews()">
+                             :options="views">
       </b-form-checkbox-group>
     </b-form-group>
 
@@ -44,7 +44,7 @@
                           button-variant="outline-secondary"
                           size="sm"
                           name="buttons2"
-                          :options="o.availableViews()">
+                          :options="views">
       </b-form-radio-group>
     </b-form-group>
     <div v-for="(feed, index) in o.feeds" :key="index">
@@ -127,6 +127,15 @@ export default {
       modules: 'module/set',
       getModuleByID: 'module/getByID',
     }),
+
+    /**
+     * Generates input-select's calendar view options
+     * @returns {Array}
+     */
+    views () {
+      return this.o.constructor.availableViews()
+        .map(view => ({ value: view, text: this.$t(`block.calendar.view.${view}`) }))
+    },
   },
 
   created () {

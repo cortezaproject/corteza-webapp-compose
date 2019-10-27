@@ -1037,6 +1037,41 @@
   resolved "https://registry.yarnpkg.com/@fortawesome/vue-fontawesome/-/vue-fontawesome-0.1.6.tgz#18a0f4263b90f65180fc927325ba01896276ea04"
   integrity sha512-HAGRbrOuGDwwUmCYdpzR0hhNQ3EE30dOS4JiJKcoZ+S4M210CxyU0OXCgzIg3HzK/23rlpHbV8zi9PDDZDnuIw==
 
+"@fullcalendar/bootstrap@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/bootstrap/-/bootstrap-4.3.0.tgz#c989968f92c4ec26a0ff7dfc35b186aa38978ba1"
+  integrity sha512-Ue0Bm2m765jY2LKRsD7ZyoeYNJeeyXxyzSeMdYY4AHFZTevTlcxv1T7ZYPRDBhseewLwiFHP8e0Okfdiji+BCg==
+
+"@fullcalendar/core@^4.3.1", "@fullcalendar/core@~4.3.0":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/core/-/core-4.3.1.tgz#a061c6d2e998d4155439dbc8aefdfe01cdf648d8"
+  integrity sha512-Eh+p/wpMkWGu26f8NpfQK9ecQMoZxX/aopv+0+4/CH+Ip0paP6iEc40JYgTz7RFl0bFqV1dvwyGyUZ4+9ZeySA==
+
+"@fullcalendar/daygrid@^4.3.0", "@fullcalendar/daygrid@~4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/daygrid/-/daygrid-4.3.0.tgz#1b4ab9fdc238dba77921cb7c5bd2d813c834e905"
+  integrity sha512-OrGaRIGbELESOXOCXtoQVY4cOxnxmN7OrjDGbMoVITdoXWuIZ6sFNO84WcBQoRaIbkmqVM0SAU2MENwy+eEwqQ==
+
+"@fullcalendar/list@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/list/-/list-4.3.0.tgz#b2523e54db0fd4cd44f7e93d72353d649c529dd7"
+  integrity sha512-Al+XaKynC4RsJpXyWOWJgrVQXFOSC+fg8DI4HGAt/mrrwazZ1L0pTQwCLeU8auZp53VFazCiNxV+jkAbuDdbDQ==
+
+"@fullcalendar/timegrid@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/timegrid/-/timegrid-4.3.0.tgz#bf003499319e5e66135bb7b8d8ed274b1a62ca91"
+  integrity sha512-9JCSZbzw2Hi+X893l5X9ViZaWjxh+sDy59o6nKx0gYKwSfs/vKpmk73GBQfKyUv8orkjpnTdPFfeLDZqlzBP4Q==
+  dependencies:
+    "@fullcalendar/daygrid" "~4.3.0"
+
+"@fullcalendar/vue@^4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/vue/-/vue-4.3.1.tgz#7a2fab995c46aefb27394eadc24afb23d56edf42"
+  integrity sha512-yrQfYJErh/K5+Ud0rsUjMHxZz6iWuYcJvpE9QgjfQOdzUhN4CKjrqO8ivNuawGD3+mQSV4jPlJ+HJ5Qy/nfSYA==
+  dependencies:
+    "@fullcalendar/core" "~4.3.0"
+    fast-deep-equal "^2.0.1"
+
 "@hapi/address@2.x.x":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.0.0.tgz#9f05469c88cb2fd3dcd624776b54ee95c312126a"
@@ -3115,13 +3150,6 @@ babel-plugin-transform-remove-undefined@^0.5.0:
   dependencies:
     babel-helper-evaluate-path "^0.5.0"
 
-babel-plugin-transform-runtime@^6.23.0:
-  version "6.23.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-runtime/-/babel-plugin-transform-runtime-6.23.0.tgz#88490d446502ea9b8e7efb0fe09ec4d99479b1ee"
-  integrity sha1-iEkNRGUC6puOfvsP4J7E2ZR5se4=
-  dependencies:
-    babel-runtime "^6.22.0"
-
 babel-plugin-transform-simplify-comparison-operators@^6.9.4:
   version "6.9.4"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-simplify-comparison-operators/-/babel-plugin-transform-simplify-comparison-operators-6.9.4.tgz#f62afe096cab0e1f68a2d753fdf283888471ceb9"
@@ -3179,7 +3207,7 @@ babel-preset-vue@^2.0.2:
     babel-plugin-syntax-jsx "^6.18.0"
     babel-plugin-transform-vue-jsx "^3.5.0"
 
-babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
+babel-runtime@^6.18.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
@@ -6719,11 +6747,6 @@ fstream@^1.0.0, fstream@^1.0.12:
     mkdirp ">=0.5 0"
     rimraf "2"
 
-fullcalendar@^3.4.0:
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/fullcalendar/-/fullcalendar-3.10.0.tgz#cc5e87d518fd6550e142816a31dd191664847919"
-  integrity sha512-0OtsHhmdYhtFmQwXzyo8VqHzYgamg+zVOoytv5N13gI+iF6CGjevpCi/yBaQs0O4wY3OAp8I688IxdNYe0iAvw==
-
 function-bind@^1.0.2, function-bind@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
@@ -8780,7 +8803,7 @@ lodash.debounce@^4.0.8:
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
 
-lodash.defaultsdeep@^4.6.0, lodash.defaultsdeep@^4.6.1:
+lodash.defaultsdeep@^4.6.1:
   version "4.6.1"
   resolved "https://registry.yarnpkg.com/lodash.defaultsdeep/-/lodash.defaultsdeep-4.6.1.tgz#512e9bd721d272d94e3d3a63653fa17516741ca6"
   integrity sha512-3j8wdDzYuWO3lM3Reg03MuQR957t287Rpcxp1njpEa8oDrikb+FwGdW3n+FELh/A6qib6yPit0j/pv9G/yeAqA==
@@ -14381,15 +14404,6 @@ vue-events@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/vue-events/-/vue-events-3.1.0.tgz#8e23121c345b4ff32ee054f9795995f3e344b27d"
   integrity sha512-JoE6ZlIEFdpj/vE7oW6T1T3Vz2h0Zxc4XEyz92L2tiRVc1TZ0u/nY1s6ZrnpHKoVxeEU0ouAp/FMxTKI3JBpvA==
-
-vue-full-calendar@^2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/vue-full-calendar/-/vue-full-calendar-2.7.0.tgz#1963d6612b5459633e30763e7bdf1d6acc304883"
-  integrity sha512-H6qrox4UwHXdIMuKeb9CjtbZFHYmL8AMU+DFtLbS4/qW3mqktNcKESqkduQfeu8+xw1szdatJsXLrBt3zbqZzA==
-  dependencies:
-    babel-plugin-transform-runtime "^6.23.0"
-    fullcalendar "^3.4.0"
-    lodash.defaultsdeep "^4.6.0"
 
 vue-functional-data-merge@^3.1.0:
   version "3.1.0"
