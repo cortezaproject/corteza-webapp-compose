@@ -65,9 +65,9 @@ export default {
     },
   },
 
-  data () {
-    return {
-      textVariants: [
+  computed: {
+    textVariants () {
+      return [
         { value: 'primary', text: this.$t('block.general.style.default') },
         { value: 'secondary', text: this.$t('block.general.style.secondary') },
         { value: 'white', text: this.$t('block.general.style.white') },
@@ -76,16 +76,17 @@ export default {
         { value: 'success', text: this.$t('block.general.style.success') },
         { value: 'warning', text: this.$t('block.general.style.warning') },
         { value: 'danger', text: this.$t('block.general.style.danger') },
-      ],
-      bgVariants: [
+      ]
+    },
+
+    bgVariants () {
+      return [
         { value: 'white', text: this.$t('block.general.style.whiteBg') },
         { value: 'light', text: this.$t('block.general.style.lightBg') },
         { value: 'dark', text: this.$t('block.general.style.darkBg') },
-      ],
-    }
-  },
+      ]
+    },
 
-  computed: {
     borderStyle () {
       return this.block.style.variants.headerText
     },
