@@ -12,21 +12,19 @@
                :items="rows"
                class="field-table">
 
-        <template slot="HEAD[selected]">
+        <template v-slot:head(selected)="data">
           <b-form-checkbox class="pr-0"
                            :checked="selectAll"
                            @change="onSelectAll" />
         </template>
 
-        <template slot="[selected]"
-                  slot-scope="data">
+        <template v-slot:cell(selected)="data">
 
           <b-form-checkbox class="pr-0"
                            v-model="data.item.selected" />
         </template>
 
-        <template slot="[moduleField]"
-                  slot-scope="data">
+        <template v-slot:cell(moduleField)="data">
 
           <b-form-select v-model="data.item.moduleField"
                          :options="moduleFields">
