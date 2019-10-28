@@ -1,24 +1,34 @@
 kind: pipeline
-name: Build & Pack
+name: "Test & Build"
+type: docker
 
 steps:
-  - name: deps & test
+  - name: Dependencies
     image: cortezaproject/corteza-webapp-builder
-    commands: [ "yarn install", "yarn lint", "yarn test:unit" ]
+    commands: [ "yarn install" ]
 
-  - name: build
+  - name: Lint
     image: cortezaproject/corteza-webapp-builder
-    commands: [ "yarn build --modern" ]
+    commands: [ "yarn lint" ]
+
+  - name: Test
+    image: cortezaproject/corteza-webapp-builder
+    commands: [ "yarn test:unit" ]
+
+  - name: Build
+    image: cortezaproject/corteza-webapp-builder
+    commands: [ "yarn build" ]
+
+  - name: Pack
     when: { ref: [ "refs/heads/master", "refs/heads/beta", "refs/heads/feature-*", "refs/tags/20??.*.*" ] }
-
-  - name: pack
     image: cortezaproject/corteza-webapp-builder
     volumes: [ { name: webapp-build, path: /var/build} ]
-    # produces something like: "corteza-webapp-compose-master.tar.bz2 "
     commands:  [ "tar -cjf /var/build/$DRONE_REPO_NAME-${DRONE_TAG=${DRONE_BRANCH}}.tar.bz2 -C dist/ ." ]
 
-  - name: trigger
+  - name: Trigger build merge
+    when: { ref: [ "refs/heads/master", "refs/heads/beta", "refs/heads/feature-*", "refs/tags/20??.*.*" ] }
     image: plugins/downstream
+    commands: []
     settings:
       fork: true
       server: https://drone.crust.tech
@@ -26,9 +36,7 @@ steps:
       params: [ "APP_VERSION=${DRONE_TAG=${DRONE_BRANCH}}" ]
       repositories:
         # Dynamically constructs Drone repo name that will be notified
-        #  - namespace (cortezaproject/crusttech),
-        #  - removing suffix (admin) from repo name (corteza-webapp..., crust-webapp...)
-        - "${DRONE_REPO_NAMESPACE}/${DRONE_REPO_NAME%%-compose}"
+        - "${DRONE_REPO_NAMESPACE}/${DRONE_REPO_NAME%%-compose}@${DRONE_BRANCH}"
 
 volumes:
   - name: webapp-build
