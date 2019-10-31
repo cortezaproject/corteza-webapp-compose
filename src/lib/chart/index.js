@@ -156,6 +156,11 @@ export const makeDataLabel = ({
   relativePrecision = 2,
   suffix = '',
 }) => {
+  // If time dimension is provided, value is represented with a { y, t } object
+  if (typeof value === 'object') {
+    value = value.y || 0
+  }
+
   if (relativeValue && hasRelativeDisplay(dataset)) {
     // get relative value
     const total = dataset.data.reduce((acc, cur) => acc + cur, 0)

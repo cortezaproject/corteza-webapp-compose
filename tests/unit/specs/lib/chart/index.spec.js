@@ -38,5 +38,14 @@ describe('lib/chart/index.js', () => {
       expect(test).to.not.include(value)
       expect(test).to.include('%')
     })
+
+    it('handle values with time dimensions', () => {
+      dataset.type = 'line'
+      const test = makeDataLabel({
+        value: { y: 10, t: new Date() },
+      })
+
+      expect(test).to.include('10')
+    })
   })
 })
