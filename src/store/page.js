@@ -45,7 +45,7 @@ export default function (ComposeAPI) {
         }
 
         commit(types.pending)
-        return ComposeAPI.pageList({ namespaceID }).then(({ set, filter }) => {
+        return ComposeAPI.pageList({ namespaceID, sort: 'weight ASC' }).then(({ set, filter }) => {
           if (set && set.length > 0) {
             commit(types.updateSet, set.map(p => new Page(p)))
           }
