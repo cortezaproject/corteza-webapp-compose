@@ -47,7 +47,7 @@ export default {
 
   data () {
     return {
-      showNSSideBar: !window.SHOW_NAMESPACE_PANEL,
+      showNSSideBar: !!window.SHOW_NAMESPACE_PANEL,
       loaded: false,
       error: '',
       alerts: [], // { variant: 'info', message: 'foo' },
