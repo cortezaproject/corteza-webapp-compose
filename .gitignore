@@ -12,3 +12,6 @@ dist
 *.njsproj
 *.sln
 *.sw*
+
+.nyc_output
+coverage
