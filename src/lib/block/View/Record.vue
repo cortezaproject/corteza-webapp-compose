@@ -39,9 +39,16 @@ export default {
     },
   },
 
-  created () {
-    this.fetchUsers(this.fields, [this.record])
+  watch: {
+    record: {
+      handler: function () {
+        this.fetchUsers(this.fields, [this.record])
+      },
+      deep: true,
+      immediate: true,
+    },
   },
+
 }
 </script>
 <style scoped lang="scss">
