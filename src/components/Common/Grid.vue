@@ -1,6 +1,6 @@
 <template>
   <div v-if="grid.length" class="w-100 pb-5 vh-100 overflow-auto flex-grow-1">
-    <grid-layout :layout="grid"
+    <grid-layout :layout.sync="layout"
                  @layout-updated="handleLayoutUpdate"
                  :col-num="12"
                  :row-height="rowHeight"
@@ -11,7 +11,7 @@
                  :cols="cols"
                  :margin="[20, 20]"
                  class="mb-5"
-                 :responsive="true">
+                 :responsive="!editable">
       <grid-item v-for="(item, index) in grid"
                  :key="item.i"
                  class="shadow rounded-lg"
@@ -83,6 +83,19 @@ export default {
     }
   },
 
+  computed: {
+    layout: {
+      get () {
+        return this.grid
+      },
+
+      set (layout) {
+        this.grid = layout
+        this.handleLayoutUpdate(layout)
+      },
+    },
+  },
+
   watch: {
     blocks: {
       handler (blocks) {
@@ -121,8 +134,8 @@ export default {
       })
     },
 
-    handleLayoutUpdate (grid) {
-      this.$emit('update:blocks', grid.map(
+    handleLayoutUpdate (layout) {
+      this.$emit('update:blocks', layout.map(
         ({ x, y, w, h, i }) => new Block({ ...this.blocks[i], xywh: [ x, y, w, h ] })
       ))
     },
