@@ -182,16 +182,147 @@ describe('lib/block/View/Calendar', () => {
       wrap.vm.loadEvents(start, end)
       await fp()
     })
+
+    it('events with multi-field values', async () => {
+      const tests = [
+        {
+          name: 'make n events with start only',
+          feed: { moduleID: '000', startField: 'start', titleField: 'title', allDay: false },
+          records: [ { recordID: '100', values: { start: ['d1', 'd2'], end: undefined } } ],
+          expect: function (c) {
+            const evts = c.props().events
+            expect(evts, this.name).to.have.length(2)
+
+            expect(evts[0], this.name).to.include({ groupId: '100' })
+            expect(evts[0], this.name).to.include({ start: 'd1' })
+            expect(evts[0], this.name).to.include({ end: null })
+
+            expect(evts[1], this.name).to.include({ groupId: '100' })
+            expect(evts[1], this.name).to.include({ start: 'd2' })
+            expect(evts[1], this.name).to.include({ end: null })
+          },
+        },
+        {
+          name: 'no events, since no start fields',
+          feed: { moduleID: '000', endField: 'end', titleField: 'title', allDay: false },
+          records: [ { recordID: '100', values: { start: undefined, end: ['d1', 'd2'] } } ],
+          expect: function (c) {
+            expect(c.props().events, this.name).to.have.length(0)
+          },
+        },
+        {
+          name: 'match available start fields with end fields',
+          feed: { moduleID: '000', startField: 'start', endField: 'end', titleField: 'title', allDay: false },
+          records: [ { recordID: '100', values: { start: ['d1', 'd2'], end: ['d3'] } } ],
+          expect: function (c) {
+            const evts = c.props().events
+            expect(evts, this.name).to.have.length(2)
+
+            expect(evts[0], this.name).to.include({ groupId: '100' })
+            expect(evts[0], this.name).to.include({ start: 'd1' })
+            expect(evts[0], this.name).to.include({ end: 'd3' })
+
+            expect(evts[1], this.name).to.include({ groupId: '100' })
+            expect(evts[1], this.name).to.include({ start: 'd2' })
+            expect(evts[1], this.name).to.include({ end: null })
+          },
+        },
+        {
+          name: 'allow system values',
+          feed: { moduleID: '000', startField: 'createdAt', endField: 'deletedAt', titleField: 'title', allDay: false },
+          records: [ { recordID: '100', createdAt: '2000-01-01T00:00:00Z', deletedAt: '2001-01-01T00:00:00Z', values: { start: undefined, end: undefined } } ],
+          expect: function (c) {
+            const evts = c.props().events
+            expect(evts, this.name).to.have.length(1)
+
+            expect(evts[0], this.name).to.include({ start: '2000-01-01T00:00:00Z' })
+            expect(evts[0], this.name).to.include({ end: '2001-01-01T00:00:00Z' })
+          },
+        },
+        {
+          name: 'allow system values - no end',
+          feed: { moduleID: '000', startField: 'createdAt', endField: 'deletedAt', titleField: 'title', allDay: false },
+          records: [ { recordID: '100', createdAt: '2000-01-01T00:00:00Z', values: { start: undefined, end: undefined } } ],
+          expect: function (c) {
+            const evts = c.props().events
+            expect(evts, this.name).to.have.length(1)
+
+            expect(evts[0], this.name).to.include({ start: '2000-01-01T00:00:00Z' })
+            expect(evts[0], this.name).to.include({ end: null })
+          },
+        },
+        {
+          name: 'allow system values - no start',
+          feed: { moduleID: '000', startField: 'createdAt', endField: 'deletedAt', titleField: 'title', allDay: false },
+          records: [ { recordID: '100', values: { start: undefined, end: undefined } } ],
+          expect: function (c) {
+            expect(c.props().events, this.name).to.have.length(0)
+          },
+        },
+        {
+          name: 'allow mix system & multi field values',
+          feed: { moduleID: '000', startField: 'createdAt', endField: 'end', titleField: 'title', allDay: false },
+          records: [ { recordID: '100', createdAt: '2000-01-01T00:00:00Z', values: { start: undefined, end: ['d1', 'd2'] } } ],
+          expect: function (c) {
+            const evts = c.props().events
+            expect(evts, this.name).to.have.length(1)
+
+            expect(evts[0], this.name).to.include({ start: '2000-01-01T00:00:00Z' })
+            expect(evts[0], this.name).to.include({ end: 'd1' })
+          },
+        },
+      ]
+
+      const start = moment()
+      const end = moment()
+      for (const t of tests) {
+        sinon.stub(Calendar.methods, 'findModuleByID').resolves(new Module({ moduleID: '000', fields: [{ name: 'start', kind:'DateTime', isMulti: true }, { name: 'end', kind:'DateTime', isMulti: true }] }))
+        $ComposeAPI.recordList = sinon.stub().resolves({ set: t.records })
+        propsData.options.feeds = [ t.feed ]
+        const wrap = mountCalendar()
+        sinon.stub(wrap.vm, 'pages').get(() => ([]))
+        wrap.vm.loadEvents(start, end)
+
+        await fp()
+        const c = wrap.find(FullCalendar)
+        t.expect(c, t)
+        Calendar.methods.findModuleByID.restore()
+      }
+    })
   })
 
-  describe('event handling', () => {
-    it('handle event click', () => {
+  it('handle event click', () => {
+    const tests = [
+      {
+        name: 'valid event - redirect',
+        event: { extendedProps: { recordID: '000', pageID: '200' } },
+        expect: function ({ $router }) {
+          sinon.assert.calledOnce($router.push)
+        },
+      },
+      {
+        name: 'malformed event - no recordID - ignore',
+        event: { extendedProps: { pageID: '200' } },
+        expect: function ({ $router }) {
+          sinon.assert.notCalled($router.push)
+        },
+      },
+      {
+        name: 'malformed event - no pageID - ignore',
+        event: { extendedProps: { recordID: '000' } },
+        expect: function ({ $router }) {
+          sinon.assert.notCalled($router.push)
+        },
+      },
+    ]
+
+    for (const t of tests) {
       const $router = {
         push: sinon.fake()
       }
       const wrap = mountCalendar({ mocks: { $router, $ComposeAPI } })
-      wrap.vm.handleEventClick({ event: { extendedProps: { recordID: '000', pageID: '200' } } })
-      sinon.assert.calledOnce($router.push)
-    })
+      wrap.vm.handleEventClick({ event: t.event })
+      t.expect({ $router })
+    }
   })
 })

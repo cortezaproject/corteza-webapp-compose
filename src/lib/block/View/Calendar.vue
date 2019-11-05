@@ -17,6 +17,7 @@ import { Calendar, cortezaTheme } from 'corteza-webapp-compose/src/lib/block/Cal
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
+import { removeDup } from 'corteza-webapp-compose/src/common/scripts'
 
 export default {
   components: {
@@ -148,7 +149,7 @@ export default {
       this.options.feeds.forEach(feed => {
         this.findModuleByID({ namespaceID: this.namespace.namespaceID, moduleID: feed.moduleID }).then((module) => {
           // We will need this for redirecting user to record page
-          const pageID = (this.pages.find(p => p.moduleID === module.moduleID) || {}).pageID
+          const page = (this.pages.find(p => p.moduleID === module.moduleID) || {})
 
           // Build params from feed configutation
           const params = {
@@ -158,26 +159,63 @@ export default {
           }
 
           this.$ComposeAPI.recordList(params).then(({ set }) => {
-            this.events.push(...set
+            removeDup(set, 'recordID')
               .map(r => new Record(module, r))
               .filter(r => !!r.values[feed.startField] || !!r[feed.startField])
-              .map(r => {
-                return {
-                  id: r.recordID,
-                  title: r.values[feed.titleField] || r.recordID,
-                  start: r.values[feed.startField] || r[feed.startField],
-                  end: feed.endField ? (r.values[feed.endField] || r[feed.endField]) : null,
-                  allDay: feed.allDay,
-                  classNames: [ 'event', 'event-record' ],
-
-                  extendedProps: {
-                    recordID: r.recordID,
-                    pageID,
-                  },
-                }
+              .forEach(r => {
+                // Expand recort into FC events
+                this.expandRecord(r, feed, page, this.events)
               })
-            )
           }).catch(this.defaultErrorHandler(this.$t('notification.record.listLoadFailed')))
+        })
+      })
+    },
+
+    /**
+     * Method expands the given record in a (set) of FC event objects.
+     * Handles basic recurrence -- multiple date fields.
+     * @param {Record} record Record to expand
+     * @param {Object} feed Feed, this record belongs to
+     * @param {Object} page Page, this record belongs to
+     * @param {Array} events Array to hold the generated events
+     */
+    expandRecord (record, feed, page, events) {
+      let starts, ends
+
+      // Determine available start values
+      const sf = record.module.fields.find(({ name }) => name === feed.startField)
+      if (!sf) {
+        starts = [ record[feed.startField] ]
+      } else {
+        starts = sf.isMulti ? record.values[feed.startField] : [ record.values[feed.startField] || null ]
+      }
+
+      // Determine available end values
+      const ef = record.module.fields.find(({ name }) => name === feed.endField)
+      if (!ef) {
+        ends = [ record[feed.endField] || null ]
+      } else {
+        ends = ends = ef.isMulti ? record.values[feed.endField] : [ record.values[feed.endField] || null ]
+      }
+
+      // Make sure ends is atleast as long as starts, to avoid length checks
+      ends.push(...(new Array(Math.max(starts.length - ends.length, 0)).fill(null)))
+
+      starts.forEach((start, i) => {
+        events.push({
+          // So FC knows how to group these expanded events
+          groupId: record.recordID,
+          id: record.recordID,
+          title: record.values[feed.titleField] || record.recordID,
+          start: start,
+          end: ends[i],
+          allDay: feed.allDay,
+          classNames: [ 'event', 'event-record' ],
+
+          extendedProps: {
+            recordID: record.recordID,
+            pageID: page.pageID,
+          },
         })
       })
     },
