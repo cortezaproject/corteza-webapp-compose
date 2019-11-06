@@ -3,6 +3,7 @@
     <multi v-if="field.isMulti" :value.sync="value" :singleInput="field.options.selectType !== 'each'" :removable="field.options.selectType !== 'multiple'">
       <template v-slot:single>
         <vue-select v-if="field.options.selectType === 'default'"
+                    :filterable="false"
                     :options="options"
                     :disabled="!module"
                     @search="search"
@@ -13,6 +14,7 @@
                     ref="singleSelect">
         </vue-select>
         <vue-select v-else-if="field.options.selectType === 'multiple'"
+                    :filterable="false"
                     :options="options"
                     :disabled="!module"
                     @search="search"
@@ -25,6 +27,7 @@
       </template>
       <template v-slot:default="ctx">
         <vue-select v-if="field.options.selectType === 'each'"
+                    :filterable="false"
                     :options="options"
                     :disabled="!module"
                     @search="search"
@@ -39,6 +42,7 @@
     </multi>
 
     <vue-select v-else
+                :filterable="false"
                 :options="options"
                 :disabled="!module"
                 @search="search"
