@@ -14,7 +14,7 @@ export default {
     message: {
       noPages: 'It seems this namespace has no visible pages yet.',
       startBuilding: 'Follow these steps to start building',
-      notifyAdministrator: 'Notify your system administrator',
+      notifyAdministrator: 'Notify your system administrator.',
     },
     step: {
       optional: 'This step is optional!',

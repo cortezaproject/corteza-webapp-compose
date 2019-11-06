@@ -14,7 +14,7 @@
           {{ $t('onboarding.message.notifyAdministrator') }}
         </span>
       </p>
-      <b-container v-if="namespace.canManageNamespace" fluid class="align-items-center border-top steps">
+      <b-container v-if="namespace.canManageNamespace" fluid class="align-items-center p-0 border-top steps">
         <b-row align-v="center" class="text-center justify-content-between">
           <b-col>
             <circle-step stepNumber="1" :done="hasModules">
@@ -143,7 +143,7 @@ export default {
     },
 
     hasPages () {
-      return !!this.pages.filter(p => p.visible).length
+      return this.pages.filter(p => p.visible).length > 0
     },
   },
 
@@ -204,7 +204,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .steps {
-  padding: 0;
   padding-top: 20vh;
 }
 </style>
