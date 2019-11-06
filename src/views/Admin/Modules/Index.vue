@@ -122,7 +122,7 @@ export default {
     const { namespaceID } = this.namespace
 
     return {
-      newModule: new Module({ namespaceID, fields: [new Field({ fieldID: '0', name: 'sample', kind: 'String' })] }),
+      newModule: new Module({ namespaceID, fields: [new Field({ fieldID: '0', name: 'Sample', kind: 'String' })] }),
     }
   },
 
@@ -169,7 +169,7 @@ export default {
       const { namespaceID } = this.namespace
       const payload = {
         namespaceID,
-        title: `${this.$t('module.recordPage')} "${module.name || moduleID}"`,
+        title: `${this.$t('module.forModule.recordPage')} "${module.name || moduleID}"`,
         moduleID,
         blocks: [],
       }

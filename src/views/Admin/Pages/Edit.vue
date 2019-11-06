@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
@@ -85,8 +86,8 @@ export default {
 
   created () {
     const { namespaceID } = this.namespace
-    this.$ComposeAPI.pageRead({ namespaceID, pageID: this.pageID }).then((page) => {
-      if (page.moduleID !== '0') {
+    this.findPageByID({ namespaceID, pageID: this.pageID }).then((page) => {
+      if (page.isRecordPage()) {
         // Do not allow to edit record pages, move to builder
         this.$router.replace({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
       }
@@ -95,9 +96,14 @@ export default {
     }).catch(this.defaultErrorHandler(this.$t('notification.page.loadFailed')))
   },
   methods: {
+    ...mapActions({
+      findPageByID: 'page/findByID',
+      updatePage: 'page/update',
+      deletePage: 'page/delete',
+    }),
     handleSave ({ closeOnSuccess = false } = {}) {
       const { namespaceID } = this.namespace
-      this.$ComposeAPI.pageUpdate({ namespaceID, ...this.page }).then((page) => {
+      this.updatePage({ namespaceID, ...this.page }).then((page) => {
         this.page = new Page(page)
         this.raiseSuccessAlert(this.$t('notification.page.saved'))
         if (closeOnSuccess) {
@@ -107,7 +113,7 @@ export default {
     },
 
     handleDeletePage () {
-      this.$ComposeAPI.pageDelete(this.page).then(() => {
+      this.deletePage(this.page).then(() => {
         this.$router.push({ name: 'admin.pages' })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.deleteFailed')))
     },
