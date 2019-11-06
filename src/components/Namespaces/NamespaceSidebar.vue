@@ -83,7 +83,16 @@ export default {
           rtr.regular.push(ns)
         }
       })
-      return rtr
+
+      // DSC order
+      const sorter = (a, b) => {
+        return a.name < b.name ? -1 : 1
+      }
+
+      return {
+        pinned: rtr.pinned.sort(sorter),
+        regular: rtr.regular.sort(sorter),
+      }
     },
   },
 
