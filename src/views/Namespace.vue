@@ -10,10 +10,12 @@
                @dismiss-count-down="a.countdown=$event"
                @dismissed="alerts.splice(i, 0)">{{ a.message }}</b-alert>
     </div>
-    <namespace-sidebar :namespaces="enabledNamespaces"
-                       :namespace="namespace"
-                       class="d-block"
-                        v-if="showNSSideBar && enabledNamespaces.length > 1"></namespace-sidebar>
+    <div class="d-none d-md-block">
+      <namespace-sidebar :namespaces="enabledNamespaces"
+                         v-if="showNSSideBar && enabledNamespaces.length > 1"
+                         :namespace="namespace" />
+
+    </div>
     <router-view v-if="loaded && namespace"
                  :namespace="namespace" />
     <div class="loader" v-else></div>

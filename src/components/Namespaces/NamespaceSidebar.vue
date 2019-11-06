@@ -2,8 +2,7 @@
   <sidebar position="left"
            name="ns-sidebar"
            class="bg-white overflow-auto"
-           disable-toggle
-           :visible="true">
+           :visible.sync="visible">
 
     <b-list-group-item class="p-2 sticky-top"
                        slot="header">
@@ -65,6 +64,7 @@ export default {
 
   data () {
     return {
+      visible: false,
       filter: null,
       pinned: {},
     }
