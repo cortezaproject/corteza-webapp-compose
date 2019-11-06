@@ -80,7 +80,9 @@ export default {
         h = 'reminderUpdate'
       }
       this.$SystemAPI[h](r).then(r => {
-        this.reminders.push(new Reminder(r))
+        if (this.$auth.user.userID === r.assignedTo) {
+          this.reminders.push(new Reminder(r))
+        }
       })
 
       this.onCancel()
@@ -100,8 +102,8 @@ export default {
       this.$SystemAPI.reminderList({
         assignedTo: this.$auth.user.userID,
         perPage: 0,
-      }).then(({ set = [] }) => {
-        this.reminders = set.map(r => new Reminder(r))
+      }).then(({ set: reminders = [] }) => {
+        this.reminders = reminders.map(r => new Reminder(r))
       })
     },
   },
