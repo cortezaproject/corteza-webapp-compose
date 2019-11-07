@@ -254,6 +254,11 @@ export default {
   }
 }
 
+// Overflow caused mobile browsers to mess up with side panel rendering
+.centering-wrap.inactive-area {
+  overflow-x: hidden;
+}
+
 .error {
   font-size: 24px;
   background-color: $white;
