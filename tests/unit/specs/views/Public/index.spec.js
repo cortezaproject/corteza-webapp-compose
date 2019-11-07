@@ -20,8 +20,19 @@ describe('views/Public/Index.vue', () => {
   afterEach(() => {
     sinon.restore()
   })
-
-  let propsData
+  
+  let propsData, wrap
+  const actions = {
+    module: {
+      create: sinon.stub().returns(new Module())
+    },
+    chart: {
+      create: sinon.stub().returns(new Chart())
+    },
+    page: {
+      create: sinon.stub().returns(new Page())
+    },
+  }
   let store = new Vuex.Store({
     modules: {
       page: {
@@ -131,7 +142,7 @@ describe('views/Public/Index.vue', () => {
           }
         }
       })
-      const wrap = mountIndex()
+      wrap = mountIndex()
       
       expect(wrap.vm.hasModules).to.be.true
       expect(wrap.vm.hasCharts).to.be.false
@@ -173,7 +184,7 @@ describe('views/Public/Index.vue', () => {
           }
         }
       })
-      const wrap = mountIndex()
+      wrap = mountIndex()
       
       expect(wrap.vm.hasModules).to.be.true
       expect(wrap.vm.hasCharts).to.be.true
@@ -216,11 +227,78 @@ describe('views/Public/Index.vue', () => {
           }
         }
       })
-      const wrap = mountIndex()
+      wrap = mountIndex()
       
       expect(wrap.vm.hasModules).to.be.true
       expect(wrap.vm.hasCharts).to.be.true
       expect(wrap.vm.hasPages).to.be.true
+    })
+    
+    
+    it('will make module', () => {
+  
+      store = new Vuex.Store({
+        modules: {
+          page: {
+            namespaced: true,
+            state: {
+              set: [],
+            },
+            getters: {
+              set: () => {
+                return []
+              },
+              getByID: () => {
+                return () => undefined
+              }
+            },
+            actions: actions.page,
+          },
+          module: {
+            namespaced: true,
+            state: {
+              set: [],
+            },
+            getters: {
+              set: () => {
+                return []
+              },
+            },
+            actions: actions.module,
+          },
+          chart: {
+            namespaced: true,
+            state: {
+              set: [],
+            },
+            getters: {
+              set: () => {
+                return []
+              },
+            },
+            actions: actions.chart,
+          }
+        }
+      })
+
+      wrap = mountIndex()
+      
+      wrap.vm.createNewModule()
+      sinon.assert.calledOnce(actions.module.create)
+    })
+    
+    it('will make chart', () => {
+      wrap = mountIndex()
+    
+      wrap.vm.createNewChart()
+      sinon.assert.calledOnce(actions.chart.create)
+    })
+
+    it('will build page', () => {
+      wrap = mountIndex()
+    
+      wrap.vm.createNewPage()
+      sinon.assert.calledOnce(actions.page.create)
     })
   })
 })

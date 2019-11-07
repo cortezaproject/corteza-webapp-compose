@@ -192,7 +192,7 @@ export default {
 
     createNewPage () {
       const { namespaceID } = this.namespace
-      const title = 'Test Page'
+      const title = 'Demo Page'
       const blocks = []
       const newPage = new Page({ namespaceID, title, blocks })
       this.createPage(newPage).then((page) => {
