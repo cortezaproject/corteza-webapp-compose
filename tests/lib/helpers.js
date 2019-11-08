@@ -21,6 +21,7 @@ export const shallowMount = (component, { mocks = {}, stubs = [], ...options } =
     mixins: [ alertMixin ],
     directives: {
       'b-tooltip': () => {},
+      'b-popover': () => {},
     },
     mocks: {
       $t: (e) => e,

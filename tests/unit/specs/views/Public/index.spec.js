@@ -20,8 +20,8 @@ describe('views/Public/Index.vue', () => {
   afterEach(() => {
     sinon.restore()
   })
-  
-  let propsData, wrap
+
+  let propsData, wrap, $router
   const actions = {
     module: {
       create: sinon.stub().returns(new Module())
@@ -75,6 +75,10 @@ describe('views/Public/Index.vue', () => {
   })
 
   beforeEach(() => {
+    $router = {
+      push: sinon.stub(),
+    }
+
     propsData = {
       namespace: new Namespace({ namespaceID: '000' }),
       pageID: '',
@@ -82,6 +86,7 @@ describe('views/Public/Index.vue', () => {
   })
 
   const mountIndex = (opt) => shallowMount(Index, {
+    mocks: { $router },
     store,
     localVue,
     propsData,
