@@ -49,7 +49,7 @@ export default {
 
   data () {
     return {
-      showNSSideBar: !!window.SHOW_NAMESPACE_PANEL,
+      showNSSideBar: false,
       loaded: false,
       error: '',
       alerts: [], // { variant: 'info', message: 'foo' },
@@ -126,6 +126,8 @@ export default {
 
     this.namespaceLoader()
       .catch(this.errHandler)
+
+    this.loadSettings()
   },
 
   mounted () {
@@ -148,6 +150,14 @@ export default {
   },
 
   methods: {
+    async loadSettings () {
+      this.$ComposeAPI
+        .settingsGet({ key: 'panel.namespace-switcher' })
+        .then(({ value = false }) => {
+          this.showNSSideBar = value
+        })
+    },
+
     async namespaceLoader () {
       return this.$ComposeAPI.namespaceList().then(({ set }) => {
         this.namespaces = set.map(ns => new Namespace(ns))
