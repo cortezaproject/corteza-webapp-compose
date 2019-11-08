@@ -1,12 +1,17 @@
 <template>
   <b-form-group :label="label">
-    <uploader :endpoint="endpoint" @uploaded="appendAttachment" />
+    <uploader :endpoint="endpoint"
+              @uploaded="appendAttachment"
+              :acceptedFiles="$s('Page.Attachments.Mimetypes', ['*/*'])"
+              :maxFilesize="$s('Page.Attachments.MaxSize', 100)"/>
+
     <list-loader kind="record"
                  :set.sync="set"
                  :namespace="namespace"
                  enable-delete
                  enable-order
-                 mode="list"></list-loader>
+                 mode="list"
+                 class="mt-2"></list-loader>
 
     <b-form-text v-if="validate && errors">
       <div v-for="(error, i) in errors" :key="i">{{ error }}</div>

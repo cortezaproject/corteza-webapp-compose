@@ -1,12 +1,12 @@
 <template>
   <main class="w-100 flex-grow">
-    <div class="vh-100 overflow-auto flex-grow-1">
+    <div v-if="loaded" class="vh-100 overflow-auto flex-grow-1">
       <h1 class="text-center mt-4">
         {{ $t('namespace.title') }}
         <permissions-button v-if="canGrant" resource="compose:namespace:*" link />
       </h1>
 
-      <b-container v-if="loaded" class="pb-5">
+      <b-container class="pb-5">
         <b-row>
           <div class="col-md-6 col-lg-4 col-12 mt-4" v-for="(n) in namespaces" :key="n.namespaceID">
             <div v-if="n.enabled">
@@ -37,6 +37,11 @@ import NamespaceItem from 'corteza-webapp-compose/src/components/Namespaces/Name
 import { PermissionsModal } from 'corteza-webapp-common/components'
 
 export default {
+  components: {
+    NamespaceItem,
+    PermissionsModal,
+  },
+
   data () {
     return {
       loaded: false,
@@ -62,23 +67,20 @@ export default {
         return Promise.reject(error)
       }
 
-      this.$ComposeAPI.namespaceList().then(({ set }) => {
-        this.namespaces = set
-        this.$ComposeAPI.permissionsEffective().then((p) => {
-          this.canCreateNamespace = p.filter(per => per.operation === 'namespace.create')[0].allow
-          this.canGrant = p.filter(per => per.operation === 'grant')[0].allow
-          this.loaded = true
-        })
+      this.$Settings.init({ api: this.$ComposeAPI }).then(() => {
+        this.$ComposeAPI.namespaceList().then(({ set }) => {
+          this.namespaces = set
+          this.$ComposeAPI.permissionsEffective().then((p) => {
+            this.canCreateNamespace = p.filter(per => per.operation === 'namespace.create')[0].allow
+            this.canGrant = p.filter(per => per.operation === 'grant')[0].allow
+            this.loaded = true
+          })
+        }).catch(errHandler)
       }).catch(errHandler)
     }).catch((e) => {
       this.$auth.open()
     })
   },
-
-  components: {
-    NamespaceItem,
-    PermissionsModal,
-  }
 }
 </script>
 <style lang="scss" scoped>

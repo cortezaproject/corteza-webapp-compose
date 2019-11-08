@@ -127,8 +127,6 @@ export default {
 
     this.namespaceLoader()
       .catch(this.errHandler)
-
-    this.loadSettings()
   },
 
   mounted () {
@@ -152,12 +150,8 @@ export default {
 
   methods: {
     async loadSettings () {
-      this.$ComposeAPI
-        .settingsCurrent()
-        .then((settings = {}) => {
-          this.showNSSideBar = !!(((settings.UI || {}).NamespaceSwitcher || {}).Enabled)
-          this.nsSbVisible = !!(((settings.UI || {}).NamespaceSwitcher || {}).DefaultOpen)
-        })
+      this.showNSSideBar = !!this.$s('UI.NamespaceSwitcher.Enabled', false)
+      this.nsSbVisible = !!this.$s('UI.NamespaceSwitcher.DefaultOpen', false)
     },
 
     async namespaceLoader () {

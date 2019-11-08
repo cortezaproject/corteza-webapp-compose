@@ -11,12 +11,13 @@
                           :options="modes">
       </b-form-radio-group>
     </b-form-group>
-   <uploader :endpoint="endpoint" @uploaded="appendAttachment" />
+    <uploader :endpoint="endpoint" @uploaded="appendAttachment" />
     <list-loader kind="page"
                  enable-delete
                  :namespace="namespace"
                  :set.sync="options.attachments"
-                 mode="list"></list-loader>
+                 mode="list"
+                 class="mt-2"></list-loader>
   </b-tab>
 </template>
 <script>

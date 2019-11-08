@@ -8,10 +8,11 @@
       </slot>
 
       <uploader class="uploader"
-                accepted-files="application/json,text/csv"
-                :endpoint="endpoint"
                 :label="dzLabel"
-                @uploaded="onUploaded" />
+                :endpoint="endpoint"
+                @uploaded="onUploaded"
+                :acceptedFiles="['application/json', 'text/csv']"
+                :maxFilesize="$s('Record.Attachments.MaxSize' || 100)"/>
 
     </b-form-group>
 

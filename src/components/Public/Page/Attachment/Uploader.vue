@@ -4,7 +4,10 @@
     id="dropzone"
     :use-custom-slot=true
     :include-styling=false
+    @vdropzone-file-added="onFileAdded"
+    @vdropzone-file-added-manually="onFileAdded"
     @vdropzone-success="onSuccess"
+    @vdropzone-error="onError"
     @vdropzone-upload-progress="onUploadProgress"
     :options="dzOptions">
     <div class="w-100 h-100 position-relative bg-light">
@@ -17,8 +20,11 @@
         </span>
       </template>
       <div v-else
-           class="d-flex align-items-center h-100 w-100 p-2 droparea justify-content-center mb-2">{{ label || $t('general.label.dropFiles') }}</div>
+           class="d-flex align-items-center h-100 w-100 p-2 droparea justify-content-center"
+           :class="{ 'bg-danger': error }">
 
+        {{ error || label || $t('general.label.dropFiles') }}
+      </div>
     </div>
   </vue-dropzone>
 </template>
@@ -26,6 +32,7 @@
 import numeral from 'numeral'
 import vueDropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+import { validateFileType } from 'corteza-webapp-common/src/lib/utils'
 
 export default {
 
@@ -39,8 +46,12 @@ export default {
       required: true,
     },
     acceptedFiles: {
-      type: String,
-      default: null,
+      type: Array,
+      default: () => [],
+    },
+    maxFilesize: {
+      type: Number,
+      default: 100,
     },
     label: {
       type: String,
@@ -51,14 +62,19 @@ export default {
   data () {
     return {
       active: null,
+      error: null,
     }
   },
 
   computed: {
+    dropzone () {
+      return (this.$refs.dropzone && this.$refs.dropzone.dropzone) ? this.$refs.dropzone.dropzone : false
+    },
+
     dzOptions () {
       return {
         paramName: 'upload',
-        maxFilesize: 100, // mb
+        maxFilesize: this.maxFilesize, // mb
         url: () => this.baseUrl + this.endpoint,
         thumbnailMethod: 'contain',
         thumbnailWidth: 320,
@@ -69,7 +85,7 @@ export default {
         disablePreview: true,
         uploadMultiple: false,
         parallelUploads: 1,
-        acceptedFiles: this.acceptedFiles,
+        acceptedFiles: null,
         headers: {
           // https://github.com/enyo/dropzone/issues/1154
           'Cache-Control': '',
@@ -78,10 +94,6 @@ export default {
         },
         addedfile (file) {},
       }
-    },
-
-    dropzone () {
-      return (this.$refs.dropzone && this.$refs.dropzone.dropzone) ? this.$refs.dropzone.dropzone : false
     },
 
     baseUrl () {
@@ -102,7 +114,22 @@ export default {
 
     onSuccess (file, { response }) {
       this.active = null
+      this.error = null
       this.$emit('uploaded', response, file)
+    },
+
+    onFileAdded (file) {
+      this.error = null
+
+      // Check if file type is allowed
+      if (!validateFileType(file.name, this.acceptedFiles)) {
+        this.error = this.$t('general.label.fileTypeNotAllowed')
+        this.$refs.dropzone.removeFile(file)
+      }
+    },
+
+    onError (e, message) {
+      this.error = message
     },
 
     onUploadProgress (file, progress, bytesSent) {

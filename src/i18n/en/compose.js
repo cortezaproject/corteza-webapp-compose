@@ -549,6 +549,7 @@ export default {
       back: 'Back',
       backWithoutSave: 'Back (without saving changes)',
       dropFiles: 'Click or drop files here to upload',
+      fileTypeNotAllowed: 'File type not allowed',
       loading: 'Loading',
       uploading: 'Uploading',
       download: 'Download',
