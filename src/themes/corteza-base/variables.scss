@@ -73,3 +73,12 @@ $input-font-size: $font-size-base !default;
 $input-btn-focus-width:        0 !default;
 $input-focus-box-shadow:       none !default;
 $input-focus-border-color:     $primary !default;
+
+/* stylelint-disable */
+// This is used within corteza-webapp-compose/src/lib/block/Calendar/feedLoader/
+// to determine default event colors
+:export {
+  primary: $primary;
+  secondary: $secondary;
+}
+/* stylelint-enable */
