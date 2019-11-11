@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <fieldset class="form-group">
-            <quill-editor v-model="o.body" :options="quillOptions"></quill-editor>
-        </fieldset>
-    </div>
+  <b-tab :title="$t('block.content.label')">
+    <fieldset class="form-group">
+        <quill-editor v-model="o.body" :options="quillOptions"></quill-editor>
+    </fieldset>
+  </b-tab>
 </template>
 <script>
 import base from './base'

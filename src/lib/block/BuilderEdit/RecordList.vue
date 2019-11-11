@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <b-tab :title="$t('block.recordList.label')">
     <fieldset class="form-group">
       <label for="select-module">{{ $t('block.general.module') }}</label>
-       <b-form-select v-model="o.moduleID" required>
+      <b-form-select v-model="o.moduleID" required>
         <option :value="undefined">{{ $t('general.label.none') }}</option>
         <option
           v-for="module in modules"
@@ -28,8 +28,8 @@
     </b-form-group>
     <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.prefilterLabel')">
       <b-form-textarea :value="true"
-                       :placeholder="$t('block.recordList.record.prefilterPlaceholder')"
-                       v-model="o.prefilter"></b-form-textarea>
+                      :placeholder="$t('block.recordList.record.prefilterPlaceholder')"
+                      v-model="o.prefilter"></b-form-textarea>
         <b-form-text>
           <i18next path="block.recordList.record.prefilterFootnote" tag="label">
             <code>${recordID}</code>
@@ -43,8 +43,8 @@
     </b-form-group>
     <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.presortLabel')">
       <b-form-textarea :value="true"
-                       :placeholder="$t('block.recordList.record.presortPlaceholder')"
-                       v-model="o.presort"></b-form-textarea>
+                      :placeholder="$t('block.recordList.record.presortPlaceholder')"
+                      v-model="o.presort"></b-form-textarea>
       <b-form-text>
         {{ $t('block.recordList.record.presortFootnote') }}
       </b-form-text>
@@ -63,7 +63,8 @@
         {{ $t('block.recordList.export.allow') }}
       </b-form-checkbox>
     </b-form-group>
-  </div>
+  </b-tab>
+
 </template>
 <script>
 import { mapGetters } from 'vuex'

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <b-tab :title="$t('block.recordOrganizer.label')">
     <b-form-group>
       <label>{{ $t('block.general.module') }}</label>
       <b-form-select v-model="o.moduleID" required>
@@ -110,7 +110,7 @@
         <b-form-text class="text-secondary small">{{ $t('block.recordOrganizer.group.footnote') }}</b-form-text>
       </b-form-group>
     </div>
-  </div>
+  </b-tab>
 </template>
 <script>
 import { mapGetters } from 'vuex'

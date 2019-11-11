@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <b-tab :title="$t('block.record.label')">
     <fieldset class="form-group">
       <label>{{ $t('block.general.module') }}</label>
       <input v-if="module" class="form-control" type="text" v-model="module.name" readonly>
     </fieldset>
     <field-picker v-if="module" :module="module" :fields.sync="o.fields" />
-  </div>
+  </b-tab>
 </template>
 <script>
 import base from './base'

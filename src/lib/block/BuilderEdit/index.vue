@@ -7,13 +7,13 @@
     <b-tab active :title="$t('general.label.general')">
       <basic :block="block" />
     </b-tab>
-    <b-tab v-if="blockComponent" :title="block.kind">
-      <component :is="block.kind"
-                 :namespace="namespace"
-                 :module="module"
-                 :page="page"
-                 :options.sync="block.options"/>
-    </b-tab>
+
+    <component v-if="blockComponent"
+              :is="block.kind"
+              :namespace="namespace"
+              :module="module"
+              :page="page"
+              :options.sync="block.options"/>
   </b-tabs>
 </template>
 

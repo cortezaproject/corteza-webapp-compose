@@ -1,52 +1,54 @@
 <template>
-  <fieldset class="form-group">
-    <b-form-group :label="$t('block.automation.manualScript')"
-                  horizontal
-                  :description="$t('block.automation.scriptFootnote')">
-      <b-input-group>
-        <b-form-select v-model="selectedScriptID"
-                       :options="scriptOptions">
-          <template slot="first">
-            <option disabled
-                    :value="null">{{ $t('block.automation.pickScript') }}</option>
-          </template>
-        </b-form-select>
-        <b-input-group-append>
-          <b-button @click.prevent="handleAddButton"
-                    variant="dark">{{ $t('general.label.add') }}</b-button>
-        </b-input-group-append>
-      </b-input-group>
-    </b-form-group>
-    <b-form-group :label="$t('general.label.buttons')"
-                  :description="$t('block.automation.buttonFootnote')"
-                  horizontal
-                  v-show="o.buttons.length > 0">
-      <draggable
-        :list.sync="o.buttons"
-        :options="{ group: 'fields' }">
-        <b-input-group class="mb-2"
-                       v-for="(b,i) in o.buttons"
-                       :key="b.scriptID">
-          <b-input-group-prepend is-text>
-            <font-awesome-icon :icon="['fas', 'grip-vertical']" class="text-secondary"></font-awesome-icon>
-          </b-input-group-prepend>
-            <b-form-input class="mb-0" v-model="b.label" placeholder="button label"></b-form-input>
-          <b-input-group-append class="w-25">
-            <b-form-select v-model="b.variant" :options="variantOptions">
-            </b-form-select>
-          </b-input-group-append>
+  <b-tab :title="$t('block.automation.label')">
+    <fieldset class="form-group">
+      <b-form-group :label="$t('block.automation.manualScript')"
+                    horizontal
+                    :description="$t('block.automation.scriptFootnote')">
+        <b-input-group>
+          <b-form-select v-model="selectedScriptID"
+                        :options="scriptOptions">
+            <template slot="first">
+              <option disabled
+                      :value="null">{{ $t('block.automation.pickScript') }}</option>
+            </template>
+          </b-form-select>
           <b-input-group-append>
-            <b-button @click.prevent="o.buttons.splice(i,1)" variant="link" class="text-danger">
-              <font-awesome-icon :icon="['far', 'trash-alt']"></font-awesome-icon>
-            </b-button>
+            <b-button @click.prevent="handleAddButton"
+                      variant="dark">{{ $t('general.label.add') }}</b-button>
           </b-input-group-append>
-          <p class="text-muted w-100">
-            {{ $t('block.automation.script') }}: "{{ (getScriptByID(b.scriptID || b.triggerID) || {}).name }}"
-          </p>
         </b-input-group>
-      </draggable>
-    </b-form-group>
-  </fieldset>
+      </b-form-group>
+      <b-form-group :label="$t('general.label.buttons')"
+                    :description="$t('block.automation.buttonFootnote')"
+                    horizontal
+                    v-show="o.buttons.length > 0">
+        <draggable
+          :list.sync="o.buttons"
+          :options="{ group: 'fields' }">
+          <b-input-group class="mb-2"
+                        v-for="(b,i) in o.buttons"
+                        :key="b.scriptID">
+            <b-input-group-prepend is-text>
+              <font-awesome-icon :icon="['fas', 'grip-vertical']" class="text-secondary"></font-awesome-icon>
+            </b-input-group-prepend>
+              <b-form-input class="mb-0" v-model="b.label" placeholder="button label"></b-form-input>
+            <b-input-group-append class="w-25">
+              <b-form-select v-model="b.variant" :options="variantOptions">
+              </b-form-select>
+            </b-input-group-append>
+            <b-input-group-append>
+              <b-button @click.prevent="o.buttons.splice(i,1)" variant="link" class="text-danger">
+                <font-awesome-icon :icon="['far', 'trash-alt']"></font-awesome-icon>
+              </b-button>
+            </b-input-group-append>
+            <p class="text-muted w-100">
+              {{ $t('block.automation.script') }}: "{{ (getScriptByID(b.scriptID || b.triggerID) || {}).name }}"
+            </p>
+          </b-input-group>
+        </draggable>
+      </b-form-group>
+    </fieldset>
+  </b-tab>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'

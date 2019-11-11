@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <b-tab :title="$t('block.file.label')">
     <b-form-group horizontal
                   :description="$t('field.kind.file.view.modeFootnote')"
                   :label="$t('field.kind.file.view.modeLabel')">
@@ -17,7 +17,7 @@
                  :namespace="namespace"
                  :set.sync="options.attachments"
                  mode="list"></list-loader>
-  </div>
+  </b-tab>
 </template>
 <script>
 import base from './base'
