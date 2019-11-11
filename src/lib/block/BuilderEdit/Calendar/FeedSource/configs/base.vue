@@ -4,7 +4,6 @@
  * Define common props, methods, ... in here.
  */
 export default {
-
   filters: {
     /**
      * Prepares a set of select options
@@ -20,6 +19,7 @@ export default {
       })
     },
   },
+
   props: {
     feed: {
       type: Object,

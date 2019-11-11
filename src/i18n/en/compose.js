@@ -105,6 +105,7 @@ export default {
       hideToday: 'Hide today button',
       hideTitle: 'Hide title text',
       addEventsSource: 'Add events source',
+      viewLabel: '$t(block.calendar.label)',
       feedLabel: 'Configure events source',
       feedPlaceholder: 'Select a feed source',
       view: {

@@ -5,10 +5,9 @@ import { expect } from 'chai'
 import { shallowMount, fullMount } from 'corteza-webapp-compose/tests/lib/helpers'
 import { createLocalVue } from '@vue/test-utils'
 
-import CalendarComponent from 'corteza-webapp-compose/src/lib/block/BuilderEdit/Calendar'
-import FeedComponent from 'corteza-webapp-compose/src/lib/block/BuilderEdit/Calendar/feed'
+import FeedSource from 'corteza-webapp-compose/src/lib/block/BuilderEdit/Calendar/FeedSource'
 import { Calendar } from 'corteza-webapp-compose/src/lib/block/Calendar'
-import { module as ModuleComponent, reminder as ReminderComponent } from 'corteza-webapp-compose/src/lib/block/BuilderEdit/Calendar/feed/loader'
+import { module as ModuleComponent, reminder as ReminderComponent } from 'corteza-webapp-compose/src/lib/block/BuilderEdit/Calendar/FeedSource/configs'
 
 import Feed from 'corteza-webapp-compose/src/lib/block/Calendar/feed'
 import Module from 'corteza-webapp-compose/src/lib/module'
@@ -22,7 +21,7 @@ import fp from 'flush-promises'
 const localVue = createLocalVue()
 localVue.use(Vuex)
 
-describe('src/lib/block/BuilderEdit/Calendar', () => {
+describe('src/lib/block/BuilderEdit/Calendar/FeedSource', () => {
   afterEach(() => {
     sinon.restore()
   })
@@ -36,13 +35,13 @@ describe('src/lib/block/BuilderEdit/Calendar', () => {
     }
   })
 
-  const mountCalendar = (opt) => shallowMount(CalendarComponent, {
+  const mountFS = (opt) => shallowMount(FeedSource, {
     mocks: {},
     propsData,
     ...opt,
   })
 
-  const fmCalendar = (opt) => fullMount(CalendarComponent, {
+  const fmFS = (opt) => fullMount(FeedSource, {
     mocks: {},
     propsData,
     ...opt,
@@ -118,7 +117,7 @@ describe('src/lib/block/BuilderEdit/Calendar', () => {
       for (const t of tests) {
         const store = new Vuex.Store({ modules: t.modules })
         propsData.options.feeds = t.feeds
-        const wrap = fmCalendar({ localVue, store })
+        const wrap = fmFS({ localVue, store })
         await fp()
         t.expect(wrap)
       }
@@ -137,8 +136,8 @@ describe('src/lib/block/BuilderEdit/Calendar', () => {
       propsData.options.feeds = [
         new Feed({ resource: resources.module })
       ]
-      const wrap = mountCalendar({ localVue, store })
-      wrap.find('b-button').trigger('click')
+      const wrap = mountFS({ localVue, store })
+      wrap.find('b-button.test-feed-add').trigger('click')
       expect(propsData.options.feeds).to.have.length(2)
     })
 
@@ -155,9 +154,9 @@ describe('src/lib/block/BuilderEdit/Calendar', () => {
       propsData.options.feeds = [
         new Feed({ resource: resources.module })
       ]
-      const wrap = fmCalendar({ localVue, store })
+      const wrap = fmFS({ localVue, store })
 
-      wrap.find(FeedComponent).vm.removeFeed()
+      wrap.vm.onRemoveFeed(0)
       expect(propsData.options.feeds).to.have.length(0)
     })
   })

@@ -4,12 +4,12 @@
 import { expect } from 'chai'
 import { shallowMount } from 'corteza-webapp-compose/tests/lib/helpers'
 import Feed from 'corteza-webapp-compose/src/lib/block/Calendar/feed'
-import { module as ModuleComponent } from 'corteza-webapp-compose/src/lib/block/BuilderEdit/Calendar/feed/loader'
+import { module as ModuleComponent } from 'corteza-webapp-compose/src/lib/block/BuilderEdit/Calendar/FeedSource/configs'
 import { resources } from 'corteza-webapp-compose/src/lib/block/Calendar'
 import Module from 'corteza-webapp-compose/src/lib/module'
 import sinon from 'sinon'
 
-describe('src/lib/block/BuilderEdit/Calendar/feed/Module', () => {
+describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
   afterEach(() => {
     sinon.restore()
   })
@@ -170,7 +170,6 @@ describe('src/lib/block/BuilderEdit/Calendar/feed/Module', () => {
         const wrap = mountModule()
         t.expect(wrap)
       }
-
     })
   })
 })
