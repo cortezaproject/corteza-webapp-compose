@@ -18,6 +18,8 @@ export default async function ($SystemAPI, user, feed, range) {
     scheduledFrom: range.start.toISOString(),
     scheduledUntil: range.end.toISOString(),
     scheduledOnly: true,
+    excludeDismissed: true,
+    assignedTo: user.userID,
   }).then(({ set: reminders = [] }) => {
     const { backgroundColor, borderColor, isLight } = makeColors(feed.options.color)
 
