@@ -4,7 +4,7 @@
 import { expect } from 'chai'
 import { shallowMount } from 'corteza-webapp-compose/tests/lib/helpers'
 import Feed from 'corteza-webapp-compose/src/lib/block/Calendar/feed'
-import { module as ModuleComponent } from 'corteza-webapp-compose/src/lib/block/BuilderEdit/Calendar/FeedSource/configs'
+import { record as RecordComponent } from 'corteza-webapp-compose/src/lib/block/BuilderEdit/Calendar/FeedSource/configs'
 import { resources } from 'corteza-webapp-compose/src/lib/block/Calendar'
 import Module from 'corteza-webapp-compose/src/lib/module'
 import sinon from 'sinon'
@@ -22,7 +22,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
     }
   })
 
-  const mountModule = (opt) => shallowMount(ModuleComponent, {
+  const mountRecord = (opt) => shallowMount(RecordComponent, {
     mocks: {},
     propsData,
     ...opt,
@@ -31,7 +31,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
   it('default props - to raise coverage', () => {
     propsData.feed = undefined,
     propsData.modules = undefined
-    mountModule()
+    mountRecord()
   })
 
   describe('determine fields', () => {
@@ -40,7 +40,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
         const tests = [
           {
             name: 'determine fields',
-            feed: new Feed({ resource: resources.module, options: { moduleID: '0001' } }),
+            feed: new Feed({ resource: resources.record, options: { moduleID: '0001' } }),
             modules: [
               new Module({ moduleID: '0001', fields: [
                 { name: 'f1', kind: 'DateTime' },
@@ -62,7 +62,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
           },
           {
             name: 'bail if no module',
-            feed: new Feed({ resource: resources.module, options: { moduleID: '0001' } }),
+            feed: new Feed({ resource: resources.record, options: { moduleID: '0001' } }),
             modules: [],
             expect: function (wrap) {
               expect(wrap.vm.dateFields).to.have.length(0)
@@ -72,7 +72,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
         for (const t of tests) {
           propsData.feed = t.feed
           propsData.modules = t.modules
-          const wrap = mountModule()
+          const wrap = mountRecord()
           t.expect(wrap)
         }
       })
@@ -81,7 +81,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
         const tests = [
           {
             name: 'ignore fields',
-            feed: new Feed({ resource: resources.module, options: { moduleID: '0001' } }),
+            feed: new Feed({ resource: resources.record, options: { moduleID: '0001' } }),
             modules: [
               new Module({ moduleID: '0001', fields: [
                 { name: 'f1', kind: 'DateTime', isMulti: true },
@@ -96,7 +96,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
         for (const t of tests) {
           propsData.feed = t.feed
           propsData.modules = t.modules
-          const wrap = mountModule()
+          const wrap = mountRecord()
           t.expect(wrap)
         }
       })
@@ -105,7 +105,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
         const tests = [
           {
             name: 'determine note',
-            feed: new Feed({ resource: resources.module, options: { moduleID: '0001' } }),
+            feed: new Feed({ resource: resources.record, options: { moduleID: '0001' } }),
             modules: [
               new Module({ moduleID: '0001', fields: [
                 { name: 'f1', kind: 'DateTime', isMulti: true },
@@ -117,7 +117,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
           },
           {
             name: 'bail if no module',
-            feed: new Feed({ resource: resources.module, options: {} }),
+            feed: new Feed({ resource: resources.record, options: {} }),
             modules: [],
             expect: function (wrap) {
               expect(wrap.find('.test-multi-field-ntf').exists()).to.be.false
@@ -127,7 +127,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
         for (const t of tests) {
           propsData.feed = t.feed
           propsData.modules = t.modules
-          const wrap = mountModule()
+          const wrap = mountRecord()
           t.expect(wrap)
         }
       })
@@ -137,7 +137,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
       const tests = [
         {
           name: 'determine fields',
-          feed: new Feed({ resource: resources.module, options: { moduleID: '0001' } }),
+          feed: new Feed({ resource: resources.record, options: { moduleID: '0001' } }),
           modules: [
             new Module({ moduleID: '0001', fields: [
               { name: 'f1', kind: 'String' },
@@ -156,7 +156,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
 
         {
           name: 'no module - bail',
-          feed: new Feed({ resource: resources.module, options: { moduleID: '0001' } }),
+          feed: new Feed({ resource: resources.record, options: { moduleID: '0001' } }),
           modules: [],
           expect: function (wrap) {
             expect(wrap.vm.titleFields, this.name).to.have.length(0)
@@ -167,7 +167,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
       for (const t of tests) {
         propsData.feed = t.feed
         propsData.modules = t.modules
-        const wrap = mountModule()
+        const wrap = mountRecord()
         t.expect(wrap)
       }
     })

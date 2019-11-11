@@ -27,7 +27,7 @@ function fromLegacy (f) {
   }
 
   return {
-    resource: resources.module,
+    resource: resources.record,
     options: {
       moduleID: f.moduleID,
     },

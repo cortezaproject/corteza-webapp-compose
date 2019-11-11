@@ -112,7 +112,7 @@ describe('lib/block/View/Calendar', () => {
           {
             name: 'start and end provided',
             feed: new Feed({
-              resource: resources.module,
+              resource: resources.record,
               options: { moduleID: '000' },
               startField: 'start',
               endField: 'end',
@@ -128,7 +128,7 @@ describe('lib/block/View/Calendar', () => {
           {
             name: 'end not provided',
             feed: new Feed({
-              resource: resources.module,
+              resource: resources.record,
               options: { moduleID: '000' },
               startField: 'start',
               endField: 'end',
@@ -144,7 +144,7 @@ describe('lib/block/View/Calendar', () => {
           {
             name: 'with prefilter',
             feed: new Feed({
-              resource: resources.module,
+              resource: resources.record,
               options: {
                 moduleID: '000',
                 prefilter: `f1 = 'x' OR f2 = 'y'`,
@@ -181,7 +181,7 @@ describe('lib/block/View/Calendar', () => {
       it('build fc events', async () => {
         propsData.options.feeds = [
           new Feed({
-            resource: resources.module,
+            resource: resources.record,
             options: { moduleID: '000' },
             startField: 'start',
             endField: 'end',
@@ -211,7 +211,7 @@ describe('lib/block/View/Calendar', () => {
       it('loading from multiple feeds', async () => {
         propsData.options.feeds = [
           new Feed({
-            resource: resources.module,
+            resource: resources.record,
             options: { moduleID: '000' },
             startField: 'start',
             endField: 'end',
@@ -219,7 +219,7 @@ describe('lib/block/View/Calendar', () => {
             titleField: 'title',
           }),
           new Feed({
-            resource: resources.module,
+            resource: resources.record,
             options: { moduleID: '001' },
             startField: 'start',
             endField: 'end',
@@ -257,7 +257,7 @@ describe('lib/block/View/Calendar', () => {
       it('determine event\'s colors', async () => {
         propsData.options.feeds = [
           new Feed({
-            resource: resources.module,
+            resource: resources.record,
             options: {
               moduleID: '000',
               color: '#1e1e1e',
@@ -268,7 +268,7 @@ describe('lib/block/View/Calendar', () => {
             titleField: 'title',
           }),
           new Feed({
-            resource: resources.module,
+            resource: resources.record,
             options: {
               moduleID: '001',
               color: '#fafafa',

@@ -7,7 +7,7 @@ import { createLocalVue } from '@vue/test-utils'
 
 import FeedSource from 'corteza-webapp-compose/src/lib/block/BuilderEdit/Calendar/FeedSource'
 import { Calendar } from 'corteza-webapp-compose/src/lib/block/Calendar'
-import { module as ModuleComponent, reminder as ReminderComponent } from 'corteza-webapp-compose/src/lib/block/BuilderEdit/Calendar/FeedSource/configs'
+import { record as RecordComponent, reminder as ReminderComponent } from 'corteza-webapp-compose/src/lib/block/BuilderEdit/Calendar/FeedSource/configs'
 
 import Feed from 'corteza-webapp-compose/src/lib/block/Calendar/feed'
 import Module from 'corteza-webapp-compose/src/lib/module'
@@ -53,8 +53,8 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource', () => {
         {
           name: 'module feed',
           feeds: [
-            new Feed({ resource: resources.module, options: { moduleID: '0001' } }),
-            new Feed({ resource: resources.module, options: { moduleID: '0002' } }),
+            new Feed({ resource: resources.record, options: { moduleID: '0001' } }),
+            new Feed({ resource: resources.record, options: { moduleID: '0002' } }),
           ],
           modules: {
             module: {
@@ -67,7 +67,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource', () => {
           },
 
           expect: function (wrap) {
-            expect(wrap.findAll(ModuleComponent)).to.have.length(2)
+            expect(wrap.findAll(RecordComponent)).to.have.length(2)
           },
         },
 
@@ -108,7 +108,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource', () => {
           },
 
           expect: function (wrap) {
-            expect(wrap.find(ModuleComponent).exists()).to.be.false
+            expect(wrap.find(RecordComponent).exists()).to.be.false
             expect(wrap.find(ReminderComponent).exists()).to.be.false
           },
         },
@@ -134,7 +134,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource', () => {
         },
       } })
       propsData.options.feeds = [
-        new Feed({ resource: resources.module })
+        new Feed({ resource: resources.record })
       ]
       const wrap = mountFS({ localVue, store })
       wrap.find('b-button.test-feed-add').trigger('click')
@@ -152,7 +152,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource', () => {
         },
       } })
       propsData.options.feeds = [
-        new Feed({ resource: resources.module })
+        new Feed({ resource: resources.record })
       ]
       const wrap = fmFS({ localVue, store })
 

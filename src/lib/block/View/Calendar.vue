@@ -146,10 +146,10 @@ export default {
       this.events = []
       this.options.feeds.forEach(feed => {
         switch (feed.resource) {
-          case resources.module:
+          case resources.record:
             this.findModuleByID({ namespaceID: this.namespace.namespaceID, moduleID: feed.options.moduleID })
               .then((module) => {
-                this.calendar.moduleFeed(this.$ComposeAPI, module, this.namespace, feed, this.loaded)
+                this.calendar.recordFeed(this.$ComposeAPI, module, this.namespace, feed, this.loaded)
                   .then(events => {
                     this.events.push(...events)
                   })

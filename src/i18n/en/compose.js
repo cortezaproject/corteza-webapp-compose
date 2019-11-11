@@ -120,8 +120,8 @@ export default {
         listWeek: 'Week list',
         listDay: 'Day list',
       },
-      moduleFeed: {
-        optionLabel: 'Modules',
+      recordFeed: {
+        optionLabel: 'Records',
         moduleLabel: 'Select module',
         modulePlaceholder: '(No module)',
         colorLabel: 'Event color',

@@ -4,7 +4,7 @@
       <b-form-group horizontal
                     :label-cols="3"
                     breakpoint="md"
-                    :label="$t('block.calendar.moduleFeed.moduleLabel')">
+                    :label="$t('block.calendar.recordFeed.moduleLabel')">
 
         <b-input-group>
           <b-form-select v-model="feed.options.moduleID"
@@ -13,7 +13,7 @@
                         text-field="name">
 
             <template slot="first">
-              <option :value="null">{{ $t('block.calendar.moduleFeed.modulePlaceholder') }}</option>
+              <option :value="null">{{ $t('block.calendar.recordFeed.modulePlaceholder') }}</option>
             </template>
           </b-form-select>
         </b-input-group>
@@ -23,7 +23,7 @@
         <b-form-group horizontal
                       :label-cols="3"
                       breakpoint="md"
-                      :label="$t('block.calendar.moduleFeed.colorLabel')">
+                      :label="$t('block.calendar.recordFeed.colorLabel')">
 
         <b-input-group>
           <b-form-input style="max-width: 50px;"
@@ -35,13 +35,13 @@
         <b-form-group horizontal
                       :label-cols="3"
                       breakpoint="md"
-                      :label="$t('block.calendar.moduleFeed.titleLabel')">
+                      :label="$t('block.calendar.recordFeed.titleLabel')">
 
           <b-form-select v-model="feed.titleField"
                         :options="titleFields | optionizeFields">
 
             <template slot="first">
-              <option disabled :value="null">{{ $t('block.calendar.moduleFeed.titlePlaceholder') }}</option>
+              <option disabled :value="null">{{ $t('block.calendar.recordFeed.titlePlaceholder') }}</option>
             </template>
           </b-form-select>
         </b-form-group>
@@ -49,40 +49,40 @@
         <b-form-group horizontal
                       :label-cols="3"
                       breakpoint="md"
-                      :label="$t('block.calendar.moduleFeed.eventStartFieldLabel')">
+                      :label="$t('block.calendar.recordFeed.eventStartFieldLabel')">
           <b-form-select v-model="feed.startField"
                         :options="dateFields | optionizeFields">
 
             <template slot="first">
               <option disabled :value="null">
-                {{ $t('block.calendar.moduleFeed.eventStartFieldPlaceholder') }}
+                {{ $t('block.calendar.recordFeed.eventStartFieldPlaceholder') }}
               </option>
             </template>
           </b-form-select>
 
           <b-form-text v-if="hasMultiFields"
                        class="test-multi-field-ntf">
-            {{ $t('block.calendar.moduleFeed.noMultiFields') }}
+            {{ $t('block.calendar.recordFeed.noMultiFields') }}
           </b-form-text>
         </b-form-group>
 
         <b-form-group horizontal
                       :label-cols="3"
                       breakpoint="md"
-                      :label="$t('block.calendar.moduleFeed.eventEndFieldLabel')">
+                      :label="$t('block.calendar.recordFeed.eventEndFieldLabel')">
           <b-form-select v-model="feed.endField"
                         :options="dateFields | optionizeFields">
 
             <template slot="first">
               <option :value="null">
-                {{ $t('block.calendar.moduleFeed.eventEndFieldPlaceholder') }}
+                {{ $t('block.calendar.recordFeed.eventEndFieldPlaceholder') }}
               </option>
             </template>
           </b-form-select>
 
           <b-form-text v-if="hasMultiFields"
                        class="test-multi-field-ntf">
-            {{ $t('block.calendar.moduleFeed.noMultiFields') }}
+            {{ $t('block.calendar.recordFeed.noMultiFields') }}
           </b-form-text>
 
           <b-form-checkbox v-model="feed.allDay"
@@ -90,7 +90,7 @@
                            :value="true"
                            :unchecked-value="false">
 
-            {{ $t('block.calendar.moduleFeed.eventAllDay') }}
+            {{ $t('block.calendar.recordFeed.eventAllDay') }}
           </b-form-checkbox>
         </b-form-group>
 
@@ -99,9 +99,9 @@
         <b-form-group horizontal
                       :label-cols="3"
                       breakpoint="md"
-                      :label="$t('block.calendar.moduleFeed.prefilterLabel')">
+                      :label="$t('block.calendar.recordFeed.prefilterLabel')">
           <b-form-textarea :value="true"
-                          :placeholder="$t('block.calendar.moduleFeed.prefilterPlaceholder')"
+                          :placeholder="$t('block.calendar.recordFeed.prefilterPlaceholder')"
                           v-model="feed.options.prefilter" />
 
         </b-form-group>

@@ -1,2 +1,2 @@
-export { default as module } from './Module'
+export { default as record } from './Record'
 export { default as reminder } from './Reminder'

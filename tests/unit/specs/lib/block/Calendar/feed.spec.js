@@ -16,7 +16,7 @@ describe('lib/block/Calendar/feed', () => {
         allDay: false,
       }
       const expected = {
-        resource: resources.module,
+        resource: resources.record,
         options: {
           moduleID: '000',
         },
@@ -31,7 +31,7 @@ describe('lib/block/Calendar/feed', () => {
 
     it('preserve new structure - determined with object keys', () => {
       const old = {
-        resource: resources.module,
+        resource: resources.record,
         options: {
           moduleID: '000',
         },
@@ -42,7 +42,7 @@ describe('lib/block/Calendar/feed', () => {
       }
 
       const expected = {
-        resource: resources.module,
+        resource: resources.record,
         options: {
           moduleID: '000',
         },

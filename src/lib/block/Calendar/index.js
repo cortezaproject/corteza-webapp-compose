@@ -1,5 +1,5 @@
 import { PropCast } from 'corteza-webapp-common/src/lib/types/common'
-import { reminderFeed, moduleFeed } from './feedLoader'
+import { reminderFeed, recordFeed } from './feedLoader'
 import Feed from './feed'
 
 export { default as cortezaTheme } from './theme'
@@ -16,7 +16,7 @@ const legacyViewMapping = {
 }
 
 export const resources = {
-  module: 'compose:module',
+  record: 'compose:record',
   reminder: 'system:reminder',
 }
 
@@ -32,7 +32,7 @@ export class Calendar {
     this.locale = o.locale || 'en-gb'
 
     this.reminderFeed = reminderFeed
-    this.moduleFeed = moduleFeed
+    this.recordFeed = recordFeed
   }
 
   /**
