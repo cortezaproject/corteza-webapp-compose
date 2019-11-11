@@ -12,7 +12,7 @@ const defaultColor = variables.primary
  * @param {Namespace} namespace Current namespace
  * @param {Feed} feed Current feed
  * @param {Object} range Current date range
- * @returns {Array} A set of FC events to display
+ * @returns {Promise<Array>} Resolves to a set of FC events to display
  */
 export default async function ($ComposeAPI, module, namespace, feed, range) {
   // Params for record fetching
@@ -23,7 +23,7 @@ export default async function ($ComposeAPI, module, namespace, feed, range) {
   }
 
   if (feed.options.prefilter) {
-    params.filter += ` AND ${feed.options.prefilter}`
+    params.filter += ` AND (${feed.options.prefilter})`
   }
 
   const events = []
@@ -31,10 +31,7 @@ export default async function ($ComposeAPI, module, namespace, feed, range) {
     removeDup(set, 'recordID')
       .map(r => new Record(module, r))
       .filter(r => !!r.values[feed.startField] || !!r[feed.startField])
-      .forEach(r => {
-        // Expand record into FC events
-        expandRecord(r, feed, events)
-      })
+      .forEach(r => events.push(...expandRecord(r, feed)))
     return events
   })
 }
@@ -44,10 +41,11 @@ export default async function ($ComposeAPI, module, namespace, feed, range) {
  * Handles basic recurrence -- multiple date fields.
  * @param {Record} record Record to expand
  * @param {Feed} feed Feed, this record belongs to
- * @param {Array} events Array to hold the generated events
+ * @returns {Array} A set of expanded events
  */
-function expandRecord (record, feed, events) {
+function expandRecord (record, feed) {
   let starts, ends
+  const events = []
 
   // Determine available start values
   const sf = record.module.fields.find(({ name }) => name === feed.startField)
@@ -95,4 +93,6 @@ function expandRecord (record, feed, events) {
       },
     })
   })
+
+  return events
 }

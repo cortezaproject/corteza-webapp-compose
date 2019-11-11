@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { createLocalVue, shallowMount as sm } from '@vue/test-utils'
+import { createLocalVue, shallowMount as sm, mount as rm } from '@vue/test-utils'
 import alertMixin from 'corteza-webapp-compose/src/mixins/alert'
 
 Vue.config.ignoredElements = [
@@ -12,10 +12,9 @@ export const writeableWindowLocation = ({ path: value = '/' } = {}) => Object.de
 
 export const mount = (component, params = {}) => shallowMount(component, { ...params })
 
-export const shallowMount = (component, { mocks = {}, stubs = [], ...options } = {}) => {
-  let localVue = createLocalVue()
-
-  return sm(component, {
+const mounter = (component, { localVue, mocks = {}, stubs = [], ...options } = {}, mount) => {
+  localVue = localVue || createLocalVue()
+  return mount(component, {
     localVue,
     stubs: ['router-view', 'router-link', ...stubs],
     mixins: [ alertMixin ],
@@ -32,6 +31,14 @@ export const shallowMount = (component, { mocks = {}, stubs = [], ...options } =
     },
     ...options,
   })
+}
+
+export const shallowMount = (...e) => {
+  return mounter(...e, sm)
+}
+
+export const fullMount = (...e) => {
+  return mounter(...e, rm)
 }
 
 export default shallowMount

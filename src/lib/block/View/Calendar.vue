@@ -156,7 +156,7 @@ export default {
               })
             break
           case resources.reminder:
-            this.calendar.reminderFeed(this.$SystemAPI, this.$auth, feed, this.loaded)
+            this.calendar.reminderFeed(this.$SystemAPI, this.$auth.user, feed, this.loaded)
               .then(events => {
                 this.events.push(...events)
               })

@@ -15,6 +15,6 @@ export function makeColors (hex) {
   return {
     backgroundColor: `rgba(${bg.join(',')})`,
     borderColor: `rgba(${br.join(',')})`,
-    isLight: (bg.reduce((acc, cur) => acc + cur, 0) / bg.length) > isLightThreshold,
+    isLight: (bg.slice(0, 3).reduce((acc, cur) => acc + cur, 0) / (bg.length - 1)) > isLightThreshold,
   }
 }

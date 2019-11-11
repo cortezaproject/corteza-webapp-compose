@@ -9,7 +9,7 @@ const defaultColor = variables.secondary
  * @param {User} user Current user
  * @param {Feed} feed Current feed
  * @param {Object} range Current date range
- * @returns {Array} A set of FC events to display
+ * @returns {Promise<Array>} Resolves to a set of FC events to display
  */
 export default async function ($SystemAPI, user, feed, range) {
   feed.options.color = feed.options.color || defaultColor
@@ -18,10 +18,10 @@ export default async function ($SystemAPI, user, feed, range) {
     scheduledFrom: range.start.toISOString(),
     scheduledUntil: range.end.toISOString(),
     scheduledOnly: true,
-  }).then(({ set = [] }) => {
+  }).then(({ set: reminders = [] }) => {
     const { backgroundColor, borderColor, isLight } = makeColors(feed.options.color)
 
-    return set.map(r => {
+    return reminders.map(r => {
       const classNames = [ 'event', 'event-reminder' ]
       if (r.assignedTo !== user.userID) {
         classNames.push('event-not-owner')

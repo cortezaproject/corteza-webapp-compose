@@ -21,7 +21,7 @@
         <template v-if="feed.resource"
                   v-slot:append>
 
-          <b-button @click="$emit('removeFeed')"
+          <b-button @click="removeFeed"
                     variant="outline-danger"
                     class="border-0">
 
@@ -75,6 +75,12 @@ export default {
       }
       const r = this.feed.resource.split(':').pop()
       return configs[r]
+    },
+  },
+
+  methods: {
+    removeFeed () {
+      this.$emit('removeFeed')
     },
   },
 }
