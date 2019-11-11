@@ -71,7 +71,7 @@ function expandRecord (record, feed) {
   if (isLight) {
     classNames.push('text-dark')
   } else {
-    classNames.push('text-light')
+    classNames.push('text-white')
   }
 
   starts.forEach((start, i) => {

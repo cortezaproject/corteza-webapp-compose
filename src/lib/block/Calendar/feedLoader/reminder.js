@@ -31,7 +31,7 @@ export default async function ($SystemAPI, user, feed, range) {
       if (isLight) {
         classNames.push('text-dark')
       } else {
-        classNames.push('text-light')
+        classNames.push('text-white')
       }
 
       return {

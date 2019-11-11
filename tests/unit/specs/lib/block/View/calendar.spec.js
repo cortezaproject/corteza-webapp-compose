@@ -300,7 +300,7 @@ describe('lib/block/View/Calendar', () => {
         expect(ee).to.have.length(2)
         const dark = ee.find(({ extendedProps: { recordID } }) => recordID === '100')
         const light = ee.find(({ extendedProps: { recordID } }) => recordID === '101')
-        expect(dark.classNames).to.include.members(['text-light'])
+        expect(dark.classNames).to.include.members(['text-white'])
         expect(light.classNames).to.include.members(['text-dark'])
       })
 
@@ -508,7 +508,7 @@ describe('lib/block/View/Calendar', () => {
         expect(ee).to.have.length(2)
         const dark = ee.find(({ id }) => id === '0001')
         const light = ee.find(({ id }) => id === '0002')
-        expect(dark.classNames).to.include.members(['text-light'])
+        expect(dark.classNames).to.include.members(['text-white'])
         expect(light.classNames).to.include.members(['text-dark'])
       })
     })

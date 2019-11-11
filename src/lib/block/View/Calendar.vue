@@ -190,14 +190,4 @@ export default {
 @import '~@fullcalendar/timegrid/main.css';
 @import '~@fullcalendar/list/main.css';
 
-/deep/.fc-event {
-  &.text-light {
-    color: $white;
-  }
-
-  &.text-dark {
-    color: $black;
-  }
-}
-
 </style>
