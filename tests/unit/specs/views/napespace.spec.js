@@ -12,13 +12,19 @@ describe('view/Namespace.vue', () => {
     sinon.restore()
   })
 
-  let propsData
+  let propsData, $ComposeAPI
   beforeEach(() => {
     propsData = { slug: 'test' }
+    $ComposeAPI = {
+      settingsCurrent: sinon.stub().resolves({}),
+    }
   })
 
   const mountNamespace = (opt) => shallowMount(Namespace, {
-    mocks: { $auth: { is: () => true, check: () => true } },
+    mocks: {
+      $auth: { is: () => true, check: () => true },
+      $ComposeAPI,
+    },
     propsData,
     ...opt,
   })

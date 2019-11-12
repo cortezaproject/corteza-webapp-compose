@@ -152,9 +152,9 @@ export default {
   methods: {
     async loadSettings () {
       this.$ComposeAPI
-        .settingsGet({ key: 'panel.namespace-switcher' })
-        .then(({ value = false }) => {
-          this.showNSSideBar = value
+        .settingsCurrent()
+        .then((settings = {}) => {
+          this.showNSSideBar = !!(((settings.UI || {}).NamespaceSwitcher || {}).Enabled)
         })
     },
 
