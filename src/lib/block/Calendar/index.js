@@ -1,4 +1,6 @@
 import { PropCast } from 'corteza-webapp-common/src/lib/types/common'
+import { reminderFeed, recordFeed } from './feedLoader'
+import Feed from './feed'
 
 export { default as cortezaTheme } from './theme'
 
@@ -13,16 +15,24 @@ const legacyViewMapping = {
   listDay: 'listDay',
 }
 
+export const resources = {
+  record: 'compose:record',
+  reminder: 'system:reminder',
+}
+
 /**
  * Helper class to help define calendar's functionality
  */
 export class Calendar {
   constructor (o = {}) {
     this.defaultView = Calendar.handleLegacyViews(PropCast(String, o.defaultView)) || 'dayGridMonth'
-    this.feeds = o.feeds || []
+    this.feeds = (o.feeds || []).map(f => new Feed(f))
     this.header = o.header || {}
     this.header = { ...this.header, views: Calendar.handleLegacyViews(this.header.views || []) }
     this.locale = o.locale || 'en-gb'
+
+    this.reminderFeed = reminderFeed
+    this.recordFeed = recordFeed
   }
 
   /**
