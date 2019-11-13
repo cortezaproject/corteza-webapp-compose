@@ -36,7 +36,13 @@ steps:
       params: [ "APP_VERSION=${DRONE_TAG=${DRONE_BRANCH}}" ]
       repositories:
         # Dynamically constructs Drone repo name that will be notified
-        - "${DRONE_REPO_NAMESPACE}/${DRONE_REPO_NAME%%-compose}@${DRONE_BRANCH}"
+        - "${DRONE_REPO_NAMESPACE}/${DRONE_REPO_NAME%%-compose}"
+
+trigger:
+  event:
+    # Pipeline will be executed from branch event,
+    # this ensures we do not run duplicates.
+    exclude: [ 'pull_request' ]
 
 volumes:
   - name: webapp-build
