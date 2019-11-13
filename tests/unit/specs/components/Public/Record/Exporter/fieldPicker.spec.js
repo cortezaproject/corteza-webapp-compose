@@ -122,15 +122,63 @@ describe('components/Public/Record/Exporter/FieldPicker.vue', () => {
 
   it('determine if export disabled', () => {
     let cases = [
-      [[], 0, true],
-      [[], 1, true],
-      [[ {} ], 0, true],
-      [[ {} ], 1, false],
+      [[], 0, true, true],
+      [[], 1, true, true],
+      [[ {} ], 0, true, true],
+      [[ {} ], 1, true, false],
     ]
-    for (const [ fields, recordCount, expected ] of cases) {
+    for (const [ fields, recordCount, dateRangeValid, expected ] of cases) {
       expect(FieldPicker.computed.exportDisabled
-          .call({ fields, recordCount })).to.eq(expected)
+          .call({ fields, recordCount, dateRangeValid })).to.eq(expected)
+    }
+  })
 
+  it('date-range validation', () => {
+    const tests = [
+      {
+        name: 'valid range',
+        state: {
+          start: '2019-10-29',
+          end: '2019-10-30',
+        },
+        expected: true,
+      },
+      {
+        name: 'valid range - larger step',
+        state: {
+          start: '2019-10-29',
+          end: '2020-01-01',
+        },
+        expected: true,
+      },
+      {
+        name: 'valid range - same date',
+        state: {
+          start: '2019-10-30',
+          end: '2019-10-30',
+        },
+        expected: true,
+      },
+      {
+        name: 'invalid range',
+        state: {
+          start: '2019-10-31',
+          end: '2019-10-30',
+        },
+        expected: false,
+      },
+      {
+        name: 'invalid range - larger step',
+        state: {
+          start: '2020-01-01',
+          end: '2019-10-30',
+        },
+        expected: false,
+      },
+    ]
+
+    for (const t of tests) {
+      expect(FieldPicker.computed.dateRangeValid.call(t.state), t.name).to.eq(t.expected)
     }
   })
 

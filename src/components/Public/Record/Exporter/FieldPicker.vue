@@ -44,10 +44,22 @@
           </b-form-group>
         </b-col>
         <b-col cols="3" class="ml-5">
-          <b-form-input type="date" v-model="start" :max="end" @keydown.prevent=""/>
+          <b-form-input
+            :state="dateRangeValid ? null : false"
+            type="date"
+            v-model="start"
+            :max="end"
+            @keydown.prevent/>
+
         </b-col>
         <b-col cols="3" class="ml-2">
-          <b-form-input type="date" v-model="end" :min="start" @keydown.prevent="" />
+          <b-form-input
+            :state="dateRangeValid ? null : false"
+            type="date"
+            v-model="end"
+            :min="start"
+            @keydown.prevent />
+
         </b-col>
       </b-row>
     </b-container>
@@ -167,6 +179,17 @@ export default {
       ]
     },
 
+    /**
+     * checks if the given date-range is valid
+     * @returns {Boolean}
+     */
+    dateRangeValid () {
+      if (this.end < this.start) {
+        return false
+      }
+      return true
+    },
+
     rangeByOptions () {
       return [
         { value: 'created_at',
@@ -202,7 +225,7 @@ export default {
     },
 
     exportDisabled () {
-      return this.fields.length === 0 || !this.recordCount
+      return !this.dateRangeValid || this.fields.length === 0 || !this.recordCount
     },
 
     selectedFields: {
