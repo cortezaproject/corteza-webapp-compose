@@ -1,11 +1,9 @@
 <template>
   <b-form-group :label="label">
     <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
-      <quill-editor
+      <rich-text-input
         v-if="field.options.useRichTextEditor"
-        v-model="value[ctx.index]"
-        :options="quillOptions"
-        ref="myQuillEditor"></quill-editor>
+        v-model="value[ctx.index]" />
       <textarea
         v-else-if="field.options.multiLine"
         v-model="value[ctx.index]"></textarea>
@@ -13,11 +11,9 @@
     </multi>
 
     <div v-else>
-      <quill-editor
+      <rich-text-input
         v-if="field.options.useRichTextEditor"
-        v-model="value"
-        :options="quillOptions"
-        ref="myQuillEditor"></quill-editor>
+        v-model="value" />
       <textarea
         v-else-if="field.options.multiLine"
         class="w-100"
@@ -33,42 +29,17 @@
     </b-form-text>
   </b-form-group>
 </template>
+
 <script>
-// require styles
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
-
-import { quillEditor } from 'vue-quill-editor'
-
+import RichTextInput from 'corteza-webapp-compose/src/components/RichTextInput'
 import base from './base'
 
 export default {
   components: {
-    quillEditor,
+    RichTextInput,
   },
 
   extends: base,
-
-  data () {
-    return {
-      quillOptions: {
-        modules: {
-          toolbar: [
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            ['blockquote', 'code-block'],
-            [{ 'color': [] }, { 'background': [] }],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            [{ 'indent': '-1' }, { 'indent': '+1' }],
-            [{ 'align': [] }],
-            ['link'],
-            ['clean'],
-          ],
-        },
-      },
-    }
-  },
 }
 
 </script>
