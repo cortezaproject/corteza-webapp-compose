@@ -67,3 +67,72 @@ html {
   background-position: center;
   background-repeat: no-repeat;
 }
+
+.ProseMirror.ProseMirror-focused {
+  outline: none;
+}
+
+// Rich text content styling
+.rt-content {
+  p {
+    margin: 0;
+    padding: 0;
+  }
+
+  // blockquote
+  blockquote {
+    border-left: 3px solid rgba($black, 0.1);
+    color: rgba($black, 0.8);
+    padding-left: 0.8rem;
+    font-style: italic;
+  }
+
+  // todo list - https://github.com/scrumpy/tiptap/blob/master/examples/Components/Routes/TodoList/index.vue
+  li[data-type="todo_item"] {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .todo-checkbox {
+    border: 2px solid $black;
+    height: 0.9em;
+    width: 0.9em;
+    box-sizing: border-box;
+    margin-right: 10px;
+    margin-top: 0.3rem;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: pointer;
+    border-radius: 0.2em;
+    background-color: transparent;
+    transition: 0.4s background;
+  }
+
+  .todo-content {
+    flex: 1;
+
+    > p:last-of-type {
+      margin-bottom: 0;
+    }
+
+    > ul[data-type="todo_list"] {
+      margin: 0.5rem 0;
+    }
+  }
+
+  li[data-done="true"] {
+    > .todo-content {
+      > p {
+        text-decoration: line-through;
+      }
+    }
+
+    > .todo-checkbox {
+      background-color: $black;
+    }
+  }
+
+  li[data-done="false"] {
+    text-decoration: none;
+  }
+}
