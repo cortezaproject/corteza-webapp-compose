@@ -11,7 +11,7 @@ const qAlignments = {
 
 const toAttrs = node => {
   if (node.attrs.alignment) {
-    return { class: `text-${node.attrs.alignment}` }
+    return { style: `text-align: ${node.attrs.alignment}` }
   }
   return {}
 }
@@ -38,9 +38,8 @@ export default class Paragraph extends Node {
         {
           tag: 'p',
           getAttrs: (node) => {
-            let alignment = node.style.alignment
-
             // Covers current structure
+            let alignment = node.style.textAlign
             if (alignment) {
               return { alignment }
             }
