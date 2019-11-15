@@ -1,4 +1,9 @@
-import { AlignmentBlock } from '../extensions'
+import {
+  AlignmentBlock,
+  TextColor,
+  TextBackground,
+} from '../extensions'
+
 import {
   Blockquote,
   CodeBlock,
@@ -37,6 +42,8 @@ export const formats = [
   new ListItem(),
   new TodoItem(),
   new History(),
+  new TextBackground(),
+  new TextColor(),
 ]
 
 // Defines the structure of our editor toolbar
@@ -45,6 +52,8 @@ export const toolbar = [
   { type: 'italic', icon: 'italic' },
   { type: 'underline', icon: 'underline' },
   { type: 'strike', icon: 'strikethrough' },
+  { type: 'color', colorPicker: true },
+  { type: 'background', colorPicker: true },
   { type: 'blockquote', icon: 'quote-right' },
   { type: 'code_block', icon: 'code' },
   { type: 'heading', label: 'H1', attrs: { level: 1 } },

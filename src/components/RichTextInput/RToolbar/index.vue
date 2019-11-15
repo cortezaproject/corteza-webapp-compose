@@ -26,7 +26,7 @@
 
 <script>
 import { EditorMenuBar } from 'tiptap'
-import { TItem, TItemVariants } from './loader'
+import { TItem, TItemVariants, TColors } from './loader'
 import { removeMark } from 'tiptap-commands'
 
 export default {
@@ -59,6 +59,9 @@ export default {
     getItem (f) {
       if (f.variants) {
         return TItemVariants
+      }
+      if (f.colorPicker) {
+        return TColors
       }
       return TItem
     },
