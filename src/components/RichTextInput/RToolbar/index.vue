@@ -1,7 +1,7 @@
 <template>
   <editor-menu-bar
     :editor="editor"
-    v-slot="{ commands, isActive }">
+    v-slot="{ commands, isActive, getMarkAttrs }">
 
     <div class="d-flex flex-wrap">
       <component
@@ -10,6 +10,7 @@
         :is="getItem(f)"
         :format="f"
         :is-active="isActive"
+        :get-mark-attrs="getMarkAttrs"
         @click="(commands[$event.type])($event.attrs)" />
 
       <!-- Extra button to remove formatting -->
@@ -26,7 +27,7 @@
 
 <script>
 import { EditorMenuBar } from 'tiptap'
-import { TItem, TItemVariants, TColors } from './loader'
+import { TItem, TItemVariants, TColors, TLink } from './loader'
 import { removeMark } from 'tiptap-commands'
 
 export default {
@@ -34,6 +35,7 @@ export default {
     EditorMenuBar,
     TItem,
     TItemVariants,
+    TLink,
   },
 
   props: {
@@ -62,6 +64,9 @@ export default {
       }
       if (f.colorPicker) {
         return TColors
+      }
+      if (f.type === 'link') {
+        return TLink
       }
       return TItem
     },

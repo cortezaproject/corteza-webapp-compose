@@ -15,6 +15,11 @@ export default {
       required: false,
       default: () => ({}),
     },
+    getMarkAttrs: {
+      type: Function,
+      required: false,
+      default: () => {},
+    },
   },
   methods: {
     /**

@@ -72,7 +72,7 @@ export const getToolbar = () => [
       { variant: 'justify', icon: 'align-justify', attrs: { alignment: 'justify' } },
     ],
   },
-  { type: 'link', icon: 'link' },
+  { type: 'link', icon: 'link', attrs: { href: null } },
   // @note There is no free FA icon for this
   { type: 'horizontal_rule', label: '__' },
 ]
