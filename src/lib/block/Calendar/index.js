@@ -11,8 +11,6 @@ const legacyViewMapping = {
   agendaWeek: 'timeGridWeek',
   agendaDay: 'timeGridDay',
   listMonth: 'listMonth',
-  listWeek: 'listWeek',
-  listDay: 'listDay',
 }
 
 export const resources = {
@@ -71,8 +69,6 @@ export class Calendar {
       'timeGridWeek',
       'timeGridDay',
       'listMonth',
-      'listWeek',
-      'listDay',
     ]
   }
 

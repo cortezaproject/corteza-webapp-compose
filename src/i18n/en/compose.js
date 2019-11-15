@@ -113,12 +113,10 @@ export default {
         default: 'Default view',
         footnote: 'Make sure default is one of the available views',
 
-        dayGridMonth: 'Month agenda',
-        timeGridWeek: 'Week agenda',
-        timeGridDay: 'Day agenda',
-        listMonth: 'Month list',
-        listWeek: 'Week list',
-        listDay: 'Day list',
+        dayGridMonth: 'Month',
+        timeGridWeek: 'Week',
+        timeGridDay: 'Day',
+        listMonth: 'Agenda',
       },
       recordFeed: {
         optionLabel: 'Records',
