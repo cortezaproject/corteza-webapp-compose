@@ -1,7 +1,7 @@
 <template>
   <b-button
     variant="link"
-    class="text-dark font-weight-bold"
+    class="text-dark font-weight-bold text-decoration-none"
     @click="onClick(format.type, format.attrs)">
     <span :class="activeClasses(format.attrs)">
       <font-awesome-icon

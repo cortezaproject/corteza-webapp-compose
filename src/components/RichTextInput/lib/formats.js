@@ -24,7 +24,7 @@ import {
 } from 'tiptap-extensions'
 
 // Defines a set of formats that our document supports
-export const formats = [
+export const getFormats = () => [
   new Bold(),
   new Italic(),
   new Underline(),
@@ -47,7 +47,7 @@ export const formats = [
 ]
 
 // Defines the structure of our editor toolbar
-export const toolbar = [
+export const getToolbar = () => [
   { type: 'bold', icon: 'bold' },
   { type: 'italic', icon: 'italic' },
   { type: 'underline', icon: 'underline' },

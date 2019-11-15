@@ -19,7 +19,7 @@
 <script>
 import RHeader from './RToolbar'
 import { Editor, EditorContent } from 'tiptap'
-import { formats, toolbar } from './lib'
+import { getFormats, getToolbar } from './lib'
 
 export default {
   components: {
@@ -36,9 +36,10 @@ export default {
   },
 
   data () {
+    const formats = getFormats()
     return {
       formats,
-      toolbar,
+      toolbar: getToolbar(),
       // Helper to determine if current content differes from prop's content
       emittedContent: false,
 

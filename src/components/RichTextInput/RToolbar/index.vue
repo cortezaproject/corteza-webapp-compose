@@ -3,7 +3,7 @@
     :editor="editor"
     v-slot="{ commands, isActive }">
 
-    <b-button-group class="flex-wrap">
+    <div class="d-flex flex-wrap">
       <component
         v-for="(f, i) of formats"
         :key="`${f.name}${i}}`"
@@ -20,7 +20,7 @@
 
         <font-awesome-icon icon="remove-format" />
       </b-button>
-    </b-button-group>
+    </div>
   </editor-menu-bar>
 </template>
 
