@@ -61,9 +61,9 @@ describe('lib/block/Calendar', () => {
 
     it('should filter, order list of views (right)', () => {
       const tests = [
-        { name: 'preserve correct order', header: { views: ['listMonth', 'listWeek', 'listDay'] }, expect: 'listMonth,listWeek,listDay' },
-        { name: 'correct order', header: { views: ['listWeek', 'listDay', 'listMonth'] }, expect: 'listMonth,listWeek,listDay' },
-        { name: 'filter & correct order', header: { views: ['ignore', 'listWeek', 'listDay', 'no', 'listMonth'] }, expect: 'listMonth,listWeek,listDay' },
+        { name: 'preserve correct order', header: { views: ['dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listMonth'] }, expect: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth' },
+        { name: 'correct order', header: { views: ['listMonth', 'dayGridMonth', 'timeGridDay', 'timeGridWeek'] }, expect: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth' },
+        { name: 'filter & correct order', header: { views: ['listMonth', 'dayGridMonth', 'timeGridDay', 'no', 'timeGridWeek'] }, expect: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth' },
       ]
 
       for (const t of tests) {
