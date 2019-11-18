@@ -920,6 +920,8 @@ export default {
       firstPagePreview: 'First page preview',
       pageLoadFailed: 'Page failed to load',
       pageLoading: '$t(preview.pdf.loading)',
+      noPages: 'This document is empty',
+      clickToRetry: 'Click to retry',
     },
   },
   notification: {

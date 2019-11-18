@@ -1,7 +1,7 @@
 <template>
   <preview-lightbox
     v-if="show"
-    :src="(attachment || {}).pdf || (attachment || {}).src"
+    :src="(attachment || {}).document || (attachment || {}).src"
     :name="(attachment || {}).name"
     :alt="(attachment || {}).name"
     :labels="previewLabels"
@@ -54,15 +54,17 @@ export default {
         downloadForAll: this.$t('preview.pdf.downloadForAll'),
         pageLoadFailed: this.$t('preview.pdf.pageLoadFailed'),
         pageLoading: this.$t('preview.pdf.pageLoading'),
+        noPages: this.$t('preview.pdf.noPages'),
+        clickToRetry: this.$t('preview.pdf.clickToRetry'),
       }
     },
   },
 
   created () {
     window.addEventListener('keyup', this.onKeyUp)
-    this.$root.$on('showAttachmentsModal', ({ url, download, name, pdf = undefined, meta }) => {
+    this.$root.$on('showAttachmentsModal', ({ url, download, name, document = undefined, meta }) => {
       this.attachment = {
-        pdf,
+        document,
         download,
         meta,
         src: url,
