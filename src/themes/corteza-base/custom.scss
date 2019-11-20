@@ -86,6 +86,18 @@ html {
     font-style: italic;
   }
 
+  // Code
+  pre {
+    background-color: #23241f;
+    color: #f8f8f2;
+    overflow: visible;
+    white-space: pre-wrap;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding: 5px 10px;
+    border-radius: 3px;
+  }
+
   // todo list - https://github.com/scrumpy/tiptap/blob/master/examples/Components/Routes/TodoList/index.vue
   li[data-type="todo_item"] {
     display: flex;
