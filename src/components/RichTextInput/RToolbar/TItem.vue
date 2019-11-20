@@ -22,7 +22,7 @@ import base from './base'
  * Component is used to display simple formatter options such as bold, italic, ...
  */
 export default {
-  name: 'h-item',
+  name: 't-item',
   extends: base,
 }
 </script>

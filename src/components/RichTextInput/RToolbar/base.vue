@@ -3,7 +3,6 @@
  * Defines common props, methods between different toolbar item types
  */
 export default {
-
   props: {
     format: {
       type: Object,

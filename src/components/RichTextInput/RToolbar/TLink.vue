@@ -49,7 +49,7 @@ import base from './base'
  * input the URL that should be applied.
  */
 export default {
-  name: 'h-item',
+  name: 't-link',
   extends: base,
 
   data () {

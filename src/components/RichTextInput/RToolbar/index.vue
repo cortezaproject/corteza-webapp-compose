@@ -1,48 +1,47 @@
 <template>
-  <editor-menu-bar
-    :editor="editor"
-    v-slot="{ commands, isActive, getMarkAttrs }">
+  <div class="d-flex flex-wrap">
+    <component
+      v-for="(f, i) of formats"
+      :key="`${f.name}${i}}`"
+      :is="getItem(f)"
+      :format="f"
+      v-bind="$props"
+      @click="(commands[$event.type])($event.attrs)" />
 
-    <div class="d-flex flex-wrap">
-      <component
-        v-for="(f, i) of formats"
-        :key="`${f.name}${i}}`"
-        :is="getItem(f)"
-        :format="f"
-        :is-active="isActive"
-        :get-mark-attrs="getMarkAttrs"
-        @click="(commands[$event.type])($event.attrs)" />
+    <!-- Extra button to remove formatting -->
+    <b-button
+      variant="link"
+      class="text-dark font-weight-bold"
+      @click="removeMarks">
 
-      <!-- Extra button to remove formatting -->
-      <b-button
-        variant="link"
-        class="text-dark font-weight-bold"
-        @click="removeMarks">
-
-        <font-awesome-icon icon="remove-format" />
-      </b-button>
-    </div>
-  </editor-menu-bar>
+      <font-awesome-icon icon="remove-format" />
+    </b-button>
+  </div>
 </template>
 
 <script>
-import { EditorMenuBar } from 'tiptap'
 import { TItem, TItemVariants, TColors, TLink } from './loader'
 import { removeMark } from 'tiptap-commands'
 
 export default {
   components: {
-    EditorMenuBar,
     TItem,
     TItemVariants,
     TLink,
   },
 
   props: {
-    editor: {
+    commands: {
       type: Object,
       required: true,
-      default: () => ({}),
+    },
+    isActive: {
+      type: Object,
+      required: true,
+    },
+    getMarkAttrs: {
+      type: Function,
+      required: true,
     },
     formats: {
       type: Array,

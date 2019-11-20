@@ -1,10 +1,18 @@
 <template>
   <b-card no-body class="editor rt-content">
     <b-card-header>
-      <r-header
+      <editor-menu-bar
         :editor="editor"
-        :formats="toolbar" />
+        v-slot="{ commands, isActive, getMarkAttrs }">
 
+      <r-toolbar
+        :editor="editor"
+        :formats="toolbar"
+        :commands="commands"
+        :is-active="isActive"
+        :get-mark-attrs="getMarkAttrs" />
+
+      </editor-menu-bar>
     </b-card-header>
 
     <b-card-body>
@@ -17,14 +25,16 @@
 </template>
 
 <script>
-import RHeader from './RToolbar'
-import { Editor, EditorContent } from 'tiptap'
+import RToolbar from './RToolbar'
+import { EditorMenuBar, Editor, EditorContent } from 'tiptap'
+
 import { getFormats, getToolbar } from './lib'
 
 export default {
   components: {
     EditorContent,
-    RHeader,
+    RToolbar,
+    EditorMenuBar,
   },
 
   props: {
