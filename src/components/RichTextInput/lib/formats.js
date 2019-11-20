@@ -59,6 +59,7 @@ export const getToolbar = () => [
   { type: 'heading', label: 'H1', attrs: { level: 1 } },
   { type: 'heading', label: 'H2', attrs: { level: 2 } },
   { type: 'heading', label: 'H3', attrs: { level: 3 } },
+  { type: 'paragraph', icon: 'paragraph' },
   { type: 'ordered_list', icon: 'list-ol' },
   { type: 'bullet_list', icon: 'list-ul' },
   { type: 'todo_list', icon: 'tasks' },
