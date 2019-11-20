@@ -1,17 +1,34 @@
 <template>
-  <swatches
-      colors="text-advanced"
-      @input="onClick(format.type, { color: $event })">
-
+  <div>
     <b-button
-      slot="trigger"
       variant="link"
-      class="text-dark font-weight-bold text-decoration-none">
+      class="text-dark font-weight-bold text-decoration-none"
+      :id="`color-popover-${format.type}`">
+
       <span
         class="icon"
         :class="typeStyle">A</span>
+
     </b-button>
-  </swatches>
+
+    <b-popover
+      :delay="0"
+      no-fade
+      custom-class="tcl-popover"
+      triggers="focus"
+      :target="`color-popover-${format.type}`"
+      placement="bottom"
+      :container="null"
+      ref="popover">
+
+      <swatches
+        swatch-size="14"
+        colors="text-advanced"
+        @input="onClick(format.type, { color: $event })"
+        inline />
+
+    </b-popover>
+  </div>
 </template>
 
 <script>
@@ -20,25 +37,24 @@ import Swatches from 'vue-swatches'
 import 'vue-swatches/dist/vue-swatches.min.css'
 
 /**
- * Component is used to display simple formatter options such as bold, italic, ...
+ * Component is used to display link formatters. It provides an interface to
+ * input the URL that should be applied.
  */
 export default {
-  name: 'h-item',
+  name: 't-color',
 
   components: {
     Swatches,
   },
   extends: base,
+
   computed: {
-    /**
-     * Determines extra styling for color type icon
-     * @returns {String}
-     */
     typeStyle () {
       return `${this.format.type}-icon`
     },
   },
 }
+
 </script>
 
 <style lang="scss" scoped>
@@ -55,5 +71,13 @@ export default {
     background-color: rgba($black, 0.07);
     padding: 2px 3px;
   }
+}
+</style>
+
+<style lang="scss">
+// Bootstrap popover doesn't provide a way to style it's body component
+// Can't be scoped, since it's not rendered in here
+.tcl-popover .popover-body {
+  padding: 0 !important;
 }
 </style>
