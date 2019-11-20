@@ -2,6 +2,7 @@ import {
   AlignmentBlock,
   TextColor,
   TextBackground,
+  Link,
 } from '../extensions'
 
 import {
@@ -14,7 +15,6 @@ import {
   TodoList,
   Bold,
   Italic,
-  Link,
   Strike,
   Underline,
   HardBreak,
