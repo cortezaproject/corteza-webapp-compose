@@ -1,26 +1,28 @@
 <template>
   <b-card no-body class="editor rt-content">
-    <b-card-header>
-      <editor-menu-bar
-        :editor="editor"
-        v-slot="{ commands, isActive, getMarkAttrs }">
+    <template v-if="editor">
+      <b-card-header>
+        <editor-menu-bar
+          :editor="editor"
+          v-slot="{ commands, isActive, getMarkAttrs }">
 
-      <r-toolbar
-        :editor="editor"
-        :formats="toolbar"
-        :commands="commands"
-        :is-active="isActive"
-        :get-mark-attrs="getMarkAttrs" />
+        <r-toolbar
+          :editor="editor"
+          :formats="toolbar"
+          :commands="commands"
+          :is-active="isActive"
+          :get-mark-attrs="getMarkAttrs" />
 
-      </editor-menu-bar>
-    </b-card-header>
+        </editor-menu-bar>
+      </b-card-header>
 
-    <b-card-body>
-      <editor-content
-        class="editor__content"
-        :editor="editor" />
+      <b-card-body>
+        <editor-content
+          class="editor__content"
+          :editor="editor" />
 
-    </b-card-body>
+      </b-card-body>
+    </template>
   </b-card>
 </template>
 
@@ -52,21 +54,7 @@ export default {
       toolbar: getToolbar(),
       // Helper to determine if current content differes from prop's content
       emittedContent: false,
-
-      editor: new Editor({
-        extensions: formats,
-        content: this.value,
-
-        /**
-         * Handle on update events. Process current document & update data model
-         * @note Currently, build-in toHTML function removes empty lines.
-         * Because of this, we are using `view.dom.innerHTML`. This should be improved at a later point
-         */
-        onUpdate: () => {
-          this.emittedContent = true
-          this.$emit('input', this.editor.view.dom.innerHTML)
-        },
-      }),
+      editor: undefined,
     }
   },
 
@@ -85,8 +73,43 @@ export default {
     },
   },
 
+  mounted () {
+    this.init()
+  },
+
   beforeDestroy () {
     this.editor.destroy()
+  },
+
+  methods: {
+    /**
+     * Initialize the editor, state, ...
+     */
+    init () {
+      this.editor = new Editor({
+        extensions: this.formats,
+        content: this.value,
+        onUpdate: this.onUpdate,
+      })
+
+      /**
+       * Since we migrated to TipTap, the new content should be emitted
+       * after tiptap is done parsing it.
+       */
+      this.$nextTick(() => {
+        this.onUpdate()
+      })
+    },
+
+    /**
+     * Handle on update events. Process current document & update data model
+     * @note Currently, build-in toHTML function removes empty lines.
+     * Because of this, we are using `view.dom.innerHTML`. This should be improved at a later point
+     */
+    onUpdate () {
+      this.emittedContent = true
+      this.$emit('input', this.editor.view.dom.innerHTML)
+    },
   },
 }
 </script>
