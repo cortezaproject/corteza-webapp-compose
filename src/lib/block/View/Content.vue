@@ -1,5 +1,7 @@
 <template>
+  <div class="rt-content">
     <div v-html="options.body"></div>
+  </div>
 </template>
 <script>
 import base from './base'

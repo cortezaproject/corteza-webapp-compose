@@ -555,6 +555,7 @@ export default {
       attachmentFileInfo: '(File size: {{0}}, uploaded {{1}})',
       yes: 'Yes',
       no: 'No',
+      ok: 'Ok',
       view: 'View',
       processing: 'Processing...',
       import: 'Import',
@@ -568,6 +569,7 @@ export default {
       general: 'General',
       enabled: 'Enabled',
       welcome: 'Welcome',
+      urlPlaceholder: 'https://example.tld',
     },
     placeholder: {
       handle: 'handle (a - z, 0 - 9, underscore, dash)',
