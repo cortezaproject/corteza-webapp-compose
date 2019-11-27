@@ -815,7 +815,8 @@ export default {
         optionsLabel: 'Options to select from',
         optionRemove: 'Remove',
         optionAdd: 'Add',
-        optionPlaceholder: 'Add more',
+        optionValuePlaceholder: 'Value',
+        optionLabelPlaceholder: 'Label',
         optionType: {
           label: 'Multiple value input type',
           default: 'Single input',

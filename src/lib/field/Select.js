@@ -6,7 +6,7 @@ export class Select {
   }
 
   merge ({ options, selectType, multiDelimiter } = {}) {
-    this.options = options || []
+    this.options = this.prepOptions(options || [])
     this.selectType = selectType ? (typeof selectType === 'string' ? selectType : 'default') : 'default'
     this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : '\n'
 
@@ -18,5 +18,21 @@ export class Select {
       options: this.options,
       selectType: this.selectType,
     }
+  }
+
+  /**
+   * Helper to prepare options for the given select
+   * @param {Array} options Array of available options
+   * @returns {Array}
+   */
+  prepOptions (options) {
+    return options.map(opt => {
+      if (typeof (opt) !== 'object') {
+        opt = { value: opt, text: opt }
+      }
+
+      opt.text = opt.text || opt.value
+      return opt
+    })
   }
 }
