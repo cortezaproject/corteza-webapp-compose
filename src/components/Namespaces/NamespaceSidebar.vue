@@ -86,7 +86,7 @@ export default {
 
       // DSC order
       const sorter = (a, b) => {
-        return a.name < b.name ? -1 : 1
+        return a.name.localeCompare(b.name, 'en', { sensitivity: 'base' })
       }
 
       return {
