@@ -147,21 +147,29 @@ export default {
     },
   },
 
+  watch: {
+    pageID: {
+      handler: function () {
+        // If we redirect to page index, try to find & redirect to a first
+        // available public page.
+        if (!this.pageID) {
+          let { pageID } = this.$store.getters['page/firstVisibleNonRecordPage'] || {}
+          if (pageID) {
+            // Use replace so we don't push to history stack
+            this.$router.replace({ name: 'page', params: { pageID } })
+          } else {
+            this.loaded = true
+          }
+        }
+      },
+      immediate: true,
+    },
+  },
+
   created () {
     this.documentWidth = document.body.offsetWidth
     window.onresize = () => {
       this.documentWidth = document.body.offsetWidth
-    }
-  },
-
-  beforeMount () {
-    if (!this.pageID) {
-      let { pageID } = this.$store.getters['page/firstVisibleNonRecordPage'] || {}
-      if (pageID) {
-        this.$router.push({ name: 'page', params: { pageID } })
-      } else {
-        this.loaded = true
-      }
     }
   },
 

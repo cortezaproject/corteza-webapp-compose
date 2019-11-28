@@ -69,6 +69,7 @@ export default {
     slug: {
       immediate: true,
       handler (slug) {
+        this.loaded = false
         this.$auth.check(this.$SystemAPI).then(() => {
           this.$store.dispatch('namespace/load').then(() => {
             const ns = this.$store.getters['namespace/getByUrlPart'](slug)
@@ -92,8 +93,6 @@ export default {
         if (!namespace) {
           return
         }
-
-        this.loaded = false
 
         const p = { namespaceID: namespace.namespaceID, clear: true }
 

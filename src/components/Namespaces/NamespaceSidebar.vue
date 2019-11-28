@@ -20,7 +20,7 @@
                         :key="ns.namespaceID"
                         :to="{ name: 'namespace', params: ns }"
                         class="p-2"
-                        active-class="active text-primary border-top-0 border-bottom-0"
+                        active-class="active text-primary border-top-0 border-bottom-0 disabled"
                         @click="removePin(ns)">
 
         <span class="text-truncate d-block">
@@ -33,7 +33,7 @@
                         :key="ns.namespaceID"
                         :to="{ name: 'namespace', params: ns }"
                         class="p-2"
-                        active-class="active text-primary border-top-0 border-bottom-0">
+                        active-class="active text-primary border-top-0 border-bottom-0 disabled">
 
       <span class="text-truncate d-block">
             {{ ns.name }}
