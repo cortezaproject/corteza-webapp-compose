@@ -13,7 +13,8 @@
     <div class="d-none d-md-block">
       <namespace-sidebar :namespaces="enabledNamespaces"
                          v-if="showNSSideBar && enabledNamespaces.length > 1"
-                         :namespace="namespace" />
+                         :namespace="namespace"
+                         :visible.sync="nsSbVisible" />
 
     </div>
     <router-view v-if="loaded && namespace"
@@ -49,6 +50,7 @@ export default {
 
   data () {
     return {
+      nsSbVisible: false,
       showNSSideBar: false,
       loaded: false,
       error: '',
@@ -154,6 +156,7 @@ export default {
         .settingsCurrent()
         .then((settings = {}) => {
           this.showNSSideBar = !!(((settings.UI || {}).NamespaceSwitcher || {}).Enabled)
+          this.nsSbVisible = !!(((settings.UI || {}).NamespaceSwitcher || {}).DefaultOpen)
         })
     },
 

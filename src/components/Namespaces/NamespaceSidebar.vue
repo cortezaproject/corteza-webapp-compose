@@ -2,7 +2,8 @@
   <sidebar position="left"
            name="ns-sidebar"
            class="bg-white overflow-auto"
-           :visible.sync="visible">
+           v-bind="$props"
+           v-on="$listeners">
 
     <b-list-group-item class="p-2 sticky-top"
                        slot="header">
@@ -60,11 +61,16 @@ export default {
       type: Namespace,
       required: false,
     },
+
+    visible: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 
   data () {
     return {
-      visible: false,
       filter: null,
       pinned: {},
     }
