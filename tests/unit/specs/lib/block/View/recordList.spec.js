@@ -4,6 +4,8 @@
 import { expect } from 'chai'
 import RecordList from 'corteza-webapp-compose/src/lib/block/View/RecordList'
 import Module from 'corteza-webapp-compose/src/lib/module'
+import ExporterModal from 'corteza-webapp-compose/src/components/Public/Record/Exporter'
+import ComposeAPI from 'corteza-webapp-common/src/lib/corteza-server/rest-api-client/compose'
 import { shallowMount } from 'corteza-webapp-compose/tests/lib/helpers'
 import sinon from 'sinon'
 import fp from 'flush-promises'
@@ -337,6 +339,45 @@ describe('lib/block/View/RecordList', () => {
         wrap.vm.filter.sort = cf
         wrap.vm.updateRecordList.restore()
       }
+    })
+  })
+
+  describe('record exporting', () => {
+    beforeEach(() => {
+      sinon.stub(RecordList.computed, 'recordListModule').returns(new Module({ moduleID: '333', name: 'testModule' }))
+      propsData.options.pageID = '111'
+      propsData.options.moduleID = '333'
+      propsData.options.allowExport = true
+      propsData.namespace.slug = 'nss'
+
+      sinon.stub(global.window, 'open').returns()
+      $ComposeAPI.recordExportEndpoint = ComposeAPI.prototype.recordExportEndpoint
+    })
+
+    it('on export -- generate name based on NS & module', () => {
+      const wrap = mountRL()
+
+      wrap.find(ExporterModal).vm.$emit('export', { filterRaw: { rangeType: 'range', date: { start: 'startPR', end: 'endPR' } } })
+      const [ url ] = global.window.open.args.pop()
+      expect(url).to.include('nss')
+      expect(url).to.include('testModule')
+    })
+
+    it('on export -- generate name for a date-range', () => {
+      const wrap = mountRL()
+
+      wrap.find(ExporterModal).vm.$emit('export', { filterRaw: { rangeType: 'range', date: { start: 'startPR', end: 'endPR' } } })
+      const [ url ] = global.window.open.args.pop()
+      expect(url).to.include('startPR')
+      expect(url).to.include('endPR')
+    })
+
+    it('on export -- generate name for all records', () => {
+      const wrap = mountRL()
+
+      wrap.find(ExporterModal).vm.$emit('export', { filterRaw: { rangeType: 'all' } })
+      const [ url ] = global.window.open.args.pop()
+      expect(url).to.include('all')
     })
   })
 

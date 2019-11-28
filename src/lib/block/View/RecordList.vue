@@ -233,11 +233,18 @@ export default {
 
     onExport (e) {
       const { namespaceID, moduleID } = this.filter || {}
+      const { filterRaw } = e
       e = {
         ...e,
         namespaceID,
         moduleID,
-        filename: 'export',
+        filename: `${this.namespace.slug} - ${this.recordListModule.name}`,
+      }
+
+      if (filterRaw.rangeType === 'range') {
+        e.filename += ` - ${filterRaw.date.start} - ${filterRaw.date.end}`
+      } else {
+        e.filename += ` - ${filterRaw.rangeType}`
       }
 
       const url = make({

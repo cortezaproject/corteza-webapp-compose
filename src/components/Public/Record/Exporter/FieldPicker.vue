@@ -410,6 +410,7 @@ export default {
         ext: kind,
         fields: this.fields.map(({ name }) => name),
         filters: this.makeFilters(this.filter),
+        filterRaw: this.filter,
       })
     },
   },

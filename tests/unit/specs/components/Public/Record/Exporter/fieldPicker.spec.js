@@ -72,7 +72,7 @@ describe('components/Public/Record/Exporter/FieldPicker.vue', () => {
       expect(wrap.emitted().export).to.be.undefined
       wrap.vm.doExport('kind')
       const e = wrap.emitted().export.pop().pop()
-      expect(e).to.have.keys(['ext', 'fields', 'filters'])
+      expect(e).to.have.keys(['ext', 'fields', 'filters', 'filterRaw'])
     })
 
     it('filter', () => {
