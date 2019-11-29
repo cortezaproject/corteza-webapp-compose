@@ -17,6 +17,7 @@
       <exporter-modal v-if="options.allowExport"
                       :module="recordListModule"
                       :records="records"
+                      :query="query"
                       @export="onExport"
                       class="ml-1 float-left" />
 
@@ -247,6 +248,18 @@ export default {
         e.filename += ` - ${filterRaw.rangeType}`
       }
 
+      if (filterRaw.includeQuery) {
+        const queryF = this.makeQuery(filterRaw.query, this.recordListModule.filterFields(this.options.fields))
+        if (e.filters) {
+          e.filters = `(${e.filters}) AND `
+        } else {
+          e.filters = ''
+        }
+        if (queryF) {
+          e.filters += encodeURI(`(${queryF})`)
+        }
+      }
+
       const url = make({
         url: `${this.$ComposeAPI.baseURL}${this.$ComposeAPI.recordExportEndpoint(e)}`,
         query: {
@@ -261,12 +274,11 @@ export default {
 
     handleQueryThrottled: _.throttle(function (e) { this.handleQuery(e) }, 500),
 
-    // Merges prefilter with query
-    handleQuery () {
+    makeQuery (q = '', fields) {
       let filter
-      let q = (this.query || '').trim()
+      q = (q || '').trim()
 
-      if (q && q.trim().length > 0) {
+      if (q) {
         let numQuery, strQuery, boolQuery
         numQuery = Number.parseFloat(q)
 
@@ -278,7 +290,7 @@ export default {
         boolQuery = toBoolean(q)
 
         // When searching, always reset filter with prefilter + query
-        filter = this.recordListModule.filterFields(this.options.fields).map(qf => {
+        filter = fields.map(qf => {
           if (qf.kind === 'Number' && !isNaN(numQuery)) {
             return `${qf.name} = ${numQuery}`
           }
@@ -303,6 +315,13 @@ export default {
       } else {
         filter = this.prefilter || ''
       }
+
+      return filter
+    },
+
+    // Merges prefilter with query
+    handleQuery () {
+      const filter = this.makeQuery(this.query, this.recordListModule.filterFields(this.options.fields))
 
       this.filter.page = 1
       this.updateRecordList({ ...this.filter, filter })

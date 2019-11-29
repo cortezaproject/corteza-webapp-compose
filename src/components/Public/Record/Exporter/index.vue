@@ -17,6 +17,7 @@
       <field-picker
         :module="module"
         :recordCount="records.length"
+        :query="query"
         v-on="$listeners" />
 
     </b-modal>
@@ -39,6 +40,11 @@ export default {
     records: {
       type: Array,
       default: () => [],
+    },
+    query: {
+      type: String,
+      required: false,
+      default: undefined,
     },
   },
 

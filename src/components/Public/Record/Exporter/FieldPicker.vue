@@ -12,6 +12,19 @@
 
         <i>{{ $t('block.recordList.export.limitations') }}</i>
       </b-form-group>
+
+      <b-form-group>
+        <b-form-checkbox v-model="includeQuery">
+         {{ $t('block.recordList.export.includeQuery') }}
+        </b-form-checkbox>
+
+        <b-form-input
+          v-if="includeQuery"
+          v-model="exportQuery"
+          :placeholder="$t('block.recordList.export.query')" />
+
+      </b-form-group>
+
       <b-form-group>
         <b-form-radio-group
           v-model="rangeType"
@@ -121,6 +134,11 @@ export default {
       type: Number,
       default: 0,
     },
+    query: {
+      type: String,
+      required: false,
+      default: undefined,
+    },
     filterRangeType: {
       type: String,
       default: 'all',
@@ -156,6 +174,8 @@ export default {
       fields: [],
       filter: {
         rangeType: null,
+        includeQuery: false,
+        query: this.query,
         rangeBy: null,
         date: {
           range: null,
@@ -245,6 +265,24 @@ export default {
 
       set (rangeBy) {
         this.filter.rangeBy = rangeBy
+      },
+    },
+
+    includeQuery: {
+      get () {
+        return this.filter.includeQuery
+      },
+      set (v) {
+        this.filter.includeQuery = v
+      },
+    },
+
+    exportQuery: {
+      get () {
+        return this.filter.query
+      },
+      set (v) {
+        this.filter.query = v
       },
     },
 

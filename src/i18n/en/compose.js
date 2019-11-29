@@ -206,6 +206,8 @@ export default {
         json: 'JSON Export',
         csv: 'CSV Export',
 
+        includeQuery: 'Filter by search query',
+        query: 'Search query',
         all: 'Export all records',
         inRange: 'Set date range',
 

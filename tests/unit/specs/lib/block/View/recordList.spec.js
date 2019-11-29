@@ -344,7 +344,7 @@ describe('lib/block/View/RecordList', () => {
 
   describe('record exporting', () => {
     beforeEach(() => {
-      sinon.stub(RecordList.computed, 'recordListModule').returns(new Module({ moduleID: '333', name: 'testModule' }))
+      sinon.stub(RecordList.computed, 'recordListModule').returns(new Module({ moduleID: '333', name: 'testModule', fields: [ {name: 'n1', kind: 'String'}, {name: 'n2', kind: 'String'} ] }))
       propsData.options.pageID = '111'
       propsData.options.moduleID = '333'
       propsData.options.allowExport = true
@@ -378,6 +378,75 @@ describe('lib/block/View/RecordList', () => {
       wrap.find(ExporterModal).vm.$emit('export', { filterRaw: { rangeType: 'all' } })
       const [ url ] = global.window.open.args.pop()
       expect(url).to.include('all')
+    })
+
+    it('on export -- include query string when so requested', () => {
+      propsData.options.fields = ['n1', 'n2']
+      const wrap = mountRL()
+
+      wrap.find(ExporterModal).vm.$emit('export', {
+        filterRaw: {
+          includeQuery: true,
+          query: 'qstring',
+        }
+      })
+
+      const [ url ] = global.window.open.args.pop()
+      expect(url).to.include('n1%20LIKE%20%27qstring%25%27')
+      expect(url).to.include('n2%20LIKE%20%27qstring%25%27')
+    })
+
+    it('on export -- ignore query string when so requested', () => {
+      propsData.options.fields = ['n1', 'n2']
+      const wrap = mountRL()
+
+      wrap.find(ExporterModal).vm.$emit('export', {
+        filterRaw: {
+          includeQuery: false,
+          query: 'qstring',
+        }
+      })
+
+      const [ url ] = global.window.open.args.pop()
+      expect(url).to.not.include('qstring')
+    })
+
+    it('on export -- combine with date filters', () => {
+      propsData.options.fields = ['n1', 'n2']
+      const wrap = mountRL()
+
+      wrap.find(ExporterModal).vm.$emit('export', {
+        filters: 'filter1',
+        filterRaw: {
+          includeQuery: true,
+          query: 'qstring',
+        }
+      })
+
+      const [ url ] = global.window.open.args.pop()
+      expect(url).to.include('(filter1)')
+      expect(url).to.include('%20AND%20(')
+      expect(url).to.include('qstring')
+    })
+
+    it('on export -- combine with pre-filter', () => {
+      propsData.options.fields = ['n1', 'n2']
+      const wrap = mountRL()
+
+      wrap.setData({ prefilter: 'pref1' })
+      wrap.find(ExporterModal).vm.$emit('export', {
+        filters: 'filter1',
+        filterRaw: {
+          includeQuery: true,
+          query: 'qstring',
+        }
+      })
+
+      const [ url ] = global.window.open.args.pop()
+      expect(url).to.include('(filter1)')
+      expect(url).to.include('(pref1)')
+      expect(url).to.include('%20AND%20(')
+      expect(url).to.include('qstring')
     })
   })
 
