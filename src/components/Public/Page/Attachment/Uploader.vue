@@ -122,7 +122,11 @@ export default {
       this.error = null
 
       // Check if file type is allowed
-      if (!validateFileType(file.name, this.acceptedFiles)) {
+      let types = this.acceptedFiles
+      if (!types || !types.length) {
+        types = ['*/*']
+      }
+      if (!validateFileType(file.name, types)) {
         this.error = this.$t('general.label.fileTypeNotAllowed')
         this.$refs.dropzone.removeFile(file)
       }
