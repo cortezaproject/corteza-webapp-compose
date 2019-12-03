@@ -15,7 +15,13 @@ export default (options = {}) => {
   options = {
     el: '#app',
     name: 'compose',
-    template: '<router-view/>',
+    template: `<router-view v-if="loaded"/>`,
+    data: () => ({ loaded: false }),
+    created () {
+      this.$Settings.init({ api: this.$ComposeAPI }).finally(() => {
+        this.loaded = true
+      })
+    },
     router,
     store,
     i18n: i18n(),

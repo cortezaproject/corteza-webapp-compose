@@ -67,15 +67,13 @@ export default {
         return Promise.reject(error)
       }
 
-      this.$Settings.init({ api: this.$ComposeAPI }).then(() => {
-        this.$ComposeAPI.namespaceList().then(({ set }) => {
-          this.namespaces = set
-          this.$ComposeAPI.permissionsEffective().then((p) => {
-            this.canCreateNamespace = p.filter(per => per.operation === 'namespace.create')[0].allow
-            this.canGrant = p.filter(per => per.operation === 'grant')[0].allow
-            this.loaded = true
-          })
-        }).catch(errHandler)
+      this.$ComposeAPI.namespaceList().then(({ set }) => {
+        this.namespaces = set
+        this.$ComposeAPI.permissionsEffective().then((p) => {
+          this.canCreateNamespace = p.filter(per => per.operation === 'namespace.create')[0].allow
+          this.canGrant = p.filter(per => per.operation === 'grant')[0].allow
+          this.loaded = true
+        })
       }).catch(errHandler)
     }).catch((e) => {
       this.$auth.open()
