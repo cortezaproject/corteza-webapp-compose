@@ -12,7 +12,7 @@
     </div>
     <div class="d-none d-md-block">
       <namespace-sidebar :namespaces="enabledNamespaces"
-                         v-if="showNSSideBar && enabledNamespaces.length > 1"
+                         v-if="$s('UI.NamespaceSwitcher.Enabled', false) && enabledNamespaces.length > 1"
                          :namespace="namespace"
                          :visible.sync="nsSbVisible" />
 
@@ -50,8 +50,7 @@ export default {
 
   data () {
     return {
-      nsSbVisible: false,
-      showNSSideBar: false,
+      nsSbVisible: this.$s('UI.NamespaceSwitcher.DefaultOpen', false),
       loaded: false,
       error: '',
       alerts: [], // { variant: 'info', message: 'foo' },
@@ -149,11 +148,6 @@ export default {
   },
 
   methods: {
-    async loadSettings () {
-      this.showNSSideBar = !!this.$s('UI.NamespaceSwitcher.Enabled', false)
-      this.nsSbVisible = !!this.$s('UI.NamespaceSwitcher.DefaultOpen', false)
-    },
-
     async namespaceLoader () {
       return this.$ComposeAPI.namespaceList().then(({ set }) => {
         this.namespaces = set.map(ns => new Namespace(ns))
