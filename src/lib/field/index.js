@@ -2,6 +2,24 @@ import * as kinds from './loader'
 import i18next from 'i18next'
 import { fieldValid, nameValid } from 'corteza-webapp-common/src/lib/types/compose/module-field'
 
+/**
+ * Checks if values are equal
+ * @param {*} v1 Value in question
+ * @param {*} ref Value to compare to
+ * @returns {Boolean}
+ */
+function valuesEq (v1, ref) {
+  if (Array.isArray(v1)) {
+    if (!Array.isArray(ref)) {
+      return false
+    }
+
+    return v1.length === ref.length && !v1.find((v, i) => v !== ref[i])
+  } else {
+    return v1 === ref
+  }
+}
+
 const stdEmptyCheck = (value) => {
   if (Array.isArray(value)) {
     if (!value.length) {
@@ -89,12 +107,16 @@ export default class Field {
   // Preforms basic validation and calls validate() function on type-specific options
   //
   // Returns an array of Error objects
-  validate (value) {
+  validate (value, compareToValue) {
     if (this.isRequired && (this.options.isEmpty ? this.options.isEmpty(value) : stdEmptyCheck(value))) {
       return [i18next.t('notification.field.missingRequired')]
     }
 
     if (this.options && this.options.validate) {
+      // If values are equal; don't validate
+      if (valuesEq(value, compareToValue)) {
+        return []
+      }
       return this.options.validate(value)
     }
 

@@ -2,6 +2,7 @@
 // @todo option to allow multiple entries
 // @todo option to allow duplicates
 import moment from 'moment'
+import i18next from 'i18next'
 
 export class DateTime {
   constructor (def = {}) {
@@ -50,36 +51,62 @@ export class DateTime {
       outputRelative: this.outputRelative,
     }
   }
-}
 
-export function checkPast (value, onlyPast, onlyDate, onlyTime) {
-  if (onlyPast) {
-    // make sure value is in the past
-    if (value < moment()) {
-      return value
+  /**
+   * Checks if given value is in the future
+   * @param {String|Array<String>} v Value (in DateTime) to check
+   * @param {Moment} now Time reference
+   * @returns {undefined|String} undefined if valid, Error string if invalid
+   */
+  checkFuture (v, now) {
+    if (!this.onlyFutureValues) {
+      return undefined
     }
-    return moment()
-  }
-}
 
-export function checkFuture (value, onlyFuture, onlyDate, onlyTime) {
-  if (onlyFuture) {
-    // make sure value is in the future
-    if (value > moment()) {
-      return value
+    if (!Array.isArray(v)) {
+      v = [v]
     }
-    return moment()
-  }
-}
-
-export function checkFuturePast (value, onlyFuture, onlyPast, onlyDate, onlyTime) {
-  // check future
-  if (onlyFuture) {
-    value = checkFuture(value, onlyFuture, onlyDate, onlyTime)
-  } else if (onlyPast) {
-    // check past
-    value = checkPast(value, onlyPast, onlyDate, onlyTime)
+    if (v.find(v => moment(v) < now)) {
+      const err = 'notification.field-datetime.valueNotFuture'
+      return i18next.t(err) || err
+    }
+    return undefined
   }
 
-  return value
+  /**
+   * Checks if given value is in the past
+   * @param {String|Array<String>} v Value (in DateTime) to check
+   * @param {Moment} now Time reference
+   * @returns {undefined|String} undefined if valid, Error string if invalid
+   */
+  checkPast (v, now) {
+    if (!this.onlyPastValues) {
+      return undefined
+    }
+
+    if (!Array.isArray(v)) {
+      v = [v]
+    }
+    if (v.find(v => moment(v) > now)) {
+      const err = 'notification.field-datetime.valueNotPast'
+      return i18next.t(err) || err
+    }
+  }
+
+  /**
+   * Checks if given value is valid for this field
+   * @param {String} v Value (in DateTime) to check
+   * @param {Moment} now Reference time used to compare
+   * @returns {Array<>} Array of issues; empty if none
+   */
+  validate (v, now = moment()) {
+    let err = this.checkFuture(v, now)
+    err = err || this.checkPast(v, now)
+
+    if (err) {
+      return [err]
+    }
+
+    return []
+  }
 }

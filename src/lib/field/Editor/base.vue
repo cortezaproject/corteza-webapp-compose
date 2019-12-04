@@ -69,7 +69,7 @@ export default {
     },
 
     errors () {
-      return this.field.validate(this.record.values[this.field.name])
+      return this.field.validate(this.value, this.record.compareToValues[this.field.name])
     },
   },
 }

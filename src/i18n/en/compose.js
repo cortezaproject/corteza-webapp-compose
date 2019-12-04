@@ -948,6 +948,10 @@ export default {
       missingRequired: 'Missing value on required field',
       unknownFieldKind: 'Error: Unknown field kind "{{kind}}", no viewer component found.',
     },
+    'field-datetime': {
+      valueNotFuture: 'Past value on future only field',
+      valueNotPast: 'Future value on past only field',
+    },
     page: {
       pageMoveFailed: 'Could not move this page',
       createFailed: 'Could not create a page',

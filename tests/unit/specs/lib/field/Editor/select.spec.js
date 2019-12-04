@@ -21,6 +21,7 @@ describe('lib/field/Editor/Select.vue', () => {
         values: {
           uu: ''
         },
+        compareToValues: {},
       },
       valueOnly: true,
     }

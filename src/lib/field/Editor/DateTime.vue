@@ -23,15 +23,13 @@
                   v-model="time" />
 
     <b-form-text v-if="validate && errors">
-      <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
+      <div class="test-error" v-for="(error, i) in errors" :key="i">{{ error }}</div>
     </b-form-text>
   </b-form-group>
 </template>
 <script>
 import base from './base'
 import moment from 'moment'
-
-import { checkFuturePast } from 'corteza-webapp-compose/src/lib/field/DateTime'
 
 export default {
   extends: base,
@@ -138,22 +136,10 @@ export default {
         const time = this.getTime(index)
         if (this.field.options.onlyDate) {
           dm = moment(d, 'YYYY-MM-DD')
-          // check for valid dates as per rules
-          dm = checkFuturePast(dm,
-            this.field.options.onlyFutureValues,
-            this.field.options.onlyPastValues,
-            this.field.options.onlyDate,
-            this.field.options.onlyTime)
-          dm = dm.format('YYYY-MM-DD')
+            .format('YYYY-MM-DD')
         } else {
           dm = moment(d + ' ' + time, 'YYYY-MM-DD HH:mm')
-          // check for valid dates as per rules
-          dm = checkFuturePast(dm,
-            this.field.options.onlyFutureValues,
-            this.field.options.onlyPastValues,
-            this.field.options.onlyDate,
-            this.field.options.onlyTime)
-          dm = dm.format('YYYY-MM-DD HH:mm')
+            .format('YYYY-MM-DD HH:mm')
         }
 
         if (index !== undefined) {
