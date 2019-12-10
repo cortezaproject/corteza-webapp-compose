@@ -51,6 +51,21 @@ module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias,
     },
 
     chainWebpack: config => {
+      // Remove css extraction issues
+      // https://github.com/vuejs/vue-cli/issues/3771#issuecomment-526228100
+      config.plugin('friendly-errors').tap(args => {
+        const vueCli3Transformer = args[0].additionalTransformers[0]
+        args[0].additionalTransformers = [
+          vueCli3Transformer,
+          error => {
+            const regexp = /\[mini-css-extract-plugin\]/
+            if (regexp.test(error.message)) return {}
+            return error
+          },
+        ]
+        return args
+      })
+
       // Do not copy config files (deployment procedure will do that)
       config.plugins.has('copy') && config.plugin('copy').tap(options => {
         options[0][0].ignore.push('config*js')
