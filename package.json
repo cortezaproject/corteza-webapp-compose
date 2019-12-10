@@ -48,7 +48,7 @@
     "c3": "^0.6.11",
     "chart.js": "^2.7.3",
     "chartjs-plugin-datalabels": "^0.6.0",
-    "corteza-webapp-common": "cortezaproject/corteza-webapp-common.git#master",
+    "corteza-webapp-common": "cortezaproject/corteza-webapp-common.git#2019.12.0",
     "ejs": "2.6.2",
     "file-saver": "^2.0.2",
     "flush-promises": "^1.0.2",
