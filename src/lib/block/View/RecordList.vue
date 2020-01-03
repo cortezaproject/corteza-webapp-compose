@@ -52,11 +52,15 @@
               <field-viewer v-else-if="col.canReadRecordValue" :field="col" value-only :record="row" :namespace="namespace"/>
               <i v-else class="text-secondary">{{ $t('field.noPermission') }}</i>
             </td>
-            <td class="text-right text-nowrap">
+            <td class="text-right text-nowrap d-flex justify-content-center">
               <b-button variant="link"
+                        class="p-0 m-0 pr-3"
                         @click.prevent="createReminder(row)">
                 <font-awesome-icon :icon="['far', 'bell']" />
               </b-button>
+              <router-link v-if="recordListModule.canCreateRecord" class="pr-3" :to="{ name: 'page.record.create', params: { pageID: options.pageID, values: row.values }, query: null }">
+                <font-awesome-icon :icon="['far', 'clone']"></font-awesome-icon>
+              </router-link>
               <router-link v-if="recordListModule.canUpdateRecord" :to="{ name: 'page.record.edit', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
                 <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
               </router-link>

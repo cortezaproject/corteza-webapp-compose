@@ -14,13 +14,14 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 
 describe('Create', () => {
+  let propsData, namespace, refRecModule, refRecord, store
 
-  it('properly links passed record reference', () => {
-    const namespace = new Namespace({namespaceID: '3003'})
-    const refRecModule = new Module({moduleID: '2002', fields: [ { name: 'dummy' } ]})
-    const refRecord = new Record(refRecModule, { recordID: '1000' })
+  namespace = new Namespace({namespaceID: '3003'})
+  refRecModule = new Module({moduleID: '2002', fields: [ { name: 'dummy' } ]})
+  refRecord = new Record(refRecModule, { recordID: '1000' })
 
-    const store = new Vuex.Store({ modules: { module: {
+  beforeEach(() => {
+    store = new Vuex.Store({ modules: { module: {
       namespaced: true,
       state: {},
       getters: {
@@ -35,18 +36,32 @@ describe('Create', () => {
       }
     }}})
 
-    const cmp = shallowMount(Create, {
-      store,
-      localVue,
-      propsData: {
-        namespace,
-        refRecord,
-        page: new Page({ moduleID: "2001"})
-      }
-    })
+    propsData = {
+      namespace,
+      refRecord,
+      page: new Page({ moduleID: "2001"})
+    }
+  })
+
+  const mountCreate = (opt) => shallowMount(Create, {
+    store,
+    localVue,
+    propsData,
+    ...opt,
+  })
+
+  it('properly links passed record reference', () => {
+    const cmp = mountCreate()
 
     expect(cmp.vm.record).not.to.be.an('undefined')
     expect(cmp.vm.record.values.ref).not.to.be.an('undefined')
     expect(cmp.vm.record.values.ref).to.equal(refRecord.recordID)
+  })
+
+  it('properly prefills record values', () => {
+    propsData.values = { Name:'Test' }
+    const cmp = mountCreate()
+
+    expect(cmp.vm.record.values).to.have.property('Name').that.deep.equals('Test')
   })
 })

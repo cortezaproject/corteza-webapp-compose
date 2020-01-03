@@ -48,6 +48,7 @@ import {
   faBell,
   faClock,
   faSquare,
+  faClone,
 } from '@fortawesome/free-regular-svg-icons'
 
 library.add(
@@ -96,4 +97,5 @@ library.add(
   faRemoveFormat,
   faTasks,
   faParagraph,
+  faClone,
 )
