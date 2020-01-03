@@ -27,6 +27,7 @@
 <script>
 import FieldEditor from 'corteza-webapp-compose/src/lib/field/Editor'
 import Field from 'corteza-webapp-compose/src/lib/field'
+import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -107,6 +108,7 @@ export default {
       this.mockNamespace.namespaceID = this.getModuleByID(this.$route.params.moduleID).namespaceID
     }
 
+    // Prepare mocks for defaultValue editor
     // Transform to frontend value struct
     let { defaultValue, isMulti } = this.field
     if (!defaultValue) {
@@ -117,11 +119,17 @@ export default {
     } else {
       defaultValue = (defaultValue[0] || {}).value
     }
-    this.mockRecord.values.defaultValue = defaultValue
+
+    // Create mock field for defaultValue fiels
     this.mockField = new Field(this.field)
     this.mockField.isRequired = false
     this.mockField.isPrivate = false
     this.mockField.name = 'defaultValue'
+
+    // Create mock field for defaultValue
+    const mockModule = { fields: [this.mockField] }
+    this.mockRecord.values.defaultValue = defaultValue
+    this.mockRecord = new Record(mockModule, this.mockRecord)
   },
 }
 </script>
