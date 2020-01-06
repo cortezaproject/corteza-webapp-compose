@@ -1,7 +1,7 @@
 <template>
   <span class="text-center">
     <span v-if="!inConfirmation">
-      <b-button variant="outline-danger" size="sm" @click.prevent="onPrompt" :disabled="disabled"><slot></slot></b-button>
+      <b-button variant="outline-danger" @click.prevent="onPrompt" :disabled="disabled"><slot></slot></b-button>
     </span>
     <span v-if="inConfirmation">
       <b-button variant="danger" size="sm" class="mr-1" @click.prevent="onConfirmation()">{{ $t('general.label.yes') }}</b-button>

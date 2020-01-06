@@ -539,6 +539,7 @@ export default {
       moduleName: 'Module name',
       search: 'Search',
       create: 'Create',
+      clone: 'Clone',
       edit: 'Edit',
       save: 'Save',
       saveAndClose: 'Save and close',

@@ -20,17 +20,21 @@
              @save="handleUpdate()">
 
       <b-button v-if="module.canCreateRecord"
-                variant="outline-secondary mx-1"
+          variant="outline-secondary ml-1"
+          @click.prevent="$router.push({ name: 'page.record.create', params: { pageID: page.pageID, values: record.values }})" >{{ $t('general.label.clone') }}</b-button>
+
+      <b-button v-if="module.canCreateRecord"
+                variant="outline-secondary ml-1"
                 @click.prevent="$router.push({ name: 'page.record.create', params: $route.params })">+ {{ $t('general.label.addNew') }}</b-button>
 
       <b-button v-if="!isDeleted && !editMode && module.canUpdateRecord"
-                variant="outline-secondary"
+                variant="outline-secondary ml-1"
                 @click.prevent="$router.push({ name: 'page.record.edit', params: $route.params })" >{{ $t('general.label.edit') }}</b-button>
 
       <b-button v-if="module.canUpdateRecord && editMode"
                 :disabled="!record || !record.isValid()"
                 @click.prevent="handleUpdate"
-                class="float-right"
+                class="float-right ml-1"
                 variant="primary"
               >{{ $t('general.label.save') }}</b-button>
 
