@@ -4,6 +4,7 @@
               :key="b.scriptID || b.triggerID"
               :variant="b.variant || 'primary'"
               class="m-1 flex-fill"
+              disabled
     >{{ b.label }}
      </b-button>
   </div>

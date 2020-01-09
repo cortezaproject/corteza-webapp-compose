@@ -1,15 +1,15 @@
 <template>
     <div class="d-flex flex-wrap">
-      <b-button v-for="(b) in options.buttons"
-                :key="b.scriptID || b.triggerID"
+      <b-button v-for="(b, i) in options.buttons"
+                :key="i"
                 :variant="b.variant || 'primary'"
                 class="m-1 flex-fill"
-                @click.prevent="onAutomationButtonClick(b.scriptID || b.triggerID)">{{ b.label }}</b-button>
+                @click.prevent="onAutomationButtonClick(b.script)">{{ b.label }}</b-button>
     </div>
 </template>
 <script>
 import base from './base'
-import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
+import triggerScript from 'corteza-webapp-compose/src/mixins/trigger-script'
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 import Module from 'corteza-webapp-compose/src/lib/module'
 import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
@@ -18,7 +18,7 @@ export default {
   extends: base,
 
   mixins: [
-    uiScriptRunner,
+    triggerScript,
   ],
 
   created () {
@@ -31,25 +31,23 @@ export default {
   },
 
   methods: {
-    onAutomationButtonClick (scriptID) {
-      console.debug('manually running script', scriptID)
+    onAutomationButtonClick (script) {
+      console.debug('manually running script', script)
 
-      this.runScripByID(scriptID, {
-        $namespace: new Namespace(this.namespace),
-        $module: new Module(this.module),
-        $record: new Record(this.module, this.record),
-      }).then((rval) => {
-        if (rval instanceof Record) {
-          // This applies changes to the record.
-          //
-          // This is done because references work as we want them
-          this.record.setValues(rval.values)
+      this.TriggerManualScriptOnComposeRecord(
+        { script },
+        {
+          namespace: new Namespace(this.namespace),
+          module: new Module(this.module),
+          record: new Record(this.module, this.record),
+        },
+      ).then(record => {
+        this.record.setValues(record.values)
+      }).catch(({ message }) => {
+        if (message) {
+          this.raiseWarningAlert(message)
+          console.error(message)
         }
-      }).catch(e => {
-        if (e.message) {
-          this.raiseWarningAlert(e.message)
-        }
-        throw e
       })
     },
   },
