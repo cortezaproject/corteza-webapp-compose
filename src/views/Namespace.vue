@@ -71,7 +71,7 @@ export default {
       immediate: true,
       handler (slug) {
         this.loaded = false
-        this.$auth.check(this.$SystemAPI).then(() => {
+        this.$auth.check().then(() => {
           this.$store.dispatch('namespace/load').then(() => {
             const ns = this.$store.getters['namespace/getByUrlPart'](slug)
             if (ns) {

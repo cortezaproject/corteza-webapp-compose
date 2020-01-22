@@ -8,7 +8,7 @@ import module from './module'
 import page from './page'
 import chart from './chart'
 import user from './user'
-import automation from './automation'
+// import automation from './automation'
 
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
@@ -19,6 +19,6 @@ export default new Vuex.Store({
     page: page(ComposeAPI),
     chart: chart(ComposeAPI),
     user: user(SystemAPI),
-    automation: automation(ComposeAPI),
+    // automation: automation(ComposeAPI),
   },
 })

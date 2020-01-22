@@ -55,7 +55,7 @@ export default {
   },
 
   created () {
-    this.$auth.check(this.$SystemAPI).then(() => {
+    this.$auth.check().then(() => {
       this.error = ''
 
       const errHandler = (error) => {
