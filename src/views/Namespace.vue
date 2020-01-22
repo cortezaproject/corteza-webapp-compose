@@ -1,5 +1,10 @@
 <template>
   <div class="centering-wrap inactive-area d-flex" v-if="$auth.is()">
+    <small
+      class="p-1 text-secondary position-absolute version"
+    >
+      {{ frontendVersion }}
+    </small>
     <toaster :toasts="toasts" />
     <div class="alert-holder">
       <b-alert v-for="(a,i) in alerts"
@@ -61,6 +66,11 @@ export default {
   },
 
   computed: {
+    frontendVersion () {
+      /* eslint-disable no-undef */
+      return VERSION
+    },
+
     enabledNamespaces () {
       return this.namespaces.filter(({ enabled }) => enabled)
     },
@@ -258,5 +268,9 @@ export default {
   height: 20vh;
   padding: 60px;
   top: 40vh;
+}
+.version {
+  bottom: 0;
+  right: 0;
 }
 </style>

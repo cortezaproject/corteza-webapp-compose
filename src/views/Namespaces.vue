@@ -1,5 +1,10 @@
 <template>
   <main class="w-100 flex-grow">
+    <small
+      class="p-1 text-secondary position-absolute version"
+    >
+      {{ frontendVersion }}
+    </small>
     <div v-if="loaded" class="vh-100 overflow-auto flex-grow-1">
       <h1 class="text-center mt-4">
         {{ $t('namespace.title') }}
@@ -52,6 +57,13 @@ export default {
       canCreateNamespace: false,
       canGrant: false,
     }
+  },
+
+  computed: {
+    frontendVersion () {
+      /* eslint-disable no-undef */
+      return VERSION
+    },
   },
 
   created () {
@@ -130,5 +142,10 @@ export default {
       text-decoration: none;
     }
   }
+}
+
+.version {
+  bottom: 0;
+  right: 0;
 }
 </style>
