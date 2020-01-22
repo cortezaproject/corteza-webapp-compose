@@ -43,14 +43,9 @@
 </template>
 
 <script>
-import FieldEditor from 'corteza-webapp-compose/src/lib/field/Editor'
 import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 
 export default {
-  components: {
-    FieldEditor,
-  },
-
   props: {
     namespace: {
       type: Namespace,

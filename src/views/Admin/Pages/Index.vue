@@ -42,7 +42,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import draggable from 'vuedraggable'
 import PageTree from 'corteza-webapp-compose/src/components/Admin/Page/Tree'
 import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 
@@ -50,7 +49,6 @@ export default {
   name: 'PageList',
 
   components: {
-    draggable,
     PageTree,
   },
 

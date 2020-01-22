@@ -90,6 +90,8 @@ export default {
       if (moduleID) {
         return this.$store.getters['module/getByID'](moduleID)
       }
+
+      return undefined
     },
 
     selectedFields () {

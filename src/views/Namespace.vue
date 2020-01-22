@@ -82,6 +82,8 @@ export default {
       handler (slug) {
         this.loaded = false
         this.$auth.check().then(() => {
+          this.initReminders()
+
           this.$store.dispatch('namespace/load').then(() => {
             const ns = this.$store.getters['namespace/getByUrlPart'](slug)
             if (ns) {
@@ -135,19 +137,6 @@ export default {
       .catch(this.errHandler)
   },
 
-  mounted () {
-    this.$nextTick(() => {
-      this.$Reminder.init({
-        emitter: this.$root,
-        filter: {
-          assignedTo: this.$auth.user.userID,
-          scheduledOnly: true,
-          excludeDismissed: true,
-        },
-      })
-    })
-  },
-
   beforeDestroy () {
     this.$Reminder.stop()
     this.$root.$off('namespaces.listLoad', this.namespaceLoader)
@@ -158,6 +147,19 @@ export default {
     async namespaceLoader () {
       return this.$ComposeAPI.namespaceList().then(({ set }) => {
         this.namespaces = set.map(ns => new Namespace(ns))
+      })
+    },
+
+    initReminders () {
+      this.$nextTick(() => {
+        this.$Reminder.init({
+          emitter: this.$root,
+          filter: {
+            assignedTo: this.$auth.user.userID,
+            scheduledOnly: true,
+            excludeDismissed: true,
+          },
+        })
       })
     },
 
@@ -269,6 +271,7 @@ export default {
   padding: 60px;
   top: 40vh;
 }
+
 .version {
   bottom: 0;
   right: 0;

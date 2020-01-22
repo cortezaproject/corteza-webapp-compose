@@ -147,7 +147,6 @@
 import { mapGetters, mapActions } from 'vuex'
 import draggable from 'vuedraggable'
 import FieldConfigurator from 'corteza-webapp-compose/src/lib/field/Configurator'
-import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
 import FieldRowEdit from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowEdit'
 import FieldRowView from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowView'
 import Field from 'corteza-webapp-compose/src/lib/field'
@@ -163,7 +162,6 @@ import Confirm from 'corteza-webapp-common/src/components/Input/Confirm'
 
 export default {
   components: {
-    ConfirmationToggle,
     draggable,
     FieldConfigurator,
     FieldRowEdit,

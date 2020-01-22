@@ -11,6 +11,8 @@ import multi from './multi'
 
 export default {
   components: {
+    // multi is actually used in the child components
+    // eslint-disable-next-line vue/no-unused-components
     multi,
   },
 

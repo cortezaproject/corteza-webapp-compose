@@ -48,7 +48,6 @@
 </template>
 <script>
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
-import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
 import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 import Toolbar from 'corteza-webapp-compose/src/components/Public/Page/Toolbar'
@@ -60,7 +59,6 @@ export default {
 
   components: {
     Grid,
-    ConfirmationToggle,
     Toolbar,
   },
 
@@ -100,6 +98,8 @@ export default {
       if (this.page.moduleID) {
         return this.$store.getters['module/getByID'](this.page.moduleID)
       }
+
+      return undefined
     },
 
     /**

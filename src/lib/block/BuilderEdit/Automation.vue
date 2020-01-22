@@ -6,7 +6,7 @@
                     :description="$t('block.automation.scriptFootnote')">
         <b-input-group>
           <c-automation-script-picker
-            style="width: 70%"
+            style="width: 70%;"
             v-model="selectedScript"
             :events="['onManual']"
             :resources="['compose', 'compose:namespace', 'compose:module', 'compose:page', 'compose:record']"

@@ -45,7 +45,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 import Page from 'corteza-webapp-compose/src/lib/page'
@@ -55,7 +54,6 @@ export default {
   name: 'PageEdit',
 
   components: {
-    ConfirmationToggle,
     EditorToolbar,
   },
 

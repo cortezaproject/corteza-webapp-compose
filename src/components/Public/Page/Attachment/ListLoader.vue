@@ -2,7 +2,7 @@
   <div>
     <div v-if="mode === 'list'" class="list">
       <draggable :list.sync="attachments" :disabled="!enableOrder">
-        <div v-for="(a, index) in attachments" :key="a.attachmentID" v-if="a" class="item">
+        <div v-for="(a, index) in attachments" :key="a.attachmentID" class="item">
           <div class="row no-gutters">
             <div v-if="enableOrder" class="col-sm-1 my-auto text-center">
               <font-awesome-icon v-b-tooltip.hover
@@ -32,7 +32,7 @@
     </div>
 
     <div v-else-if="mode === 'grid'" class="grid">
-      <div v-for="a in attachments" :key="a.attachmentID" v-if="a" class="p-2">
+      <div v-for="a in attachments" :key="a.attachmentID" class="p-2">
         <attachment-link :attachment="a" class="d-block">
           <font-awesome-icon :icon="['far', 'file-'+ext(a)]" class="text-dark float-left mr-2"></font-awesome-icon>
           {{a.name}}
@@ -45,7 +45,7 @@
     </div>
 
     <div v-else-if="mode === 'single' || 'gallery'" class="single gallery">
-      <div v-for="(a) in attachments" :key="a.attachmentID" v-if="a" class="mb-2">
+      <div v-for="(a) in attachments" :key="a.attachmentID" class="mb-2">
         <preview-inline
           v-if="canPreview(a)"
           @openPreview="openLightbox({ ...a, ...$event })"
@@ -154,7 +154,7 @@ export default {
           } else {
             return null
           }
-        })
+        }).filter(a => !!a)
 
         const namespaceID = this.namespace.namespaceID
         set.forEach((attachmentID, index) => {

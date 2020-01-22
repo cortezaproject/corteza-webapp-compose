@@ -3,7 +3,7 @@
         :blocks="page.blocks"
         :editable="false"
         :key="page.pageID">
-    <template slot-scope="{ boundingRect, block, index }">
+    <template slot-scope="{ boundingRect, block }">
       <block-editor :block="block"
                     :namespace="namespace"
                     :page="page"
@@ -63,6 +63,8 @@ export default {
       if (this.page.moduleID) {
         return this.$store.getters['module/getByID'](this.page.moduleID)
       }
+
+      return undefined
     },
   },
 }

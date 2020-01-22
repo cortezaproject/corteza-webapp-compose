@@ -114,16 +114,11 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import FieldEditor from 'corteza-webapp-compose/src/lib/field/Editor'
 import base from './base'
 import { RecordOrganizer } from './../RecordOrganizer'
 
 export default {
   name: 'RecordOrganizer',
-
-  components: {
-    FieldEditor,
-  },
 
   extends: base,
 

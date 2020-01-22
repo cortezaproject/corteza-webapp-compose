@@ -2,7 +2,6 @@
   <ul :class="ulClass">
     <li v-for="child in children"
         :key="child.pageID"
-        v-if="showInNav(child)"
         :class="liClass(child)">
       <router-link :to="{ name: 'page', params: { pageID: child.pageID }}" class="nav-link">{{ child.title }}</router-link>
       <menu-level v-if="hasChildren(child)"

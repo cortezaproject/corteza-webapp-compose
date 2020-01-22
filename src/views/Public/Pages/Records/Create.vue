@@ -70,6 +70,8 @@ export default {
       if (this.page.moduleID) {
         return this.$store.getters['module/getByID'](this.page.moduleID)
       }
+
+      return undefined
     },
   },
 
