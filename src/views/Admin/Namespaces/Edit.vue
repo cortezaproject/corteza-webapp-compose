@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import { PermissionsModal } from 'corteza-webapp-common/components'
 
@@ -77,7 +77,7 @@ export default {
 
   data () {
     return {
-      namespace: new Namespace(),
+      namespace: new compose.Namespace(),
     }
   },
 
@@ -123,7 +123,7 @@ export default {
     fetchNamespace (namespaceID) {
       if (namespaceID) {
         this.$store.dispatch('namespace/findByID', { namespaceID: namespaceID }).then((ns) => {
-          this.namespace = new Namespace(ns)
+          this.namespace = new compose.Namespace(ns)
         })
       }
     },
@@ -132,7 +132,7 @@ export default {
       const { namespaceID, name, slug, enabled, meta } = this.namespace
       if (this.isEdit) {
         this.$store.dispatch('namespace/update', { namespaceID, name, slug, enabled, meta }).then((ns) => {
-          this.namespace = new Namespace(ns)
+          this.namespace = new compose.Namespace(ns)
 
           this.raiseSuccessAlert(this.$t('notification.namespace.saved'))
           if (closeOnSuccess) {
@@ -141,7 +141,7 @@ export default {
         }).catch(this.raiseWarningAlert(this.$t('notification.namespace.saveFailed')))
       } else {
         this.$store.dispatch('namespace/create', { name, slug, enabled, meta }).then((ns) => {
-          this.namespace = new Namespace(ns)
+          this.namespace = new compose.Namespace(ns)
 
           this.raiseSuccessAlert(this.$t('notification.namespace.saved'))
           if (closeOnSuccess) {

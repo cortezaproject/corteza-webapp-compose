@@ -43,7 +43,7 @@
 <script>
 import { mapActions } from 'vuex'
 import PageTree from 'corteza-webapp-compose/src/components/Admin/Page/Tree'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   name: 'PageList',
@@ -54,7 +54,7 @@ export default {
 
   props: {
     namespace: {
-      type: Namespace,
+      type: compose.Namespace,
       required: false,
     },
   },

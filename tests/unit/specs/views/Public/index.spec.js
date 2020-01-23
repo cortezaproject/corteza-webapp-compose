@@ -5,9 +5,7 @@ import { expect } from 'chai'
 import { shallowMount } from 'corteza-webapp-compose/tests/lib/helpers'
 import { createLocalVue } from '@vue/test-utils'
 import Index from 'corteza-webapp-compose/src/views/Public/Index'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
-import Module from 'corteza-webapp-compose/src/lib/module'
-import Page from 'corteza-webapp-compose/src/lib/page'
+import { compose } from '@cortezaproject/corteza-js'
 import Chart from 'corteza-webapp-compose/src/lib/chart'
 import sinon from 'sinon'
 import Vuex from 'vuex'
@@ -24,13 +22,13 @@ describe('views/Public/Index.vue', () => {
   let propsData, wrap, $router
   const actions = {
     module: {
-      create: sinon.stub().returns(new Module())
+      create: sinon.stub().returns(new compose.Module())
     },
     chart: {
       create: sinon.stub().returns(new Chart())
     },
     page: {
-      create: sinon.stub().returns(new Page())
+      create: sinon.stub().returns(new compose.Page())
     },
   }
   let store = new Vuex.Store({
@@ -80,7 +78,7 @@ describe('views/Public/Index.vue', () => {
     }
 
     propsData = {
-      namespace: new Namespace({ namespaceID: '000' }),
+      namespace: new compose.Namespace({ namespaceID: '000' }),
       pageID: '',
     }
   })
@@ -111,7 +109,7 @@ describe('views/Public/Index.vue', () => {
       expect(wrapHide.vm.hasCharts).to.be.false
     })
 
-    
+
     it('will detect step 1', () => {
       store = new Vuex.Store({
         modules: {
@@ -132,7 +130,7 @@ describe('views/Public/Index.vue', () => {
             state: {},
             getters: {
               set: () => {
-                return [new Module()]
+                return [new compose.Module()]
               },
             }
           },
@@ -148,7 +146,7 @@ describe('views/Public/Index.vue', () => {
         }
       })
       wrap = mountIndex()
-      
+
       expect(wrap.vm.hasModules).to.be.true
       expect(wrap.vm.hasCharts).to.be.false
       expect(wrap.vm.hasPages).to.be.false
@@ -174,7 +172,7 @@ describe('views/Public/Index.vue', () => {
             state: {},
             getters: {
               set: () => {
-                return [new Module()]
+                return [new compose.Module()]
               },
             }
           },
@@ -190,7 +188,7 @@ describe('views/Public/Index.vue', () => {
         }
       })
       wrap = mountIndex()
-      
+
       expect(wrap.vm.hasModules).to.be.true
       expect(wrap.vm.hasCharts).to.be.true
       expect(wrap.vm.hasPages).to.be.false
@@ -205,7 +203,7 @@ describe('views/Public/Index.vue', () => {
             state: {},
             getters: {
               set: () => {
-                return [new Page()]
+                return [new compose.Page()]
               },
               getByID: () => {
                 return () => undefined
@@ -217,7 +215,7 @@ describe('views/Public/Index.vue', () => {
             state: {},
             getters: {
               set: () => {
-                return [new Module()]
+                return [new compose.Module()]
               },
             }
           },
@@ -233,15 +231,15 @@ describe('views/Public/Index.vue', () => {
         }
       })
       wrap = mountIndex()
-      
+
       expect(wrap.vm.hasModules).to.be.true
       expect(wrap.vm.hasCharts).to.be.true
       expect(wrap.vm.hasPages).to.be.true
     })
-    
-    
+
+
     it('will make module', () => {
-  
+
       store = new Vuex.Store({
         modules: {
           page: {
@@ -287,21 +285,21 @@ describe('views/Public/Index.vue', () => {
       })
 
       wrap = mountIndex()
-      
+
       wrap.vm.createNewModule()
       sinon.assert.calledOnce(actions.module.create)
     })
-    
+
     it('will make chart', () => {
       wrap = mountIndex()
-    
+
       wrap.vm.createNewChart()
       sinon.assert.calledOnce(actions.chart.create)
     })
 
     it('will build page', () => {
       wrap = mountIndex()
-    
+
       wrap.vm.createNewPage()
       sinon.assert.calledOnce(actions.page.create)
     })

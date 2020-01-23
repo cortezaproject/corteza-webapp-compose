@@ -1,4 +1,4 @@
-import Record from 'corteza-webapp-common/src/lib/types/compose/record'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   methods: {
@@ -17,7 +17,7 @@ export default {
         const { recordID, values } = record
         const { moduleID } = module
         const { namespaceID } = namespace
-        return this.$ComposeAPI.recordTriggerScript({ script, values, recordID, moduleID, namespaceID }).then(r => new Record(module, r))
+        return this.$ComposeAPI.recordTriggerScript({ script, values, recordID, moduleID, namespaceID }).then(r => new compose.Record(module, r))
       }
     },
 

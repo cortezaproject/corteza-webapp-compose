@@ -4,10 +4,7 @@
 import { expect } from 'chai'
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Create from 'corteza-webapp-compose/src/views/Public/Pages/Records/Create'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
-import Module from 'corteza-webapp-compose/src/lib/module'
-import Record from 'corteza-webapp-common/src/lib/types/compose/record'
-import Page from 'corteza-webapp-compose/src/lib/page'
+import { compose } from '@cortezaproject/corteza-js'
 import Vuex from 'vuex'
 
 const localVue = createLocalVue()
@@ -16,9 +13,9 @@ localVue.use(Vuex)
 describe('Create', () => {
   let propsData, namespace, refRecModule, refRecord, store
 
-  namespace = new Namespace({namespaceID: '3003'})
-  refRecModule = new Module({moduleID: '2002', fields: [ { name: 'dummy' } ]})
-  refRecord = new Record(refRecModule, { recordID: '1000' })
+  namespace = new compose.Namespace({namespaceID: '3003'})
+  refRecModule = new compose.Module({moduleID: '2002', fields: [ { name: 'dummy' } ]})
+  refRecord = new compose.Record(refRecModule, { recordID: '1000' })
 
   beforeEach(() => {
     store = new Vuex.Store({ modules: { module: {
@@ -26,7 +23,7 @@ describe('Create', () => {
       state: {},
       getters: {
         getByID: () => (moduleID) => {
-          return new Module({
+          return new compose.Module({
             moduleID: '2001',
             fields: [
               {name: 'ref', kind: 'Record', options: {moduleID: refRecModule.moduleID}},
@@ -39,7 +36,7 @@ describe('Create', () => {
     propsData = {
       namespace,
       refRecord,
-      page: new Page({ moduleID: "2001"})
+      page: new compose.Page({ moduleID: "2001"})
     }
   })
 

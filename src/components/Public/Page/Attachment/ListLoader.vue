@@ -70,8 +70,7 @@
 <script>
 import numeral from 'numeral'
 import moment from 'moment'
-import Attachment from 'corteza-webapp-compose/src/lib/attachment'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 import { PreviewInline, canPreview } from 'corteza-webapp-common/src/components/FilePreview/'
 import AttachmentLink from './Link'
 import draggable from 'vuedraggable'
@@ -94,7 +93,7 @@ export default {
     },
 
     namespace: {
-      type: Namespace,
+      type: compose.Namespace,
       required: true,
     },
 
@@ -150,7 +149,7 @@ export default {
       handler (set) {
         this.attachments = set.map(a => {
           if (typeof a === 'object') {
-            return new Attachment(a)
+            return new compose.Attachment(a)
           } else {
             return null
           }
@@ -160,7 +159,7 @@ export default {
         set.forEach((attachmentID, index) => {
           if (typeof attachmentID === 'string') {
             this.$ComposeAPI.attachmentRead({ kind: this.kind, attachmentID, namespaceID }).then(att => {
-              this.attachments.splice(index, 1, new Attachment(att))
+              this.attachments.splice(index, 1, new compose.Attachment(att))
             })
           }
         })

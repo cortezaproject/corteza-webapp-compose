@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { expect } from 'chai'
 import FieldPicker from 'corteza-webapp-compose/src/components/Common/Module/FieldPicker'
-import Module from 'corteza-webapp-compose/src/lib/module'
 
 describe('components/Common/Module/FieldPicker.vue', () => {
   describe('define all available fields', () => {
@@ -29,7 +28,7 @@ describe('components/Common/Module/FieldPicker.vue', () => {
       },
     ]
     beforeEach(() => {
-      module = new Module({ fields })
+      module = new compose.Module({ fields })
       disabledTypes = []
     })
 

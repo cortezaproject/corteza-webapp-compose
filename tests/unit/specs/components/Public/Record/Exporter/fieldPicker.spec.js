@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { expect } from 'chai'
 import FieldPicker from 'corteza-webapp-compose/src/components/Public/Record/Exporter/FieldPicker'
-import Module from 'corteza-webapp-compose/src/lib/module'
 import { shallowMount } from 'corteza-webapp-compose/tests/lib/helpers'
 import moment from 'moment'
 
@@ -10,7 +9,7 @@ describe('components/Public/Record/Exporter/FieldPicker.vue', () => {
   let propsData
   beforeEach(() => {
     propsData = {
-      module: new Module(),
+      module: new compose.Module(),
     }
   })
 

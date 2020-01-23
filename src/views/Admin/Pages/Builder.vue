@@ -74,8 +74,7 @@ import Block from 'corteza-webapp-compose/src/lib/block'
 import BlockPreview from 'corteza-webapp-compose/src/lib/block/BuilderPreview'
 import BlockEdit from 'corteza-webapp-compose/src/lib/block/BuilderEdit'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
-import Page from 'corteza-webapp-compose/src/lib/page'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
@@ -88,7 +87,7 @@ export default {
 
   props: {
     namespace: {
-      type: Namespace,
+      type: compose.Namespace,
       required: true,
     },
 
@@ -126,7 +125,7 @@ export default {
   mounted () {
     const { namespaceID } = this.namespace
     this.findPageByID({ namespaceID, pageID: this.pageID, force: true }).then(page => {
-      this.page = new Page(page)
+      this.page = new compose.Page(page)
     })
   },
 
@@ -157,7 +156,7 @@ export default {
 
       this.findPageByID({ namespaceID, pageID: this.pageID, force: true }).then(page => {
         // Merge changes
-        this.page = new Page({ namespaceID, ...page, blocks: this.page.blocks })
+        this.page = new compose.Page({ namespaceID, ...page, blocks: this.page.blocks })
 
         this.updatePage(this.page).then((page) => {
           this.raiseSuccessAlert(this.$t('notification.page.saved'))
@@ -167,7 +166,7 @@ export default {
             this.$router.push({ name: 'page', params: { pageID: this.pageID } })
           }
 
-          this.page = new Page(page)
+          this.page = new compose.Page(page)
         }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))
       })
     },

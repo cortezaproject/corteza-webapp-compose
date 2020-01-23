@@ -46,8 +46,7 @@
 <script>
 import { mapActions } from 'vuex'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
-import Page from 'corteza-webapp-compose/src/lib/page'
+import { compose } from '@cortezaproject/corteza-js'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 
 export default {
@@ -59,7 +58,7 @@ export default {
 
   props: {
     namespace: {
-      type: Namespace,
+      type: compose.Namespace,
       required: true,
     },
 
@@ -72,7 +71,7 @@ export default {
   data () {
     return {
       modulesList: [],
-      page: new Page(),
+      page: new compose.Page(),
     }
   },
 
@@ -90,7 +89,7 @@ export default {
         this.$router.replace({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
       }
 
-      this.page = new Page(page)
+      this.page = new compose.Page(page)
     }).catch(this.defaultErrorHandler(this.$t('notification.page.loadFailed')))
   },
   methods: {
@@ -102,7 +101,7 @@ export default {
     handleSave ({ closeOnSuccess = false } = {}) {
       const { namespaceID } = this.namespace
       this.updatePage({ namespaceID, ...this.page }).then((page) => {
-        this.page = new Page(page)
+        this.page = new compose.Page(page)
         this.raiseSuccessAlert(this.$t('notification.page.saved'))
         if (closeOnSuccess) {
           this.$router.push({ name: 'admin.pages' })

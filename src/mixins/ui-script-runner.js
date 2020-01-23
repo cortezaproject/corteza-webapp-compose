@@ -1,5 +1,4 @@
-import Module from 'corteza-webapp-compose/src/lib/module'
-import Record from 'corteza-webapp-common/src/lib/types/compose/record'
+import { compose } from '@cortezaproject/corteza-js'
 import UserAgentScript from 'corteza-webapp-common/src/lib/types/shared/automation-ua-script'
 import execInUA from 'corteza-webapp-common/src/lib/automation-scripts/exec-in-ua'
 import { mapGetters } from 'vuex'
@@ -38,7 +37,7 @@ export default {
         .then(({ $record }) => this.$ComposeAPI.recordCreate($record))
 
         // convert record we got back from the API
-        .then((record) => new Record(module, record))
+        .then((record) => new compose.Record(module, record))
 
         // automation (running UA scripts on afterCreate event)
         .then($record => this.runScriptsByEvent('afterCreate', moduleID, { ...ctx, $record }, this.stdRecordEventProcessor))
@@ -71,7 +70,7 @@ export default {
         .then(({ $record }) => this.$ComposeAPI.recordUpdate($record))
 
         // convert record we got back from the API
-        .then((record) => new Record(module, record))
+        .then((record) => new compose.Record(module, record))
 
         // automation (running UA scripts on afterUpdate event)
         .then($record => this.runScriptsByEvent('afterUpdate', moduleID, { ...ctx, $record }, this.stdRecordEventProcessor))
@@ -106,7 +105,7 @@ export default {
         // automation (running UA scripts on afterDelete event)
         // no record is returned on-delete event, so we'll reuse the old one
         // (we also create new instance to avoid ref leak)
-        .then(() => this.runScriptsByEvent('afterDelete', moduleID, { ...ctx, $record: new Record(module, record) }, this.stdRecordEventProcessor))
+        .then(() => this.runScriptsByEvent('afterDelete', moduleID, { ...ctx, $record: new compose.Record(module, record) }, this.stdRecordEventProcessor))
 
         // return null
         .then(() => null)
@@ -192,7 +191,7 @@ export default {
         return this.$ComposeAPI.automationScriptRun(payload).then(({ record }) => {
           if (record) {
             // Assuming type Record
-            return new Record($module, record)
+            return new compose.Record($module, record)
           }
 
           return undefined
@@ -231,7 +230,7 @@ export default {
 
       // We need to override Module class from the common with one from the compose
       // @todo remove this when module & module fields are fully ported to common lib
-      ctx.Module = Module
+      ctx.Module = compose.Module
 
       if (script.async) {
         // Execute async script, ignore the results

@@ -27,7 +27,7 @@
 <script>
 import FieldEditor from 'corteza-webapp-compose/src/lib/field/Editor'
 import Field from 'corteza-webapp-compose/src/lib/field'
-import Record from 'corteza-webapp-common/src/lib/types/compose/record'
+import { compose } from '@cortezaproject/corteza-js'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -129,7 +129,7 @@ export default {
     // Create mock field for defaultValue
     const mockModule = { fields: [this.mockField] }
     this.mockRecord.values.defaultValue = defaultValue
-    this.mockRecord = new Record(mockModule, this.mockRecord)
+    this.mockRecord = new compose.Record(mockModule, this.mockRecord)
   },
 }
 </script>

@@ -65,7 +65,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import Report from 'corteza-webapp-compose/src/components/Admin/Chart/Editor/Report'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import { Chart, ChartComponent } from 'corteza-webapp-compose/src/lib/chart'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
@@ -86,7 +86,7 @@ export default {
 
   props: {
     namespace: {
-      type: Namespace,
+      type: compose.Namespace,
       required: true,
     },
 

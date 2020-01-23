@@ -22,7 +22,7 @@
 </template>
 <script>
 import base from './base'
-import Record from 'corteza-webapp-common/src/lib/types/compose/record'
+import { compose } from '@cortezaproject/corteza-js'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -116,9 +116,9 @@ export default {
                 if (r) {
                   record = r
                 }
-                this.relRecords.push(new Record(m, record))
+                this.relRecords.push(new compose.Record(m, record))
               }).catch(e => {
-                this.relRecords.push(new Record(m, record))
+                this.relRecords.push(new compose.Record(m, record))
               })
             }
           }

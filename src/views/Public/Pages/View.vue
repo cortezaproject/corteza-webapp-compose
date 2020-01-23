@@ -19,7 +19,7 @@
 <script>
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
 import AttachmentModal from 'corteza-webapp-compose/src/components/Public/Page/Attachment/Modal'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 import Page from 'corteza-webapp-compose/src/lib/page'
 import RightPanel from 'corteza-webapp-compose/src/components/RightPanel'
 
@@ -32,7 +32,7 @@ export default {
 
   props: {
     namespace: { // via router-view
-      type: Namespace,
+      type: compose.Namespace,
       required: true,
     },
 

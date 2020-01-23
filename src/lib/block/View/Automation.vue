@@ -10,9 +10,7 @@
 <script>
 import base from './base'
 import triggerScript from 'corteza-webapp-compose/src/mixins/trigger-script'
-import Record from 'corteza-webapp-common/src/lib/types/compose/record'
-import Module from 'corteza-webapp-compose/src/lib/module'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   extends: base,
@@ -37,9 +35,9 @@ export default {
       this.TriggerManualScriptOnComposeRecord(
         { script },
         {
-          namespace: new Namespace(this.namespace),
-          module: new Module(this.module),
-          record: new Record(this.module, this.record),
+          namespace: new compose.Namespace(this.namespace),
+          module: new compose.Module(this.module),
+          record: new compose.Record(this.module, this.record),
         },
       ).then(record => {
         this.record.setValues(record.values)

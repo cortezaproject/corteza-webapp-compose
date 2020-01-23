@@ -10,7 +10,7 @@ import Feed from 'corteza-webapp-compose/src/lib/block/Calendar/feed'
 import FullCalendar from '@fullcalendar/vue'
 
 import { resources } from 'corteza-webapp-compose/src/lib/block/Calendar'
-import Module from 'corteza-webapp-compose/src/lib/module'
+import { compose } from '@cortezaproject/corteza-js'
 
 import moment from 'moment'
 import Vuex from 'vuex'
@@ -72,7 +72,7 @@ describe('lib/block/View/Calendar', () => {
   })
 
   describe('event loading', () => {
-    const mkM = (moduleID = '000') => new Module({ moduleID, fields: [{ name: 'start', kind:'DateTime' }, { name: 'end', kind:'DateTime' }] })
+    const mkM = (moduleID = '000') => new compose.Module({ moduleID, fields: [{ name: 'start', kind:'DateTime' }, { name: 'end', kind:'DateTime' }] })
 
     it('bail if date ranges not defined', async () => {
       const tests = [
@@ -170,7 +170,7 @@ describe('lib/block/View/Calendar', () => {
           const wrap = mountCalendar()
           sinon.stub(wrap.vm, 'pages').get(() => ([]))
           wrap.vm.loadEvents(start, end)
-  
+
           await fp()
           await fp()
           t.expect()
@@ -194,7 +194,7 @@ describe('lib/block/View/Calendar', () => {
         $ComposeAPI.recordList = sinon.stub().resolves({ set: [ { recordID: '100', values: { start: 'd1' } } ] })
         const wrap = mountCalendar()
         sinon.stub(wrap.vm, 'pages').get(() => ([]))
-  
+
         const start = moment()
         const end = moment()
         wrap.vm.loadEvents(start, end)
@@ -231,23 +231,23 @@ describe('lib/block/View/Calendar', () => {
         sinon.stub(Calendar.methods, 'findModuleByID')
         Calendar.methods.findModuleByID.onCall(0).resolves(mkM())
         Calendar.methods.findModuleByID.onCall(1).resolves(mkM('001'))
-  
+
         $ComposeAPI.recordList = sinon.stub()
         $ComposeAPI.recordList.onCall(0).resolves({ set: [ { recordID: '100', values: { start: 'd1' } } ] })
         $ComposeAPI.recordList.onCall(1).resolves({ set: [ { recordID: '101', values: { start: 'd2' } }, { recordID: '102', values: { start: 'd3' } } ] })
-  
+
         const wrap = mountCalendar()
         sinon.stub(wrap.vm, 'pages').get(() => ([]))
         const start = moment()
         const end = moment()
         wrap.vm.loadEvents(start, end)
-  
+
         await fp()
         const c = wrap.find(FullCalendar)
         const ee = c.props().events
         expect(ee).to.not.be.undefined
         expect(ee).to.have.length(3)
-  
+
         // 2nd run, shouldn't fetch data
         // v will fail, if it attempts to run
         wrap.vm.loadEvents(start, end)
@@ -283,17 +283,17 @@ describe('lib/block/View/Calendar', () => {
         sinon.stub(Calendar.methods, 'findModuleByID')
         Calendar.methods.findModuleByID.onCall(0).resolves(mkM())
         Calendar.methods.findModuleByID.onCall(1).resolves(mkM('001'))
-  
+
         $ComposeAPI.recordList = sinon.stub()
         $ComposeAPI.recordList.onCall(0).resolves({ set: [ { recordID: '100', values: { start: 'd1' } } ] })
         $ComposeAPI.recordList.onCall(1).resolves({ set: [ { recordID: '101', values: { start: 'd2' } } ] })
-  
+
         const wrap = mountCalendar()
         sinon.stub(wrap.vm, 'pages').get(() => ([]))
         const start = moment()
         const end = moment()
         wrap.vm.loadEvents(start, end)
-  
+
         await fp()
         const c = wrap.find(FullCalendar)
         const ee = c.props().events
@@ -313,11 +313,11 @@ describe('lib/block/View/Calendar', () => {
             expect: function (c) {
               const evts = c.props().events
               expect(evts, this.name).to.have.length(2)
-  
+
               expect(evts[0], this.name).to.include({ groupId: '100' })
               expect(evts[0], this.name).to.include({ start: 'd1' })
               expect(evts[0], this.name).to.include({ end: null })
-  
+
               expect(evts[1], this.name).to.include({ groupId: '100' })
               expect(evts[1], this.name).to.include({ start: 'd2' })
               expect(evts[1], this.name).to.include({ end: null })
@@ -338,11 +338,11 @@ describe('lib/block/View/Calendar', () => {
             expect: function (c) {
               const evts = c.props().events
               expect(evts, this.name).to.have.length(2)
-  
+
               expect(evts[0], this.name).to.include({ groupId: '100' })
               expect(evts[0], this.name).to.include({ start: 'd1' })
               expect(evts[0], this.name).to.include({ end: 'd3' })
-  
+
               expect(evts[1], this.name).to.include({ groupId: '100' })
               expect(evts[1], this.name).to.include({ start: 'd2' })
               expect(evts[1], this.name).to.include({ end: null })
@@ -355,7 +355,7 @@ describe('lib/block/View/Calendar', () => {
             expect: function (c) {
               const evts = c.props().events
               expect(evts, this.name).to.have.length(1)
-  
+
               expect(evts[0], this.name).to.include({ start: '2000-01-01T00:00:00Z' })
               expect(evts[0], this.name).to.include({ end: '2001-01-01T00:00:00Z' })
             },
@@ -367,7 +367,7 @@ describe('lib/block/View/Calendar', () => {
             expect: function (c) {
               const evts = c.props().events
               expect(evts, this.name).to.have.length(1)
-  
+
               expect(evts[0], this.name).to.include({ start: '2000-01-01T00:00:00Z' })
               expect(evts[0], this.name).to.include({ end: null })
             },
@@ -387,23 +387,23 @@ describe('lib/block/View/Calendar', () => {
             expect: function (c) {
               const evts = c.props().events
               expect(evts, this.name).to.have.length(1)
-  
+
               expect(evts[0], this.name).to.include({ start: '2000-01-01T00:00:00Z' })
               expect(evts[0], this.name).to.include({ end: 'd1' })
             },
           },
         ]
-  
+
         const start = moment()
         const end = moment()
         for (const t of tests) {
-          sinon.stub(Calendar.methods, 'findModuleByID').resolves(new Module({ moduleID: '000', fields: [{ name: 'start', kind:'DateTime', isMulti: true }, { name: 'end', kind:'DateTime', isMulti: true }] }))
+          sinon.stub(Calendar.methods, 'findModuleByID').resolves(new compose.Module({ moduleID: '000', fields: [{ name: 'start', kind:'DateTime', isMulti: true }, { name: 'end', kind:'DateTime', isMulti: true }] }))
           $ComposeAPI.recordList = sinon.stub().resolves({ set: t.records })
           propsData.options.feeds = [ t.feed ]
           const wrap = mountCalendar()
           sinon.stub(wrap.vm, 'pages').get(() => ([]))
           wrap.vm.loadEvents(start, end)
-  
+
           await fp()
           const c = wrap.find(FullCalendar)
           t.expect(c, t)

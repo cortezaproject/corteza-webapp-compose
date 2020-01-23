@@ -1,5 +1,5 @@
 import { makeColors } from './colors'
-import Record from 'corteza-webapp-common/src/lib/types/compose/record'
+import { compose } from '@cortezaproject/corteza-js'
 import { removeDup } from 'corteza-webapp-compose/src/common/scripts'
 import variables from 'corteza-webapp-compose/src/themes/corteza-base/variables.scss'
 
@@ -29,7 +29,7 @@ export default async function ($ComposeAPI, module, namespace, feed, range) {
   const events = []
   return $ComposeAPI.recordList(params).then(({ set }) => {
     removeDup(set, 'recordID')
-      .map(r => new Record(module, r))
+      .map(r => new compose.Record(module, r))
       .filter(r => !!r.values[feed.startField] || !!r[feed.startField])
       .forEach(r => events.push(...expandRecord(r, feed)))
     return events

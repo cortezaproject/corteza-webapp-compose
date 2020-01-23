@@ -10,8 +10,7 @@ import { Calendar } from 'corteza-webapp-compose/src/lib/block/Calendar'
 import { record as RecordComponent, reminder as ReminderComponent } from 'corteza-webapp-compose/src/lib/block/BuilderEdit/Calendar/FeedSource/configs'
 
 import Feed from 'corteza-webapp-compose/src/lib/block/Calendar/feed'
-import Module from 'corteza-webapp-compose/src/lib/module'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 import { resources } from 'corteza-webapp-compose/src/lib/block/Calendar'
 
 import Vuex from 'vuex'
@@ -29,7 +28,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource', () => {
   let propsData
   beforeEach(() => {
     propsData = {
-      namespace: new Namespace({ namespaceID: '1001' }),
+      namespace: new compose.Namespace({ namespaceID: '1001' }),
       page: { pageID: '2001' },
       options: new Calendar({ defaultView: 'dayGridMonth' }),
     }
@@ -61,7 +60,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource', () => {
               namespaced: true,
               state: {},
               getters: {
-                set: () => [ new Module({ moduleID: '0001', fields: [] }) ],
+                set: () => [ new compose.Module({ moduleID: '0001', fields: [] }) ],
               },
             },
           },

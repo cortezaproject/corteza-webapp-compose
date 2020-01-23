@@ -71,10 +71,8 @@
 import { mapGetters, mapActions } from 'vuex'
 import PublicHeader from 'corteza-webapp-compose/src/components/Public/Header'
 import CircleStep from 'corteza-webapp-compose/src/components/Common/CircleStep'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
-import Module from 'corteza-webapp-compose/src/lib/module'
+import { compose } from '@cortezaproject/corteza-js'
 import Chart from 'corteza-webapp-compose/src/lib/chart'
-import Page from 'corteza-webapp-compose/src/lib/page'
 import Field from 'corteza-webapp-compose/src/lib/field'
 
 const pushContentAbove = 610
@@ -95,7 +93,7 @@ export default {
     },
 
     namespace: { // via router-view
-      type: Namespace,
+      type: compose.Namespace,
       required: true,
     },
   },
@@ -127,7 +125,7 @@ export default {
     },
 
     page () {
-      return this.$store.getters['page/getByID'](this.pageID) || new Page()
+      return this.$store.getters['page/getByID'](this.pageID) || new compose.Page()
     },
 
     showSteps () {
@@ -183,7 +181,7 @@ export default {
     createNewModule () {
       const { namespaceID } = this.namespace
       const name = 'Demo Module'
-      const newModule = new Module({ namespaceID, name, fields: [new Field({ fieldID: '0', name: 'Sample', kind: 'String' })] })
+      const newModule = new compose.Module({ namespaceID, name, fields: [new Field({ fieldID: '0', name: 'Sample', kind: 'String' })] })
       this.createModule(newModule).then((module) => {
         this.$router.push({ name: 'admin.modules.edit', params: { moduleID: module.moduleID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.module.createFailed')))
@@ -202,7 +200,7 @@ export default {
       const { namespaceID } = this.namespace
       const title = 'Demo Page'
       const blocks = []
-      const newPage = new Page({ namespaceID, title, blocks })
+      const newPage = new compose.Page({ namespaceID, title, blocks })
       this.createPage(newPage).then((page) => {
         this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))

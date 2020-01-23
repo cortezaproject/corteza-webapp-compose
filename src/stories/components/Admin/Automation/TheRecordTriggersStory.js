@@ -3,7 +3,6 @@ import { storiesOf } from '@storybook/vue'
 import i18nInit from '@/i18n'
 import { withKnobs } from '@storybook/addon-knobs'
 import RecordEventsTable from '@components/Admin/Automation/TheRecordTriggers'
-import Module from 'corteza-webapp-compose/src/lib/module'
 import AutomationTrigger from 'corteza-webapp-common/src/lib/types/shared/automation-trigger'
 
 const story = storiesOf('Admin|Automation', module)
@@ -27,7 +26,7 @@ const events = [
 
 const modules = { default: Array.apply(0, Array(maxModules)).map((a, index) => {
   let ID = index + 1
-  return new Module({
+  return new compose.Module({
     moduleID: ID.toString(),
     name: `Module #${ID}`,
   })

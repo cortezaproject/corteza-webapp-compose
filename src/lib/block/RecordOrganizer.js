@@ -1,5 +1,5 @@
 import { PropCast, ID } from 'corteza-webapp-common/src/lib/types/common'
-import Record from 'corteza-webapp-common/src/lib/types/compose/record'
+import { compose } from '@cortezaproject/corteza-js'
 
 export class RecordOrganizer {
   /**
@@ -95,6 +95,6 @@ export class RecordOrganizer {
 
     return $ComposeAPI
       .recordList(params)
-      .then(({ set }) => set.map(r => Object.freeze(new Record(module, r))))
+      .then(({ set }) => set.map(r => Object.freeze(new compose.Record(module, r))))
   }
 }

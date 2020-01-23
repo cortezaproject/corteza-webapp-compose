@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/vue'
-import Module from 'corteza-webapp-compose/src/lib/module'
 import Exporter from 'corteza-webapp-compose/src/components/Public/Record/Exporter'
 import i18n from 'corteza-webapp-compose/src/i18n'
 import { withKnobs, object, select, text, number, boolean } from '@storybook/addon-knobs'
@@ -28,7 +27,7 @@ let fields = [
 ]
 
 let props = {
-  module: new Module({
+  module: new compose.Module({
     fields: fields,
   }),
 
@@ -128,7 +127,7 @@ exporter.add('Exporter', () => ({
     },
   },
 
-  template: `<exporter 
+  template: `<exporter
               :module="module"
               :preselectedFields="preselectedFields"
               :allowJSON="allowJSON"

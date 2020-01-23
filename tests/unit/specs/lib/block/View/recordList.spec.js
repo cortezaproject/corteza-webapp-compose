@@ -3,7 +3,6 @@
 
 import { expect } from 'chai'
 import RecordList from 'corteza-webapp-compose/src/lib/block/View/RecordList'
-import Module from 'corteza-webapp-compose/src/lib/module'
 import ExporterModal from 'corteza-webapp-compose/src/components/Public/Record/Exporter'
 import ComposeAPI from 'corteza-webapp-common/src/lib/corteza-server/rest-api-client/compose'
 import { shallowMount } from 'corteza-webapp-compose/tests/lib/helpers'
@@ -23,7 +22,7 @@ const rspFilter = () => ({
   filter: '',
 })
 
-let mod = new Module({
+let mod = new compose.Module({
   moduleID: '200',
   fields: [
     {name: 'n1', kind: 'String'},
@@ -82,7 +81,7 @@ describe('lib/block/View/RecordList', () => {
 
   describe('record fetching', () => {
     beforeEach(() => {
-      sinon.stub(RecordList.computed, 'recordListModule').returns(new Module({ moduleID: '333' }))
+      sinon.stub(RecordList.computed, 'recordListModule').returns(new compose.Module({ moduleID: '333' }))
       propsData.options.pageID = '111'
       propsData.options.moduleID = '333'
     })
@@ -131,7 +130,7 @@ describe('lib/block/View/RecordList', () => {
 
     describe('textual queries', () => {
       beforeEach(() => {
-        sinon.stub(RecordList.computed, 'recordListModule').returns(new Module({
+        sinon.stub(RecordList.computed, 'recordListModule').returns(new compose.Module({
           moduleID: '200',
           fields: [
             { name: 'n1', kind: 'String' },
@@ -174,7 +173,7 @@ describe('lib/block/View/RecordList', () => {
 
     describe('numerical queries', () => {
       beforeEach(() => {
-        sinon.stub(RecordList.computed, 'recordListModule').returns(new Module({
+        sinon.stub(RecordList.computed, 'recordListModule').returns(new compose.Module({
           moduleID: '200',
           fields: [
             { name: 'n1', kind: 'Number' },
@@ -201,7 +200,7 @@ describe('lib/block/View/RecordList', () => {
 
     describe('boolean queries', () => {
       beforeEach(() => {
-        sinon.stub(RecordList.computed, 'recordListModule').returns(new Module({
+        sinon.stub(RecordList.computed, 'recordListModule').returns(new compose.Module({
           moduleID: '200',
           fields: [
             { name: 'n1', kind: 'Bool' },
@@ -288,7 +287,7 @@ describe('lib/block/View/RecordList', () => {
       propsData.options.fields = ['n1']
       propsData.options.pageID = '111'
       propsData.options.moduleID = '200'
-      sinon.stub(RecordList.computed, 'recordListModule').returns(new Module({
+      sinon.stub(RecordList.computed, 'recordListModule').returns(new compose.Module({
         moduleID: '200',
         fields: [
           { name: 'n1', kind: 'String' },
@@ -344,7 +343,7 @@ describe('lib/block/View/RecordList', () => {
 
   describe('record exporting', () => {
     beforeEach(() => {
-      sinon.stub(RecordList.computed, 'recordListModule').returns(new Module({ moduleID: '333', name: 'testModule', fields: [ {name: 'n1', kind: 'String'}, {name: 'n2', kind: 'String'} ] }))
+      sinon.stub(RecordList.computed, 'recordListModule').returns(new compose.Module({ moduleID: '333', name: 'testModule', fields: [ {name: 'n1', kind: 'String'}, {name: 'n2', kind: 'String'} ] }))
       propsData.options.pageID = '111'
       propsData.options.moduleID = '333'
       propsData.options.allowExport = true

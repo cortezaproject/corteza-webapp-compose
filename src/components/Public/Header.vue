@@ -43,8 +43,7 @@
 import { mapGetters } from 'vuex'
 import MenuLevel from './MenuLevel'
 import navbarCollapse from 'corteza-webapp-compose/src/mixins/navbar_collapse'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
-import Page from 'corteza-webapp-compose/src/lib/page'
+import { compose } from '@cortezaproject/corteza-js'
 import HamburgerMenu from 'corteza-webapp-common/src/components/Sidebar/HamburgerMenu'
 
 export default {
@@ -57,12 +56,12 @@ export default {
 
   props: {
     namespace: {
-      type: Namespace,
+      type: compose.Namespace,
       required: true,
     },
 
     page: {
-      type: Page,
+      type: compose.Page,
       required: true,
     },
   },

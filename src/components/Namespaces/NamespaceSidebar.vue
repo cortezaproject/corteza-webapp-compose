@@ -45,7 +45,7 @@
 
 <script>
 import Sidebar from 'corteza-webapp-common/src/components/Sidebar'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
@@ -58,7 +58,7 @@ export default {
     },
 
     namespace: {
-      type: Namespace,
+      type: compose.Namespace,
       required: false,
     },
 

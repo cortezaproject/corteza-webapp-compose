@@ -46,7 +46,7 @@
 <script>
 import { mapActions } from 'vuex'
 import SortableTree from 'vue-sortable-tree'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   name: 'page-tree',
@@ -57,7 +57,7 @@ export default {
 
   props: {
     namespace: {
-      type: Namespace,
+      type: compose.Namespace,
       required: true,
     },
 

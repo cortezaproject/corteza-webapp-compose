@@ -150,8 +150,7 @@ import FieldConfigurator from 'corteza-webapp-compose/src/lib/field/Configurator
 import FieldRowEdit from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowEdit'
 import FieldRowView from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowView'
 import Field from 'corteza-webapp-compose/src/lib/field'
-import Module from 'corteza-webapp-compose/src/lib/module'
-import Page from 'corteza-webapp-compose/src/lib/page'
+import { compose } from '@cortezaproject/corteza-js'
 import Block from 'corteza-webapp-compose/src/lib/block'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
@@ -187,7 +186,7 @@ export default {
   data () {
     return {
       updateField: null,
-      module: new Module(),
+      module: new compose.Module(),
       hasRecords: false,
       processing: false,
       recordList: null,
@@ -239,7 +238,7 @@ export default {
   created () {
     this.findModuleByID({ moduleID: this.moduleID }).then((module) => {
       // Make a copy so that we do not change store item by ref
-      this.module = new Module({ ...module })
+      this.module = new compose.Module({ ...module })
       this.recordList = new RecordList({ moduleID: this.module.moduleID })
       this.recordList.fetch(this.$ComposeAPI, this.module, {}).then(({ records }) => {
         if (records.length > 0) {
@@ -276,7 +275,7 @@ export default {
     handleSave ({ closeOnSuccess = false } = {}) {
       this.processing = true
       this.updateModule(this.module).then((module) => {
-        this.module = new Module({ ...module })
+        this.module = new compose.Module({ ...module })
         this.raiseSuccessAlert(this.$t('notification.module.saved'))
         if (closeOnSuccess) {
           this.redirect()
@@ -334,7 +333,7 @@ export default {
           }),
         ]
 
-        page = new Page({ ...page, blocks })
+        page = new compose.Page({ ...page, blocks })
 
         this.updatePage(page).then((page) => {
           this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })

@@ -59,7 +59,7 @@
 <script>
 import base from './base'
 import { VueSelect } from 'vue-select'
-import Record from 'corteza-webapp-common/src/lib/types/compose/record'
+import { compose } from '@cortezaproject/corteza-js'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
 
@@ -203,7 +203,7 @@ export default {
         }).join(' OR ')
 
         this.$ComposeAPI.recordList({ namespaceID, moduleID, filter, sort: this.sortString() }).then(({ set }) => {
-          this.records = set.map(r => new Record(this.module, r))
+          this.records = set.map(r => new compose.Record(this.module, r))
         })
       }
     },
@@ -214,7 +214,7 @@ export default {
       const perPage = 10
       if (moduleID) {
         this.$ComposeAPI.recordList({ namespaceID, moduleID, perPage }).then(({ set }) => {
-          this.latest = set.map(r => new Record(this.module, r))
+          this.latest = set.map(r => new compose.Record(this.module, r))
         })
       }
     },
@@ -228,9 +228,9 @@ export default {
       const moduleID = this.field.options.moduleID
       if (!this.fetchedRecords.find(r => r.recordID === recordID)) {
         this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID }).then(record => {
-          this.fetchedRecords.push(new Record(this.module, record))
+          this.fetchedRecords.push(new compose.Record(this.module, record))
         }).catch(e => {
-          this.fetchedRecords.push(new Record(this.module, { recordID }))
+          this.fetchedRecords.push(new compose.Record(this.module, { recordID }))
         })
       }
     },

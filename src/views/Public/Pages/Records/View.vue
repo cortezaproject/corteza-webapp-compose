@@ -48,10 +48,9 @@
 </template>
 <script>
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
-import Record from 'corteza-webapp-common/src/lib/types/compose/record'
+import { compose } from '@cortezaproject/corteza-js'
 import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 import Toolbar from 'corteza-webapp-compose/src/components/Public/Page/Toolbar'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
 import Page from 'corteza-webapp-compose/src/lib/page'
 
 export default {
@@ -68,7 +67,7 @@ export default {
 
   props: {
     namespace: { // via router-view
-      type: Namespace,
+      type: compose.Namespace,
       required: true,
     },
 
@@ -129,7 +128,7 @@ export default {
       if (this.page && this.recordID && this.page.moduleID) {
         const { namespaceID, moduleID } = this.page
         this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID: this.recordID }).then(record => {
-          this.record = new Record(this.module, record)
+          this.record = new compose.Record(this.module, record)
         }).catch(this.defaultErrorHandler(this.$t('notification.record.loadFailed')))
       }
     },

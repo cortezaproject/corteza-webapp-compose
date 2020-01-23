@@ -19,9 +19,8 @@
 <script>
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
 import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 import Page from 'corteza-webapp-compose/src/lib/page'
-import Record from 'corteza-webapp-common/src/lib/types/compose/record'
 import Toolbar from 'corteza-webapp-compose/src/components/Public/Page/Toolbar'
 
 export default {
@@ -43,7 +42,7 @@ export default {
     },
 
     namespace: { // via router-view
-      type: Namespace,
+      type: compose.Namespace,
       required: true,
     },
 
@@ -76,7 +75,7 @@ export default {
   },
 
   created () {
-    this.record = new Record(this.module, { values: this.values })
+    this.record = new compose.Record(this.module, { values: this.values })
 
     if (this.refRecord) {
       // Record create form called from a related records block,

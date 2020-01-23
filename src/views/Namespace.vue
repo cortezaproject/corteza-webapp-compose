@@ -33,7 +33,7 @@
 <script>
 import { PermissionsModal } from 'corteza-webapp-common/components'
 import NamespaceSidebar from 'corteza-webapp-compose/src/components/Namespaces/NamespaceSidebar'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 import Toaster from 'corteza-webapp-common/src/components/Toaster'
 import moment from 'moment'
 
@@ -146,7 +146,7 @@ export default {
   methods: {
     async namespaceLoader () {
       return this.$ComposeAPI.namespaceList().then(({ set }) => {
-        this.namespaces = set.map(ns => new Namespace(ns))
+        this.namespaces = set.map(ns => new compose.Namespace(ns))
       })
     },
 

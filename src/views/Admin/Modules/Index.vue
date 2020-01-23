@@ -92,7 +92,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import Field from 'corteza-webapp-compose/src/lib/field'
-import Module from 'corteza-webapp-compose/src/lib/module'
+import { compose } from '@cortezaproject/corteza-js'
 import TableSortableColumn from 'corteza-webapp-compose/src/components/Admin/TableSortableColumn'
 import tableSort from 'corteza-webapp-compose/src/mixins/table_sort'
 import Import from 'corteza-webapp-compose/src/components/Admin/Import'
@@ -122,7 +122,7 @@ export default {
     const { namespaceID } = this.namespace
 
     return {
-      newModule: new Module({ namespaceID, fields: [new Field({ fieldID: '0', name: 'Sample', kind: 'String' })] }),
+      newModule: new compose.Module({ namespaceID, fields: [new Field({ fieldID: '0', name: 'Sample', kind: 'String' })] }),
     }
   },
 

@@ -4,9 +4,7 @@
 import { expect } from 'chai'
 import { shallowMount } from 'corteza-webapp-compose/tests/lib/helpers'
 import View from 'corteza-webapp-compose/src/views/Public/Pages/Records/View'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
-import Module from 'corteza-webapp-compose/src/lib/module'
-import Page from 'corteza-webapp-compose/src/lib/page'
+import { compose } from '@cortezaproject/corteza-js'
 import sinon from 'sinon'
 import fp from 'flush-promises'
 
@@ -19,8 +17,8 @@ describe('views/Public/Pages/Records/View.vue', () => {
   beforeEach(() => {
     $ComposeAPI = {}
     propsData = {
-      namespace: new Namespace({ namespaceID: '000' }),
-      page: new Page({ pageID: '100', moduleID: '300' }),
+      namespace: new compose.Namespace({ namespaceID: '000' }),
+      page: new compose.Page({ pageID: '100', moduleID: '300' }),
       recordID: '200',
     }
   })
@@ -32,7 +30,7 @@ describe('views/Public/Pages/Records/View.vue', () => {
   })
 
   const stubRecordLoad = () => {
-    sinon.stub(View.computed, 'module').returns(new Module({ moduleID: '300', fields: [{ name: 'f1', kind: 'String' }] }))
+    sinon.stub(View.computed, 'module').returns(new compose.Module({ moduleID: '300', fields: [{ name: 'f1', kind: 'String' }] }))
     $ComposeAPI.recordRead = sinon.stub().resolves({ recordID: '200', values: { f1: 'v1' } })
   }
 

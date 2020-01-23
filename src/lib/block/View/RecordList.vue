@@ -85,7 +85,7 @@ import base from './base'
 import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
 import ExporterModal from 'corteza-webapp-compose/src/components/Public/Record/Exporter'
 import ImporterModal from 'corteza-webapp-compose/src/components/Public/Record/Importer'
-import Record from 'corteza-webapp-common/src/lib/types/compose/record'
+import { compose } from '@cortezaproject/corteza-js'
 import Pagination from 'vue-pagination-2'
 import users from 'corteza-webapp-compose/src/mixins/users'
 import _ from 'lodash'
@@ -154,7 +154,7 @@ export default {
       if (!this.recordListModule) {
         return []
       }
-      return this.recordsRaw.map(r => new Record(this.recordListModule, r))
+      return this.recordsRaw.map(r => new compose.Record(this.recordListModule, r))
     },
   },
 
