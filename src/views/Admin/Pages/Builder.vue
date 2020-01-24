@@ -70,9 +70,8 @@
 import { mapActions } from 'vuex'
 import NewBlockSelector from 'corteza-webapp-compose/src/components/Admin/Page/Builder/Selector'
 import Grid from 'corteza-webapp-compose/src/components/Common/Grid'
-import Block from 'corteza-webapp-compose/src/lib/block'
-import BlockPreview from 'corteza-webapp-compose/src/lib/block/BuilderPreview'
-import BlockEdit from 'corteza-webapp-compose/src/lib/block/BuilderEdit'
+import BlockPreview from 'corteza-webapp-compose/src/components/PageBlocks/BuilderPreview'
+import BlockEdit from 'corteza-webapp-compose/src/components/PageBlocks/BuilderEdit'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import { compose } from '@cortezaproject/corteza-js'
 
@@ -137,11 +136,11 @@ export default {
     }),
 
     editBlock (block, index = undefined) {
-      this.editor = { index, block: new Block({ ...block }) }
+      this.editor = { index, block: new compose.PageBlockMaker({ ...block }) }
     },
 
     updateBlocks () {
-      let block = new Block(this.editor.block) // make sure we get rid of the references
+      let block = new PageBlockMaker(this.editor.block) // make sure we get rid of the references
       if (this.editor.index !== undefined) {
         this.page.blocks.splice(this.editor.index, 1, block)
       } else {

@@ -52,7 +52,7 @@ import base from './base'
 import draggable from 'vuedraggable'
 import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
 import users from 'corteza-webapp-compose/src/mixins/users'
-import { RecordOrganizer } from '../RecordOrganizer'
+// import { RecordOrganizer } from '../RecordOrganizer'
 
 export default {
   components: {

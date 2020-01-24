@@ -11,7 +11,8 @@
 <script>
 import base from './base'
 import { Timeline } from 'vue-tweet-embed'
-import { extractSocialUrl } from '../SocialFeed'
+// import { extractSocialUrl } from '../SocialFeed'
+const extractSocialUrl = () => {} // temp
 
 export default {
   components: {

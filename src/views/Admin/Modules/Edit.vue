@@ -151,11 +151,9 @@ import FieldRowEdit from 'corteza-webapp-compose/src/components/Admin/Module/Fie
 import FieldRowView from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowView'
 import Field from 'corteza-webapp-compose/src/lib/field'
 import { compose } from '@cortezaproject/corteza-js'
-import Block from 'corteza-webapp-compose/src/lib/block'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
-import { RecordList } from 'corteza-webapp-compose/src/lib/block/RecordList'
 import CircleStep from 'corteza-webapp-compose/src/components/Common/CircleStep'
 import Confirm from 'corteza-webapp-common/src/components/Input/Confirm'
 
@@ -239,7 +237,7 @@ export default {
     this.findModuleByID({ moduleID: this.moduleID }).then((module) => {
       // Make a copy so that we do not change store item by ref
       this.module = new compose.Module({ ...module })
-      this.recordList = new RecordList({ moduleID: this.module.moduleID })
+      this.recordList = new compose.PageBlockRecordList({ moduleID: this.module.moduleID })
       this.recordList.fetch(this.$ComposeAPI, this.module, {}).then(({ records }) => {
         if (records.length > 0) {
           this.hasRecords = true
@@ -326,9 +324,8 @@ export default {
         this.recordList.fields = []
         this.recordList.title = `${this.$t('module.forModule.recordList')} "${name || moduleID}"`
         const blocks = [
-          new Block({
+          new compose.PageBlockRecordList({
             xywh: [0, 0, 12, 16],
-            kind: 'RecordList',
             options: this.recordList,
           }),
         ]

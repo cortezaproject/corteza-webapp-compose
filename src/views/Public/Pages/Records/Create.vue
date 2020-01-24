@@ -20,7 +20,6 @@
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
 import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 import { compose } from '@cortezaproject/corteza-js'
-import Page from 'corteza-webapp-compose/src/lib/page'
 import Toolbar from 'corteza-webapp-compose/src/components/Public/Page/Toolbar'
 
 export default {
@@ -37,7 +36,7 @@ export default {
 
   props: {
     page: { // via router-view
-      type: Page,
+      type: compose.Page,
       required: false,
     },
 

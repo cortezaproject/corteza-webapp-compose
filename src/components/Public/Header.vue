@@ -118,7 +118,11 @@ export default {
   },
 
   created () {
-    this.$ComposeAPI.pageTree({ namespaceID: this.namespace.namespaceID }).then((result) => { this.tree = result })
+    this.$ComposeAPI
+      .pageTree({ namespaceID: this.namespace.namespaceID })
+      .then((result) => {
+        this.tree = Object.freeze(result.map(p => new compose.Page(p)))
+      })
   },
 
   methods: {

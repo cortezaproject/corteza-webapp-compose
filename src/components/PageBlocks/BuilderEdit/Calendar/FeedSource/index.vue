@@ -58,9 +58,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import base from '../../base'
-import Feed from 'corteza-webapp-compose/src/lib/block/Calendar/feed'
-import { resources } from 'corteza-webapp-compose/src/lib/block/Calendar'
 import * as configs from './configs'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
@@ -78,7 +77,7 @@ export default {
      * @returns {Array}
      */
     feedSources () {
-      return Object.entries(resources).map(([ key, value ]) => ({
+      return Object.entries(compose.PageBlockCalendar.resources).map(([ key, value ]) => ({
         value,
         text: this.$t(`block.calendar.${key}Feed.optionLabel`),
       }))
@@ -104,7 +103,7 @@ export default {
      * Handles feed's addition
      */
     handleAddButton () {
-      this.o.feeds.push(new Feed())
+      this.o.feeds.push(compose.PageBlockCalendar.makeFeed())
     },
 
     /**

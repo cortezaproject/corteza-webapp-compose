@@ -14,7 +14,7 @@
     </div>
 </template>
 <script>
-import Block from 'corteza-webapp-compose/src/lib/block'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   props: {
@@ -29,31 +29,31 @@ export default {
       types: [
         { label: this.$t('block.content.label'),
           recordPageOnly: false,
-          block: new Block({ kind: 'Content' }) },
+          block: new compose.PageBlockContent() },
         { label: this.$t('block.chart.label'),
           recordPageOnly: false,
-          block: new Block({ kind: 'Chart' }) },
+          block: new compose.PageBlockChart() },
         { label: this.$t('block.socialFeed.label'),
           recordPageOnly: false,
-          block: new Block({ kind: 'SocialFeed' }) },
+          block: new compose.PageBlockSocialFeed() },
         { label: this.$t('block.record.label'),
           recordPageOnly: true,
-          block: new Block({ kind: 'Record' }) },
+          block: new compose.PageBlockRecord() },
         { label: this.$t('block.recordList.label'),
           recordPageOnly: false,
-          block: new Block({ kind: 'RecordList' }) },
+          block: new compose.PageBlockRecordList() },
         { label: this.$t('block.automation.label'),
           recordPageOnly: false,
-          block: new Block({ kind: 'Automation' }) },
+          block: new compose.PageBlockAutomation() },
         { label: this.$t('block.calendar.label'),
           recordPageOnly: false,
-          block: new Block({ kind: 'Calendar' }) },
+          block: new compose.PageBlockCalendar() },
         { label: this.$t('block.file.label'),
           recordPageOnly: false,
-          block: new Block({ kind: 'File' }) },
+          block: new compose.PageBlockFile() },
         { label: this.$t('block.recordOrganizer.label'),
           recordPageOnly: false,
-          block: new Block({ kind: 'RecordOrganizer' }) },
+          block: new compose.PageBlockRecordOrganizer() },
       ],
     }
   },

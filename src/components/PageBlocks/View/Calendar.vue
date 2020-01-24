@@ -12,10 +12,32 @@ import moment from 'moment'
 import { mapGetters, mapActions } from 'vuex'
 import base from './base'
 import FullCalendar from '@fullcalendar/vue'
-import { Calendar, cortezaTheme, resources } from 'corteza-webapp-compose/src/lib/block/Calendar'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
+import { compose } from '@cortezaproject/corteza-js'
+import { BootstrapTheme } from '@fullcalendar/bootstrap'
+import { createPlugin } from '@fullcalendar/core'
+
+/**
+ * FullCalendar corteza theme definition.
+ */
+export class CortezaTheme extends BootstrapTheme {}
+CortezaTheme.prototype.classes.widget = 'corteza-unthemed'
+CortezaTheme.prototype.classes.button = 'btn btn-outline-primary'
+
+CortezaTheme.prototype.baseIconClass = 'fc-icon'
+CortezaTheme.prototype.iconClasses = {
+  close: 'fc-icon-x',
+  prev: 'fc-icon-chevron-left',
+  next: 'fc-icon-chevron-right',
+  prevYear: 'fc-icon-chevrons-left',
+  nextYear: 'fc-icon-chevrons-right',
+}
+
+CortezaTheme.prototype.iconOverrideOption = 'buttonIcons'
+CortezaTheme.prototype.iconOverrideCustomButtonOption = 'icon'
+CortezaTheme.prototype.iconOverridePrefix = 'fc-icon-'
 
 export default {
   components: {
@@ -60,12 +82,16 @@ export default {
           dayGridPlugin,
           timeGridPlugin,
           listPlugin,
-          cortezaTheme,
+          createPlugin({
+            themeClasses: {
+              corteza: CortezaTheme,
+            },
+          }),
         ],
 
         // Use available views to define custom view labels.
         // See src/i18n/en/compose.js for i18n definitons
-        buttonText: Calendar.availableViews()
+        buttonText: compose.PageBlockCalendar.availableViews()
           .map(view => ({ view, label: this.$t(`block.calendar.view.${view}`) }))
           .reduce((acc, cur) => {
             acc[cur.view] = cur.label
@@ -83,7 +109,7 @@ export default {
   watch: {
     options: {
       handler: function (opts) {
-        this.calendar = new Calendar(opts)
+        this.calendar = new compose.PageBlockCalendar(opts)
         this.changeLocale(this.calendar.locale)
       },
       immediate: true,
@@ -146,7 +172,7 @@ export default {
       this.events = []
       this.options.feeds.forEach(feed => {
         switch (feed.resource) {
-          case resources.record:
+          case compose.PageBlockCalendar.feedResources.record:
             this.findModuleByID({ namespaceID: this.namespace.namespaceID, moduleID: feed.options.moduleID })
               .then((module) => {
                 this.calendar.recordFeed(this.$ComposeAPI, module, this.namespace, feed, this.loaded)
@@ -155,7 +181,7 @@ export default {
                   })
               })
             break
-          case resources.reminder:
+          case compose.PageBlockCalendar.feedResources.reminder:
             this.calendar.reminderFeed(this.$SystemAPI, this.$auth.user, feed, this.loaded)
               .then(events => {
                 this.events.push(...events)
@@ -189,5 +215,4 @@ export default {
 @import '~@fullcalendar/daygrid/main.css';
 @import '~@fullcalendar/timegrid/main.css';
 @import '~@fullcalendar/list/main.css';
-
 </style>

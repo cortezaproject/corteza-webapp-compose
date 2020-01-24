@@ -3,7 +3,7 @@ function r (name, path, component) {
   return {
     path,
     name,
-    component: () => import(`./${component}.vue`),
+    component: () => import('./' + component + '.vue'),
     props: true,
   }
 }

@@ -1,6 +1,6 @@
 import { compose } from '@cortezaproject/corteza-js'
-import UserAgentScript from 'corteza-webapp-common/src/lib/types/shared/automation-ua-script'
-import execInUA from 'corteza-webapp-common/src/lib/automation-scripts/exec-in-ua'
+// import UserAgentScript from 'corteza-webapp-common/src/lib/types/shared/automation-ua-script'
+// import execInUA from 'corteza-webapp-common/src/lib/automation-scripts/exec-in-ua'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -215,45 +215,45 @@ export default {
      * @returns {Promise}
      */
     async runUAScript (script, ctx = {}) {
-      if (!(script instanceof UserAgentScript)) {
-        throw new ReferenceError(`Expecting UserAgentScript object (got ${typeof script})`)
-      }
-
-      // Current user
-      ctx.authUser = this.$auth ? this.$auth.user : {}
-
-      // Map API clients
-      ctx.ComposeAPI = this.$ComposeAPI
-      ctx.MessagingAPI = this.$MessagingAPI
-      ctx.SystemAPI = this.$SystemAPI
-      ctx.pages = this.pages
-
-      // We need to override Module class from the common with one from the compose
-      // @todo remove this when module & module fields are fully ported to common lib
-      ctx.Module = compose.Module
-
-      if (script.async) {
-        // Execute async script, ignore the results
-        // and go to the next script right away
-        setTimeout(async () => {
-          await execInUA(script.source, { ...ctx }, script)
-        }, 0)
-        return Promise.resolve(undefined)
-      }
-
-      // Attach route pusher & emitter after async
-      // our env can not be affected by async scripts!
-      ctx.routePusher = (params) => this.$router.push(params)
-      ctx.emitter = (name, params) => this.$root.$emit(name, params)
-
-      var result = await execInUA(script.source, ctx, script)
-
-      if (!result) {
-        // Abort!
-        return Promise.reject(Error('aborted'))
-      }
-
-      return Promise.resolve(result)
+      // if (!(script instanceof UserAgentScript)) {
+      //   throw new ReferenceError(`Expecting UserAgentScript object (got ${typeof script})`)
+      // }
+      //
+      // // Current user
+      // ctx.authUser = this.$auth ? this.$auth.user : {}
+      //
+      // // Map API clients
+      // ctx.ComposeAPI = this.$ComposeAPI
+      // ctx.MessagingAPI = this.$MessagingAPI
+      // ctx.SystemAPI = this.$SystemAPI
+      // ctx.pages = this.pages
+      //
+      // // We need to override Module class from the common with one from the compose
+      // // @todo remove this when module & module fields are fully ported to common lib
+      // ctx.Module = compose.Module
+      //
+      // if (script.async) {
+      //   // Execute async script, ignore the results
+      //   // and go to the next script right away
+      //   setTimeout(async () => {
+      //     await execInUA(script.source, { ...ctx }, script)
+      //   }, 0)
+      //   return Promise.resolve(undefined)
+      // }
+      //
+      // // Attach route pusher & emitter after async
+      // // our env can not be affected by async scripts!
+      // ctx.routePusher = (params) => this.$router.push(params)
+      // ctx.emitter = (name, params) => this.$root.$emit(name, params)
+      //
+      // var result = await execInUA(script.source, ctx, script)
+      //
+      // if (!result) {
+      //   // Abort!
+      //   return Promise.reject(Error('aborted'))
+      // }
+      //
+      // return Promise.resolve(result)
     },
   },
 }

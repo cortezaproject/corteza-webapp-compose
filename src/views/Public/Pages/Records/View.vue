@@ -51,7 +51,6 @@ import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
 import { compose } from '@cortezaproject/corteza-js'
 import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 import Toolbar from 'corteza-webapp-compose/src/components/Public/Page/Toolbar'
-import Page from 'corteza-webapp-compose/src/lib/page'
 
 export default {
   name: 'ViewRecord',
@@ -72,7 +71,7 @@ export default {
     },
 
     page: { // via router-view
-      type: Page,
+      type: compose.Page,
       required: true,
     },
 

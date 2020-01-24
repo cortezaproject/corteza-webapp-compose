@@ -115,7 +115,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import base from './base'
-import { RecordOrganizer } from './../RecordOrganizer'
 
 export default {
   name: 'RecordOrganizer',
@@ -172,20 +171,6 @@ export default {
   },
 
   watch: {
-    /*
-    'o.groupField': {
-      handler (group) {
-        if (group) {
-          if (this.group.isMulti) {
-            this.o.group = []
-          } else {
-            this.o.group = undefined
-          }
-          this.setMockRecord(group)
-        }
-      },
-    },
-     */
     'o.moduleID': {
       handler (moduleID) {
         this.o = new RecordOrganizer({ moduleID })

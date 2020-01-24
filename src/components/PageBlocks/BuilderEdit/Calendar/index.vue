@@ -13,7 +13,8 @@
 </template>
 
 <script>
-import { CalendarDisplay, FeedSource } from './loader'
+import FeedSource from './FeedSource'
+import CalendarDisplay from './CalendarDisplay'
 
 export default {
   components: {

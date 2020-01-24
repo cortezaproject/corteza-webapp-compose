@@ -20,7 +20,6 @@
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
 import AttachmentModal from 'corteza-webapp-compose/src/components/Public/Page/Attachment/Modal'
 import { compose } from '@cortezaproject/corteza-js'
-import Page from 'corteza-webapp-compose/src/lib/page'
 import RightPanel from 'corteza-webapp-compose/src/components/RightPanel'
 
 export default {
@@ -37,7 +36,7 @@ export default {
     },
 
     page: { // via route-view
-      type: Page,
+      type: compose.Page,
       required: true,
     },
 

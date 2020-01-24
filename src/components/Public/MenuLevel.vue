@@ -15,6 +15,7 @@
   </ul>
 </template>
 <script>
+
 export default {
   name: 'menu-level',
   props: {
@@ -35,6 +36,7 @@ export default {
 
     parentPageID: {
       type: String,
+      default () { return '0' },
     },
 
     currentPageID: {
@@ -44,7 +46,7 @@ export default {
 
   computed: {
     children () {
-      return this.pages.filter(p => this.showInNav(p) && p.selfID === (this.parentPageID || null)) || []
+      return this.pages.filter(p => this.showInNav(p) && p.selfID === this.parentPageID) || []
     },
 
     ulClass () {
@@ -64,9 +66,14 @@ export default {
   },
 
   methods: {
-    // Page is visible ( when visible flag is true & it is not a record
+    /**
+     * Page is visible ( when visible flag is true & it is not a record
+     *
+     * @param page
+     * @returns {boolean}
+     */
     showInNav (page) {
-      return page.visible && !page.moduleID && page.blocks.length > 0
+      return page.visible && !page.hasModule && page.blocks.length > 0
     },
 
     hasChildren ({ pageID }) {
