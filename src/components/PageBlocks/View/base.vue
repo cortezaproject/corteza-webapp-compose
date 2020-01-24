@@ -1,4 +1,6 @@
 <script>
+import { compose } from '@cortezaproject/corteza-js'
+
 export default {
   props: {
     boundingRect: {
@@ -7,28 +9,34 @@ export default {
     },
 
     namespace: {
-      type: Object,
+      type: compose.Namespace,
       required: true,
     },
 
     page: {
-      type: Object,
+      type: compose.Page,
+      required: true,
+    },
+
+    block: {
+      type: compose.PageBlock,
       required: true,
     },
 
     module: {
-      type: Object,
+      type: compose.Module,
       required: false,
     },
 
     record: {
-      type: Object,
+      type: compose.Record,
       required: false,
     },
+  },
 
-    options: {
-      type: Object,
-      required: true,
+  computed: {
+    options () {
+      return this.block.options
     },
   },
 }

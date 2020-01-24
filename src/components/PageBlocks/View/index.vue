@@ -15,16 +15,15 @@
     <div class="h-100" ref="content" v-else>
       <component :is="block.kind"
                  :bounding-rect="adjustedBoundingRect"
-                 :options="block.options"
                  :namespace="namespace"
                  :page="page"
+                 :block="block"
                  :module="module"
                  :record="record"
                  v-on="$listeners" />
     </div>
   </b-card>
 </template>
-
 <script>
 import * as ViewBlocks from './loader'
 
