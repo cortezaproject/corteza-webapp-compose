@@ -11,7 +11,7 @@
       <b-button v-if="module.canCreateRecord"
                 variant="primary"
                 class="float-right"
-                :disabled="!record.isValid()"
+                :disabled="!isValid"
                 @click.prevent="handleCreate">{{ $t('general.label.save') }}</b-button>
     </toolbar>
   </div>
@@ -70,6 +70,19 @@ export default {
       }
 
       return undefined
+    },
+
+    validator () {
+      return this.module ? new compose.RecordValidator(this.module) : null
+    },
+
+    isValid () {
+      if (this.validator && this.record) {
+        // @todo do something with errors
+        return this.validator.run(this.record).valid()
+      }
+
+      return true
     },
   },
 

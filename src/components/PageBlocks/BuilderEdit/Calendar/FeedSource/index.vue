@@ -2,7 +2,7 @@
   <fieldset class="form-group">
 
     <!-- Feed list -->
-    <div v-for="(feed, i) in o.feeds"
+    <div v-for="(feed, i) in options.feeds"
          :key="i">
 
       <!-- define feed resource; eg. module, reminders, google calendar, ... -->
@@ -77,7 +77,7 @@ export default {
      * @returns {Array}
      */
     feedSources () {
-      return Object.entries(compose.PageBlockCalendar.resources).map(([ key, value ]) => ({
+      return Object.entries(compose.PageBlockCalendar.resources).map(([key, value]) => ({
         value,
         text: this.$t(`block.calendar.${key}Feed.optionLabel`),
       }))
@@ -85,8 +85,8 @@ export default {
   },
 
   created () {
-    if (this.o.feeds.length === 0) {
-      this.o.feeds = []
+    if (this.options.feeds.length === 0) {
+      this.options.feeds = []
     }
   },
 
@@ -96,14 +96,14 @@ export default {
      * @param {Number} i Feed's index
      */
     onRemoveFeed (i) {
-      this.o.feeds.splice(i, 1)
+      this.options.feeds.splice(i, 1)
     },
 
     /**
      * Handles feed's addition
      */
     handleAddButton () {
-      this.o.feeds.push(compose.PageBlockCalendar.makeFeed())
+      this.options.feeds.push(compose.PageBlockCalendar.makeFeed())
     },
 
     /**

@@ -2,7 +2,7 @@
   <b-tab :title="$t('block.recordList.label')">
     <fieldset class="form-group">
       <label for="select-module">{{ $t('block.general.module') }}</label>
-      <b-form-select v-model="o.moduleID" required>
+      <b-form-select v-model="options.moduleID" required>
         <option :value="undefined">{{ $t('general.label.none') }}</option>
         <option
           v-for="module in modules"
@@ -19,17 +19,17 @@
       </i>
     </fieldset>
 
-    <field-picker v-if="recordListModule" :module="recordListModule" :fields.sync="o.fields" />
+    <field-picker v-if="recordListModule" :module="recordListModule" :fields.sync="options.fields" />
 
     <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.newLabel')">
-        <b-form-checkbox v-model="o.hideAddButton">
+        <b-form-checkbox v-model="options.hideAddButton">
           {{ $t('block.recordList.record.hideAddButton') }}
         </b-form-checkbox>
     </b-form-group>
     <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.prefilterLabel')">
       <b-form-textarea :value="true"
                       :placeholder="$t('block.recordList.record.prefilterPlaceholder')"
-                      v-model="o.prefilter"></b-form-textarea>
+                      v-model="options.prefilter"></b-form-textarea>
         <b-form-text>
           <i18next path="block.recordList.record.prefilterFootnote" tag="label">
             <code>${recordID}</code>
@@ -37,29 +37,29 @@
             <code>${userID}</code>
           </i18next>
         </b-form-text>
-      <b-form-checkbox v-model="o.hideSearch">
+      <b-form-checkbox v-model="options.hideSearch">
         {{ $t('block.recordList.record.prefilterHideSearch') }}
       </b-form-checkbox>
     </b-form-group>
     <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.presortLabel')">
       <b-form-textarea :value="true"
                       :placeholder="$t('block.recordList.record.presortPlaceholder')"
-                      v-model="o.presort"></b-form-textarea>
+                      v-model="options.presort"></b-form-textarea>
       <b-form-text>
         {{ $t('block.recordList.record.presortFootnote') }}
       </b-form-text>
-      <b-form-checkbox v-model="o.hideSorting">
+      <b-form-checkbox v-model="options.hideSorting">
         {{ $t('block.recordList.record.presortHideSort') }}
       </b-form-checkbox>
     </b-form-group>
     <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.perPage')">
-      <b-form-input type="number" v-model.number="o.perPage"></b-form-input>
-      <b-form-checkbox v-model="o.hidePaging">
+      <b-form-input type="number" v-model.number="options.perPage"></b-form-input>
+      <b-form-checkbox v-model="options.hidePaging">
         {{ $t('block.recordList.record.hidePaging') }}
       </b-form-checkbox>
     </b-form-group>
     <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('general.label.export')" class="mt-4">
-      <b-form-checkbox v-model="o.allowExport" class="mt-2">
+      <b-form-checkbox v-model="options.allowExport" class="mt-2">
         {{ $t('block.recordList.export.allow') }}
       </b-form-checkbox>
     </b-form-group>
@@ -87,26 +87,26 @@ export default {
     }),
 
     recordListModule () {
-      if (this.o.moduleID !== '0') {
-        return this.$store.getters['module/getByID'](this.o.moduleID)
+      if (this.options.moduleID !== '0') {
+        return this.$store.getters['module/getByID'](this.options.moduleID)
       } else {
         return undefined
       }
     },
 
     modulePageID () {
-      let modulePageID = []
+      const modulePageID = []
       this.pages.filter(p => !!p.moduleID).forEach(({ pageID, moduleID }) => { modulePageID[moduleID] = pageID })
       return modulePageID
     },
   },
 
   watch: {
-    'o.moduleID' (newModuleID) {
+    'options.moduleID' (newModuleID) {
       // Everytime moduleID changes, do a lookup among module-page pairs and
       // reset the pageID
-      this.o.pageID = this.modulePageID[newModuleID] || undefined
-      this.o.fields = []
+      this.options.pageID = this.modulePageID[newModuleID] || undefined
+      this.options.fields = []
     },
   },
 }

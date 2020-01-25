@@ -4,7 +4,7 @@
       <label>{{ $t('block.general.module') }}</label>
       <input v-if="module" class="form-control" type="text" v-model="module.name" readonly>
     </fieldset>
-    <field-picker v-if="module" :module="module" :fields.sync="o.fields" />
+    <field-picker v-if="module" :module="module" :fields.sync="options.fields" />
   </b-tab>
 </template>
 <script>

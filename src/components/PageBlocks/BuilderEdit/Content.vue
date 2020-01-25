@@ -1,7 +1,7 @@
 <template>
   <b-tab :title="$t('block.content.label')">
     <fieldset class="form-group">
-      <rich-text-input v-model="o.body" />
+      <rich-text-input v-model="options.body" />
     </fieldset>
   </b-tab>
 </template>

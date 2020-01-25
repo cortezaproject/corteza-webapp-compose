@@ -21,14 +21,14 @@
       <b-form-group :label="$t('general.label.buttons')"
                     :description="$t('block.automation.buttonFootnote')"
                     horizontal
-                    v-show="o.buttons.length > 0">
+                    v-show="options.buttons.length > 0">
         <draggable
-          :list.sync="o.buttons"
+          :list.sync="options.buttons"
           :options="{ group: 'buttons' }"
           handle=".draggable-handle"
         >
           <b-row
-            v-for="(b, i) in o.buttons"
+            v-for="(b, i) in options.buttons"
             :key="i"
             class="mb-2"
             no-gutters
@@ -45,7 +45,7 @@
               <b-form-select v-model="b.variant" :options="variantOptions"></b-form-select>
             </b-col>
             <b-col cols="1">
-              <b-button @click.prevent="o.buttons.splice(i,1)" variant="link" class="text-danger">
+              <b-button @click.prevent="options.buttons.splice(i,1)" variant="link" class="text-danger">
                 <font-awesome-icon :icon="['far', 'trash-alt']"></font-awesome-icon>
               </b-button>
             </b-col>
@@ -117,7 +117,7 @@ export default {
     //
     //   return this.scripts.map(s => {
     //     // Already used?
-    //     const used = (this.o.buttons.find(
+    //     const used = (this.options.buttons.find(
     //       // fallback to triggerID (old structure)
     //       ({ scriptID, triggerID }) => (scriptID || triggerID) === s.scriptID) !== undefined
     //     )
@@ -143,7 +143,7 @@ export default {
     //
 
     const variants = this.variantOptions.map(({ value }) => value)
-    this.o.buttons.map(b => {
+    this.options.buttons.map(b => {
       if (variants.indexOf(b.variant) < 0) {
         b.variant = 'primary'
       }
@@ -157,7 +157,7 @@ export default {
 
     handleAddButton () {
       const { name: script, label } = this.selectedScript
-      this.o.buttons.push({
+      this.options.buttons.push({
         script,
         label: label || script,
         variant: 'primary',

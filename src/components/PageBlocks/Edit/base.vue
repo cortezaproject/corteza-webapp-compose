@@ -3,6 +3,11 @@ import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   props: {
+    boundingRect: {
+      type: Object,
+      required: false,
+    },
+
     namespace: {
       type: compose.Namespace,
       required: true,
@@ -22,17 +27,16 @@ export default {
       type: compose.Module,
       required: false,
     },
+
+    record: {
+      type: compose.Record,
+      required: false,
+    },
   },
 
   computed: {
-    options: {
-      get () {
-        return this.block.options
-      },
-
-      set (o) {
-        this.$emit('update:options', o)
-      },
+    options () {
+      return this.block.options
     },
   },
 }

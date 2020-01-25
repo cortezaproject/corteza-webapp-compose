@@ -52,7 +52,7 @@ import base from './base'
 import draggable from 'vuedraggable'
 import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
 import users from 'corteza-webapp-compose/src/mixins/users'
-// import { RecordOrganizer } from '../RecordOrganizer'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
@@ -82,10 +82,6 @@ export default {
       getModuleByID: 'module/getByID',
       pages: 'page/set',
     }),
-
-    ro () {
-      return new RecordOrganizer(this.options)
-    },
 
     roModule () {
       return this.getModuleByID(this.moduleID)
@@ -153,7 +149,7 @@ export default {
     }
 
     if (this.roModule) {
-      this.ro.fetchRecords(this.$ComposeAPI, this.roModule, this.expandFilter()).then(rr => {
+      this.fetchRecords(this.$ComposeAPI, this.roModule, this.expandFilter()).then(rr => {
         this.records = rr
         const fields = [this.titleField, this.descriptionField]
         this.fetchUsers(fields, this.records)
@@ -172,8 +168,7 @@ export default {
 
     reorganize ({ element: record, newIndex }) {
       // Move record to a different position in a different group
-      this.ro.moveRecord(
-        this.$ComposeAPI,
+      this.moveRecord(
         record,
         this.calcNewPosition(record, newIndex),
         this.ro.group,
@@ -182,8 +177,7 @@ export default {
 
     reposition ({ element: record, newIndex }) {
       // Move record to a different position in the same group
-      this.ro.moveRecord(
-        this.$ComposeAPI,
+      this.moveRecord(
         record,
         this.calcNewPosition(record, newIndex),
       )
@@ -198,7 +192,7 @@ export default {
         return 0
       }
 
-      let total = this.records.length
+      const total = this.records.length
       if (newPosition > total) {
         // Dropped at the end,
         // make sure we don't put it too far away
@@ -219,9 +213,9 @@ export default {
         return
       }
 
-      let { pageID } = this.roRecordPage
+      const { pageID } = this.roRecordPage
 
-      let values = {}
+      const values = {}
       values[positionField] = groupField
       this.$router.push({ name: 'page.record.create', params: { pageID, values: values } })
     },
@@ -256,6 +250,78 @@ export default {
       }
 
       return ''
+    },
+
+    /**
+     * Reposition and optionally move record to a different group
+     *
+     * This is only a helper function and we do not keep any hard dependencies on
+     * the API client.
+     *
+     * @param {Compose}           api Compose API client
+     * @param {Record}            record,     Record we're moving
+     * @param {Number}            position    New position
+     * @param {String|undefined}  group       New group
+     * @returns {Promise<void>}
+     */
+    async moveRecord (record, position, group) {
+      const { namespaceID, moduleID, recordID } = record
+
+      if (moduleID !== this.options.moduleID) {
+        throw Error('Record incompatible, module mismatch')
+      }
+
+      const { filter, positionField, groupField } = this.options
+      const args = {
+        recordID,
+        filter,
+        positionField,
+        position,
+      }
+
+      if (group !== undefined) {
+        // If group is set (empty string is a valid!
+        args.groupField = groupField
+        args.group = group || ''
+      }
+
+      const params = {
+        procedure: 'organize',
+        namespaceID,
+        moduleID,
+        // map kv to [{ name: k, value: v }, ...]
+        args: Object.keys(args).map(name => ({ name, value: String(args[name]) })),
+      }
+
+      return this.$ComposeAPI.recordExec(params)
+    },
+
+    /**
+     * Fetches group of records using configured options & module
+     *
+     * @param {Compose}           api Compose API client
+     * @param {Module}            module Module to use for assembling API request & casting results
+     * @param {String}            filter Filter records
+     * @returns {Promise<Record[]>}
+     */
+    async fetchRecords (module, filter) {
+      if (module.moduleID !== this.options.moduleID) {
+        throw Error('Module incompatible, module mismatch')
+      }
+
+      const { positionField: sort } = this.options
+      const { moduleID, namespaceID } = module
+
+      const params = {
+        namespaceID,
+        moduleID,
+        filter,
+        sort,
+      }
+
+      return this.$ComposeAPI
+        .recordList(params)
+        .then(({ set }) => set.map(r => Object.freeze(new compose.Record(module, r))))
     },
   },
 }

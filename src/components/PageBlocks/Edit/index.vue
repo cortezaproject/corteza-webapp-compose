@@ -11,7 +11,6 @@
     :body-bg-variant="block.style.variants.bodyBg">
     <div>
       <component :is="block.kind"
-                 :options="block.options"
                  v-bind="$props"
                  v-on="$listeners" />
     </div>
@@ -20,38 +19,14 @@
 
 <script>
 import * as EditBlocks from './loader'
+import base from './base'
 
 export default {
   components: {
     ...EditBlocks,
   },
 
-  props: {
-    block: {
-      type: Object,
-      required: true,
-    },
-
-    namespace: {
-      type: Object,
-      required: true,
-    },
-
-    page: {
-      type: Object,
-      required: true,
-    },
-
-    module: {
-      type: Object,
-      required: true,
-    },
-
-    record: {
-      type: Object,
-      required: false,
-    },
-  },
+  extends: base,
 
   computed: {
     blockClass () {

@@ -3,7 +3,7 @@
     <fieldset class="form-group">
       <b-form-group>
         <label>{{ $t('block.chart.display') }}</label>
-        <b-form-select v-model="o.chartID" :options="charts" text-field="name" value-field="chartID">
+        <b-form-select v-model="options.chartID" :options="charts" text-field="name" value-field="chartID">
           <template slot="first">
             <option disabled>{{ $t('block.chart.pick') }}</option>
           </template>

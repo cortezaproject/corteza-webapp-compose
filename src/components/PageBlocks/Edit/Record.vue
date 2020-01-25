@@ -27,6 +27,7 @@
 import FieldEditor from 'corteza-webapp-compose/src/lib/field/Editor'
 import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
 import users from 'corteza-webapp-compose/src/mixins/users'
+import base from './base'
 
 export default {
   components: {
@@ -34,31 +35,11 @@ export default {
     FieldViewer,
   },
 
+  extends: base,
+
   mixins: [
     users,
   ],
-
-  props: {
-    options: {
-      type: Object,
-      required: true,
-    },
-
-    module: {
-      type: Object,
-      required: true,
-    },
-
-    namespace: {
-      type: Object,
-      required: true,
-    },
-
-    record: {
-      type: Object,
-      required: false, // actually true, but we'll going to fail soft here
-    },
-  },
 
   computed: {
     fields () {
@@ -68,7 +49,7 @@ export default {
 
   created () {
     if (!this.record.recordID) {
-      let userFields = []
+      const userFields = []
       this.fields.forEach(({ name, kind, defaultValue, isMulti }) => {
         if (defaultValue && defaultValue.length > 0) {
           if (isMulti) {

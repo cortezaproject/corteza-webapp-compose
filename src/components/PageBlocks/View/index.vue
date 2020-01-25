@@ -15,17 +15,14 @@
     <div class="h-100" ref="content" v-else>
       <component :is="block.kind"
                  :bounding-rect="adjustedBoundingRect"
-                 :namespace="namespace"
-                 :page="page"
-                 :block="block"
-                 :module="module"
-                 :record="record"
+                 v-bind="$props"
                  v-on="$listeners" />
     </div>
   </b-card>
 </template>
 <script>
 import * as ViewBlocks from './loader'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
@@ -39,27 +36,27 @@ export default {
     },
 
     namespace: {
-      type: Object,
-      required: true,
-    },
-
-    block: {
-      type: Object,
+      type: compose.Namespace,
       required: true,
     },
 
     page: {
-      type: Object,
+      type: compose.Page,
+      required: true,
+    },
+
+    block: {
+      type: compose.PageBlock,
       required: true,
     },
 
     module: {
-      type: Object,
+      type: compose.Module,
       required: false,
     },
 
     record: {
-      type: Object,
+      type: compose.Record,
       required: false,
     },
   },

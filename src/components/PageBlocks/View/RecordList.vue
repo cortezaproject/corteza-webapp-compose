@@ -221,9 +221,9 @@ export default {
     createReminder (record) {
       // Determine initial reminder title
       const tField = ((this.options.fields || []).find(({ name }) => !!record.values[name]) || {}).name
-      let title = record.values[tField]
+      const title = record.values[tField]
 
-      let payload = {
+      const payload = {
         title,
         link: {
           namespaceSlug: this.namespace.slug,
@@ -231,7 +231,7 @@ export default {
           moduleID: record.moduleID,
         },
       }
-      let resource = `compose:record:${record.recordID}`
+      const resource = `compose:record:${record.recordID}`
       this.$root.$emit('reminder.create', { payload, resource })
       this.$root.$emit('rightPanel.toggle', true)
     },
@@ -283,15 +283,14 @@ export default {
       q = (q || '').trim()
 
       if (q) {
-        let numQuery, strQuery, boolQuery
-        numQuery = Number.parseFloat(q)
+        const numQuery = Number.parseFloat(q)
 
         // To SQL string
-        strQuery = q
+        const strQuery = q
           .replace(/\*+$/, '')
           .replace(/\*/g, '%') + '%'
 
-        boolQuery = toBoolean(q)
+        const boolQuery = toBoolean(q)
 
         // When searching, always reset filter with prefilter + query
         filter = fields.map(qf => {
@@ -336,7 +335,7 @@ export default {
         return
       }
 
-      let sort = this.filter.sort === fieldName ? `${fieldName} DESC` : fieldName
+      const sort = this.filter.sort === fieldName ? `${fieldName} DESC` : fieldName
       this.updateRecordList({ ...this.filter, sort })
     },
 

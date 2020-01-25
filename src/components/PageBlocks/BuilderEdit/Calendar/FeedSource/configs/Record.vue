@@ -148,7 +148,7 @@ export default {
       if (!this.module) {
         return []
       }
-      return [ ...this.module.fields ].filter(f => ['String', 'Email', 'Url'].includes(f.kind))
+      return [...this.module.fields].filter(f => ['String', 'Email', 'Url'].includes(f.kind))
     },
 
     /**
@@ -160,7 +160,7 @@ export default {
       if (!this.module) {
         return []
       }
-      return [ ...this.module.fields, ...this.module.systemFields() ]
+      return [...this.module.fields, ...this.module.systemFields()]
         .filter(f => f.kind === 'DateTime' && !f.isMulti)
     },
   },

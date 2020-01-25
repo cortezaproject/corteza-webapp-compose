@@ -32,7 +32,7 @@
                 @click.prevent="$router.push({ name: 'page.record.edit', params: $route.params })" >{{ $t('general.label.edit') }}</b-button>
 
       <b-button v-if="module.canUpdateRecord && editMode"
-                :disabled="!record || !record.isValid()"
+                :disabled="isValid"
                 @click.prevent="handleUpdate"
                 class="float-right ml-1"
                 variant="primary"
@@ -98,6 +98,19 @@ export default {
       }
 
       return undefined
+    },
+
+    validator () {
+      return this.module ? new compose.RecordValidator(this.module) : null
+    },
+
+    isValid () {
+      if (this.validator && this.record) {
+        // @todo do something with errors
+        return this.validator.run(this.record).valid()
+      }
+
+      return true
     },
 
     /**

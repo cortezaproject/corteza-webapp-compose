@@ -2,7 +2,7 @@
   <b-tab :title="$t('block.recordOrganizer.label')">
     <b-form-group>
       <label>{{ $t('block.general.module') }}</label>
-      <b-form-select v-model="o.moduleID" required>
+      <b-form-select v-model="options.moduleID" required>
         <option :value="undefined">{{ $t('general.label.none') }}</option>
         <option
           v-for="module in modules"
@@ -14,7 +14,7 @@
       </b-form-select>
     </b-form-group>
 
-    <div v-if="!!o.moduleID">
+    <div v-if="!!options.moduleID && selectedModule">
       <b-form-group>
         <label>{{ $t('field.selector.available') }}</label>
         <div class="d-flex">
@@ -34,7 +34,7 @@
       <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.prefilterLabel')">
         <b-form-textarea :value="true"
                         :placeholder="$t('block.recordList.record.prefilterPlaceholder')"
-                        v-model.trim="o.filter"></b-form-textarea>
+                        v-model.trim="options.filter"></b-form-textarea>
           <b-form-text>
             <i18next path="block.recordList.record.prefilterFootnote" tag="label">
               <code>${recordID}</code>
@@ -45,7 +45,7 @@
       </b-form-group>
 
       <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordOrganizer.labelField.label')">
-        <b-form-select v-model="o.labelField">
+        <b-form-select v-model="options.labelField">
           <option :value="undefined">{{ $t('general.label.none') }}</option>
           <option
             v-for="(field, index) in selectedModule.fields"
@@ -59,7 +59,7 @@
       </b-form-group>
 
       <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordOrganizer.descriptionField.label')">
-        <b-form-select v-model="o.descriptionField">
+        <b-form-select v-model="options.descriptionField">
           <option :value="undefined">{{ $t('general.label.none') }}</option>
           <option
             v-for="(field, index) in selectedModule.fields"
@@ -73,7 +73,7 @@
       </b-form-group>
 
       <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordOrganizer.positionField.label')">
-        <b-form-select v-model="o.positionField">
+        <b-form-select v-model="options.positionField">
           <option :value="undefined">{{ $t('general.label.none') }}</option>
           <option
             v-for="(field, index) in positionFields"
@@ -87,7 +87,7 @@
       </b-form-group>
 
       <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordOrganizer.groupField.label')">
-        <b-form-select v-model="o.groupField">
+        <b-form-select v-model="options.groupField">
           <option :value="undefined">{{ $t('general.label.none') }}</option>
           <option
             v-for="(field, index) in groupFields"
@@ -101,11 +101,11 @@
       </b-form-group>
 
       <b-form-group horizontal
-                    v-if="o.groupField"
+                    v-if="options.groupField"
                     :label-cols="3"
                     breakpoint="md"
                     :label="$t('block.recordOrganizer.group.label')">
-        <b-form-input v-model="o.group" />
+        <b-form-input v-model="options.group" />
 
         <b-form-text class="text-secondary small">{{ $t('block.recordOrganizer.group.footnote') }}</b-form-text>
       </b-form-group>
@@ -138,17 +138,17 @@ export default {
       },
 
       set (record) {
-        this.o.group = record.values[this.groupField]
+        this.options.group = record.values[this.groupField]
         this.mockRecord = record
       },
     },
 
     selectedModule () {
-      return this.modules.find(m => m.moduleID === this.o.moduleID)
+      return this.modules.find(m => m.moduleID === this.options.moduleID)
     },
 
     allFields () {
-      if (this.o.moduleID) {
+      if (this.options.moduleID) {
         return [
           ...this.selectedModule.fields,
           ...this.selectedModule.systemFields(),
@@ -166,30 +166,31 @@ export default {
     },
 
     group () {
-      return this.allFields.find(f => f.name === this.o.settingField)
+      return this.allFields.find(f => f.name === this.options.settingField)
     },
   },
 
   watch: {
-    'o.moduleID': {
+    'options.moduleID': {
       handler (moduleID) {
-        this.o = new RecordOrganizer({ moduleID })
+        // @todo fix this
+        // this.o = new RecordOrganizer({ moduleID })
       },
     },
   },
 
   created () {
-    // this.setMockRecord(this.o.groupField)
+    // this.setMockRecord(this.options.groupField)
   },
 
   methods: {
     setMockRecord (groupField) {
-      let record = {
+      const record = {
         values: {},
       }
 
       if (groupField) {
-        record.values[groupField] = this.o.group
+        record.values[groupField] = this.options.group
       }
       this.mockRecord = record
     },

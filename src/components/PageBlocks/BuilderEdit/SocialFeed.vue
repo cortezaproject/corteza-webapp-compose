@@ -4,11 +4,11 @@
         <label>{{ $t('block.socialFeed.twitterProfileField') }}</label>
         <b-form-select
             :options="selectOptions"
-            v-model="o.profileSourceField" />
+            v-model="options.profileSourceField" />
     </fieldset>
     <fieldset class="form-group">
         <label>{{ $t('block.socialFeed.twitterProfileLabel') }}</label>
-        <input class="form-control" type="text" v-model="o.profileUrl">
+        <input class="form-control" type="text" v-model="options.profileUrl">
     </fieldset>
   </b-tab>
 </template>
