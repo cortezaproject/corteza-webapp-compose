@@ -73,7 +73,7 @@ export default {
      * @returns {boolean}
      */
     showInNav (page) {
-      return page.visible && !page.hasModule && page.blocks.length > 0
+      return page.visible && !page.isRecordPage && page.blocks.length > 0
     },
 
     hasChildren ({ pageID }) {
