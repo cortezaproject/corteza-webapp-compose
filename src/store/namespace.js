@@ -56,7 +56,7 @@ export default function (ComposeAPI) {
 
       async findByID ({ commit, getters }, { namespaceID, force = false } = {}) {
         if (!force) {
-          let oldItem = getters.getByID(namespaceID)
+          const oldItem = getters.getByID(namespaceID)
           if (oldItem) {
             return new Promise((resolve) => resolve(oldItem))
           }
@@ -64,7 +64,7 @@ export default function (ComposeAPI) {
 
         commit(types.pending)
         return ComposeAPI.namespaceRead({ namespaceID }).then(raw => {
-          let namespace = new compose.Namespace(raw)
+          const namespace = new compose.Namespace(raw)
           commit(types.updateSet, [namespace])
           commit(types.completed)
           return namespace
@@ -74,7 +74,7 @@ export default function (ComposeAPI) {
       async create ({ commit }, item) {
         commit(types.pending)
         return ComposeAPI.namespaceCreate(item).then(raw => {
-          let namespace = new compose.Namespace(raw)
+          const namespace = new compose.Namespace(raw)
           commit(types.updateSet, [namespace])
           commit(types.completed)
           return namespace
@@ -84,7 +84,7 @@ export default function (ComposeAPI) {
       async update ({ commit }, item) {
         commit(types.pending)
         return ComposeAPI.namespaceUpdate(item).then(raw => {
-          let namespace = new compose.Namespace(raw)
+          const namespace = new compose.Namespace(raw)
           commit(types.updateSet, [namespace])
           commit(types.completed)
           return namespace

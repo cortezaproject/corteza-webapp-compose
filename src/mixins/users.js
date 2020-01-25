@@ -1,7 +1,7 @@
 export default {
   methods: {
     fetchUsers (fields = [], records = []) {
-      let userIDs = new Set()
+      const userIDs = new Set()
       fields
         .filter(c => c.kind === 'User')
         .forEach(u => {

@@ -1,5 +1,5 @@
 module.exports = {
-  root: false,
+  root: true,
   env: {
     node: true,
     mocha: true,

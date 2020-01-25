@@ -39,7 +39,7 @@ import { compose } from '@cortezaproject/corteza-js'
 import { throttle } from 'lodash'
 
 const blocksToGrid = blocks => {
-  return blocks.map(({ xywh: [ x, y, w, h ] }, i) => {
+  return blocks.map(({ xywh: [x, y, w, h] }, i) => {
     return {
       i,
 
@@ -136,7 +136,7 @@ export default {
 
     handleLayoutUpdate (layout) {
       this.$emit('update:blocks', layout.map(
-        ({ x, y, w, h, i }) => new compose.PageBlockMaker({ ...this.blocks[i], xywh: [ x, y, w, h ] })
+        ({ x, y, w, h, i }) => new compose.PageBlockMaker({ ...this.blocks[i], xywh: [x, y, w, h] }),
       ))
     },
   },

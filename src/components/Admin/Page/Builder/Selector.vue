@@ -27,33 +27,51 @@ export default {
   data () {
     return {
       types: [
-        { label: this.$t('block.content.label'),
+        {
+          label: this.$t('block.content.label'),
           recordPageOnly: false,
-          block: new compose.PageBlockContent() },
-        { label: this.$t('block.chart.label'),
+          block: new compose.PageBlockContent(),
+        },
+        {
+          label: this.$t('block.chart.label'),
           recordPageOnly: false,
-          block: new compose.PageBlockChart() },
-        { label: this.$t('block.socialFeed.label'),
+          block: new compose.PageBlockChart(),
+        },
+        {
+          label: this.$t('block.socialFeed.label'),
           recordPageOnly: false,
-          block: new compose.PageBlockSocialFeed() },
-        { label: this.$t('block.record.label'),
+          block: new compose.PageBlockSocialFeed(),
+        },
+        {
+          label: this.$t('block.record.label'),
           recordPageOnly: true,
-          block: new compose.PageBlockRecord() },
-        { label: this.$t('block.recordList.label'),
+          block: new compose.PageBlockRecord(),
+        },
+        {
+          label: this.$t('block.recordList.label'),
           recordPageOnly: false,
-          block: new compose.PageBlockRecordList() },
-        { label: this.$t('block.automation.label'),
+          block: new compose.PageBlockRecordList(),
+        },
+        {
+          label: this.$t('block.automation.label'),
           recordPageOnly: false,
-          block: new compose.PageBlockAutomation() },
-        { label: this.$t('block.calendar.label'),
+          block: new compose.PageBlockAutomation(),
+        },
+        {
+          label: this.$t('block.calendar.label'),
           recordPageOnly: false,
-          block: new compose.PageBlockCalendar() },
-        { label: this.$t('block.file.label'),
+          block: new compose.PageBlockCalendar(),
+        },
+        {
+          label: this.$t('block.file.label'),
           recordPageOnly: false,
-          block: new compose.PageBlockFile() },
-        { label: this.$t('block.recordOrganizer.label'),
+          block: new compose.PageBlockFile(),
+        },
+        {
+          label: this.$t('block.recordOrganizer.label'),
           recordPageOnly: false,
-          block: new compose.PageBlockRecordOrganizer() },
+          block: new compose.PageBlockRecordOrganizer(),
+        },
       ],
     }
   },

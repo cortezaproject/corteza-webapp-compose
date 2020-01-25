@@ -69,8 +69,8 @@ export default {
       processing: false,
       show: false,
       classes: {
-        'module': compose.Module,
-        'chart': Chart,
+        module: compose.Module,
+        chart: Chart,
         // 'trigger': Trigger,
       },
     }
@@ -100,7 +100,7 @@ export default {
         }
         this.raiseSuccessAlert(this.$t('notification.import.successful'))
       } catch (e) {
-        this.raiseWarningAlert(this.$t(`notification.import.failed`))
+        this.raiseWarningAlert(this.$t('notification.import.failed'))
       }
       this.cancelImport()
     },

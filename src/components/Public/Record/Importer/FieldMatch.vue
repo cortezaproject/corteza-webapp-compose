@@ -12,7 +12,7 @@
                :items="rows"
                class="field-table">
 
-        <template v-slot:head(selected)="data">
+        <template v-slot:head(selected)>
           <b-form-checkbox class="pr-0"
                            :checked="selectAll"
                            @change="onSelectAll" />
@@ -128,7 +128,7 @@ export default {
     })
 
     this.rows = Object.entries(fields)
-      .map(([ fileColumn, moduleField ]) => ({
+      .map(([fileColumn, moduleField]) => ({
         selected: false,
         fileColumn,
         moduleField: moduleField || moduleFields[fileColumn],

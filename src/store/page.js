@@ -64,7 +64,7 @@ export default function (ComposeAPI) {
 
         commit(types.pending)
         return ComposeAPI.pageRead({ namespaceID, pageID }).then(raw => {
-          let page = new compose.Page(raw)
+          const page = new compose.Page(raw)
           commit(types.updateSet, [page])
           commit(types.completed)
           return page
@@ -74,7 +74,7 @@ export default function (ComposeAPI) {
       async create ({ commit }, item) {
         commit(types.pending)
         return ComposeAPI.pageCreate(item).then(raw => {
-          let page = new compose.Page(raw)
+          const page = new compose.Page(raw)
           commit(types.updateSet, [page])
           commit(types.completed)
           return page
@@ -84,7 +84,7 @@ export default function (ComposeAPI) {
       async update ({ commit }, item) {
         commit(types.pending)
         return ComposeAPI.pageUpdate(item).then(raw => {
-          let page = new compose.Page(raw)
+          const page = new compose.Page(raw)
           commit(types.updateSet, [page])
           commit(types.completed)
           return page

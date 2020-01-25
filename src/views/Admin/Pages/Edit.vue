@@ -84,7 +84,7 @@ export default {
   created () {
     const { namespaceID } = this.namespace
     this.findPageByID({ namespaceID, pageID: this.pageID }).then((page) => {
-      if (page.isRecordPage()) {
+      if (page.isRecordPage) {
         // Do not allow to edit record pages, move to builder
         this.$router.replace({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
       }

@@ -18,7 +18,10 @@
       </grid>
 
       <b-modal size="lg" id="createBlockSelector" hide-footer :title="$t('page.build.selectBlockTitle')">
-        <new-block-selector :record-page="!!module" @select="editBlock($event)"/>
+        <new-block-selector
+          :record-page="!!module"
+          @select="editBlock($event)"
+        />
       </b-modal>
 
       <b-modal
@@ -63,8 +66,21 @@
                       @save="handleSave()"
                       @delete="handleDeletePage"
                       @saveAndClose="handleSave({ closeOnSuccess: true })">
-        <b-button v-if="page.canUpdatePage" variant="outline-secondary" class="mr-1" v-b-modal.createBlockSelector>+ {{ $t('page.build.addBlock') }}</b-button>
-        <b-button v-if="page.canUpdatePage" variant="outline-secondary" class="mr-1" @click.prevent="handleSave({ previewOnSuccess: true })">{{ $t('general.label.saveAndPreview') }}</b-button>
+        <b-button
+          v-if="page.canUpdatePage"
+          variant="outline-secondary"
+          class="mr-1"
+          v-b-modal.createBlockSelector>
+          + {{ $t('page.build.addBlock') }}
+        </b-button>
+        <b-button
+          v-if="page.canUpdatePage"
+          variant="outline-secondary"
+          class="mr-1"
+          @click.prevent="handleSave({ previewOnSuccess: true })"
+        >
+          {{ $t('general.label.saveAndPreview') }}
+        </b-button>
       </editor-toolbar>
     </div>
 </template>
@@ -139,11 +155,12 @@ export default {
     }),
 
     editBlock (block, index = undefined) {
+      this.$bvModal.hide('createBlockSelector')
       this.editor = { index, block }
     },
 
     updateBlocks () {
-      let block = new compose.PageBlockMaker(this.editor.block) // make sure we get rid of the references
+      const block = new compose.PageBlockMaker(this.editor.block) // make sure we get rid of the references
       if (this.editor.index !== undefined) {
         this.page.blocks.splice(this.editor.index, 1, block)
       } else {

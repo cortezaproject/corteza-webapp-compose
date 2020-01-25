@@ -220,7 +220,7 @@ export default {
         label: `<b>${this.$t('general.reminder.dismiss')}</b>`,
         options: {
           variant: 'warning',
-          class: [ 'float-right' ],
+          class: ['float-right'],
         },
       })
 
@@ -230,7 +230,7 @@ export default {
         kind: 'Select',
         options: {
           variant: 'outline-warning',
-          class: [ 'float-left' ],
+          class: ['float-left'],
           items: [
             { kind: 'item-button', label: this.$t('general.label.timeMinute', { t: 5 }), value: { duration: 1000 * 60 * 5 } },
             { kind: 'item-button', label: this.$t('general.label.timeMinute', { t: 15 }), value: { duration: 1000 * 60 * 15 } },

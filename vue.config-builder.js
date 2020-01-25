@@ -47,6 +47,9 @@ module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias,
     },
 
     chainWebpack: config => {
+      // https://cli.vuejs.org/guide/troubleshooting.html#symbolic-links-in-node-modules
+      config.resolve.symlinks(false)
+
       // Remove css extraction issues
       // https://github.com/vuejs/vue-cli/issues/3771#issuecomment-526228100
       config.plugin('friendly-errors').tap(args => {
@@ -98,6 +101,11 @@ module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias,
       host: '127.0.0.1',
       hot: true,
       disableHostCheck: true,
+
+      overlay: {
+        warnings: true,
+        errors: true,
+      },
 
       watchOptions: {
         ignored: [

@@ -70,12 +70,12 @@ export default class Field {
       const klc = kind.toLowerCase()
       const supported = Object.keys(kinds)
       const old = {
-        'textarea': 'String',
-        'text': 'String',
-        'enum': 'Select',
-        'stamp': 'DateTime',
-        'related': 'Record',
-        'related_multi': 'Record',
+        textarea: 'String',
+        text: 'String',
+        enum: 'Select',
+        stamp: 'DateTime',
+        related: 'Record',
+        related_multi: 'Record',
       }
 
       if (old[klc]) {
@@ -90,7 +90,7 @@ export default class Field {
       }
 
       if (!kinds[kind]) {
-        throw Error(i18next.t(`notification.field.unsupportedKind`, { kind }))
+        throw Error(i18next.t('notification.field.unsupportedKind', { kind }))
       }
 
       this.kind = kind

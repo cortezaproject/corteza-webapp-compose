@@ -63,7 +63,7 @@ export default function (ComposeAPI) {
 
         commit(types.pending)
         return ComposeAPI.moduleRead({ namespaceID, moduleID }).then(raw => {
-          let module = new compose.Module(raw)
+          const module = new compose.Module(raw)
           commit(types.updateSet, [module])
           commit(types.completed)
           return module
@@ -73,7 +73,7 @@ export default function (ComposeAPI) {
       async create ({ commit }, item) {
         commit(types.pending)
         return ComposeAPI.moduleCreate(item).then(raw => {
-          let module = new compose.Module(raw)
+          const module = new compose.Module(raw)
           commit(types.updateSet, [module])
           commit(types.completed)
           return module
@@ -83,7 +83,7 @@ export default function (ComposeAPI) {
       async update ({ commit }, item) {
         commit(types.pending)
         return ComposeAPI.moduleUpdate(item).then(raw => {
-          let module = new compose.Module(raw)
+          const module = new compose.Module(raw)
           commit(types.updateSet, [module])
           commit(types.completed)
           return module

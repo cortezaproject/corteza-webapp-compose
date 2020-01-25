@@ -14,7 +14,7 @@ export default {
 
   computed: {
     component () {
-      let kind = this.field.kind.toLocaleLowerCase()
+      const kind = this.field.kind.toLocaleLowerCase()
 
       if (this.field.isSystem) {
         switch (this.field.kind) {

@@ -52,7 +52,7 @@ export default {
     HamburgerMenu,
   },
 
-  mixins: [ navbarCollapse ],
+  mixins: [navbarCollapse],
 
   props: {
     namespace: {
@@ -89,7 +89,7 @@ export default {
             return [pageID]
           }
 
-          let path = tt(pp[i].children, pageID)
+          const path = tt(pp[i].children, pageID)
           if (path) {
             path.unshift(pp[i].pageID)
             return path
@@ -130,7 +130,7 @@ export default {
       if (!nav || !bb || !collapse) return
 
       const { children: navChildren = new HTMLCollection() } = nav
-      const [ collapseBody ] = collapse.getElementsByTagName('UL')
+      const [collapseBody] = collapse.getElementsByTagName('UL')
       if (!collapseBody) return
 
       const { clientWidth: collapseWidth } = collapse
@@ -145,7 +145,7 @@ export default {
           c = navChildren.item(i)
 
           const { clientWidth, offsetLeft } = c
-          let elPos = clientWidth + offsetLeft + buffer + collapseWidth
+          const elPos = clientWidth + offsetLeft + buffer + collapseWidth
 
           if (elPos >= bbWidth) {
             c.dataset.collapsed = true

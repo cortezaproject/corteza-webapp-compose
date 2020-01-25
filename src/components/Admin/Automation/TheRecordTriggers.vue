@@ -81,7 +81,7 @@ export default {
 
   computed: {
     filteredModules () {
-      let mm = [...this.modules]
+      const mm = [...this.modules]
       mm.sort((a, b) => a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase()))
 
       if (this.filter && this.filter.length > 0) {

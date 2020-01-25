@@ -3,7 +3,7 @@ import Exporter from 'corteza-webapp-compose/src/components/Public/Record/Export
 import i18n from 'corteza-webapp-compose/src/i18n'
 import { withKnobs, object, select, text, number, boolean } from '@storybook/addon-knobs'
 
-let fields = [
+const fields = [
   {
     kind: 'String',
     label: 'First Name',
@@ -26,7 +26,7 @@ let fields = [
   },
 ]
 
-let props = {
+const props = {
   module: new compose.Module({
     fields: fields,
   }),

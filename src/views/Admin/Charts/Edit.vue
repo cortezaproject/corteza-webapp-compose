@@ -146,7 +146,7 @@ export default {
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {
-      let c = Object.assign({}, this.chart)
+      const c = Object.assign({}, this.chart)
       delete (c.config.renderer.data)
 
       this.updateChart(c).then((chart) => {

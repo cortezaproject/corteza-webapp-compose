@@ -15,7 +15,7 @@ export default (options = {}) => {
   options = {
     el: '#app',
     name: 'compose',
-    template: `<router-view v-if="loaded"/>`,
+    template: '<router-view v-if="loaded"/>',
     data: () => ({ loaded: false }),
     created () {
       this.$Settings.init({ api: this.$ComposeAPI }).finally(() => {

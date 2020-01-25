@@ -6,7 +6,7 @@ import alert from 'corteza-webapp-compose/src/mixins/alert'
 import users from 'corteza-webapp-compose/src/mixins/users'
 import { withKnobs, object } from '@storybook/addon-knobs'
 
-let block1 = {
+const block1 = {
   title: 'Record organizer title',
   description: '',
   kind: 'RecordOrganizer',
@@ -28,7 +28,7 @@ let block1 = {
   },
 }
 
-let block2 = {
+const block2 = {
   title: 'Record organizer title 2',
   description: '',
   kind: 'RecordOrganizer',
@@ -50,7 +50,7 @@ let block2 = {
   },
 }
 
-let namespace = {
+const namespace = {
   namespaceID: '1',
 }
 

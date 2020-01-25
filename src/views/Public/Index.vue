@@ -116,7 +116,7 @@ export default {
     routerViewClass () {
       return {
         'compose-content': true,
-        'padded': this.navVisible && this.canPushContent,
+        padded: this.navVisible && this.canPushContent,
       }
     },
 
@@ -151,7 +151,7 @@ export default {
         // If we redirect to page index, try to find & redirect to a first
         // available public page.
         if (!this.pageID) {
-          let { pageID } = this.$store.getters['page/firstVisibleNonRecordPage'] || {}
+          const { pageID } = this.$store.getters['page/firstVisibleNonRecordPage'] || {}
           if (pageID) {
             // Use replace so we don't push to history stack
             this.$router.replace({ name: 'page', params: { pageID } })

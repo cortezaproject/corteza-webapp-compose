@@ -71,7 +71,7 @@ export default {
         }
         // Transform to backend value struct
         this.field.defaultValue = defaultValue.map(v => {
-          return { 'name': this.field.name, 'value': v }
+          return { name: this.field.name, value: v }
         })
       },
       deep: true,

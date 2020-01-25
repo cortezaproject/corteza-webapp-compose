@@ -50,8 +50,8 @@ export default {
     },
 
     ulClass () {
-      let cc = {}
-      cc['root'] = this.level === 0
+      const cc = {}
+      cc.root = this.level === 0
       return cc
     },
 
@@ -59,7 +59,7 @@ export default {
       return ({ pageID }) => {
         return {
           'selected-in-path': this.selectedPath.findIndex(p => p === pageID) > -1,
-          'selected': pageID === this.currentPageID,
+          selected: pageID === this.currentPageID,
         }
       }
     },

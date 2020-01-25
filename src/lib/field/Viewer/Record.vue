@@ -41,7 +41,7 @@ export default {
 
     valid () {
       if (this.relRecords.length > 0) {
-        for (let record of this.relRecords) {
+        for (const record of this.relRecords) {
           if (!record) {
             return false
           }
@@ -109,7 +109,7 @@ export default {
         const { namespaceID } = this.namespace
         const { moduleID } = this.field.options
         this.findModuleByID({ moduleID, namespaceID }).then(m => {
-          for (let v of value) {
+          for (const v of value) {
             if (v) {
               let record = { recordID: v }
               this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID: v }).then(r => {

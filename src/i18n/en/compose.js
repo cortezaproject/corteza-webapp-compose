@@ -621,7 +621,7 @@ export default {
         specific: 'Update namespace "{{target}}"',
         description: '',
       },
-      'delete': {
+      delete: {
         title: 'Delete any namespace',
         specific: 'Delete namespace "{{target}}"',
         description: '',
@@ -663,7 +663,7 @@ export default {
         specific: 'Update page "{{target}}"',
         description: 'Default: deny',
       },
-      'delete': {
+      delete: {
         title: 'Delete any page',
         specific: 'Delete page "{{target}}"',
         description: 'Default: deny',
@@ -680,7 +680,7 @@ export default {
         specific: 'Update script "{{target}}"',
         description: 'Default: deny',
       },
-      'delete': {
+      delete: {
         title: 'Delete any script',
         specific: 'Delete script "{{target}}"',
         description: 'Default: deny',
@@ -704,7 +704,7 @@ export default {
         specific: 'Update module "{{target}}"',
         description: 'Default: deny',
       },
-      'delete': {
+      delete: {
         title: 'Delete any module',
         specific: 'Delete module "{{target}}"',
         description: 'Default: deny',

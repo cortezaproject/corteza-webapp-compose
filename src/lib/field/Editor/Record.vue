@@ -142,7 +142,7 @@ export default {
     if (value) {
       const { moduleID } = this.field.options
       if (moduleID) {
-        for (let v of value) {
+        for (const v of value) {
           if (v) {
             this.fetchRecord(v)
           }
@@ -161,7 +161,7 @@ export default {
 
     setRecord (event, index = undefined) {
       const crtValue = index !== undefined ? this.value[index] : this.value
-      let { value } = event || {}
+      const { value } = event || {}
       if (value && value !== crtValue) {
         // Set selected to value
         this.fetchRecord(value)

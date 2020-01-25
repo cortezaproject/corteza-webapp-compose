@@ -138,8 +138,8 @@ export default {
     async runScriptsByEvent (event, condition, ctx = {}, processor = (ctx, result) => ctx) {
       const scripts = this.getMatchingUAScripts(event, condition) || []
 
-      for (let s of scripts) {
-        let result = await this.runUAScript(s, ctx)
+      for (const s of scripts) {
+        const result = await this.runUAScript(s, ctx)
 
         if (result === false) {
           // Async script

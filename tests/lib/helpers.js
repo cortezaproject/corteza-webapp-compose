@@ -19,7 +19,7 @@ const mounter = (component, { localVue, mocks = {}, stubs = [], ...options } = {
   return mount(component, {
     localVue,
     stubs: ['router-view', 'router-link', ...stubs],
-    mixins: [ alertMixin ],
+    mixins: [alertMixin],
     directives: {
       'b-tooltip': () => {},
       'b-popover': () => {},

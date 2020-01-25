@@ -90,7 +90,7 @@ export default {
           // https://github.com/enyo/dropzone/issues/1154
           'Cache-Control': '',
           'X-Requested-With': '',
-          'Authorization': 'Bearer ' + this.$auth.JWT,
+          Authorization: 'Bearer ' + this.$auth.JWT,
         },
         addedfile (file) {},
       }

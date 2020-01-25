@@ -93,7 +93,7 @@ export default {
   beforeMount () {
     if ((!this.value || this.value.length === 0) && this.field.options.presetWithAuthenticated) {
       // This (ID) was not converted yet
-      let { ID, userID } = this.$auth.user
+      const { ID, userID } = this.$auth.user
       if (this.field.isMulti) {
         this.value.push(userID || ID)
       } else {

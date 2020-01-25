@@ -27,73 +27,89 @@ const defConfig = () => Object.assign({}, {
 })
 
 export const chartTypes = [
-  { text: 'line',
+  {
+    text: 'line',
     value: 'line',
   },
-  { text: 'bar',
+  {
+    text: 'bar',
     value: 'bar',
   },
-  { text: 'pie',
+  {
+    text: 'pie',
     value: 'pie',
   },
-  { text: 'doughnut',
+  {
+    text: 'doughnut',
     value: 'doughnut',
   },
 ]
 
 export const aggregateFunctions = [
-  { value: 'COUNTD',
+  {
+    value: 'COUNTD',
     text: 'countd',
   },
-  { value: 'SUM',
+  {
+    value: 'SUM',
     text: 'sum',
   },
-  { value: 'MAX',
+  {
+    value: 'MAX',
     text: 'max',
   },
-  { value: 'MIN',
+  {
+    value: 'MIN',
     text: 'min',
   },
-  { value: 'AVG',
+  {
+    value: 'AVG',
     text: 'avg',
   },
-  { value: 'STD',
+  {
+    value: 'STD',
     text: 'std',
   },
 ]
 
 export const dimensionFunctions = [
-  { text: 'none',
+  {
+    text: 'none',
     value: '(no grouping / buckets)',
     convert: (f) => f,
     time: false,
   },
 
-  { text: 'date',
+  {
+    text: 'date',
     value: 'DATE',
     convert: (f) => `DATE(${f})`,
     time: { unit: 'day', minUnit: 'day', round: true },
   },
 
-  { text: 'week',
+  {
+    text: 'week',
     value: 'WEEK',
     convert: (f) => `DATE(${f})`,
     time: { unit: 'week', minUnit: 'week', round: true, isoWeekday: true },
   },
 
-  { text: 'month',
+  {
+    text: 'month',
     value: 'MONTH',
     convert: (f) => `DATE_FORMAT(${f}, '%Y-%m-01')`,
     time: { unit: 'month', minUnit: 'month', round: true },
   },
 
-  { text: 'quarter', // fetch monthly aggregation but tell renderer to group by quarter
+  {
+    text: 'quarter', // fetch monthly aggregation but tell renderer to group by quarter
     value: 'QUARTER',
     convert: (f) => `DATE_FORMAT(${f}, '%Y-%m-01')`,
     time: { unit: 'quarter', minUnit: 'quarter', round: true },
   },
 
-  { text: 'year',
+  {
+    text: 'year',
     value: 'YEAR',
     convert: (f) => `DATE_FORMAT(${f}, '%Y-01-01')`,
     time: { unit: 'year', minUnit: 'year', round: true },
@@ -101,20 +117,32 @@ export const dimensionFunctions = [
 ]
 
 export const predefinedFilters = [
-  { value: `YEAR(created_at) = YEAR(NOW())`,
-    text: `recordsCreatedThisYear` },
-  { value: `YEAR(created_at) = YEAR(NOW()) - 1`,
-    text: `recordsCreatedLastYear` },
+  {
+    value: 'YEAR(created_at) = YEAR(NOW())',
+    text: 'recordsCreatedThisYear',
+  },
+  {
+    value: 'YEAR(created_at) = YEAR(NOW()) - 1',
+    text: 'recordsCreatedLastYear',
+  },
 
-  { value: `YEAR(created_at) = YEAR(NOW()) AND QUARTER(created_at) = QUARTER(NOW())`,
-    text: `recordsCreatedThisQuarter` },
-  { value: `YEAR(created_at) = YEAR(NOW()) - 1 AND QUARTER(created_at) = QUARTER(DATE_SUB(NOW(), INTERVAL 3 MONTH)`,
-    text: `recordsCreatedLastQuarter` },
+  {
+    value: 'YEAR(created_at) = YEAR(NOW()) AND QUARTER(created_at) = QUARTER(NOW())',
+    text: 'recordsCreatedThisQuarter',
+  },
+  {
+    value: 'YEAR(created_at) = YEAR(NOW()) - 1 AND QUARTER(created_at) = QUARTER(DATE_SUB(NOW(), INTERVAL 3 MONTH)',
+    text: 'recordsCreatedLastQuarter',
+  },
 
-  { value: `DATE_FORMAT(created_at, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')`,
-    text: `recordsCreatedThisMonth` },
-  { value: `DATE_FORMAT(created_at, '%Y-%m') = DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 YEAR), '%Y-%m')`,
-    text: `recordsCreatedLastMonth` },
+  {
+    value: 'DATE_FORMAT(created_at, \'%Y-%m\') = DATE_FORMAT(NOW(), \'%Y-%m\')',
+    text: 'recordsCreatedThisMonth',
+  },
+  {
+    value: 'DATE_FORMAT(created_at, \'%Y-%m\') = DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 YEAR), \'%Y-%m\')',
+    text: 'recordsCreatedLastMonth',
+  },
 ]
 
 export { default as ChartComponent } from './Component'
@@ -190,7 +218,7 @@ export class Chart {
       let { renderer, reports } = config
 
       if (renderer) {
-        let { version } = renderer || {}
+        const { version } = renderer || {}
 
         if (version !== 'chart.js') {
           throw Error(i18next.t('notification.chart.unsupportedRenderer', { version }))
@@ -264,7 +292,7 @@ export class Chart {
   // Builds renderer (only ChartJS supported) options
   buildOptions () {
     const plugins = new Set()
-    let options = {
+    const options = {
       // Allow chart to consume entire container
       responsive: true,
       maintainAspectRatio: false,
@@ -273,7 +301,7 @@ export class Chart {
       },
     }
 
-    let datasets = []
+    const datasets = []
     let baseType
 
     this.config.reports.forEach(r => {
@@ -454,7 +482,7 @@ export class Chart {
 
   processReporterResults (results, report) {
     const dLabel = 'dimension_0'
-    const { dimensions: [ dimension ] = [] } = report
+    const { dimensions: [dimension] = [] } = report
     const isTimeDimension = !!(dimensionFunctions.lookup(dimension) || {}).time
     const getLabel = (rLabel, { default: dDft }) => {
       if (rLabel) return rLabel
@@ -473,7 +501,7 @@ export class Chart {
       labels = results.map(r => getLabel(r[dLabel], dimension))
     }
 
-    let metrics = report.metrics.map(({ field, fill, aggregate, label, type, backgroundColor }) => {
+    const metrics = report.metrics.map(({ field, fill, aggregate, label, type, backgroundColor }) => {
       const alias = makeAlias({ field, aggregate })
 
       return results.map(r => {
@@ -493,7 +521,7 @@ export class Chart {
 
   async export (findModuleByID) {
     const { namespaceID } = this
-    let copy = new Chart(this)
+    const copy = new Chart(this)
     await Promise.all(copy.config.reports.map(async r => {
       const { moduleID } = r
       if (moduleID) {
@@ -510,7 +538,7 @@ export class Chart {
   }
 
   import (getModuleID) {
-    let copy = new Chart(this)
+    const copy = new Chart(this)
     copy.config.reports.map(r => {
       const { moduleID } = r
       if (moduleID) {
