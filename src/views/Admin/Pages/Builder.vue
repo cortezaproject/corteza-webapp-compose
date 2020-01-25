@@ -8,9 +8,12 @@
             </a>
             <a class="pr-1"  @click="page.blocks.splice(index,1)">X</a>
           </div>
-          <block-preview :block="block"
-                         :namespace="namespace"
-                         :module="module"></block-preview>
+          <block-preview
+            :block="block"
+            :namespace="namespace"
+            :module="module"
+            :page="page"
+          />
         </template>
       </grid>
 
@@ -136,11 +139,11 @@ export default {
     }),
 
     editBlock (block, index = undefined) {
-      this.editor = { index, block: new compose.PageBlockMaker({ ...block }) }
+      this.editor = { index, block }
     },
 
     updateBlocks () {
-      let block = new PageBlockMaker(this.editor.block) // make sure we get rid of the references
+      let block = new compose.PageBlockMaker(this.editor.block) // make sure we get rid of the references
       if (this.editor.index !== undefined) {
         this.page.blocks.splice(this.editor.index, 1, block)
       } else {

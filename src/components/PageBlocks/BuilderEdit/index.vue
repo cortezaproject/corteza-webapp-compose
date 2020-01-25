@@ -10,16 +10,14 @@
 
     <component v-if="blockComponent"
               :is="block.kind"
-              :namespace="namespace"
-              :module="module"
-              :page="page"
-              :options.sync="block.options"/>
+              v-bind="$props" />
   </b-tabs>
 </template>
 
 <script>
 import * as EditBlocks from './loader'
 import basic from './basic'
+import base from './base'
 
 export default {
   components: {
@@ -27,27 +25,7 @@ export default {
     basic,
   },
 
-  props: {
-    block: {
-      type: Object,
-      required: true,
-    },
-
-    namespace: {
-      type: Object,
-      required: true,
-    },
-
-    page: {
-      type: Object,
-      required: true,
-    },
-
-    module: {
-      type: Object,
-      required: false,
-    },
-  },
+  extends: base,
 
   computed: {
     blockComponent () {

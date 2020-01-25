@@ -1,19 +1,32 @@
 <script>
+import { compose } from '@cortezaproject/corteza-js'
+
 export default {
   props: {
-    options: {
-      type: Object,
+    namespace: {
+      type: compose.Namespace,
       required: true,
     },
 
-    namespace: {
-      type: Object,
+    page: {
+      type: compose.Page,
+      required: true,
+    },
+
+    block: {
+      type: compose.PageBlock,
       required: true,
     },
 
     module: {
-      type: Object,
+      type: compose.Module,
       required: false,
+    },
+  },
+
+  computed: {
+    options () {
+      return this.block.options
     },
   },
 }

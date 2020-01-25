@@ -10,8 +10,7 @@
           :body-bg-variant="block.style.variants.bodyBg">
     <b-card-text>
       <component :is="block.kind"
-                 :options="block.options"
-                 :module="module"
+                 v-bind="$props"
                  :namespace="namespace"/>
     </b-card-text>
   </b-card>
@@ -19,28 +18,14 @@
 
 <script>
 import * as PreviewBlocks from './loader'
+import base from './base'
 
 export default {
   components: {
     ...PreviewBlocks,
   },
 
-  props: {
-    namespace: {
-      type: Object,
-      required: true,
-    },
-
-    block: {
-      type: Object,
-      required: true,
-    },
-
-    module: {
-      type: Object,
-      required: false,
-    },
-  },
+  extends: base,
 
   computed: {
     blockClass () {

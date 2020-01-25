@@ -1,7 +1,7 @@
 <template>
    <div>
       <i18next v-if="options.moduleID" path="block.recordOrganizer.preview.label" tag="label">
-        <code>{{ recordOrganizerModule.name || this.options.moduleID }}</code>
+        <code v-if="recordOrganizerModule">{{ recordOrganizerModule.name || this.options.moduleID }}</code>
         <code>{{ this.options.labelField || $t('general.label.none') }}</code>
         <code>{{ this.options.descriptionField || $t('general.label.none') }}</code>
         <code>{{ this.options.groupField || $t('general.label.none') }}</code>
