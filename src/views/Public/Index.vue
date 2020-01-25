@@ -150,7 +150,7 @@ export default {
         // If we redirect to page index, try to find & redirect to a first
         // available public page.
         if (!this.pageID) {
-          const { pageID } = this.$store.getters['page/firstVisibleNonRecordPage'] || {}
+          const { pageID } = this.$store.getters['page/homePage'] || {}
           if (pageID) {
             // Use replace so we don't push to history stack
             this.$router.replace({ name: 'page', params: { pageID } })

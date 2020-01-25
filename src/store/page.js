@@ -23,7 +23,7 @@ export default function (ComposeAPI) {
         return (ID) => state.set.find(({ pageID }) => ID === pageID)
       },
 
-      firstVisibleNonRecordPage: (state) => state.set.find(p => p.firstLevelVisibleNonRecord),
+      homePage: (state) => state.set.find(p => p.visible && p.firstLevel && !p.isRecordPage),
 
       set (state) {
         return state.set
