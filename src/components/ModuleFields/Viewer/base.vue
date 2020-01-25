@@ -8,20 +8,22 @@
   </div>
 </template>
 <script>
+import { compose } from '@cortezaproject/corteza-js'
+
 export default {
   props: {
     namespace: {
-      type: Object,
+      type: compose.Namespace,
       required: true,
     },
 
     field: {
-      type: Object,
+      type: compose.ModuleField,
       required: true,
     },
 
     record: {
-      type: Object,
+      type: compose.Record,
       required: true,
     },
 

@@ -4,6 +4,7 @@ import i18nInit from '@/i18n'
 import { withKnobs } from '@storybook/addon-knobs'
 import RecordEventsTable from '@components/Admin/Automation/TheRecordTriggers'
 import AutomationTrigger from 'corteza-webapp-common/src/lib/types/shared/automation-trigger'
+import { compose } from '@cortezaproject/corteza-js'
 
 const story = storiesOf('Admin|Automation', module)
   .addDecorator(withKnobs)

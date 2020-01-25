@@ -50,7 +50,7 @@
 import { mapGetters } from 'vuex'
 import base from './base'
 import draggable from 'vuedraggable'
-import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
+import FieldViewer from 'corteza-webapp-compose/src/components/ModuleFields/Viewer'
 import users from 'corteza-webapp-compose/src/mixins/users'
 import { compose } from '@cortezaproject/corteza-js'
 

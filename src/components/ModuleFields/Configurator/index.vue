@@ -7,11 +7,21 @@
     <b-tab active :title="$t('general.label.general')">
       <basic :field="field" />
     </b-tab>
-    <b-tab v-if="fieldComponent" :title="field.kind">
-      <component :is="fieldComponent" :field="field" />
+    <b-tab
+      v-if="fieldComponent"
+      :title="field.kind">
+      <component
+        :is="fieldComponent"
+        :field="field"
+      />
     </b-tab>
-    <b-tab :title="$t('general.label.multi')">
-      <multi :field="field" />
+    <b-tab
+      v-if="field.cap.multiValue"
+      :title="$t('general.label.multi')"
+    >
+      <multi
+        :field="field"
+      />
     </b-tab>
   </b-tabs>
 </template>

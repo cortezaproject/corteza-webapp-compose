@@ -146,10 +146,9 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import draggable from 'vuedraggable'
-import FieldConfigurator from 'corteza-webapp-compose/src/lib/field/Configurator'
+import FieldConfigurator from 'corteza-webapp-compose/src/components/ModuleFields/Configurator'
 import FieldRowEdit from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowEdit'
 import FieldRowView from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowView'
-import Field from 'corteza-webapp-compose/src/lib/field'
 import { compose } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
@@ -202,14 +201,12 @@ export default {
 
     fieldsValid () {
       return this.module.fields.reduce((acc, f) => {
-        const fv = f.fieldValid()
-
         // Allow, if any old fields are invalid (legacy support)
         if (f.fieldID !== '0') {
           return acc && true
         }
 
-        return acc && fv
+        return acc && f.isValid
       }, true)
     },
 
@@ -236,13 +233,12 @@ export default {
   created () {
     this.findModuleByID({ moduleID: this.moduleID }).then((module) => {
       // Make a copy so that we do not change store item by ref
-      this.module = new compose.Module({ ...module })
-      this.recordList = new compose.PageBlockRecordList({ moduleID: this.module.moduleID })
-      this.recordList.fetch(this.$ComposeAPI, this.module, {}).then(({ records }) => {
-        if (records.length > 0) {
-          this.hasRecords = true
-        }
-      })
+      this.module = module.clone()
+
+      // Count existing records to see what we can do with this module
+      this.$ComposeAPI
+        .recordList({ ...this.module, perPage: 1 })
+        .then(({ filter }) => { this.hasRecords = (filter.count > 0) })
     })
   },
 
@@ -256,11 +252,11 @@ export default {
     }),
 
     handleNewField () {
-      this.module.fields.push(new Field({ kind: 'String' }))
+      this.module.fields.push(new compose.ModuleFieldString())
     },
 
     handleFieldEdit (field) {
-      this.updateField = new Field({ ...field })
+      this.updateField = compose.ModuleFieldMaker({ ...field })
     },
 
     handleFieldSave (field) {

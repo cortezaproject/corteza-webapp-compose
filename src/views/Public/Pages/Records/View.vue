@@ -10,6 +10,7 @@
     <grid :namespace="namespace"
           :page="page"
           :record="record"
+          :module="module"
           :edit-mode="editMode"
           v-if="record"
           @reload="loadRecord()" />
@@ -65,12 +66,17 @@ export default {
   ],
 
   props: {
-    namespace: { // via router-view
+    namespace: {
       type: compose.Namespace,
       required: true,
     },
 
-    page: { // via router-view
+    module: {
+      type: compose.Module,
+      required: false,
+    },
+
+    page: {
       type: compose.Page,
       required: true,
     },
@@ -92,14 +98,6 @@ export default {
   },
 
   computed: {
-    module () {
-      if (this.page.moduleID) {
-        return this.$store.getters['module/getByID'](this.page.moduleID)
-      }
-
-      return undefined
-    },
-
     validator () {
       return this.module ? new compose.RecordValidator(this.module) : null
     },

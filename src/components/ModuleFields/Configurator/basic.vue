@@ -1,32 +1,36 @@
 <template>
   <div>
-    <b-form-checkbox v-model="field.isRequired"
-                     :value="true"
-                     :unchecked-value="false">
-
+    <b-form-checkbox
+      v-model="field.isRequired"
+      :value="true"
+      :unchecked-value="false"
+    >
       {{ $t('general.label.required') }}
     </b-form-checkbox>
-    <b-form-checkbox v-model="field.isPrivate"
-                     :value="true"
-                     :unchecked-value="false">
+    <b-form-checkbox
+      v-model="field.isPrivate"
+      :value="true"
+      :unchecked-value="false"
+    >
       {{ $t('general.label.private') }}
     </b-form-checkbox>
-    <b-form-group v-if="mockField.kind"
-                  :label="$t('field.defaultValue')"
-                  class="mt-3">
-
-      <field-editor class="mb-0"
-                    valueOnly
-                    :namespace="mockNamespace"
-                    :field="mockField"
-                    :record.sync="mockRecord" />
+    <b-form-group
+      v-if="mockField.kind"
+      :label="$t('field.defaultValue')"
+      class="mt-3"
+    >
+      <field-editor
+        class="mb-0"
+        valueOnly
+        :namespace="mockNamespace"
+        :field="mockField"
+        :record.sync="mockRecord" />
     </b-form-group>
   </div>
 </template>
 
 <script>
-import FieldEditor from 'corteza-webapp-compose/src/lib/field/Editor'
-import Field from 'corteza-webapp-compose/src/lib/field'
+import FieldEditor from '../Editor'
 import { compose } from '@cortezaproject/corteza-js'
 import { mapGetters } from 'vuex'
 
@@ -121,7 +125,7 @@ export default {
     }
 
     // Create mock field for defaultValue fiels
-    this.mockField = new Field(this.field)
+    this.mockField = compose.ModuleFieldMaker(this.field)
     this.mockField.isRequired = false
     this.mockField.isPrivate = false
     this.mockField.name = 'defaultValue'

@@ -43,7 +43,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import base from './base'
-import { Record } from 'corteza-webapp-compose/src/lib/field/Record'
+import { compose } from '@cortezaproject/corteza-js'
 
 // @todo rename to Record and make appropriate changes...
 export default {
@@ -87,7 +87,7 @@ export default {
   },
 
   created () {
-    this.f.options = new Record(this.f.options)
+    this.f.options = new compose.Record(this.f.options)
   },
 }
 </script>

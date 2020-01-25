@@ -21,11 +21,13 @@
         <i>{{ $t('field.noPermission') }}</i>
       </div>
     </div>
+
+    {{ errors }}
   </div>
 </template>
 <script>
-import FieldEditor from 'corteza-webapp-compose/src/lib/field/Editor'
-import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
+import FieldEditor from 'corteza-webapp-compose/src/components/ModuleFields/Editor'
+import FieldViewer from 'corteza-webapp-compose/src/components/ModuleFields/Viewer'
 import users from 'corteza-webapp-compose/src/mixins/users'
 import base from './base'
 
@@ -40,6 +42,10 @@ export default {
   mixins: [
     users,
   ],
+
+  props: {
+    errors: {},
+  },
 
   computed: {
     fields () {

@@ -24,7 +24,7 @@
 </template>
 <script>
 import base from './base'
-import { trimUrlFragment, trimUrlQuery, trimUrlPath, onlySecureUrl } from 'corteza-webapp-compose/src/lib/field/Url'
+import { trimUrlFragment, trimUrlQuery, trimUrlPath, onlySecureUrl } from '../url'
 
 export default {
   extends: base,

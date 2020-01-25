@@ -50,7 +50,7 @@
   </b-form-group>
 </template>
 <script>
-import _ from 'lodash'
+import { debounce } from 'lodash'
 import base from './base'
 import { VueSelect } from 'vue-select'
 
@@ -135,7 +135,7 @@ export default {
       }
     },
 
-    debouncedSearch: _.debounce((vm, query) => {
+    debouncedSearch: debounce((vm, query) => {
       vm.$SystemAPI.userList({ query }).then(({ set }) => {
         vm.users = set.map(vm.convert)
       })

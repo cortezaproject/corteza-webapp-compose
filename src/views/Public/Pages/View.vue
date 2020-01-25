@@ -1,13 +1,20 @@
 <template>
   <div v-if="!!page" class="d-flex">
-    <router-view :namespace="namespace"
-                 :page="page"
-                 class="flex-grow-1"
-                 v-if="recordID || createPage" />
+    <router-view
+      class="flex-grow-1"
+      v-if="recordID || isRecordCreatePage"
+      :namespace="namespace"
+      :module="module"
+      :page="page"
+    />
 
-    <grid :namespace="namespace"
-          class="vh-100 flex-grow-1"
-          :page="page" v-else />
+    <grid
+      class="vh-100 flex-grow-1"
+      v-else
+      :namespace="namespace"
+      :module="module"
+      :page="page"
+    />
 
     <right-panel class="pb-5"
                  :namespaceID="namespace.namespaceID"/>
@@ -45,8 +52,16 @@ export default {
   },
 
   computed: {
-    createPage () {
+    isRecordCreatePage () {
       return this.$route.name === 'page.record.create'
+    },
+
+    module () {
+      if (this.page.moduleID) {
+        return this.$store.getters['module/getByID'](this.page.moduleID)
+      }
+
+      return undefined
     },
   },
 }

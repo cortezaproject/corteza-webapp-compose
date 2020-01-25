@@ -19,7 +19,7 @@
 </div>
 </template>
 <script>
-import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
+import ConfirmationToggle from './ConfirmationToggle'
 
 export default {
   components: {

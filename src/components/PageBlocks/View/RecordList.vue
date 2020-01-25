@@ -82,7 +82,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import base from './base'
-import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
+import FieldViewer from 'corteza-webapp-compose/src/components/ModuleFields/Viewer'
 import ExporterModal from 'corteza-webapp-compose/src/components/Public/Record/Exporter'
 import ImporterModal from 'corteza-webapp-compose/src/components/Public/Record/Importer'
 import { compose } from '@cortezaproject/corteza-js'

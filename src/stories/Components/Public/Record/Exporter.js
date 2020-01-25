@@ -2,6 +2,7 @@ import { storiesOf } from '@storybook/vue'
 import Exporter from 'corteza-webapp-compose/src/components/Public/Record/Exporter'
 import i18n from 'corteza-webapp-compose/src/i18n'
 import { withKnobs, object, select, text, number, boolean } from '@storybook/addon-knobs'
+import { compose } from '@cortezaproject/corteza-js'
 
 const fields = [
   {

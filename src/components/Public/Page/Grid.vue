@@ -1,32 +1,38 @@
 <template>
-  <grid v-if="page.blocks"
-        :blocks="page.blocks"
-        :editable="false"
-        :key="page.pageID">
-    <template slot-scope="{ boundingRect, block }">
-      <block-editor :block="block"
-                    :namespace="namespace"
-                    :page="page"
-                    :module="module"
-                    :record="record"
-                    :bounding-rect="boundingRect"
-                    v-on="$listeners"
-                    v-if="editMode" />
-      <block-viewer :block="block"
-                    :namespace="namespace"
-                    :page="page"
-                    :module="module"
-                    :record="record"
-                    :bounding-rect="boundingRect"
-                    v-on="$listeners"
-                    v-else />
+  <grid
+    v-if="page.blocks"
+    :blocks="page.blocks"
+    :editable="false"
+    :key="page.pageID"
+  >
+    <template
+      slot-scope="{ boundingRect, block }"
+    >
+      <block-editor
+        :block="block"
+        :module="module"
+        :bounding-rect="boundingRect"
+        v-bind="$props"
+        v-on="$listeners"
+        v-if="editMode"
+      />
+      <block-viewer
+        :block="block"
+        :page="page"
+        :module="module"
+        :bounding-rect="boundingRect"
+        v-bind="$props"
+        v-on="$listeners"
+        v-else
+      />
     </template>
   </grid>
 </template>
 <script>
-import Grid from 'corteza-webapp-compose/src/components/Common/Grid'
-import BlockViewer from 'corteza-webapp-compose/src/components/PageBlocks/View'
-import BlockEditor from 'corteza-webapp-compose/src/components/PageBlocks/Edit'
+import Grid from '../../Common/Grid'
+import BlockViewer from '../../PageBlocks/View'
+import BlockEditor from '../../PageBlocks/Edit'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   name: 'public-grid',
@@ -39,32 +45,27 @@ export default {
 
   props: {
     namespace: {
-      type: Object,
+      type: compose.Namespace,
       required: true,
     },
 
+    module: {
+      type: compose.Module,
+      required: false,
+    },
+
     page: {
-      type: Object,
+      type: compose.Page,
       required: true,
     },
 
     record: {
-      type: Object,
+      type: compose.Record,
       required: false,
     },
 
     editMode: {
       type: Boolean,
-    },
-  },
-
-  computed: {
-    module () {
-      if (this.page.moduleID) {
-        return this.$store.getters['module/getByID'](this.page.moduleID)
-      }
-
-      return undefined
     },
   },
 }

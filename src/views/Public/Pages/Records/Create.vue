@@ -2,6 +2,7 @@
   <div>
     <grid :namespace="namespace"
           :page="page"
+          :module="module"
           :record="record"
           v-if="record" edit-mode />
     <toolbar :back-link="{name: 'admin.pages'}"
@@ -21,6 +22,7 @@ import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
 import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 import { compose } from '@cortezaproject/corteza-js'
 import Toolbar from 'corteza-webapp-compose/src/components/Public/Page/Toolbar'
+import ViewRecord from './View'
 
 export default {
   name: 'CreateRecord',
@@ -30,26 +32,20 @@ export default {
     Toolbar,
   },
 
+  extends: ViewRecord,
+
   mixins: [
     uiScriptRunner,
   ],
 
   props: {
-    page: { // via router-view
-      type: compose.Page,
-      required: false,
-    },
-
-    namespace: { // via router-view
-      type: compose.Namespace,
-      required: true,
-    },
-
+    // When creating from related record blocks
     refRecord: {
-      type: Object,
+      type: compose.Record,
       required: false,
     },
 
+    // If component was called with some pre-seed values
     values: {
       type: Object,
       required: false,
@@ -59,30 +55,17 @@ export default {
 
   data () {
     return {
-      record: null,
+      record: undefined,
     }
   },
 
   computed: {
-    module () {
-      if (this.page.moduleID) {
-        return this.$store.getters['module/getByID'](this.page.moduleID)
+    errors () {
+      if (this.validator) {
+        return this.validator.run(this.record).get()
       }
 
-      return undefined
-    },
-
-    validator () {
-      return this.module ? new compose.RecordValidator(this.module) : null
-    },
-
-    isValid () {
-      if (this.validator && this.record) {
-        // @todo do something with errors
-        return this.validator.run(this.record).valid()
-      }
-
-      return true
+      return []
     },
   },
 

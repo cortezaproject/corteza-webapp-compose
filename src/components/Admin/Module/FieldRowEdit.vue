@@ -1,11 +1,13 @@
 <template>
   <tr>
-    <td v-b-tooltip.hover
-        :title="$t('general.tooltip.dragAndDrop')"
-        class="handle text-center align-middle">
-        <font-awesome-icon :icon="['fas', 'sort']"
-                           class="text-secondary"
-                           :title="$t('module.edit.reorderFields')"></font-awesome-icon>
+    <td
+      v-b-tooltip.hover
+      class="handle text-center align-middle"
+    >
+      <font-awesome-icon
+        :icon="['fas', 'sort']"
+        class="text-secondary"
+      />
     </td>
     <td>
       <b-form-input v-model="value.name"
@@ -22,14 +24,14 @@
     </td>
     <td>
       <b-select v-model="value.kind" :disabled="disabled">
-        <option v-for="fieldType in fieldsList"
-                :key="fieldType.kind"
-                :value="fieldType.kind">{{ fieldType.label||fieldType.kind }}</option>
+        <option v-for="({ kind, label }) in fieldKinds"
+                :key="kind"
+                :value="kind">{{ label }}</option>
       </b-select>
     </td>
     <td class="text-center align-middle">
       <b-form-checkbox v-model="value.isMulti"
-                       :disabled="!value.allowMulti()"
+                       :disabled="!value.cap.multiValue"
                        :value="true"
                        :unchecked-value="false"></b-form-checkbox>
     </td>
@@ -44,7 +46,7 @@
                        :unchecked-value="false"></b-form-checkbox>
     </td>
     <td class="d-flex justify-content-around align-items-center mt-1">
-      <b-button :disabled="!value.isConfigurable()"
+      <b-button :disabled="!value.cap.configurable"
                 @click.prevent="$emit('edit')"
                 class="pl-1 pr-0 text-secondary"
                 variant="link">
@@ -70,11 +72,18 @@
 
 <script>
 import Confirm from 'corteza-webapp-common/src/components/Input/Confirm'
-import fieldList from 'corteza-webapp-compose/src/lib/field/list'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
     Confirm,
+  },
+
+  i18nOptions: {
+    keyPrefix: 'module.fieldKinds',
+    missingKeyHandler: (lng, ns, key, fallbackValue) => {
+      console.log(lng, ns, key, fallbackValue)
+    },
   },
 
   props: {
@@ -99,17 +108,22 @@ export default {
     return {
       updateField: null,
       module: null,
-      fieldsList: fieldList,
     }
   },
 
   computed: {
     checkFieldName () {
-      return (this.disabled || this.value.nameValid()) ? null : false
+      return (this.disabled || this.value.isValid) ? null : false
     },
 
     disabled () {
       return this.value.fieldID !== '0' && this.hasRecords
+    },
+
+    fieldKinds () {
+      return [...compose.ModuleFieldRegistry.keys()].map(kind => {
+        return { kind, label: this.$t(kind + '.label') }
+      })
     },
   },
 

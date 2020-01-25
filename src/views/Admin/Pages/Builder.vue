@@ -143,7 +143,7 @@ export default {
   mounted () {
     const { namespaceID } = this.namespace
     this.findPageByID({ namespaceID, pageID: this.pageID, force: true }).then(page => {
-      this.page = new compose.Page(page)
+      this.page = page.clone()
     })
   },
 

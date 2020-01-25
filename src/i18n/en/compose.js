@@ -283,6 +283,21 @@ export default {
       recordListPage: 'Record List page for module',
       recordList: 'Record List for module',
     },
+
+    fieldKinds: {
+      Bool: { label: 'Checkbox (Y/N)' },
+      DateTime: { label: 'Date and time' },
+      Email: { label: 'Email input' },
+      File: { label: 'File upload' },
+      Formula: { label: 'Formula' },
+      Select: { label: 'Select / dropdown' },
+      Number: { label: 'Number input' },
+      Record: { label: 'Record selector' },
+      String: { label: 'Text input (string)' },
+      Url: { label: 'URL input' },
+      User: { label: 'User selector' },
+    },
+
     edit: {
       title: 'Edit module',
       manageRecordFields: 'Manage record fields',

@@ -1,32 +1,3 @@
-// @todo option to allow multiple entries
-// @todo option to allow duplicates
-export class Url {
-  constructor (def = {}) {
-    this.merge(def)
-  }
-
-  merge ({ trimFragment, trimQuery, trimPath, onlySecure, outputPlain, multiDelimiter } = {}) {
-    this.trimFragment = !!trimFragment
-    this.trimQuery = !!trimQuery
-    this.trimPath = !!trimPath
-    this.onlySecure = !!onlySecure
-    this.outputPlain = !!outputPlain
-    this.multiDelimiter = multiDelimiter ? (typeof multiDelimiter === 'string' ? multiDelimiter : '\n') : '\n'
-
-    return this
-  }
-
-  export () {
-    return {
-      trimFragment: this.trimFragment,
-      trimQuery: this.trimQuery,
-      trimPath: this.trimPath,
-      onlySecure: this.onlySecure,
-      outputPlain: this.outputPlain,
-    }
-  }
-}
-
 /**
  * Processes a given URL and returns a URL object
  * @param {String} url URL to process

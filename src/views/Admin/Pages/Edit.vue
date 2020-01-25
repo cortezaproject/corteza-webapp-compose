@@ -101,7 +101,7 @@ export default {
     handleSave ({ closeOnSuccess = false } = {}) {
       const { namespaceID } = this.namespace
       this.updatePage({ namespaceID, ...this.page }).then((page) => {
-        this.page = new compose.Page(page)
+        this.page = page.clone()
         this.raiseSuccessAlert(this.$t('notification.page.saved'))
         if (closeOnSuccess) {
           this.$router.push({ name: 'admin.pages' })

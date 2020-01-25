@@ -73,7 +73,6 @@ import PublicHeader from 'corteza-webapp-compose/src/components/Public/Header'
 import CircleStep from 'corteza-webapp-compose/src/components/Common/CircleStep'
 import { compose } from '@cortezaproject/corteza-js'
 import Chart from 'corteza-webapp-compose/src/lib/chart'
-import Field from 'corteza-webapp-compose/src/lib/field'
 
 const pushContentAbove = 610
 
@@ -181,7 +180,7 @@ export default {
     createNewModule () {
       const { namespaceID } = this.namespace
       const name = 'Demo Module'
-      const newModule = new compose.Module({ namespaceID, name, fields: [new Field({ fieldID: '0', name: 'Sample', kind: 'String' })] })
+      const newModule = new compose.Module({ namespaceID, name, fields: [compose.ModuleFieldString({ fieldID: '0', name: 'Sample' })] })
       this.createModule(newModule).then((module) => {
         this.$router.push({ name: 'admin.modules.edit', params: { moduleID: module.moduleID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.module.createFailed')))

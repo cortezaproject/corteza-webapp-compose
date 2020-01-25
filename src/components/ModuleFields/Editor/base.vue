@@ -8,6 +8,7 @@
 </template>
 <script>
 import multi from './multi'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
@@ -18,17 +19,17 @@ export default {
 
   props: {
     namespace: {
-      type: Object,
+      type: compose.Namespace,
       required: true,
     },
 
     field: {
-      type: Object,
+      type: compose.ModuleField,
       required: true,
     },
 
     record: {
-      type: Object,
+      type: compose.Record,
       required: true,
     },
 
@@ -67,11 +68,12 @@ export default {
       if (this.valueOnly) {
         return ''
       }
+
       return this.field.label || this.field.name
     },
 
     errors () {
-      return this.field.validate(this.value, this.record.compareToValues[this.field.name])
+      return [] // this.field.validate(this.value, this.record.compareToValues[this.field.name])
     },
   },
 }

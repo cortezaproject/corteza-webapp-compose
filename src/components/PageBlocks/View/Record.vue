@@ -17,7 +17,7 @@
 </template>
 <script>
 import base from './base'
-import FieldViewer from 'corteza-webapp-compose/src/lib/field/Viewer'
+import FieldViewer from 'corteza-webapp-compose/src/components/ModuleFields/Viewer'
 import users from 'corteza-webapp-compose/src/mixins/users'
 
 export default {
