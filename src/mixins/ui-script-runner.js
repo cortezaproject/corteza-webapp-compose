@@ -6,8 +6,8 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters({
-      getScriptByID: 'uaScript/getByID',
-      getMatchingUAScripts: 'uaScript/getMatching',
+      // getScriptByID: 'uaScript/getByID',
+      // getMatchingUAScripts: 'uaScript/getMatching',
       pages: 'page/set',
     }),
   },

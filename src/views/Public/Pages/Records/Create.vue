@@ -19,10 +19,9 @@
 </template>
 <script>
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
-import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
-import { compose } from '@cortezaproject/corteza-js'
 import Toolbar from 'corteza-webapp-compose/src/components/Public/Page/Toolbar'
 import ViewRecord from './View'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   name: 'CreateRecord',
@@ -33,10 +32,6 @@ export default {
   },
 
   extends: ViewRecord,
-
-  mixins: [
-    uiScriptRunner,
-  ],
 
   props: {
     // When creating from related record blocks
@@ -84,10 +79,8 @@ export default {
 
   methods: {
     handleCreate () {
-      this.createRecord(this.namespace, this.module, this.record)
-        .then((record) => {
-          this.$router.push({ name: 'page.record', params: { ...this.$route.params, recordID: record.recordID } })
-        })
+      this
+        .handleFormSubmit(() => this.$ComposeAPI.recordCreate(this.record))
         .catch(this.defaultErrorHandler(this.$t('notification.record.createFailed')))
     },
   },

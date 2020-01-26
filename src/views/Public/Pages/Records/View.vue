@@ -11,6 +11,7 @@
       v-if="record"
       v-bind="$props"
       :errors="errors"
+      :record="record"
       :edit-mode="editMode"
       @reload="loadRecord()"
     />
@@ -33,7 +34,7 @@
                 @click.prevent="$router.push({ name: 'page.record.edit', params: $route.params })" >{{ $t('general.label.edit') }}</b-button>
 
       <b-button v-if="module.canUpdateRecord && editMode"
-                :disabled="isValid"
+                :disabled="!isValid"
                 @click.prevent="handleUpdate"
                 class="float-right ml-1"
                 variant="primary"
@@ -48,9 +49,8 @@
 </template>
 <script>
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
-import { compose } from '@cortezaproject/corteza-js'
-import uiScriptRunner from 'corteza-webapp-compose/src/mixins/ui-script-runner'
 import Toolbar from 'corteza-webapp-compose/src/components/Public/Page/Toolbar'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   name: 'ViewRecord',
@@ -59,10 +59,6 @@ export default {
     Grid,
     Toolbar,
   },
-
-  mixins: [
-    uiScriptRunner,
-  ],
 
   props: {
     namespace: {
@@ -97,12 +93,20 @@ export default {
   },
 
   computed: {
+    errors () {
+      if (this.validator) {
+        return this.validator.run(this.record).get()
+      }
+
+      return []
+    },
+
     validator () {
       return this.module ? new compose.RecordValidator(this.module) : null
     },
 
     isValid () {
-      if (this.validator && this.record) {
+      if (this.record && this.validator) {
         // @todo do something with errors
         return this.validator.run(this.record).valid()
       }
@@ -142,20 +146,49 @@ export default {
       }
     },
 
+    handleBack () {
+      this.$router.back()
+    },
+
     /**
      * On delete, preserve user's view. Show a notification that the record
      * has been deleted.
      */
     handleDelete () {
-      this.deleteRecord(this.namespace, this.module, this.record)
-        .then((e) => {
+      return this
+        .dispatchUiEvent('beforeDelete')
+        .then(() => this.$ComposeAPI.recordDelete(this.record))
+        .then(() => {
           this.record.deletedAt = (new Date()).toISOString()
         })
+        .then(() => this.dispatchUiEvent('afterDelete'))
         .catch(this.defaultErrorHandler(this.$t('notification.record.deleteFailed')))
     },
 
-    handleBack () {
-      this.$router.back()
+    /**
+     * Handle create & update actions
+     *
+     * Caller must pass storeCallback that is called after (successfull)
+     * beforeSubmitEvent
+     *
+     * @param storeCallback
+     */
+    handleFormSubmit (storeCallback) {
+      return this
+        .dispatchUiEvent('beforeFormSubmit')
+        .then(() => storeCallback())
+        .then((record) => this.record.apply(record))
+        .then(() => this.dispatchUiEvent('afterFormSubmit'))
+        .then(() => {
+          this.$router.push({ name: 'page.record', params: { ...this.$route.params, recordID: this.record.recordID } })
+        })
+    },
+
+    dispatchUiEvent (eventType) {
+      const resourceType = 'ui:compose:record-page'
+      return this
+        .$EventBus
+        .Dispatch(compose.RecordEvent(this.record, { eventType, resourceType }))
     },
   },
 }
