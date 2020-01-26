@@ -8,22 +8,15 @@
     <template
       slot-scope="{ boundingRect, block }"
     >
-      <block-editor
-        :block="block"
+      <component
+        :is="editMode ? 'block-editor' : 'block-viewer'"
+        :namespace="namespace"
         :module="module"
-        :bounding-rect="boundingRect"
-        v-bind="$props"
-        v-on="$listeners"
-        v-if="editMode"
-      />
-      <block-viewer
-        :block="block"
+        :record="record"
         :page="page"
-        :module="module"
+        :block="block"
         :bounding-rect="boundingRect"
-        v-bind="$props"
         v-on="$listeners"
-        v-else
       />
     </template>
   </grid>
