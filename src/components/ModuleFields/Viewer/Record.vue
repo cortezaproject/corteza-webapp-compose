@@ -108,7 +108,7 @@ export default {
       if (value) {
         const { namespaceID } = this.namespace
         const { moduleID } = this.field.options
-        this.findModuleByID({ moduleID, namespaceID }).then(m => {
+        this.findModuleByID({ namespace: this.namespace, moduleID }).then(m => {
           for (const v of value) {
             if (v) {
               let record = { recordID: v }

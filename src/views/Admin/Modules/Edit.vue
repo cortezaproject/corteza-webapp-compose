@@ -170,7 +170,7 @@ export default {
 
   props: {
     namespace: {
-      type: Object,
+      type: compose.Namespace,
       required: false,
     },
 
@@ -231,7 +231,7 @@ export default {
   },
 
   created () {
-    this.findModuleByID({ moduleID: this.moduleID }).then((module) => {
+    this.findModuleByID({ namespace: this.namespace, moduleID: this.moduleID }).then((module) => {
       // Make a copy so that we do not change store item by ref
       this.module = module.clone()
 

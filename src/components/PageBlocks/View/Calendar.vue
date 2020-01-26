@@ -173,7 +173,7 @@ export default {
       this.options.feeds.forEach(feed => {
         switch (feed.resource) {
           case compose.PageBlockCalendar.feedResources.record:
-            this.findModuleByID({ namespaceID: this.namespace.namespaceID, moduleID: feed.options.moduleID })
+            this.findModuleByID({ namespace: this.namespace, moduleID: feed.options.moduleID })
               .then((module) => {
                 this.calendar.recordFeed(this.$ComposeAPI, module, this.namespace, feed, this.loaded)
                   .then(events => {

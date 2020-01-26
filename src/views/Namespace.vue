@@ -107,7 +107,7 @@ export default {
           return
         }
 
-        const p = { namespaceID: namespace.namespaceID, clear: true }
+        const p = { namespace, namespaceID: namespace.namespaceID, clear: true }
 
         // Preload all data we need.
         Promise.all([

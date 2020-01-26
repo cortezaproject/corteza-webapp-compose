@@ -30,7 +30,7 @@ export default function (ComposeAPI) {
     },
 
     actions: {
-      async load ({ commit, getters, rootGetters }, { namespaceID, clear = false, force = false } = {}) {
+      async load ({ commit, getters, rootGetters }, { namespace, clear = false, force = false } = {}) {
         if (clear) {
           commit(types.clearSet)
         }
@@ -43,9 +43,9 @@ export default function (ComposeAPI) {
         }
 
         commit(types.pending)
-        return ComposeAPI.moduleList({ namespaceID }).then(({ set, filter }) => {
+        return ComposeAPI.moduleList({ namespaceID: namespace.namespaceID }).then(({ set, filter }) => {
           if (set && set.length > 0) {
-            commit(types.updateSet, set.map(m => new compose.Module(m)))
+            commit(types.updateSet, set.map(m => new compose.Module(m, namespace)))
           }
 
           commit(types.completed)
@@ -53,7 +53,7 @@ export default function (ComposeAPI) {
         })
       },
 
-      async findByID ({ commit, getters }, { namespaceID, moduleID, force = false } = {}) {
+      async findByID ({ commit, getters }, { namespace, moduleID, force = false } = {}) {
         if (!force) {
           const oldItem = getters.getByID(moduleID)
           if (oldItem) {
@@ -62,8 +62,8 @@ export default function (ComposeAPI) {
         }
 
         commit(types.pending)
-        return ComposeAPI.moduleRead({ namespaceID, moduleID }).then(raw => {
-          const module = new compose.Module(raw)
+        return ComposeAPI.moduleRead({ namespaceID: namespace.namespaceID, moduleID }).then(raw => {
+          const module = new compose.Module(raw, namespace)
           commit(types.updateSet, [module])
           commit(types.completed)
           return module
@@ -73,7 +73,7 @@ export default function (ComposeAPI) {
       async create ({ commit }, item) {
         commit(types.pending)
         return ComposeAPI.moduleCreate(item).then(raw => {
-          const module = new compose.Module(raw)
+          const module = new compose.Module(raw, raw.namespace)
           commit(types.updateSet, [module])
           commit(types.completed)
           return module
@@ -83,7 +83,7 @@ export default function (ComposeAPI) {
       async update ({ commit }, item) {
         commit(types.pending)
         return ComposeAPI.moduleUpdate(item).then(raw => {
-          const module = new compose.Module(raw)
+          const module = new compose.Module(raw, raw.namespace)
           commit(types.updateSet, [module])
           commit(types.completed)
           return module
