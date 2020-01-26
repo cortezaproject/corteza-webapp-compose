@@ -10,9 +10,10 @@
     :header-border-variant="block.style.variants.border"
     :body-bg-variant="block.style.variants.bodyBg">
     <div>
-      <component :is="block.kind"
-                 v-bind="$props"
-                 v-on="$listeners" />
+      <component
+        :is="block.kind"
+        v-bind="$props"
+        v-on="$listeners" />
     </div>
   </b-card>
 </template>

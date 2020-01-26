@@ -7,13 +7,13 @@
       {{ $t('block.record.recordDeleted') }}
     </b-alert>
 
-    <grid :namespace="namespace"
-          :page="page"
-          :record="record"
-          :module="module"
-          :edit-mode="editMode"
-          v-if="record"
-          @reload="loadRecord()" />
+    <grid
+      v-if="record"
+      v-bind="$props"
+      :errors="errors"
+      :edit-mode="editMode"
+      @reload="loadRecord()"
+    />
     <toolbar :back-link="{name: 'pages'}"
              :hide-delete="!module.canDeleteRecord || isDeleted"
              :read-only="!module.canUpdateRecord || isDeleted"
@@ -38,7 +38,6 @@
                 class="float-right ml-1"
                 variant="primary"
               >{{ $t('general.label.save') }}</b-button>
-
     </toolbar>
     <b-modal size="lg" id="deleteRecord" :title="$t('block.record.deleteRecord')" @ok="handleDelete" :ok-title="$t('general.label.delete')" ok-variant="danger">
       <div class="d-block text-center">

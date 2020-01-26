@@ -4,16 +4,16 @@
       <field-editor
         v-if="field.canUpdateRecordValue"
         class="field"
-        :record.sync="record"
-        :namespace="namespace"
-        :field="field" />
+        :field="field"
+        v-bind="$props"
+      />
 
       <div v-else-if="field.canReadRecordValue" class="field">
         <label>{{ field.label || field.name }}</label>
         <field-viewer
-          :record.sync="record"
-          :namespace="namespace"
-          :field="field" />
+          :field="field"
+          v-bind="$props"
+        />
       </div>
 
       <div v-else class="field">
@@ -22,7 +22,6 @@
       </div>
     </div>
 
-    {{ errors }}
   </div>
 </template>
 <script>
