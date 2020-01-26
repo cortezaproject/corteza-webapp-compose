@@ -30,7 +30,7 @@ export default {
 
     record: {
       type: compose.Record,
-      required: false,
+      required: true,
     },
   },
 
