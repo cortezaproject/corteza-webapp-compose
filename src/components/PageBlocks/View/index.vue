@@ -8,15 +8,23 @@
     :header-bg-variant="block.style.variants.headerBg"
     :header-text-variant="block.style.variants.headerText"
     :header-border-variant="block.style.variants.border"
-    :body-bg-variant="block.style.variants.bodyBg">
-    <div v-if="blockComponentError">
-      {{ blockComponentError.message }}
-    </div>
-    <div class="h-100" ref="content" v-else>
-      <component :is="block.kind"
-                 :bounding-rect="adjustedBoundingRect"
-                 v-bind="$props"
-                 v-on="$listeners" />
+    :body-bg-variant="blockComponentError ? 'danger' : block.style.variants.bodyBg">
+    <slot name="card-body" v-if="blockComponentError">
+      <b>{{ blockComponentError.message }}</b>
+      <hr />
+      <pre v-if="blockComponentError.stack">{{ blockComponentError.stack }}</pre>
+    </slot>
+    <div
+      v-else
+      class="h-100"
+      ref="content"
+    >
+      <component
+        :is="block.kind"
+        :bounding-rect="adjustedBoundingRect"
+        v-bind="$props"
+        v-on="$listeners"
+      />
     </div>
   </b-card>
 </template>
