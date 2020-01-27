@@ -55,15 +55,7 @@ export default {
   created () {
     if (!this.record.recordID) {
       const userFields = []
-      this.fields.forEach(({ name, kind, defaultValue, isMulti }) => {
-        if (defaultValue && defaultValue.length > 0) {
-          if (isMulti) {
-            defaultValue = defaultValue.map(v => v.value)
-          } else {
-            defaultValue = defaultValue[0].value
-          }
-          this.record.values[name] = defaultValue
-        }
+      this.fields.forEach(({ name, kind, isMulti }) => {
         if (kind === 'User') {
           userFields.push({ name, isMulti })
         }
