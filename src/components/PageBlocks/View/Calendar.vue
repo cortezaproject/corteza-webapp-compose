@@ -110,7 +110,7 @@ export default {
     options: {
       handler: function (opts) {
         this.calendar = new compose.PageBlockCalendar(opts)
-        this.changeLocale(this.calendar.locale)
+        this.changeLocale(this.calendar.options.locale)
       },
       immediate: true,
     },
@@ -143,7 +143,7 @@ export default {
      * for a full list
      * @param {String} lng Locale tag.
      */
-    changeLocale (lng) {
+    changeLocale (lng = 'en-gb') {
       // fc doesn't provide a en locale
       if (lng === 'en') {
         lng = 'en-gb'
