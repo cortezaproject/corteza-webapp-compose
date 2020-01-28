@@ -11,8 +11,8 @@
     <list-loader kind="record"
                  :set.sync="set"
                  :namespace="namespace"
+                 :enable-order="field.isMulti"
                  enable-delete
-                 enable-order
                  mode="list"
                  class="mt-2"></list-loader>
     <errors :errors="errors" />

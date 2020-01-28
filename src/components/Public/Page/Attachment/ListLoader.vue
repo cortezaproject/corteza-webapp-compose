@@ -70,7 +70,7 @@
 <script>
 import numeral from 'numeral'
 import moment from 'moment'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, shared } from '@cortezaproject/corteza-js'
 import { PreviewInline, canPreview } from 'corteza-webapp-common/src/components/FilePreview/'
 import AttachmentLink from './Link'
 import draggable from 'vuedraggable'
@@ -121,7 +121,7 @@ export default {
 
   computed: {
     inlineUrl () {
-      return (a) => this.ext(a) === 'pdf' ? a.download : a.previewUrl
+      return (a) => (this.ext(a) === 'pdf' ? a.download : a.previewUrl)
     },
 
     previewLabels () {
@@ -149,7 +149,7 @@ export default {
       handler (set) {
         this.attachments = set.map(a => {
           if (typeof a === 'object') {
-            return new compose.Attachment(a)
+            return new shared.Attachment(a, window.ComposeAPI)
           } else {
             return null
           }
@@ -159,7 +159,7 @@ export default {
         set.forEach((attachmentID, index) => {
           if (typeof attachmentID === 'string') {
             this.$ComposeAPI.attachmentRead({ kind: this.kind, attachmentID, namespaceID }).then(att => {
-              this.attachments.splice(index, 1, new compose.Attachment(att))
+              this.attachments.splice(index, 1, new shared.Attachment(att, window.ComposeAPI))
             })
           }
         })
