@@ -38,7 +38,6 @@ export default [
         children: [
           r('admin.modules', 'modules', 'Admin/Modules/Index'),
           r('admin.modules.edit', 'modules/:moduleID/edit', 'Admin/Modules/Edit'),
-          r('admin.modules.generator', 'modules/:moduleID/generator', 'Admin/Modules/Records/Generator'),
 
           r('admin.pages', 'pages', 'Admin/Pages/Index'),
           r('admin.pages.edit', 'pages/:pageID/edit', 'Admin/Pages/Edit'),

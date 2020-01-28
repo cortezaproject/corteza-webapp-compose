@@ -324,14 +324,6 @@ export default {
         },
       },
     },
-    recordGenerator: {
-      notUsable: 'Can not use generator, no faker lib.',
-      forModule: 'Record generator for',
-      howManyRecords: 'How many fake ecords do you want to create?',
-      generate: 'Generate!',
-      sampleRoll: 'Sample {{0}}',
-      rollTheDice: 'roll the dice',
-    },
   },
   page: {
     title: 'List of pages',
