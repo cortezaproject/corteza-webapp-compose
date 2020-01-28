@@ -1,5 +1,5 @@
 <script>
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, validator } from '@cortezaproject/corteza-js'
 
 export default {
   props: {
@@ -31,6 +31,11 @@ export default {
     record: {
       type: compose.Record,
       required: true,
+    },
+
+    errors: {
+      type: validator.Validated,
+      default: () => new validator.Validated(),
     },
   },
 

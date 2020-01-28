@@ -3,10 +3,7 @@
     <b-form-checkbox v-model="value">
       {{ field.label || field.name }}
     </b-form-checkbox>
-
-    <b-form-text v-if="validate && errors">
-      <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
-    </b-form-text>
+    <errors :errors="errors" />
   </b-form-group>
 </template>
 <script>

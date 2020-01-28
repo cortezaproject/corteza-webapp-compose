@@ -1,5 +1,8 @@
 <template>
-  <b-form-group :label="label">
+  <b-form-group
+    :label="label"
+    :class="formGroupStyleClasses"
+  >
     <uploader :endpoint="endpoint"
               @uploaded="appendAttachment"
               :acceptedFiles="$s('Page.Attachments.Mimetypes', ['*/*'])"
@@ -12,10 +15,7 @@
                  enable-order
                  mode="list"
                  class="mt-2"></list-loader>
-
-    <b-form-text v-if="validate && errors">
-      <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
-    </b-form-text>
+    <errors :errors="errors" />
   </b-form-group>
 </template>
 <script>

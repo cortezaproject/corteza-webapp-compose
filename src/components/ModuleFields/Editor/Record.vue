@@ -1,59 +1,67 @@
 <template>
-  <b-form-group :label="label">
+  <b-form-group
+    :label="label"
+    :class="formGroupStyleClasses"
+  >
     <multi v-if="field.isMulti" :value.sync="value" :singleInput="field.options.selectType !== 'each'" :removable="field.options.selectType !== 'multiple'">
       <template v-slot:single>
-        <vue-select v-if="field.options.selectType === 'default'"
-                    :filterable="false"
-                    :options="options"
-                    :disabled="!module"
-                    @search="search"
-                    option-value="recordID"
-                    option-text="label"
-                    :placeholder="$t('field.kind.record.suggestionPlaceholder')"
-                    @input="selectChange($event)"
-                    ref="singleSelect">
-        </vue-select>
-        <vue-select v-else-if="field.options.selectType === 'multiple'"
-                    :filterable="false"
-                    :options="options"
-                    :disabled="!module"
-                    @search="search"
-                    option-value="recordID"
-                    option-text="label"
-                    :placeholder="$t('field.kind.record.suggestionPlaceholder')"
-                    multiple
-                    v-model="multipleSelected">
-        </vue-select>
+        <vue-select
+          v-if="field.options.selectType === 'default'"
+          :filterable="false"
+          :options="options"
+          :disabled="!module"
+          @search="search"
+          option-value="recordID"
+          option-text="label"
+          :placeholder="$t('field.kind.record.suggestionPlaceholder')"
+          @input="selectChange($event)"
+          ref="singleSelect"
+        />
+        <vue-select
+          v-else-if="field.options.selectType === 'multiple'"
+          :filterable="false"
+          :options="options"
+          :disabled="!module"
+          @search="search"
+          option-value="recordID"
+          option-text="label"
+          :placeholder="$t('field.kind.record.suggestionPlaceholder')"
+          multiple
+          v-model="multipleSelected"
+        />
       </template>
       <template v-slot:default="ctx">
-        <vue-select v-if="field.options.selectType === 'each'"
-                    :filterable="false"
-                    :options="options"
-                    :disabled="!module"
-                    @search="search"
-                    option-value="recordID"
-                    option-text="label"
-                    :placeholder="$t('field.kind.record.suggestionPlaceholder')"
-                    :value="getRecord(ctx.index)"
-                    @input="setRecord($event, ctx.index)">
-        </vue-select>
+        <vue-select
+          v-if="field.options.selectType === 'each'"
+          :filterable="false"
+          :options="options"
+          :disabled="!module"
+          @search="search"
+          option-value="recordID"
+          option-text="label"
+          :placeholder="$t('field.kind.record.suggestionPlaceholder')"
+          :value="getRecord(ctx.index)"
+          @input="setRecord($event, ctx.index)"
+        />
         <span v-else>{{ (multipleSelected[ctx.index] || {}).label }}</span>
+        <errors :errors="errors" />
       </template>
     </multi>
-
-    <vue-select v-else
-                :filterable="false"
-                :options="options"
-                :disabled="!module"
-                @search="search"
-                option-value="recordID"
-                option-text="label"
-                :placeholder="$t('field.kind.record.suggestionPlaceholder')"
-                v-model="selected"></vue-select>
-
-    <b-form-text v-if="validate && errors">
-      <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
-    </b-form-text>
+    <template
+      v-else
+    >
+      <vue-select
+        :filterable="false"
+        :options="options"
+        :disabled="!module"
+        @search="search"
+        option-value="recordID"
+        option-text="label"
+        :placeholder="$t('field.kind.record.suggestionPlaceholder')"
+        v-model="selected"
+      />
+      <errors :errors="errors" />
+    </template>
   </b-form-group>
 </template>
 <script>

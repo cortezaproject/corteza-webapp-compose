@@ -1,30 +1,56 @@
 <template>
-  <b-form-group :label="label">
-    <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
-      <b-form-input v-if="!field.options.onlyTime"
-                    type="date"
-                    v-b-tooltip.hover :title="$t(dateRule)"
-                    @change="setDate($event, ctx.index)"
-                    :value="getDate(ctx.index)" />
-      <b-form-input v-if="!field.options.onlyDate"
-                    type="time"
-                    @change="setTime($event, ctx.index)"
-                    :value="getTime(ctx.index)" />
+  <b-form-group
+    :label="label"
+    :class="formGroupStyleClasses"
+  >
+    <multi
+      v-if="field.isMulti"
+      :value.sync="value"
+      v-slot="ctx">
+      <b-form-input
+        type="date"
+        v-if="!field.options.onlyTime"
+        v-b-tooltip.hover :title="$t(dateRule)"
+        @change="setDate($event, ctx.index)"
+        :value="getDate(ctx.index)"
+        :required="field.isRequired"
+        :state="state"
+      />
+      <b-form-input
+        type="time"
+        v-if="!field.options.onlyDate"
+        @change="setTime($event, ctx.index)"
+        :value="getTime(ctx.index)"
+        :required="field.isRequired"
+        :state="state"
+      />
+      <errors :errors="errors" />
     </multi>
 
-    <b-form-input v-if="!field.options.onlyTime && !field.isMulti"
-                  type="date"
-                  class="d-inline w-50"
-                  v-b-tooltip.hover :title="$t(dateRule)"
-                  v-model="date" />
-    <b-form-input v-if="!field.options.onlyDate && !field.isMulti"
-                  type="time"
-                  class="d-inline w-50"
-                  v-model="time" />
+    <template
+      v-else
+      >
+      <b-form-input
+        type="date"
+        v-if="!field.options.onlyTime && !field.isMulti"
+        v-b-tooltip.hover
+        v-model="date"
+        :required="field.isRequired"
+        class="d-inline w-50"
+        :title="$t(dateRule)"
+        :state="state"
+      />
+      <b-form-input
+        type="time"
+        v-if="!field.options.onlyDate && !field.isMulti"
+        v-model="time"
+        class="d-inline w-50"
+        :required="field.isRequired"
+        :state="state"
+      />
 
-    <b-form-text v-if="validate && errors">
-      <div class="test-error" v-for="(error, i) in errors" :key="i">{{ error }}</div>
-    </b-form-text>
+      <errors :errors="errors" />
+    </template>
   </b-form-group>
 </template>
 <script>
@@ -33,6 +59,7 @@ import moment from 'moment'
 
 export default {
   extends: base,
+
   computed: {
     dateRule () {
       if (this.field.options.onlyFutureValues) {

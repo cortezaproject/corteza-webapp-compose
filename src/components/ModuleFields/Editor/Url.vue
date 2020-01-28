@@ -1,25 +1,29 @@
 <template>
-  <b-form-group :label="label">
+  <b-form-group
+    :label="label"
+    :class="formGroupStyleClasses"
+  >
     <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
       <b-form-input
         type="url"
         placeholder="Example URL: https://example.com"
         :formatter="fixUrl"
         lazy-formatter
-        v-model="value[ctx.index]"></b-form-input>
+        v-model="value[ctx.index]"
+      />
     </multi>
-
-    <b-form-input
+    <template
       v-else
-      type="url"
-      placeholder="Example URL: https://example.com"
-      :formatter="fixUrl"
-      lazy-formatter
-      v-model="value"></b-form-input>
-
-    <b-form-text v-if="validate && errors">
-      <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
-    </b-form-text>
+    >
+      <b-form-input
+        type="url"
+        placeholder="Example URL: https://example.com"
+        :formatter="fixUrl"
+        lazy-formatter
+        v-model="value"
+      />
+      <errors :errors="errors" />
+    </template>
   </b-form-group>
 </template>
 <script>

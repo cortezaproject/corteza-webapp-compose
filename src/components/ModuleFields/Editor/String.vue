@@ -1,5 +1,9 @@
 <template>
-  <b-form-group :label="label">
+  <b-form-group
+    :label="label"
+    :class="formGroupStyleClasses"
+    :state="state"
+  >
     <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
       <rich-text-input
         v-if="field.options.useRichTextEditor"
@@ -8,12 +12,14 @@
         v-else-if="field.options.multiLine"
         v-model="value[ctx.index]"></textarea>
       <b-form-input v-else v-model="value[ctx.index]" />
+      <errors :errors="errors" />
     </multi>
 
-    <div v-else>
+    <template v-else>
       <rich-text-input
         v-if="field.options.useRichTextEditor"
         v-model="value" />
+
       <textarea
         v-else-if="field.options.multiLine"
         class="w-100"
@@ -22,11 +28,8 @@
       <b-form-input
         v-else
         v-model="value"></b-form-input>
-    </div>
-
-    <b-form-text v-if="validate && errors">
-      <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
-    </b-form-text>
+      <errors :errors="errors" />
+    </template>
   </b-form-group>
 </template>
 

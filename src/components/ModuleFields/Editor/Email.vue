@@ -1,14 +1,27 @@
 <template>
-  <b-form-group :label="label">
+  <b-form-group
+    :label="label"
+    :class="formGroupStyleClasses"
+    :state="state"
+  >
     <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
-      <b-form-input type="email" v-model="value[ctx.index]"></b-form-input>
+      <b-form-input
+        type="email"
+        v-model="value[ctx.index]"
+      />
+      <errors :errors="errors" />
     </multi>
 
-    <b-form-input v-else type="email" v-model="value"></b-form-input>
-
-    <b-form-text v-if="validate && errors">
-      <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
-    </b-form-text>
+    <template
+      v-else
+    >
+      <b-form-input
+        type="email"
+        v-model="value"
+        :state="state"
+      />
+      <errors :errors="errors" />
+    </template>
   </b-form-group>
 </template>
 <script>

@@ -1,5 +1,8 @@
 <template>
-  <b-form-group :label="label">
+  <b-form-group
+    :label="label"
+    :class="formGroupStyleClasses"
+  >
     <multi v-if="field.isMulti" :value.sync="value" :singleInput="field.options.selectType !== 'each'">
       <template v-slot:single>
         <b-form-select v-if="field.options.selectType === 'default'" @change="selectChange" :options="selectOptions" ref="singleSelect" >
@@ -13,14 +16,14 @@
       </template>
     </multi>
 
-    <b-form-select
+    <template
       v-else
-      :options="selectOptions"
-      v-model="value" />
-
-    <b-form-text v-if="validate && errors">
-      <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
-    </b-form-text>
+    >
+      <b-form-select
+        :options="selectOptions"
+        v-model="value" />
+      <errors :errors="errors" />
+    </template>
   </b-form-group>
 </template>
 <script>

@@ -3,9 +3,9 @@
     <div v-for="field in fields" :key="field.id">
       <field-editor
         v-if="field.canUpdateRecordValue"
+        v-bind="{ ...$props, errors: fieldErrors(field.name) }"
         class="field"
         :field="field"
-        v-bind="$props"
       />
 
       <div v-else-if="field.canReadRecordValue" class="field">
@@ -21,7 +21,6 @@
         <i>{{ $t('field.noPermission') }}</i>
       </div>
     </div>
-
   </div>
 </template>
 <script>
@@ -42,10 +41,6 @@ export default {
     users,
   ],
 
-  props: {
-    errors: {},
-  },
-
   computed: {
     fields () {
       return this.module.filterFields(this.options.fields)
@@ -62,6 +57,17 @@ export default {
       })
       this.fetchUsers(userFields, [this.record])
     }
+  },
+
+  methods: {
+    /**
+     * Returns errors, filtered for a specific field
+     * @param name
+     * @returns {validator.Validated} filtered validation results
+     */
+    fieldErrors (name) {
+      return this.errors.filterByMeta('field', name)
+    },
   },
 }
 </script>

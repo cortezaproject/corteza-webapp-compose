@@ -1,5 +1,8 @@
 <template>
-  <b-form-group :label="label">
+  <b-form-group
+    :label="label"
+    :class="formGroupStyleClasses"
+  >
     <multi v-if="field.isMulti" :value.sync="value" :singleInput="field.options.selectType !== 'each'" :removable="field.options.selectType !== 'multiple'">
       <template v-slot:single>
         <vue-select v-if="field.options.selectType === 'default'"
@@ -33,20 +36,21 @@
         </vue-select>
         <span v-else>{{ getUser(ctx.index).label }}</span>
       </template>
+      <errors :errors="errors" />
     </multi>
-
-    <vue-select v-else
-                :options="users"
-                @search="search"
-                option-value="userID"
-                option-text="label"
-                :placeholder="$t('field.kind.user.suggestionPlaceholder')"
-                v-model="selected">
-    </vue-select>
-
-    <b-form-text v-if="validate && errors">
-      <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
-    </b-form-text>
+    <template
+      v-else
+    >
+      <vue-select
+        :options="users"
+        @search="search"
+        option-value="userID"
+        option-text="label"
+        :placeholder="$t('field.kind.user.suggestionPlaceholder')"
+        v-model="selected"
+      />
+      <errors :errors="errors" />
+    </template>
   </b-form-group>
 </template>
 <script>

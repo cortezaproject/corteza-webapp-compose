@@ -8,13 +8,18 @@
 </template>
 <script>
 import multi from './multi'
-import { compose } from '@cortezaproject/corteza-js'
+import errors from './errors'
+import { compose, validator } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
-    // multi is actually used in the child components
+    // multi is used in the components that extends base
     // eslint-disable-next-line vue/no-unused-components
     multi,
+
+    // errors is used in the components that extends base
+    // eslint-disable-next-line vue/no-unused-components
+    errors,
   },
 
   props: {
@@ -33,9 +38,9 @@ export default {
       required: true,
     },
 
-    validate: {
-      type: Boolean,
-      default: true,
+    errors: {
+      type: validator.Validated,
+      required: true,
     },
 
     valueOnly: {
@@ -45,12 +50,18 @@ export default {
   },
 
   computed: {
+    formGroupStyleClasses () {
+      return {
+        required: this.field.isRequired,
+      }
+    },
+
     state () {
-      if (!this.validate) {
+      if (!this.errors.valid()) {
         return null
       }
 
-      return this.errors === 0
+      return this.errors.valid() === true ? null : false
     },
 
     value: {
@@ -69,10 +80,6 @@ export default {
       }
 
       return this.field.label || this.field.name
-    },
-
-    errors () {
-      return [] // this.field.validate(this.value, this.record.compareToValues[this.field.name])
     },
   },
 }

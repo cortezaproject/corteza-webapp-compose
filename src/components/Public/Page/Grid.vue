@@ -10,12 +10,9 @@
     >
       <component
         :is="editMode ? 'block-editor' : 'block-viewer'"
-        :namespace="namespace"
-        :module="module"
-        :record="record"
-        :page="page"
         :block="block"
         :bounding-rect="boundingRect"
+        v-bind="$props"
         v-on="$listeners"
       />
     </template>
@@ -25,7 +22,7 @@
 import Grid from '../../Common/Grid'
 import BlockViewer from '../../PageBlocks/View'
 import BlockEditor from '../../PageBlocks/Edit'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, validator } from '@cortezaproject/corteza-js'
 
 export default {
   name: 'public-grid',
@@ -54,6 +51,11 @@ export default {
 
     record: {
       type: compose.Record,
+      required: false,
+    },
+
+    errors: {
+      type: validator.Validated,
       required: false,
     },
 
