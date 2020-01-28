@@ -146,3 +146,22 @@ html {
     text-decoration: none;
   }
 }
+
+fieldset.required {
+  &.error {
+    legend::before {
+      color: $danger;
+    }
+  }
+
+  legend::before {
+    content: "*";
+    display: inline-block;
+    color: $primary;
+    vertical-align: sub;
+    margin-left: -10px;
+    width: 10px;
+    height: 16px;
+    overflow: hidden;
+  }
+}
