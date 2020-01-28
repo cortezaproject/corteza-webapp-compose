@@ -1806,7 +1806,7 @@
     babel-loader "^8.0.5"
     webpack "^4.0.0"
 
-"@vue/cli-plugin-eslint@4.1.2":
+"@vue/cli-plugin-eslint@^4.1.2":
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/@vue/cli-plugin-eslint/-/cli-plugin-eslint-4.1.2.tgz#173d2a40beb7debc03a217db3bb4c67cbf255bd6"
   integrity sha512-j6Z6tyhas7AFBwSvQ8JdKPLfaakZbwmK0+Xk8H6BK1/GrEpSCsb8pzBV8faStbKCPUO9vlKEuO319kHypUTJ1g==
@@ -1941,7 +1941,7 @@
     source-map "~0.6.1"
     vue-template-es2015-compiler "^1.9.0"
 
-"@vue/eslint-config-prettier@6.0.0":
+"@vue/eslint-config-prettier@^6.0.0":
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/@vue/eslint-config-prettier/-/eslint-config-prettier-6.0.0.tgz#ad5912b308f4ae468458e02a2b05db0b9d246700"
   integrity sha512-wFQmv45c3ige5EA+ngijq40YpVcIkAy0Lihupnsnd1Dao5CBbPyfCzqtejFLZX1EwH/kCJdpz3t6s+5wd3+KxQ==
@@ -3135,7 +3135,7 @@ boolbase@^1.0.0, boolbase@~1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
-bootstrap-vue@2.2.2, bootstrap-vue@^2.0.4:
+bootstrap-vue@2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/bootstrap-vue/-/bootstrap-vue-2.2.2.tgz#750d461d18352e2fd6cd2debfe52ebeb125c191f"
   integrity sha512-jFw9WcPX2MLCMaMNdakXke2Fwtz5o7EeByMJGhzGjiL1TNBr/nz2PolCAFW475+o2t5Tz3MZT152o6zLQXcElw==
@@ -3143,6 +3143,17 @@ bootstrap-vue@2.2.2, bootstrap-vue@^2.0.4:
     "@nuxt/opencollective" "^0.3.0"
     bootstrap ">=4.4.1 <5.0.0"
     popper.js "^1.16.0"
+    portal-vue "^2.1.7"
+    vue-functional-data-merge "^3.1.0"
+
+bootstrap-vue@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/bootstrap-vue/-/bootstrap-vue-2.3.0.tgz#e2be057e25ca173e4a4123239c5399ad1c355e81"
+  integrity sha512-ChfCObs1xwsALIDB52S32yMm18P2iiiJUULUbob2DFI3V6SEtx7pTi5vG7ZKagNt+SMKd3lfLUCxWGMTDjPR1g==
+  dependencies:
+    "@nuxt/opencollective" "^0.3.0"
+    bootstrap ">=4.4.1 <5.0.0"
+    popper.js "^1.16.1"
     portal-vue "^2.1.7"
     vue-functional-data-merge "^3.1.0"
 
@@ -5670,7 +5681,7 @@ eslint-plugin-standard@^4.0.1:
   resolved "https://registry.yarnpkg.com/eslint-plugin-standard/-/eslint-plugin-standard-4.0.1.tgz#ff0519f7ffaff114f76d1bd7c3996eef0f6e20b4"
   integrity sha512-v/KBnfyaOMPmZc/dmc6ozOdWqekGp7bBGq4jLAecEfPGmfKiWS4sA8sC0LqiV9w5qmXAtXVn4M3p1jSyhY85SQ==
 
-eslint-plugin-vue@6.1.2:
+eslint-plugin-vue@^6.1.2:
   version "6.1.2"
   resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-6.1.2.tgz#4b05c28c83c0ec912669b64dbd998bb8bf692ef6"
   integrity sha512-M75oAB+2a/LNkLKRbeEaS07EjzjIUaV7/hYoHAfRFeeF8ZMmCbahUn8nQLsLP85mkar24+zDU3QW2iT1JRsACw==
@@ -5713,7 +5724,7 @@ eslint-visitor-keys@^1.0.0, eslint-visitor-keys@^1.1.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.1.0.tgz#e2a82cea84ff246ad6fb57f9bde5b46621459ec2"
   integrity sha512-8y9YjtM1JBJU/A9Kc+SbaOV4y29sSWckBwMHa+FGtVj5gN/sbnKDf6xJUl+8g7FAij9LVaP8C24DUiH/f/2Z9A==
 
-eslint@6.8.0:
+eslint@^6.8.0:
   version "6.8.0"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-6.8.0.tgz#62262d6729739f9275723824302fb227c8c93ffb"
   integrity sha512-K+Iayyo2LtyYhDSYwz5D5QdWw0hCacNzyq1Y821Xna2xSJj7cijoLLYmLxTQgcgZ9mC61nryMy9S7GRbYpI5Ig==
@@ -6012,11 +6023,6 @@ fake-tag@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/fake-tag/-/fake-tag-1.0.1.tgz#1d59da482240a02bd83500ca98976530ed154b0d"
   integrity sha512-qmewZoBpa71mM+y6oxXYW/d1xOYQmeIvnEXAt1oCmdP0sqcogWYLepR87QL1jQVLSVMVYDq2cjY6ec/Wu8/4pg==
-
-faker@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/faker/-/faker-4.1.0.tgz#1e45bbbecc6774b3c195fad2835109c6d748cc3f"
-  integrity sha1-HkW7vsxndLPBlfrSg1EJxtdIzD8=
 
 fast-deep-equal@^2.0.1:
   version "2.0.1"
@@ -8546,21 +8552,6 @@ lodash.flattendeep@^4.4.0:
   resolved "https://registry.yarnpkg.com/lodash.flattendeep/-/lodash.flattendeep-4.4.0.tgz#fb030917f86a3134e5bc9bec0d69e0013ddfedb2"
   integrity sha1-+wMJF/hqMTTlvJvsDWngAT3f7bI=
 
-lodash.isboolean@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/lodash.isboolean/-/lodash.isboolean-3.0.3.tgz#6c2e171db2a257cd96802fd43b01b20d5f5870f6"
-  integrity sha1-bC4XHbKiV82WgC/UOwGyDV9YcPY=
-
-lodash.isregexp@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/lodash.isregexp/-/lodash.isregexp-4.0.1.tgz#e13e647b30cd559752a04cd912086faf7da1c30b"
-  integrity sha1-4T5kezDNVZdSoEzZEghvr32hwws=
-
-lodash.isstring@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/lodash.isstring/-/lodash.isstring-4.0.1.tgz#d527dfb5456eca7cc9bb95d5daeaf88ba54a5451"
-  integrity sha1-1SfftUVuynzJu5XV2ur4i6VKVFE=
-
 lodash.kebabcase@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.kebabcase/-/lodash.kebabcase-4.1.1.tgz#8489b1cb0d29ff88195cceca448ff6d6cc295c36"
@@ -10311,7 +10302,7 @@ polished@^3.3.1:
   dependencies:
     "@babel/runtime" "^7.6.3"
 
-popper.js@^1.14.4, popper.js@^1.14.7, popper.js@^1.16.0:
+popper.js@^1.14.4, popper.js@^1.14.7, popper.js@^1.16.0, popper.js@^1.16.1:
   version "1.16.1"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.16.1.tgz#2a223cb3dc7b6213d740e40372be40de43e65b1b"
   integrity sha512-Wb4p1J4zyFTbM+u6WuO4XstYx4Ky9Cewe4DWrel7B0w6VVICvPwdOpotjzcf6eD8TsckVnIMNONQyPIUFOUbCQ==
@@ -13083,14 +13074,12 @@ stylelint-config-standard@^18.3.0:
   dependencies:
     stylelint-config-recommended "^2.2.0"
 
-stylelint-scss@^3.9.3:
-  version "3.13.0"
-  resolved "https://registry.yarnpkg.com/stylelint-scss/-/stylelint-scss-3.13.0.tgz#875c76e61d95333c4f0ae737a310be6f1d27d780"
-  integrity sha512-SaLnvQyndaPcsgVJsMh6zJ1uKVzkRZJx+Wg/stzoB1mTBdEmGketbHrGbMQNymzH/0mJ06zDSpeCDvNxqIJE5A==
+stylelint-scss@^3.14.2:
+  version "3.14.2"
+  resolved "https://registry.yarnpkg.com/stylelint-scss/-/stylelint-scss-3.14.2.tgz#e449a47e0ac410e6909f1a71b49550202c978bf9"
+  integrity sha512-59/BkIEWyFoORiejDIQB2P2kmg0KcqMn7wtj1y5sRvS4N+Qh+Ng3hbKelOzgS+OM2Ezbai0uEev8xckXxkh9TQ==
   dependencies:
-    lodash.isboolean "^3.0.3"
-    lodash.isregexp "^4.0.1"
-    lodash.isstring "^4.0.1"
+    lodash "^4.17.15"
     postcss-media-query-parser "^0.2.3"
     postcss-resolve-nested-selector "^0.1.1"
     postcss-selector-parser "^6.0.2"
