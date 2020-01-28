@@ -16,9 +16,10 @@ export default {
     ...stdEventTypes,
   ],
   'ui:compose:record-page': [
+    'beforeFormSubmit',
+    'onFormSubmitError',
+    'afterFormSubmit',
     'beforeDelete',
     'afterDelete',
-    'afterFormSubmit',
-    'beforeFormSubmit',
   ],
 }
