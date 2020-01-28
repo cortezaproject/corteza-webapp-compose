@@ -1,11 +1,11 @@
 <template>
   <div>
     <grid
-      :namespace="namespace"
-      :page="page"
-      :module="module"
+      v-if="record"
+      v-bind="$props"
+      :errors="errors"
       :record="record"
-      v-if="record" edit-mode
+      edit-mode
     />
     <toolbar
       :back-link="{name: 'admin.pages'}"
@@ -60,16 +60,6 @@ export default {
     return {
       record: undefined,
     }
-  },
-
-  computed: {
-    errors () {
-      if (this.validator) {
-        return this.validator.run(this.record).get()
-      }
-
-      return []
-    },
   },
 
   created () {
