@@ -1,8 +1,15 @@
 <script>
+import { compose } from '@cortezaproject/corteza-js'
+
 export default {
   props: {
+    namespace: {
+      type: compose.Namespace,
+      required: true,
+    },
+
     field: {
-      type: Object,
+      type: compose.ModuleField,
       required: true,
     },
   },

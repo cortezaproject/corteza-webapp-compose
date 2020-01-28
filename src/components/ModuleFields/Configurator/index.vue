@@ -5,13 +5,17 @@
           card>
 
     <b-tab active :title="$t('general.label.general')">
-      <basic :field="field" />
+      <basic
+        :namespace="namespace"
+        :field="field"
+      />
     </b-tab>
     <b-tab
       v-if="fieldComponent"
       :title="field.kind">
       <component
         :is="fieldComponent"
+        :namespace="namespace"
         :field="field"
       />
     </b-tab>
@@ -20,6 +24,7 @@
       :title="$t('general.label.multi')"
     >
       <multi
+        :namespace="namespace"
         :field="field"
       />
     </b-tab>

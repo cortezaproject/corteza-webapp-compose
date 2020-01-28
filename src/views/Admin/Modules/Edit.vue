@@ -130,7 +130,10 @@
       :visible="!!updateField"
       body-class="p-0 border-top-0"
       header-class="p-3 pb-0 border-bottom-0">
-      <field-configurator :field.sync="updateField" />
+      <field-configurator
+        :field.sync="updateField"
+        :namespace="namespace"
+      />
     </b-modal>
     <editor-toolbar :back-link="{name: 'admin.modules'}"
                     :hideDelete="!module.canDeleteModule"
@@ -171,7 +174,7 @@ export default {
   props: {
     namespace: {
       type: compose.Namespace,
-      required: false,
+      required: true,
     },
 
     moduleID: {

@@ -17,23 +17,23 @@
       {{ $t('general.label.private') }}
     </b-form-checkbox>
     <b-form-group
-      v-if="mockField.kind"
+      v-if="mock.field"
       :label="$t('field.defaultValue')"
       class="mt-3"
     >
       <field-editor
         class="mb-0"
         valueOnly
-        :namespace="mockNamespace"
-        :field="mockField"
-        :record.sync="mockRecord" />
+        v-bind="mock"
+      />
     </b-form-group>
+    <pre>{{ field }}</pre>
   </div>
 </template>
 
 <script>
 import FieldEditor from '../Editor'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, validator } from '@cortezaproject/corteza-js'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -42,24 +42,26 @@ export default {
   },
 
   props: {
-    field: {
-      type: Object,
+    namespace: {
+      type: compose.Namespace,
       required: true,
-      default: () => ({}),
+    },
+
+    field: {
+      type: compose.ModuleField,
+      required: true,
     },
   },
 
   data () {
     return {
-      mockNamespace: {
-        namespaceID: undefined,
+      mock: {
+        namespace: undefined,
+        module: undefined,
+        field: undefined,
+        record: undefined,
+        errors: new validator.Validated(),
       },
-      mockRecord: {
-        values: {
-          defaultValue: undefined,
-        },
-      },
-      mockField: null,
     }
   },
 
@@ -70,13 +72,13 @@ export default {
   },
 
   watch: {
-    'mockRecord.values': {
-      handler ({ defaultValue }) {
-        if (!Array.isArray(defaultValue)) {
-          defaultValue = [defaultValue]
+    'mock.record.values': {
+      handler ({ defValField: dv }) {
+        if (!Array.isArray(dv)) {
+          dv = [dv]
         }
         // Transform to backend value struct
-        this.field.defaultValue = defaultValue.map(v => {
+        this.field.defaultValue = dv.map(v => {
           return { name: this.field.name, value: v }
         })
       },
@@ -85,37 +87,33 @@ export default {
 
     'field.options': {
       handler (options) {
-        this.mockField.options = options
+        this.mock.field.options = options
       },
       deep: true,
     },
 
     'field.isMulti': {
       handler (isMulti) {
-        const { defaultValue } = this.mockRecord.values
+        const { defValField } = this.mock.record.values
         if (isMulti) {
-          if (defaultValue) {
-            this.mockRecord.values.defaultValue = [defaultValue]
+          if (defValField) {
+            this.mock.record.values.defValField = [defValField]
           } else {
-            this.mockRecord.values.defaultValue = []
+            this.mock.record.values.defValField = []
           }
         } else {
-          this.mockRecord.values.defaultValue = defaultValue[0]
+          this.mock.record.values.defValField = defValField[0]
         }
-        this.mockField.isMulti = isMulti
+        this.mock.field.isMulti = isMulti
       },
     },
 
   },
 
+  /**
+   * Prepare mock values for default-value field editor
+   */
   created () {
-    // Get namespaceID
-    if (this.field.kind === 'Record') {
-      this.mockNamespace.namespaceID = this.getModuleByID(this.$route.params.moduleID).namespaceID
-    }
-
-    // Prepare mocks for defaultValue editor
-    // Transform to frontend value struct
     let { defaultValue, isMulti } = this.field
     if (!defaultValue) {
       defaultValue = []
@@ -126,16 +124,11 @@ export default {
       defaultValue = (defaultValue[0] || {}).value
     }
 
-    // Create mock field for defaultValue fiels
-    this.mockField = compose.ModuleFieldMaker(this.field)
-    this.mockField.isRequired = false
-    this.mockField.isPrivate = false
-    this.mockField.name = 'defaultValue'
-
-    // Create mock field for defaultValue
-    const mockModule = { fields: [this.mockField] }
-    this.mockRecord.values.defaultValue = defaultValue
-    this.mockRecord = new compose.Record(mockModule, this.mockRecord)
+    this.mock.namespace = this.namespace
+    this.mock.field = compose.ModuleFieldMaker(this.field)
+    this.mock.field.apply({ name: 'defValField' })
+    this.mock.module = new compose.Module({ fields: [this.mock.field] }, this.namespace)
+    this.mock.record = new compose.Record(this.mock.module, { defValField: defaultValue })
   },
 }
 </script>

@@ -546,7 +546,7 @@ export default {
       title: 'Title',
       description: 'Description',
       type: 'Type',
-      multi: 'Multiple',
+      multi: 'Multi value',
       required: 'Required',
       private: 'Private',
       updatedAt: '$t(field.system.updatedAt)',
