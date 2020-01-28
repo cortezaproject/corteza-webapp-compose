@@ -2,6 +2,7 @@
   <div>
     <b-form-checkbox
       v-model="field.isRequired"
+      :disabled="!field.cap.required"
       :value="true"
       :unchecked-value="false"
     >
@@ -9,6 +10,7 @@
     </b-form-checkbox>
     <b-form-checkbox
       v-model="field.isPrivate"
+      :disabled="!field.cap.private"
       :value="true"
       :unchecked-value="false"
     >

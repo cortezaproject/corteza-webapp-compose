@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-form-checkbox v-model="field.isMulti"
-                     :disabled="!field.cap.multiValue"
+                     :disabled="!field.cap.multi"
                      :value="true"
                      :unchecked-value="false">
 

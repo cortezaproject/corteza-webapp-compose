@@ -16,7 +16,7 @@
       />
     </b-tab>
     <b-tab
-      v-if="field.cap.multiValue"
+      v-if="field.cap.multi"
       :title="$t('general.label.multi')"
     >
       <multi

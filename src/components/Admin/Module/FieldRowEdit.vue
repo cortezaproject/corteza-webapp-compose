@@ -10,54 +10,86 @@
       />
     </td>
     <td>
-      <b-form-input v-model="value.name"
-                    required
-                    :readonly="disabled"
-                    :state="checkFieldName"
-                    type="text"
-                    class="form-control"></b-form-input>
+      <b-form-input
+        v-model="value.name"
+        required
+        :readonly="disabled"
+        :state="checkFieldName"
+        type="text"
+        class="form-control"
+      />
     </td>
     <td>
-      <b-input v-model="value.label"
-               type="text"
-               class="form-control"/>
+      <b-input
+        v-model="value.label"
+        type="text"
+        class="form-control"
+      />
     </td>
     <td>
-      <b-select v-model="value.kind" :disabled="disabled">
-        <option v-for="({ kind, label }) in fieldKinds"
-                :key="kind"
-                :value="kind">{{ label }}</option>
+      <b-select
+        v-model="value.kind"
+        :disabled="disabled"
+      >
+        <option
+          v-for="({ kind, label }) in fieldKinds"
+          :key="kind"
+          :value="kind">
+          {{ label }}
+        </option>
       </b-select>
     </td>
-    <td class="text-center align-middle">
-      <b-form-checkbox v-model="value.isMulti"
-                       :disabled="!value.cap.multiValue"
-                       :value="true"
-                       :unchecked-value="false"></b-form-checkbox>
+    <td
+      class="text-center align-middle"
+    >
+      <b-form-checkbox
+        v-model="value.isMulti"
+        :disabled="!value.cap.multi"
+        :value="true"
+        :unchecked-value="false"
+      />
     </td>
-    <td class="text-center align-middle">
-      <b-form-checkbox v-model="value.isRequired"
-                       :value="true"
-                       :unchecked-value="false"></b-form-checkbox>
+    <td
+      class="text-center align-middle"
+    >
+      <b-form-checkbox
+        v-model="value.isRequired"
+        :disabled="!value.cap.required"
+        :value="true"
+        :unchecked-value="false"
+      />
     </td>
-    <td class="text-center align-middle">
-      <b-form-checkbox v-model="value.isPrivate"
-                       :value="true"
-                       :unchecked-value="false"></b-form-checkbox>
+    <td
+      class="text-center align-middle"
+    >
+      <b-form-checkbox
+        v-model="value.isPrivate"
+        :disabled="!value.cap.private"
+        :value="true"
+        :unchecked-value="false"
+      />
     </td>
-    <td class="d-flex justify-content-around align-items-center mt-1">
-      <b-button :disabled="!value.cap.configurable"
-                @click.prevent="$emit('edit')"
-                class="pl-1 pr-0 text-secondary"
-                variant="link">
-
-        <font-awesome-icon :icon="['fas', 'wrench']"></font-awesome-icon>
+    <td
+      class="d-flex justify-content-around align-items-center mt-1"
+    >
+      <b-button
+        :disabled="!value.cap.configurable"
+        @click.prevent="$emit('edit')"
+        class="pl-1 pr-0 text-secondary"
+        variant="link"
+      >
+        <font-awesome-icon
+          :icon="['fas', 'wrench']"
+        />
       </b-button>
-      <confirm @confirmed="$emit('delete')"
-               :no-prompt="!value.name"
-               class="confirmation-small">
-
-        <font-awesome-icon :icon="['far', 'trash-alt']"></font-awesome-icon>
+      <confirm
+        @confirmed="$emit('delete')"
+        :no-prompt="!value.name"
+        class="confirmation-small"
+      >
+        <font-awesome-icon
+          :icon="['far', 'trash-alt']"
+        />
         <template v-slot:yes>
           {{ $t('general.label.yes') }}
         </template>
@@ -65,7 +97,12 @@
           {{ $t('general.label.no') }}
         </template>
       </confirm>
-      <permissions-button v-if="canGrant" :title="value.name" :resource="'compose:module-field:'+value.fieldID" link/>
+      <permissions-button
+        v-if="canGrant"
+        :title="value.name"
+        :resource="'compose:module-field:'+value.fieldID"
+        link
+      />
     </td>
   </tr>
 </template>
