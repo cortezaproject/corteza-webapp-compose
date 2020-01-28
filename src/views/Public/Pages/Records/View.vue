@@ -25,20 +25,31 @@
           variant="outline-secondary ml-1"
           @click.prevent="$router.push({ name: 'page.record.create', params: { pageID: page.pageID, values: record.values }})" >{{ $t('general.label.clone') }}</b-button>
 
-      <b-button v-if="module.canCreateRecord"
-                variant="outline-secondary ml-1"
-                @click.prevent="$router.push({ name: 'page.record.create', params: $route.params })">+ {{ $t('general.label.addNew') }}</b-button>
+      <b-button
+        v-if="module.canCreateRecord"
+        variant="outline-secondary ml-1"
+        @click.prevent="$router.push({ name: 'page.record.create', params: $route.params })"
+      >
+        + {{ $t('general.label.addNew') }}
+      </b-button>
 
-      <b-button v-if="!isDeleted && !editMode && module.canUpdateRecord"
-                variant="outline-secondary ml-1"
-                @click.prevent="$router.push({ name: 'page.record.edit', params: $route.params })" >{{ $t('general.label.edit') }}</b-button>
+      <b-button
+        v-if="!isDeleted && !editMode && module.canUpdateRecord"
+        variant="outline-secondary ml-1"
+        @click.prevent="$router.push({ name: 'page.record.edit', params: $route.params })"
+      >
+        {{ $t('general.label.edit') }}
+      </b-button>
 
-      <b-button v-if="module.canUpdateRecord && editMode"
-                :disabled="!isValid"
-                @click.prevent="handleUpdate"
-                class="float-right ml-1"
-                variant="primary"
-              >{{ $t('general.label.save') }}</b-button>
+      <b-button
+        v-if="module.canUpdateRecord && editMode"
+        :disabled="!isValid"
+        @click.prevent="handleFormSubmit"
+        class="float-right ml-1"
+        variant="primary"
+      >
+        {{ $t('general.label.save') }}
+      </b-button>
     </toolbar>
     <b-modal size="lg" id="deleteRecord" :title="$t('block.record.deleteRecord')" @ok="handleDelete" :ok-title="$t('general.label.delete')" ok-variant="danger">
       <div class="d-block text-center">
@@ -50,7 +61,7 @@
 <script>
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
 import Toolbar from 'corteza-webapp-compose/src/components/Public/Page/Toolbar'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, validator, NoID } from '@cortezaproject/corteza-js'
 
 export default {
   name: 'ViewRecord',
@@ -86,6 +97,8 @@ export default {
     return {
       record: undefined,
 
+      errors: new validator.Validated(),
+
       // We handle edit mode here because EditRecord components
       // is extending us
       editMode: false,
@@ -93,25 +106,16 @@ export default {
   },
 
   computed: {
-    errors () {
-      if (this.validator) {
-        return this.validator.run(this.record).get()
+    validator () {
+      if (!this.module) {
+        throw new Error('can not initialize record validator without module')
       }
 
-      return []
-    },
-
-    validator () {
-      return this.module ? new compose.RecordValidator(this.module) : null
+      return new compose.RecordValidator(this.module)
     },
 
     isValid () {
-      if (this.record && this.validator) {
-        // @todo do something with errors
-        return this.validator.run(this.record).valid()
-      }
-
-      return true
+      return this.errors.valid()
     },
 
     /**
@@ -131,6 +135,14 @@ export default {
       immediate: true,
       handler () {
         this.loadRecord()
+      },
+    },
+    'record.values': {
+      deep: true,
+      handler () {
+        if (!this.errors.valid()) {
+          this.errors = this.validator.run(this.record)
+        }
       },
     },
   },
@@ -166,29 +178,88 @@ export default {
     },
 
     /**
-     * Handle create & update actions
+     * Handle form submit for record create & update
      *
-     * Caller must pass storeCallback that is called after (successfull)
-     * beforeSubmitEvent
+     *  -> dispatch beforeFormSubmit (on ui:compose:record-page)
+     *  -> validate record (see validateRecord())
+     *     -> stop on errors
+     *  -> send record to the API
+     *  -> apply changes received from the API to current record
+     *  -> dispatch afterFormSubmit
+     *  -> redirect user to record viewer page
      *
-     * @param storeCallback
+     * @returns {Promise<void>}
      */
-    handleFormSubmit (storeCallback) {
+    handleFormSubmit (ev) {
+      const isNew = this.record.recordID === NoID
+
       return this
         .dispatchUiEvent('beforeFormSubmit')
-        .then(() => storeCallback())
+        .then(() => this.validateRecord())
+        .then(() => {
+          if (isNew) {
+            return this.$ComposeAPI.recordCreate(this.record)
+          } else {
+            return this.$ComposeAPI.recordUpdate(this.record)
+          }
+        })
         .then((record) => this.record.apply(record))
         .then(() => this.dispatchUiEvent('afterFormSubmit'))
         .then(() => {
           this.$router.push({ name: 'page.record', params: { ...this.$route.params, recordID: this.record.recordID } })
         })
+        .catch(this.defaultErrorHandler(this.$t(
+          isNew
+            ? 'notification.record.createFailed'
+            : 'notification.record.updateFailed',
+        )))
     },
 
+    /**
+     * Validates record and dispatches onFormSubmitError
+     *
+     * onFormSubmitError is dispatched only if there are record errors,
+     * if not, we continue with form submit handling
+     *
+     * After onFormSubmitError, record is re-validated and if errors
+     * are still present, we stop form submit handing
+     *
+     * @returns {Promise<void>}
+     */
+    async validateRecord () {
+      this.errors = this.validator.run(this.record)
+      if (this.errors.valid()) {
+        return
+      }
+
+      await this.dispatchUiEvent('onFormSubmitError')
+
+      this.errors = this.validator.run(this.record)
+      if (!this.errors.valid()) {
+        throw new Error('not storing')
+      }
+    },
+
+    /**
+     * Generic event dispatcher for ui:compose:record-page resource type
+     *
+     * This is used when deleting, updating, creating
+     * records and where validation errors occur
+     *
+     * @param eventType
+     */
     dispatchUiEvent (eventType) {
       const resourceType = 'ui:compose:record-page'
+
+      const args = {
+        errors: this.errors,
+        validator: this.validator,
+      }
+
       return this
         .$EventBus
-        .Dispatch(compose.RecordEvent(this.record, { eventType, resourceType }))
+        .Dispatch(compose.RecordEvent(
+          this.record, { eventType, resourceType, args }))
     },
   },
 }

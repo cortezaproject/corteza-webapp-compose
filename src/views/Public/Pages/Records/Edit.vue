@@ -13,12 +13,6 @@ export default {
   },
 
   methods: {
-    handleUpdate () {
-      this
-        .handleFormSubmit(() => this.$ComposeAPI.recordUpdate(this.record))
-        .catch(this.defaultErrorHandler(this.$t('notification.record.updateFailed')))
-    },
-
     handleBack () {
       this.$router.push({ name: 'page.record' })
     },
