@@ -59,7 +59,6 @@ export default {
         lightBg: 'Light background',
         darkBg: 'Dark background',
         noBorder: 'No border',
-
       },
     },
     recordOrganizer: {
@@ -141,11 +140,9 @@ export default {
     },
     automation: {
       label: 'Automation',
-      script: 'Script',
-      manualScript: 'Manual scripts',
-      pickScript: 'Pick a script',
-      scriptFootnote: 'Select from the list of manual scripts. Disabled and incompatible (different module) scripts are disabled.',
-      button: 'Buttons',
+      configuredButtons: 'Configured buttons',
+      availableScripts: 'Available scripts',
+      noScripts: 'There are no manual scripts compatible with this page block',
       primaryButton: 'Primary button',
       secondaryButton: 'Secondary button',
       lightButton: 'Light button',
@@ -153,7 +150,6 @@ export default {
       dangerButton: 'Danger button',
       warningButton: 'Warning button',
       darkButton: 'Dark button',
-      buttonFootnote: 'A list of manual scripts, accessible via click on a button (rename and reorder as you see fit)',
     },
     recordList: {
       label: 'Record list',
@@ -1005,17 +1001,7 @@ export default {
       unexpectedInput: 'Unexpected input for values property, should be an array with name-value object pairs',
     },
     automation: {
-      saveFailed: 'Could not save this trigger',
-      deleteFailed: 'Could not delete this trigger',
-      execFailed: 'An error occurred while executing the trigger (see browser console for details)',
-      invalidRecordID: 'Primary module set, expecting valid recordID',
-      execError: 'Trigger failed to execute successfully',
-      expectingRecordObject: 'Expecting Record object',
-      expectingModuleObject: 'Expecting Module object',
-      recordDoesNotExist: 'Record does not exist',
-      saved: 'Trigger saved',
-      deleted: 'Trigger deleted',
-      executed: 'Trigger successfully executed',
+      scriptFailed: 'Could not execute automation',
     },
     module: {
       saveFailed: 'Could not save this module',

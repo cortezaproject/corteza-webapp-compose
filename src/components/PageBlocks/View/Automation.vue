@@ -1,52 +1,61 @@
 <template>
-    <div class="d-flex flex-wrap">
-      <b-button v-for="(b, i) in options.buttons"
-                :key="i"
-                :variant="b.variant || 'primary'"
-                class="m-1 flex-fill"
-                @click.prevent="onAutomationButtonClick(b.script)">{{ b.label }}</b-button>
+    <div
+      class="d-flex flex-wrap"
+    >
+      <b-button
+        v-for="(b, i) in options.buttons"
+        :key="i"
+        :variant="b.variant || 'primary'"
+        :disabled="processing"
+        class="m-1 flex-fill"
+        @click.prevent="handle(b)"
+      >
+        {{ b.label }}
+      </b-button>
     </div>
 </template>
 <script>
 import base from './base'
-import triggerScript from 'corteza-webapp-compose/src/mixins/trigger-script'
 import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   extends: base,
 
-  mixins: [
-    triggerScript,
-  ],
-
-  created () {
-    const variants = ['primary', 'light', 'success', 'danger', 'secondary', 'warning', 'info', 'dark']
-    this.options.buttons.map(b => {
-      if (variants.indexOf(b.variant) < 0) {
-        b.variant = 'primary'
-      }
-    })
+  data () {
+    return {
+      processing: false,
+    }
   },
 
   methods: {
-    onAutomationButtonClick (script) {
-      console.debug('manually running script', script)
+    handle (b) {
+      this.processing = true
+      let ev
 
-      this.TriggerManualScriptOnComposeRecord(
-        { script },
-        {
-          namespace: new compose.Namespace(this.namespace),
-          module: new compose.Module(this.module),
-          record: new compose.Record(this.module, this.record),
-        },
-      ).then(record => {
-        this.record.setValues(record.values)
-      }).catch(({ message }) => {
-        if (message) {
-          this.raiseWarningAlert(message)
-          console.error(message)
-        }
-      })
+      switch (b.resourceType) {
+        case 'compose:record':
+          ev = compose.RecordEvent(this.record)
+          break
+        case 'compose:module':
+          ev = compose.ModuleEvent(this.module)
+          break
+        case 'compose:namespace':
+          ev = compose.NamespaceEvent(this.namespace)
+          break
+        case 'compose':
+          ev = compose.ComposeEvent()
+      }
+
+      // @todo this is not a complete implementation
+      //       we need to do a proper filtering via constraint matching
+      //       for now, all (configured) buttons are displayed
+
+      this.$EventBus
+        .Dispatch(ev, b.script)
+        .catch(this.defaultErrorHandler(this.$t('notification.automation.scriptFailed')))
+        .finally(() => {
+          this.processing = false
+        })
     },
   },
 }

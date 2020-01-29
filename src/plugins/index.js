@@ -25,7 +25,11 @@ Vue.use(plugins.EventBus({
   verbose: notProduction,
   pairs,
 }))
-Vue.use(plugins.UIHooks('compose'))
+
+Vue.use(plugins.UIHooks({
+  app: 'compose',
+  verbose: notProduction,
+}))
 
 Vue.use(plugins.Auth(Vue.prototype.$SystemAPI))
 Vue.use(settings, { api: Vue.prototype.$ComposeAPI })
