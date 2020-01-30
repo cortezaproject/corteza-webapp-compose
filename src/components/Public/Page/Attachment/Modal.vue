@@ -14,8 +14,8 @@
 
     <a
       slot="header.right"
+      v-if="attachment"
       :href="(attachment || {}).download">
-
       {{ $t('general.label.download') }}
     </a>
   </preview-lightbox>

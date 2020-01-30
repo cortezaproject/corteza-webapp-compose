@@ -71,6 +71,7 @@
 import numeral from 'numeral'
 import moment from 'moment'
 import { compose, shared } from '@cortezaproject/corteza-js'
+import { url } from '@cortezaproject/corteza-vue'
 import { PreviewInline, canPreview } from 'corteza-webapp-common/src/components/FilePreview/'
 import AttachmentLink from './Link'
 import draggable from 'vuedraggable'
@@ -141,6 +142,10 @@ export default {
         return canPreview({ type, src, name: a.name })
       }
     },
+
+    baseURL () {
+      return url.Make({ url: window.ComposeAPI })
+    },
   },
 
   watch: {
@@ -149,7 +154,7 @@ export default {
       handler (set) {
         this.attachments = set.map(a => {
           if (typeof a === 'object') {
-            return new shared.Attachment(a, window.ComposeAPI)
+            return new shared.Attachment(a, this.baseURL)
           } else {
             return null
           }
@@ -159,7 +164,7 @@ export default {
         set.forEach((attachmentID, index) => {
           if (typeof attachmentID === 'string') {
             this.$ComposeAPI.attachmentRead({ kind: this.kind, attachmentID, namespaceID }).then(att => {
-              this.attachments.splice(index, 1, new shared.Attachment(att, window.ComposeAPI))
+              this.attachments.splice(index, 1, new shared.Attachment(att, this.baseURL))
             })
           }
         })
