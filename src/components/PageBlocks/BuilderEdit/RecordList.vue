@@ -1,7 +1,9 @@
 <template>
   <b-tab :title="$t('block.recordList.label')">
-    <fieldset class="form-group">
-      <label for="select-module">{{ $t('block.general.module') }}</label>
+    <b-form-group
+      class="form-group"
+      :label="$t('block.general.module')"
+    >
       <b-form-select v-model="options.moduleID" required>
         <option :value="undefined">{{ $t('general.label.none') }}</option>
         <option
@@ -17,7 +19,7 @@
           <router-link :to="{ name: 'admin.pages'}">{{ $t('block.recordList.recordPages') }}</router-link>
         </i18next>
       </i>
-    </fieldset>
+    </b-form-group>
 
     <field-picker v-if="recordListModule" :module="recordListModule" :fields.sync="options.fields" />
 
