@@ -82,7 +82,7 @@
           :icon="['fas', 'wrench']"
         />
       </b-button>
-      <confirm
+      <c-input-confirm
         @confirmed="$emit('delete')"
         :no-prompt="!value.name"
         class="confirmation-small"
@@ -96,8 +96,8 @@
         <template v-slot:no>
           {{ $t('general.label.no') }}
         </template>
-      </confirm>
-      <permissions-button
+      </c-input-confirm>
+      <c-permissions-button
         v-if="canGrant"
         :title="value.name"
         :resource="'compose:module-field:'+value.fieldID"
@@ -108,12 +108,13 @@
 </template>
 
 <script>
-import Confirm from 'corteza-webapp-common/src/components/Input/Confirm'
 import { compose } from '@cortezaproject/corteza-js'
+import { components } from '@cortezaproject/corteza-vue'
+const { CInputConfirm } = components
 
 export default {
   components: {
-    Confirm,
+    CInputConfirm,
   },
 
   i18nOptions: {

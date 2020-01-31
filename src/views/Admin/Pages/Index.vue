@@ -18,7 +18,7 @@
                 </b-form>
               </b-col>
               <b-col offset-md="5" md="2" class="text-right">
-                <permissions-button v-if="namespace.canGrant"
+                <c-permissions-button v-if="namespace.canGrant"
                                     resource="compose:page:*"
                                     link/>
               </b-col>

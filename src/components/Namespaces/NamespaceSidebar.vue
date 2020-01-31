@@ -1,5 +1,5 @@
 <template>
-  <sidebar position="left"
+  <c-sidebar position="left"
            name="ns-sidebar"
            class="bg-white overflow-auto"
            v-bind="$props"
@@ -40,16 +40,17 @@
             {{ ns.name }}
       </span>
     </b-list-group-item>
-  </sidebar>
+  </c-sidebar>
 </template>
 
 <script>
-import Sidebar from 'corteza-webapp-common/src/components/Sidebar'
 import { compose } from '@cortezaproject/corteza-js'
+import { components } from '@cortezaproject/corteza-vue'
+const { CSidebar } = components
 
 export default {
   components: {
-    Sidebar,
+    CSidebar,
   },
   props: {
     namespaces: {

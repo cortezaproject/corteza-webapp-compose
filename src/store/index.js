@@ -1,24 +1,20 @@
+import Vue from 'vue'
 import Vuex from 'vuex'
-
-import ComposeAPI from 'corteza-webapp-common/src/lib/corteza-server/compose'
-import SystemAPI from 'corteza-webapp-common/src/lib/corteza-server/system'
 
 import namespace from './namespace'
 import module from './module'
 import page from './page'
 import chart from './chart'
 import user from './user'
-// import automation from './automation'
 
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
 
   modules: {
-    namespace: namespace(ComposeAPI),
-    module: module(ComposeAPI),
-    page: page(ComposeAPI),
-    chart: chart(ComposeAPI),
-    user: user(SystemAPI),
-    // automation: automation(ComposeAPI),
+    namespace: namespace(Vue.prototype.$ComposeAPI),
+    module: module(Vue.prototype.$ComposeAPI),
+    page: page(Vue.prototype.$ComposeAPI),
+    chart: chart(Vue.prototype.$ComposeAPI),
+    user: user(Vue.prototype.SystemAPI),
   },
 })

@@ -19,7 +19,7 @@
 import List from './List'
 import Edit from './Edit'
 import { mapGetters } from 'vuex'
-import Reminder from 'corteza-webapp-common/src/lib/types/shared/reminder'
+import { system } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
@@ -81,7 +81,7 @@ export default {
       }
       this.$SystemAPI[h](r).then(r => {
         if (this.$auth.user.userID === r.assignedTo) {
-          this.reminders.push(new Reminder(r))
+          this.reminders.push(new system.Reminder(r))
         }
       })
 
@@ -103,7 +103,7 @@ export default {
         assignedTo: this.$auth.user.userID,
         perPage: 0,
       }).then(({ set: reminders = [] }) => {
-        this.reminders = reminders.map(r => new Reminder(r))
+        this.reminders = reminders.map(r => new system.Reminder(r))
       })
     },
   },

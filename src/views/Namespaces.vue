@@ -8,7 +8,7 @@
     <div v-if="loaded" class="vh-100 overflow-auto flex-grow-1">
       <h1 class="text-center mt-4">
         {{ $t('namespace.title') }}
-        <permissions-button v-if="canGrant" resource="compose:namespace:*" link />
+        <c-permissions-button v-if="canGrant" resource="compose:namespace:*" link />
       </h1>
 
       <b-container class="pb-5">
@@ -33,18 +33,19 @@
           </div>
         </b-row>
       </b-container>
-      <permissions-modal />
+      <c-permissions-modal />
     </div>
   </main>
 </template>
 <script>
 import NamespaceItem from 'corteza-webapp-compose/src/components/Namespaces/NamespaceItem'
-import { PermissionsModal } from 'corteza-webapp-common/components'
+import { components } from '@cortezaproject/corteza-vue'
+const { CPermissionsModal } = components
 
 export default {
   components: {
     NamespaceItem,
-    PermissionsModal,
+    CPermissionsModal,
   },
 
   data () {

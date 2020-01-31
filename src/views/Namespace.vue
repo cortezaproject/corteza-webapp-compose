@@ -5,7 +5,9 @@
     >
       {{ frontendVersion }}
     </small>
-    <toaster :toasts="toasts" />
+    <c-toaster
+      :toasts="toasts"
+    />
     <div class="alert-holder">
       <b-alert v-for="(a,i) in alerts"
                :variant=" a.variant || 'info'"
@@ -26,23 +28,23 @@
                  :namespace="namespace" />
     <div class="loader" v-else></div>
     <div class="error text-danger text-center position-absolute" v-if="error">{{ error }}</div>
-    <permissions-modal />
+    <c-permissions-modal />
   </div>
 </template>
 
 <script>
-import { PermissionsModal } from 'corteza-webapp-common/components'
+import moment from 'moment'
 import NamespaceSidebar from 'corteza-webapp-compose/src/components/Namespaces/NamespaceSidebar'
 import { compose } from '@cortezaproject/corteza-js'
-import Toaster from 'corteza-webapp-common/src/components/Toaster'
-import moment from 'moment'
+import { components } from '@cortezaproject/corteza-vue'
+const { CPermissionsModal, CToaster } = components
 
 export default {
   name: 'Namespace',
 
   components: {
-    Toaster,
-    PermissionsModal,
+    CToaster,
+    CPermissionsModal,
     NamespaceSidebar,
   },
 

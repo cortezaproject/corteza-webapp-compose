@@ -2,7 +2,7 @@
   <b-container>
     <h1 class="text-center mt-4">
       {{ getTitle }}
-      <permissions-button
+      <c-permissions-button
         v-if="isEdit && namespace.canGrant"
         :title="namespace.name"
         :resource="'compose:namespace:'+namespace.namespaceID"
@@ -60,19 +60,20 @@
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
     </editor-toolbar>
-    <permissions-modal />
+    <c-permissions-modal />
   </b-container>
 </template>
 
 <script>
 import { compose } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
-import { PermissionsModal } from 'corteza-webapp-common/components'
+import { components } from '@cortezaproject/corteza-vue'
+const { CPermissionsModal } = components
 
 export default {
   components: {
     EditorToolbar,
-    PermissionsModal,
+    CPermissionsModal,
   },
 
   data () {

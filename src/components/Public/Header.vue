@@ -33,8 +33,10 @@
                       :to="{ name: 'admin.modules' }"
                       class="nav-link mw-100 text-nowrap">{{ $t('navigation.adminPanel') }}</router-link>
 
-          <hamburger-menu class="d-none d-md-block mr-2"
-                          name="right-panel" />
+          <c-hamburger-menu
+            class="d-none d-md-block mr-2"
+            name="right-panel"
+          />
         </div>
       </b-navbar>
     </header>
@@ -44,12 +46,13 @@ import { mapGetters } from 'vuex'
 import MenuLevel from './MenuLevel'
 import navbarCollapse from 'corteza-webapp-compose/src/mixins/navbar_collapse'
 import { compose } from '@cortezaproject/corteza-js'
-import HamburgerMenu from 'corteza-webapp-common/src/components/Sidebar/HamburgerMenu'
+import { components } from '@cortezaproject/corteza-vue'
+const { CHamburgerMenu } = components
 
 export default {
   components: {
     MenuLevel,
-    HamburgerMenu,
+    CHamburgerMenu,
   },
 
   mixins: [navbarCollapse],

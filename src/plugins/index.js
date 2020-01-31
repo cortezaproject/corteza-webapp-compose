@@ -4,8 +4,6 @@ import BootstrapVue from 'bootstrap-vue'
 import Router from 'vue-router'
 import Vuex from 'vuex'
 
-import settings from 'corteza-webapp-common/src/plugins/settings'
-import reminder from 'corteza-webapp-common/src/plugins/reminder'
 import { plugins } from '@cortezaproject/corteza-vue'
 
 import pairs from './eventbus-pairs'
@@ -31,6 +29,6 @@ Vue.use(plugins.UIHooks({
   verbose: notProduction,
 }))
 
-Vue.use(plugins.Auth(Vue.prototype.$SystemAPI))
-Vue.use(settings, { api: Vue.prototype.$ComposeAPI })
-Vue.use(reminder, { api: Vue.prototype.$SystemAPI })
+Vue.use(plugins.Auth(), { api: Vue.prototype.$SystemAPI })
+Vue.use(plugins.Settings, { api: Vue.prototype.$ComposeAPI })
+Vue.use(plugins.Reminder, { api: Vue.prototype.$SystemAPI })

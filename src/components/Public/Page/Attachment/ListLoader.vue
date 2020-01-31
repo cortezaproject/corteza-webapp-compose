@@ -46,7 +46,7 @@
 
     <div v-else-if="mode === 'single' || 'gallery'" class="single gallery">
       <div v-for="(a) in attachments" :key="a.attachmentID" class="mb-2">
-        <preview-inline
+        <c-preview-inline
           v-if="canPreview(a)"
           @openPreview="openLightbox({ ...a, ...$event })"
           :src="inlineUrl(a)"
@@ -54,7 +54,8 @@
           :name="a.name"
           :alt="a.name"
           :preview-style="{ width: 'unset' }"
-          :labels="previewLabels" />
+          :labels="previewLabels"
+        />
 
         <div v-else>
           <font-awesome-icon
@@ -71,14 +72,14 @@
 import numeral from 'numeral'
 import moment from 'moment'
 import { compose, shared } from '@cortezaproject/corteza-js'
-import { url } from '@cortezaproject/corteza-vue'
-import { PreviewInline, canPreview } from 'corteza-webapp-common/src/components/FilePreview/'
 import AttachmentLink from './Link'
 import draggable from 'vuedraggable'
+import { url, components } from '@cortezaproject/corteza-vue'
+const { CPreviewInline, canPreview } = components
 
 export default {
   components: {
-    PreviewInline,
+    CPreviewInline,
     AttachmentLink,
     draggable,
   },

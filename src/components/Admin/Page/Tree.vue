@@ -34,7 +34,7 @@
                        class="mr-2 text-dark d-inline-block edit">
             <font-awesome-icon :icon="['far', 'edit']" v-if="item.moduleID === '0'"></font-awesome-icon>
           </router-link>
-         <permissions-button v-if="namespace.canGrant"
+         <c-permissions-button v-if="namespace.canGrant"
                              :title="item.title"
                              :resource="'compose:page:'+item.pageID" link />
           </div>

@@ -6,4 +6,4 @@ import { components } from '@cortezaproject/corteza-vue'
 
 Vue.use(PortalVue)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-Vue.component('permissions-button', components.PermissionsButton)
+Vue.component('c-permissions-button', components.CPermissionsButton)

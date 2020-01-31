@@ -6,7 +6,7 @@
           <b-card :title="$t('module.edit.title')" class="mb-5">
             <div slot="header" class="text-right">
               <export :list="[this.module]" type="module" />
-              <permissions-button v-if="module.canGrant" resource="compose:module-field:*" link />
+              <c-permissions-button v-if="module.canGrant" resource="compose:module-field:*" link />
             </div>
             <b-form-group>
               <label>{{ $t('module.newPlaceholder') }}</label>
@@ -74,17 +74,18 @@
 
                           {{ $t('module.edit.step.recordList.create') }}
                         </b-button>
-                        <confirm v-else
-                                @confirmed="toRecordList('view')"
-                                @canceled="toRecordList('edit')"
-                                :disabled="!namespace.canManageNamespace"
-                                :borderless="false"
-                                variant="primary"
-                                variantOk="primary"
-                                variantCancel="outline-primary"
-                                size="md"
-                                sizeConfirm="md">
-
+                        <c-input-confirm
+                          v-else
+                          @confirmed="toRecordList('view')"
+                          @canceled="toRecordList('edit')"
+                          :disabled="!namespace.canManageNamespace"
+                          :borderless="false"
+                          variant="primary"
+                          variantOk="primary"
+                          variantCancel="outline-primary"
+                          size="md"
+                          sizeConfirm="md"
+                        >
                           {{ $t('module.edit.step.recordList.view') }}
                           <template v-slot:yes>
                             {{ $t('general.label.view') }}
@@ -92,7 +93,7 @@
                           <template v-slot:no>
                             {{ $t('general.label.edit') }}
                           </template>
-                        </confirm>
+                        </c-input-confirm>
                       </circle-step>
                     </b-col>
                     <b-col>
@@ -157,7 +158,8 @@ import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToo
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 import CircleStep from 'corteza-webapp-compose/src/components/Common/CircleStep'
-import Confirm from 'corteza-webapp-common/src/components/Input/Confirm'
+import { components } from '@cortezaproject/corteza-vue'
+const { CInputConfirm } = components
 
 export default {
   components: {
@@ -168,7 +170,7 @@ export default {
     EditorToolbar,
     Export,
     CircleStep,
-    Confirm,
+    CInputConfirm,
   },
 
   props: {

@@ -86,10 +86,10 @@ import FieldViewer from 'corteza-webapp-compose/src/components/ModuleFields/View
 import ExporterModal from 'corteza-webapp-compose/src/components/Public/Record/Exporter'
 import ImporterModal from 'corteza-webapp-compose/src/components/Public/Record/Importer'
 import { compose } from '@cortezaproject/corteza-js'
+import { url } from '@cortezaproject/corteza-vue'
 import Pagination from 'vue-pagination-2'
 import users from 'corteza-webapp-compose/src/mixins/users'
 import _ from 'lodash'
-import { make } from 'corteza-webapp-common/src/lib/url'
 
 // Helper to determine if and value for given bool query
 // == is intentional
@@ -264,16 +264,14 @@ export default {
         }
       }
 
-      const url = make({
+      window.open(url.Make({
         url: `${this.$ComposeAPI.baseURL}${this.$ComposeAPI.recordExportEndpoint(e)}`,
         query: {
           fields: e.fields,
           filter: e.filters,
           jwt: this.$auth.JWT,
         },
-      })
-
-      window.open(url)
+      }))
     },
 
     handleQueryThrottled: _.throttle(function (e) { this.handleQuery(e) }, 500),
