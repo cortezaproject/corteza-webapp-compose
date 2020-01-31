@@ -18,16 +18,17 @@ Vue.use(plugins.CortezaAPI('system'))
 Vue.use(plugins.CortezaAPI('messaging'))
 
 const notProduction = (process.env.NODE_ENV !== 'production')
-Vue.use(plugins.EventBus({
+
+Vue.use(plugins.EventBus(), {
   strict: notProduction,
   verbose: notProduction,
   pairs,
-}))
+})
 
-Vue.use(plugins.UIHooks({
+Vue.use(plugins.UIHooks(), {
   app: 'compose',
   verbose: notProduction,
-}))
+})
 
 Vue.use(plugins.Auth(), { api: Vue.prototype.$SystemAPI })
 Vue.use(plugins.Settings, { api: Vue.prototype.$ComposeAPI })
