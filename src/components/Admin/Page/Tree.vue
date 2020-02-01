@@ -6,47 +6,85 @@
     mixinParentKey="parent"
     class="list-group"
     @changePosition="handleChangePosition">
-
-      <template slot-scope="{item}">
-        <div class="wrap d-flex" v-if="item.pageID">
-          <div class="flex-fill ml-1" :class="{'grab': namespace.canCreatePage}">
-            {{ item.title }}
-          </div>
-          <div class="prop-col text-left">
-            <span v-if="item.moduleID !== '0'">{{ $t('page.recordPage') }}</span>
-            <span v-else-if="item.visible">{{ $t('page.visible') }}</span>
-          </div>
-          <div class="fixed-width text-right">
+    <template
+      slot-scope="{item}"
+    >
+      <div
+        v-if="item.pageID"
+        class="wrap d-flex"
+      >
+        <div
+          class="flex-fill ml-1"
+          :class="{'grab': namespace.canCreatePage}"
+        >
+          {{ item.title }}
+        </div>
+        <div
+          class="prop-col text-left"
+        >
+          <span
+            v-if="item.moduleID !== '0'"
+          >
+            <i18next
+              path="page.recordPage"
+              tag="label"
+            >
+              <router-link
+                :to="{ name: 'admin.modules.edit', params: { moduleID: item.moduleID }}"
+              >
+                {{ moduleName(item) }}
+              </router-link>
+            </i18next>
+          </span>
+          <span
+            v-else-if="item.visible"
+          >
+            {{ $t('page.visible') }}
+          </span>
+        </div>
+        <div class="fixed-width text-right ml-3">
           <router-link
             v-if="item.blocks && item.blocks.length >= 1"
             :to="{name: 'page', params: { pageID: item.pageID }}"
             class="mr-2 text-dark d-inline-block">
             <font-awesome-icon
               :icon="['far', 'eye']"
-              :title="$t('general.label.view')"
-            ></font-awesome-icon>
+              :title="$t('page.preview')"
+            />
           </router-link>
-          <router-link v-if="item.canUpdatePage"
-                       :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
-                       class="mr-2 text-dark">{{ $t('general.label.pageBuilder') }}</router-link>
-          <router-link v-if="item.canUpdatePage"
-                       :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
-                       class="mr-2 text-dark d-inline-block edit">
-            <font-awesome-icon :icon="['far', 'edit']" v-if="item.moduleID === '0'"></font-awesome-icon>
+          <router-link
+            v-if="item.canUpdatePage"
+            :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
+            class="mr-2 text-dark"
+          >
+            {{ $t('general.label.pageBuilder') }}
           </router-link>
-         <c-permissions-button v-if="namespace.canGrant"
-                             :title="item.title"
-                             :resource="'compose:page:'+item.pageID" link />
-          </div>
+          <router-link
+            v-if="item.canUpdatePage"
+            :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
+            class="mr-2 text-dark d-inline-block edit"
+          >
+            <font-awesome-icon
+              v-if="item.moduleID === '0'"
+              :icon="['far', 'edit']"
+            />
+          </router-link>
+          <c-permissions-button
+            v-if="namespace.canGrant"
+            :title="item.title"
+            :resource="'compose:page:'+item.pageID"
+            link
+          />
         </div>
+      </div>
     </template>
   </sortable-tree>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import SortableTree from 'vue-sortable-tree'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 
 export default {
   name: 'page-tree',
@@ -68,7 +106,7 @@ export default {
 
     parentID: {
       type: String,
-      default: '0',
+      default: NoID,
     },
 
     level: {
@@ -78,6 +116,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      getModuleByID: 'module/getByID',
+    }),
+
     list: {
       get () {
         return this.value
@@ -94,10 +136,18 @@ export default {
       updatePage: 'page/update',
     }),
 
+    moduleName ({ moduleID }) {
+      if (moduleID === NoID) {
+        return ''
+      }
+
+      return (this.getModuleByID(moduleID) || {}).name
+    },
+
     handleChangePosition ({ beforeParent, data, afterParent }) {
       const { namespaceID } = this.namespace
-      const beforeID = beforeParent.parent ? beforeParent.pageID : '0'
-      const afterID = afterParent.parent ? afterParent.pageID : '0'
+      const beforeID = beforeParent.parent ? beforeParent.pageID : NoID
+      const afterID = afterParent.parent ? afterParent.pageID : NoID
 
       const reorder = () => {
         const pageIDs = afterParent.children.map(p => p.pageID)

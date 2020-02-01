@@ -324,7 +324,8 @@ export default {
   page: {
     title: 'List of pages',
     visible: 'Visible',
-    recordPage: 'Record page',
+    preview: 'Preview',
+    recordPage: 'Record page for {{ 0 }}',
     newLabel: 'Create a new page:',
     newPlaceholder: 'Page title',
     noBlock: 'No block added yet',
