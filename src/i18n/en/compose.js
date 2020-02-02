@@ -156,7 +156,9 @@ export default {
       moduleFootnote: 'Disabled modules on the list do not have {{0}} available.',
       recordPages: 'record pages',
       addRecord: 'Add new record',
-      pagination: 'Showing {from} to {to} of {count} records|{count} records|One record',
+      pagination: 'Showing {{from}} to {{to}} of {{count}} records',
+      pagination_onepage: 'One record',
+      pagination_onepage_plural: '{{count}} records',
       record: {
         newLabel: 'New records',
         hideAddButton: 'Hide add record button',

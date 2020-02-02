@@ -14,12 +14,12 @@
                       :namespace="namespace"
                       class="ml-1 float-left" />
     </template>
-      <exporter-modal v-if="options.allowExport"
-                      :module="recordListModule"
-                      :records="records"
-                      :query="query"
-                      @export="onExport"
-                      class="ml-1 float-left" />
+    <exporter-modal v-if="options.allowExport"
+                    :module="recordListModule"
+                    :records="records()"
+                    :query="query"
+                    @export="onExport"
+                    class="ml-1 float-left" />
 
     <b-input v-if="!options.hideSearch"
            @keyup="handleQueryThrottled"
@@ -27,55 +27,103 @@
            class="float-right mw-100 mb-1"
            :placeholder="$t('general.label.search')" />
 
-    <div class="table-responsive">
-      <table class="table sticky-header table-hover" :class="{sortable: !options.hideSorting}">
-        <thead v-if="!options.hideHeader" class="border-bottom">
-          <tr>
-            <th v-for="(col) in columns" :key="'header:'+col.name" @click="handleSort(col.name)" class="text-nowrap">
-              {{ col.label || col.name }}
-              <span v-if="!options.hideSorting" class="ml-1">
-                <font-awesome-icon v-if="!isSortedBy(col.name)" :icon="['fas', 'sort']"></font-awesome-icon>
-                <font-awesome-icon v-else-if="isSortedBy(col.name) === 'ASC'" :icon="['fas', 'sort-up']"></font-awesome-icon>
-                <font-awesome-icon v-else-if="isSortedBy(col.name) === 'DESC'" :icon="['fas', 'sort-down']"></font-awesome-icon>
-              </span>
-            </th>
-            <th v-if="recordListModule.canUpdateRecord"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <router-link tag="tr" v-for="(row) in records" :key="row.recordID" :to="{ name: 'page.record', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
-            <td v-if="!recordListModule.canReadRecord">
-              <i class="text-secondary">{{ $t('block.recordList.record.noPermission') }}</i>
-            </td>
-            <td v-for="(col) in columns" :key="row.recordID+':'+col.name">
-              <span v-if="!recordListModule.canReadRecord"/>
-              <field-viewer v-else-if="col.canReadRecordValue" :field="col" value-only :record="row" :namespace="namespace"/>
-              <i v-else class="text-secondary">{{ $t('field.noPermission') }}</i>
-            </td>
-            <td class="text-right text-nowrap d-flex justify-content-center">
-              <b-button variant="link"
-                        class="p-0 m-0 pr-3"
-                        @click.prevent="createReminder(row)">
-                <font-awesome-icon :icon="['far', 'bell']" />
-              </b-button>
-              <router-link v-if="recordListModule.canCreateRecord" class="pr-3" :to="{ name: 'page.record.create', params: { pageID: options.pageID, values: row.values }, query: null }">
-                <font-awesome-icon :icon="['far', 'clone']"></font-awesome-icon>
-              </router-link>
-              <router-link v-if="recordListModule.canUpdateRecord" :to="{ name: 'page.record.edit', params: { pageID: options.pageID, recordID: row.recordID }, query: null }">
-                <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
-              </router-link>
-            </td>
+    <div>
+      <b-table
+        hover
+        ref="table"
+        responsive
+        class="mb-0"
+        head-variant="light"
+        :items="records"
+        :fields="fields"
+        no-sort-reset
+        @row-clicked="handleRowClick"
+        @sort-changed="handleSort"
+      >
+        <template #head()="{ field }">
+          {{ field.label }}
+        </template>
+        <template #cell()="{ item: r, field }">
+         <span
+            v-if="!recordListModule.canReadRecord"
+          />
+            <field-viewer
+              v-else-if="field.moduleField.canReadRecordValue"
+              :field="field.moduleField"
+              value-only
+              :record="r"
+              :module="module"
+              :namespace="namespace"
+            />
+          <i
+            v-else
+            class="text-secondary"
+          >
+            {{ $t('field.noPermission') }}
+          </i>
+        </template>
+        <template #cell(actions)="{ item: r }">
+          <b-button
+            variant="link"
+            class="p-0 m-0 pr-3"
+            @click.prevent="createReminder(r)">
+            <font-awesome-icon
+              :icon="['far', 'bell']"
+            />
+          </b-button>
+          <router-link
+            v-if="recordListModule.canCreateRecord"
+            class="pr-3" :to="{ name: 'page.record.create', params: { pageID: options.pageID, values: r.values }, query: null }"
+          >
+            <font-awesome-icon
+              :icon="['far', 'clone']"
+            />
           </router-link>
-        </tbody>
-      </table>
+          <router-link
+            v-if="recordListModule.canUpdateRecord"
+            :to="{ name: 'page.record.edit', params: { pageID: options.pageID, recordID: r.recordID }, query: null }"
+          >
+            <font-awesome-icon
+              :icon="['far', 'edit']"
+            />
+          </router-link>
+        </template>
+      </b-table>
     </div>
-    <div class="position-sticky fixed-bottom bg-white border-top pt-1" v-if="!options.hidePaging">
-      <pagination :records="filter.count || 0"
-                  :per-page="filter.perPage || 0"
-                  @paginate="handlePageChange"
-                  :page="filter.page || 0"
-                  :options="{ texts: { count: $t('block.recordList.pagination') } }" />
-    </div>
+    <b-container
+      fluid
+      v-if="!options.hidePaging"
+      class="bg-white border-top pt-2 mt-1 m-0"
+    >
+      <b-row no-gutters>
+        <b-col
+          cols="4"
+        >
+          <span
+            v-if="filter.count > filter.perPage"
+          >
+            {{ $t('block.recordList.pagination', pagingStats) }}
+          </span>
+          <span
+            v-else
+          >
+            {{ $t('block.recordList.pagination_onepage', pagingStats) }}
+          </span>
+        </b-col>
+        <b-col
+          cols="8"
+          class="p-0"
+        >
+          <b-pagination
+            align="right"
+            aria-controls="record-list"
+            v-model="filter.page"
+            :per-page="filter.perPage"
+            :total-rows="filter.count"
+          />
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
   <div v-else>{{ $t('general.label.loading') }}...</div>
 </template>
@@ -87,7 +135,6 @@ import ExporterModal from 'corteza-webapp-compose/src/components/Public/Record/E
 import ImporterModal from 'corteza-webapp-compose/src/components/Public/Record/Importer'
 import { compose } from '@cortezaproject/corteza-js'
 import { url } from '@cortezaproject/corteza-vue'
-import Pagination from 'vue-pagination-2'
 import users from 'corteza-webapp-compose/src/mixins/users'
 import _ from 'lodash'
 
@@ -107,7 +154,6 @@ const toBoolean = (v) => {
 
 export default {
   components: {
-    Pagination,
     FieldViewer,
     ExporterModal,
     ImporterModal,
@@ -125,10 +171,11 @@ export default {
       sortColumn: '',
       query: null,
 
-      // Initialized by prepRecordList()
-      filter: {},
-
-      recordsRaw: [],
+      filter: {
+        page: 1,
+        perPage: 20,
+        count: 0,
+      },
     }
   },
 
@@ -136,6 +183,20 @@ export default {
     ...mapGetters({
       getModuleByID: 'module/getByID',
     }),
+
+    pagingStats () {
+      const { page, perPage, count } = this.filter
+      let pages = Math.ceil(count / perPage)
+      if (pages < 1) { pages = 1 }
+
+      return {
+        from: ((page - 1) * perPage) + 1,
+        to: (page * perPage),
+        page,
+        count,
+        pages,
+      }
+    },
 
     // Returns module, configured for this record list
     recordListModule () {
@@ -146,28 +207,31 @@ export default {
       }
     },
 
-    columns () {
-      return this.recordListModule.filterFields(this.options.fields)
-    },
+    fields () {
+      const configured = this.recordListModule
+        .filterFields(this.options.fields)
+        .map(mf => ({
+          key: mf.name,
+          label: mf.label,
+          moduleField: mf,
+          sortable: true,
+        }))
 
-    records () {
-      if (!this.recordListModule) {
-        return []
-      }
-      return this.recordsRaw.map(r => new compose.Record(this.recordListModule, r))
+      return [
+        ...configured,
+        { key: 'actions', label: '' },
+      ]
+    },
+  },
+
+  watch: {
+    'filter.page' () {
+      this.$refs.table.refresh()
     },
   },
 
   created () {
     this.prepRecordList()
-    this.updateRecordList(this.filter)
-  },
-
-  beforeMount () {
-    this.$root.$on('recordList.refresh', this.updateRecordList)
-  },
-  beforeDestroy () {
-    this.$root.$off('recordList.refresh', this.updateRecordList)
   },
 
   methods: {
@@ -320,53 +384,38 @@ export default {
       return filter
     },
 
-    // Merges prefilter with query
-    handleQuery () {
-      const filter = this.makeQuery(this.query, this.recordListModule.filterFields(this.options.fields))
-
-      this.filter.page = 1
-      this.updateRecordList({ ...this.filter, filter })
+    handleRowClick ({ recordID }) {
+      const { pageID } = this.options
+      this.$router.push({ name: 'page.record', params: { pageID, recordID }, query: null })
     },
 
-    handleSort (fieldName) {
-      if (this.options.hideSorting) {
-        return
-      }
-
-      const sort = this.filter.sort === fieldName ? `${fieldName} DESC` : fieldName
-      this.updateRecordList({ ...this.filter, sort })
+    handleSort ({ sortBy, sortDesc = false }) {
+      this.filter.sort = `${sortBy} ${sortDesc ? 'DESC' : ''}`.trim()
+      this.$refs.table.refresh()
     },
 
-    isSortedBy (name) {
-      const { sort = '' } = this.filter
-      if (sort.includes(name)) {
-        if (sort.includes('DESC')) {
-          return 'DESC'
-        } else {
-          return 'ASC'
-        }
-      }
-      return false
-    },
-
-    handlePageChange (page) {
-      this.updateRecordList({ ...this.filter, page })
-    },
-
-    // Helper to fetch records, update filter, ...
-    async updateRecordList (filter = this.filter) {
+    /**
+     * Loader for b-table
+     *
+     * Will ignore b-tables input arguments for filter
+     * and assemble them on our own
+     */
+    records () {
       if (this.recordListModule.moduleID !== this.options.moduleID) {
         throw Error('Module incompatible, module mismatch')
       }
 
-      return this.$ComposeAPI.recordList({ ...this.recordListModule, ...filter })
+      return this.$ComposeAPI.recordList({ ...this.recordListModule, ...this.filter })
         .then(({ set, filter }) => {
-          this.recordsRaw = set
-          this.filter = {
-            ...this.filter,
-            ...filter,
-          }
-          this.fetchUsers(this.columns, this.records)
+          const records = set.map(r => Object.freeze(new compose.Record(r, this.recordListModule)))
+
+          this.filter = { ...this.filter, ...filter }
+          console.log(this.filter, filter)
+
+          // Extract user IDs from record values and load all users
+          this.fetchUsers(this.columns, records)
+
+          return records
         })
         .catch(this.stdErr)
     },
