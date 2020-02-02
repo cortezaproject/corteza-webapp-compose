@@ -8,7 +8,7 @@ export default {
 
   methods: {
     sortedItems (items) {
-      let newItems = items.sort((a, b) => {
+      const newItems = items.sort((a, b) => {
         return (String(a[this.sortBy]) || '').localeCompare(String(b[this.sortBy]) || '')
       })
 
@@ -27,7 +27,7 @@ export default {
       }
       this.sortBy = name
 
-      let param = !this.sortAscending ? ('-' + this.sortBy) : this.sortBy
+      const param = !this.sortAscending ? ('-' + this.sortBy) : this.sortBy
       this.$router.push({ name: this.$route.name, query: { sortBy: param } })
     },
 

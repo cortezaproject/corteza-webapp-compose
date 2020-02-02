@@ -101,11 +101,11 @@ export default {
     },
 
     availableFields () {
-      const fields = [ ...this.allFields ]
+      const fields = [...this.allFields]
 
       // Remove selected fields
       return fields.filter(a =>
-        !this.fields.find(f => a.name === f.name)
+        !this.fields.find(f => a.name === f.name),
       )
     },
   },

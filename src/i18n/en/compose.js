@@ -59,7 +59,6 @@ export default {
         lightBg: 'Light background',
         darkBg: 'Dark background',
         noBorder: 'No border',
-
       },
     },
     recordOrganizer: {
@@ -141,11 +140,9 @@ export default {
     },
     automation: {
       label: 'Automation',
-      script: 'Script',
-      manualScript: 'Manual scripts',
-      pickScript: 'Pick a script',
-      scriptFootnote: 'Select from the list of manual scripts. Disabled and incompatible (different module) scripts are disabled.',
-      button: 'Buttons',
+      configuredButtons: 'Configured buttons',
+      availableScripts: 'Available scripts',
+      noScripts: 'There are no manual scripts compatible with this page block',
       primaryButton: 'Primary button',
       secondaryButton: 'Secondary button',
       lightButton: 'Light button',
@@ -153,7 +150,6 @@ export default {
       dangerButton: 'Danger button',
       warningButton: 'Warning button',
       darkButton: 'Dark button',
-      buttonFootnote: 'A list of manual scripts, accessible via click on a button (rename and reorder as you see fit)',
     },
     recordList: {
       label: 'Record list',
@@ -283,6 +279,21 @@ export default {
       recordListPage: 'Record List page for module',
       recordList: 'Record List for module',
     },
+
+    fieldKinds: {
+      Bool: { label: 'Checkbox (Y/N)' },
+      DateTime: { label: 'Date and time' },
+      Email: { label: 'Email input' },
+      File: { label: 'File upload' },
+      Formula: { label: 'Formula' },
+      Select: { label: 'Select / dropdown' },
+      Number: { label: 'Number input' },
+      Record: { label: 'Record selector' },
+      String: { label: 'Text input (string)' },
+      Url: { label: 'URL input' },
+      User: { label: 'User selector' },
+    },
+
     edit: {
       title: 'Edit module',
       manageRecordFields: 'Manage record fields',
@@ -308,14 +319,6 @@ export default {
           view: 'Module Record Page',
         },
       },
-    },
-    recordGenerator: {
-      notUsable: 'Can not use generator, no faker lib.',
-      forModule: 'Record generator for',
-      howManyRecords: 'How many fake ecords do you want to create?',
-      generate: 'Generate!',
-      sampleRoll: 'Sample {{0}}',
-      rollTheDice: 'roll the dice',
     },
   },
   page: {
@@ -531,7 +534,7 @@ export default {
       title: 'Title',
       description: 'Description',
       type: 'Type',
-      multi: 'Multiple',
+      multi: 'Multi value',
       required: 'Required',
       private: 'Private',
       updatedAt: '$t(field.system.updatedAt)',
@@ -621,7 +624,7 @@ export default {
         specific: 'Update namespace "{{target}}"',
         description: '',
       },
-      'delete': {
+      delete: {
         title: 'Delete any namespace',
         specific: 'Delete namespace "{{target}}"',
         description: '',
@@ -663,7 +666,7 @@ export default {
         specific: 'Update page "{{target}}"',
         description: 'Default: deny',
       },
-      'delete': {
+      delete: {
         title: 'Delete any page',
         specific: 'Delete page "{{target}}"',
         description: 'Default: deny',
@@ -680,7 +683,7 @@ export default {
         specific: 'Update script "{{target}}"',
         description: 'Default: deny',
       },
-      'delete': {
+      delete: {
         title: 'Delete any script',
         specific: 'Delete script "{{target}}"',
         description: 'Default: deny',
@@ -704,7 +707,7 @@ export default {
         specific: 'Update module "{{target}}"',
         description: 'Default: deny',
       },
-      'delete': {
+      delete: {
         title: 'Delete any module',
         specific: 'Delete module "{{target}}"',
         description: 'Default: deny',
@@ -998,17 +1001,7 @@ export default {
       unexpectedInput: 'Unexpected input for values property, should be an array with name-value object pairs',
     },
     automation: {
-      saveFailed: 'Could not save this trigger',
-      deleteFailed: 'Could not delete this trigger',
-      execFailed: 'An error occurred while executing the trigger (see browser console for details)',
-      invalidRecordID: 'Primary module set, expecting valid recordID',
-      execError: 'Trigger failed to execute successfully',
-      expectingRecordObject: 'Expecting Record object',
-      expectingModuleObject: 'Expecting Module object',
-      recordDoesNotExist: 'Record does not exist',
-      saved: 'Trigger saved',
-      deleted: 'Trigger deleted',
-      executed: 'Trigger successfully executed',
+      scriptFailed: 'Could not execute automation',
     },
     module: {
       saveFailed: 'Could not save this module',

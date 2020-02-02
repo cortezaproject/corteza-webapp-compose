@@ -2,7 +2,7 @@
 import { expect } from 'chai'
 import DateTime from 'corteza-webapp-compose/src/lib/field/Editor/DateTime'
 import { shallowMount } from 'corteza-webapp-compose/tests/lib/helpers'
-import Record from 'corteza-webapp-common/src/lib/types/compose/record'
+import { compose } from '@cortezaproject/corteza-js'
 import Field from 'corteza-webapp-compose/src/lib/field'
 import moment from 'moment'
 
@@ -60,7 +60,7 @@ describe('lib/field/Editor/DateTime.vue', () => {
         "fields": [field],
       }
 
-      record = new Record(module, { values: { future: moment().toISOString() } })
+      record = new compose.Record(module, { values: { future: moment().toISOString() } })
     })
 
     it('no validation specified', () => {
@@ -75,7 +75,7 @@ describe('lib/field/Editor/DateTime.vue', () => {
       field.options.onlyFutureValues = true
       propsData.field = field
       propsData.record = record
-      propsData.record = new Record(module, { values: { future: moment().add(-1, 'day').toISOString() } })
+      propsData.record = new compose.Record(module, { values: { future: moment().add(-1, 'day').toISOString() } })
       propsData.record.compareToValues = {}
 
       const wrap = mountDT()
@@ -88,7 +88,7 @@ describe('lib/field/Editor/DateTime.vue', () => {
       field.options.onlyPastValues = true
       propsData.field = field
       propsData.record = record
-      propsData.record = new Record(module, { values: { future: moment().add(1, 'day').toISOString() } })
+      propsData.record = new compose.Record(module, { values: { future: moment().add(1, 'day').toISOString() } })
       propsData.record.compareToValues = {}
 
       const wrap = mountDT()
@@ -101,7 +101,7 @@ describe('lib/field/Editor/DateTime.vue', () => {
       field.options.onlyPastValues = true
       propsData.field = field
       propsData.record = record
-      propsData.record = new Record(module, { values: { future: moment().add(1, 'day').toISOString() } })
+      propsData.record = new compose.Record(module, { values: { future: moment().add(1, 'day').toISOString() } })
 
       const wrap = mountDT()
       const err = wrap.find('div.test-error')
@@ -136,7 +136,7 @@ describe('lib/field/Editor/DateTime.vue', () => {
         "fields": [field],
       }
 
-      record = new Record(module, { values: { future: [moment() .toISOString() ] } })
+      record = new compose.Record(module, { values: { future: [moment() .toISOString() ] } })
     })
     it('no validation specified', () => {
       propsData.field = field
@@ -150,7 +150,7 @@ describe('lib/field/Editor/DateTime.vue', () => {
       field.options.onlyFutureValues = true
       propsData.field = field
       propsData.record = record
-      propsData.record = new Record(module, { values: { future: [ moment().add(-1, 'day').toISOString() ] } })
+      propsData.record = new compose.Record(module, { values: { future: [ moment().add(-1, 'day').toISOString() ] } })
       propsData.record.compareToValues = {}
 
       const wrap = mountDT()
@@ -163,7 +163,7 @@ describe('lib/field/Editor/DateTime.vue', () => {
       field.options.onlyPastValues = true
       propsData.field = field
       propsData.record = record
-      propsData.record = new Record(module, { values: { future: [ moment().add(1, 'day').toISOString() ] } })
+      propsData.record = new compose.Record(module, { values: { future: [ moment().add(1, 'day').toISOString() ] } })
       propsData.record.compareToValues = {}
 
       const wrap = mountDT()
@@ -176,7 +176,7 @@ describe('lib/field/Editor/DateTime.vue', () => {
       field.options.onlyPastValues = true
       propsData.field = field
       propsData.record = record
-      propsData.record = new Record(module, { values: { future: [ moment().add(1, 'day').toISOString() ] } })
+      propsData.record = new compose.Record(module, { values: { future: [ moment().add(1, 'day').toISOString() ] } })
 
       const wrap = mountDT()
       const err = wrap.find('div.test-error')

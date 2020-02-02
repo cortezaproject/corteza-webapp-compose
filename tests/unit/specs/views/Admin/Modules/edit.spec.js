@@ -5,9 +5,7 @@ import { expect } from 'chai'
 import { createLocalVue } from '@vue/test-utils'
 import { shallowMount } from 'corteza-webapp-compose/tests/lib/helpers'
 import Edit from 'corteza-webapp-compose/src/views/Admin/Modules/Edit.vue'
-import Field from 'corteza-webapp-common/src/lib/types/compose/module-field'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
-import Module from 'corteza-webapp-compose/src/lib/module'
+import { compose } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Vuex from 'vuex'
 import sinon from 'sinon'
@@ -37,7 +35,7 @@ describe('views/Admin/Modules/Edit.vue', () => {
       push: sinon.stub(),
     }
     propsData = {
-      namespace: new Namespace({ namespaceID: '999' }) ,
+      namespace: new compose.Namespace({ namespaceID: '999' }) ,
       moduleID: '123',
     }
   })
@@ -63,7 +61,7 @@ describe('views/Admin/Modules/Edit.vue', () => {
       const wrap = mountEdit()
 
       for (const fields of cases) {
-        wrap.setData({ module: new Module({ fields }) })
+        wrap.setData({ module: new compose.Module({ fields }) })
         expect(wrap.vm.fieldsValid).to.be.false
       }
     })
@@ -76,7 +74,7 @@ describe('views/Admin/Modules/Edit.vue', () => {
       const wrap = mountEdit()
 
       for (const fields of cases) {
-        wrap.setData({ module: new Module({ fields }) })
+        wrap.setData({ module: new compose.Module({ fields }) })
         expect(wrap.vm.fieldsValid).to.be.true
       }
     })
@@ -90,7 +88,7 @@ describe('views/Admin/Modules/Edit.vue', () => {
       const wrap = mountEdit()
 
       for (const fields of cases) {
-        wrap.setData({ module: new Module({ fields }) })
+        wrap.setData({ module: new compose.Module({ fields }) })
         expect(wrap.vm.fieldsValid).to.be.true
       }
     })

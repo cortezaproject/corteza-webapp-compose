@@ -22,7 +22,7 @@ const store = new Vuex.Store({
 
 store.dispatch('module/load')
 
-let field = new Field({
+const field = new Field({
   fieldID: '1',
   name: 'LeadId',
   label: 'Lead',
@@ -39,7 +39,7 @@ let field = new Field({
   },
 })
 
-let props = {
+const props = {
   field,
 
   namespace: {},

@@ -1,6 +1,13 @@
 <template>
   <div class="centering-wrap inactive-area d-flex" v-if="$auth.is()">
-    <toaster :toasts="toasts" />
+    <small
+      class="p-1 text-secondary position-absolute version"
+    >
+      {{ frontendVersion }}
+    </small>
+    <c-toaster
+      :toasts="toasts"
+    />
     <div class="alert-holder">
       <b-alert v-for="(a,i) in alerts"
                :variant=" a.variant || 'info'"
@@ -21,23 +28,23 @@
                  :namespace="namespace" />
     <div class="loader" v-else></div>
     <div class="error text-danger text-center position-absolute" v-if="error">{{ error }}</div>
-    <permissions-modal />
+    <c-permissions-modal />
   </div>
 </template>
 
 <script>
-import { PermissionsModal } from 'corteza-webapp-common/components'
-import NamespaceSidebar from 'corteza-webapp-compose/src/components/Namespaces/NamespaceSidebar'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
-import Toaster from 'corteza-webapp-common/src/components/Toaster'
 import moment from 'moment'
+import NamespaceSidebar from 'corteza-webapp-compose/src/components/Namespaces/NamespaceSidebar'
+import { compose } from '@cortezaproject/corteza-js'
+import { components } from '@cortezaproject/corteza-vue'
+const { CPermissionsModal, CToaster } = components
 
 export default {
   name: 'Namespace',
 
   components: {
-    Toaster,
-    PermissionsModal,
+    CToaster,
+    CPermissionsModal,
     NamespaceSidebar,
   },
 
@@ -61,6 +68,11 @@ export default {
   },
 
   computed: {
+    frontendVersion () {
+      /* eslint-disable no-undef */
+      return VERSION
+    },
+
     enabledNamespaces () {
       return this.namespaces.filter(({ enabled }) => enabled)
     },
@@ -71,7 +83,9 @@ export default {
       immediate: true,
       handler (slug) {
         this.loaded = false
-        this.$auth.check(this.$SystemAPI).then(() => {
+        this.$auth.check().then(() => {
+          this.initReminders()
+
           this.$store.dispatch('namespace/load').then(() => {
             const ns = this.$store.getters['namespace/getByUrlPart'](slug)
             if (ns) {
@@ -95,7 +109,7 @@ export default {
           return
         }
 
-        const p = { namespaceID: namespace.namespaceID, clear: true }
+        const p = { namespace, namespaceID: namespace.namespaceID, clear: true }
 
         // Preload all data we need.
         Promise.all([
@@ -106,9 +120,6 @@ export default {
             .catch(this.errHandler),
 
           this.$store.dispatch('page/load', p)
-            .catch(this.errHandler),
-
-          this.$store.dispatch('uaScript/load', p)
             .catch(this.errHandler),
 
         ]).catch(this.errHandler).then(() => {
@@ -128,19 +139,6 @@ export default {
       .catch(this.errHandler)
   },
 
-  mounted () {
-    this.$nextTick(() => {
-      this.$Reminder.init({
-        emitter: this.$root,
-        filter: {
-          assignedTo: this.$auth.user.userID,
-          scheduledOnly: true,
-          excludeDismissed: true,
-        },
-      })
-    })
-  },
-
   beforeDestroy () {
     this.$Reminder.stop()
     this.$root.$off('namespaces.listLoad', this.namespaceLoader)
@@ -150,7 +148,20 @@ export default {
   methods: {
     async namespaceLoader () {
       return this.$ComposeAPI.namespaceList().then(({ set }) => {
-        this.namespaces = set.map(ns => new Namespace(ns))
+        this.namespaces = set.map(ns => new compose.Namespace(ns))
+      })
+    },
+
+    initReminders () {
+      this.$nextTick(() => {
+        this.$Reminder.init({
+          emitter: this.$root,
+          filter: {
+            assignedTo: this.$auth.user.userID,
+            scheduledOnly: true,
+            excludeDismissed: true,
+          },
+        })
       })
     },
 
@@ -211,7 +222,7 @@ export default {
         label: `<b>${this.$t('general.reminder.dismiss')}</b>`,
         options: {
           variant: 'warning',
-          class: [ 'float-right' ],
+          class: ['float-right'],
         },
       })
 
@@ -221,7 +232,7 @@ export default {
         kind: 'Select',
         options: {
           variant: 'outline-warning',
-          class: [ 'float-left' ],
+          class: ['float-left'],
           items: [
             { kind: 'item-button', label: this.$t('general.label.timeMinute', { t: 5 }), value: { duration: 1000 * 60 * 5 } },
             { kind: 'item-button', label: this.$t('general.label.timeMinute', { t: 15 }), value: { duration: 1000 * 60 * 15 } },
@@ -261,5 +272,10 @@ export default {
   height: 20vh;
   padding: 60px;
   top: 40vh;
+}
+
+.version {
+  bottom: 0;
+  right: 0;
 }
 </style>

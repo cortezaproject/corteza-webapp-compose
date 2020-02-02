@@ -32,13 +32,16 @@
 import numeral from 'numeral'
 import vueDropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
-import { validateFileType } from 'corteza-webapp-common/src/lib/utils'
+import { mixins } from '@cortezaproject/corteza-vue'
 
 export default {
-
   components: {
     vueDropzone,
   },
+
+  mixins: [
+    mixins.files,
+  ],
 
   props: {
     endpoint: {
@@ -90,7 +93,7 @@ export default {
           // https://github.com/enyo/dropzone/issues/1154
           'Cache-Control': '',
           'X-Requested-With': '',
-          'Authorization': 'Bearer ' + this.$auth.JWT,
+          Authorization: 'Bearer ' + this.$auth.JWT,
         },
         addedfile (file) {},
       }
@@ -126,7 +129,7 @@ export default {
       if (!types || !types.length) {
         types = ['*/*']
       }
-      if (!validateFileType(file.name, types)) {
+      if (!this.validateFileType(file.name, types)) {
         this.error = this.$t('general.label.fileTypeNotAllowed')
         this.$refs.dropzone.removeFile(file)
       }

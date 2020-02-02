@@ -49,6 +49,7 @@ import {
   faClock,
   faSquare,
   faClone,
+  faPlusSquare,
 } from '@fortawesome/free-regular-svg-icons'
 
 library.add(
@@ -98,4 +99,5 @@ library.add(
   faTasks,
   faParagraph,
   faClone,
+  faPlusSquare,
 )

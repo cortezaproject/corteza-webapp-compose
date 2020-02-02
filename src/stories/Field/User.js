@@ -17,7 +17,7 @@ const store = new Vuex.Store({
   },
 })
 
-let field = new Field({
+const field = new Field({
   name: 'OwnerId',
   label: 'Account Owner',
   isMulti: true,
@@ -29,7 +29,7 @@ let field = new Field({
   },
 })
 
-let props = {
+const props = {
   field,
 
   namespace: {},

@@ -29,7 +29,7 @@
               </b-col>
               <b-col md="2" class="text-right">
                 <export :list="sortedModules" type="module" />
-                <permissions-button v-if="namespace.canGrant"
+                <c-permissions-button v-if="namespace.canGrant"
                                     resource="compose:module:*"
                                     link />
               </b-col>
@@ -77,7 +77,7 @@
                         <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
                       </router-link>
                     </span>
-                    <permissions-button v-if="m.canGrant" :title="m.name" :resource="'compose:module:'+m.moduleID" link />
+                    <c-permissions-button v-if="m.canGrant" :title="m.name" :resource="'compose:module:'+m.moduleID" link />
                   </td>
                 </tr>
               </tbody>
@@ -91,8 +91,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Field from 'corteza-webapp-compose/src/lib/field'
-import Module from 'corteza-webapp-compose/src/lib/module'
+import { compose } from '@cortezaproject/corteza-js'
 import TableSortableColumn from 'corteza-webapp-compose/src/components/Admin/TableSortableColumn'
 import tableSort from 'corteza-webapp-compose/src/mixins/table_sort'
 import Import from 'corteza-webapp-compose/src/components/Admin/Import'
@@ -122,7 +121,7 @@ export default {
     const { namespaceID } = this.namespace
 
     return {
-      newModule: new Module({ namespaceID, fields: [new Field({ fieldID: '0', name: 'Sample', kind: 'String' })] }),
+      newModule: new compose.Module({ namespaceID, fields: [new compose.ModuleFieldString({ fieldID: '0', name: 'Sample' })] }),
     }
   },
 

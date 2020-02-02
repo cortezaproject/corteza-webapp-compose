@@ -1,4 +1,4 @@
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 
 const types = {
   pending: 'pending',
@@ -46,7 +46,7 @@ export default function (ComposeAPI) {
         // @todo expect issues with larger sets of namespaces because we do paging on the API
         return ComposeAPI.namespaceList({}).then(({ set, filter }) => {
           if (set && set.length > 0) {
-            commit(types.updateSet, set.map(n => new Namespace(n)))
+            commit(types.updateSet, set.map(n => new compose.Namespace(n)))
           }
 
           commit(types.completed)
@@ -56,7 +56,7 @@ export default function (ComposeAPI) {
 
       async findByID ({ commit, getters }, { namespaceID, force = false } = {}) {
         if (!force) {
-          let oldItem = getters.getByID(namespaceID)
+          const oldItem = getters.getByID(namespaceID)
           if (oldItem) {
             return new Promise((resolve) => resolve(oldItem))
           }
@@ -64,7 +64,7 @@ export default function (ComposeAPI) {
 
         commit(types.pending)
         return ComposeAPI.namespaceRead({ namespaceID }).then(raw => {
-          let namespace = new Namespace(raw)
+          const namespace = new compose.Namespace(raw)
           commit(types.updateSet, [namespace])
           commit(types.completed)
           return namespace
@@ -74,7 +74,7 @@ export default function (ComposeAPI) {
       async create ({ commit }, item) {
         commit(types.pending)
         return ComposeAPI.namespaceCreate(item).then(raw => {
-          let namespace = new Namespace(raw)
+          const namespace = new compose.Namespace(raw)
           commit(types.updateSet, [namespace])
           commit(types.completed)
           return namespace
@@ -84,7 +84,7 @@ export default function (ComposeAPI) {
       async update ({ commit }, item) {
         commit(types.pending)
         return ComposeAPI.namespaceUpdate(item).then(raw => {
-          let namespace = new Namespace(raw)
+          const namespace = new compose.Namespace(raw)
           commit(types.updateSet, [namespace])
           commit(types.completed)
           return namespace

@@ -3,25 +3,33 @@ import VTooltip from 'v-tooltip'
 import BootstrapVue from 'bootstrap-vue'
 import Router from 'vue-router'
 import Vuex from 'vuex'
-import SystemAPI from 'corteza-webapp-common/src/lib/corteza-server/system'
-import ComposeAPI from 'corteza-webapp-common/src/lib/corteza-server/compose'
 
-import settings from 'corteza-webapp-common/src/plugins/settings'
-import system from 'corteza-webapp-common/src/plugins/system'
-import compose from 'corteza-webapp-common/src/plugins/compose'
-import messaging from 'corteza-webapp-common/src/plugins/messaging'
-import auth from 'corteza-webapp-common/src/plugins/auth'
-import reminder from 'corteza-webapp-common/src/plugins/reminder'
+import { plugins } from '@cortezaproject/corteza-vue'
+
+import pairs from './eventbus-pairs'
 
 Vue.use(VTooltip)
 Vue.use(BootstrapVue)
 Vue.use(Router)
 Vue.use(Vuex)
 
-Vue.use(settings, { api: ComposeAPI })
-Vue.use(system)
-Vue.use(compose)
-Vue.use(messaging)
-Vue.use(auth)
+Vue.use(plugins.CortezaAPI('compose'))
+Vue.use(plugins.CortezaAPI('system'))
+Vue.use(plugins.CortezaAPI('messaging'))
 
-Vue.use(reminder, { api: SystemAPI })
+const notProduction = (process.env.NODE_ENV !== 'production')
+
+Vue.use(plugins.EventBus(), {
+  strict: notProduction,
+  verbose: notProduction,
+  pairs,
+})
+
+Vue.use(plugins.UIHooks(), {
+  app: 'compose',
+  verbose: notProduction,
+})
+
+Vue.use(plugins.Auth(), { api: Vue.prototype.$SystemAPI })
+Vue.use(plugins.Settings, { api: Vue.prototype.$ComposeAPI })
+Vue.use(plugins.Reminder, { api: Vue.prototype.$SystemAPI })

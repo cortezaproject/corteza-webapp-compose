@@ -3,7 +3,7 @@ function r (name, path, component) {
   return {
     path,
     name,
-    component: () => import(`./${component}.vue`),
+    component: () => import('./' + component + '.vue'),
     props: true,
   }
 }
@@ -38,7 +38,6 @@ export default [
         children: [
           r('admin.modules', 'modules', 'Admin/Modules/Index'),
           r('admin.modules.edit', 'modules/:moduleID/edit', 'Admin/Modules/Edit'),
-          r('admin.modules.generator', 'modules/:moduleID/generator', 'Admin/Modules/Records/Generator'),
 
           r('admin.pages', 'pages', 'Admin/Pages/Index'),
           r('admin.pages.edit', 'pages/:pageID/edit', 'Admin/Pages/Edit'),
@@ -46,9 +45,6 @@ export default [
 
           r('admin.charts', 'charts', 'Admin/Charts/Index'),
           r('admin.charts.edit', 'charts/:chartID/edit', 'Admin/Charts/Edit'),
-
-          r('admin.automation', 'automation', 'Admin/Automation/Index'),
-          r('admin.automation.edit', 'automation/:scriptID/edit', 'Admin/Automation/Edit'),
 
           r('admin.configuration', 'configuration', 'Admin/Configuration/Index'),
         ],

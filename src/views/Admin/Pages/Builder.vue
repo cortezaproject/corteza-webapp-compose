@@ -8,14 +8,20 @@
             </a>
             <a class="pr-1"  @click="page.blocks.splice(index,1)">X</a>
           </div>
-          <block-preview :block="block"
-                         :namespace="namespace"
-                         :module="module"></block-preview>
+          <block-preview
+            :block="block"
+            :namespace="namespace"
+            :module="module"
+            :page="page"
+          />
         </template>
       </grid>
 
       <b-modal size="lg" id="createBlockSelector" hide-footer :title="$t('page.build.selectBlockTitle')">
-        <new-block-selector :record-page="!!module" @select="editBlock($event)"/>
+        <new-block-selector
+          :record-page="!!module"
+          @select="editBlock($event)"
+        />
       </b-modal>
 
       <b-modal
@@ -60,8 +66,21 @@
                       @save="handleSave()"
                       @delete="handleDeletePage"
                       @saveAndClose="handleSave({ closeOnSuccess: true })">
-        <b-button v-if="page.canUpdatePage" variant="outline-secondary" class="mr-1" v-b-modal.createBlockSelector>+ {{ $t('page.build.addBlock') }}</b-button>
-        <b-button v-if="page.canUpdatePage" variant="outline-secondary" class="mr-1" @click.prevent="handleSave({ previewOnSuccess: true })">{{ $t('general.label.saveAndPreview') }}</b-button>
+        <b-button
+          v-if="page.canUpdatePage"
+          variant="outline-secondary"
+          class="mr-1"
+          v-b-modal.createBlockSelector>
+          + {{ $t('page.build.addBlock') }}
+        </b-button>
+        <b-button
+          v-if="page.canUpdatePage"
+          variant="outline-secondary"
+          class="mr-1"
+          @click.prevent="handleSave({ previewOnSuccess: true })"
+        >
+          {{ $t('general.label.saveAndPreview') }}
+        </b-button>
       </editor-toolbar>
     </div>
 </template>
@@ -70,12 +89,10 @@
 import { mapActions } from 'vuex'
 import NewBlockSelector from 'corteza-webapp-compose/src/components/Admin/Page/Builder/Selector'
 import Grid from 'corteza-webapp-compose/src/components/Common/Grid'
-import Block from 'corteza-webapp-compose/src/lib/block'
-import BlockPreview from 'corteza-webapp-compose/src/lib/block/BuilderPreview'
-import BlockEdit from 'corteza-webapp-compose/src/lib/block/BuilderEdit'
+import BlockPreview from 'corteza-webapp-compose/src/components/PageBlocks/BuilderPreview'
+import BlockEdit from 'corteza-webapp-compose/src/components/PageBlocks/BuilderEdit'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
-import Page from 'corteza-webapp-compose/src/lib/page'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
@@ -88,7 +105,7 @@ export default {
 
   props: {
     namespace: {
-      type: Namespace,
+      type: compose.Namespace,
       required: true,
     },
 
@@ -126,7 +143,7 @@ export default {
   mounted () {
     const { namespaceID } = this.namespace
     this.findPageByID({ namespaceID, pageID: this.pageID, force: true }).then(page => {
-      this.page = new Page(page)
+      this.page = page.clone()
     })
   },
 
@@ -138,11 +155,12 @@ export default {
     }),
 
     editBlock (block, index = undefined) {
-      this.editor = { index, block: new Block({ ...block }) }
+      this.$bvModal.hide('createBlockSelector')
+      this.editor = { index, block }
     },
 
     updateBlocks () {
-      let block = new Block(this.editor.block) // make sure we get rid of the references
+      const block = new compose.PageBlockMaker(this.editor.block) // make sure we get rid of the references
       if (this.editor.index !== undefined) {
         this.page.blocks.splice(this.editor.index, 1, block)
       } else {
@@ -157,7 +175,7 @@ export default {
 
       this.findPageByID({ namespaceID, pageID: this.pageID, force: true }).then(page => {
         // Merge changes
-        this.page = new Page({ namespaceID, ...page, blocks: this.page.blocks })
+        this.page = new compose.Page({ namespaceID, ...page, blocks: this.page.blocks })
 
         this.updatePage(this.page).then((page) => {
           this.raiseSuccessAlert(this.$t('notification.page.saved'))
@@ -167,7 +185,7 @@ export default {
             this.$router.push({ name: 'page', params: { pageID: this.pageID } })
           }
 
-          this.page = new Page(page)
+          this.page = new compose.Page(page)
         }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))
       })
     },

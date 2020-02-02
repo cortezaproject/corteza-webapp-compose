@@ -6,7 +6,8 @@
      :href="attachment.download"><slot>{{ attachment.name }}</slot></a>
 </template>
 <script>
-import { canPreview } from 'corteza-webapp-common/src/components/FilePreview/'
+import { components } from '@cortezaproject/corteza-vue'
+const { canPreview } = components
 
 export default {
   props: {

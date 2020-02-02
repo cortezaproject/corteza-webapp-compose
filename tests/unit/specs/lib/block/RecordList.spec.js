@@ -4,14 +4,13 @@
 import { expect } from 'chai'
 import sinon from 'sinon'
 import { RecordList } from 'corteza-webapp-compose/src/lib/block/RecordList'
-import Module from 'corteza-webapp-compose/src/lib/module'
 
 let should = require('chai').should()
 
 describe('lib/block/RecordList.js', () => {
   it('Should fetch recordList', () => {
 
-    let recordListModule = new Module({
+    let recordListModule = new compose.Module({
       moduleID: '1',
       namespaceID: '1'
     })

@@ -32,10 +32,6 @@ module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias,
     lintOnSave: true,
     runtimeCompiler: true,
 
-    transpileDependencies: [
-      /^[\\/]node_modules[\\/]corteza-webapp-/,
-    ],
-
     configureWebpack: {
       // other webpack options to merge in ...
       plugins: [
@@ -51,6 +47,9 @@ module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias,
     },
 
     chainWebpack: config => {
+      // https://cli.vuejs.org/guide/troubleshooting.html#symbolic-links-in-node-modules
+      config.resolve.symlinks(false)
+
       // Remove css extraction issues
       // https://github.com/vuejs/vue-cli/issues/3771#issuecomment-526228100
       config.plugin('friendly-errors').tap(args => {
@@ -99,9 +98,24 @@ module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias,
     },
 
     devServer: {
-      host: '0.0.0.0',
+      host: '127.0.0.1',
       hot: true,
       disableHostCheck: true,
+
+      overlay: {
+        warnings: true,
+        errors: true,
+      },
+
+      watchOptions: {
+        ignored: [
+          // Do not watch for changes under node_modules
+          // (exception is node_modules/@cortezaproject)
+          /node_modules([\\]+|\/)+(?!@cortezaproject)/,
+        ],
+        aggregateTimeout: 200,
+        poll: 1000,
+      },
     },
 
     css: {

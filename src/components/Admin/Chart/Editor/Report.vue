@@ -161,7 +161,6 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
-import { VueSelect } from 'vue-select'
 import {
   chartTypes,
   hasRelativeDisplay,
@@ -175,7 +174,6 @@ export default {
 
   components: {
     draggable,
-    VueSelect,
   },
 
   props: {

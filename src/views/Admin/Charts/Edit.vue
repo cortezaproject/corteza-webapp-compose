@@ -63,11 +63,9 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import draggable from 'vuedraggable'
 import Report from 'corteza-webapp-compose/src/components/Admin/Chart/Editor/Report'
-import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import { Chart, ChartComponent } from 'corteza-webapp-compose/src/lib/chart'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
@@ -81,8 +79,6 @@ const defaultReport = {
 export default {
   components: {
     Report,
-    ConfirmationToggle,
-    draggable,
     EditorToolbar,
     Export,
     ChartComponent,
@@ -90,7 +86,7 @@ export default {
 
   props: {
     namespace: {
-      type: Namespace,
+      type: compose.Namespace,
       required: true,
     },
 
@@ -150,7 +146,7 @@ export default {
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {
-      let c = Object.assign({}, this.chart)
+      const c = Object.assign({}, this.chart)
       delete (c.config.renderer.data)
 
       this.updateChart(c).then((chart) => {

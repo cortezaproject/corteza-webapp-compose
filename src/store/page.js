@@ -1,5 +1,4 @@
-import Page from 'corteza-webapp-compose/src/lib/page'
-
+import { compose } from '@cortezaproject/corteza-js'
 const types = {
   pending: 'pending',
   completed: 'completed',
@@ -24,7 +23,7 @@ export default function (ComposeAPI) {
         return (ID) => state.set.find(({ pageID }) => ID === pageID)
       },
 
-      firstVisibleNonRecordPage: (state) => state.set.find(p => !p.moduleID && p.visible && !p.selfID),
+      homePage: (state) => state.set.find(p => p.visible && p.firstLevel && !p.isRecordPage),
 
       set (state) {
         return state.set
@@ -47,7 +46,7 @@ export default function (ComposeAPI) {
         commit(types.pending)
         return ComposeAPI.pageList({ namespaceID, sort: 'weight ASC' }).then(({ set, filter }) => {
           if (set && set.length > 0) {
-            commit(types.updateSet, set.map(p => new Page(p)))
+            commit(types.updateSet, set.map(p => new compose.Page(p)))
           }
 
           commit(types.completed)
@@ -65,7 +64,7 @@ export default function (ComposeAPI) {
 
         commit(types.pending)
         return ComposeAPI.pageRead({ namespaceID, pageID }).then(raw => {
-          let page = new Page(raw)
+          const page = new compose.Page(raw)
           commit(types.updateSet, [page])
           commit(types.completed)
           return page
@@ -75,7 +74,7 @@ export default function (ComposeAPI) {
       async create ({ commit }, item) {
         commit(types.pending)
         return ComposeAPI.pageCreate(item).then(raw => {
-          let page = new Page(raw)
+          const page = new compose.Page(raw)
           commit(types.updateSet, [page])
           commit(types.completed)
           return page
@@ -85,7 +84,7 @@ export default function (ComposeAPI) {
       async update ({ commit }, item) {
         commit(types.pending)
         return ComposeAPI.pageUpdate(item).then(raw => {
-          let page = new Page(raw)
+          const page = new compose.Page(raw)
           commit(types.updateSet, [page])
           commit(types.completed)
           return page

@@ -6,7 +6,6 @@ import { shallowMount } from 'corteza-webapp-compose/tests/lib/helpers'
 import Feed from 'corteza-webapp-compose/src/lib/block/Calendar/feed'
 import { record as RecordComponent } from 'corteza-webapp-compose/src/lib/block/BuilderEdit/Calendar/FeedSource/configs'
 import { resources } from 'corteza-webapp-compose/src/lib/block/Calendar'
-import Module from 'corteza-webapp-compose/src/lib/module'
 import sinon from 'sinon'
 
 describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
@@ -42,7 +41,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
             name: 'determine fields',
             feed: new Feed({ resource: resources.record, options: { moduleID: '0001' } }),
             modules: [
-              new Module({ moduleID: '0001', fields: [
+              new compose.Module({ moduleID: '0001', fields: [
                 { name: 'f1', kind: 'DateTime' },
                 { name: 'f2', kind: 'String' },
               ] }),
@@ -83,7 +82,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
             name: 'ignore fields',
             feed: new Feed({ resource: resources.record, options: { moduleID: '0001' } }),
             modules: [
-              new Module({ moduleID: '0001', fields: [
+              new compose.Module({ moduleID: '0001', fields: [
                 { name: 'f1', kind: 'DateTime', isMulti: true },
               ] }),
             ],
@@ -107,7 +106,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
             name: 'determine note',
             feed: new Feed({ resource: resources.record, options: { moduleID: '0001' } }),
             modules: [
-              new Module({ moduleID: '0001', fields: [
+              new compose.Module({ moduleID: '0001', fields: [
                 { name: 'f1', kind: 'DateTime', isMulti: true },
               ] }),
             ],
@@ -139,7 +138,7 @@ describe('src/lib/block/BuilderEdit/Calendar/FeedSource/configs/Module', () => {
           name: 'determine fields',
           feed: new Feed({ resource: resources.record, options: { moduleID: '0001' } }),
           modules: [
-            new Module({ moduleID: '0001', fields: [
+            new compose.Module({ moduleID: '0001', fields: [
               { name: 'f1', kind: 'String' },
             ] }),
           ],

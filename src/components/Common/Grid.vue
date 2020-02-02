@@ -35,11 +35,11 @@
 
 <script>
 import VueGridLayout from 'vue-grid-layout'
-import Block from 'corteza-webapp-compose/src/lib/block'
-import _ from 'lodash'
+import { compose } from '@cortezaproject/corteza-js'
+import { throttle } from 'lodash'
 
 const blocksToGrid = blocks => {
-  return blocks.map(({ xywh: [ x, y, w, h ] }, i) => {
+  return blocks.map(({ xywh: [x, y, w, h] }, i) => {
     return {
       i,
 
@@ -117,7 +117,7 @@ export default {
   },
 
   methods: {
-    windowResizeThrottledHandler: _.throttle(function () { this.recalculateBoundingRect() }, 500),
+    windowResizeThrottledHandler: throttle(function () { this.recalculateBoundingRect() }, 500),
 
     // Fetch bounding boxes of all grid items
     recalculateBoundingRect () {
@@ -136,7 +136,7 @@ export default {
 
     handleLayoutUpdate (layout) {
       this.$emit('update:blocks', layout.map(
-        ({ x, y, w, h, i }) => new Block({ ...this.blocks[i], xywh: [ x, y, w, h ] })
+        ({ x, y, w, h, i }) => new compose.PageBlockMaker({ ...this.blocks[i], xywh: [x, y, w, h] }),
       ))
     },
   },

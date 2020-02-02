@@ -6,7 +6,7 @@
           <b-card :title="$t('module.edit.title')" class="mb-5">
             <div slot="header" class="text-right">
               <export :list="[this.module]" type="module" />
-              <permissions-button v-if="module.canGrant" resource="compose:module-field:*" link />
+              <c-permissions-button v-if="module.canGrant" resource="compose:module-field:*" link />
             </div>
             <b-form-group>
               <label>{{ $t('module.newPlaceholder') }}</label>
@@ -74,17 +74,18 @@
 
                           {{ $t('module.edit.step.recordList.create') }}
                         </b-button>
-                        <confirm v-else
-                                @confirmed="toRecordList('view')"
-                                @canceled="toRecordList('edit')"
-                                :disabled="!namespace.canManageNamespace"
-                                :borderless="false"
-                                variant="primary"
-                                variantOk="primary"
-                                variantCancel="outline-primary"
-                                size="md"
-                                sizeConfirm="md">
-
+                        <c-input-confirm
+                          v-else
+                          @confirmed="toRecordList('view')"
+                          @canceled="toRecordList('edit')"
+                          :disabled="!namespace.canManageNamespace"
+                          :borderless="false"
+                          variant="primary"
+                          variantOk="primary"
+                          variantCancel="outline-primary"
+                          size="md"
+                          sizeConfirm="md"
+                        >
                           {{ $t('module.edit.step.recordList.view') }}
                           <template v-slot:yes>
                             {{ $t('general.label.view') }}
@@ -92,7 +93,7 @@
                           <template v-slot:no>
                             {{ $t('general.label.edit') }}
                           </template>
-                        </confirm>
+                        </c-input-confirm>
                       </circle-step>
                     </b-col>
                     <b-col>
@@ -130,7 +131,10 @@
       :visible="!!updateField"
       body-class="p-0 border-top-0"
       header-class="p-3 pb-0 border-bottom-0">
-      <field-configurator :field.sync="updateField" />
+      <field-configurator
+        :field.sync="updateField"
+        :namespace="namespace"
+      />
     </b-modal>
     <editor-toolbar :back-link="{name: 'admin.modules'}"
                     :hideDelete="!module.canDeleteModule"
@@ -146,24 +150,19 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import draggable from 'vuedraggable'
-import FieldConfigurator from 'corteza-webapp-compose/src/lib/field/Configurator'
-import ConfirmationToggle from 'corteza-webapp-compose/src/components/Admin/ConfirmationToggle'
+import FieldConfigurator from 'corteza-webapp-compose/src/components/ModuleFields/Configurator'
 import FieldRowEdit from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowEdit'
 import FieldRowView from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowView'
-import Field from 'corteza-webapp-compose/src/lib/field'
-import Module from 'corteza-webapp-compose/src/lib/module'
-import Page from 'corteza-webapp-compose/src/lib/page'
-import Block from 'corteza-webapp-compose/src/lib/block'
+import { compose } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
-import { RecordList } from 'corteza-webapp-compose/src/lib/block/RecordList'
 import CircleStep from 'corteza-webapp-compose/src/components/Common/CircleStep'
-import Confirm from 'corteza-webapp-common/src/components/Input/Confirm'
+import { components } from '@cortezaproject/corteza-vue'
+const { CInputConfirm } = components
 
 export default {
   components: {
-    ConfirmationToggle,
     draggable,
     FieldConfigurator,
     FieldRowEdit,
@@ -171,13 +170,13 @@ export default {
     EditorToolbar,
     Export,
     CircleStep,
-    Confirm,
+    CInputConfirm,
   },
 
   props: {
     namespace: {
-      type: Object,
-      required: false,
+      type: compose.Namespace,
+      required: true,
     },
 
     moduleID: {
@@ -189,7 +188,7 @@ export default {
   data () {
     return {
       updateField: null,
-      module: new Module(),
+      module: new compose.Module(),
       hasRecords: false,
       processing: false,
       recordList: null,
@@ -207,14 +206,12 @@ export default {
 
     fieldsValid () {
       return this.module.fields.reduce((acc, f) => {
-        const fv = f.fieldValid()
-
         // Allow, if any old fields are invalid (legacy support)
         if (f.fieldID !== '0') {
           return acc && true
         }
 
-        return acc && fv
+        return acc && f.isValid
       }, true)
     },
 
@@ -239,15 +236,14 @@ export default {
   },
 
   created () {
-    this.findModuleByID({ moduleID: this.moduleID }).then((module) => {
+    this.findModuleByID({ namespace: this.namespace, moduleID: this.moduleID }).then((module) => {
       // Make a copy so that we do not change store item by ref
-      this.module = new Module({ ...module })
-      this.recordList = new RecordList({ moduleID: this.module.moduleID })
-      this.recordList.fetch(this.$ComposeAPI, this.module, {}).then(({ records }) => {
-        if (records.length > 0) {
-          this.hasRecords = true
-        }
-      })
+      this.module = module.clone()
+
+      // Count existing records to see what we can do with this module
+      this.$ComposeAPI
+        .recordList({ ...this.module, perPage: 1 })
+        .then(({ filter }) => { this.hasRecords = (filter.count > 0) })
     })
   },
 
@@ -261,11 +257,11 @@ export default {
     }),
 
     handleNewField () {
-      this.module.fields.push(new Field({ kind: 'String' }))
+      this.module.fields.push(new compose.ModuleFieldString())
     },
 
     handleFieldEdit (field) {
-      this.updateField = new Field({ ...field })
+      this.updateField = compose.ModuleFieldMaker({ ...field })
     },
 
     handleFieldSave (field) {
@@ -278,7 +274,7 @@ export default {
     handleSave ({ closeOnSuccess = false } = {}) {
       this.processing = true
       this.updateModule(this.module).then((module) => {
-        this.module = new Module({ ...module })
+        this.module = new compose.Module({ ...module })
         this.raiseSuccessAlert(this.$t('notification.module.saved'))
         if (closeOnSuccess) {
           this.redirect()
@@ -329,14 +325,13 @@ export default {
         this.recordList.fields = []
         this.recordList.title = `${this.$t('module.forModule.recordList')} "${name || moduleID}"`
         const blocks = [
-          new Block({
+          new compose.PageBlockRecordList({
             xywh: [0, 0, 12, 16],
-            kind: 'RecordList',
             options: this.recordList,
           }),
         ]
 
-        page = new Page({ ...page, blocks })
+        page = new compose.Page({ ...page, blocks })
 
         this.updatePage(page).then((page) => {
           this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })

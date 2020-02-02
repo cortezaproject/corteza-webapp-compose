@@ -23,7 +23,7 @@
               </b-col>
               <b-col md="2" class="text-right">
                 <export :list="sortedCharts" type="chart"/>
-                <permissions-button v-if="namespace.canGrant"
+                <c-permissions-button v-if="namespace.canGrant"
                                     resource="compose:chart:*"
                                     link />
               </b-col>
@@ -60,7 +60,7 @@
                       <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
                     </router-link>
                   </span>
-                  <permissions-button v-if="chart.canGrant" :title="chart.name" :resource="'compose:chart:'+chart.chartID" link />
+                  <c-permissions-button v-if="chart.canGrant" :title="chart.name" :resource="'compose:chart:'+chart.chartID" link />
                 </td>
               </tr>
               </tbody>

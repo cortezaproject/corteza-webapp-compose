@@ -2,7 +2,7 @@
   <b-container>
     <h1 class="text-center mt-4">
       {{ getTitle }}
-      <permissions-button
+      <c-permissions-button
         v-if="isEdit && namespace.canGrant"
         :title="namespace.name"
         :resource="'compose:namespace:'+namespace.namespaceID"
@@ -60,24 +60,25 @@
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
     </editor-toolbar>
-    <permissions-modal />
+    <c-permissions-modal />
   </b-container>
 </template>
 
 <script>
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
-import { PermissionsModal } from 'corteza-webapp-common/components'
+import { components } from '@cortezaproject/corteza-vue'
+const { CPermissionsModal } = components
 
 export default {
   components: {
     EditorToolbar,
-    PermissionsModal,
+    CPermissionsModal,
   },
 
   data () {
     return {
-      namespace: new Namespace(),
+      namespace: new compose.Namespace(),
     }
   },
 
@@ -123,7 +124,7 @@ export default {
     fetchNamespace (namespaceID) {
       if (namespaceID) {
         this.$store.dispatch('namespace/findByID', { namespaceID: namespaceID }).then((ns) => {
-          this.namespace = new Namespace(ns)
+          this.namespace = new compose.Namespace(ns)
         })
       }
     },
@@ -132,7 +133,7 @@ export default {
       const { namespaceID, name, slug, enabled, meta } = this.namespace
       if (this.isEdit) {
         this.$store.dispatch('namespace/update', { namespaceID, name, slug, enabled, meta }).then((ns) => {
-          this.namespace = new Namespace(ns)
+          this.namespace = new compose.Namespace(ns)
 
           this.raiseSuccessAlert(this.$t('notification.namespace.saved'))
           if (closeOnSuccess) {
@@ -141,7 +142,7 @@ export default {
         }).catch(this.raiseWarningAlert(this.$t('notification.namespace.saveFailed')))
       } else {
         this.$store.dispatch('namespace/create', { name, slug, enabled, meta }).then((ns) => {
-          this.namespace = new Namespace(ns)
+          this.namespace = new compose.Namespace(ns)
 
           this.raiseSuccessAlert(this.$t('notification.namespace.saved'))
           if (closeOnSuccess) {

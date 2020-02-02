@@ -1,5 +1,5 @@
 <template>
-  <sidebar position="right"
+  <c-sidebar position="right"
            name="right-panel"
            class="bg-white overflow-auto pb-5"
            :width="250"
@@ -7,17 +7,18 @@
            :visible.sync="visible">
 
     <reminder v-bind="$props" />
-  </sidebar>
+  </c-sidebar>
 </template>
 
 <script>
 import Reminder from './reminder'
-import Sidebar from 'corteza-webapp-common/src/components/Sidebar'
+import { components } from '@cortezaproject/corteza-vue'
+const { CSidebar } = components
 
 export default {
   components: {
     Reminder,
-    Sidebar,
+    CSidebar,
   },
   inheritAttrs: false,
 

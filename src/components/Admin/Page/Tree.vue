@@ -34,7 +34,7 @@
                        class="mr-2 text-dark d-inline-block edit">
             <font-awesome-icon :icon="['far', 'edit']" v-if="item.moduleID === '0'"></font-awesome-icon>
           </router-link>
-         <permissions-button v-if="namespace.canGrant"
+         <c-permissions-button v-if="namespace.canGrant"
                              :title="item.title"
                              :resource="'compose:page:'+item.pageID" link />
           </div>
@@ -46,7 +46,7 @@
 <script>
 import { mapActions } from 'vuex'
 import SortableTree from 'vue-sortable-tree'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   name: 'page-tree',
@@ -57,7 +57,7 @@ export default {
 
   props: {
     namespace: {
-      type: Namespace,
+      type: compose.Namespace,
       required: true,
     },
 

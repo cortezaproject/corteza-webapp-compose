@@ -47,9 +47,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-// import Trigger from 'corteza-webapp-compose/src/lib/trigger'
 import Chart from 'corteza-webapp-compose/src/lib/chart'
-import Module from 'corteza-webapp-compose/src/lib/module'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   props: {
@@ -70,8 +69,8 @@ export default {
       processing: false,
       show: false,
       classes: {
-        'module': Module,
-        'chart': Chart,
+        module: compose.Module,
+        chart: Chart,
         // 'trigger': Trigger,
       },
     }
@@ -101,7 +100,7 @@ export default {
         }
         this.raiseSuccessAlert(this.$t('notification.import.successful'))
       } catch (e) {
-        this.raiseWarningAlert(this.$t(`notification.import.failed`))
+        this.raiseWarningAlert(this.$t('notification.import.failed'))
       }
       this.cancelImport()
     },

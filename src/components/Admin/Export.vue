@@ -28,7 +28,7 @@ export default {
 
     jsonExport (list, type) {
       Promise.all(list.map(i => i.export(this.findModuleByID))).then(list => {
-        let blob = new Blob([JSON.stringify({ type, list }, null, 2)], { type: 'application/json' })
+        const blob = new Blob([JSON.stringify({ type, list }, null, 2)], { type: 'application/json' })
         saveAs(blob, `${type}-export.json`)
       })
     },

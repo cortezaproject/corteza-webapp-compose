@@ -1,4 +1,4 @@
-import User from 'corteza-webapp-compose/src/lib/user'
+import { system } from '@cortezaproject/corteza-js'
 
 const types = {
   pending: 'pending',
@@ -59,7 +59,7 @@ export default function (SystemAPI) {
       },
 
       [types.updateSet] (state, set) {
-        set = set.map(u => { return new User(u) })
+        set = set.map(u => { return new system.User(u) })
         if (state.set.length === 0) {
           state.set = set
         } else {

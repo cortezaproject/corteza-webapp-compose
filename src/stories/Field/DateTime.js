@@ -5,7 +5,7 @@ import Editor from 'corteza-webapp-compose/src/lib/field/Editor/DateTime'
 import i18n from 'corteza-webapp-compose/src/i18n'
 import { withKnobs, button, object } from '@storybook/addon-knobs'
 
-let field = new Field({
+const field = new Field({
   name: 'Date',
   label: 'Date',
   isMulti: true,
@@ -21,7 +21,7 @@ let field = new Field({
   },
 })
 
-let props = {
+const props = {
   field,
 
   namespace: {},

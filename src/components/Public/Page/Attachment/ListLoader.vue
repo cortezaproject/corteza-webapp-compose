@@ -2,7 +2,7 @@
   <div>
     <div v-if="mode === 'list'" class="list">
       <draggable :list.sync="attachments" :disabled="!enableOrder">
-        <div v-for="(a, index) in attachments" :key="a.attachmentID" v-if="a" class="item">
+        <div v-for="(a, index) in attachments" :key="a.attachmentID" class="item">
           <div class="row no-gutters">
             <div v-if="enableOrder" class="col-sm-1 my-auto text-center">
               <font-awesome-icon v-b-tooltip.hover
@@ -32,7 +32,7 @@
     </div>
 
     <div v-else-if="mode === 'grid'" class="grid">
-      <div v-for="a in attachments" :key="a.attachmentID" v-if="a" class="p-2">
+      <div v-for="a in attachments" :key="a.attachmentID" class="p-2">
         <attachment-link :attachment="a" class="d-block">
           <font-awesome-icon :icon="['far', 'file-'+ext(a)]" class="text-dark float-left mr-2"></font-awesome-icon>
           {{a.name}}
@@ -45,8 +45,8 @@
     </div>
 
     <div v-else-if="mode === 'single' || 'gallery'" class="single gallery">
-      <div v-for="(a) in attachments" :key="a.attachmentID" v-if="a" class="mb-2">
-        <preview-inline
+      <div v-for="(a) in attachments" :key="a.attachmentID" class="mb-2">
+        <c-preview-inline
           v-if="canPreview(a)"
           @openPreview="openLightbox({ ...a, ...$event })"
           :src="inlineUrl(a)"
@@ -54,7 +54,8 @@
           :name="a.name"
           :alt="a.name"
           :preview-style="{ width: 'unset' }"
-          :labels="previewLabels" />
+          :labels="previewLabels"
+        />
 
         <div v-else>
           <font-awesome-icon
@@ -70,15 +71,15 @@
 <script>
 import numeral from 'numeral'
 import moment from 'moment'
-import Attachment from 'corteza-webapp-compose/src/lib/attachment'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
-import { PreviewInline, canPreview } from 'corteza-webapp-common/src/components/FilePreview/'
+import { compose, shared } from '@cortezaproject/corteza-js'
 import AttachmentLink from './Link'
 import draggable from 'vuedraggable'
+import { url, components } from '@cortezaproject/corteza-vue'
+const { CPreviewInline, canPreview } = components
 
 export default {
   components: {
-    PreviewInline,
+    CPreviewInline,
     AttachmentLink,
     draggable,
   },
@@ -94,7 +95,7 @@ export default {
     },
 
     namespace: {
-      type: Namespace,
+      type: compose.Namespace,
       required: true,
     },
 
@@ -122,7 +123,7 @@ export default {
 
   computed: {
     inlineUrl () {
-      return (a) => this.ext(a) === 'pdf' ? a.download : a.previewUrl
+      return (a) => (this.ext(a) === 'pdf' ? a.download : a.previewUrl)
     },
 
     previewLabels () {
@@ -142,6 +143,10 @@ export default {
         return canPreview({ type, src, name: a.name })
       }
     },
+
+    baseURL () {
+      return url.Make({ url: window.ComposeAPI })
+    },
   },
 
   watch: {
@@ -150,17 +155,17 @@ export default {
       handler (set) {
         this.attachments = set.map(a => {
           if (typeof a === 'object') {
-            return new Attachment(a)
+            return new shared.Attachment(a, this.baseURL)
           } else {
             return null
           }
-        })
+        }).filter(a => !!a)
 
         const namespaceID = this.namespace.namespaceID
         set.forEach((attachmentID, index) => {
           if (typeof attachmentID === 'string') {
             this.$ComposeAPI.attachmentRead({ kind: this.kind, attachmentID, namespaceID }).then(att => {
-              this.attachments.splice(index, 1, new Attachment(att))
+              this.attachments.splice(index, 1, new shared.Attachment(att, this.baseURL))
             })
           }
         })

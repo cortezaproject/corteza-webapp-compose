@@ -18,7 +18,7 @@
                 </b-form>
               </b-col>
               <b-col offset-md="5" md="2" class="text-right">
-                <permissions-button v-if="namespace.canGrant"
+                <c-permissions-button v-if="namespace.canGrant"
                                     resource="compose:page:*"
                                     link/>
               </b-col>
@@ -42,21 +42,19 @@
 
 <script>
 import { mapActions } from 'vuex'
-import draggable from 'vuedraggable'
 import PageTree from 'corteza-webapp-compose/src/components/Admin/Page/Tree'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   name: 'PageList',
 
   components: {
-    draggable,
     PageTree,
   },
 
   props: {
     namespace: {
-      type: Namespace,
+      type: compose.Namespace,
       required: false,
     },
   },

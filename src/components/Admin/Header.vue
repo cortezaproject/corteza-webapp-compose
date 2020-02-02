@@ -7,7 +7,6 @@
       <b-nav-item :to="{name: 'admin.modules'}" class="nav-link">{{ $t('navigation.module') }}</b-nav-item>
       <b-nav-item :to="{name: 'admin.pages'}" class="nav-link">{{ $t('navigation.page') }}</b-nav-item>
       <b-nav-item :to="{name: 'admin.charts'}" class="nav-link">{{ $t('navigation.chart') }}</b-nav-item>
-      <b-nav-item :to="{name: 'admin.automation'}" class="nav-link">{{ $t('navigation.automation') }}</b-nav-item>
     </b-navbar-nav>
     <b-navbar-nav class="right">
       <b-nav-item :to="{name: 'pages'}" class="nav-link">{{ $t('navigation.publicPages') }}</b-nav-item>
@@ -16,7 +15,7 @@
 </template>
 
 <script>
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   props: {
@@ -27,7 +26,7 @@ export default {
     },
 
     namespace: {
-      type: Namespace,
+      type: compose.Namespace,
       required: true,
     },
   },

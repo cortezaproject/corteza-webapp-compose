@@ -1,5 +1,5 @@
 <template>
-  <preview-lightbox
+  <c-preview-lightbox
     v-if="show"
     :src="(attachment || {}).document || (attachment || {}).src"
     :name="(attachment || {}).name"
@@ -14,19 +14,20 @@
 
     <a
       slot="header.right"
+      v-if="attachment"
       :href="(attachment || {}).download">
-
       {{ $t('general.label.download') }}
     </a>
-  </preview-lightbox>
+  </c-preview-lightbox>
 </template>
 
 <script>
-import { PreviewLightbox } from 'corteza-webapp-common/src/components/FilePreview/index'
+import { components } from '@cortezaproject/corteza-vue'
+const { CPreviewLightbox } = components
 
 export default {
   components: {
-    PreviewLightbox,
+    CPreviewLightbox,
   },
 
   data () {

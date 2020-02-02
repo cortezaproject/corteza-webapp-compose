@@ -33,8 +33,10 @@
                       :to="{ name: 'admin.modules' }"
                       class="nav-link mw-100 text-nowrap">{{ $t('navigation.adminPanel') }}</router-link>
 
-          <hamburger-menu class="d-none d-md-block mr-2"
-                          name="right-panel" />
+          <c-hamburger-menu
+            class="d-none d-md-block mr-2"
+            name="right-panel"
+          />
         </div>
       </b-navbar>
     </header>
@@ -43,26 +45,26 @@
 import { mapGetters } from 'vuex'
 import MenuLevel from './MenuLevel'
 import navbarCollapse from 'corteza-webapp-compose/src/mixins/navbar_collapse'
-import Namespace from 'corteza-webapp-common/src/lib/types/compose/namespace'
-import Page from 'corteza-webapp-compose/src/lib/page'
-import HamburgerMenu from 'corteza-webapp-common/src/components/Sidebar/HamburgerMenu'
+import { compose } from '@cortezaproject/corteza-js'
+import { components } from '@cortezaproject/corteza-vue'
+const { CHamburgerMenu } = components
 
 export default {
   components: {
     MenuLevel,
-    HamburgerMenu,
+    CHamburgerMenu,
   },
 
-  mixins: [ navbarCollapse ],
+  mixins: [navbarCollapse],
 
   props: {
     namespace: {
-      type: Namespace,
+      type: compose.Namespace,
       required: true,
     },
 
     page: {
-      type: Page,
+      type: compose.Page,
       required: true,
     },
   },
@@ -90,7 +92,7 @@ export default {
             return [pageID]
           }
 
-          let path = tt(pp[i].children, pageID)
+          const path = tt(pp[i].children, pageID)
           if (path) {
             path.unshift(pp[i].pageID)
             return path
@@ -119,7 +121,11 @@ export default {
   },
 
   created () {
-    this.$ComposeAPI.pageTree({ namespaceID: this.namespace.namespaceID }).then((result) => { this.tree = result })
+    this.$ComposeAPI
+      .pageTree({ namespaceID: this.namespace.namespaceID })
+      .then((result) => {
+        this.tree = Object.freeze(result.map(p => new compose.Page(p)))
+      })
   },
 
   methods: {
@@ -127,7 +133,7 @@ export default {
       if (!nav || !bb || !collapse) return
 
       const { children: navChildren = new HTMLCollection() } = nav
-      const [ collapseBody ] = collapse.getElementsByTagName('UL')
+      const [collapseBody] = collapse.getElementsByTagName('UL')
       if (!collapseBody) return
 
       const { clientWidth: collapseWidth } = collapse
@@ -142,7 +148,7 @@ export default {
           c = navChildren.item(i)
 
           const { clientWidth, offsetLeft } = c
-          let elPos = clientWidth + offsetLeft + buffer + collapseWidth
+          const elPos = clientWidth + offsetLeft + buffer + collapseWidth
 
           if (elPos >= bbWidth) {
             c.dataset.collapsed = true

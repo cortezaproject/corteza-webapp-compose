@@ -190,10 +190,12 @@ export default {
     // These should be computed, because of i18n
     rangeTypeOptions () {
       return [
-        { value: 'all',
+        {
+          value: 'all',
           text: this.$t('block.recordList.export.all'),
         },
-        { value: 'range',
+        {
+          value: 'range',
           text: this.$t('block.recordList.export.inRange'),
         },
       ]
@@ -212,10 +214,12 @@ export default {
 
     rangeByOptions () {
       return [
-        { value: 'created_at',
+        {
+          value: 'created_at',
           text: this.$t('block.recordList.export.filter.createdAt'),
         },
-        { value: 'updated_at',
+        {
+          value: 'updated_at',
           text: this.$t('block.recordList.export.filter.updatedAt'),
         },
       ]
@@ -223,22 +227,28 @@ export default {
 
     dateRangeOptions () {
       return [
-        { value: 'lastMonth',
+        {
+          value: 'lastMonth',
           text: this.$t('block.recordList.export.filter.lastMonth'),
         },
-        { value: 'thisMonth',
+        {
+          value: 'thisMonth',
           text: this.$t('block.recordList.export.filter.thisMonth'),
         },
-        { value: 'lastWeek',
+        {
+          value: 'lastWeek',
           text: this.$t('block.recordList.export.filter.lastWeek'),
         },
-        { value: 'thisWeek',
+        {
+          value: 'thisWeek',
           text: this.$t('block.recordList.export.filter.thisWeek'),
         },
-        { value: 'today',
+        {
+          value: 'today',
           text: this.$t('block.recordList.export.filter.today'),
         },
-        { value: 'custom',
+        {
+          value: 'custom',
           text: this.$t('block.recordList.export.filter.custom'),
         },
       ]

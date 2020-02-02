@@ -2,7 +2,6 @@
   <ul :class="ulClass">
     <li v-for="child in children"
         :key="child.pageID"
-        v-if="showInNav(child)"
         :class="liClass(child)">
       <router-link :to="{ name: 'page', params: { pageID: child.pageID }}" class="nav-link">{{ child.title }}</router-link>
       <menu-level v-if="hasChildren(child)"
@@ -16,6 +15,7 @@
   </ul>
 </template>
 <script>
+
 export default {
   name: 'menu-level',
   props: {
@@ -36,6 +36,7 @@ export default {
 
     parentPageID: {
       type: String,
+      default () { return '0' },
     },
 
     currentPageID: {
@@ -45,12 +46,12 @@ export default {
 
   computed: {
     children () {
-      return this.pages.filter(p => this.showInNav(p) && p.selfID === (this.parentPageID || null)) || []
+      return this.pages.filter(p => this.showInNav(p) && p.selfID === this.parentPageID) || []
     },
 
     ulClass () {
-      let cc = {}
-      cc['root'] = this.level === 0
+      const cc = {}
+      cc.root = this.level === 0
       return cc
     },
 
@@ -58,16 +59,21 @@ export default {
       return ({ pageID }) => {
         return {
           'selected-in-path': this.selectedPath.findIndex(p => p === pageID) > -1,
-          'selected': pageID === this.currentPageID,
+          selected: pageID === this.currentPageID,
         }
       }
     },
   },
 
   methods: {
-    // Page is visible ( when visible flag is true & it is not a record
+    /**
+     * Page is visible ( when visible flag is true & it is not a record
+     *
+     * @param page
+     * @returns {boolean}
+     */
     showInNav (page) {
-      return page.visible && !page.moduleID && page.blocks.length > 0
+      return page.visible && !page.isRecordPage && page.blocks.length > 0
     },
 
     hasChildren ({ pageID }) {
