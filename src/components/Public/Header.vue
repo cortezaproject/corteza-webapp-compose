@@ -7,39 +7,41 @@
           </label>
         </b-navbar-toggle>
 
-        <hamburger-menu class="d-none d-md-block text-dark mx-2"
-                        name="ns-sidebar" />
+        <c-hamburger-menu
+          class="d-none d-md-block text-dark mx-2"
+          name="ns-sidebar"
+        />
 
-          <b-collapse is-nav id="public_nav_collapse"
-                      :class="{ visible }"
-                      class="mw-100 flex-grow-1 bg-white"
-                      @show="toggleNav(true)"
-                      @hide="toggleNav(false)">
-            <menu-level id="menu_lvl_1"
-                        :pages="pages"
-                        :selectedPath="selectedPath"
-                        :currentPageID="page.pageID">
+        <b-collapse is-nav id="public_nav_collapse"
+                    :class="{ visible }"
+                    class="mw-100 flex-grow-1 bg-white"
+                    @show="toggleNav(true)"
+                    @hide="toggleNav(false)">
+          <menu-level id="menu_lvl_1"
+                      :pages="pages"
+                      :selectedPath="selectedPath"
+                      :currentPageID="page.pageID">
 
-              <li slot="collapse" id="public_nav_collapse_0">
-                <span>{{ $t('navigation.more') }}</span><ul></ul>
-              </li>
-            </menu-level>
-          </b-collapse>
-        <span class="page-title text-nowrap position-absolute d-block d-md-none ml-5" v-if="page">{{ page.title }}</span>
+            <li slot="collapse" id="public_nav_collapse_0">
+              <span>{{ $t('navigation.more') }}</span><ul></ul>
+            </li>
+          </menu-level>
+        </b-collapse>
+      <span class="page-title text-nowrap position-absolute d-block d-md-none ml-5" v-if="page">{{ page.title }}</span>
 
-        <div id="right-nav-opts"
-             class="position-absolute d-flex align-items-center">
-          <router-link v-if="namespace.canManageNamespace"
-                      :to="{ name: 'admin.modules' }"
-                      class="nav-link mw-100 text-nowrap">{{ $t('navigation.adminPanel') }}</router-link>
+      <div id="right-nav-opts"
+           class="position-absolute d-flex align-items-center">
+        <router-link v-if="namespace.canManageNamespace"
+                    :to="{ name: 'admin.modules' }"
+                    class="nav-link mw-100 text-nowrap">{{ $t('navigation.adminPanel') }}</router-link>
 
-          <c-hamburger-menu
-            class="d-none d-md-block mr-2"
-            name="right-panel"
-          />
-        </div>
-      </b-navbar>
-    </header>
+        <c-hamburger-menu
+          class="d-none d-md-block mr-2"
+          name="right-panel"
+        />
+      </div>
+    </b-navbar>
+  </header>
 </template>
 <script>
 import { mapGetters } from 'vuex'
