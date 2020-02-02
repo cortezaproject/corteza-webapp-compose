@@ -26,12 +26,17 @@ export default (options = {}) => {
 
     data: () => ({ loaded: false }),
     created () {
-      this.$ComposeAPI.automationList()
-        .then(this.makeAutomationScriptsRegistrator(this.$ComposeAPI, compose.TriggerComposeScriptOnManual))
+      if (this.$auth.is()) {
+        this.loadClientScriptBundle({ bundle: 'compose' })
+          .then(() => {
+            this.$ComposeAPI.automationList()
+              .then(this.makeAutomationScriptsRegistrator(this.$ComposeAPI, compose.TriggerComposeScriptOnManual))
+          })
 
-      this.$Settings.init({ api: this.$ComposeAPI }).finally(() => {
-        this.loaded = true
-      })
+        this.$Settings.init({ api: this.$ComposeAPI }).finally(() => {
+          this.loaded = true
+        })
+      }
     },
     router,
     store,
