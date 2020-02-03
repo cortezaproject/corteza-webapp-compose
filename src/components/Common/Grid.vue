@@ -1,34 +1,41 @@
 <template>
-  <div v-if="grid.length" class="w-100 pb-5 vh-100 overflow-auto flex-grow-1">
-    <grid-layout :layout.sync="layout"
-                 @layout-updated="handleLayoutUpdate"
-                 :col-num="12"
-                 :row-height="rowHeight"
-                 :vertical-compact="true"
-                 :is-resizable="!!editable"
-                 :is-draggable="!!editable"
-                 :use-css-transforms="true"
-                 :cols="cols"
-                 :margin="[20, 20]"
-                 class="mb-5"
-                 :responsive="!editable">
-      <grid-item v-for="(item, index) in grid"
-                 :key="item.i"
-                 class="shadow rounded-lg"
-                 ref="items"
-                 :x="item.x"
-                 :y="item.y"
-                 :w="item.w"
-                 :h="item.h"
-                 :i="item.i">
-        <slot :block="blocks[item.i]"
-              :index="index"
-              v-on="$listeners"
-              :bounding-rect="boundingRects[index]"></slot>
+  <div
+    v-if="grid.length"
+    class="w-100 pb-5 vh-100 overflow-auto flex-grow-1"
+  >
+    <grid-layout
+      :layout.sync="layout"
+      @layout-updated="handleLayoutUpdate"
+      :col-num="12"
+      :row-height="rowHeight"
+      :vertical-compact="true"
+      :is-resizable="!!editable"
+      :is-draggable="!!editable"
+      :use-css-transforms="true"
+      :cols="cols"
+      :margin="[0, 0]"
+      class="mb-5"
+      :responsive="!editable"
+    >
+      <grid-item
+        v-for="(item, index) in grid"
+        :key="item.i"
+        ref="items"
+        v-bind="{ ...item }"
+      >
+        <slot
+          :block="blocks[item.i]"
+          :index="index"
+          :block-index="item.i"
+          :bounding-rect="boundingRects[index]"
+          v-on="$listeners"
+        />
       </grid-item>
     </grid-layout>
   </div>
-  <div v-else class="no-builder-grid pt-5 container text-center">
+  <div
+    v-else
+    class="no-builder-grid pt-5 container text-center">
     <h4>{{ $t('page.noBlock') }}.</h4>
   </div>
 </template>

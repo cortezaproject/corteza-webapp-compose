@@ -1,18 +1,17 @@
 <template>
     <div class="d-flex" v-if="page">
       <grid :blocks.sync="page.blocks" editable>
-        <template slot-scope="{ block, index }">
+        <template
+          slot-scope="{ boundingRect, block, index }"
+        >
           <div class="text-right fixed-top mt-1">
             <a class="pr-1 text-dark" @click="editBlock(block, index)">
               <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
             </a>
             <a class="pr-1"  @click="page.blocks.splice(index,1)">X</a>
           </div>
-          <block-preview
-            :block="block"
-            :namespace="namespace"
-            :module="module"
-            :page="page"
+          <page-block
+            v-bind="{ ...$attrs, ...$props, page, block, boundingRect, blockIndex: index }"
           />
         </template>
       </grid>
@@ -89,7 +88,7 @@
 import { mapActions } from 'vuex'
 import NewBlockSelector from 'corteza-webapp-compose/src/components/Admin/Page/Builder/Selector'
 import Grid from 'corteza-webapp-compose/src/components/Common/Grid'
-import BlockPreview from 'corteza-webapp-compose/src/components/PageBlocks/BuilderPreview'
+import PageBlock from 'corteza-webapp-compose/src/components/PageBlocks'
 import BlockEdit from 'corteza-webapp-compose/src/components/PageBlocks/BuilderEdit'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import { compose } from '@cortezaproject/corteza-js'
@@ -99,7 +98,7 @@ export default {
     Grid,
     NewBlockSelector,
     BlockEdit,
-    BlockPreview,
+    PageBlock,
     EditorToolbar,
   },
 
