@@ -15,6 +15,6 @@ export default new Vuex.Store({
     module: module(Vue.prototype.$ComposeAPI),
     page: page(Vue.prototype.$ComposeAPI),
     chart: chart(Vue.prototype.$ComposeAPI),
-    user: user(Vue.prototype.SystemAPI),
+    user: user(Vue.prototype.$SystemAPI),
   },
 })
