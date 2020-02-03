@@ -157,8 +157,8 @@ export default {
       recordPages: 'record pages',
       addRecord: 'Add new record',
       pagination: 'Showing {{from}} to {{to}} of {{count}} records',
-      pagination_onepage: 'One record',
-      pagination_onepage_plural: '{{count}} records',
+      paginationSingle: 'One record',
+      paginationSingle_plural: '{{count}} records',
       record: {
         newLabel: 'New records',
         hideAddButton: 'Hide add record button',
