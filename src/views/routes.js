@@ -1,3 +1,5 @@
+import { components } from '@cortezaproject/corteza-vue'
+
 // public route builder/helper
 function r (name, path, component) {
   return {
@@ -54,7 +56,7 @@ export default [
     ],
   },
 
-  r('auth', '/auth', 'Auth'),
+  { path: '/auth', name: 'auth', component: components.CDevAuth },
 
   // When everything else fails, go to namespaces
   { path: '*', redirect: { name: 'root' } },
