@@ -67,7 +67,8 @@ import Report from 'corteza-webapp-compose/src/components/Admin/Chart/Editor/Rep
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import { compose } from '@cortezaproject/corteza-js'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
-import { Chart, ChartComponent } from 'corteza-webapp-compose/src/lib/chart'
+import ChartComponent from 'corteza-webapp-compose/src/components/Chart'
+import { Chart } from 'corteza-webapp-compose/src/lib/chart'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 
 const defaultReport = {

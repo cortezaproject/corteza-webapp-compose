@@ -17,21 +17,6 @@ html {
   .card-header {
     border-bottom-width: 3px;
   }
-
-  &:not(.vue-grid-placeholder) {
-    background: #fff;
-  }
-
-  &.resizing {
-    opacity: 0.9;
-  }
-
-  .Chart,
-  .Calendar {
-    .card-body {
-      padding: 10px;
-    }
-  }
 }
 
 .vs__dropdown-toggle {

@@ -1,34 +1,41 @@
 <template>
-  <div v-if="grid.length" class="w-100 pb-5 vh-100 overflow-auto flex-grow-1">
-    <grid-layout :layout.sync="layout"
-                 @layout-updated="handleLayoutUpdate"
-                 :col-num="12"
-                 :row-height="rowHeight"
-                 :vertical-compact="true"
-                 :is-resizable="!!editable"
-                 :is-draggable="!!editable"
-                 :use-css-transforms="true"
-                 :cols="cols"
-                 :margin="[20, 20]"
-                 class="mb-5"
-                 :responsive="!editable">
-      <grid-item v-for="(item, index) in grid"
-                 :key="item.i"
-                 class="shadow rounded-lg"
-                 ref="items"
-                 :x="item.x"
-                 :y="item.y"
-                 :w="item.w"
-                 :h="item.h"
-                 :i="item.i">
-        <slot :block="blocks[item.i]"
-              :index="index"
-              v-on="$listeners"
-              :bounding-rect="boundingRects[index]"></slot>
+  <div
+    v-if="grid.length"
+    class="w-100 p-2 pb-5 vh-100 overflow-auto flex-grow-1"
+  >
+    <grid-layout
+      class="mb-5"
+      @layout-updated="handleLayoutUpdate"
+      :layout.sync="layout"
+      :col-num="12"
+      :row-height="50"
+      :vertical-compact="true"
+      :is-resizable="!!editable"
+      :is-draggable="!!editable"
+      :use-css-transforms="true"
+      :cols="{ lg: 12, md: 12, sm: 1, xs: 1, xxs: 1 }"
+      :margin="[0, 0]"
+      :responsive="!editable"
+    >
+      <grid-item
+        v-for="(item, index) in grid"
+        :key="item.i"
+        ref="items"
+        v-bind="{ ...item }"
+      >
+        <slot
+          :block="blocks[item.i]"
+          :index="index"
+          :block-index="item.i"
+          :bounding-rect="boundingRects[index]"
+          v-on="$listeners"
+        />
       </grid-item>
     </grid-layout>
   </div>
-  <div v-else class="no-builder-grid pt-5 container text-center">
+  <div
+    v-else
+    class="no-builder-grid pt-5 container text-center">
     <h4>{{ $t('page.noBlock') }}.</h4>
   </div>
 </template>
@@ -37,19 +44,6 @@
 import VueGridLayout from 'vue-grid-layout'
 import { compose } from '@cortezaproject/corteza-js'
 import { throttle } from 'lodash'
-
-const blocksToGrid = blocks => {
-  return blocks.map(({ xywh: [x, y, w, h] }, i) => {
-    return {
-      i,
-
-      x,
-      y,
-      w,
-      h,
-    }
-  })
-}
 
 export default {
   components: {
@@ -70,13 +64,8 @@ export default {
 
   data () {
     return {
-      rowHeight: 30,
-
       // all blocks in vue-grid friendly structure
       grid: [],
-
-      // attempt to solve responsive grid issues. 2 views: desktop and mobile
-      cols: { lg: 12, md: 12, sm: 1, xs: 1, xxs: 1 },
 
       // Grid items bounding rect info
       boundingRects: [],
@@ -99,7 +88,7 @@ export default {
   watch: {
     blocks: {
       handler (blocks) {
-        this.grid = blocksToGrid(blocks)
+        this.grid = blocks.map(({ xywh: [x, y, w, h] }, i) => ({ i, x, y, w, h }))
         this.recalculateBoundingRect()
       },
       immediate: true,
@@ -121,17 +110,8 @@ export default {
 
     // Fetch bounding boxes of all grid items
     recalculateBoundingRect () {
-      this.boundingRects = (this.$refs.items || []).map(({ $el }) => {
-        const bcr = $el.getBoundingClientRect()
-        return {
-          width: bcr.width,
-          height: bcr.height,
-          top: bcr.top,
-          left: bcr.left,
-          right: bcr.right,
-          bottom: bcr.bottom,
-        }
-      })
+      this.boundingRects = (this.$refs.items || [])
+        .map(({ $el }) => ({ ...$el.getBoundingClientRect() }))
     },
 
     handleLayoutUpdate (layout) {

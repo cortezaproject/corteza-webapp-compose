@@ -5,7 +5,7 @@
       v-bind="$props"
       :errors="errors"
       :record="record"
-      edit-mode
+      :mode="mode || 'record-create'"
     />
     <toolbar
       :back-link="{name: 'admin.pages'}"
@@ -59,6 +59,7 @@ export default {
   data () {
     return {
       record: undefined,
+      inEditing: true,
     }
   },
 

@@ -1,5 +1,5 @@
 <template>
-  <div :class="[editMode ? 'edit': 'view']">
+  <div :class="[inEditing ? 'edit': 'view']">
     <b-alert v-if="isDeleted"
              show
              variant="info">
@@ -12,7 +12,7 @@
       v-bind="$props"
       :errors="errors"
       :record="record"
-      :edit-mode="editMode"
+      :mode="mode || 'general'"
       @reload="loadRecord()"
     />
     <toolbar :back-link="{name: 'pages'}"
@@ -34,7 +34,7 @@
       </b-button>
 
       <b-button
-        v-if="!isDeleted && !editMode && module.canUpdateRecord"
+        v-if="!isDeleted && !inEditing && module.canUpdateRecord"
         variant="outline-secondary ml-1"
         @click.prevent="$router.push({ name: 'page.record.edit', params: $route.params })"
       >
@@ -42,7 +42,7 @@
       </b-button>
 
       <b-button
-        v-if="module.canUpdateRecord && editMode"
+        v-if="module.canUpdateRecord && inEditing"
         :disabled="!isValid"
         @click.prevent="handleFormSubmit"
         class="float-right ml-1"
@@ -95,13 +95,13 @@ export default {
 
   data () {
     return {
+      inEditing: false,
       record: undefined,
 
       errors: new validator.Validated(),
 
       // We handle edit mode here because EditRecord components
       // is extending us
-      editMode: false,
     }
   },
 

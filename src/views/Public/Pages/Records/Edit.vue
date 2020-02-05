@@ -8,7 +8,8 @@ export default {
 
   data () {
     return {
-      editMode: true,
+      mode: 'record-update',
+      inEditing: true,
     }
   },
 
