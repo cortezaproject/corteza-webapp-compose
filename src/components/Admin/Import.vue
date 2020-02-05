@@ -47,7 +47,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Chart from 'corteza-webapp-compose/src/lib/chart'
+import Chart from '../Chart'
 import { compose } from '@cortezaproject/corteza-js'
 
 export default {

@@ -1,20 +1,20 @@
 <template>
   <div
     v-if="grid.length"
-    class="w-100 pb-5 vh-100 overflow-auto flex-grow-1"
+    class="w-100 p-2 pb-5 vh-100 overflow-auto flex-grow-1"
   >
     <grid-layout
-      :layout.sync="layout"
+      class="mb-5"
       @layout-updated="handleLayoutUpdate"
+      :layout.sync="layout"
       :col-num="12"
-      :row-height="rowHeight"
+      :row-height="50"
       :vertical-compact="true"
       :is-resizable="!!editable"
       :is-draggable="!!editable"
       :use-css-transforms="true"
-      :cols="cols"
+      :cols="{ lg: 12, md: 12, sm: 1, xs: 1, xxs: 1 }"
       :margin="[0, 0]"
-      class="mb-5"
       :responsive="!editable"
     >
       <grid-item
@@ -45,19 +45,6 @@ import VueGridLayout from 'vue-grid-layout'
 import { compose } from '@cortezaproject/corteza-js'
 import { throttle } from 'lodash'
 
-const blocksToGrid = blocks => {
-  return blocks.map(({ xywh: [x, y, w, h] }, i) => {
-    return {
-      i,
-
-      x,
-      y,
-      w,
-      h,
-    }
-  })
-}
-
 export default {
   components: {
     GridLayout: VueGridLayout.GridLayout,
@@ -77,13 +64,8 @@ export default {
 
   data () {
     return {
-      rowHeight: 30,
-
       // all blocks in vue-grid friendly structure
       grid: [],
-
-      // attempt to solve responsive grid issues. 2 views: desktop and mobile
-      cols: { lg: 12, md: 12, sm: 1, xs: 1, xxs: 1 },
 
       // Grid items bounding rect info
       boundingRects: [],
@@ -106,7 +88,7 @@ export default {
   watch: {
     blocks: {
       handler (blocks) {
-        this.grid = blocksToGrid(blocks)
+        this.grid = blocks.map(({ xywh: [x, y, w, h] }, i) => ({ i, x, y, w, h }))
         this.recalculateBoundingRect()
       },
       immediate: true,
@@ -128,17 +110,8 @@ export default {
 
     // Fetch bounding boxes of all grid items
     recalculateBoundingRect () {
-      this.boundingRects = (this.$refs.items || []).map(({ $el }) => {
-        const bcr = $el.getBoundingClientRect()
-        return {
-          width: bcr.width,
-          height: bcr.height,
-          top: bcr.top,
-          left: bcr.left,
-          right: bcr.right,
-          bottom: bcr.bottom,
-        }
-      })
+      this.boundingRects = (this.$refs.items || [])
+        .map(({ $el }) => ({ ...$el.getBoundingClientRect() }))
     },
 
     handleLayoutUpdate (layout) {

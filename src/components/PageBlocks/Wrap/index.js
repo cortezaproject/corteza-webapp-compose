@@ -1,22 +1,29 @@
 import Vue from 'vue'
-import PageBlockCard from './PageBlockCard'
-import PageBlockPlain from './PageBlockPlain'
+import { capitalize } from 'lodash'
 
-const wraps = {
-  card: PageBlockCard,
-  plain: PageBlockPlain,
+import Card
+  from './Card'
+import Plain
+  from './Plain'
+
+const Registry = {
+  Card,
+  Plain,
 }
 
-const defaultWrap = 'card'
+const defaultWrap = 'Card'
 
 /**
- *
- * @param block {compose.PageBlock}
- * @returns {{computed: {blockClass(): [string, computed.block.kind]}, props: {block: {type: PageBlock, required: boolean}}}|{computed: {blockClass(): [string, *]}, props: {block: {type: PageBlock, required: boolean}}}}
- * @constructor
+ * @param block {compose.PageBLock}
+ * @returns component
  */
-function GetComponent ({ block }) {
-  return wraps[block.style.wrap.kind || defaultWrap]
+function GetWrapComponent ({ block, wrap = defaultWrap }) {
+  const cmpName = capitalize(wrap)
+  if (Object.hasOwnProperty.call(Registry, cmpName)) {
+    return Registry[capitalize(cmpName)]
+  }
+
+  throw new Error('unknown wrap: ' + wrap)
 }
 
 /**
@@ -26,6 +33,6 @@ export default Vue.component('page-block', {
   functional: true,
 
   render (ce, ctx) {
-    return ce(GetComponent(ctx.props), ctx.data, ctx.children)
+    return ce(GetWrapComponent(ctx.props), ctx.data, ctx.children)
   },
 })

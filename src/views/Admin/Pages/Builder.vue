@@ -34,11 +34,13 @@
         :visible="showCreator"
         body-class="p-0 border-top-0"
         header-class="p-3 pb-0 border-bottom-0">
-        <block-edit v-if="showCreator"
-                    :namespace="namespace"
-                    :module="module"
-                    :page="page"
-                    :block.sync="editor.block" />
+        <configurator
+          v-if="showCreator"
+          :namespace="namespace"
+          :module="module"
+          :page="page"
+          :block.sync="editor.block"
+        />
       </b-modal>
 
       <b-modal
@@ -52,11 +54,13 @@
         :visible="showEditor"
         body-class="p-0 border-top-0"
         header-class="p-3 pb-0 border-bottom-0">
-        <block-edit v-if="showEditor"
-                    :namespace="namespace"
-                    :module="module"
-                    :page="page"
-                    :block.sync="editor.block" />
+        <configurator
+          v-if="showEditor"
+          :namespace="namespace"
+          :module="module"
+          :page="page"
+          :block.sync="editor.block"
+        />
       </b-modal>
 
       <editor-toolbar :back-link="{name: 'admin.pages'}"
@@ -89,15 +93,15 @@ import { mapActions } from 'vuex'
 import NewBlockSelector from 'corteza-webapp-compose/src/components/Admin/Page/Builder/Selector'
 import Grid from 'corteza-webapp-compose/src/components/Common/Grid'
 import PageBlock from 'corteza-webapp-compose/src/components/PageBlocks'
-import BlockEdit from 'corteza-webapp-compose/src/components/PageBlocks/BuilderEdit'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import { compose } from '@cortezaproject/corteza-js'
+import Configurator from 'corteza-webapp-compose/src/components/PageBlocks/Configurator'
 
 export default {
   components: {
+    Configurator,
     Grid,
     NewBlockSelector,
-    BlockEdit,
     PageBlock,
     EditorToolbar,
   },

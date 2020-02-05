@@ -1,0 +1,221 @@
+<template>
+  <wrap v-bind="$props" v-on="$listeners">
+    <div class="calendar-container m-2">
+      <full-calendar
+        :events="events"
+        ref="fc"
+        v-bind="config"
+        @eventClick="handleEventClick"
+        class="m-1"
+      />
+    </div>
+  </wrap>
+</template>
+
+<script>
+import moment from 'moment'
+import { mapGetters, mapActions } from 'vuex'
+import base from './base'
+import FullCalendar from '@fullcalendar/vue'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import listPlugin from '@fullcalendar/list'
+import { compose } from '@cortezaproject/corteza-js'
+import { BootstrapTheme } from '@fullcalendar/bootstrap'
+import { createPlugin } from '@fullcalendar/core'
+
+/**
+ * FullCalendar corteza theme definition.
+ */
+export class CortezaTheme extends BootstrapTheme {}
+CortezaTheme.prototype.classes.widget = 'corteza-unthemed'
+CortezaTheme.prototype.classes.button = 'btn btn-outline-primary'
+
+CortezaTheme.prototype.baseIconClass = 'fc-icon'
+CortezaTheme.prototype.iconClasses = {
+  close: 'fc-icon-x',
+  prev: 'fc-icon-chevron-left',
+  next: 'fc-icon-chevron-right',
+  prevYear: 'fc-icon-chevrons-left',
+  nextYear: 'fc-icon-chevrons-right',
+}
+
+CortezaTheme.prototype.iconOverrideOption = 'buttonIcons'
+CortezaTheme.prototype.iconOverrideCustomButtonOption = 'icon'
+CortezaTheme.prototype.iconOverridePrefix = 'fc-icon-'
+
+export default {
+  components: {
+    FullCalendar,
+  },
+
+  extends: base,
+
+  data () {
+    return {
+      events: [],
+      locale: undefined,
+
+      loaded: {
+        start: null,
+        end: null,
+      },
+    }
+  },
+
+  computed: {
+    ...mapGetters({
+      pages: 'page/set',
+    }),
+
+    config () {
+      return {
+        header: this.block.getHeader(),
+        height: 'parent',
+        themeSystem: 'corteza',
+        defaultView: this.block.defaultView,
+        editable: false,
+        eventLimit: true,
+        locale: this.locale,
+        // @todo could be loaded on demand
+        plugins: [
+          dayGridPlugin,
+          timeGridPlugin,
+          listPlugin,
+          createPlugin({
+            themeClasses: {
+              corteza: CortezaTheme,
+            },
+          }),
+        ],
+
+        // Use available views to define custom view labels.
+        // See src/i18n/en/compose.js for i18n definitons
+        buttonText: compose.PageBlockCalendar.availableViews()
+          .map(view => ({ view, label: this.$t(`block.calendar.view.${view}`) }))
+          .reduce((acc, cur) => {
+            acc[cur.view] = cur.label
+            return acc
+          }, {}),
+
+        // Handle event fetching when view/date-range changes
+        datesRender: ({ view: { currentStart, currentEnd } = {} } = {}) => {
+          this.loadEvents(moment(currentStart), moment(currentEnd))
+        },
+      }
+    },
+  },
+
+  watch: {
+    'boundingRect.height': {
+      handler: function () {
+        // This is required, since vue-grid calculates grid item's dimensions
+        // inside mounted hook
+        setTimeout(() => {
+          const fc = this.$refs.fc
+          if (!fc) {
+            return
+          }
+          fc.getApi().windowResize({ target: window })
+          fc.getApi().updateSize()
+        })
+      },
+      immediate: true,
+    },
+  },
+
+  methods: {
+    ...mapActions({
+      findModuleByID: 'module/findByID',
+    }),
+
+    // @todo listen for i18next locale change, and reload
+    /**
+     * Helper method to load requested locale.
+     * See https://github.com/fullcalendar/fullcalendar/tree/master/packages/core/src/locales
+     * for a full list
+     * @param {String} lng Locale tag.
+     */
+    changeLocale (lng = 'en-gb') {
+      // fc doesn't provide a en locale
+      if (lng === 'en') {
+        lng = 'en-gb'
+      }
+
+      this.locale = require(`@fullcalendar/core/locales/${lng}`)
+    },
+
+    /**
+     * Loads & preps fc events from `start` to `end` for all defined feeds.
+     * @param {Moment} start Start date
+     * @param {Moment} end End date
+     */
+    loadEvents (start, end) {
+      if (!start || !end) {
+        return
+      }
+
+      if (start.isSame(this.loaded.start) && end.isSame(this.loaded.end)) {
+        return
+      }
+
+      this.loaded.start = start
+      this.loaded.end = end
+
+      this.events = []
+
+      this.options.feeds.forEach(feed => {
+        switch (feed.resource) {
+          case compose.PageBlockCalendar.feedResources.record:
+            this.findModuleByID({ namespace: this.namespace, moduleID: feed.options.moduleID })
+              .then((module) => {
+                compose.PageBlockCalendar.RecordFeed(this.$ComposeAPI, module, this.namespace, feed, this.loaded)
+                  .then(events => {
+                    this.events.push(...events)
+                  })
+              })
+            break
+          case compose.PageBlockCalendar.feedResources.reminder:
+            compose.PageBlockCalendar.ReminderFeed(this.$SystemAPI, this.$auth.user, feed, this.loaded)
+              .then(events => {
+                this.events.push(...events)
+              })
+            break
+        }
+      })
+    },
+
+    /**
+     * Based on event type, perform some action.
+     * @param {Event} event Fullcalendar event object
+     */
+    handleEventClick ({ event: { extendedProps: { recordID, moduleID } } }) {
+      if (!moduleID || !recordID) {
+        return
+      }
+
+      const page = this.pages.find(p => p.moduleID === moduleID)
+      if (!page) {
+        return
+      }
+
+      this.$router.push({ name: 'page.record', params: { recordID, pageID: page.pageID } })
+    },
+  },
+}
+</script>
+<style lang="scss" scoped>
+@import '~@fullcalendar/core/main.css';
+@import '~@fullcalendar/daygrid/main.css';
+@import '~@fullcalendar/timegrid/main.css';
+@import '~@fullcalendar/list/main.css';
+
+.calendar-container {
+  // We need a special style to handle
+  // parent height of the calendar
+  //
+  // Make sure used margin (m-2) is
+  // synced with the height difference (20px)
+  height: calc(100% - 20px);
+}
+</style>
