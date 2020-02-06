@@ -46,6 +46,12 @@
                     @sort="handleSort"/>
 
                   <table-sortable-column
+                    :label="$t('general.label.handle')"
+                    name="handle"
+                    :ascending="sortedByHandle"
+                    @sort="handleSort"/>
+
+                  <table-sortable-column
                     :label="$t('general.label.updatedAt')"
                     name="updatedAt"
                     :ascending="sortedByUpdatedAt"
@@ -55,10 +61,17 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(m, index) in sortedModules" :key="index">
+                <tr
+                  v-for="(m, index) in sortedModules"
+                  :key="index"
+                  @click.prevent="openEditor(m)"
+                >
+                  <td
+                  >
+                    {{ m.name }}
+                  </td>
                   <td class="align-middle">
-                    <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}"
-                                 class="text-dark">{{ m.name }}</router-link>
+                    {{ m.handle }}
                   </td>
                   <td class="align-middle"><time :datetime="m.updatedAt" v-if="m.updatedAt">{{ prettyDate(m.updatedAt || m.createdAt) }}</time></td>
                   <td class="text-right">
@@ -88,7 +101,6 @@
     </b-container>
   </div>
 </template>
-
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { compose } from '@cortezaproject/corteza-js'
@@ -139,6 +151,10 @@ export default {
       return this.isSortedBy('name', true)
     },
 
+    sortedByHandle () {
+      return this.isSortedBy('handle', true)
+    },
+
     sortedByUpdatedAt () {
       return this.isSortedBy('updatedAt')
     },
@@ -155,9 +171,14 @@ export default {
     }),
 
     create () {
-      this.createModule(this.newModule).then((module) => {
-        this.$router.push({ name: 'admin.modules.edit', params: { moduleID: module.moduleID } })
-      }).catch(this.defaultErrorHandler(this.$t('notification.module.createFailed')))
+      this.createModule(this.newModule)
+        .then((module) => this.openEditor(module))
+        .catch(this.defaultErrorHandler(this.$t('notification.module.createFailed')))
+    },
+
+    openEditor (module) {
+      const { moduleID } = module
+      this.$router.push({ name: 'admin.modules.edit', params: { moduleID } })
     },
 
     handleRecordPageCreation ({ moduleID }) {
@@ -180,3 +201,10 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+table {
+  tr {
+    cursor: pointer;
+  }
+}
+</style>
