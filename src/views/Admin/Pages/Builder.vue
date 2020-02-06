@@ -244,7 +244,7 @@ div.toolbox {
   top: 0;
   z-index: 10000;
   border-bottom-left-radius: 10px;
-  opacity: .2;
+  opacity: 0.2;
 
   &:hover {
     opacity: 1;
