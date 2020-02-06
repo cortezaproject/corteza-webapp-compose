@@ -12,7 +12,7 @@
       v-bind="$props"
       :errors="errors"
       :record="record"
-      :mode="mode || 'general'"
+      :mode="blockMode"
       @reload="loadRecord()"
     />
     <toolbar :back-link="{name: 'pages'}"
@@ -102,6 +102,7 @@ export default {
 
       // We handle edit mode here because EditRecord components
       // is extending us
+      blockMode: 'base',
     }
   },
 

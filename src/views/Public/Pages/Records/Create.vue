@@ -5,7 +5,7 @@
       v-bind="$props"
       :errors="errors"
       :record="record"
-      :mode="mode || 'record-create'"
+      mode="editor"
     />
     <toolbar
       :back-link="{name: 'admin.pages'}"

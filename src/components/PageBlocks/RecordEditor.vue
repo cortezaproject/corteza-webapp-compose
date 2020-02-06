@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <wrap v-bind="$props" v-on="$listeners">
     <div v-for="field in fields" :key="field.id">
       <field-editor
         v-if="field.canUpdateRecordValue"
@@ -21,7 +21,7 @@
         <i>{{ $t('field.noPermission') }}</i>
       </div>
     </div>
-  </div>
+  </wrap>
 </template>
 <script>
 import FieldEditor from 'corteza-webapp-compose/src/components/ModuleFields/Editor'
@@ -66,6 +66,10 @@ export default {
      * @returns {validator.Validated} filtered validation results
      */
     fieldErrors (name) {
+      if (!this.errors) {
+        return []
+      }
+
       return this.errors.filterByMeta('field', name)
     },
   },

@@ -42,6 +42,11 @@ export default {
       type: compose.Record,
       required: false,
     },
+
+    mode: {
+      type: String,
+      required: false,
+    },
   },
 
   computed: {

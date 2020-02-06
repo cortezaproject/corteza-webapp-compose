@@ -10,10 +10,10 @@
         :key="index">
         <label>{{ field.label || field.name }}</label>
         <div v-if="field.canReadRecordValue">
-          <field-viewer :namespace="namespace"
-                        :field="field"
-                        :record="record"
-                        value-only />
+          <field-viewer
+            v-bind="$props"
+            value-only
+          />
         </div>
         <i v-else>{{ $t('field.noPermission') }}</i>
       </div>
