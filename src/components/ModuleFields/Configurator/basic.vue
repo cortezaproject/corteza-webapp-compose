@@ -16,6 +16,8 @@
     >
       {{ $t('general.label.private') }}
     </b-form-checkbox>
+
+    <hr />
     <b-form-group
       v-if="mock.field"
       :label="$t('field.defaultValue')"
@@ -27,7 +29,6 @@
         v-bind="mock"
       />
     </b-form-group>
-    <pre>{{ field }}</pre>
   </div>
 </template>
 
