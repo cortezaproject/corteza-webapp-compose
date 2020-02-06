@@ -23,6 +23,10 @@ export default function (ComposeAPI) {
         return (ID) => state.set.find(({ pageID }) => ID === pageID)
       },
 
+      getByHandle (state) {
+        return (handle) => state.set.find((p) => handle === p.handle)
+      },
+
       homePage: (state) => state.set.find(p => p.visible && p.firstLevel && !p.isRecordPage),
 
       set (state) {

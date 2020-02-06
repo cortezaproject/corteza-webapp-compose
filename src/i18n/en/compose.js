@@ -578,7 +578,7 @@ export default {
       handle: 'Handle',
       general: 'General',
       enabled: 'Enabled',
-      welcome: 'Welcome',
+      welcome: 'Welcome!',
       urlPlaceholder: 'https://example.tld',
     },
     placeholder: {

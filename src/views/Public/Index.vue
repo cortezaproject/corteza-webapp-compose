@@ -4,7 +4,7 @@
                    :namespace="namespace"
                    @toggleNav="navVisible = $event" />
     <div v-if="showSteps" class="d-flex flex-column m-5 vh-75">
-      <h1 class="display-3">{{ $t('general.label.welcome') }}!</h1>
+      <h1 class="display-3">{{ $t('general.label.welcome') }}</h1>
       <p class="lead">
         {{ $t('onboarding.message.noPages') }}
         <span v-if="namespace.canManageNamespace">
@@ -75,6 +75,7 @@ import { compose } from '@cortezaproject/corteza-js'
 import Chart from 'corteza-webapp-compose/src/lib/chart'
 
 const pushContentAbove = 610
+const demoPageHandle = 'demo_page'
 
 export default {
   name: 'public-root',
@@ -140,7 +141,7 @@ export default {
     },
 
     hasPages () {
-      return this.pages.filter(p => p.visible).length > 0
+      return this.pages.filter(p => p.visible || p.handle === demoPageHandle).length > 0
     },
   },
 
@@ -179,8 +180,15 @@ export default {
 
     createNewModule () {
       const { namespaceID } = this.namespace
-      const name = 'Demo Module'
-      const newModule = new compose.Module({ namespaceID, name, fields: [compose.ModuleFieldString({ fieldID: '0', name: 'Sample' })] })
+      const newModule = new compose.Module({
+        namespaceID,
+        name: 'Demo Module',
+        handle: 'demo_module',
+        fields: [
+          new compose.ModuleFieldString({ fieldID: '0', name: 'Sample' }),
+        ],
+      })
+
       this.createModule(newModule).then((module) => {
         this.$router.push({ name: 'admin.modules.edit', params: { moduleID: module.moduleID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.module.createFailed')))
@@ -188,8 +196,12 @@ export default {
 
     createNewChart () {
       const { namespaceID } = this.namespace
-      const name = 'Demo Chart'
-      const newChart = new Chart({ namespaceID, name })
+      const newChart = new Chart({
+        namespaceID,
+        name: 'Demo Chart',
+        handle: 'demo_chart',
+      })
+
       this.createChart(newChart).then((chart) => {
         this.$router.push({ name: 'admin.charts.edit', params: { chartID: chart.chartID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.chart.createFailed')))
@@ -197,9 +209,13 @@ export default {
 
     createNewPage () {
       const { namespaceID } = this.namespace
-      const title = 'Demo Page'
-      const blocks = []
-      const newPage = new compose.Page({ namespaceID, title, blocks })
+      const newPage = new compose.Page({
+        namespaceID,
+        title: 'Demo Page',
+        handle: demoPageHandle,
+        blocks: [],
+      })
+
       this.createPage(newPage).then((page) => {
         this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))
