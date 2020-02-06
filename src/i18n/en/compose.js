@@ -902,7 +902,7 @@ export default {
     clickOpen: 'Click to open',
     title: 'Low Code Namespaces',
     create: 'Create namespace',
-    edit: 'Edit "{{name}}"',
+    edit: 'Edit namespace',
     disabled: 'Namespace is disabled',
     setPermissions: 'Set namespace permissions',
     name: {

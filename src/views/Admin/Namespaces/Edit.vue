@@ -1,13 +1,17 @@
 <template>
   <b-container>
-    <h1 class="text-center mt-4">
-      {{ getTitle }}
+    <div
+     class="float-right"
+    >
       <c-permissions-button
         v-if="isEdit && namespace.canGrant"
         :title="namespace.name"
         :resource="'compose:namespace:'+namespace.namespaceID"
-        link />
-
+        link
+      />
+    </div>
+    <h1 class="text-center mt-4">
+      {{ isEdit ? $t('namespace.edit') : $t('namespace.create') }}
     </h1>
     <b-form>
       <b-form-group :label="$t('namespace.name.label')">
@@ -21,7 +25,10 @@
       </b-form-group>
       <b-row align-v="center">
         <b-col cols="6">
-          <b-form-group :label="$t('namespace.slug.label')" :description="$t('namespace.slug.description')">
+          <b-form-group
+            :label="$t('namespace.slug.label')"
+            :description="$t('namespace.slug.description')"
+          >
             <b-form-input
               v-model="namespace.slug"
               type="text"
@@ -55,7 +62,7 @@
     </b-form>
     <editor-toolbar :back-link="{name: 'root'}"
                     :hideDelete="!canDelete"
-                    :hideSave="!canSave"
+                    :disableSave="!canSave"
                     @delete="handleDelete"
                     @save="handleSave()"
                     @saveAndClose="handleSave({ closeOnSuccess: true })">
@@ -65,9 +72,10 @@
 </template>
 
 <script>
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import { components } from '@cortezaproject/corteza-vue'
+import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 const { CPermissionsModal } = components
 
 export default {
@@ -83,20 +91,20 @@ export default {
   },
 
   computed: {
-    getTitle () {
-      return this.isEdit ? this.$t('namespace.edit', { name: this.namespace.name }) : this.$t('namespace.create')
-    },
-
     isEdit () {
-      return this.namespace && !!this.namespace.namespaceID
+      return this.namespace && this.namespace.namespaceID !== NoID
     },
 
     slugState () {
-      return this.namespace ? this.namespace.slug.length > 0 : null
+      return handleState(this.namespace.slug)
     },
 
     nameState () {
-      return this.namespace ? this.namespace.name.length > 0 : null
+      if (!this.isEdit && this.namespace.name.length === 0) {
+        return null
+      }
+
+      return this.namespace.name.length > 0
     },
 
     canDelete () {
@@ -112,7 +120,7 @@ export default {
         return false
       }
 
-      return !!this.namespace.name && !!this.namespace.slug
+      return !!this.namespace.name
     },
   },
 
