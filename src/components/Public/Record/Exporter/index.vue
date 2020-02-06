@@ -16,7 +16,7 @@
 
       <field-picker
         :module="module"
-        :recordCount="records.length"
+        :recordCount="count"
         :query="query"
         v-on="$listeners" />
 
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import { compose } from '@cortezaproject/corteza-js'
 import FieldPicker from './FieldPicker'
 
 export default {
@@ -34,13 +35,15 @@ export default {
 
   props: {
     module: {
-      type: Object,
+      type: compose.Module,
       required: true,
     },
-    records: {
-      type: Array,
-      default: () => [],
+
+    count: {
+      type: Number,
+      required: true,
     },
+
     query: {
       type: String,
       required: false,
