@@ -66,7 +66,6 @@
       </b-form-checkbox>
     </b-form-group>
   </b-tab>
-
 </template>
 <script>
 import { mapGetters } from 'vuex'

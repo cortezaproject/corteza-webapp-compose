@@ -59,6 +59,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
 import Toolbar from 'corteza-webapp-compose/src/components/Public/Page/Toolbar'
 import { compose, validator, NoID } from '@cortezaproject/corteza-js'
@@ -107,6 +108,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      getModuleByID: 'module/getByID',
+    }),
+
     validator () {
       if (!this.module) {
         throw new Error('can not initialize record validator without module')
@@ -153,9 +158,14 @@ export default {
       this.record = null
       if (this.page && this.recordID && this.page.moduleID) {
         const { namespaceID, moduleID } = this.page
-        this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID: this.recordID }).then(record => {
-          this.record = new compose.Record(this.module, record)
-        }).catch(this.defaultErrorHandler(this.$t('notification.record.loadFailed')))
+        const module = this.getModuleByID(moduleID)
+
+        this.$ComposeAPI
+          .recordRead({ namespaceID, moduleID, recordID: this.recordID })
+          .then(record => {
+            this.record = new compose.Record(module, record)
+          })
+          .catch(this.defaultErrorHandler(this.$t('notification.record.loadFailed')))
       }
     },
 

@@ -41,6 +41,7 @@
     </div>
     <div
       v-else
+      class="p-3 text-light bg-danger h-100"
     >
       {{ $t('block.record.preview.blockNoRecord') }}
     </div>
