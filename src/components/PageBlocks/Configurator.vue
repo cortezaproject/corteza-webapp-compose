@@ -27,10 +27,6 @@
         <hr />
         <div class="row">
           <div class="col-sm-8">
-            <b-form-input
-              v-model="block.style.wrap.kind"
-            />
-
             <b-form-group for="color" :label="$t('block.general.headerStyle')">
               <b-form-select id="color"
                               v-model="block.style.variants.headerText"
