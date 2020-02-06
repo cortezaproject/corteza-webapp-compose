@@ -1,21 +1,33 @@
 <template>
   <wrap v-bind="$props" v-on="$listeners">
     <div
-      v-if="record && options"
-      class="p-2 record"
+      v-if="record"
+      class="p-3 record"
     >
       <div
         v-for="(field, index) in fields"
-        class="field"
+        class="mb-2"
         :key="index">
-        <label>{{ field.label || field.name }}</label>
-        <div v-if="field.canReadRecordValue">
+        <label
+          class="font-weight-bold"
+        >
+          {{ field.label || field.name }}
+        </label>
+        <div
+          v-if="field.canReadRecordValue"
+          class="value"
+        >
           <field-viewer
-            v-bind="$props"
+            v-bind="{ ...$props, field }"
             value-only
           />
         </div>
-        <i v-else>{{ $t('field.noPermission') }}</i>
+        <i
+          v-else
+          class="text-secondary"
+        >
+          {{ $t('field.noPermission') }}
+        </i>
       </div>
     </div>
     <div
@@ -59,25 +71,3 @@ export default {
 
 }
 </script>
-<style scoped lang="scss">
-
-.record {
-  .field {
-    label {
-      font-weight: 900;
-      display: block;
-      font-size: 12px;
-      font-family: $bold;
-    }
-
-    div {
-      min-width: 200px;
-      display: inline-block;
-    }
-
-    i {
-      color: $secondary;
-    }
-  }
-}
-</style>

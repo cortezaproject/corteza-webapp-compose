@@ -57,7 +57,6 @@ function GetComponent ({ block, mode = defaultMode }) {
   const { kind } = block
   for (mode of uniq([capitalize(mode), defaultMode])) {
     const cmpName = kind + mode
-    console.log({ cmpName })
     if (Object.hasOwnProperty.call(Registry, cmpName)) {
       return Registry[cmpName]
     }
