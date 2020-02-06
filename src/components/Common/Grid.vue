@@ -1,7 +1,8 @@
 <template>
   <div
     v-if="grid.length"
-    class="w-100 p-2 pb-5 vh-100 overflow-auto flex-grow-1"
+    class="w-100 p-2 pb-5 mb-5 vh-100 overflow-auto flex-grow-1"
+    :class="{ editable: !!editable }"
   >
     <grid-layout
       class="mb-5"
@@ -20,6 +21,7 @@
       <grid-item
         v-for="(item, index) in grid"
         :key="item.i"
+        class="grid-item"
         ref="items"
         v-bind="{ ...item }"
       >
@@ -122,3 +124,11 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+.editable {
+  .grid-item {
+    background-image: linear-gradient(45deg, #f3f3f5 25%, #ffffff 25%, #ffffff 50%, #f3f3f5 50%, #f3f3f5 75%, #ffffff 75%, #ffffff 100%);
+    background-size: 28.28px 28.28px;
+  }
+}
+</style>

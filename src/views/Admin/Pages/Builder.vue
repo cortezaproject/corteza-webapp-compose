@@ -1,18 +1,47 @@
 <template>
     <div class="d-flex" v-if="page">
-      <grid :blocks.sync="page.blocks" editable>
+      <grid
+        :blocks.sync="page.blocks"
+        editable
+      >
         <template
           slot-scope="{ boundingRect, block, index }"
         >
-          <div class="text-right fixed-top mt-1">
-            <a class="pr-1 text-dark" @click="editBlock(block, index)">
-              <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
-            </a>
-            <a class="pr-1"  @click="page.blocks.splice(index,1)">X</a>
+          <div
+            class="h-100 editable-block"
+          >
+            <div
+              class="toolbox border-0 p-2 text-light"
+            >
+              <b-button
+                class="p-1 text-light"
+                variant="link"
+                @click="editBlock(block, index)"
+              >
+                <font-awesome-icon
+                  :icon="['far', 'edit']"
+                />
+              </b-button>
+
+              <c-input-confirm
+                @confirmed="page.blocks.splice(index,1)"
+                class="p-1"
+              >
+                <font-awesome-icon
+                  :icon="['far', 'trash-alt']"
+                />
+                <template v-slot:yes>
+                  {{ $t('general.label.yes') }}
+                </template>
+                <template v-slot:no>
+                  {{ $t('general.label.no') }}
+                </template>
+              </c-input-confirm>
+            </div>
+            <page-block
+              v-bind="{ ...$attrs, ...$props, page, block, boundingRect, blockIndex: index }"
+            />
           </div>
-          <page-block
-            v-bind="{ ...$attrs, ...$props, page, block, boundingRect, blockIndex: index }"
-          />
         </template>
       </grid>
 
@@ -63,12 +92,15 @@
         />
       </b-modal>
 
-      <editor-toolbar :back-link="{name: 'admin.pages'}"
-                      :hideDelete="!page.canDeletePage"
-                      :hideSave="!page.canUpdatePage"
-                      @save="handleSave()"
-                      @delete="handleDeletePage"
-                      @saveAndClose="handleSave({ closeOnSuccess: true })">
+      <editor-toolbar
+        class=""
+        :back-link="{name: 'admin.pages'}"
+        :hideDelete="!page.canDeletePage"
+        :hideSave="!page.canUpdatePage"
+        @save="handleSave()"
+        @delete="handleDeletePage"
+        @saveAndClose="handleSave({ closeOnSuccess: true })"
+      >
         <b-button
           v-if="page.canUpdatePage"
           variant="outline-secondary"
@@ -96,6 +128,8 @@ import PageBlock from 'corteza-webapp-compose/src/components/PageBlocks'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import { compose } from '@cortezaproject/corteza-js'
 import Configurator from 'corteza-webapp-compose/src/components/PageBlocks/Configurator'
+import { components } from '@cortezaproject/corteza-vue'
+const { CInputConfirm } = components
 
 export default {
   components: {
@@ -104,6 +138,7 @@ export default {
     NewBlockSelector,
     PageBlock,
     EditorToolbar,
+    CInputConfirm,
   },
 
   props: {
@@ -201,3 +236,18 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+div.toolbox {
+  position: absolute;
+  background-color: $dark;
+  right: 0;
+  top: 0;
+  z-index: 10000;
+  border-bottom-left-radius: 10px;
+  opacity: .2;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+</style>
