@@ -1,14 +1,15 @@
 import Vue from 'vue'
 import { createLocalVue, shallowMount as sm, mount as rm } from '@vue/test-utils'
 import alertMixin from 'corteza-webapp-compose/src/mixins/alert'
-import { Settings } from 'corteza-webapp-common/src/plugins/settings'
+// import { plugins } from '@cortezaproject/corteza-vue'
 import sinon from 'sinon'
+import BootstrapVue from 'bootstrap-vue'
 
 Vue.config.ignoredElements = [
   'font-awesome-icon',
-  // Ignore all bootstrap elements
-  /^b-/,
 ]
+
+Vue.use(BootstrapVue)
 
 export const writeableWindowLocation = ({ path: value = '/' } = {}) => Object.defineProperty(window, 'location', { writable: true, value })
 
@@ -28,7 +29,7 @@ const mounter = (component, { localVue, mocks = {}, stubs = [], ...options } = {
       $t: (e) => e,
       $SystemAPI: {},
       $ComposeAPI: {},
-      $Settings: new Settings(),
+      // $Settings: plugins.Settings(),
       $s: sinon.stub().resolves(undefined),
       $route: { query: { fullPath: '', token: undefined } },
       ...mocks,

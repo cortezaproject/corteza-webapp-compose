@@ -3,6 +3,7 @@ import { expect } from 'chai'
 import FieldPicker from 'corteza-webapp-compose/src/components/Public/Record/Exporter/FieldPicker'
 import { shallowMount } from 'corteza-webapp-compose/tests/lib/helpers'
 import moment from 'moment'
+import { compose } from '@cortezaproject/corteza-js'
 
 describe('components/Public/Record/Exporter/FieldPicker.vue', () => {
   const mm = () => moment("2019-08-22")
