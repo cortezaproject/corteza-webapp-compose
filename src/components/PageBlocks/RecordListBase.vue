@@ -3,8 +3,7 @@
     <template #toolbar>
       <b-container
         ref="header"
-        v-if="true"
-        class="m-0 p-2 pb-0"
+        class="m-0 px-2 pt-2"
         fluid
       >
         <b-row
@@ -52,8 +51,47 @@
               :placeholder="$t('general.label.search')" />
 
           </b-col>
-
         </b-row>
+        <transition
+          name="slide"
+          v-if="options.selectable"
+        >
+          <b-row
+            v-show="selected.length > 0"
+            class="text-light bg-secondary p-2 mt-2"
+          >
+            <b-col
+            >
+              {{ $t('block.recordList.selected', { count: selected.length, total: filter.count }) }}
+              <a
+                class="text-light"
+                href="#"
+                @click.prevent="handleSelectAllOnPage({ isChecked: false })"
+              >
+                ({{ $t('block.recordList.cancelSelection') }})
+              </a>
+            </b-col>
+            <b-col
+              class="text-right"
+            >
+              <c-input-confirm
+                @confirmed="handleDeleteSelectedRecords()"
+                class="confirmation-small"
+                variant="link-light"
+              >
+                <font-awesome-icon
+                  :icon="['far', 'trash-alt']"
+                />
+                <template v-slot:yes>
+                  {{ $t('general.label.yes') }}
+                </template>
+                <template v-slot:no>
+                  {{ $t('general.label.no') }}
+                </template>
+              </c-input-confirm>
+            </b-col>
+          </b-row>
+        </transition>
       </b-container>
     </template>
     <template #default>
@@ -64,12 +102,14 @@
         :sticky-header="true"
         :show-empty="true"
         :small="false"
+        :selectable="options.selectable"
+        :select-mode="options.selectMode"
         class="mh-100 m-0 mt-0 mb-2"
         :items="records"
         :fields="fields"
         no-sort-reset
-        @row-clicked="handleRowClick"
         @sort-changed="handleSort"
+        @row-selected="handleRowSelected"
       >
         <template #head()="{ field }">
           {{ field.label }}
@@ -120,6 +160,18 @@
             </router-link>
           </div>
         </template>
+        <template #head(selectable)>
+          <b-checkbox
+            :checked="areAllRowsSelected"
+            @change="handleSelectAllOnPage({ isChecked: $event })"
+          />
+        </template>
+        <template #cell(selectable)="{ item, index, rowSelected }">
+          <b-checkbox
+            :checked="rowSelected"
+            @change="handleRowSelectCheckbox({ record: item, index, isChecked: $event })"
+          />
+        </template>
         <template #table-busy>
           <div class="text-center m-5">
             <div>
@@ -145,8 +197,8 @@
           no-gutters
         >
           <b-col
-            class="pt-1"
-            cols="4"
+            class="pt-1 text-nowrap text-truncate"
+            cols="8"
           >
             <span
               v-if="filter.count > filter.perPage"
@@ -160,7 +212,7 @@
             </span>
           </b-col>
           <b-col
-            cols="8"
+            cols="4"
           >
             <b-pagination
               v-if="filter.count > filter.perPage"
@@ -179,15 +231,16 @@
   </wrap>
 </template>
 <script>
+import { throttle } from 'lodash'
 import { mapGetters } from 'vuex'
 import base from './base'
 import FieldViewer from 'corteza-webapp-compose/src/components/ModuleFields/Viewer'
 import ExporterModal from 'corteza-webapp-compose/src/components/Public/Record/Exporter'
 import ImporterModal from 'corteza-webapp-compose/src/components/Public/Record/Importer'
 import { compose } from '@cortezaproject/corteza-js'
-import { url } from '@cortezaproject/corteza-vue'
 import users from 'corteza-webapp-compose/src/mixins/users'
-import { throttle } from 'lodash'
+import { url, components } from '@cortezaproject/corteza-vue'
+const { CInputConfirm } = components
 
 // Helper to determine if and value for given bool query
 // == is intentional
@@ -208,6 +261,7 @@ export default {
     FieldViewer,
     ExporterModal,
     ImporterModal,
+    CInputConfirm,
   },
 
   extends: base,
@@ -233,6 +287,8 @@ export default {
         perPage: 20,
         count: 0,
       },
+
+      selected: [],
     }
   },
 
@@ -240,6 +296,14 @@ export default {
     ...mapGetters({
       getModuleByID: 'module/getByID',
     }),
+
+    /**
+     * Check if all rows are selected
+     */
+    areAllRowsSelected () {
+      const { count, perPage } = this.filter
+      return this.selected.length === (count < perPage ? count : perPage)
+    },
 
     pagingStats () {
       const { page, perPage, count } = this.filter
@@ -272,11 +336,22 @@ export default {
           label: mf.label || mf.name,
           moduleField: mf,
           sortable: true,
+          tdClass: 'record-value',
         }))
 
+      const pre = []
+      const post = []
+
+      if (this.options.selectable) {
+        pre.push({ key: 'selectable', label: '', tdClass: 'selector', thClass: 'selector' })
+      }
+
+      post.push({ key: 'actions', label: '', tdClass: 'actions' })
+
       return [
+        ...pre,
         ...configured,
-        { key: 'actions', label: '' },
+        ...post,
       ]
     },
   },
@@ -450,7 +525,7 @@ export default {
       return query
     },
 
-    handleRowClick ({ recordID }) {
+    handleCellClick ({ recordID }) {
       const { pageID } = this.options
       this.$router.push({ name: 'page.record', params: { pageID, recordID }, query: null })
     },
@@ -458,6 +533,44 @@ export default {
     handleSort ({ sortBy, sortDesc = false }) {
       this.filter.sort = `${sortBy} ${sortDesc ? 'DESC' : ''}`.trim()
       this.$refs.table.refresh()
+    },
+
+    handleSelectAllOnPage ({ isChecked }) {
+      if (isChecked) {
+        this.$refs.table.selectAllRows()
+      } else {
+        this.$refs.table.clearSelected()
+      }
+    },
+
+    handleRowSelectCheckbox ({ index, isChecked }) {
+      if (isChecked) {
+        this.$refs.table.selectRow(index)
+      } else {
+        this.$refs.table.unselectRow(index)
+      }
+    },
+
+    handleRowSelected (selected) {
+      this.selected = selected
+    },
+
+    handleDeleteSelectedRecords () {
+      if (this.selected.length === 0) {
+        return
+      }
+
+      const { moduleID, namespaceID } = this.selected[0]
+
+      // Assuming all records are of same module & namespace
+      const recordIDs = this.selected
+        .filter(r => r.moduleID === moduleID && r.namespaceID === namespaceID)
+        .map(({ recordID }) => recordID)
+
+      this.$ComposeAPI
+        .recordBulkDelete({ moduleID, namespaceID, recordIDs })
+        .then(() => { this.$refs.table.refresh() })
+        .catch(this.stdErr)
     },
 
     /**
@@ -495,24 +608,39 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/deep/ .VuePagination {
-  .pagination {
-    float: right;
+/deep/ table {
+  tbody {
+    tr {
+      td.record-value {
+        cursor: pointer;
+      }
 
-    .VuePagination__pagination-item-prev-chunk,
-    .VuePagination__pagination-item-next-chunk {
-      display: none;
+      th.selector, td.selector {
+        width: 25px !important;
+      }
     }
-  }
-}
-
-table {
-  tr {
-    cursor: pointer;
   }
 }
 
 input {
   width: 200px;
+}
+
+.slide-enter-active {
+  transition-duration: 0.1s;
+  transition-timing-function: ease-in;
+}
+.slide-leave-active {
+  transition-duration: 0.1s;
+  transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+.slide-enter-to, .slide-leave {
+   max-height: available;
+   overflow: hidden;
+}
+
+.slide-enter, .slide-leave-to {
+   overflow: hidden;
+   max-height: 0;
 }
 </style>

@@ -65,6 +65,11 @@
         {{ $t('block.recordList.export.allow') }}
       </b-form-checkbox>
     </b-form-group>
+    <b-form-group horizontal :label-cols="3" breakpoint="md" class="mt-4">
+      <b-form-checkbox v-model="options.selectable" class="mt-2">
+        {{ $t('block.recordList.selectable') }}
+      </b-form-checkbox>
+    </b-form-group>
   </b-tab>
 </template>
 <script>

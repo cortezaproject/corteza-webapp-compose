@@ -87,7 +87,7 @@ export default {
       },
       preview: {
         label: 'Record Organizer block for module {{0}}. Label field {{1}}, Description field {{2}}. Value setting field: {{3}}, Sorted by position field: {{4}}.',
-        moduleNotSelected: 'Record Organizer block. Module not selected.',
+        moduleNotSelected: 'Record Organizer module not selected.',
       },
     },
     file: {
@@ -159,6 +159,9 @@ export default {
       pagination: 'Showing {{from}} to {{to}} of {{count}} records',
       paginationSingle: 'One record',
       paginationSingle_plural: '{{count}} records',
+      selected: '{{count}} of {{total}} records selected',
+      selectable: 'Enable record selection',
+      cancelSelection: 'cancel',
       record: {
         newLabel: 'New records',
         hideAddButton: 'Hide add record button',
