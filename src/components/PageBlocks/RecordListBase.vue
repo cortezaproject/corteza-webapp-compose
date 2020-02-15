@@ -75,24 +75,20 @@
           {{ field.label }}
         </template>
         <template #cell()="{ item: r, field }">
-          <div
-            @click.exact="handleCellClick(r)"
+          <field-viewer
+            v-if="field.moduleField.canReadRecordValue"
+            :field="field.moduleField"
+            value-only
+            :record="r"
+            :module="module"
+            :namespace="namespace"
+          />
+          <i
+            v-else
+            class="text-secondary"
           >
-            <field-viewer
-              v-if="field.moduleField.canReadRecordValue"
-              :field="field.moduleField"
-              value-only
-              :record="r"
-              :module="module"
-              :namespace="namespace"
-            />
-            <i
-              v-else
-              class="text-secondary"
-            >
-              {{ $t('field.noPermission') }}
-            </i>
-          </div>
+            {{ $t('field.noPermission') }}
+          </i>
         </template>
         <template #cell(actions)="{ item: r }">
           <div class="text-right">
