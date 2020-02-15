@@ -6,12 +6,22 @@
       {{ frontendVersion }}
     </small>
     <div v-if="loaded" class="vh-100 overflow-auto flex-grow-1">
-      <h1 class="text-center mt-4">
-        {{ $t('namespace.title') }}
-        <c-permissions-button v-if="canGrant" resource="compose:namespace:*" link />
-      </h1>
+      <b-container class="pt-2 pb-5">
+        <b-row>
+          <b-col>
+            <div
+             class="float-right pt-2"
+            >
+              <c-permissions-button v-if="canGrant" resource="compose:namespace:*" link />
+            </div>
+            <h1
+              class="text-center"
+            >
+              {{ $t('namespace.title') }}
+            </h1>
+          </b-col>
+        </b-row>
 
-      <b-container class="pb-5">
         <b-row>
           <div class="col-md-6 col-lg-4 col-12 mt-4" v-for="(n) in namespaces" :key="n.namespaceID">
             <div v-if="n.enabled">
