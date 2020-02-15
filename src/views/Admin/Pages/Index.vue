@@ -9,7 +9,7 @@
                 <b-form @submit.prevent="handleAddPageFormSubmit">
                   <b-form-group v-if="namespace.canCreatePage" :label="$t('page.newLabel')">
                     <b-input-group >
-                      <input required type="text" v-model="addPageFormData.title" class="form-control" id="name" :placeholder="$t('page.newPlaceholder')" />
+                      <input required type="text" v-model="page.title" class="form-control" id="name" :placeholder="$t('page.newPlaceholder')" />
                       <b-input-group-append>
                         <b-button type="submit" variant="dark">{{ $t('general.label.create') }}</b-button>
                       </b-input-group-append>
@@ -62,10 +62,7 @@ export default {
   data () {
     return {
       tree: [],
-      addPageFormData: {
-        title: '',
-        blocks: [],
-      },
+      page: new compose.Page({ visible: true }),
     }
   },
 
@@ -87,8 +84,8 @@ export default {
 
     handleAddPageFormSubmit () {
       const { namespaceID } = this.namespace
-      this.createPage({ namespaceID, ...this.addPageFormData }).then((page) => {
-        this.$router.push({ name: 'admin.pages.edit', params: { pageID: page.pageID } })
+      this.createPage({ ...this.page, namespaceID }).then(({ pageID }) => {
+        this.$router.push({ name: 'admin.pages.edit', params: { pageID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))
     },
 
