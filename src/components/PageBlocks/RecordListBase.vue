@@ -263,7 +263,7 @@ export default {
         .filterFields(this.options.fields)
         .map(mf => ({
           key: mf.name,
-          label: mf.label,
+          label: mf.label || mf.name,
           moduleField: mf,
           sortable: true,
         }))
