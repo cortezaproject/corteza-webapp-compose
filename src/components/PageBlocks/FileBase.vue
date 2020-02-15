@@ -8,7 +8,7 @@
 </template>
 <script>
 import base from './base'
-import ListLoader from 'corteza-webapp-compose/src/components/Public/Page/Attachment/ListLoader'
+import ListLoader from '../Public/Page/Attachment/ListLoader'
 
 export default {
   components: {

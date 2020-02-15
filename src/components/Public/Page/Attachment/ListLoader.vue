@@ -12,6 +12,7 @@
             </div>
             <div :class="{'col-sm-9': enableOrder, 'col-sm-10': !enableOrder}">
               <attachment-link :attachment="a" />
+              &nbsp;
               <i18next path="general.label.attachmentFileInfo" tag="label">
                 <span>{{ size(a) }}</span>
                 <span>{{ uploadedAt(a) }}</span>
@@ -45,7 +46,10 @@
     </div>
 
     <div v-else-if="mode === 'single' || 'gallery'" class="single gallery">
-      <div v-for="(a) in attachments" :key="a.attachmentID" class="mb-2">
+      <div
+        v-for="(a) in attachments" :key="a.attachmentID"
+        class="m-2"
+      >
         <c-preview-inline
           v-if="canPreview(a)"
           @openPreview="openLightbox({ ...a, ...$event })"
@@ -63,7 +67,14 @@
             title="Open bookmarks"
           ></font-awesome-icon>
         </div>
-        <attachment-link :attachment="a" />
+
+        <div
+          class="text-center m-1"
+        >
+          <attachment-link
+            :attachment="a"
+          />
+        </div>
       </div>
     </div>
   </div>
