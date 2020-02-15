@@ -543,7 +543,6 @@ export default {
       edit: 'Edit',
       save: 'Save',
       saveAndClose: 'Save and close',
-      saveAndPreview: 'Save and Preview',
       add: 'Add',
       addNew: 'Add new',
       addValue: 'Add new value',

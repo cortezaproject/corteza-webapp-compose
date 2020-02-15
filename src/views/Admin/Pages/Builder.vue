@@ -108,14 +108,6 @@
           v-b-modal.createBlockSelector>
           + {{ $t('page.build.addBlock') }}
         </b-button>
-        <b-button
-          v-if="page.canUpdatePage"
-          variant="outline-secondary"
-          class="mr-1"
-          @click.prevent="handleSave({ previewOnSuccess: true })"
-        >
-          {{ $t('general.label.saveAndPreview') }}
-        </b-button>
       </editor-toolbar>
     </div>
 </template>
