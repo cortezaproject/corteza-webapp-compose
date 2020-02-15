@@ -11,7 +11,10 @@
                           :options="modes">
       </b-form-radio-group>
     </b-form-group>
-    <uploader :endpoint="endpoint" @uploaded="appendAttachment" />
+    <uploader
+      :endpoint="endpoint"
+      @uploaded="appendAttachment"
+    />
     <list-loader kind="page"
                  enable-delete
                  :namespace="namespace"

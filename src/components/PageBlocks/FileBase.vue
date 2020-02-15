@@ -1,9 +1,18 @@
 <template>
-  <wrap v-bind="$props" v-on="$listeners">
-    <list-loader kind="page"
-                 :set="options.attachments"
-                 :namespace="namespace"
-                 :mode="options.mode"></list-loader>
+  <wrap
+    v-bind="$props"
+    v-on="$listeners"
+  >
+    <div
+      class="p-2"
+    >
+      <list-loader
+        kind="page"
+        :set="options.attachments"
+        :namespace="namespace"
+        :mode="options.mode"
+      />
+    </div>
   </wrap>
 </template>
 <script>
