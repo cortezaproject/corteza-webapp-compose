@@ -77,7 +77,7 @@ export default {
 
   computed: {
     handleState () {
-      return handleState(this.page)
+      return handleState(this.page.handle)
     },
   },
 

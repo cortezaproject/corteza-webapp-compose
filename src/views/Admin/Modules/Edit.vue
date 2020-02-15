@@ -201,7 +201,7 @@ export default {
     }),
 
     handleState () {
-      return handleState(this.module)
+      return handleState(this.module.handle)
     },
 
     fieldsValid () {

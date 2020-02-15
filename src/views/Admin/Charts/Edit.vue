@@ -115,7 +115,7 @@ export default {
     },
 
     handleState () {
-      return handleState(this.page)
+      return handleState(this.chart.handle)
     },
   },
 
