@@ -311,15 +311,9 @@ export default {
         required: 'Required field',
         private: 'Sensitive data',
       },
-      step: {
-        recordList: {
-          create: 'Create Record List',
-          view: 'Record List Page',
-        },
-        recordPage: {
-          create: 'Create Record Page',
-          view: 'Module Record Page',
-        },
+      steps: {
+        recordPage: 'Record page',
+        recordList: 'Page with record list',
       },
     },
   },

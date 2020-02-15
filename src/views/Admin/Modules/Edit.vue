@@ -66,49 +66,50 @@
                 <div class="d-flex flex-column w-50">
                   <b-row align-v="center" class="text-center justify-content-between mt-4">
                     <b-col>
-                      <circle-step stepNumber="1" :done="!!recordListPage" small>
-                        <b-button v-if="!recordListPage"
-                                  @click="handleRecordListCreation"
-                                  :disabled="!namespace.canCreatePage"
-                                  variant="outline-primary">
-
-                          {{ $t('module.edit.step.recordList.create') }}
-                        </b-button>
-                        <c-input-confirm
-                          v-else
-                          @confirmed="toRecordList('view')"
-                          @canceled="toRecordList('edit')"
+                      <circle-step
+                        stepNumber="1"
+                        :done="!!recordPage"
+                        small>
+                        <b-button
+                          v-if="recordPage"
                           :disabled="!namespace.canManageNamespace"
-                          :borderless="false"
-                          variant="primary"
-                          variantOk="primary"
-                          variantCancel="outline-primary"
-                          size="md"
-                          sizeConfirm="md"
+                          :to="{ name: 'admin.pages.builder', params: { pageID: recordPage.pageID } }"
+                          variant="outline-secondary"
                         >
-                          {{ $t('module.edit.step.recordList.view') }}
-                          <template v-slot:yes>
-                            {{ $t('general.label.view') }}
-                          </template>
-                          <template v-slot:no>
-                            {{ $t('general.label.edit') }}
-                          </template>
-                        </c-input-confirm>
+                          {{ $t('module.edit.steps.recordPage') }}
+                        </b-button>
+                        <b-button
+                          v-else
+                          @click="handleRecordPageCreation"
+                          variant="outline-secondary"
+                        >
+                          {{ $t('module.edit.steps.recordPage') }}
+                        </b-button>
                       </circle-step>
                     </b-col>
                     <b-col>
                       <hr />
                     </b-col>
                     <b-col>
-                      <circle-step stepNumber="2" :done="!!recordPage" :disabled="!recordListPage" small>
-                        <b-button v-if="!recordPage" @click="handleRecordPageCreation" variant="outline-primary">
-                          {{ $t('module.edit.step.recordPage.create') }}
+                      <circle-step
+                        stepNumber="2"
+                        :done="!!recordListPage"
+                        small>
+                        <b-button
+                          v-if="recordListPage"
+                          :disabled="!namespace.canManageNamespace"
+                          :to="{ name: 'admin.pages.builder', params: { pageID: recordListPage.pageID } }"
+                          variant="outline-secondary"
+                        >
+                          {{ $t('module.edit.steps.recordList') }}
                         </b-button>
-                        <router-link v-else :to="{ name: 'admin.pages.builder', params: { pageID: recordPage.pageID } }">
-                          <b-button :disabled="!namespace.canManageNamespace" variant="primary">
-                            {{ $t('module.edit.step.recordPage.view') }}
-                          </b-button>
-                        </router-link>
+                        <b-button
+                          v-else
+                          @click="handleRecordListCreation"
+                          :disabled="!namespace.canCreatePage || !recordPage"
+                          variant="outline-secondary">
+                          {{ $t('module.edit.steps.recordList') }}
+                        </b-button>
                       </circle-step>
                     </b-col>
                   </b-row>
@@ -158,8 +159,6 @@ import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToo
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 import CircleStep from 'corteza-webapp-compose/src/components/Common/CircleStep'
-import { components } from '@cortezaproject/corteza-vue'
-const { CInputConfirm } = components
 
 export default {
   components: {
@@ -170,7 +169,6 @@ export default {
     EditorToolbar,
     Export,
     CircleStep,
-    CInputConfirm,
   },
 
   props: {
@@ -191,7 +189,6 @@ export default {
       module: new compose.Module(),
       hasRecords: false,
       processing: false,
-      recordList: null,
     }
   },
 
@@ -292,48 +289,51 @@ export default {
       }).catch(this.defaultErrorHandler(this.$t('notification.module.deleteFailed')))
     },
 
-    handleRecordPageCreation () {
+    async createRecordPage () {
+      if (this.recordPage) {
+        return this.recordPage
+      }
+
       const { name, moduleID } = this.module
       const { namespaceID } = this.namespace
 
-      const payload = {
+      return this.createPage({
         namespaceID,
         title: `${this.$t('module.forModule.recordPage')} "${name || moduleID}"`,
         moduleID,
-        selfID: this.recordListPage.pageID,
         blocks: [],
-      }
+      })
+    },
 
-      this.createPage(payload).then(page => {
+    handleRecordPageCreation () {
+      this.createRecordPage().then(page => {
         this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.createFailed')))
     },
 
     handleRecordListCreation () {
-      const { name, moduleID } = this.module
-      const { namespaceID } = this.namespace
+      this.createRecordPage().then(recordPage => {
+        const { namespaceID } = this.namespace
+        const { name, moduleID } = this.module
 
-      const payload = {
-        namespaceID,
-        title: `${this.$t('module.forModule.recordListPage')} "${name || moduleID}"`,
-        selfID: '0',
-        blocks: [],
-      }
+        const recListBlock = new compose.PageBlockRecordList({
+          xywh: [0, 0, 12, 16],
+          options: {
+            moduleID,
+            pageID: recordPage.pageID,
+            fields: [],
+          },
+        })
 
-      this.createPage(payload).then(page => {
-        this.recordList.pageID = page.pageID
-        this.recordList.fields = []
-        this.recordList.title = `${this.$t('module.forModule.recordList')} "${name || moduleID}"`
-        const blocks = [
-          new compose.PageBlockRecordList({
-            xywh: [0, 0, 12, 16],
-            options: this.recordList,
-          }),
-        ]
+        const page = new compose.Page({
+          title: `${this.$t('module.forModule.recordList')} "${name || moduleID}"`,
+          namespaceID,
+          blocks: [
+            recListBlock,
+          ],
+        })
 
-        page = new compose.Page({ ...page, blocks })
-
-        this.updatePage(page).then((page) => {
+        this.createPage(page).then((page) => {
           this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
         })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.createFailed')))
@@ -341,15 +341,6 @@ export default {
 
     redirect () {
       this.$router.push({ name: 'admin.modules' })
-    },
-
-    toRecordList (to) {
-      const { pageID } = this.recordListPage || {}
-      if (to === 'view') {
-        this.$router.push({ name: 'page', params: { pageID: pageID } })
-      } else if (to === 'edit') {
-        this.$router.push({ name: 'admin.pages.builder', params: { pageID: pageID } })
-      }
     },
   },
 }
