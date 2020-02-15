@@ -209,7 +209,6 @@ export default {
     createNewRecord () {
       const { positionField, groupField } = this.options
 
-      console.log(this.roRecordPage)
       if (!this.roRecordPage) {
         // can not create record without a record page
         return

@@ -287,7 +287,6 @@ export default {
     },
 
     query: throttle(function (e) {
-      // console.log('throttled', v)
       this.filter.query = this.queryToFilter(this.query)
       this.$refs.table.refresh()
     }, 500),

@@ -87,8 +87,6 @@ export default {
     if (this.options.feeds.length === 0) {
       this.options.feeds = []
     }
-
-    console.log(JSON.stringify(this.options.feeds))
   },
 
   methods: {
