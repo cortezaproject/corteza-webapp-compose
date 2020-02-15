@@ -11,7 +11,7 @@
           no-gutters
           class="m-0 p-0"
         >
-          <b-col
+         <b-col
             cols="6"
           >
             <template v-if="!options.hideAddButton && recordListModule.canCreateRecord">
@@ -45,10 +45,10 @@
           >
             <b-input
               v-if="!options.hideSearch"
-              @keyup="handleQueryThrottled"
               v-model="query"
               class="float-right mw-100 mb-1"
               size="sm"
+              type="search"
               :placeholder="$t('general.label.search')" />
 
           </b-col>
@@ -187,7 +187,7 @@ import ImporterModal from 'corteza-webapp-compose/src/components/Public/Record/I
 import { compose } from '@cortezaproject/corteza-js'
 import { url } from '@cortezaproject/corteza-vue'
 import users from 'corteza-webapp-compose/src/mixins/users'
-import _ from 'lodash'
+import { throttle } from 'lodash'
 
 // Helper to determine if and value for given bool query
 // == is intentional
@@ -218,11 +218,17 @@ export default {
 
   data () {
     return {
+      // prefilter from block config
       prefilter: null,
-      sortColumn: '',
+
+      // raw query string used to build final filter
       query: null,
 
+      // used to construct request parameters
+      // AND to store response params
       filter: {
+        filter: '',
+        sort: '',
         page: 1,
         perPage: 20,
         count: 0,
@@ -279,6 +285,12 @@ export default {
     'filter.page' () {
       this.$refs.table.refresh()
     },
+
+    query: throttle(function (e) {
+      // console.log('throttled', v)
+      this.filter.query = this.queryToFilter(this.query)
+      this.$refs.table.refresh()
+    }, 500),
   },
 
   created () {
@@ -286,6 +298,8 @@ export default {
   },
 
   methods: {
+    // Sanitizes record list config and
+    // prepares prefilter
     prepRecordList () {
       // Validate props
       if (!this.options.moduleID || !this.options.pageID) {
@@ -368,7 +382,7 @@ export default {
       }
 
       if (filterRaw.includeQuery) {
-        const queryF = this.makeQuery(filterRaw.query, this.recordListModule.filterFields(this.options.fields))
+        const queryF = this.queryToFilter(filterRaw.query)
         if (e.filters) {
           e.filters = `(${e.filters}) AND `
         } else {
@@ -389,50 +403,52 @@ export default {
       }))
     },
 
-    handleQueryThrottled: _.throttle(function (e) { this.handleQuery(e) }, 500),
+    // Takes fields and prefilter and merges it query expression over all columns we're showing
+    // ie: Return records that have strings in columns (fields) we're showing that start with <query> in case
+    //     of text or are exactly the same in case of numbers
+    queryToFilter (query = '') {
+      query = (query || '').trim()
 
-    makeQuery (q = '', fields) {
-      let filter
-      q = (q || '').trim()
-
-      if (q) {
-        const numQuery = Number.parseFloat(q)
-
-        // To SQL string
-        const strQuery = q
-          .replace(/\*+$/, '')
-          .replace(/\*/g, '%') + '%'
-
-        const boolQuery = toBoolean(q)
-
-        // When searching, always reset filter with prefilter + query
-        filter = fields.map(qf => {
-          if (qf.kind === 'Number' && !isNaN(numQuery)) {
-            return `${qf.name} = ${numQuery}`
-          }
-
-          if (qf.kind === 'Bool' && boolQuery !== undefined) {
-            if (boolQuery) {
-              return `${qf.name} = 'true'`
-            } else {
-              return `${qf.name} = 'false' OR ${qf.name} IS NULL`
-            }
-          }
-
-          if (['String', 'DateTime', 'Select', 'Url', 'Email'].includes(qf.kind)) {
-            return `${qf.name} LIKE '${strQuery}'`
-          }
-        }).filter(q => !!q)
-          .join(' OR ')
-
-        if (this.prefilter) {
-          filter = `(${this.prefilter}) AND (${filter})`
-        }
-      } else {
-        filter = this.prefilter || ''
+      if (!query) {
+        return this.prefilter || ''
       }
 
-      return filter
+      const numQuery = Number.parseFloat(query)
+
+      // To SQL string
+      const strQuery = query
+        // Remove all trailing * and %
+        .replace(/[%*]+$/, '')
+        // replace * with %
+        .replace(/[*]+/g, '%') + '%'
+
+      const boolQuery = toBoolean(query)
+
+      // When searching, always reset filter with prefilter + query
+      query = this.recordListModule.filterFields(this.options.fields).map(qf => {
+        if (qf.kind === 'Number' && !isNaN(numQuery)) {
+          return `${qf.name} = ${numQuery}`
+        }
+
+        if (qf.kind === 'Bool' && boolQuery !== undefined) {
+          if (boolQuery) {
+            return `${qf.name} = 'true'`
+          } else {
+            return `${qf.name} = 'false' OR ${qf.name} IS NULL`
+          }
+        }
+
+        if (['String', 'DateTime', 'Select', 'Url', 'Email'].includes(qf.kind)) {
+          return `${qf.name} LIKE '${strQuery}'`
+        }
+      }).filter(q => !!q)
+        .join(' OR ')
+
+      if (this.prefilter) {
+        return `(${this.prefilter}) AND (${query})`
+      }
+
+      return query
     },
 
     handleRowClick ({ recordID }) {
@@ -456,7 +472,9 @@ export default {
         throw Error('Module incompatible, module mismatch')
       }
 
-      return this.$ComposeAPI.recordList({ ...this.recordListModule, ...this.filter })
+      const filter = this.queryToFilter(this.query)
+
+      return this.$ComposeAPI.recordList({ ...this.recordListModule, ...this.filter, filter })
         .then(({ set, filter }) => {
           const records = set.map(r => Object.freeze(new compose.Record(r, this.recordListModule)))
 
