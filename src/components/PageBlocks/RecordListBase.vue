@@ -61,6 +61,8 @@
             class="text-light bg-secondary p-2 mt-2"
           >
             <b-col
+              cols="4"
+              class="pt-1 text-nowrap"
             >
               {{ $t('block.recordList.selected', { count: selected.length, total: filter.count }) }}
               <a
@@ -73,7 +75,16 @@
             </b-col>
             <b-col
               class="text-right"
+              cols="8"
             >
+              <automation-buttons
+                class="d-inline m-0"
+                :buttons="options.selectionButtons"
+                :module="recordListModule"
+                :extra-event-args="{ selected, filter }"
+                v-bind="$props"
+                @refresh="refresh()"
+              />
               <c-input-confirm
                 @confirmed="handleDeleteSelectedRecords()"
                 class="confirmation-small"
@@ -162,6 +173,7 @@
         </template>
         <template #head(selectable)>
           <b-checkbox
+            :disabled="pagingStats.count === 0"
             :checked="areAllRowsSelected"
             @change="handleSelectAllOnPage({ isChecked: $event })"
           />
@@ -237,6 +249,7 @@ import base from './base'
 import FieldViewer from 'corteza-webapp-compose/src/components/ModuleFields/Viewer'
 import ExporterModal from 'corteza-webapp-compose/src/components/Public/Record/Exporter'
 import ImporterModal from 'corteza-webapp-compose/src/components/Public/Record/Importer'
+import AutomationButtons from './Shared/AutomationButtons'
 import { compose } from '@cortezaproject/corteza-js'
 import users from 'corteza-webapp-compose/src/mixins/users'
 import { url, components } from '@cortezaproject/corteza-vue'
@@ -262,6 +275,7 @@ export default {
     ExporterModal,
     ImporterModal,
     CInputConfirm,
+    AutomationButtons,
   },
 
   extends: base,
@@ -358,12 +372,12 @@ export default {
 
   watch: {
     'filter.page' () {
-      this.$refs.table.refresh()
+      this.refresh()
     },
 
     query: throttle(function (e) {
       this.filter.query = this.queryToFilter(this.query)
-      this.$refs.table.refresh()
+      this.refresh()
     }, 500),
   },
 
@@ -532,7 +546,7 @@ export default {
 
     handleSort ({ sortBy, sortDesc = false }) {
       this.filter.sort = `${sortBy} ${sortDesc ? 'DESC' : ''}`.trim()
-      this.$refs.table.refresh()
+      this.refresh()
     },
 
     handleSelectAllOnPage ({ isChecked }) {
@@ -569,8 +583,12 @@ export default {
 
       this.$ComposeAPI
         .recordBulkDelete({ moduleID, namespaceID, recordIDs })
-        .then(() => { this.$refs.table.refresh() })
+        .then(() => { this.refresh() })
         .catch(this.stdErr)
+    },
+
+    refresh () {
+      this.$refs.table.refresh()
     },
 
     /**
@@ -630,17 +648,19 @@ input {
   transition-duration: 0.1s;
   transition-timing-function: ease-in;
 }
+
 .slide-leave-active {
   transition-duration: 0.1s;
   transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 }
+
 .slide-enter-to, .slide-leave {
-   max-height: available;
-   overflow: hidden;
+  max-height: available;
+  overflow: hidden;
 }
 
 .slide-enter, .slide-leave-to {
-   overflow: hidden;
-   max-height: 0;
+  overflow: hidden;
+  max-height: 0;
 }
 </style>
