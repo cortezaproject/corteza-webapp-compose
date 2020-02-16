@@ -121,20 +121,16 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
+import base from '../base'
 
 export default {
-  name: 'Automation',
-
   components: {
     draggable,
   },
 
-  props: {
-    resources: {
-      type: Array,
-      required: true,
-    },
+  extends: base,
 
+  props: {
     buttons: {
       type: Array,
       required: true,
@@ -159,12 +155,29 @@ export default {
 
   computed: {
     available () {
+      const resourceTypes = [
+        // Three base types we always include when loading list of
+        // available automation scripts
+        'compose',
+        'compose:namespace',
+        'compose:page',
+      ]
+
+      if (this.module) {
+        resourceTypes.push('compose:module')
+      }
+
+      if (this.record) {
+        resourceTypes.push('compose:record')
+      }
+
       // @todo this is not a complete implementation
       //       we need to do a proper filtering via constraint matching
       //       for now, all (available) buttons can be configured
-      console.log(this.resources, this.$UIHooks.Find(this.resources))
       const existing = this.buttons.map(s => s.script)
-      return this.$UIHooks.Find(this.resources)
+
+      return this.$UIHooks
+        .Find(resourceTypes)
         .filter(({ script }, i, aa) => !existing.includes(script) && i === aa.findIndex(s => s.script === script))
     },
   },

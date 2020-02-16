@@ -1,6 +1,6 @@
 <template>
   <automation-tab
-    :resources="resources"
+    v-bind="$props"
     :buttons.sync="options.buttons"
   />
 </template>
@@ -16,24 +16,5 @@ export default {
   },
 
   extends: base,
-
-  computed: {
-    resources () {
-      const set = [
-        'compose',
-        'compose:namespace',
-        'compose:page',
-      ]
-
-      if (this.module) {
-        set.push(
-          'compose:module',
-          'compose:record',
-        )
-      }
-
-      return set
-    },
-  },
 }
 </script>
