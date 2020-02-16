@@ -12,7 +12,9 @@ import store from './store'
 import router from './router'
 
 import { compose } from '@cortezaproject/corteza-js'
-import { mixins } from '@cortezaproject/corteza-vue'
+import { mixins, corredor } from '@cortezaproject/corteza-vue'
+
+const notProduction = (process.env.NODE_ENV !== 'production')
 
 export default (options = {}) => {
   options = {
@@ -27,11 +29,29 @@ export default (options = {}) => {
     data: () => ({ loaded: false }),
     created () {
       if (this.$auth.is()) {
-        this.loadClientScriptBundle({ bundle: 'compose' })
-          .then(() => {
-            this.$ComposeAPI.automationList()
-              .then(this.makeAutomationScriptsRegistrator(this.$ComposeAPI, compose.TriggerComposeScriptOnManual))
-          })
+        // ref to vue is needed inside compose helper
+        // load and register bundle and list of client/server scripts
+
+        const bundleLoaderOpt = {
+          // Name of the bundle to load
+          bundle: 'compose',
+
+          // Debug logging
+          verbose: notProduction,
+
+          // Context for exec function (client scripts only!)
+          //
+          // Extended with additional helpers
+          ctx: new corredor.ComposeCtx({}, this),
+        }
+
+        this.loadBundle(bundleLoaderOpt)
+          .then(() => this.$ComposeAPI.automationList())
+          .then(this.makeAutomationScriptsRegistrator(
+            // compose specific handler that routes  onManual events for server-scripts
+            // to the proper endpoint on the API
+            compose.TriggerComposeScriptOnManual(this.$ComposeAPI),
+          ))
 
         this.$Settings.init({ api: this.$ComposeAPI }).finally(() => {
           this.loaded = true
