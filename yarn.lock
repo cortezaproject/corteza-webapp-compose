@@ -850,10 +850,10 @@
     openurl "1.1.1"
     yargs "6.6.0"
 
-"@cortezaproject/corteza-js@>2020.3.0-alpha":
-  version "2020.3.0-alpha.10"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-alpha.10.tgz#f6bdc9ba174ab68d830635a0dd3b2f42841e739e"
-  integrity sha512-qjdNjA4SLRcgUZ0J3yemi23fbPJQrSH5sbhJd6yJMfmrUlkBh85jfoEBifrJBv9MNhQwwWOhTH7VQsXWhB4Lgg==
+"@cortezaproject/corteza-js@>2020.3.0-alpha", "@cortezaproject/corteza-js@^2020.3.0-rc":
+  version "2020.3.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-rc.1.tgz#77730d2fd25b672a63ec1b552d5773b8babb4809"
+  integrity sha512-LhY4IaN5eHzt3GsCkpZf8kM6NIrtCGc46+fm+5s9KKjRg8Oy69c1vVi3G5CLUSVe7mp57OC8GTzQCz+hkq65Sw==
   dependencies:
     axios "^0.19.1"
     hex-rgb "^4.1.0"
@@ -862,13 +862,14 @@
     moment "^2.24.0"
     numeral "^2.0.6"
     pino "^5.16.0"
+    ts-sinon "^1.0.25"
 
 "@cortezaproject/corteza-vue@>2020.3.0-alpha":
-  version "2020.3.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2020.3.0-alpha.8.tgz#79c04d9f05d05346552db43e7bf1e16d19837c40"
-  integrity sha512-oX68Qq7PAA/FIgnrtZ1NVXjmAPiR47vTL0adE/NGgYBBxSqb4it4aJXizxRl1IBPZXEhZuyJMDnyOzmf0z89PA==
+  version "2020.3.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2020.3.0-rc.1.tgz#f09a848cacc338880e7f18314c3383d1f696d4a1"
+  integrity sha512-skt8iv+j+fzA9l7rwPlR9YaV/ho/W2OK8FjJ2IYBm6QIS+4ijmEsZrkUu0qISgEnIskTu0NVoUlTmHHcSETfQw==
   dependencies:
-    "@cortezaproject/corteza-js" ">2020.3.0-alpha"
+    "@cortezaproject/corteza-js" "^2020.3.0-rc"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
     "@fortawesome/free-solid-svg-icons" "^5.12.0"
     "@fortawesome/vue-fontawesome" "^0.1.9"
@@ -1616,6 +1617,11 @@
     ts-dedent "^1.1.0"
     webpack "^4.33.0"
 
+"@types/chai@*":
+  version "4.2.9"
+  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.2.9.tgz#194332625ed2ae914aef00b8d5ca3b77e7924cc6"
+  integrity sha512-NeXgZj+MFL4izGqA4sapdYzkzQG+MtGra9vhQ58dnmDY++VgJaRUws+aLVV5zRJCYJl/8s9IjMmhiUw1WsKSmw==
+
 "@types/color-name@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
@@ -1659,6 +1665,11 @@
   version "13.5.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.5.0.tgz#4e498dbf355795a611a87ae5ef811a8660d42662"
   integrity sha512-Onhn+z72D2O2Pb2ql2xukJ55rglumsVo1H6Fmyi8mlU9SvKdBk/pUSUAiBY/d9bAOF7VVWajX3sths/+g6ZiAQ==
+
+"@types/node@^11.15.4":
+  version "11.15.6"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.15.6.tgz#b4b525cc760e4efe614c5819c29232edc4241fa4"
+  integrity sha512-QylJmcJXqKCOhx1VE29kKA2wDjzVBQuKzoSJPykpelTmNQX/GAlPXgT1ZiIc6+sL81z66vXbrDexGale/JVIsQ==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -1721,6 +1732,19 @@
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
+
+"@types/sinon-chai@^3.2.3":
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/@types/sinon-chai/-/sinon-chai-3.2.3.tgz#afe392303dda95cc8069685d1e537ff434fa506e"
+  integrity sha512-TOUFS6vqS0PVL1I8NGVSNcFaNJtFoyZPXZ5zur+qlhDfOmQECZZM4H4kKgca6O8L+QceX/ymODZASfUfn+y4yQ==
+  dependencies:
+    "@types/chai" "*"
+    "@types/sinon" "*"
+
+"@types/sinon@*", "@types/sinon@^7.5.1":
+  version "7.5.1"
+  resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-7.5.1.tgz#d27b81af0d1cfe1f9b24eebe7a24f74ae40f5b7c"
+  integrity sha512-EZQUP3hSZQyTQRfiLqelC9NMWd1kqLcmQE0dMiklxBkgi84T+cHOhnKpgk4NnOWpGX863yE6+IaGnOXUNFqDnQ==
 
 "@types/webpack-env@^1.15.0":
   version "1.15.0"
@@ -12449,7 +12473,7 @@ simplebar@^4.2.3:
     lodash.throttle "^4.1.1"
     resize-observer-polyfill "^1.5.1"
 
-sinon@^7.3.2:
+sinon@^7.3.2, sinon@^7.5.0:
   version "7.5.0"
   resolved "https://registry.yarnpkg.com/sinon/-/sinon-7.5.0.tgz#e9488ea466070ea908fd44a3d6478fd4923c67ec"
   integrity sha512-AoD0oJWerp0/rY9czP/D6hDTTUYGpObhZjMpd7Cl/A6+j0xBE+ayL/ldfggkBXUs0IkvIiM1ljM8+WkOc5k78Q==
@@ -13601,6 +13625,16 @@ ts-pnp@^1.1.2:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/ts-pnp/-/ts-pnp-1.1.5.tgz#840e0739c89fce5f3abd9037bb091dbff16d9dec"
   integrity sha512-ti7OGMOUOzo66wLF3liskw6YQIaSsBgc4GOAlWRnIEj8htCxJUxskanMUoJOD6MDCRAXo36goXJZch+nOS0VMA==
+
+ts-sinon@^1.0.25:
+  version "1.0.25"
+  resolved "https://registry.yarnpkg.com/ts-sinon/-/ts-sinon-1.0.25.tgz#89e1a0171f6d22a9708bc9f6b23eb8970b8d7808"
+  integrity sha512-G6ufQ8ELd/em6tyuhp1iKoKcwDV/zgjT0uJQWzDovRLFc33kzKvTaZZ8whshFcgHk0d8QzVTVlmwTrmy0e9F+A==
+  dependencies:
+    "@types/node" "^11.15.4"
+    "@types/sinon" "^7.5.1"
+    "@types/sinon-chai" "^3.2.3"
+    sinon "^7.5.0"
 
 tslib@^1.9.0, tslib@^1.9.3:
   version "1.10.0"
