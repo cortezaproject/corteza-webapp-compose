@@ -42,7 +42,13 @@ export default (options = {}) => {
           // Context for exec function (client scripts only!)
           //
           // Extended with additional helpers
-          ctx: new corredor.ComposeCtx({}, this),
+          ctx: new corredor.ComposeCtx(
+            {
+              $invoker: this.$auth.user,
+              authToken: this.$auth.JWT,
+            },
+            this,
+          ),
         }
 
         this.loadBundle(bundleLoaderOpt)
@@ -56,6 +62,8 @@ export default (options = {}) => {
         this.$Settings.init({ api: this.$ComposeAPI }).finally(() => {
           this.loaded = true
         })
+      } else {
+        this.loaded = true
       }
     },
     router,
