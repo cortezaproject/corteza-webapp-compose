@@ -72,6 +72,11 @@ export default {
           recordPageOnly: false,
           block: new compose.PageBlockRecordOrganizer(),
         },
+        {
+          label: this.$t('block.iframe.label'),
+          recordPageOnly: false,
+          block: new compose.PageBlockIFrame(),
+        },
       ],
     }
   },

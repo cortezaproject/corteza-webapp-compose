@@ -11,6 +11,8 @@ import ContentBase from './ContentBase'
 import ContentConfigurator from './ContentConfigurator'
 import FileBase from './FileBase'
 import FileConfigurator from './FileConfigurator'
+import IFrameBase from './IFrameBase'
+import IFrameConfigurator from './IFrameConfigurator'
 import RecordBase from './RecordBase'
 import RecordConfigurator from './RecordConfigurator'
 import RecordEditor from './RecordEditor'
@@ -36,6 +38,8 @@ const Registry = {
   ContentConfigurator,
   FileBase,
   FileConfigurator,
+  IFrameBase,
+  IFrameConfigurator,
   RecordBase,
   RecordConfigurator,
   RecordEditor,

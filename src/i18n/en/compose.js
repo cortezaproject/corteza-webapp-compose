@@ -96,6 +96,13 @@ export default {
         label: 'File block',
       },
     },
+    iframe: {
+      label: 'IFrame',
+      srcLabel: 'URL to show in the iframe',
+      srcDesc: 'Used as a fallback when set in combination with record field.',
+      srcFieldLabel: 'Field (URL) from record to use for the iframe',
+      srcFieldDesc: 'Only available on record pages and on modules with existing "url" field kind',
+    },
     calendar: {
       label: 'Calendar',
       calendarHeader: 'Calendar header',
