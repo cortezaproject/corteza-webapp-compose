@@ -1,7 +1,7 @@
 <template>
   <wrap v-bind="$props" v-on="$listeners">
     <div
-      v-if="record"
+      v-if="module && record"
       class="p-3 record"
     >
       <div
@@ -56,7 +56,7 @@ export default {
 
   computed: {
     fields () {
-      return this.module.filterFields(this.options.fields)
+      return this.module ? this.module.filterFields(this.options.fields) : []
     },
   },
 
