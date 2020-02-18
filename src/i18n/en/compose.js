@@ -218,6 +218,7 @@ export default {
         query: 'Search query',
         all: 'Export all records',
         inRange: 'Set date range',
+        selection: 'Selected records',
 
         filter: {
           createdAt: 'Record created',

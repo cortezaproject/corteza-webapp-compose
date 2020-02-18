@@ -15,9 +15,7 @@
       body-class="p-0">
 
       <field-picker
-        :module="module"
-        :recordCount="count"
-        :query="query"
+        v-bind="$attrs"
         v-on="$listeners" />
 
     </b-modal>
@@ -25,7 +23,6 @@
 </template>
 
 <script>
-import { compose } from '@cortezaproject/corteza-js'
 import FieldPicker from './FieldPicker'
 
 export default {
@@ -33,23 +30,7 @@ export default {
     FieldPicker,
   },
 
-  props: {
-    module: {
-      type: compose.Module,
-      required: true,
-    },
-
-    count: {
-      type: Number,
-      required: true,
-    },
-
-    query: {
-      type: String,
-      required: false,
-      default: undefined,
-    },
-  },
+  inheritAttrs: true,
 
   data () {
     return {
