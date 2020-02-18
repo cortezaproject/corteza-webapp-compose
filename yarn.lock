@@ -13409,7 +13409,7 @@ tinycolor2@^1.4.1:
   resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.1.tgz#f4fad333447bc0b07d4dc8e9209d8f39a8ac77e8"
   integrity sha1-9PrTM0R7wLB9TcjpIJ2POaisd+g=
 
-tiptap-commands@^1.12.3:
+tiptap-commands@1.12.3, tiptap-commands@^1.12.3:
   version "1.12.3"
   resolved "https://registry.yarnpkg.com/tiptap-commands/-/tiptap-commands-1.12.3.tgz#604767878073e6344d1daf7a376fd89fc62e4742"
   integrity sha512-Dck51lePBwuHmkvkJ6+8V3DbInxAhZwtS2mPvVwz74pDUIcy17tCFw1eHUN50JoXIAci7acuxPKO/weVO1JAyw==
@@ -13423,7 +13423,7 @@ tiptap-commands@^1.12.3:
     prosemirror-utils "^0.9.6"
     tiptap-utils "^1.8.2"
 
-tiptap-extensions@^1.28.4:
+tiptap-extensions@1.28.4:
   version "1.28.4"
   resolved "https://registry.yarnpkg.com/tiptap-extensions/-/tiptap-extensions-1.28.4.tgz#0e729d081a80105730101512e7eb5acdce8b9bde"
   integrity sha512-UAtxngKifjrMtJFmi3D9RCNC5LJutq4yn1Np0cqJ4dTnvhWR49PqN6gKjlMYyzyutiLLQk+/3GM/E6EfVwmHOA==
@@ -13450,7 +13450,7 @@ tiptap-utils@^1.8.2:
     prosemirror-tables "^0.9.5"
     prosemirror-utils "^0.9.6"
 
-tiptap@^1.26.4:
+tiptap@1.26.4, tiptap@^1.26.4:
   version "1.26.4"
   resolved "https://registry.yarnpkg.com/tiptap/-/tiptap-1.26.4.tgz#bfa289841bc45c6401cbd1661a02b81c3d3f14f0"
   integrity sha512-UCH0wufjGdKMuCUydL896sFYXEUWC3bE20h/oONABSf0gull+pqBEm7J1yCl7j50eYa9FiLgUBGPqPTzKLluxQ==
