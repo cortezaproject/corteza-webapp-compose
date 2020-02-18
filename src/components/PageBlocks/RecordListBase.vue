@@ -53,57 +53,53 @@
 
           </b-col>
         </b-row>
-        <transition
-          name="slide"
+        <b-row
           v-if="options.selectable"
+          v-show="selected.length > 0"
+          class="text-light bg-secondary p-2 mt-2"
         >
-          <b-row
-            v-show="selected.length > 0"
-            class="text-light bg-secondary p-2 mt-2"
+          <b-col
+            cols="4"
+            class="pt-1 text-nowrap"
           >
-            <b-col
-              cols="4"
-              class="pt-1 text-nowrap"
+            {{ $t('block.recordList.selected', { count: selected.length, total: filter.count }) }}
+            <a
+              class="text-light"
+              href="#"
+              @click.prevent="handleSelectAllOnPage({ isChecked: false })"
             >
-              {{ $t('block.recordList.selected', { count: selected.length, total: filter.count }) }}
-              <a
-                class="text-light"
-                href="#"
-                @click.prevent="handleSelectAllOnPage({ isChecked: false })"
-              >
-                ({{ $t('block.recordList.cancelSelection') }})
-              </a>
-            </b-col>
-            <b-col
-              class="text-right"
-              cols="8"
+              ({{ $t('block.recordList.cancelSelection') }})
+            </a>
+          </b-col>
+          <b-col
+            class="text-right"
+            cols="8"
+          >
+            <automation-buttons
+              class="d-inline m-0"
+              :buttons="options.selectionButtons"
+              :module="recordListModule"
+              :extra-event-args="{ selected, filter }"
+              v-bind="$props"
+              @refresh="refresh()"
+            />
+            <c-input-confirm
+              @confirmed="handleDeleteSelectedRecords()"
+              class="confirmation-small"
+              variant="link-light"
             >
-              <automation-buttons
-                class="d-inline m-0"
-                :buttons="options.selectionButtons"
-                :module="recordListModule"
-                :extra-event-args="{ selected, filter }"
-                v-bind="$props"
-                @refresh="refresh()"
+              <font-awesome-icon
+                :icon="['far', 'trash-alt']"
               />
-              <c-input-confirm
-                @confirmed="handleDeleteSelectedRecords()"
-                class="confirmation-small"
-                variant="link-light"
-              >
-                <font-awesome-icon
-                  :icon="['far', 'trash-alt']"
-                />
-                <template v-slot:yes>
-                  {{ $t('general.label.yes') }}
-                </template>
-                <template v-slot:no>
-                  {{ $t('general.label.no') }}
-                </template>
-              </c-input-confirm>
-            </b-col>
-          </b-row>
-        </transition>
+              <template v-slot:yes>
+                {{ $t('general.label.yes') }}
+              </template>
+              <template v-slot:no>
+                {{ $t('general.label.no') }}
+              </template>
+            </c-input-confirm>
+          </b-col>
+        </b-row>
       </b-container>
     </template>
     <template #default>
@@ -645,23 +641,4 @@ input {
   width: 200px;
 }
 
-.slide-enter-active {
-  transition-duration: 0.1s;
-  transition-timing-function: ease-in;
-}
-
-.slide-leave-active {
-  transition-duration: 0.1s;
-  transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-}
-
-.slide-enter-to, .slide-leave {
-  max-height: available;
-  overflow: hidden;
-}
-
-.slide-enter, .slide-leave-to {
-  overflow: hidden;
-  max-height: 0;
-}
 </style>
