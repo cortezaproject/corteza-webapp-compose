@@ -28,7 +28,9 @@ export default {
       this.sortBy = name
 
       const param = !this.sortAscending ? ('-' + this.sortBy) : this.sortBy
-      this.$router.push({ name: this.$route.name, query: { sortBy: param } })
+      if (this.$route.query.sortBy !== param) {
+        this.$router.push({ name: this.$route.name, query: { sortBy: param } })
+      }
     },
 
     isSortedBy (fieldName, def = undefined) {
