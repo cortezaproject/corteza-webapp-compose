@@ -21,6 +21,7 @@
     </b-tab>
     <b-tab
       v-if="field.cap.multi"
+      :disabled="!field.isMulti"
       :title="$t('general.label.multi')"
     >
       <multi

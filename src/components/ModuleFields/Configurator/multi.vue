@@ -1,12 +1,5 @@
 <template>
   <div>
-    <b-form-checkbox v-model="field.isMulti"
-                     :disabled="!field.cap.multi"
-                     :value="true"
-                     :unchecked-value="false">
-
-      {{ $t('general.label.enabled') }}
-    </b-form-checkbox>
     <b-form-group v-if="field.isMulti"
                   class="mt-3"
                   :label="$t('field.options.multiDelimiter.label')">

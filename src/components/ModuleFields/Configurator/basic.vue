@@ -9,12 +9,21 @@
       {{ $t('general.label.required') }}
     </b-form-checkbox>
     <b-form-checkbox
+      v-if="false"
       v-model="field.isPrivate"
       :disabled="!field.cap.private"
       :value="true"
       :unchecked-value="false"
     >
       {{ $t('general.label.private') }}
+    </b-form-checkbox>
+    <b-form-checkbox
+      v-model="field.isMulti"
+      :disabled="!field.cap.multi"
+      :value="true"
+      :unchecked-value="false"
+    >
+      {{ $t('general.label.multi') }}
     </b-form-checkbox>
 
     <hr />
