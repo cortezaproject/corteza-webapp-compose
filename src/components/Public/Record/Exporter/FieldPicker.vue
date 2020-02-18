@@ -77,8 +77,8 @@
       </b-row>
     </b-container>
     <div slot="footer" class="d-flex">
-      <span v-if="!!recordCount" class="my-auto">
-        {{ $t('block.recordList.export.recordCount', { count: recordCount}) }}
+      <span v-if="!!getExportableCount" class="my-auto">
+        {{ $t('block.recordList.export.recordCount', { count: getExportableCount}) }}
       </span>
       <span class="ml-auto">
         <b-button
@@ -104,6 +104,7 @@
 </template>
 
 <script>
+import { compose } from '@cortezaproject/corteza-js'
 import FieldPicker from 'corteza-webapp-compose/src/components/Common/Module/FieldPicker'
 import moment from 'moment'
 const fmtDate = (d) => d.format('YYYY-MM-DD')
@@ -123,7 +124,7 @@ export default {
       default: true,
     },
     module: {
-      type: Object,
+      type: compose.Module,
       required: true,
     },
     preselectedFields: {
@@ -138,6 +139,11 @@ export default {
       type: String,
       required: false,
       default: undefined,
+    },
+    selection: {
+      type: Array,
+      required: false,
+      default: () => [],
     },
     filterRangeType: {
       type: String,
@@ -198,6 +204,11 @@ export default {
           value: 'range',
           text: this.$t('block.recordList.export.inRange'),
         },
+        {
+          value: 'selection',
+          text: this.$t('block.recordList.export.selection'),
+          disabled: !this.hasSelection,
+        },
       ]
     },
 
@@ -252,6 +263,18 @@ export default {
           text: this.$t('block.recordList.export.filter.custom'),
         },
       ]
+    },
+
+    hasSelection () {
+      return !!this.selection.length
+    },
+
+    getExportableCount () {
+      // when exporting selection, only selected records are applicable
+      if (this.rangeType === 'selection') {
+        return this.selection.length
+      }
+      return this.recordCount
     },
 
     exportDisabled () {
@@ -390,6 +413,15 @@ export default {
         this.range = value
       },
     },
+
+    hasSelection: {
+      handler: function (h) {
+        if (h) {
+          this.rangeType = 'selection'
+        }
+      },
+      immediate: true,
+    },
   },
 
   mounted () {
@@ -437,6 +469,15 @@ export default {
     makeFilters ({ rangeType, rangeBy, date }) {
       if (rangeType === 'all') {
         return undefined
+      }
+
+      if (rangeType === 'selection') {
+        // @todo improve with IN operator when supported
+        return `(${
+          this.selection.map(({ recordID }) => recordID)
+            .map(r => `recordID='${r}'`)
+            .join(' OR ')
+        })`
       }
 
       let start, end

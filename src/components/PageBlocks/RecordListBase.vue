@@ -33,8 +33,9 @@
             <exporter-modal
               v-if="options.allowExport"
               :module="recordListModule"
-              :count="pagingStats.count"
+              :record-count="pagingStats.count"
               :query="query"
+              :selection="selected"
               @export="onExport"
               class="ml-1 float-left"
             />
