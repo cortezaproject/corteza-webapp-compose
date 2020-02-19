@@ -74,7 +74,10 @@
                     {{ m.handle }}
                   </td>
                   <td class="align-middle"><time :datetime="m.updatedAt" v-if="m.updatedAt">{{ prettyDate(m.updatedAt || m.createdAt) }}</time></td>
-                  <td class="text-right">
+                  <td
+                    @click.prevent.stop
+                    class="text-right"
+                  >
                     <b-button
                       v-if="recordPage(m.moduleID)"
                       :to="{name: 'admin.pages.builder', params: { pageID: recordPage(m.moduleID).pageID }}"
