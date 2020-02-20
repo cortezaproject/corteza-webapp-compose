@@ -149,7 +149,8 @@
                 :icon="['far', 'bell']"
               />
             </b-button>
-            <router-link
+            <b-button
+              variant="link"
               v-if="recordListModule.canCreateRecord"
               class="p-0 m-0 pl-2 text-secondary"
               :to="{ name: 'page.record.create', params: { pageID: options.pageID, values: r.values }, query: null }"
@@ -157,8 +158,9 @@
               <font-awesome-icon
                 :icon="['far', 'clone']"
               />
-            </router-link>
-            <router-link
+            </b-button>
+            <b-button
+              variant="link"
               v-if="recordListModule.canUpdateRecord"
               class="p-0 m-0 pl-2 text-secondary"
               :to="{ name: 'page.record.edit', params: { pageID: options.pageID, recordID: r.recordID }, query: null }"
@@ -166,7 +168,7 @@
               <font-awesome-icon
                 :icon="['far', 'edit']"
               />
-            </router-link>
+            </b-button>
           </div>
         </template>
         <template #head(selectable)>
