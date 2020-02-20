@@ -1,17 +1,31 @@
 <template>
-    <div class="d-flex flex-wrap">
-        <b-button
-            variant="outline-primary"
-            class="p-5 m-1 flex-fill"
-            @click="$emit('select', type.block)"
-            v-for="(type) in types"
-            :disabled="!recordPage && type.recordPageOnly"
-            :key="type.label">{{type.label}}</b-button>
-      <div class="w-100">
-        <hr />
-        <i>{{ $t('page.build.selectBlockFootnote') }}.</i>
-      </div>
+  <div class="d-flex flex-wrap">
+    <b-tabs pills card vertical>
+      <b-tab
+        variant="outline-primary"
+        class="p-5 m-1 flex-fill"
+        @click="$emit('select', type.block)"
+        v-for="(type) in types"
+        :disabled="!recordPage && type.recordPageOnly"
+        :key="type.label">
+        <template v-slot:title>
+          <div
+            @mouseover="mouseover"
+            @mouseleave="mouseleave"
+          >
+            {{ type.label }}
+          </div>
+        </template>
+        <b-card-text v-if="hover">
+          {{type.label}}
+        </b-card-text>
+      </b-tab>
+    </b-tabs>
+    <div class="w-100">
+      <hr />
+      <i>{{ $t('page.build.selectBlockFootnote') }}.</i>
     </div>
+  </div>
 </template>
 <script>
 import { compose } from '@cortezaproject/corteza-js'
@@ -26,6 +40,7 @@ export default {
 
   data () {
     return {
+      hover: true,
       types: [
         {
           label: this.$t('block.content.label'),
@@ -79,6 +94,14 @@ export default {
         },
       ],
     }
+  },
+  methods: {
+    mouseover: function () {
+      this.hover = !this.hover
+    },
+    mouseleave: function () {
+      this.hover = false
+    },
   },
 }
 </script>
