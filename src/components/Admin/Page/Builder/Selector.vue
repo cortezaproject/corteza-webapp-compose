@@ -1,34 +1,42 @@
 <template>
-  <div class="d-flex flex-wrap">
-    <b-tabs pills card vertical>
-      <b-tab
-        variant="outline-primary"
-        class="p-5 m-1 flex-fill"
-        @click="$emit('select', type.block)"
-        v-for="(type) in types"
-        :disabled="!recordPage && type.recordPageOnly"
-        :key="type.label">
-        <template v-slot:title>
-          <div
-            @mouseover="mouseover"
-            @mouseleave="mouseleave"
+  <b-container>
+    <b-row>
+      <b-col
+        cols="4"
+      >
+        <b-list-group>
+          <b-list-group-item
+            v-for="(type) in types"
+            :disabled="!recordPage && type.recordPageOnly"
+            @click="$emit('select', type.block)"
+            :key="type.label"
+            button
+            @mouseover="current = type.image"
           >
             {{ type.label }}
-          </div>
-        </template>
-        <b-card-text v-if="hover">
-          <b-img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJx20rvSBTZ_BA2dhm65MpVn7t7vw413jBnWcFEKgV1MIQnzBL"> </b-img>
-        </b-card-text>
-      </b-tab>
-    </b-tabs>
-    <div class="w-100">
-      <hr />
-      <i>{{ $t('page.build.selectBlockFootnote') }}.</i>
-    </div>
-  </div>
+          </b-list-group-item>
+        </b-list-group>
+      </b-col>
+      <b-col
+        cols="8"
+      >
+        <b-img
+          v-if="current"
+          fluid
+          :src="current"
+        />
+      </b-col>
+    </b-row>
+    <b-row
+      class="border-top mt-2"
+    >
+      <b-col>{{ $t('page.build.selectBlockFootnote') }}.</b-col>
+    </b-row>
+  </b-container>
 </template>
 <script>
 import { compose } from '@cortezaproject/corteza-js'
+import * as images from '../../../../assets/PageBlocks'
 
 export default {
   props: {
@@ -40,68 +48,70 @@ export default {
 
   data () {
     return {
-      hover: true,
+      current: undefined,
       types: [
         {
           label: this.$t('block.content.label'),
           recordPageOnly: false,
           block: new compose.PageBlockContent(),
+          image: images.Content,
         },
         {
           label: this.$t('block.chart.label'),
           recordPageOnly: false,
           block: new compose.PageBlockChart(),
+          image: images.Chart,
         },
         {
           label: this.$t('block.socialFeed.label'),
           recordPageOnly: false,
           block: new compose.PageBlockSocialFeed(),
+          image: images.SocialFeed,
         },
         {
           label: this.$t('block.record.label'),
           recordPageOnly: true,
           block: new compose.PageBlockRecord(),
+          image: images.Record,
         },
         {
           label: this.$t('block.recordList.label'),
           recordPageOnly: false,
           block: new compose.PageBlockRecordList(),
+          image: images.RecordList,
         },
         {
           label: this.$t('block.automation.label'),
           recordPageOnly: false,
           block: new compose.PageBlockAutomation(),
+          image: images.Automation,
         },
         {
           label: this.$t('block.calendar.label'),
           recordPageOnly: false,
           block: new compose.PageBlockCalendar(),
+          image: images.Calendar,
         },
         {
           label: this.$t('block.file.label'),
           recordPageOnly: false,
           block: new compose.PageBlockFile(),
+          image: images.File,
         },
         {
           label: this.$t('block.recordOrganizer.label'),
           recordPageOnly: false,
           block: new compose.PageBlockRecordOrganizer(),
+          // image: images.RecordOrganizer,
         },
         {
           label: this.$t('block.iframe.label'),
           recordPageOnly: false,
           block: new compose.PageBlockIFrame(),
+          // image: images.IFrame,
         },
       ],
     }
-  },
-  methods: {
-    mouseover: function () {
-      this.hover = !this.hover
-    },
-    mouseleave: function () {
-      this.hover = false
-    },
   },
 }
 </script>
