@@ -118,6 +118,7 @@
         no-sort-reset
         @sort-changed="handleSort"
         @row-selected="handleRowSelected"
+        @row-clicked="handleRowClicked"
       >
         <template #head()="{ field }">
           {{ field.label }}
@@ -536,7 +537,7 @@ export default {
       return query
     },
 
-    handleCellClick ({ recordID }) {
+    handleRowClicked ({ recordID }) {
       const { pageID } = this.options
       this.$router.push({ name: 'page.record', params: { pageID, recordID }, query: null })
     },
