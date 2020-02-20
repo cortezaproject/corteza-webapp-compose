@@ -61,14 +61,26 @@
           {{ $t('block.recordList.record.hidePaging') }}
         </b-form-checkbox>
       </b-form-group>
-      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('general.label.export')" class="mt-4">
-        <b-form-checkbox v-model="options.allowExport" class="mt-2">
+      <b-form-group horizontal :label-cols="3" breakpoint="md" class="mt-4">
+        <b-form-checkbox v-model="options.allowExport">
           {{ $t('block.recordList.export.allow') }}
         </b-form-checkbox>
       </b-form-group>
       <b-form-group horizontal :label-cols="3" breakpoint="md" class="mt-4">
-        <b-form-checkbox v-model="options.selectable" class="mt-2">
+        <b-form-checkbox v-model="options.selectable">
           {{ $t('block.recordList.selectable') }}
+        </b-form-checkbox>
+        <b-form-checkbox v-model="options.hideRecordReminderButton">
+          {{ $t('block.recordList.hideRecordReminderButton') }}
+        </b-form-checkbox>
+        <b-form-checkbox v-model="options.hideRecordCloneButton">
+          {{ $t('block.recordList.hideRecordCloneButton') }}
+        </b-form-checkbox>
+        <b-form-checkbox v-model="options.hideRecordEditButton">
+          {{ $t('block.recordList.hideRecordEditButton') }}
+        </b-form-checkbox>
+        <b-form-checkbox v-model="options.hideRecordViewButton">
+          {{ $t('block.recordList.hideRecordViewButton') }}
         </b-form-checkbox>
       </b-form-group>
     </b-tab>

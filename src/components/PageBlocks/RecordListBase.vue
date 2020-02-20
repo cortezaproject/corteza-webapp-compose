@@ -142,17 +142,18 @@
         <template #cell(actions)="{ item: r }">
           <div class="text-right">
             <b-button
+              v-if="!options.hideRecordReminderButton"
               variant="link"
-              class="p-0 m-0 pl-2 text-secondary"
+              class="p-0 m-0 pl-1 text-secondary"
               @click.prevent="createReminder(r)">
               <font-awesome-icon
                 :icon="['far', 'bell']"
               />
             </b-button>
             <b-button
+              v-if="!options.hideRecordCloneButton && recordListModule.canCreateRecord"
               variant="link"
-              v-if="recordListModule.canCreateRecord"
-              class="p-0 m-0 pl-2 text-secondary"
+              class="p-0 m-0 pl-1 text-secondary"
               :to="{ name: 'page.record.create', params: { pageID: options.pageID, values: r.values }, query: null }"
             >
               <font-awesome-icon
@@ -160,13 +161,23 @@
               />
             </b-button>
             <b-button
+              v-if="!options.hideRecordEditButton && recordListModule.canUpdateRecord"
               variant="link"
-              v-if="recordListModule.canUpdateRecord"
-              class="p-0 m-0 pl-2 text-secondary"
+              class="p-0 m-0 pl-1 text-secondary"
               :to="{ name: 'page.record.edit', params: { pageID: options.pageID, recordID: r.recordID }, query: null }"
             >
               <font-awesome-icon
                 :icon="['far', 'edit']"
+              />
+            </b-button>
+            <b-button
+              v-if="!options.hideRecordViewButton"
+              variant="link"
+              class="p-0 m-0 pl-1 text-secondary"
+              :to="{ name: 'page.record', params: { pageID: options.pageID, recordID: r.recordID }, query: null }"
+            >
+              <font-awesome-icon
+                :icon="['far', 'eye']"
               />
             </b-button>
           </div>

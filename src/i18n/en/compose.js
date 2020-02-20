@@ -168,6 +168,11 @@ export default {
       paginationSingle_plural: '{{count}} records',
       selected: '{{count}} of {{total}} records selected',
       selectable: 'Enable record selection',
+      hideRecordReminderButton: 'Hide record reminder button',
+      hideRecordCloneButton: 'Hide clone record button',
+      hideRecordEditButton: 'Hide edit record button',
+      hideRecordViewButton: 'Hide view record button',
+
       cancelSelection: 'cancel',
       record: {
         newLabel: 'New records',
