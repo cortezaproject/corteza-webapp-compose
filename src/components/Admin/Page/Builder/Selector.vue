@@ -17,7 +17,7 @@
           </div>
         </template>
         <b-card-text v-if="hover">
-          {{type.label}}
+          <b-img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTJx20rvSBTZ_BA2dhm65MpVn7t7vw413jBnWcFEKgV1MIQnzBL"> </b-img>
         </b-card-text>
       </b-tab>
     </b-tabs>
