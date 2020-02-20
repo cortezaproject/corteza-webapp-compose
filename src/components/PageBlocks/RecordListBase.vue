@@ -630,6 +630,7 @@ export default {
     },
 
     stdErr (err) {
+      /* eslint-disable no-console */
       console.error(err)
     },
   },

@@ -119,9 +119,6 @@ export default {
 
   i18nOptions: {
     keyPrefix: 'module.fieldKinds',
-    missingKeyHandler: (lng, ns, key, fallbackValue) => {
-      console.warn('missing i18n key', { lng, ns, key, fallbackValue })
-    },
   },
 
   props: {

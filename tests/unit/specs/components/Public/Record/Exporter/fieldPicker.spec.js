@@ -111,7 +111,6 @@ describe('components/Public/Record/Exporter/FieldPicker.vue', () => {
       const wrap = mountExporter()
 
       for (const [filter, expected] of cases) {
-        // console.log(filter)
         wrap.setData({ filter })
         wrap.vm.doExport()
         const e = wrap.emitted().export.pop().pop()

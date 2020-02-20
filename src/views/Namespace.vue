@@ -205,7 +205,6 @@ export default {
       const i = this.toasts.findIndex(({ id }) => id === r.id)
       if (i > -1 && (!r.editedAt || r.editedAt === this.toasts[i].editedAt)) {
         // Same reminder; no need to push it again
-        console.debug('reminder.ignore')
         return
       }
 

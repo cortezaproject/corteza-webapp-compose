@@ -88,6 +88,7 @@ export default {
     },
 
     error (msg) {
+      /* eslint-disable no-console */
       console.error(msg)
     },
   },
