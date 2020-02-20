@@ -1,7 +1,7 @@
 <template>
   <wrap v-bind="$props" v-on="$listeners">
     <div class="h-100">
-      <i v-if="!isConfigured" class="text-secondary d-block">{{ $t('block.recordOrganizer.notConfigured') }}</i>
+      <div v-if="!isConfigured" class="p-3 text-light bg-danger h-100">{{ $t('block.recordOrganizer.notConfigured') }}</div>
       <i v-else-if="!roModule.canReadRecord" class="text-secondary d-block">{{ $t('block.recordList.record.noPermission') }}</i>
       <div v-else class="h-100 mb-5">
         <i v-if="!records.length" class="text-secondary d-block">{{ $t('block.recordOrganizer.noRecords') }}</i>
@@ -94,7 +94,7 @@ export default {
     },
 
     moduleID () {
-      return this.ro.moduleID
+      return this.options.moduleID
     },
 
     titleField () {
@@ -145,15 +145,15 @@ export default {
   },
 
   beforeMount () {
-    if (!this.ro.moduleID) {
+    if (!this.options.moduleID) {
       // Make sure block is properly configured
       throw Error(this.$t('notification.record.moduleOrPageNotSet'))
     }
 
     if (this.roModule) {
-      this.fetchRecords(this.$ComposeAPI, this.roModule, this.expandFilter()).then(rr => {
+      this.fetchRecords(this.roModule, this.expandFilter()).then(rr => {
         this.records = rr
-        const fields = [this.titleField, this.descriptionField]
+        const fields = [this.titleField, this.descriptionField].filter(f => !!f)
         this.fetchUsers(fields, this.records)
       })
     }
@@ -173,7 +173,7 @@ export default {
       this.moveRecord(
         record,
         this.calcNewPosition(record, newIndex),
-        this.ro.group,
+        this.options.group,
       )
     },
 
@@ -203,7 +203,7 @@ export default {
 
       // Find position field on the record placed before the drop position
       // fallback to 1
-      return parseInt(this.records[newPosition - 1].values[this.ro.positionField] || 0) + 1
+      return parseInt(this.records[newPosition - 1].values[this.options.positionField] || 0) + 1
     },
 
     createNewRecord () {
@@ -226,23 +226,23 @@ export default {
       if (!this.record) {
         // If there is no current record and we are using recordID/ownerID variable in (pre)filter
         // we should disable the block
-        if ((this.ro.filter || '').includes('${record')) {
+        if ((this.options.filter || '').includes('${record')) {
           throw Error(this.$t('notification.record.invalidRecordVar'))
         }
 
-        if ((this.ro.filter || '').includes('${ownerID}')) {
+        if ((this.options.filter || '').includes('${ownerID}')) {
           throw Error(this.$t('notification.record.invalidOwnerVar'))
         }
       }
 
-      if (this.ro.filter) {
+      if (this.options.filter) {
         // Little magic here: filter is wraped with backticks and evaluated
         // this allows us to us ${record.values....}, ${recordID}, ${ownerID}, ${userID} in filter string;
         // hence the /hanging/ record, recordID, ownerID and userID variables
         return (function (filter, { record, recordID, ownerID, userID }) {
           /* eslint-disable no-eval */
           return eval('`' + filter + '`')
-        })(this.ro.filter, {
+        })(this.options.filter, {
           record: this.record,
           recordID: (this.record || {}).recordID || 0,
           ownerID: (this.record || {}).userID || 0,
