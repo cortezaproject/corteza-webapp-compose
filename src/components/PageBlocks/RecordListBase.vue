@@ -143,7 +143,7 @@
           <div class="text-right">
             <b-button
               variant="link"
-              class="p-0 m-0 pr-2"
+              class="p-0 m-0 pl-2 text-secondary"
               @click.prevent="createReminder(r)">
               <font-awesome-icon
                 :icon="['far', 'bell']"
@@ -151,7 +151,7 @@
             </b-button>
             <router-link
               v-if="recordListModule.canCreateRecord"
-              class="p-0 m-0 pr-2"
+              class="p-0 m-0 pl-2 text-secondary"
               :to="{ name: 'page.record.create', params: { pageID: options.pageID, values: r.values }, query: null }"
             >
               <font-awesome-icon
@@ -160,7 +160,7 @@
             </router-link>
             <router-link
               v-if="recordListModule.canUpdateRecord"
-              class="p-0 m-0 pr-2"
+              class="p-0 m-0 pl-2 text-secondary"
               :to="{ name: 'page.record.edit', params: { pageID: options.pageID, recordID: r.recordID }, query: null }"
             >
               <font-awesome-icon
