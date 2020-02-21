@@ -11,7 +11,7 @@
             class="h-100 editable-block"
           >
             <div
-              class="toolbox border-0 p-2 text-light"
+              class="toolbox border-0 p-2 pr-3 m-0 text-light text-center"
             >
               <b-button
                 class="p-1 text-light"
@@ -26,6 +26,7 @@
               <c-input-confirm
                 @confirmed="page.blocks.splice(index,1)"
                 class="p-1"
+                size="md"
               >
                 <font-awesome-icon
                   :icon="['far', 'trash-alt']"
@@ -240,11 +241,11 @@ export default {
 div.toolbox {
   position: absolute;
   background-color: $dark;
-  right: 0;
-  top: 0;
+  bottom: 0;
+  left: 0;
   z-index: 10000;
-  border-bottom-left-radius: 10px;
-  opacity: 0.2;
+  border-top-right-radius: 10px;
+  opacity: 0.5;
 
   &:hover {
     opacity: 1;
