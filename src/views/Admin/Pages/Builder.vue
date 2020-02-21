@@ -45,7 +45,13 @@
         </template>
       </grid>
 
-      <b-modal size="lg" id="createBlockSelector" hide-footer :title="$t('page.build.selectBlockTitle')">
+      <b-modal
+        size="lg"
+        id="createBlockSelector"
+        scrollable
+        hide-footer
+        :title="$t('page.build.selectBlockTitle')"
+      >
         <new-block-selector
           :record-page="!!module"
           @select="editBlock($event)"
@@ -57,7 +63,8 @@
         :ok-title="$t('page.build.addBlock')"
         ok-variant="dark"
         ok-only
-        size="lg"
+        scrollable
+        size="xl"
         @ok="updateBlocks"
         @hide="editor=null"
         :visible="showCreator"
@@ -77,7 +84,8 @@
         :ok-title="$t('general.label.saveAndClose')"
         ok-variant="dark"
         ok-only
-        size="lg"
+        scrollable
+        size="xl"
         @ok="updateBlocks"
         @hide="editor=null"
         :visible="showEditor"

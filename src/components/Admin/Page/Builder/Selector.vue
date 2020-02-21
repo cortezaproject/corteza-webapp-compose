@@ -4,7 +4,8 @@
       <b-col
         cols="4"
       >
-        <b-list-group>
+        <b-list-group
+        >
           <b-list-group-item
             v-for="(type) in types"
             :disabled="!recordPage && type.recordPageOnly"
@@ -23,6 +24,7 @@
         <b-img
           v-if="current"
           fluid
+          thumbnail
           :src="current"
         />
       </b-col>
