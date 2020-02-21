@@ -3,12 +3,12 @@
     <b-button
       v-for="(b, i) in buttons"
       :key="i"
-      :variant="b.variant || 'primary'"
-      :disabled="processing"
+      :variant="variant(b)"
+      :disabled="!isValid(b) || processing"
       :class="buttonClass"
       @click.prevent="handle(b)"
     >
-      {{ b.label }}
+      {{ b.label || '-' }}
     </b-button>
   </div>
 </template>
@@ -43,7 +43,31 @@ export default {
   },
 
   methods: {
+    /**
+     *
+     */
+    variant (b) {
+      if (!b.script) {
+        return b.variant
+      }
+
+      if (!this.isValid(b)) {
+        // Does this script actually exist?
+        return 'outline-danger'
+      }
+
+      return b.variant || 'primary'
+    },
+
+    isValid (b) {
+      return !!b.script && !!this.$UIHooks.FindByScript(b.script)
+    },
+
     handle (b) {
+      if (!b.script) {
+        return
+      }
+
       this.processing = true
 
       // Base of the raise event:
