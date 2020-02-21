@@ -61,8 +61,8 @@
       <b-modal
         :title="$t('block.general.title')"
         :ok-title="$t('page.build.addBlock')"
-        ok-variant="dark"
-        ok-only
+        ok-variant="primary"
+        cancel-variant="link"
         scrollable
         size="xl"
         @ok="updateBlocks"
@@ -82,8 +82,8 @@
       <b-modal
         :title="$t('block.general.changeBlock')"
         :ok-title="$t('general.label.saveAndClose')"
-        ok-variant="dark"
-        ok-only
+        ok-variant="primary"
+        cancel-variant="link"
         scrollable
         size="xl"
         @ok="updateBlocks"
@@ -194,11 +194,11 @@ export default {
 
     editBlock (block, index = undefined) {
       this.$bvModal.hide('createBlockSelector')
-      this.editor = { index, block }
+      this.editor = { index, block: compose.PageBlockMaker(block) }
     },
 
     updateBlocks () {
-      const block = new compose.PageBlockMaker(this.editor.block) // make sure we get rid of the references
+      const block = compose.PageBlockMaker(this.editor.block)
       if (this.editor.index !== undefined) {
         this.page.blocks.splice(this.editor.index, 1, block)
       } else {
