@@ -9,7 +9,7 @@
       :header-bg-variant="block.style.variants.headerBg"
       :header-text-variant="block.style.variants.headerText"
       :header-border-variant="block.style.variants.border"
-      :body-bg-variant="block.style.variants.bodyBg">
+    >
       <b-card-text
         v-if="block.description"
         class="p-2 m-0"
@@ -25,6 +25,7 @@
         />
       </div>
       <b-card-body
+        :body-bg-variant="block.style.variants.bodyBg"
         class="p-0"
       >
         <slot
