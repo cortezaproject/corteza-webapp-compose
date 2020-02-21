@@ -214,6 +214,15 @@ export default {
             return this.$ComposeAPI.recordUpdate(this.record)
           }
         })
+        .catch(err => {
+          const { details = undefined } = err
+          if (!!details && Array.isArray(details) && details.length > 0) {
+            this.errors.push(...details)
+            throw new Error(this.$t('notification.record.validationErrors'))
+          }
+
+          throw err
+        })
         .then((record) => this.record.apply(record))
         .then(() => this.dispatchUiEvent('afterFormSubmit'))
         .then(() => {
@@ -247,7 +256,7 @@ export default {
 
       this.errors = this.validator.run(this.record)
       if (!this.errors.valid()) {
-        throw new Error('not storing')
+        throw new Error(this.$t('notification.record.validationErrors'))
       }
     },
 

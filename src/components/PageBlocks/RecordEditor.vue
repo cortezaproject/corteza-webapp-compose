@@ -2,7 +2,7 @@
   <wrap v-bind="$props" v-on="$listeners">
     <div
       v-if="record"
-      class="p-3 record"
+      class="p-3 h-100"
     >
       <div
         v-for="field in fields"
@@ -65,6 +65,13 @@ export default {
   mixins: [
     users,
   ],
+
+  props: {
+    errors: {
+      type: validator.Validated,
+      required: false,
+    },
+  },
 
   computed: {
     fields () {
