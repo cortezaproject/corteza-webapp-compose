@@ -27,17 +27,31 @@
       />
     </td>
     <td>
-      <b-select
-        v-model="value.kind"
-        :disabled="disabled"
-      >
-        <option
-          v-for="({ kind, label }) in fieldKinds"
-          :key="kind"
-          :value="kind">
-          {{ label }}
-        </option>
-      </b-select>
+      <b-input-group>
+        <b-select
+          v-model="value.kind"
+          :disabled="disabled"
+        >
+          <option
+            v-for="({ kind, label }) in fieldKinds"
+            :key="kind"
+            :value="kind">
+            {{ label }}
+          </option>
+        </b-select>
+        <b-input-group-append>
+          <b-button
+            :disabled="!value.cap.configurable"
+            @click.prevent="$emit('edit')"
+            class="px-2"
+            variant="secondary"
+          >
+            <font-awesome-icon
+              :icon="['fas', 'wrench']"
+            />
+          </b-button>
+        </b-input-group-append>
+      </b-input-group>
     </td>
     <td
       class="text-center align-middle"
@@ -70,33 +84,14 @@
       />
     </td>
     <td
-      class="d-flex justify-content-around align-items-center mt-1"
+      class="text-right mt-1"
+      style="min-width: 100px;"
     >
-      <b-button
-        :disabled="!value.cap.configurable"
-        @click.prevent="$emit('edit')"
-        class="pl-1 pr-0 text-secondary"
-        variant="link"
-      >
-        <font-awesome-icon
-          :icon="['fas', 'wrench']"
-        />
-      </b-button>
       <c-input-confirm
         @confirmed="$emit('delete')"
         :no-prompt="!value.name"
-        class="confirmation-small"
-      >
-        <font-awesome-icon
-          :icon="['far', 'trash-alt']"
-        />
-        <template v-slot:yes>
-          {{ $t('general.label.yes') }}
-        </template>
-        <template v-slot:no>
-          {{ $t('general.label.no') }}
-        </template>
-      </c-input-confirm>
+        class="mr-2"
+      />
       <c-permissions-button
         v-if="canGrant"
         :title="value.name"
@@ -169,12 +164,3 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-.confirmation-small {
-  min-width: 80px;
-
-  /deep/.btn-outline-danger {
-    border: none;
-  }
-}
-</style>
