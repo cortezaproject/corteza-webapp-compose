@@ -27,17 +27,8 @@
                 @confirmed="page.blocks.splice(index,1)"
                 class="p-1"
                 size="md"
-              >
-                <font-awesome-icon
-                  :icon="['far', 'trash-alt']"
-                />
-                <template v-slot:yes>
-                  {{ $t('general.label.yes') }}
-                </template>
-                <template v-slot:no>
-                  {{ $t('general.label.no') }}
-                </template>
-              </c-input-confirm>
+                link
+              />
             </div>
             <page-block
               v-bind="{ ...$attrs, ...$props, page, block, boundingRect, blockIndex: index }"
@@ -129,8 +120,6 @@ import PageBlock from 'corteza-webapp-compose/src/components/PageBlocks'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import { compose } from '@cortezaproject/corteza-js'
 import Configurator from 'corteza-webapp-compose/src/components/PageBlocks/Configurator'
-import { components } from '@cortezaproject/corteza-vue'
-const { CInputConfirm } = components
 
 export default {
   components: {
@@ -139,7 +128,6 @@ export default {
     NewBlockSelector,
     PageBlock,
     EditorToolbar,
-    CInputConfirm,
   },
 
   props: {

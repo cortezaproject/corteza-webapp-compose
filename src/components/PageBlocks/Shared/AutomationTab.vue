@@ -46,12 +46,6 @@
                 size="md"
               >
                 {{ $t('block.automation.removeAll') }}
-                <template v-slot:yes>
-                  {{ $t('general.label.yes') }}
-                </template>
-                <template v-slot:no>
-                  {{ $t('general.label.no') }}
-                </template>
               </c-input-confirm>
             </template>
           </b-card>
@@ -123,12 +117,9 @@ import draggable from 'vuedraggable'
 import base from '../base'
 import { words } from 'lodash'
 import ButtonEditor from './AutomationTabButtonEditor'
-import { components } from '@cortezaproject/corteza-vue'
-const { CInputConfirm } = components
 
 export default {
   components: {
-    CInputConfirm,
     ButtonEditor,
     draggable,
   },

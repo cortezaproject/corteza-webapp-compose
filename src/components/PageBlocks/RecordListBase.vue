@@ -85,19 +85,8 @@
             />
             <c-input-confirm
               @confirmed="handleDeleteSelectedRecords()"
-              class="confirmation-small"
               variant="link-light"
-            >
-              <font-awesome-icon
-                :icon="['far', 'trash-alt']"
-              />
-              <template v-slot:yes>
-                {{ $t('general.label.yes') }}
-              </template>
-              <template v-slot:no>
-                {{ $t('general.label.no') }}
-              </template>
-            </c-input-confirm>
+            />
           </b-col>
         </b-row>
       </b-container>
@@ -263,8 +252,7 @@ import ImporterModal from 'corteza-webapp-compose/src/components/Public/Record/I
 import AutomationButtons from './Shared/AutomationButtons'
 import { compose } from '@cortezaproject/corteza-js'
 import users from 'corteza-webapp-compose/src/mixins/users'
-import { url, components } from '@cortezaproject/corteza-vue'
-const { CInputConfirm } = components
+import { url } from '@cortezaproject/corteza-vue'
 
 // Helper to determine if and value for given bool query
 // == is intentional
@@ -285,7 +273,6 @@ export default {
     FieldViewer,
     ExporterModal,
     ImporterModal,
-    CInputConfirm,
     AutomationButtons,
   },
 

@@ -4,9 +4,17 @@
             :to="backLink"
             v-if="backLink"
             class="float-left">&#171; {{ $t('general.label.backWithoutSave') }}</b-button>
-  <slot></slot>
-  <confirmation-toggle v-if="!hideDelete"
-                       @confirmed="$emit('delete')">{{ $t('general.label.delete') }}</confirmation-toggle>
+  <slot />
+
+  <c-input-confirm
+    v-if="!hideDelete"
+    @confirmed="$emit('delete')"
+    size="md"
+    :borderless="false"
+  >
+    {{ $t('general.label.delete') }}
+  </c-input-confirm>
+
   <b-button v-if="!hideSave"
             :disabled="disableSave"
             variant="primary"
@@ -19,13 +27,8 @@
 </div>
 </template>
 <script>
-import ConfirmationToggle from './ConfirmationToggle'
 
 export default {
-  components: {
-    ConfirmationToggle,
-  },
-
   props: {
     backLink: {
       type: Object,

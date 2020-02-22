@@ -45,31 +45,13 @@
     <template #footer>
       <c-input-confirm
         @confirmed="$emit('delete', button)"
-        class="confirmation-small"
         variant="link-light"
-      >
-        <font-awesome-icon
-          :icon="['far', 'trash-alt']"
-        />
-        <template v-slot:yes>
-          {{ $t('general.label.yes') }}
-        </template>
-        <template v-slot:no>
-          {{ $t('general.label.no') }}
-        </template>
-      </c-input-confirm>
+      />
     </template>
   </b-card>
 </template>
 <script>
-import { components } from '@cortezaproject/corteza-vue'
-const { CInputConfirm } = components
-
 export default {
-  components: {
-    CInputConfirm,
-  },
-
   props: {
     button: {
       type: Object,

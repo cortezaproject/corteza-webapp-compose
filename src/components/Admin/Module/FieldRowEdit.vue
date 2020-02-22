@@ -104,14 +104,8 @@
 
 <script>
 import { compose } from '@cortezaproject/corteza-js'
-import { components } from '@cortezaproject/corteza-vue'
-const { CInputConfirm } = components
 
 export default {
-  components: {
-    CInputConfirm,
-  },
-
   i18nOptions: {
     keyPrefix: 'module.fieldKinds',
   },
