@@ -73,14 +73,17 @@ export default {
       // Base of the raise event:
       // we'll attach all extra arguments passed to component to
       // be part of the generated event
-      let ev = { args: this.extraEventArgs }
+      let ev = { args: this.extraEventArgs || {} }
 
       // @todo page event missing
       switch (b.resourceType) {
         case 'compose:record':
+          ev.args.namespace = this.namespace
+          ev.args.module = this.module
           ev = compose.RecordEvent(this.record, ev)
           break
         case 'compose:module':
+          ev.args.namespace = this.namespace
           ev = compose.ModuleEvent(this.module, ev)
           break
         case 'compose:namespace':
