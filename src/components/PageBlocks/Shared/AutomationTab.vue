@@ -107,9 +107,6 @@
         </b-col>
       </b-row>
     </b-container>
-
-    <pre>
-    </pre>
   </b-tab>
 </template>
 <script>
@@ -153,8 +150,7 @@ export default {
       return undefined
     },
 
-    // Returns all compatible buttons
-    compatible () {
+    resourceTypes () {
       const resourceTypes = [
         // Three base types we always include when loading list of
         // available automation scripts
@@ -171,11 +167,15 @@ export default {
         resourceTypes.push('compose:record')
       }
 
+      return resourceTypes
+    },
+
+    // Returns all compatible buttons
+    compatible () {
       // @todo this is not a complete implementation
       //       we need to do a proper filtering via constraint matching
       //       for now, all (available) buttons can be configured
-
-      return this.$UIHooks.Find(resourceTypes)
+      return this.$UIHooks.Find(this.resourceTypes)
     },
 
     // Available buttons (compatible w/o ones already added)
