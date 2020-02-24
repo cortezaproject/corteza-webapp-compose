@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container fluid>
     <b-row>
       <b-col
         cols="4"
@@ -20,6 +20,7 @@
       </b-col>
       <b-col
         cols="8"
+        class="my-auto"
       >
         <b-img
           v-if="current"
@@ -104,13 +105,13 @@ export default {
           label: this.$t('block.recordOrganizer.label'),
           recordPageOnly: false,
           block: new compose.PageBlockRecordOrganizer(),
-          // image: images.RecordOrganizer,
+          image: images.RecordOrganizer,
         },
         {
           label: this.$t('block.iframe.label'),
           recordPageOnly: false,
           block: new compose.PageBlockIFrame(),
-          // image: images.IFrame,
+          image: images.IFrame,
         },
       ],
     }
