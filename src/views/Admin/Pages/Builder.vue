@@ -32,6 +32,8 @@
             </div>
             <page-block
               v-bind="{ ...$attrs, ...$props, page, block, boundingRect, blockIndex: index }"
+              :record="record"
+              :module="module"
             />
           </div>
         </template>
@@ -68,6 +70,7 @@
           :module="module"
           :page="page"
           :block.sync="editor.block"
+          :record="record"
         />
       </b-modal>
 
@@ -89,6 +92,7 @@
           :module="module"
           :page="page"
           :block.sync="editor.block"
+          :record="record"
         />
       </b-modal>
 
@@ -164,6 +168,17 @@ export default {
       } else {
         return undefined
       }
+    },
+
+    /**
+     * Create a dummy record object when we are editing a record page.
+     * This enables compose:record triggers & Record page blocks
+     */
+    record () {
+      if (this.module) {
+        return new compose.Record({}, this.module)
+      }
+      return null
     },
   },
 
