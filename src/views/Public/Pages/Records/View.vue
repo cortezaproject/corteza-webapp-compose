@@ -158,8 +158,7 @@ export default {
       this.record = null
       if (this.page && this.recordID && this.page.moduleID) {
         const { namespaceID, moduleID } = this.page
-        const module = this.getModuleByID(moduleID)
-
+        const module = Object.freeze(this.getModuleByID(moduleID).clone())
         this.$ComposeAPI
           .recordRead({ namespaceID, moduleID, recordID: this.recordID })
           .then(record => {

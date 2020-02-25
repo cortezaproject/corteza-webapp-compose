@@ -127,16 +127,17 @@ export default {
 
   props: {
     namespace: {
-      type: Object,
-      required: false,
+      type: compose.Namespace,
+      required: true,
     },
   },
 
   data () {
-    const { namespaceID } = this.namespace
-
     return {
-      newModule: new compose.Module({ namespaceID, fields: [new compose.ModuleFieldString({ fieldID: '0', name: 'Sample' })] }),
+      newModule: new compose.Module(
+        { fields: [new compose.ModuleFieldString({ fieldID: '0', name: 'Sample' })] },
+        this.namespace,
+      ),
     }
   },
 

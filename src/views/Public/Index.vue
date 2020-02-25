@@ -179,15 +179,13 @@ export default {
     }),
 
     createNewModule () {
-      const { namespaceID } = this.namespace
       const newModule = new compose.Module({
-        namespaceID,
         name: 'Demo Module',
         handle: 'demo_module',
         fields: [
           new compose.ModuleFieldString({ fieldID: '0', name: 'Sample' }),
         ],
-      })
+      }, this.namespace)
 
       this.createModule(newModule).then((module) => {
         this.$router.push({ name: 'admin.modules.edit', params: { moduleID: module.moduleID } })

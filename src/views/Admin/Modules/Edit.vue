@@ -271,7 +271,7 @@ export default {
     handleSave ({ closeOnSuccess = false } = {}) {
       this.processing = true
       this.updateModule(this.module).then((module) => {
-        this.module = new compose.Module({ ...module })
+        this.module = new compose.Module({ ...module }, this.namespace)
         this.raiseSuccessAlert(this.$t('notification.module.saved'))
         if (closeOnSuccess) {
           this.redirect()
