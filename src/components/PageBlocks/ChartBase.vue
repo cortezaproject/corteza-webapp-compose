@@ -11,6 +11,7 @@
 import { mapActions } from 'vuex'
 import base from './base'
 import ChartComponent from '../Chart'
+import { NoID } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
@@ -25,11 +26,14 @@ export default {
   },
 
   mounted () {
-    if (!this.options.chartID) {
+    const { chartID } = this.options
+
+    if (chartID === NoID) {
       return
     }
 
-    this.findChartByID({ chartID: this.options.chartID }).then((chart) => {
+    const { namespaceID } = this.namespace
+    this.findChartByID({ chartID, namespaceID }).then((chart) => {
       this.chart = chart
     }).catch(this.defaultErrorHandler(this.$t('notification.chart.loadFailed')))
   },
@@ -40,7 +44,8 @@ export default {
     }),
 
     reporter (r) {
-      return this.$ComposeAPI.recordReport({ namespaceID: this.namespace.namespaceID, ...r })
+      const { namespaceID } = this.namespace
+      return this.$ComposeAPI.recordReport({ namespaceID, ...r })
     },
   },
 }
