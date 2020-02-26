@@ -126,7 +126,7 @@ export default {
     this.$ComposeAPI
       .pageTree({ namespaceID: this.namespace.namespaceID })
       .then((result) => {
-        this.tree = Object.freeze(result.map(p => new compose.Page({ ...p })))
+        this.tree = Object.freeze(result.map(p => new compose.Page({ ...p, blocks: null })))
       })
   },
 
