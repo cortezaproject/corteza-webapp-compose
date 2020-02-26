@@ -119,6 +119,13 @@ export default function (ComposeAPI) {
       },
 
       [types.updateSet] (state, set) {
+        set = set.map(i => Object.freeze(i))
+
+        if (state.set.length === 0) {
+          state.set = set
+          return
+        }
+
         set.forEach(newItem => {
           const oldIndex = state.set.findIndex(({ pageID }) => pageID === newItem.pageID)
           if (oldIndex > -1) {

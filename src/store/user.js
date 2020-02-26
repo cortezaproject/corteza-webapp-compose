@@ -59,22 +59,21 @@ export default function (SystemAPI) {
       },
 
       [types.updateSet] (state, set) {
-        set = set.map(u => { return new system.User(u) })
+        set = set.map(i => Object.freeze(new system.User(i)))
+
         if (state.set.length === 0) {
           state.set = set
-        } else {
-          set.forEach(usr => {
-            // Replaces given user due to an update
-            const n = state.set.findIndex(u => u.userID === usr.userID)
-
-            // Doesn't yet exist -- add it
-            if (n < 0) {
-              state.set.push(usr)
-            } else {
-              state.set.splice(n, 1, usr)
-            }
-          })
+          return
         }
+
+        set.forEach(newItem => {
+          const oldIndex = state.set.findIndex(({ pageID }) => pageID === newItem.pageID)
+          if (oldIndex > -1) {
+            state.set.splice(oldIndex, 1, newItem)
+          } else {
+            state.set.push(newItem)
+          }
+        })
       },
     },
   }

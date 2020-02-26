@@ -114,10 +114,17 @@ export default function (ComposeAPI) {
       },
 
       [types.updateSet] (state, set) {
+        set = set.map(i => Object.freeze(i))
+
+        if (state.set.length === 0) {
+          state.set = set
+          return
+        }
+
         set.forEach(newItem => {
-          const i = state.set.findIndex(({ moduleID }) => moduleID === newItem.moduleID)
-          if (i > -1) {
-            state.set.splice(i, 1, newItem)
+          const oldIndex = state.set.findIndex(({ pageID }) => pageID === newItem.pageID)
+          if (oldIndex > -1) {
+            state.set.splice(oldIndex, 1, newItem)
           } else {
             state.set.push(newItem)
           }
