@@ -18,15 +18,47 @@
                @dismissed="alerts.splice(i, 0)">{{ a.message }}</b-alert>
     </div>
     <div class="d-none d-md-block">
-      <namespace-sidebar :namespaces="enabledNamespaces"
-                         v-if="$s('UI.NamespaceSwitcher.Enabled', false) && enabledNamespaces.length > 1"
-                         :namespace="namespace"
-                         :visible.sync="nsSbVisible" />
-
+      <namespace-sidebar
+        :namespaces="enabledNamespaces"
+        v-if="showNamespaceSidebar"
+        :namespace="namespace"
+        :visible.sync="nsSbVisible"
+      />
     </div>
-    <router-view v-if="loaded && namespace"
-                 :namespace="namespace" />
-    <div class="loader" v-else></div>
+    <router-view
+      v-if="loaded && namespace"
+      :namespace="namespace"
+    />
+    <div class="loader" v-else>
+      <div>
+        <h1 class="mt-5 text-center">{{ namespace ? (namespace.name || namespace.slug || namespace.ID) : '...' }}</h1>
+        <div>
+          <div
+            v-for="(pending, part) in parts"
+            :key="part"
+            class="p-1"
+          >
+            <div
+              class="pending pr-3 d-inline-block text-right"
+            >
+              <b-spinner
+                v-if="pending"
+                small
+              />
+              <font-awesome-icon
+                v-else
+                :icon="['fas', 'check']"
+              />
+            </div>
+            <div
+              class="d-inline-block"
+            >
+              {{ $t('navigation.' + part) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="error text-danger text-center position-absolute" v-if="error">{{ error }}</div>
     <c-permissions-modal />
   </div>
@@ -34,7 +66,8 @@
 
 <script>
 import moment from 'moment'
-import NamespaceSidebar from 'corteza-webapp-compose/src/components/Namespaces/NamespaceSidebar'
+import { mapGetters } from 'vuex'
+import NamespaceSidebar from '../components/Namespaces/NamespaceSidebar'
 import { compose } from '@cortezaproject/corteza-js'
 import { components } from '@cortezaproject/corteza-vue'
 const { CPermissionsModal, CToaster } = components
@@ -59,6 +92,7 @@ export default {
     return {
       nsSbVisible: this.$s('UI.NamespaceSwitcher.DefaultOpen', false),
       loaded: false,
+
       error: '',
       alerts: [], // { variant: 'info', message: 'foo' },
       namespace: null,
@@ -68,6 +102,22 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      namespacePending: 'namespace/pending',
+      modulePending: 'module/pending',
+      chartPending: 'chart/pending',
+      pagePending: 'page/pending',
+    }),
+
+    parts () {
+      return {
+        namespace: this.namespacePending,
+        module: this.modulePending,
+        page: this.pagePending,
+        chart: this.chartPending,
+      }
+    },
+
     frontendVersion () {
       /* eslint-disable no-undef */
       return VERSION
@@ -75,6 +125,10 @@ export default {
 
     enabledNamespaces () {
       return this.namespaces.filter(({ enabled }) => enabled)
+    },
+
+    showNamespaceSidebar () {
+      return this.$s('UI.NamespaceSwitcher.Enabled', false) && this.enabledNamespaces.length > 1
     },
   },
 
@@ -103,6 +157,7 @@ export default {
       },
     },
 
+    // When namespace changes, reload modules, charts & pages
     namespace: {
       handler (namespace) {
         if (!namespace) {
@@ -110,6 +165,10 @@ export default {
         }
 
         const p = { namespace, namespaceID: namespace.namespaceID, clear: true }
+
+        this.$store.dispatch('module/clearSet')
+        this.$store.dispatch('chart/clearSet')
+        this.$store.dispatch('page/clearSet')
 
         // Preload all data we need.
         Promise.all([

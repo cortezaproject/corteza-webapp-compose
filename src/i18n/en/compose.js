@@ -1,6 +1,7 @@
 /* eslint-disable no-template-curly-in-string */
 export default {
   navigation: {
+    namespace: 'Namespaces',
     module: 'Modules',
     page: 'Pages',
     chart: 'Charts',
