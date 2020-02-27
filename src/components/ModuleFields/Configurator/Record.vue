@@ -8,7 +8,7 @@
       </label>
       <b-form-select
         v-model="f.options.moduleID"
-        :options="modules"
+        :options="sortedModules"
         text-field="name"
         value-field="moduleID"
         class="form-control"
@@ -107,6 +107,11 @@ export default {
       } else {
         return undefined
       }
+    },
+
+    sortedModules () {
+      const modules = this.modules
+      return modules.sort((a, b) => a.name.localeCompare(b.name))
     },
 
     fields () {
