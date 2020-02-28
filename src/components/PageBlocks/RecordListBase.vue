@@ -499,16 +499,17 @@ export default {
         return this.prefilter || ''
       }
 
+      const boolQuery = toBoolean(query)
       const numQuery = Number.parseFloat(query)
 
-      // To SQL string
+      // To SQLish LIKE param
       const strQuery = query
-        // Remove all trailing * and %
-        .replace(/[%*]+$/, '')
         // replace * with %
-        .replace(/[*]+/g, '%') + '%'
-
-      const boolQuery = toBoolean(query)
+        .replace(/[*%]+/g, '%')
+        // Remove all trailing * and %
+        .replace(/[%]+$/, '')
+        // Remove all leading * and %
+        .replace(/^[%]+/, '')
 
       // When searching, always reset filter with prefilter + query
       query = this.recordListModule.filterFields(this.options.fields).map(qf => {
@@ -525,7 +526,7 @@ export default {
         }
 
         if (['String', 'DateTime', 'Select', 'Url', 'Email'].includes(qf.kind)) {
-          return `${qf.name} LIKE '${strQuery}'`
+          return `${qf.name} LIKE '%${strQuery}%'`
         }
       }).filter(q => !!q)
         .join(' OR ')
