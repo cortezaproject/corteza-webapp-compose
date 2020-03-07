@@ -122,7 +122,7 @@ export default function (ComposeAPI) {
         }
 
         set.forEach(newItem => {
-          const oldIndex = state.set.findIndex(({ pageID }) => pageID === newItem.pageID)
+          const oldIndex = state.set.findIndex(({ moduleID }) => moduleID === newItem.moduleID)
           if (oldIndex > -1) {
             state.set.splice(oldIndex, 1, newItem)
           } else {
