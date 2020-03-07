@@ -28,7 +28,7 @@
       <b-button
         v-if="module.canCreateRecord"
         variant="outline-secondary ml-1"
-        @click.prevent="$router.push({ name: 'page.record.create', params: $route.params })"
+        @click.prevent="$router.push({ name: 'page.record.create', params: newRouteParams })"
       >
         + {{ $t('general.label.addNew') }}
       </b-button>
@@ -111,6 +111,11 @@ export default {
     ...mapGetters({
       getModuleByID: 'module/getByID',
     }),
+
+    newRouteParams () {
+      const { recordID, ...params } = this.$route.params
+      return params
+    },
 
     validator () {
       if (!this.module) {
