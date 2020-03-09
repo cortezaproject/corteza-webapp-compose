@@ -741,8 +741,8 @@ export default {
         outputFormat: 'Output format:',
         outputFormatFootnote: 'See {{0}} for formatting options',
         warning: {
-          pastValuesOnly: 'Only dates in the future will be saved!',
-          futureValuesOnly: 'Only dates in the past will be saved!',
+          pastValuesOnly: 'Only dates in the past will be saved',
+          futureValuesOnly: 'Only dates in the future will be saved',
         },
       },
       email: {
