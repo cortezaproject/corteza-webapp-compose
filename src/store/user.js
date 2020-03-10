@@ -32,17 +32,50 @@ export default function (SystemAPI) {
     },
 
     actions: {
-      async load ({ commit, getters }) {
+      async load ({ commit }) {
         commit(types.pending)
-        SystemAPI.userList().then(({ set }) => {
+        return SystemAPI.userList().then(({ set }) => {
           commit(types.updateSet, set)
           commit(types.completed)
         })
       },
 
+      push ({ commit }, user) {
+        commit(types.updateSet, user)
+      },
+
       async fetchUsers ({ commit }, userID) {
         commit(types.pending)
-        SystemAPI.userList({ userID }).then(({ set }) => {
+
+        if (userID.length === 0) {
+          return new Promise()
+        }
+
+        return SystemAPI.userList({ userID }).then(({ set }) => {
+          commit(types.updateSet, set)
+          commit(types.completed)
+        })
+      },
+
+      /**
+       * Similar to fetchUsers but it only fetches unknown (not in set) ids
+       */
+      async resolveUsers ({ commit, getters }, list) {
+        if (list.length === 0) {
+          // save ourselves some work
+          return
+        }
+
+        // exclude existing & make unique
+        const existing = new Set(getters.set.map(({ userID }) => userID))
+        list = [...new Set(list.filter(userID => !existing.has(userID)))]
+
+        if (list.length === 0) {
+          // Check for values again
+          return
+        }
+
+        return SystemAPI.userList({ userID: list }).then(({ set }) => {
           commit(types.updateSet, set)
           commit(types.completed)
         })
@@ -59,7 +92,7 @@ export default function (SystemAPI) {
       },
 
       [types.updateSet] (state, set) {
-        set = set.map(i => Object.freeze(new system.User(i)))
+        set = (Array.isArray(set) ? set : [set]).map(i => new system.User(i))
 
         if (state.set.length === 0) {
           state.set = set
@@ -67,7 +100,7 @@ export default function (SystemAPI) {
         }
 
         set.forEach(newItem => {
-          const oldIndex = state.set.findIndex(({ pageID }) => pageID === newItem.pageID)
+          const oldIndex = state.set.findIndex(({ userID }) => userID === newItem.userID)
           if (oldIndex > -1) {
             state.set.splice(oldIndex, 1, newItem)
           } else {

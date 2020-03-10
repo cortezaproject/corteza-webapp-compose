@@ -80,14 +80,8 @@ export default {
   },
 
   created () {
-    if (!this.record.recordID) {
-      const userFields = []
-      this.fields.forEach(({ name, kind, isMulti }) => {
-        if (kind === 'User') {
-          userFields.push({ name, isMulti })
-        }
-      })
-      this.fetchUsers(userFields, [this.record])
+    if (this.record.recordID) {
+      this.fetchUsers(this.fields, [this.record])
     }
   },
 

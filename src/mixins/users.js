@@ -1,35 +1,23 @@
 export default {
   methods: {
     fetchUsers (fields = [], records = []) {
-      const userIDs = new Set()
-      fields
-        .filter(c => c.kind === 'User')
-        .forEach(u => {
-          records.forEach(r => {
-            if (r) {
-              let userID
-              if (u.isSystem) {
-                userID = r[u.name]
-              } else {
-                userID = r.values[u.name]
-              }
+      if (records.length === 0 || fields.length === 0) {
+        return
+      }
 
-              if (u.isMulti && userID) {
-                userID.forEach(uID => {
-                  if (uID && uID !== '0' && !this.$store.getters['user/findByID'](uID)) {
-                    userIDs.add(uID)
-                  }
-                })
-              } else if (userID && userID !== '0' && !this.$store.getters['user/findByID'](userID)) {
-                userIDs.add(userID)
-              }
+      const list = records.map(r => {
+        return fields
+          .filter(c => c.kind === 'User')
+          .map(f => {
+            if (f.isSystem) {
+              return [r[f.name]]
+            } else {
+              return f.isMulti ? r.values[f.name] : [r.values[f.name]]
             }
           })
-        })
+      }).flat(Infinity)
 
-      if (userIDs.size > 0) {
-        this.$store.dispatch('user/fetchUsers', [...userIDs])
-      }
+      return this.$store.dispatch('user/fetchUsers', list)
     },
   },
 }
