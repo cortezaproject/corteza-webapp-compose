@@ -48,7 +48,7 @@ export default function (SystemAPI) {
         commit(types.pending)
 
         if (userID.length === 0) {
-          return new Promise()
+          return null
         }
 
         return SystemAPI.userList({ userID }).then(({ set }) => {
@@ -92,7 +92,7 @@ export default function (SystemAPI) {
       },
 
       [types.updateSet] (state, set) {
-        set = (Array.isArray(set) ? set : [set]).map(i => new system.User(i))
+        set = (Array.isArray(set) ? set : [set]).filter(u => !!u).map(i => new system.User(i))
 
         if (state.set.length === 0) {
           state.set = set

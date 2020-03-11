@@ -162,7 +162,9 @@ export default {
      */
     getUserByIndex (index = 0) {
       const userID = this.field.isMulti ? this.value[index] : this.value
-      return this.findByID(userID) || {}
+      if (userID) {
+        return this.findByID(userID) || {}
+      }
     },
 
     search (query) {
