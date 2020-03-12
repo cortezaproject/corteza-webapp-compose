@@ -11,9 +11,9 @@ steps:
     image: cortezaproject/corteza-webapp-builder
     commands: [ "yarn lint" ]
 
-  - name: Test
-    image: cortezaproject/corteza-webapp-builder
-    commands: [ "yarn test:unit" ]
+#  - name: Test
+#    image: cortezaproject/corteza-webapp-builder
+#    commands: [ "yarn test:unit" ]
 
   - name: Build
     image: cortezaproject/corteza-webapp-builder
