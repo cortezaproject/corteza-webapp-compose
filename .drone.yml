@@ -3,52 +3,39 @@ name: "Test & Build"
 type: docker
 
 steps:
-  - name: Dependencies
+  - name: "Quality Control"
     image: cortezaproject/corteza-webapp-builder
-    commands: [ "yarn install" ]
+    commands:
+    - make dep # test
 
-  - name: Lint
+  - name: "Build release (tag)"
     image: cortezaproject/corteza-webapp-builder
-    commands: [ "yarn lint" ]
-
-#  - name: Test
-#    image: cortezaproject/corteza-webapp-builder
-#    commands: [ "yarn test:unit" ]
-
-  - name: Build
-    image: cortezaproject/corteza-webapp-builder
-    commands: [ "yarn build" ]
-
-  - name: Pack
+    environment:
+      RELEASE_SFTP_KEY: { from_secret: RELEASE_SFTP_KEY }
+      RELEASE_SFTP_URI: { from_secret: RELEASE_SFTP_URI }
+    commands:
+    - make build release upload BUILD_VERSION=${DRONE_TAG}
     when:
-      ref: { include: [ "refs/tags/20??.*.*", "refs/heads/master", "refs/heads/preview" ] }
-      event: [ "push", "tag" ]
-    image: cortezaproject/corteza-webapp-builder
-    volumes: [ { name: webapp-build, path: /var/build} ]
-    commands:  [ "tar -cjf /var/build/$DRONE_REPO_NAME-${DRONE_TAG=${DRONE_BRANCH}}.tar.bz2 -C dist/ ." ]
+      event: [ tag ]
+      ref:
+      - refs/tags/20??.3.*
+      - refs/tags/20??.6.*
+      - refs/tags/20??.9.*
+      - refs/tags/20??.12.*
 
-  - name: Trigger build merge
+  - name: "Build unstable release (develop)"
+    image: cortezaproject/corteza-webapp-builder
+    environment:
+      RELEASE_SFTP_KEY: { from_secret: RELEASE_SFTP_KEY }
+      RELEASE_SFTP_URI: { from_secret: RELEASE_SFTP_URI }
+    commands:
+    - make build release upload BUILD_VERSION=unstable
     when:
-      ref: { include: [ "refs/tags/20??.*.*", "refs/heads/master", "refs/heads/preview" ] }
-      event: [ "push", "tag" ]
-    image: plugins/downstream
-    commands: []
-    settings:
-      fork: true
-      server: https://drone.crust.tech
-      token: { from_secret: drone_token }
-      params: [ "APP_VERSION=${DRONE_TAG=${DRONE_BRANCH}}" ]
-      repositories:
-        # Dynamically constructs Drone repo name that will be notified
-        - "${DRONE_REPO_NAMESPACE}/${DRONE_REPO_NAME%%-compose}"
+      event: [ push ]
+      branch: [ develop, drone-release-upgrade ]
 
 trigger:
   event:
     # Pipeline will be executed from branch event,
     # this ensures we do not run duplicates.
-    exclude: [ 'pull_request' ]
-
-volumes:
-  - name: webapp-build
-    host:
-      path: /var/build/drone/webapp-build
+    exclude: [ pull_request ]
