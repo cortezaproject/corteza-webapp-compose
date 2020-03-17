@@ -40,6 +40,7 @@
           <h5 class="mb-3"> {{ $t('chart.edit.dimension.label') }} </h5>
           <b-form-group horizontal :label-cols="2" breakpoint="md" :label="$t('chart.edit.dimension.fieldLabel')">
             <b-form-select v-model="d.field"
+                           @change="onDimFieldChange($event, d)"
                            :options="dimensionFields"
                            text-field="name"
                            value-field="name">
@@ -258,6 +259,12 @@ export default {
 
   methods: {
     hasRelativeDisplay,
+
+    onDimFieldChange (f, d) {
+      if (!this.isTemporalField(f)) {
+        this.$set(d, 'modifier', this.dimensionModifiers[0].value)
+      }
+    },
 
     removeMetric (i) {
       this.metrics.splice(i, 1)
