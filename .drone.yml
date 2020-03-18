@@ -32,7 +32,7 @@ steps:
     - make build release upload BUILD_VERSION=unstable
     when:
       event: [ push ]
-      branch: [ develop, drone-release-upgrade ]
+      branch: [ develop ]
 
 trigger:
   event:
