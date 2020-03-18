@@ -11,18 +11,18 @@
         type="date"
         v-if="!field.options.onlyTime"
         v-b-tooltip.hover :title="$t(dateRule)"
-        @change="setDate($event, ctx.index)"
         :value="getDate(ctx.index)"
         :required="field.isRequired"
         :state="state"
+        @change="setDate($event, ctx.index)"
       />
       <b-form-input
         type="time"
         v-if="!field.options.onlyDate"
-        @change="setTime($event, ctx.index)"
         :value="getTime(ctx.index)"
         :required="field.isRequired"
         :state="state"
+        @change="setTime($event, ctx.index)"
       />
       <errors :errors="errors" />
     </multi>
@@ -34,19 +34,21 @@
         type="date"
         v-if="!field.options.onlyTime && !field.isMulti"
         v-b-tooltip.hover
-        v-model="date"
-        :required="field.isRequired"
         class="d-inline w-50"
+        :value="getDate()"
+        :required="field.isRequired"
         :title="$t(dateRule)"
         :state="state"
+        @change="setDate($event)"
       />
       <b-form-input
         type="time"
         v-if="!field.options.onlyDate && !field.isMulti"
-        v-model="time"
         class="d-inline w-50"
+        :value="getTime()"
         :required="field.isRequired"
         :state="state"
+        @change="setTime($event)"
       />
 
       <errors :errors="errors" />
@@ -60,6 +62,13 @@ import moment from 'moment'
 export default {
   extends: base,
 
+  data () {
+    return {
+      date: null,
+      time: null,
+    }
+  },
+
   computed: {
     dateRule () {
       if (this.field.options.onlyFutureValues) {
@@ -70,60 +79,48 @@ export default {
         return ''
       }
     },
-    date: {
-      get () {
-        return this.getDate()
-      },
-      set (d) {
-        this.setDate(d)
-      },
-    },
-    time: {
-      get () {
-        return this.getTime()
-      },
-      set (t) {
-        this.setTime(t)
+
+  },
+
+  watch: {
+    value: {
+      immediate: true,
+      handler () {
+        this.date = this.getDate()
+        this.time = this.getTime()
       },
     },
   },
 
   methods: {
-    getTime (index = undefined) {
+    getTime (index) {
       if (this.value && this.value.length > 0) {
-        let dt = []
-        const value = index !== undefined ? this.value[index] : this.value
-        if (value) {
-          dt = value.split(' ')
+        if (this.value === 'Invalid date') {
+          // Make sure this weird value does not cause us problems
+          return ''
         }
 
-        if (dt.length > 1) {
-          return dt[1] // we only want the time part
-        } else if (dt.length === 1) {
-          // If we time is in the value
-          if (dt[0].indexOf(':') > -1) {
-            return dt[0]
-          }
-        }
+        const time = index !== undefined ? this.value[index] : this.value
+        return moment(time).local().format('HH:mm')
       }
       return ''
     },
 
-    setTime (t, index = undefined) {
-      if (t && t.length > 1) {
-        let tm = moment()
+    setTime (time, index) {
+      if (time && time.length > 1) {
+        let tm
         let date = this.getDate(index)
+
         if (this.field.options.onlyTime) {
-          tm = moment(t, 'HH:mm')
-          tm = tm.format('HH:mm')
+          tm = moment(time, 'HH:mm').utc().format()
         } else {
           if (!date) {
             // If no date is yet set default to today
             date = moment().format('YYYY-MM-DD')
           }
-          tm = moment(date + ' ' + t, 'YYYY-MM-DD HH:mm')
-          tm = tm.format('YYYY-MM-DD HH:mm')
+          tm = moment(date + ' ' + time, 'YYYY-MM-DD HH:mm').utc().format()
         }
+
         if (index !== undefined) {
           this.value = Object.assign([], this.value, { [index]: tm })
         } else {
@@ -132,41 +129,32 @@ export default {
       }
     },
 
-    getDate (index = undefined) {
+    getDate (index) {
       if (this.value && this.value.length > 0) {
         if (this.value === 'Invalid date') {
           // Make sure this weird value does not cause us problems
           return ''
         }
 
-        let dt = []
-        if (index !== undefined) {
-          dt = this.value[index].split(' ')
-        } else {
-          dt = this.value.split(' ')
-        }
-        if (dt.length > 1) {
-          return dt[0] // we only want the date part
-        } else if (dt.length === 1) {
-          // If date is in the value
-          if (dt[0].indexOf('-') > -1) {
-            return dt[0]
-          }
-        }
+        const date = index !== undefined ? this.value[index] : this.value
+        return moment(date).local().format('YYYY-MM-DD')
       }
       return ''
     },
 
-    setDate (d, index = undefined) {
-      if (d && d.length > 1) {
+    setDate (date, index) {
+      if (date && date.length > 1) {
         let dm = moment()
-        const time = this.getTime(index)
+        let time = this.getTime(index)
+
         if (this.field.options.onlyDate) {
-          dm = moment(d, 'YYYY-MM-DD')
-            .format('YYYY-MM-DD')
+          dm = moment(date, 'YYYY-MM-DD').utc().format()
         } else {
-          dm = moment(d + ' ' + time, 'YYYY-MM-DD HH:mm')
-            .format('YYYY-MM-DD HH:mm')
+          if (!time) {
+            // If no date is yet set default to today
+            time = moment().format('HH:mm')
+          }
+          dm = moment(date + ' ' + time, 'YYYY-MM-DD HH:mm').utc().format()
         }
 
         if (index !== undefined) {
