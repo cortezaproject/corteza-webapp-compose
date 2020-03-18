@@ -16,6 +16,7 @@
         :value="getDate(ctx.index)"
         :required="field.isRequired"
         :state="state"
+        :class="{ 'd-inline w-50': !field.options.onlyDate }"
         @change="setDate($event, ctx.index)"
       />
       <b-form-input
@@ -24,6 +25,7 @@
         :value="getTime(ctx.index)"
         :required="field.isRequired"
         :state="state"
+        :class="{ 'd-inline w-50': !field.options.onlyTime }"
         @change="setTime($event, ctx.index)"
       />
       <errors :errors="errors" />
@@ -38,20 +40,20 @@
         v-b-tooltip.hover
         :title="$t(dateRule)"
         type="date"
-        class="d-inline w-50"
         :value="getDate()"
         :required="field.isRequired"
         :state="state"
+        :class="{ 'd-inline w-50': !field.options.onlyDate }"
       />
       <b-form-input
         v-if="!field.options.onlyDate"
         v-model="time"
         type="time"
-        class="d-inline w-50"
         :value="getTime()"
         :required="field.isRequired"
         :state="state"
         @change="setTime($event)"
+        :class="{ 'd-inline w-50': !field.options.onlyTime }"
       />
 
       <errors :errors="errors" />
