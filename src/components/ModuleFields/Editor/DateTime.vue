@@ -31,19 +31,19 @@
       v-else
       >
       <b-form-input
-        type="date"
         v-if="!field.options.onlyTime && !field.isMulti"
+        type="date"
         v-b-tooltip.hover
+        v-model="date"
         class="d-inline w-50"
         :value="getDate()"
         :required="field.isRequired"
-        :title="$t(dateRule)"
         :state="state"
-        @change="setDate($event)"
       />
       <b-form-input
-        type="time"
         v-if="!field.options.onlyDate && !field.isMulti"
+        type="time"
+        v-model="time"
         class="d-inline w-50"
         :value="getTime()"
         :required="field.isRequired"
@@ -62,13 +62,6 @@ import moment from 'moment'
 export default {
   extends: base,
 
-  data () {
-    return {
-      date: null,
-      time: null,
-    }
-  },
-
   computed: {
     dateRule () {
       if (this.field.options.onlyFutureValues) {
@@ -80,20 +73,26 @@ export default {
       }
     },
 
-  },
-
-  watch: {
-    value: {
-      immediate: true,
-      handler () {
-        this.date = this.getDate()
-        this.time = this.getTime()
+    date: {
+      get () {
+        return this.getDate()
+      },
+      set (date) {
+        this.setDate(date)
+      },
+    },
+    time: {
+      get () {
+        return this.getTime()
+      },
+      set (time) {
+        this.setTime(time)
       },
     },
   },
 
   methods: {
-    getTime (index) {
+    getTime (index = undefined) {
       if (this.value && this.value.length > 0) {
         if (this.value === 'Invalid date') {
           // Make sure this weird value does not cause us problems
@@ -106,7 +105,7 @@ export default {
       return ''
     },
 
-    setTime (time, index) {
+    setTime (time, index = undefined) {
       if (time && time.length > 1) {
         let tm
         let date = this.getDate(index)
@@ -129,7 +128,7 @@ export default {
       }
     },
 
-    getDate (index) {
+    getDate (index = undefined) {
       if (this.value && this.value.length > 0) {
         if (this.value === 'Invalid date') {
           // Make sure this weird value does not cause us problems
@@ -142,7 +141,7 @@ export default {
       return ''
     },
 
-    setDate (date, index) {
+    setDate (date, index = undefined) {
       if (date && date.length > 1) {
         let dm = moment()
         let time = this.getTime(index)
