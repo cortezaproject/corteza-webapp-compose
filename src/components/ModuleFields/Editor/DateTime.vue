@@ -105,7 +105,11 @@ export default {
         }
 
         const time = index !== undefined ? this.value[index] : this.value
-        return moment(time).local().format('HH:mm')
+        if (this.field.options.onlyTime) {
+          return moment(time, 'HH:mm').format('HH:mm')
+        } else {
+          return moment(time).local().format('HH:mm')
+        }
       }
       return ''
     },
@@ -113,11 +117,10 @@ export default {
     setTime (time, index = undefined) {
       if (time && time.length > 1) {
         let tm
-        let date = this.getDate(index)
-
         if (this.field.options.onlyTime) {
-          tm = moment(time, 'HH:mm').utc().format()
+          tm = moment(time, 'HH:mm').format('HH:mm')
         } else {
+          let date = this.getDate(index)
           if (!date) {
             // If no date is yet set default to today
             date = moment().format('YYYY-MM-DD')
@@ -141,19 +144,23 @@ export default {
         }
 
         const date = index !== undefined ? this.value[index] : this.value
-        return moment(date).local().format('YYYY-MM-DD')
+        if (this.field.options.onlyDate) {
+          return moment(date, 'YYYY-MM-DD').format('YYYY-MM-DD')
+        } else {
+          return moment(date).local().format('YYYY-MM-DD')
+        }
       }
       return ''
     },
 
     setDate (date, index = undefined) {
       if (date && date.length > 1) {
-        let dm = moment()
-        let time = this.getTime(index)
+        let dm
 
         if (this.field.options.onlyDate) {
-          dm = moment(date, 'YYYY-MM-DD').utc().format()
+          dm = moment(date, 'YYYY-MM-DD').format('YYYY-MM-DD')
         } else {
+          let time = this.getTime(index)
           if (!time) {
             // If no date is yet set default to today
             time = moment().format('HH:mm')
