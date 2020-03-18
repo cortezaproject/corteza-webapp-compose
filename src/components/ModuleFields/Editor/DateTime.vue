@@ -5,20 +5,22 @@
   >
     <multi
       v-if="field.isMulti"
+      v-slot="ctx"
       :value.sync="value"
-      v-slot="ctx">
+    >
       <b-form-input
-        type="date"
         v-if="!field.options.onlyTime"
-        v-b-tooltip.hover :title="$t(dateRule)"
+        v-b-tooltip.hover
+        :title="$t(dateRule)"
+        type="date"
         :value="getDate(ctx.index)"
         :required="field.isRequired"
         :state="state"
         @change="setDate($event, ctx.index)"
       />
       <b-form-input
-        type="time"
         v-if="!field.options.onlyDate"
+        type="time"
         :value="getTime(ctx.index)"
         :required="field.isRequired"
         :state="state"
@@ -29,21 +31,22 @@
 
     <template
       v-else
-      >
+    >
       <b-form-input
-        v-if="!field.options.onlyTime && !field.isMulti"
-        type="date"
-        v-b-tooltip.hover
+        v-if="!field.options.onlyTime"
         v-model="date"
+        v-b-tooltip.hover
+        :title="$t(dateRule)"
+        type="date"
         class="d-inline w-50"
         :value="getDate()"
         :required="field.isRequired"
         :state="state"
       />
       <b-form-input
-        v-if="!field.options.onlyDate && !field.isMulti"
-        type="time"
+        v-if="!field.options.onlyDate"
         v-model="time"
+        type="time"
         class="d-inline w-50"
         :value="getTime()"
         :required="field.isRequired"
