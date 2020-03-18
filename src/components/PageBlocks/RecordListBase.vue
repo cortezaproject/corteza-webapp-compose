@@ -610,7 +610,8 @@ export default {
           this.filter = { ...this.filter, ...filter }
 
           // Extract user IDs from record values and load all users
-          this.fetchUsers(this.columns, records)
+          const fields = this.fields.filter(f => f.moduleField).map(f => f.moduleField)
+          this.fetchUsers(fields, records)
 
           return records
         })
