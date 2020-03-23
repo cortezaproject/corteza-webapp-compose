@@ -10,6 +10,7 @@
           :filterable="false"
           :options="options"
           :disabled="!module"
+          :clearable="false"
           @search="search"
           option-value="recordID"
           option-text="label"
@@ -36,6 +37,7 @@
           :filterable="false"
           :options="options"
           :disabled="!module"
+          :clearable="false"
           @search="search"
           option-value="recordID"
           option-text="label"
@@ -170,13 +172,21 @@ export default {
     setRecord (event, index = undefined) {
       const crtValue = index !== undefined ? this.value[index] : this.value
       const { value } = event || {}
-      if (value && value !== crtValue) {
-        // Set selected to value
-        this.fetchRecord(value)
-        if (index !== undefined) {
-          this.value[index] = value
+      if (value !== crtValue) {
+        if (value) {
+          // Set selected to value
+          this.fetchRecord(value)
+          if (index !== undefined) {
+            this.value[index] = value
+          } else {
+            this.value = value
+          }
         } else {
-          this.value = value
+          if (index !== undefined) {
+            this.value.splice(index, 1)
+          } else {
+            this.value = undefined
+          }
         }
       }
     },
