@@ -11,6 +11,7 @@
           :options="options"
           :get-option-label="getOptionLabel"
           :get-option-key="getOptionKey"
+          :clearable="false"
           @search="search"
           @input="updateValue($event)"
           ref="singleSelect"
@@ -36,6 +37,7 @@
           :get-option-label="getOptionLabel"
           :get-option-key="getOptionKey"
           :value="getUserByIndex(ctx.index)"
+          :clearable="false"
           @search="search"
           @input="updateValue($event, ctx.index)"
         >
@@ -139,20 +141,30 @@ export default {
      * Handles single & multi value fields
      */
     updateValue (user, index = -1) {
-      // update list of resolved users for every item we add
-      this.addUserToResolved({ ...user })
+      console.log(user)
+      console.log(index)
+      if (user) {
+        // update list of resolved users for every item we add
+        this.addUserToResolved({ ...user })
 
-      // update valie on record
-      const { userID } = user
-      if (this.field.isMulti) {
-        if (index >= 0 && this.value[index]) {
-          this.value[index] = userID
+        // update valie on record
+        const { userID } = user
+        if (this.field.isMulti) {
+          if (index >= 0) {
+            this.value[index] = userID
+          } else {
+            // <0, assume we're appending
+            this.value.push(userID)
+          }
         } else {
-          // <0, assume we're appending
-          this.value.push(userID)
+          this.value = userID
         }
       } else {
-        this.value = userID
+        if (index >= 0) {
+          this.value.splice(index, 1)
+        } else {
+          this.value = undefined
+        }
       }
     },
 
