@@ -141,8 +141,6 @@ export default {
      * Handles single & multi value fields
      */
     updateValue (user, index = -1) {
-      console.log(user)
-      console.log(index)
       if (user) {
         // update list of resolved users for every item we add
         this.addUserToResolved({ ...user })
