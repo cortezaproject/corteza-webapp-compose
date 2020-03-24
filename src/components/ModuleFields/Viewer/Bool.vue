@@ -7,10 +7,11 @@ export default {
   computed: {
     formatted () {
       const { trueLabel, falseLabel } = this.field.options
-      if (!this.value || this.value === 'false') {
-        return falseLabel || 'false'
-      } else {
+
+      if ([1, '1', 'true', true].includes(this.value)) {
         return trueLabel || 'true'
+      } else {
+        return falseLabel || 'false'
       }
     },
   },
