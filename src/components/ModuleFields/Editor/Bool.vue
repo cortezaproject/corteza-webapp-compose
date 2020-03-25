@@ -15,7 +15,7 @@ export default {
   computed: {
     value: {
       get () {
-        if ([1, '1', 'true', true].includes(this.record.values[this.field.name])) {
+        if (this.record.values[this.field.name]) {
           return true
         } else {
           return false
