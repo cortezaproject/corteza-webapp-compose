@@ -78,7 +78,12 @@ export default {
   },
 
   created () {
-    this.$auth.check().then(() => {
+    this.$auth.check().then((user) => {
+      if (!user) {
+        // check performed: no error & no user,
+        // redirect to auth
+        throw new Error()
+      }
       this.error = ''
 
       const errHandler = (error) => {

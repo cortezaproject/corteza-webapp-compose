@@ -137,7 +137,12 @@ export default {
       immediate: true,
       handler (slug) {
         this.loaded = false
-        this.$auth.check().then(() => {
+        this.$auth.check().then((user) => {
+          if (!user) {
+            // check performed: no error & no user,
+            // redirect to auth
+            throw new Error()
+          }
           this.initReminders()
 
           this.$store.dispatch('namespace/load').then(() => {
