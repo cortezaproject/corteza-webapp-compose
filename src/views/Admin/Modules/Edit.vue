@@ -289,7 +289,7 @@ export default {
       }).catch(this.defaultErrorHandler(this.$t('notification.module.deleteFailed')))
     },
 
-    async createRecordPage () {
+    async createRecordPage (page = {}) {
       if (this.recordPage) {
         return this.recordPage
       }
@@ -299,14 +299,21 @@ export default {
 
       return this.createPage({
         namespaceID,
-        title: `${this.$t('module.forModule.recordPage')} "${name || moduleID}"`,
         moduleID,
+
+        title: `${this.$t('module.forModule.recordPage')} "${name || moduleID}"`,
         blocks: [],
+
+        ...page,
+
       })
     },
 
     handleRecordPageCreation () {
-      this.createRecordPage().then(page => {
+      // A simple record block w/o preselected fields
+      const recBlock = new compose.PageBlockRecord({ xywh: [0, 0, 12, 16] })
+
+      this.createRecordPage({ blocks: [recBlock] }).then(page => {
         this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.createFailed')))
     },
