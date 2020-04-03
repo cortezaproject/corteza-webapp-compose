@@ -120,19 +120,11 @@ export default {
         return undefined
       }
     },
-
-    modulePageID () {
-      const modulePageID = []
-      this.pages.filter(p => !!p.moduleID).forEach(({ pageID, moduleID }) => { modulePageID[moduleID] = pageID })
-      return modulePageID
-    },
   },
 
   watch: {
     'options.moduleID' (newModuleID) {
-      // Every time moduleID changes, do a lookup among module-page pairs and
-      // reset the pageID
-      this.options.pageID = this.modulePageID[newModuleID] || undefined
+      // Every time moduleID changes
       this.options.fields = []
     },
   },

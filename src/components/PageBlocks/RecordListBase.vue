@@ -13,12 +13,12 @@
          <b-col
             cols="6"
           >
-            <template v-if="!options.hideAddButton && recordListModule.canCreateRecord">
+            <template v-if="!options.hideAddButton && recordListModule.canCreateRecord && recordPageID">
               <router-link
                 class="btn btn-sm btn-outline-primary float-left"
                 :to="{
                   name: 'page.record.create',
-                  params: { pageID: options.pageID, refRecord: record },
+                  params: { pageID: recordPageID, refRecord: record },
                   query: null,
                 }"
               >
@@ -140,30 +140,30 @@
               />
             </b-button>
             <b-button
-              v-if="!options.hideRecordCloneButton && recordListModule.canCreateRecord"
+              v-if="!options.hideRecordCloneButton && recordListModule.canCreateRecord && recordPageID"
               variant="link"
               class="p-0 m-0 pl-1 text-secondary"
-              :to="{ name: 'page.record.create', params: { pageID: options.pageID, values: r.values }, query: null }"
+              :to="{ name: 'page.record.create', params: { pageID: recordPageID, values: r.values }, query: null }"
             >
               <font-awesome-icon
                 :icon="['far', 'clone']"
               />
             </b-button>
             <b-button
-              v-if="!options.hideRecordEditButton && recordListModule.canUpdateRecord"
+              v-if="!options.hideRecordEditButton && recordListModule.canUpdateRecord && recordPageID"
               variant="link"
               class="p-0 m-0 pl-1 text-secondary"
-              :to="{ name: 'page.record.edit', params: { pageID: options.pageID, recordID: r.recordID }, query: null }"
+              :to="{ name: 'page.record.edit', params: { pageID: recordPageID, recordID: r.recordID }, query: null }"
             >
               <font-awesome-icon
                 :icon="['far', 'edit']"
               />
             </b-button>
             <b-button
-              v-if="!options.hideRecordViewButton"
+              v-if="!options.hideRecordViewButton && recordPageID"
               variant="link"
               class="p-0 m-0 pl-1 text-secondary"
-              :to="{ name: 'page.record', params: { pageID: options.pageID, recordID: r.recordID }, query: null }"
+              :to="{ name: 'page.record', params: { pageID: recordPageID, recordID: r.recordID }, query: null }"
             >
               <font-awesome-icon
                 :icon="['far', 'eye']"
@@ -307,6 +307,7 @@ export default {
   computed: {
     ...mapGetters({
       getModuleByID: 'module/getByID',
+      pages: 'page/set',
     }),
 
     /**
@@ -340,16 +341,40 @@ export default {
       }
     },
 
+    // Tries to determine ID of the page we're supposed to redirect
+    recordPageID () {
+      // Relying on pages having unique moduleID,
+      const { moduleID } = this.recordListModule || {}
+      if (!moduleID) {
+        return undefined
+      }
+
+      const { pageID } = this.pages.find(p => p.moduleID === moduleID) || {}
+      if (!pageID) {
+        return undefined
+      }
+
+      return pageID
+    },
+
     fields () {
-      const configured = this.recordListModule
-        .filterFields(this.options.fields)
-        .map(mf => ({
-          key: mf.name,
-          label: mf.label || mf.name,
-          moduleField: mf,
-          sortable: true,
-          tdClass: 'record-value',
-        }))
+      let fields = []
+
+      if (this.options.fields.length > 0) {
+        fields = this.recordListModule.filterFields(this.options.fields)
+      } else {
+        // Record list block does not have any configured fields
+        // Use first five fields from the module.
+        fields = this.recordListModule.fields.slice(0, 5)
+      }
+
+      const configured = fields.map(mf => ({
+        key: mf.name,
+        label: mf.label || mf.name,
+        moduleField: mf,
+        sortable: true,
+        tdClass: 'record-value',
+      }))
 
       const pre = []
       const post = []
@@ -388,7 +413,7 @@ export default {
     // prepares prefilter
     prepRecordList () {
       // Validate props
-      if (!this.options.moduleID || !this.options.pageID) {
+      if (!this.options.moduleID) {
         throw Error(this.$t('notification.record.moduleOrPageNotSet'))
       }
 
@@ -442,7 +467,7 @@ export default {
         title,
         link: {
           namespaceSlug: this.namespace.slug,
-          pageID: this.options.pageID,
+          pageID: this.recordPageID,
           moduleID: record.moduleID,
         },
       }
