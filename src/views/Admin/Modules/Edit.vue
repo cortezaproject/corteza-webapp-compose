@@ -305,7 +305,6 @@ export default {
         blocks: [],
 
         ...page,
-
       })
     },
 

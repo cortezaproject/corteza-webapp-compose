@@ -56,7 +56,18 @@ export default {
 
   computed: {
     fields () {
-      return this.module ? this.module.filterFields(this.options.fields) : []
+      if (!this.module) {
+        // No module, no fields
+        return []
+      }
+
+      if (!this.options.fields || this.options.fields.length === 0) {
+        // No fields defined in the options, show all (buy system)
+        return this.module.fields
+      }
+
+      // Show filtered & ordered list of fields
+      return this.module.filterFields(this.options.fields)
     },
   },
 
