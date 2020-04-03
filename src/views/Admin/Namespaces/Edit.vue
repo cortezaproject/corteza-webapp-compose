@@ -86,7 +86,7 @@ export default {
 
   data () {
     return {
-      namespace: new compose.Namespace(),
+      namespace: new compose.Namespace({ enabled: true }),
     }
   },
 
