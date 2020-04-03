@@ -17,7 +17,7 @@
         v-if="module.canCreateRecord"
         variant="primary"
         class="float-right"
-        :disabled="!isValid"
+        :disabled="!isValid || page.blocks.length === 0"
         @click.prevent="handleFormSubmit"
       >
         {{ $t('general.label.save') }}
