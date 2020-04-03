@@ -345,6 +345,7 @@ export default {
   page: {
     title: 'List of pages',
     visible: 'Visible',
+    notVisible: 'Not visible',
     preview: 'Preview',
     recordPage: 'Record page for {{ 0 }}',
     newLabel: 'Create a new page:',

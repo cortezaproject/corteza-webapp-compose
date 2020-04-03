@@ -41,6 +41,12 @@
           >
             {{ $t('page.visible') }}
           </span>
+          <span
+            v-else-if="!item.visible"
+            class="text-danger"
+          >
+            {{ $t('page.notVisible') }}
+          </span>
         </div>
         <div class="fixed-width text-right ml-3">
           <router-link
