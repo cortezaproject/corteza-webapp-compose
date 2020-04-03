@@ -37,8 +37,10 @@
   </div>
   <div
     v-else
-    class="no-builder-grid pt-5 container text-center">
-    <h4>{{ $t('page.noBlock') }}.</h4>
+    class="no-builder-grid vh-100 pt-5 container text-center">
+    <h4>
+      {{ $t('page.noBlock') }}
+    </h4>
   </div>
 </template>
 
