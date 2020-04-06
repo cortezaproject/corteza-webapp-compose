@@ -12,6 +12,7 @@
       <div
         v-if="item.pageID"
         class="wrap d-flex"
+        :class="{ 'bg-warning': !isValid(item) }"
       >
         <div
           class="flex-fill ml-1"
@@ -176,6 +177,20 @@ export default {
       } else {
         reorder()
       }
+    },
+
+    /**
+     * Validates page, returns true if there are no problems with it
+     *
+     * @param {compose.Page} pahe
+     * @returns {boolean}
+     */
+    isValid (page) {
+      if (typeof page.validate === 'function') {
+        return page.validate().length === 0
+      }
+
+      return true
     },
   },
 }

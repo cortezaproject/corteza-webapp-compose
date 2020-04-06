@@ -13,23 +13,30 @@
     <b-form-group
       :label="$t('block.automation.buttonVariant')"
     >
-      <b-button-group
-        class="d-flex w-100"
+      <b-select
+        class="w-100"
+        size="sm"
+        v-model="button.variant"
       >
-        <b-button
+        <b-select-option
           v-for="({ variant, label }) in variants"
           :key="variant"
-          :variant="variant"
-          class="py-2"
-          size="sm"
-          @click="button.variant = variant"
+          :value="variant"
         >
           {{ label }}
-        </b-button>
-      </b-button-group>
+        </b-select-option>
+      </b-select>
     </b-form-group>
 
-    <code>{{ button.script }}</code>
+    <b-alert
+      variant="warning"
+      show
+    >
+      {{ $t('block.automation.noAction' )}}
+    </b-alert>
+    <code>
+      {{ button.script }}
+    </code>
     <p
       v-if="description"
       class="mb-0 mt-2"

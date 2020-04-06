@@ -78,7 +78,7 @@ export default {
     loadTree () {
       const { namespaceID } = this.namespace
       this.$ComposeAPI.pageTree({ namespaceID }).then((tree) => {
-        this.tree = tree
+        this.tree = tree.map(p => new compose.Page(p))
       }).catch(this.defaultErrorHandler(this.$t('notification.page.loadFailed')))
     },
 

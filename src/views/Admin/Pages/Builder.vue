@@ -9,6 +9,7 @@
         >
           <div
             class="h-100 editable-block"
+            :class="{ 'bg-warning': !isValid(block) }"
           >
             <div
               class="toolbox border-0 p-2 pr-3 m-0 text-light text-center"
@@ -236,6 +237,20 @@ export default {
       this.deletePage(this.page).then(() => {
         this.$router.push({ name: 'admin.pages' })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.deleteFailed')))
+    },
+
+    /**
+     * Validates block, returns true if there are no problems with it
+     *
+     * @param {compose.PageBlock} block
+     * @returns {boolean}
+     */
+    isValid (block) {
+      if (typeof block.validate === 'function') {
+        return block.validate().length === 0
+      }
+
+      return true
     },
   },
 }

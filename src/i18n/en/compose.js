@@ -153,6 +153,7 @@ export default {
       availableScripts: 'Available scripts ({{count}})',
       addPlaceholderLabel: 'Add placeholder (dummy button)',
       searchPlaceholder: 'Filter available scripts by label, script name and description',
+      noAction: 'There is no action/script configured with this button',
       noScripts: 'There are no manual scripts compatible with this page block',
       noDescription: 'No description',
       dummyButtonLabel: 'Dummy',
