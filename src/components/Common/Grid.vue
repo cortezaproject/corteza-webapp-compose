@@ -2,9 +2,32 @@
   <div
     v-if="grid.length"
     class="w-100"
-    :class="{ editable: !!editable }"
+    :class="{
+      editable: !!editable,
+      'flex-grow-1 d-flex': isStretchable,
+    }"
   >
+    <div
+      v-if="isStretchable"
+      class="flex-grow-1 d-flex"
+    >
+      <div
+        v-for="(item, index) in grid"
+        :key="item.i"
+        class="w-100"
+      >
+        <slot
+          :block="blocks[item.i]"
+          :index="index"
+          :block-index="item.i"
+          :bounding-rect="boundingRects[index]"
+          v-on="$listeners"
+        />
+      </div>
+    </div>
+
     <grid-layout
+      v-else
       @layout-updated="handleLayoutUpdate"
       :layout.sync="layout"
       :col-num="12"
@@ -85,6 +108,38 @@ export default {
         this.grid = layout
         this.handleLayoutUpdate(layout)
       },
+    },
+
+    isStretchable () {
+      if (this.editable) {
+        // When in-edit mode do not stretch the blocks
+        return false
+      }
+
+      const minHeight = 10
+      let heightCheck = -1
+
+      for (let b = 0; b < this.blocks.length; b++) {
+        const { xywh: [, y, , h] } = this.blocks[b]
+
+        if (y > 0) {
+          // If block is not positioned at the top,
+          // do not try to make it stretchable
+          return false
+        }
+
+        if (heightCheck === -1) {
+          // Set block height for the next check
+          heightCheck = h
+        }
+
+        if (heightCheck !== h && minHeight > h) {
+          // Not full height
+          return false
+        }
+      }
+
+      return true
     },
   },
 

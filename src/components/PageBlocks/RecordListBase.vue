@@ -101,7 +101,7 @@
         :small="false"
         :selectable="options.selectable"
         :select-mode="options.selectMode"
-        class="mh-100 m-0 mt-0 mb-2"
+        class="mh-100 m-0 mb-2"
         :items="records"
         :fields="fields"
         no-sort-reset

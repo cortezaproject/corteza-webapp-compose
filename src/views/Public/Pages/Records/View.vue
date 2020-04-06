@@ -1,5 +1,5 @@
 <template>
-  <div :class="[inEditing ? 'edit': 'view']">
+  <div class="d-flex flex-grow-1" :class="[inEditing ? 'edit': 'view']">
     <b-alert v-if="isDeleted"
              show
              variant="info">
