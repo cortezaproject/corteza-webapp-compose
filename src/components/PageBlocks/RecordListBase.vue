@@ -564,8 +564,15 @@ export default {
     },
 
     handleRowClicked ({ recordID }) {
-      const { pageID } = this.options
-      this.$router.push({ name: 'page.record', params: { pageID, recordID }, query: null })
+      const pageID = this.recordPageID
+      this.$router.push({
+        name: 'page.record',
+        params: {
+          pageID,
+          recordID,
+        },
+        query: null,
+      })
     },
 
     handleSort ({ sortBy, sortDesc = false }) {
