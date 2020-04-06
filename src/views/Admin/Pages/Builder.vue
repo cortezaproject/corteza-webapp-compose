@@ -1,102 +1,103 @@
 <template>
-    <div class="d-flex" v-if="page">
-      <grid
-        :blocks.sync="page.blocks"
-        editable
+  <div v-if="page">
+    <grid
+      :blocks.sync="page.blocks"
+      editable
+    >
+      <template
+        slot-scope="{ boundingRect, block, index }"
       >
-        <template
-          slot-scope="{ boundingRect, block, index }"
+        <div
+          class="h-100 editable-block"
+          :class="{ 'bg-warning': !isValid(block) }"
         >
           <div
-            class="h-100 editable-block"
-            :class="{ 'bg-warning': !isValid(block) }"
+            class="toolbox border-0 p-2 pr-3 m-0 text-light text-center"
           >
-            <div
-              class="toolbox border-0 p-2 pr-3 m-0 text-light text-center"
+            <b-button
+              class="p-1 text-light"
+              variant="link"
+              @click="editBlock(block, index)"
             >
-              <b-button
-                class="p-1 text-light"
-                variant="link"
-                @click="editBlock(block, index)"
-              >
-                <font-awesome-icon
-                  :icon="['far', 'edit']"
-                />
-              </b-button>
-
-              <c-input-confirm
-                @confirmed="page.blocks.splice(index,1)"
-                class="p-1"
-                size="md"
-                link
+              <font-awesome-icon
+                :icon="['far', 'edit']"
               />
-            </div>
-            <page-block
-              v-bind="{ ...$attrs, ...$props, page, block, boundingRect, blockIndex: index }"
-              :record="record"
-              :module="module"
+            </b-button>
+
+            <c-input-confirm
+              @confirmed="page.blocks.splice(index,1)"
+              class="p-1"
+              size="md"
+              link
             />
           </div>
-        </template>
-      </grid>
+          <page-block
+            v-bind="{ ...$attrs, ...$props, page, block, boundingRect, blockIndex: index }"
+            :record="record"
+            :module="module"
+          />
+        </div>
+      </template>
+    </grid>
 
-      <b-modal
-        size="lg"
-        id="createBlockSelector"
-        scrollable
-        hide-footer
-        :title="$t('page.build.selectBlockTitle')"
-      >
-        <new-block-selector
-          :record-page="!!module"
-          @select="editBlock($event)"
-        />
-      </b-modal>
+    <b-modal
+      size="lg"
+      id="createBlockSelector"
+      scrollable
+      hide-footer
+      :title="$t('page.build.selectBlockTitle')"
+    >
+      <new-block-selector
+        :record-page="!!module"
+        @select="editBlock($event)"
+      />
+    </b-modal>
 
-      <b-modal
-        :title="$t('block.general.title')"
-        :ok-title="$t('page.build.addBlock')"
-        ok-variant="primary"
-        cancel-variant="link"
-        scrollable
-        size="xl"
-        @ok="updateBlocks"
-        @hide="editor=null"
-        :visible="showCreator"
-        body-class="p-0 border-top-0"
-        header-class="p-3 pb-0 border-bottom-0">
-        <configurator
-          v-if="showCreator"
-          :namespace="namespace"
-          :module="module"
-          :page="page"
-          :block.sync="editor.block"
-          :record="record"
-        />
-      </b-modal>
+    <b-modal
+      :title="$t('block.general.title')"
+      :ok-title="$t('page.build.addBlock')"
+      ok-variant="primary"
+      cancel-variant="link"
+      scrollable
+      size="xl"
+      @ok="updateBlocks"
+      @hide="editor=null"
+      :visible="showCreator"
+      body-class="p-0 border-top-0"
+      header-class="p-3 pb-0 border-bottom-0">
+      <configurator
+        v-if="showCreator"
+        :namespace="namespace"
+        :module="module"
+        :page="page"
+        :block.sync="editor.block"
+        :record="record"
+      />
+    </b-modal>
 
-      <b-modal
-        :title="$t('block.general.changeBlock')"
-        :ok-title="$t('general.label.saveAndClose')"
-        ok-variant="primary"
-        cancel-variant="link"
-        scrollable
-        size="xl"
-        @ok="updateBlocks"
-        @hide="editor=null"
-        :visible="showEditor"
-        body-class="p-0 border-top-0"
-        header-class="p-3 pb-0 border-bottom-0">
-        <configurator
-          v-if="showEditor"
-          :namespace="namespace"
-          :module="module"
-          :page="page"
-          :block.sync="editor.block"
-          :record="record"
-        />
-      </b-modal>
+    <b-modal
+      :title="$t('block.general.changeBlock')"
+      :ok-title="$t('general.label.saveAndClose')"
+      ok-variant="primary"
+      cancel-variant="link"
+      scrollable
+      size="xl"
+      @ok="updateBlocks"
+      @hide="editor=null"
+      :visible="showEditor"
+      body-class="p-0 border-top-0"
+      header-class="p-3 pb-0 border-bottom-0">
+      <configurator
+        v-if="showEditor"
+        :namespace="namespace"
+        :module="module"
+        :page="page"
+        :block.sync="editor.block"
+        :record="record"
+      />
+    </b-modal>
 
+    <portal to="admin-toolbar">
       <editor-toolbar
         class=""
         :back-link="{name: 'admin.pages'}"
@@ -114,7 +115,8 @@
           + {{ $t('page.build.addBlock') }}
         </b-button>
       </editor-toolbar>
-    </div>
+    </portal>
+  </div>
 </template>
 
 <script>

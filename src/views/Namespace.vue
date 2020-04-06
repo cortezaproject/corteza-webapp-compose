@@ -1,7 +1,7 @@
 <template>
   <div class="centering-wrap inactive-area d-flex" v-if="$auth.is()">
     <small
-      class="p-1 text-secondary position-absolute version"
+      class="text-secondary position-absolute version"
     >
       {{ frontendVersion }}
     </small>
@@ -338,7 +338,7 @@ export default {
 }
 
 .version {
-  bottom: 0;
-  right: 0;
+  bottom: 0px;
+  right: 12px;
 }
 </style>

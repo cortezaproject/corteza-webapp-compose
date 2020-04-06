@@ -1,7 +1,15 @@
 <template>
-  <div class="w-100 flex-grow" v-if="namespace.canManageNamespace">
-    <admin-header :namespace="namespace"></admin-header>
-    <router-view :namespace="namespace" />
+  <div class="d-flex flex-column w-100 vh-100" v-if="namespace.canManageNamespace">
+    <admin-header
+      :namespace="namespace"
+    />
+    <router-view
+      class="flex-grow-1 overflow-auto"
+      :namespace="namespace"
+    />
+    <portal-target
+      name="admin-toolbar"
+    />
   </div>
 </template>
 

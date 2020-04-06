@@ -1,11 +1,10 @@
 <template>
   <div
     v-if="grid.length"
-    class="w-100 p-2 pb-5 mb-5 vh-100 overflow-auto flex-grow-1"
+    class="w-100"
     :class="{ editable: !!editable }"
   >
     <grid-layout
-      class="mb-5"
       @layout-updated="handleLayoutUpdate"
       :layout.sync="layout"
       :col-num="12"

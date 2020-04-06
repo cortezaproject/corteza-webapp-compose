@@ -1,64 +1,71 @@
 <template>
-  <div class="mt-3 w-100 pb-5 vh-100 overflow-auto flex-grow-1">
-    <b-container @submit.prevent="handleSave" tag="form" class="pb-5">
-      <b-row class="pb-5">
+  <div class="py-3">
+    <b-container @submit.prevent="handleSave" tag="form">
+      <b-row>
         <b-col md="12">
-          <b-card :title="$t('chart.edit.title')" class="mb-5">
+          <b-card
+            :title="$t('chart.edit.title')"
+          >
             <export :list="[chart]" type="chart" class="float-right" slot="header"/>
-              <b-row>
-                <b-col md="6">
-                  <fieldset v-if="modules">
-                    <b-form-input v-model="chart.name" :placeholder="$t('chart.newPlaceholder')" class="mb-1"></b-form-input>
-                    <b-form-input v-model="chart.handle" :placeholder="$t('general.placeholder.handle')" :state="handleState" class="mb-1"></b-form-input>
-                  </fieldset>
-                  <report v-for="(report, index) in chart.config.reports"
-                          :report.sync="report"
-                          :modules="modules"
-                          :key="'report_'+index"></report>
-                </b-col>
+            <b-row>
+              <b-col md="6">
+                <fieldset v-if="modules">
+                  <b-form-input v-model="chart.name" :placeholder="$t('chart.newPlaceholder')" class="mb-1"></b-form-input>
+                  <b-form-input v-model="chart.handle" :placeholder="$t('general.placeholder.handle')" :state="handleState" class="mb-1"></b-form-input>
+                </fieldset>
+                <report v-for="(report, index) in chart.config.reports"
+                        :report.sync="report"
+                        :modules="modules"
+                        :key="'report_'+index"></report>
+              </b-col>
 
-                <b-col md="6">
-                  <b-button v-if="!error"
-                            @click.prevent="update"
-                            :disabled="processing"
-                            class="float-right"
-                            variant="outline-primary">{{ $t('chart.edit.loadData') }}</b-button>
-                  <b-alert :show="error"
-                           variant="warning">
+              <b-col md="6">
+                <b-button v-if="!error"
+                          @click.prevent="update"
+                          :disabled="processing"
+                          class="float-right"
+                          variant="outline-primary">{{ $t('chart.edit.loadData') }}
+                </b-button>
+                <b-alert
+                  :show="error"
+                  variant="warning"
+                >
+                  {{ error }}
+                </b-alert>
 
-                    {{ error }}
-                  </b-alert>
-
-                  <div class="chart-preview w-100 h-100">
-                    <chart-component v-if="chart"
-                                     :chart="chart"
-                                     :reporter="reporter"
-                                     ref="chart"
-                                     width="200"
-                                     height="200"
-                                     @error="error=$event"
-                                     @updated="onUpdated" />
-
-                  </div>
-
-                  <!-- not supporting multiple reports for now
+                <div class="chart-preview w-100 h-100">
+                  <chart-component
+                    v-if="chart"
+                    :chart="chart"
+                    :reporter="reporter"
+                    ref="chart"
+                    width="200"
+                    height="200"
+                    @error="error=$event"
+                    @updated="onUpdated"
+                  />
+                </div>
+                <!-- not supporting multiple reports for now
 <b-button @click.prevent="chart.config.reports.push(defaultReport)"
-          v-if="false"
-          class="float-right">+ Add report</b-button>
+        v-if="false"
+        class="float-right">+ Add report</b-button>
 -->
-                </b-col>
-              </b-row>
+              </b-col>
+            </b-row>
           </b-card>
         </b-col>
       </b-row>
     </b-container>
-    <editor-toolbar :back-link="{name: 'admin.charts'}"
-                    :hideDelete="!chart.canDeleteChart"
-                    :hideSave="!chart.canUpdateChart"
-                    @delete="handleDelete"
-                    @save="handleSave()"
-                    @saveAndClose="handleSave({ closeOnSuccess: true })">
-    </editor-toolbar>
+    <portal to="admin-toolbar">
+      <editor-toolbar
+        :back-link="{name: 'admin.charts'}"
+        :hideDelete="!chart.canDeleteChart"
+        :hideSave="!chart.canUpdateChart"
+        @delete="handleDelete"
+        @save="handleSave()"
+        @saveAndClose="handleSave({ closeOnSuccess: true })">
+      </editor-toolbar>
+    </portal>
   </div>
 </template>
 <script>

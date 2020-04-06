@@ -1,7 +1,7 @@
 <template>
-  <div class="mt-3 w-100 pb-5 vh-100 overflow-auto flex-grow-1">
-    <b-container @submit.prevent="handleSave" tag="form" v-if="module" class="pb-5">
-      <b-row class="pb-5">
+  <div class="py-3">
+    <b-container @submit.prevent="handleSave" tag="form" v-if="module">
+      <b-row>
         <b-col md="12">
           <b-card :title="$t('module.edit.title')" class="mb-5">
             <div slot="header" class="text-right">
@@ -137,14 +137,17 @@
         :namespace="namespace"
       />
     </b-modal>
-    <editor-toolbar :back-link="{name: 'admin.modules'}"
-                    :hideDelete="!module.canDeleteModule"
-                    :hideSave="!module.canUpdateModule"
-                    :disable-save="!fieldsValid || processing"
-                    @delete="handleDelete"
-                    @save="handleSave()"
-                    @saveAndClose="handleSave({ closeOnSuccess: true })">
-    </editor-toolbar>
+    <portal to="admin-toolbar">
+      <editor-toolbar
+        :back-link="{name: 'admin.modules'}"
+        :hideDelete="!module.canDeleteModule"
+        :hideSave="!module.canUpdateModule"
+        :disable-save="!fieldsValid || processing"
+        @delete="handleDelete"
+        @save="handleSave()"
+        @saveAndClose="handleSave({ closeOnSuccess: true })"
+      />
+    </portal>
   </div>
 </template>
 

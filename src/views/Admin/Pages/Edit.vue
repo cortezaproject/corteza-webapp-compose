@@ -1,6 +1,6 @@
 <template>
-  <div class="mt-3 w-100 pb-5 vh-100 overflow-auto flex-grow-1">
-    <b-container class="pb-5">
+  <div class="py-3">
+    <b-container>
       <b-row>
         <b-col md="12">
           <b-card :title="$t('page.edit.title')">
@@ -33,13 +33,16 @@
         </b-col>
       </b-row>
     </b-container>
-    <editor-toolbar :back-link="{name: 'admin.pages'}"
-                    :hideDelete="!page.canDeletePage"
-                    :hideSave="!page.canUpdatePage"
-                    @delete="handleDeletePage"
-                    @save="handleSave()"
-                    @saveAndClose="handleSave({ closeOnSuccess: true })">
-    </editor-toolbar>
+    <portal to="admin-toolbar">
+      <editor-toolbar
+        :back-link="{name: 'admin.pages'}"
+        :hideDelete="!page.canDeletePage"
+        :hideSave="!page.canUpdatePage"
+        @delete="handleDeletePage"
+        @save="handleSave()"
+        @saveAndClose="handleSave({ closeOnSuccess: true })"
+      />
+    </portal>
   </div>
 </template>
 
