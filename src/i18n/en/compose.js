@@ -172,7 +172,7 @@ export default {
       label: 'Record list',
       moduleFootnote: 'Disabled modules on the list do not have {{0}} available.',
       recordPages: 'record pages',
-      addRecord: 'Add new record',
+      addRecord: 'Add',
       pagination: 'Showing {{from}} to {{to}} of {{count}} records',
       paginationSingle: 'One record',
       paginationSingle_plural: '{{count}} records',
