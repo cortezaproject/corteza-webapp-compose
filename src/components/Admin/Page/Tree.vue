@@ -182,7 +182,7 @@ export default {
     /**
      * Validates page, returns true if there are no problems with it
      *
-     * @param {compose.Page} pahe
+     * @param {compose.Page} page
      * @returns {boolean}
      */
     isValid (page) {
