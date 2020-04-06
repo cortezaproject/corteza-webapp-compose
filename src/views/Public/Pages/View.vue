@@ -1,27 +1,28 @@
 <template>
-  <div v-if="!!page" class="d-flex">
-    <router-view
-      class="flex-grow-1"
-      v-if="recordID || isRecordCreatePage"
-      :namespace="namespace"
-      :module="module"
-      :page="page"
+  <div v-if="!!page" class="d-flex w-100 overflow-hidden">
+    <main
+      class="flex-grow-1 overflow-auto"
+    >
+      <router-view
+        v-if="recordID || isRecordCreatePage"
+        :namespace="namespace"
+        :module="module"
+        :page="page"
+      />
+
+      <grid
+        v-else
+        :namespace="namespace"
+        :module="module"
+        :page="page"
+      />
+    </main>
+
+    <right-panel
+      :namespaceID="namespace.namespaceID"
     />
-
-    <grid
-      class="vh-100 flex-grow-1"
-      v-else
-      :namespace="namespace"
-      :module="module"
-      :page="page"
-    />
-
-    <right-panel class="pb-5"
-                 :namespaceID="namespace.namespaceID"/>
-
     <attachment-modal />
   </div>
-  <div v-else><!-- @todo loader --></div>
 </template>
 <script>
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'

@@ -1,8 +1,10 @@
 <template>
-  <div class="centering-wrap inactive-area w-100 flex-grow-1">
-    <public-header :page="page"
-                   :namespace="namespace"
-                   @toggleNav="navVisible = $event" />
+  <div class="d-flex flex-column w-100 vh-100">
+    <public-header
+      :page="page"
+      :namespace="namespace"
+      @toggleNav="navVisible = $event"
+    />
     <div v-if="showSteps" class="d-flex flex-column m-5 vh-75">
       <h1 class="display-3">{{ $t('general.label.welcome') }}</h1>
       <p class="lead">
@@ -61,9 +63,15 @@
         </b-row>
       </b-container>
     </div>
-    <router-view v-else
-                 :namespace="namespace"
-                 :page="page" />
+    <router-view
+      v-else
+      class="flex-grow-1 overflow-auto"
+      :namespace="namespace"
+      :page="page"
+    />
+    <portal-target
+      name="toolbar"
+    />
   </div>
 </template>
 

@@ -1,12 +1,15 @@
 <template>
-  <c-sidebar position="right"
-           name="right-panel"
-           class="bg-white overflow-auto pb-5"
-           :width="250"
-           v-bind="$attrs"
-           :visible.sync="visible">
-
-    <reminder v-bind="$props" />
+  <c-sidebar
+    position="right"
+    name="right-panel"
+    class="bg-white overflow-auto pb-5 border-left"
+    :width="250"
+    v-bind="$attrs"
+    :visible.sync="visible"
+  >
+    <reminder
+      v-bind="$props"
+    />
   </c-sidebar>
 </template>
 
@@ -51,3 +54,8 @@ export default {
 }
 
 </script>
+<style lang="scss" scoped>
+aside {
+  z-index: 1;
+}
+</style>

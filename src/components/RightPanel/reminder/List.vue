@@ -1,5 +1,5 @@
 <template>
-  <div class="border-left">
+  <div>
     <h5 class="sticky-top bg-white p-2 mb-0">
       {{ $t('general.reminder.listLabel') }}
     </h5>

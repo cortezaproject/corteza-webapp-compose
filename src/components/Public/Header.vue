@@ -1,32 +1,32 @@
 <template>
-    <header class="w-100 border-right">
-      <b-navbar id="public_header" type="light" toggleable="md" class="border-bottom border-light shadow-sm bg-white align-self-end">
-        <b-navbar-toggle target="public_nav_collapse" class="border-0">
-          <label>
-            <font-awesome-icon :icon="['fas', 'bars']"></font-awesome-icon>
-          </label>
-        </b-navbar-toggle>
+  <header class="w-100">
+    <b-navbar id="public_header" type="light" toggleable="md" class="border-bottom border-light shadow-sm bg-white align-self-end">
+      <b-navbar-toggle target="public_nav_collapse" class="border-0">
+        <label>
+          <font-awesome-icon :icon="['fas', 'bars']"></font-awesome-icon>
+        </label>
+      </b-navbar-toggle>
 
-        <c-hamburger-menu
-          class="d-none d-md-block text-dark mx-2"
-          name="ns-sidebar"
-        />
+      <c-hamburger-menu
+        class="d-none d-md-block text-dark mx-2"
+        name="ns-sidebar"
+      />
 
-        <b-collapse is-nav id="public_nav_collapse"
-                    :class="{ visible }"
-                    class="mw-100 flex-grow-1 bg-white"
-                    @show="toggleNav(true)"
-                    @hide="toggleNav(false)">
-          <menu-level id="menu_lvl_1"
-                      :pages="pages"
-                      :selectedPath="selectedPath"
-                      :currentPageID="page.pageID">
+      <b-collapse is-nav id="public_nav_collapse"
+                  :class="{ visible }"
+                  class="mw-100 flex-grow-1 bg-white"
+                  @show="toggleNav(true)"
+                  @hide="toggleNav(false)">
+        <menu-level id="menu_lvl_1"
+                    :pages="pages"
+                    :selectedPath="selectedPath"
+                    :currentPageID="page.pageID">
 
-            <li slot="collapse" id="public_nav_collapse_0">
-              <span>{{ $t('navigation.more') }}</span><ul></ul>
-            </li>
-          </menu-level>
-        </b-collapse>
+          <li slot="collapse" id="public_nav_collapse_0">
+            <span>{{ $t('navigation.more') }}</span><ul></ul>
+          </li>
+        </menu-level>
+      </b-collapse>
       <span class="page-title text-nowrap position-absolute d-block d-md-none ml-5" v-if="page">{{ page.title }}</span>
 
       <div id="right-nav-opts"
@@ -198,6 +198,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+header {
+  z-index: 1000;
+}
+
 .navbar {
   height: $navbar-height;
 }

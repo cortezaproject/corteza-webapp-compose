@@ -1,10 +1,8 @@
 <template>
-  <div class="centering-wrap inactive-area d-flex" v-if="$auth.is()">
-    <small
-      class="text-secondary position-absolute version"
-    >
-      {{ frontendVersion }}
-    </small>
+  <div
+    class="centering-wrap inactive-area d-flex"
+    v-if="$auth.is()"
+  >
     <c-toaster
       :toasts="toasts"
     />
@@ -29,7 +27,10 @@
       v-if="loaded && namespace"
       :namespace="namespace"
     />
-    <div class="loader" v-else>
+    <div
+      v-else
+      class="loader"
+    >
       <div>
         <h1 class="mt-5 text-center">{{ namespace ? (namespace.name || namespace.slug || namespace.ID) : '...' }}</h1>
         <div>
@@ -57,6 +58,11 @@
             </div>
           </div>
         </div>
+        <small
+          class="text-secondary mt-5"
+        >
+          {{ frontendVersion }}
+        </small>
       </div>
     </div>
     <div class="error text-danger text-center position-absolute" v-if="error">{{ error }}</div>
@@ -335,10 +341,5 @@ export default {
   height: 20vh;
   padding: 60px;
   top: 40vh;
-}
-
-.version {
-  bottom: 0px;
-  right: 12px;
 }
 </style>
