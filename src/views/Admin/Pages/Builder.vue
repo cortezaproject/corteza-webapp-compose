@@ -263,7 +263,7 @@ div.toolbox {
   background-color: $dark;
   bottom: 0;
   left: 0;
-  z-index: 10000;
+  z-index: 1000;
   border-top-right-radius: 10px;
   opacity: 0.5;
 

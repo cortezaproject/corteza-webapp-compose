@@ -168,7 +168,7 @@ ul {
 
     & > ul {
       visibility: hidden;
-      z-index: 10;
+      z-index: 2000;
       position: absolute;
       box-shadow: 0 0.1rem 0.2rem 0 rgba(30, 34, 36, 0.1);
     }
