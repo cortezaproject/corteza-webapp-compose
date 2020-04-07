@@ -22,7 +22,7 @@
                         :namespace="namespace" type="chart" />
               </b-col>
               <b-col md="2" class="text-right">
-                <export :list="sortedCharts" type="chart"/>
+                <export :list="charts" type="chart"/>
                 <c-permissions-button v-if="namespace.canGrant"
                                     resource="compose:chart:*"
                                     link />
@@ -34,37 +34,22 @@
       <b-row>
         <b-col md="12">
           <b-card :title="$t('chart.title')">
-            <table class="table table-striped">
-              <thead>
-              <tr>
-                <table-sortable-column
-                  :label="$t('general.label.name')"
-                  name="name"
-                  :ascending="sortedByName"
-                  @sort="handleSort"/>
-                <th></th>
-                <th></th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="(chart) in sortedCharts" :key="chart.chartID">
-                <td>
-                  {{ chart.name }}
-                </td>
-                <td>
-                  <time :datetime="chart.updatedAt" v-if="chart.updatedAt">{{ prettyDate(chart.updatedAt || chart.createdAt) }}</time>
-                </td>
-                <td class="text-right">
-                  <span v-if="chart.canUpdateChart || chart.canDeleteChart">
-                    <router-link :to="{name: 'admin.charts.edit', params: { chartID: chart.chartID }}" class="text-dark pr-2">
-                      <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
-                    </router-link>
-                  </span>
-                  <c-permissions-button v-if="chart.canGrant" :title="chart.name" :resource="'compose:chart:'+chart.chartID" link />
-                </td>
-              </tr>
-              </tbody>
-            </table>
+            <b-table
+              :fields="tableFields"
+              :items="charts"
+              striped
+              borderless
+              responsive
+            >
+              <template v-slot:cell(actions)="{ item: c }">
+                <span v-if="c.canUpdateChart || c.canDeleteChart">
+                  <router-link :to="{name: 'admin.charts.edit', params: { chartID: c.chartID }}" class="text-dark pr-2">
+                    <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
+                  </router-link>
+                </span>
+                  <c-permissions-button v-if="c.canGrant" :title="c.name" :resource="'compose:chart:'+c.chartID" link />
+              </template>
+            </b-table>
           </b-card>
         </b-col>
       </b-row>
@@ -73,9 +58,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Chart from 'corteza-webapp-compose/src/lib/chart.js'
-import TableSortableColumn from 'corteza-webapp-compose/src/components/Admin/TableSortableColumn'
-import tableSort from 'corteza-webapp-compose/src/mixins/table_sort'
+import Chart from 'corteza-webapp-compose/src/lib/chart'
 import Import from 'corteza-webapp-compose/src/components/Admin/Import'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 
@@ -83,14 +66,9 @@ export default {
   name: 'ChartList',
 
   components: {
-    TableSortableColumn,
     Import,
     Export,
   },
-
-  mixins: [
-    tableSort,
-  ],
 
   props: {
     namespace: {
@@ -111,12 +89,18 @@ export default {
       charts: 'chart/set',
     }),
 
-    sortedByName () {
-      return this.isSortedBy('name', true)
-    },
-
-    sortedCharts () {
-      return this.sortedItems([...this.charts])
+    tableFields () {
+      return [
+        {
+          key: 'name',
+          sortable: true,
+        },
+        {
+          key: 'actions',
+          label: '',
+          tdClass: 'text-right text-nowrap',
+        },
+      ]
     },
   },
 

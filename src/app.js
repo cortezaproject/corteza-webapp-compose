@@ -3,6 +3,7 @@ import Vue from 'vue'
 import './config-check'
 import './console-splash'
 
+import './filters'
 import './plugins'
 import './mixins'
 import './components'
