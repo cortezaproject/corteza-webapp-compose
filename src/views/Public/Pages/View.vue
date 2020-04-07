@@ -8,6 +8,7 @@
         :namespace="namespace"
         :module="module"
         :page="page"
+        class="flex-grow-1 overflow-auto d-flex flex-column"
       />
 
       <grid
