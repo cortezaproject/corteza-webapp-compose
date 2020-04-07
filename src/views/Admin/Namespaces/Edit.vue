@@ -2,70 +2,79 @@
   <div
     class="d-flex flex-column w-100 vh-100"
   >
-    <b-container
-      class="flex-grow-1 overflow-auto mt-5"
+    <div
+      class="flex-grow-1 overflow-auto w-100"
     >
-      <div
-       class="float-right"
-      >
-        <c-permissions-button
-          v-if="isEdit && namespace.canGrant"
-          :title="namespace.name"
-          :resource="'compose:namespace:'+namespace.namespaceID"
-          link
-        />
-      </div>
-      <b-form>
-        <h1 class="text-center mt-4">
-          {{ isEdit ? $t('namespace.edit') : $t('namespace.create') }}
-        </h1>
-        <b-form-group :label="$t('namespace.name.label')">
-          <b-form-input
-            v-model="namespace.name"
-            type="text"
-            required
-            :state="nameState"
-            :placeholder="$t('namespace.name.placeholder')" />
-
-        </b-form-group>
-        <b-row align-v="center">
-          <b-col cols="6">
-            <b-form-group
-              :label="$t('namespace.slug.label')"
-              :description="$t('namespace.slug.description')"
+      <b-container>
+        <b-row>
+          <b-col
+            offset-lg="2"
+            xl="8"
+          >
+            <div
+             class="float-right mt-3"
             >
-              <b-form-input
-                v-model="namespace.slug"
-                type="text"
-                :state="slugState"
-                :placeholder="$t('namespace.slug.placeholder')" />
+              <c-permissions-button
+                v-if="isEdit && namespace.canGrant"
+                :title="namespace.name"
+                :resource="'compose:namespace:'+namespace.namespaceID"
+                link
+              />
+            </div>
+            <b-form>
+              <h1 class="text-center mt-4">
+                {{ isEdit ? $t('namespace.edit') : $t('namespace.create') }}
+              </h1>
+              <b-form-group :label="$t('namespace.name.label')">
+                <b-form-input
+                  v-model="namespace.name"
+                  type="text"
+                  required
+                  :state="nameState"
+                  :placeholder="$t('namespace.name.placeholder')" />
 
-            </b-form-group>
-          </b-col>
-          <b-col cols="6">
-            <b-form-checkbox v-model="namespace.enabled" size="lg">
-              {{ $t('namespace.enabled.label') }}
-            </b-form-checkbox>
+              </b-form-group>
+              <b-row align-v="center">
+                <b-col cols="6">
+                  <b-form-group
+                    :label="$t('namespace.slug.label')"
+                    :description="$t('namespace.slug.description')"
+                  >
+                    <b-form-input
+                      v-model="namespace.slug"
+                      type="text"
+                      :state="slugState"
+                      :placeholder="$t('namespace.slug.placeholder')" />
+
+                  </b-form-group>
+                </b-col>
+                <b-col cols="6">
+                  <b-form-checkbox v-model="namespace.enabled" size="lg">
+                    {{ $t('namespace.enabled.label') }}
+                  </b-form-checkbox>
+                </b-col>
+              </b-row>
+              <b-form-group :label="$t('namespace.subtitle.label')">
+                <b-form-input
+                  v-model="namespace.meta.subtitle"
+                  type="text"
+                  :placeholder="$t('namespace.subtitle.placeholder')" />
+
+              </b-form-group>
+
+              <b-form-group :label="$t('namespace.description.label')">
+                <b-form-textarea
+                  v-model="namespace.meta.description"
+                  :placeholder="$t('namespace.description.placeholder')"
+                  rows="3"
+                  max-rows="5" />
+
+              </b-form-group>
+            </b-form>
           </b-col>
         </b-row>
-        <b-form-group :label="$t('namespace.subtitle.label')">
-          <b-form-input
-            v-model="namespace.meta.subtitle"
-            type="text"
-            :placeholder="$t('namespace.subtitle.placeholder')" />
-
-        </b-form-group>
-
-        <b-form-group :label="$t('namespace.description.label')">
-          <b-form-textarea
-            v-model="namespace.meta.description"
-            :placeholder="$t('namespace.description.placeholder')"
-            rows="3"
-            max-rows="5" />
-
-        </b-form-group>
-      </b-form>
-    </b-container>
+      </b-container>
+    </div>
     <editor-toolbar
       :back-link="{name: 'root'}"
       :hideDelete="!canDelete"
