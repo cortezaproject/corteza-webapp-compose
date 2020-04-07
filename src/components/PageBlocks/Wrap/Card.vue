@@ -2,7 +2,7 @@
   <div class="h-100 p-2">
     <b-card
       no-body
-      class="h-100 border-0 shadow-sm rounded-lg overflow-auto"
+      class="h-100 border-0 shadow-sm rounded-lg"
       :class="blockClass"
       :header="block.title"
       header-class="sticky-top h5 pl-2"
@@ -27,6 +27,7 @@
       <b-card-body
         :body-bg-variant="block.style.variants.bodyBg"
         class="p-0"
+        :class="{ 'overflow-auto': scrollableBody }"
       >
         <slot
           name="default"
@@ -51,6 +52,12 @@ export default {
     block: {
       type: compose.PageBlock,
       required: true,
+    },
+
+    scrollableBody: {
+      type: Boolean,
+      required: false,
+      default: () => true,
     },
   },
 

@@ -1,5 +1,5 @@
 <template>
-  <wrap v-bind="$props" v-on="$listeners">
+  <wrap v-bind="$props" v-on="$listeners" :scrollable-body="false">
     <template #toolbar>
       <b-container
         ref="header"
