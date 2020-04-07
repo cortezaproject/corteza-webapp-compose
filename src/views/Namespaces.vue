@@ -162,6 +162,6 @@ export default {
 
 .version {
   bottom: 0;
-  right: 0;
+  right: 15px;
 }
 </style>

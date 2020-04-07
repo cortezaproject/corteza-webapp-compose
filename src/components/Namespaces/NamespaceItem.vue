@@ -24,7 +24,7 @@
         </span>
       </div>
       <div class="extra-text text p-1">
-        <pre class="text-left" v-if="namespace.meta.description">{{ namespace.meta.description }}</pre>
+        <p class="text-left" v-if="namespace.meta.description">{{ namespace.meta.description }}</p>
         <label v-else :class="{ 'click': true, 'pointer': isEnabled }">
           <span v-if="isEnabled">
             {{ $t('namespace.clickOpen') }}
