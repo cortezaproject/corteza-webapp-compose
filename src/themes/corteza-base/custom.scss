@@ -5,6 +5,11 @@ html {
   overflow: hidden;
 }
 
+button:disabled {
+  cursor: not-allowed;
+  pointer-events: all !important;
+}
+
 .vue-grid-layout {
   transition: none !important;
 }

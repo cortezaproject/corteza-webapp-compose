@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-grow-1" :class="[inEditing ? 'edit': 'view']">
+  <div class="d-flex flex-grow-1">
     <b-alert v-if="isDeleted"
              show
              variant="info">
@@ -11,46 +11,81 @@
       v-bind="$props"
       :errors="errors"
       :record="record"
-      :mode="blockMode"
+      :mode="inEditing ? 'editor' : 'base'"
       @reload="loadRecord()"
     />
+
     <portal to="toolbar">
-      <toolbar :back-link="{name: 'pages'}"
-               :hide-delete="!module.canDeleteRecord || isDeleted"
-               :read-only="!module.canUpdateRecord || isDeleted"
-               @delete="handleDelete"
-               @save="handleUpdate()">
-
-        <b-button v-if="module.canCreateRecord"
-            variant="outline-secondary ml-1"
-            @click.prevent="$router.push({ name: 'page.record.create', params: { pageID: page.pageID, values: record.values }})" >{{ $t('general.label.clone') }}</b-button>
-
-        <b-button
-          v-if="module.canCreateRecord"
-          variant="outline-secondary ml-1"
-          @click.prevent="$router.push({ name: 'page.record.create', params: newRouteParams })"
+      <b-container
+        fluid
+        class="bg-white shadow border-top py-3 px-3 m-0"
+      >
+        <b-row
+          no-gutters
         >
-          + {{ $t('general.label.addNew') }}
-        </b-button>
+          <b-col cols="4">
+            <b-button
+              variant="link"
+              @click.prevent="$router.back()"
+            >
+              &#171; {{ $t('general.label.back') }}
+            </b-button>
+          </b-col>
+          <b-col
+            cols="4"
+            class="text-center"
+          >
+            <b-button
+              v-if="module.canCreateRecord"
+              variant="outline-secondary"
+              class="m-1"
+              @click.prevent="$router.push({ name: 'page.record.create', params: { pageID: page.pageID, values: record.values }})"
+            >
+              {{ $t('general.label.clone') }}
+            </b-button>
 
-        <b-button
-          v-if="!isDeleted && !inEditing && module.canUpdateRecord"
-          variant="outline-secondary ml-1"
-          @click.prevent="$router.push({ name: 'page.record.edit', params: $route.params })"
-        >
-          {{ $t('general.label.edit') }}
-        </b-button>
+            <b-button
+              v-if="module.canCreateRecord"
+              variant="outline-secondary"
+              class="m-1"
+              @click.prevent="$router.push({ name: 'page.record.create', params: newRouteParams })"
+            >
+              {{ $t('general.label.addNew') }}
+            </b-button>
+          </b-col>
+          <b-col
+            cols="4"
+            class="text-right"
+          >
+            <c-input-confirm
+              :disabled="!module.canDeleteRecord || isDeleted"
+              @confirmed="handleDelete()"
+              class="m-1"
+            >
+              {{ $t('general.label.delete') }}
+            </c-input-confirm>
 
-        <b-button
-          v-if="module.canUpdateRecord && inEditing"
-          :disabled="!isValid"
-          @click.prevent="handleFormSubmit"
-          class="float-right ml-1"
-          variant="primary"
-        >
-          {{ $t('general.label.save') }}
-        </b-button>
-      </toolbar>
+            <b-button
+              v-if="module.canUpdateRecord && !isDeleted && !inEditing"
+              variant="outline-secondary"
+              class="m-1"
+              @click.prevent="$router.push({ name: 'page.record.edit', params: $route.params })"
+            >
+              {{ $t('general.label.edit') }}
+            </b-button>
+
+            <b-button
+              v-else-if="module.canUpdateRecord"
+              :disabled="!isValid || isDeleted"
+              class="m-1"
+              variant="primary"
+              @click.prevent="handleFormSubmit"
+            >
+              {{ $t('general.label.save') }}
+            </b-button>
+          </b-col>
+        </b-row>
+      </b-container>
     </portal>
     <b-modal size="lg" id="deleteRecord" :title="$t('block.record.deleteRecord')" @ok="handleDelete" :ok-title="$t('general.label.delete')" ok-variant="danger">
       <div class="d-block text-center">
@@ -62,7 +97,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
-import Toolbar from 'corteza-webapp-compose/src/components/Public/Page/Toolbar'
 import { compose, validator, NoID } from '@cortezaproject/corteza-js'
 
 export default {
@@ -70,7 +104,6 @@ export default {
 
   components: {
     Grid,
-    Toolbar,
   },
 
   props: {
@@ -99,12 +132,7 @@ export default {
     return {
       inEditing: false,
       record: undefined,
-
       errors: new validator.Validated(),
-
-      // We handle edit mode here because EditRecord components
-      // is extending us
-      blockMode: 'base',
     }
   },
 

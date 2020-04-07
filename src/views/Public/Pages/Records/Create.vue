@@ -1,43 +1,9 @@
-<template>
-  <div>
-    <grid
-      v-if="record"
-      v-bind="$props"
-      :errors="errors"
-      :record="record"
-      mode="editor"
-    />
-    <toolbar
-      :back-link="{name: 'admin.pages'}"
-      :read-only="!module.canUpdateRecord"
-      :hide-delete="true"
-    >
-      <div class="d-inline-block text-white">_</div>
-      <b-button
-        v-if="module.canCreateRecord"
-        variant="primary"
-        class="float-right"
-        :disabled="!isValid || page.blocks.length === 0"
-        @click.prevent="handleFormSubmit"
-      >
-        {{ $t('general.label.save') }}
-      </b-button>
-    </toolbar>
-  </div>
-</template>
 <script>
-import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
-import Toolbar from 'corteza-webapp-compose/src/components/Public/Page/Toolbar'
 import ViewRecord from './View'
 import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   name: 'CreateRecord',
-
-  components: {
-    Grid,
-    Toolbar,
-  },
 
   extends: ViewRecord,
 
@@ -48,7 +14,7 @@ export default {
       required: false,
     },
 
-    // If component was called with some pre-seed values
+    // If component was called (via router) with some pre-seed values
     values: {
       type: Object,
       required: false,
@@ -58,7 +24,6 @@ export default {
 
   data () {
     return {
-      record: undefined,
       inEditing: true,
     }
   },
