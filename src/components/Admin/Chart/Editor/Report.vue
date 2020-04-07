@@ -214,7 +214,25 @@ export default {
     },
 
     dimensionFields () {
-      return [{ name: 'created_at' }, ...this.module.fields.filter(f => f.kind === 'DateTime' || f.kind === 'Select')]
+      return [
+        { name: 'created_at' },
+        ...this.module.fields.map(f => {
+          const { name, label, kind, options } = f
+          let disabled = true
+          switch (kind) {
+            case 'DateTime':
+            case 'Select':
+            case 'Number':
+            case 'Bool':
+              disabled = false
+              break
+            case 'String':
+              disabled = options.useRichTextEditor || options.multiLine
+              break
+          }
+
+          return { name, label, disabled }
+        })]
     },
 
     moduleID: {
