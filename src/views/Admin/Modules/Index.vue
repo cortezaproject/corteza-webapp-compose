@@ -158,6 +158,7 @@ export default {
       if (recordPage) {
         // Record page already exists
         this.$router.push(goto(recordPage))
+        return
       }
 
       // Collect params and create new record page
