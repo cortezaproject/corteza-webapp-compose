@@ -28,15 +28,18 @@
       </b-select>
     </b-form-group>
 
+    <code
+      v-if="button.script"
+    >
+      {{ button.script }}
+    </code>
     <b-alert
-      variant="warning"
       show
+      variant="warning"
+      v-else
     >
       {{ $t('block.automation.noAction' )}}
     </b-alert>
-    <code>
-      {{ button.script }}
-    </code>
     <p
       v-if="description"
       class="mb-0 mt-2"
