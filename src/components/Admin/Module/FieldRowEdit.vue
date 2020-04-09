@@ -84,7 +84,7 @@
       />
     </td>
     <td
-      class="text-right mt-1"
+      class="text-right align-middle"
       style="min-width: 100px;"
     >
       <c-input-confirm
