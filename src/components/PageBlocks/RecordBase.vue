@@ -2,14 +2,14 @@
   <wrap v-bind="$props" v-on="$listeners">
     <div
       v-if="module && record"
-      class="p-3 record"
+      class="p-0"
     >
       <div
         v-for="(field, index) in fields"
-        class="mb-2"
+        class="p-2 border-bottom border-light"
         :key="index">
         <label
-          class="font-weight-bold"
+          class="text-secondary small"
         >
           {{ field.label || field.name }}
         </label>
@@ -22,12 +22,12 @@
             value-only
           />
         </div>
-        <i
+        <div
           v-else
-          class="text-secondary"
+          class="text-warning"
         >
           {{ $t('field.noPermission') }}
-        </i>
+        </div>
       </div>
     </div>
     <div
@@ -83,3 +83,8 @@ export default {
 
 }
 </script>
+<style lang="scss">
+.value {
+  min-height: 1.2rem;
+}
+</style>
