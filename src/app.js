@@ -16,6 +16,7 @@ import { compose } from '@cortezaproject/corteza-js'
 import { mixins, corredor } from '@cortezaproject/corteza-vue'
 
 const notProduction = (process.env.NODE_ENV !== 'production')
+const verboseEventbus = window.location.search.includes('verboseEventbus')
 
 export default (options = {}) => {
   options = {
@@ -38,7 +39,7 @@ export default (options = {}) => {
           bundle: 'compose',
 
           // Debug logging
-          verbose: notProduction,
+          verbose: notProduction || verboseEventbus,
 
           // Context for exec function (client scripts only!)
           //

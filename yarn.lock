@@ -864,10 +864,10 @@
     pino "^5.16.0"
     ts-sinon "^1.0.25"
 
-"@cortezaproject/corteza-vue@^2020.3.0-rc.12":
-  version "2020.3.0-rc.12"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2020.3.0-rc.12.tgz#dcfab365c9e862c5e630d8735e5a94bf12cb2ddc"
-  integrity sha512-2QuCJNcGwU99CEt2jfi+ugmnn8/VtLA2EhFyMjwpNu30rvfRGnKcmyCV8hvzjzZKlfeXkTDm/8g3jb2z7u08cg==
+"@cortezaproject/corteza-vue@^2020.3.0-rc.15":
+  version "2020.3.0-rc.15"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2020.3.0-rc.15.tgz#d4924e04be9119d715fb959a65cab75d4460584a"
+  integrity sha512-3DqAzr1bX/qhkbLHk52pNzKOYCbM6BLXgnZerscaNNZizbdHxcp2AOH+2ctmP1oxnanvVqPrWQSZyMxkbY6C2Q==
   dependencies:
     "@cortezaproject/corteza-js" "^2020.3.0-rc.13"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"

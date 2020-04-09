@@ -18,16 +18,18 @@ Vue.use(plugins.CortezaAPI('system'))
 Vue.use(plugins.CortezaAPI('messaging'))
 
 const notProduction = (process.env.NODE_ENV !== 'production')
+const verboseUIHooks = window.location.search.includes('verboseUIHooks')
+const verboseEventbus = window.location.search.includes('verboseEventbus')
 
 Vue.use(plugins.EventBus(), {
   strict: notProduction,
-  verbose: notProduction,
+  verbose: notProduction || verboseEventbus,
   pairs,
 })
 
 Vue.use(plugins.UIHooks(), {
   app: 'compose',
-  verbose: notProduction,
+  verbose: notProduction || verboseUIHooks,
 })
 
 Vue.use(plugins.Auth(), { api: Vue.prototype.$SystemAPI })
