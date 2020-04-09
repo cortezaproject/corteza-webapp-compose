@@ -97,6 +97,11 @@ export default {
       //       we need to do a proper filtering via constraint matching
       //       for now, all (configured) buttons are displayed
 
+      // Passing events to eventbus
+      //
+      // The main reason to do this is because eventbus (or better, handlers registed there)
+      // know how to handle each script - is it client or server script, what context to use
+      // etc...
       this.$EventBus
         .Dispatch(ev, b.script)
         .catch(this.defaultErrorHandler(this.$t('notification.automation.scriptFailed')))

@@ -55,9 +55,9 @@ export default (options = {}) => {
         this.loadBundle(bundleLoaderOpt)
           .then(() => this.$ComposeAPI.automationList())
           .then(this.makeAutomationScriptsRegistrator(
-            // compose specific handler that routes  onManual events for server-scripts
+            // compose specific handler that routes onManual events for server-scripts
             // to the proper endpoint on the API
-            compose.TriggerComposeScriptOnManual(this.$ComposeAPI),
+            compose.TriggerComposeServerScriptOnManual(this.$ComposeAPI),
           ))
 
         this.$Settings.init({ api: this.$ComposeAPI }).finally(() => {

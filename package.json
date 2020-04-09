@@ -32,8 +32,8 @@
     }
   },
   "dependencies": {
-    "@cortezaproject/corteza-js": "^2020.3.0-rc.12",
-    "@cortezaproject/corteza-vue": "^2020.3.0-rc.11",
+    "@cortezaproject/corteza-js": "^2020.3.0-rc.13",
+    "@cortezaproject/corteza-vue": "^2020.3.0-rc.12",
     "@fortawesome/fontawesome-svg-core": "^1.2.21",
     "@fortawesome/free-regular-svg-icons": "^5.10.1",
     "@fortawesome/free-solid-svg-icons": "^5.10.1",
