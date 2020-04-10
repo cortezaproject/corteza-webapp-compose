@@ -79,6 +79,7 @@
           <c-permissions-button
             v-if="namespace.canGrant"
             :title="item.title"
+            :target="item.title"
             :resource="'compose:page:'+item.pageID"
             link
           />

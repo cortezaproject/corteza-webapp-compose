@@ -29,9 +29,11 @@
               </b-col>
               <b-col md="2" class="text-right">
                 <export :list="modules" type="module" />
-                <c-permissions-button v-if="namespace.canGrant"
-                                    resource="compose:module:*"
-                                    link />
+                <c-permissions-button
+                  v-if="namespace.canGrant"
+                  resource="compose:module:*"
+                  link
+                />
               </b-col>
             </b-row>
           </b-card>
@@ -56,7 +58,13 @@
                     <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
                   </router-link>
                 </span>
-                <c-permissions-button v-if="m.canGrant" :title="m.name" :resource="'compose:module:'+m.moduleID" link />
+                <c-permissions-button
+                  v-if="m.canGrant"
+                  :title="m.name"
+                  :target="m.name"
+                  :resource="'compose:module:'+m.moduleID"
+                  link
+                />
               </template>
             </b-table>
           </b-card>

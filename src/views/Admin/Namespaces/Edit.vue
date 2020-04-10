@@ -17,6 +17,7 @@
               <c-permissions-button
                 v-if="isEdit && namespace.canGrant"
                 :title="namespace.name"
+                :target="namespace.name"
                 :resource="'compose:namespace:'+namespace.namespaceID"
                 link
               />

@@ -12,7 +12,11 @@
             <div
              class="float-right pt-2"
             >
-              <c-permissions-button v-if="canGrant" resource="compose:namespace:*" link />
+              <c-permissions-button
+                v-if="canGrant"
+                resource="compose:namespace:*"
+                link
+              />
             </div>
             <h1
               class="text-center"

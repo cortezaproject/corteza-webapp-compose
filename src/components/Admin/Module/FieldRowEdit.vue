@@ -95,6 +95,7 @@
       <c-permissions-button
         v-if="canGrant"
         :title="value.name"
+        :target="value.name"
         :resource="'compose:module-field:'+value.fieldID"
         link
       />

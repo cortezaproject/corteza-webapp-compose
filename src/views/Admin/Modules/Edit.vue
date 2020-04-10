@@ -6,7 +6,11 @@
           <b-card :title="$t('module.edit.title')" class="mb-5">
             <div slot="header" class="text-right">
               <export :list="[this.module]" type="module" />
-              <c-permissions-button v-if="module.canGrant" resource="compose:module-field:*" link />
+              <c-permissions-button
+                v-if="module.canGrant"
+                resource="compose:module-field:*"
+                link
+              />
             </div>
             <b-form-group>
               <label>{{ $t('module.newPlaceholder') }}</label>
