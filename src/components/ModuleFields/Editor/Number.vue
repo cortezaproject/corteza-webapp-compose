@@ -1,6 +1,7 @@
 <template>
   <b-form-group
     :label="label"
+    label-class="text-secondary"
     :class="formGroupStyleClasses"
   >
     <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">

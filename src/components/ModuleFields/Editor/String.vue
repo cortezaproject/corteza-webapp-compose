@@ -2,6 +2,7 @@
   <b-form-group
     :label="label"
     :class="formGroupStyleClasses"
+    label-class="text-secondary"
     :state="state"
   >
     <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">

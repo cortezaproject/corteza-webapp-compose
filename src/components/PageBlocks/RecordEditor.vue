@@ -2,12 +2,12 @@
   <wrap v-bind="$props" v-on="$listeners">
     <div
       v-if="record"
-      class="p-3 h-100"
+      class="p-0"
     >
       <div
         v-for="field in fields"
         :key="field.id"
-        class="field"
+        class="p-2 border-bottom border-light"
       >
         <field-editor
           v-if="field.canUpdateRecordValue"
@@ -19,7 +19,9 @@
           v-else-if="field.canReadRecordValue"
           class="field"
         >
-          <label>
+          <label
+            class="text-secondary small"
+          >
             {{ field.label || field.name }}
           </label>
           <field-viewer
@@ -112,3 +114,8 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+.value {
+  min-height: 1.2rem;
+}
+</style>

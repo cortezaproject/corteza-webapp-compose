@@ -1,7 +1,11 @@
 <template>
   <div>
     <fieldset class="form-group">
-      <label>{{ label }}</label>
+      <label
+        class="text-secondary small"
+      >
+        {{ label }}
+      </label>
       <div>{{ value }}</div>
     </fieldset>
   </div>
@@ -53,6 +57,11 @@ export default {
     formGroupStyleClasses () {
       return {
         required: this.field.isRequired,
+
+        // CSS class "small" is set on form group
+        // because of font-size: inherit prop on .col-form-label on
+        // wrapping element
+        small: true,
       }
     },
 
