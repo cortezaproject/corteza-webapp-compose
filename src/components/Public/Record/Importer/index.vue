@@ -3,7 +3,6 @@
     <b-button @click="showModal=true"
               size="sm"
               variant="outline-primary">
-
       {{ $t('general.label.import') }}
     </b-button>
 

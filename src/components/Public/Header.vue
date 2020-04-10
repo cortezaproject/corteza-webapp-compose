@@ -199,7 +199,7 @@ export default {
 
 <style lang="scss" scoped>
 header {
-  z-index: 2000;
+  z-index: 1030;
 }
 
 .navbar {
@@ -253,7 +253,7 @@ header {
 
 @media (max-width: 768px) {
   .navbar-collapse {
-    z-index: 2000;
+    z-index: 1030;
     top: $navbar-height;
     width: $sidebar-width;
     height: $sidebar-height;

@@ -329,7 +329,7 @@ export default {
   top: 55px;
 
   .alert {
-    z-index: 9000;
+    z-index: 1040;
     box-shadow: 0 0 2px 0 rgba($secondary, 0.75);
   }
 }
