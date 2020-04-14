@@ -20,17 +20,17 @@
 </template>
 
 <script>
-import { TItem, TItemVariants, TColors, TLink } from './loader'
+import cc from './loader'
 import { removeMark } from 'tiptap-commands'
 
 export default {
-  components: {
-    TItem,
-    TItemVariants,
-    TLink,
-  },
+  inheritAttrs: true,
 
   props: {
+    editor: {
+      type: Object,
+      required: true,
+    },
     commands: {
       type: Object,
       required: true,
@@ -58,16 +58,31 @@ export default {
      * @returns {Component}
      */
     getItem (f) {
-      if (f.variants) {
-        return TItemVariants
+      let b
+      if (f.mark) {
+        b = cc.mark
+      } else if (f.node) {
+        b = cc.node
+      } else if (f.nodeAttr) {
+        b = cc.nodeAttr
       }
-      if (f.colorPicker) {
-        return TColors
+
+      if (!b) {
+        throw new Error('invalid node type')
       }
-      if (f.type === 'link') {
-        return TLink
+
+      let comp
+      if (f.component) {
+        comp = b[f.component]
+      } else {
+        comp = b.Item
       }
-      return TItem
+
+      if (!comp) {
+        throw new Error('invalid component type')
+      }
+
+      return comp
     },
 
     /**
