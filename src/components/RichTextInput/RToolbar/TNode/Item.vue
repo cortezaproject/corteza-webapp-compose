@@ -19,10 +19,10 @@
 import base from './base'
 
 /**
- * Component is used to display simple formatter options such as bold, italic, ...
+ * Component is used to display node types; paragraph, headding, ...
  */
 export default {
-  name: 't-item',
+  name: 't-node-item',
   extends: base,
 }
 </script>

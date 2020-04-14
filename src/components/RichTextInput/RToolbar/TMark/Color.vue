@@ -41,7 +41,7 @@ import 'vue-swatches/dist/vue-swatches.min.css'
  * input the URL that should be applied.
  */
 export default {
-  name: 't-color',
+  name: 't-mark-color',
 
   components: {
     Swatches,

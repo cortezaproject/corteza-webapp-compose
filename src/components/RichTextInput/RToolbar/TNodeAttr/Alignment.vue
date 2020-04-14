@@ -19,7 +19,7 @@
     <b-dropdown-item
       v-for="v of format.variants"
       :key="v.variant"
-      @click="onClick(format.type, v.attrs)">
+      @click="dispatchTransaction(v)">
 
       <b-button
         variant="link"
@@ -39,22 +39,60 @@
 </template>
 
 <script>
-import base from './base'
+import base from '../TNode/base'
+import { nodeTypes } from '../../lib/formats'
 
 /**
- * Component is used to display complex formatter options - with extra attribute options
- * such as alignment
+ * Component is used to display node alignment formatting
  */
 export default {
-  name: 'h-item-variants',
+  name: 't-nattr-alignment',
   extends: base,
 
+  props: {
+    isActive: {
+      type: Object,
+      required: false,
+      default: () => ({}),
+    },
+  },
+
   methods: {
+    activeClasses (attrs) {
+      const an = this.activeNode(nodeTypes, attrs)
+      if (!an || !an.node) {
+        return undefined
+      }
+
+      const ac = (type, attrs) => {
+        const b = (this.isActive[type])
+        return b && (b(attrs))
+      }
+      if (ac(an.node.type.name, { ...an.node.attrs, ...attrs })) {
+        return ['text-success']
+      }
+
+      return undefined
+    },
+
+    /**
+     * dispatches node attr update for all affected nodes
+     * use a single transaction, so ctrl + z works as intended
+     */
+    dispatchTransaction (v) {
+      const ann = this.activeNodes(nodeTypes)
+      const tr = this.$attrs.editor.state.tr
+      for (const an of ann) {
+        tr.setNodeMarkup(an.position, an.node.type, { ...an.node.attrs, ...v.attrs })
+      }
+      this.$attrs.editor.dispatchTransaction(tr)
+    },
+
     /**
      * Helper method to determine if the root formater should be shown as active
      * @returns {Array|undefined}
      */
-    rootActiveClasses () {
+    rootActiveClasses (v) {
       if (this.format.variants.find(({ type, attrs }) => this.activeClasses(attrs))) {
         return ['text-success']
       }

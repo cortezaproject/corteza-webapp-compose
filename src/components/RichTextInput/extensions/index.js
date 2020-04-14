@@ -1,4 +1,5 @@
-export { default as AlignmentBlock } from './paragraph'
+export { default as Paragraph } from './paragraph'
+export { default as Heading } from './heading'
 export { default as TextColor } from './textColor'
 export { default as TextBackground } from './textBackground'
 export { default as Link } from './link'

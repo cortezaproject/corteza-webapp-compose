@@ -1,5 +1,6 @@
 import {
-  AlignmentBlock,
+  Paragraph,
+  Heading,
   TextColor,
   TextBackground,
   Link,
@@ -8,7 +9,6 @@ import {
 import {
   Blockquote,
   CodeBlock,
-  Heading,
   HorizontalRule,
   OrderedList,
   BulletList,
@@ -35,7 +35,7 @@ export const getFormats = () => [
   new BulletList(),
   new TodoList(),
   new Heading({ levels: [1, 2, 3] }),
-  new AlignmentBlock({ alignments: ['left', 'right', 'center', 'justify'] }),
+  new Paragraph({ alignments: ['left', 'right', 'center', 'justify'] }),
   new Link(),
   new HorizontalRule(),
   new HardBreak(),
@@ -48,24 +48,28 @@ export const getFormats = () => [
 
 // Defines the structure of our editor toolbar
 export const getToolbar = () => [
-  { type: 'bold', icon: 'bold' },
-  { type: 'italic', icon: 'italic' },
-  { type: 'underline', icon: 'underline' },
-  { type: 'strike', icon: 'strikethrough' },
-  { type: 'color', colorPicker: true },
-  { type: 'background', colorPicker: true },
-  { type: 'blockquote', icon: 'quote-right' },
-  { type: 'code_block', icon: 'code' },
-  { type: 'heading', label: 'H1', attrs: { level: 1 } },
-  { type: 'heading', label: 'H2', attrs: { level: 2 } },
-  { type: 'heading', label: 'H3', attrs: { level: 3 } },
-  { type: 'paragraph', icon: 'paragraph' },
-  { type: 'ordered_list', icon: 'list-ol' },
-  { type: 'bullet_list', icon: 'list-ul' },
-  { type: 'todo_list', icon: 'tasks' },
+  { type: 'bold', mark: true, icon: 'bold' },
+  { type: 'italic', mark: true, icon: 'italic' },
+  { type: 'underline', mark: true, icon: 'underline' },
+  { type: 'strike', mark: true, icon: 'strikethrough' },
+  { type: 'color', mark: true, component: 'Color' },
+  { type: 'background', mark: true, component: 'Color' },
+
+  { type: 'blockquote', node: true, icon: 'quote-right' },
+  { type: 'code_block', node: true, icon: 'code' },
+  { type: 'heading', node: true, label: 'H1', attrs: { level: 1 } },
+  { type: 'heading', node: true, label: 'H2', attrs: { level: 2 } },
+  { type: 'heading', node: true, label: 'H3', attrs: { level: 3 } },
+  { type: 'paragraph', node: true, icon: 'paragraph' },
+  { type: 'ordered_list', node: true, icon: 'list-ol' },
+  { type: 'bullet_list', node: true, icon: 'list-ul' },
+  { type: 'todo_list', node: true, icon: 'tasks' },
+
   {
-    type: 'paragraph',
+    type: 'alignment',
     icon: 'align-left',
+    nodeAttr: true,
+    component: 'Alignment',
     variants: [
       { variant: 'left', icon: 'align-left', attrs: { alignment: 'left' } },
       { variant: 'center', icon: 'align-center', attrs: { alignment: 'center' } },
@@ -73,7 +77,11 @@ export const getToolbar = () => [
       { variant: 'justify', icon: 'align-justify', attrs: { alignment: 'justify' } },
     ],
   },
-  { type: 'link', icon: 'link', attrs: { href: null } },
+
+  { type: 'link', mark: true, component: 'Link', icon: 'link', attrs: { href: null } },
+
   // @note There is no free FA icon for this
-  { type: 'horizontal_rule', label: '__' },
+  { type: 'horizontal_rule', node: true, label: '__' },
 ]
+
+export const nodeTypes = getToolbar().filter(({ node }) => node).map(({ type }) => type)

@@ -1,4 +1,9 @@
-export { default as TItem } from './TItem'
-export { default as TItemVariants } from './TItemVariants'
-export { default as TColors } from './TColors'
-export { default as TLink } from './TLink'
+import mark from './TMark/loader'
+import node from './TNode/loader'
+import nodeAttr from './TNodeAttr/loader'
+
+export default {
+  mark,
+  node,
+  nodeAttr,
+}

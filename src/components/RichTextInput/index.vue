@@ -4,14 +4,15 @@
       <b-card-header>
         <editor-menu-bar
           :editor="editor"
-          v-slot="{ commands, isActive, getMarkAttrs }">
+          v-slot="{ commands, isActive, getMarkAttrs, getNodeAttrs }">
 
         <r-toolbar
           :editor="editor"
           :formats="toolbar"
           :commands="commands"
           :is-active="isActive"
-          :get-mark-attrs="getMarkAttrs" />
+          :get-mark-attrs="getMarkAttrs"
+          :get-node-attrs="getNodeAttrs" />
 
         </editor-menu-bar>
       </b-card-header>

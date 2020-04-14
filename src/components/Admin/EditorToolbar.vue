@@ -29,6 +29,8 @@
 <script>
 
 export default {
+  inheritAttrs: true,
+
   props: {
     backLink: {
       type: Object,
