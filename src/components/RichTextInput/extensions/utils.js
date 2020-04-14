@@ -1,6 +1,3 @@
-import { setBlockType } from 'prosemirror-commands'
-import { nodeIsActive } from 'tiptap-utils'
-
 // maps legacy Quill alignment classes to new classes
 export const qAlignments = {
   'ql-align-right': 'right',
@@ -33,6 +30,7 @@ export function alignmentParser (node) {
   return { alignment: alignment || undefined }
 }
 
+// helper to construct DOM parsers with alignment attrs
 export const makeDOMParser = pd => ({
   ...pd,
   getAttrs: (node) => {
@@ -43,15 +41,3 @@ export const makeDOMParser = pd => ({
     return { ...rtr, ...alignmentParser(node) }
   },
 })
-
-export function toggler (type, toggletype, attrs = {}) {
-  return (state, dispatch, view) => {
-    const isActive = nodeIsActive(state, type, attrs)
-
-    if (isActive) {
-      return setBlockType(toggletype)(state, dispatch, view)
-    }
-
-    return setBlockType(type, attrs)(state, dispatch, view)
-  }
-}

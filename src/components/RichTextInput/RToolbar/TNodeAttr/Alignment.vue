@@ -43,12 +43,19 @@ import base from '../TNode/base'
 import { nodeTypes } from '../../lib/formats'
 
 /**
- * Component is used to display complex formatter options - with extra attribute options
- * such as alignment
+ * Component is used to display node alignment formatting
  */
 export default {
   name: 't-nattr-alignment',
   extends: base,
+
+  props: {
+    isActive: {
+      type: Object,
+      required: false,
+      default: () => ({}),
+    },
+  },
 
   methods: {
     activeClasses (attrs) {

@@ -11,16 +11,6 @@ export default {
       required: true,
       default: () => ({}),
     },
-    isActive: {
-      type: Object,
-      required: false,
-      default: () => ({}),
-    },
-    getMarkAttrs: {
-      type: Function,
-      required: false,
-      default: () => {},
-    },
   },
 
   methods: {
@@ -34,7 +24,7 @@ export default {
         attrs = {}
       }
 
-      // manuall toggling, since tiptap's isActive fails to resolve modified nodes
+      // manual toggling, since tiptap's isActive fails to resolve modified nodes
       const act = this.activeNode([type], attrs)
       if (act) {
         type = 'paragraph'
