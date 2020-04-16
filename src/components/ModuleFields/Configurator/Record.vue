@@ -60,7 +60,7 @@
         class="form-control"
         :options="fields"
         multiple
-        v-if="!module"
+        :disabled="!module"
       />
     </b-form-group>
     <b-form-group v-if="field.isMulti">
@@ -111,7 +111,8 @@ export default {
 
     sortedModules () {
       const modules = this.modules
-      return modules.sort((a, b) => a.name.localeCompare(b.name))
+      // JS's array sort is in place, so this raises Vuex warnings about mutations.
+      return modules.concat().sort((a, b) => a.name.localeCompare(b.name))
     },
 
     fields () {
@@ -121,9 +122,9 @@ export default {
 
   watch: {
     'field.options.moduleID' () {
-      this.field.options.labelField = undefined
-      this.field.options.queryFields = []
-      this.field.options.selectType = 'default'
+      this.f.options.labelField = undefined
+      this.f.options.queryFields = []
+      this.f.options.selectType = 'default'
     },
   },
 }
