@@ -146,9 +146,12 @@ export default {
     },
 
     fieldKinds () {
-      return [...compose.ModuleFieldRegistry.keys()].map(kind => {
-        return { kind, label: this.$t(kind + '.label') }
-      })
+      return [...compose.ModuleFieldRegistry.keys()]
+        // for now this field is hidden, since it's implementation is mia.
+        .filter(k => k !== 'Formula')
+        .map(kind => {
+          return { kind, label: this.$t(kind + '.label') }
+        })
     },
   },
 
