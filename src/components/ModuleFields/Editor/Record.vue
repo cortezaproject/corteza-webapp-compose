@@ -210,7 +210,7 @@ export default {
       }
     },
 
-    search (query) {
+    search: _.throttle(function (query) {
       this.query = query
       const namespaceID = this.namespace.namespaceID
       const moduleID = this.field.options.moduleID
@@ -225,7 +225,7 @@ export default {
           this.records = set.map(r => new compose.Record(this.module, r))
         })
       }
-    },
+    }, 1000),
 
     loadLatest () {
       const namespaceID = this.namespace.namespaceID
