@@ -864,6 +864,20 @@
     pino "^5.16.0"
     ts-sinon "^1.0.25"
 
+"@cortezaproject/corteza-js@^2020.3.0-rc.14":
+  version "2020.3.0-rc.14"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-rc.14.tgz#792fe00f8ff3576aa21d4d9d781ea5fee685e702"
+  integrity sha512-iy+KJZQN78Sypw1xm7gtAwbwY9K+GwnOG1vdYQFuxB6yjG3+SxrmKD5mWk0HA4/pMZ3JSSlXqShBDz0IcY1kYg==
+  dependencies:
+    axios "^0.19.1"
+    hex-rgb "^4.1.0"
+    lodash "^4.17.15"
+    minimatch "^3.0.4"
+    moment "^2.24.0"
+    numeral "^2.0.6"
+    pino "^5.16.0"
+    ts-sinon "^1.0.25"
+
 "@cortezaproject/corteza-vue@^2020.3.0-rc.16":
   version "2020.3.0-rc.16"
   resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2020.3.0-rc.16.tgz#987e620e6ab90507011b7a602cead0ae1a583735"
