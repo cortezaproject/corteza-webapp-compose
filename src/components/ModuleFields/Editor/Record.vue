@@ -109,7 +109,9 @@ export default {
 
     multipleSelected: {
       get () {
-        return this.value.map(v => this.convert(this.fetchedRecords.find(r => r.recordID === v)))
+        return this.value
+          .map(v => this.convert(this.fetchedRecords.find(r => r.recordID === v)))
+          .filter(e => e)
       },
 
       set (value) {
