@@ -252,21 +252,8 @@ import ImporterModal from 'corteza-webapp-compose/src/components/Public/Record/I
 import AutomationButtons from './Shared/AutomationButtons'
 import { compose } from '@cortezaproject/corteza-js'
 import users from 'corteza-webapp-compose/src/mixins/users'
+import { queryToFilter } from 'corteza-webapp-compose/src/lib/record-filter'
 import { url } from '@cortezaproject/corteza-vue'
-
-// Helper to determine if and value for given bool query
-// == is intentional
-const toBoolean = (v) => {
-  /* eslint-disable eqeqeq */
-  if (v == 'false' || v == 0) {
-    return false
-  }
-  if (v == 'true' || v == 1) {
-    return true
-  }
-
-  return undefined
-}
 
 export default {
   components: {
@@ -399,7 +386,7 @@ export default {
     },
 
     query: throttle(function (e) {
-      this.filter.query = this.queryToFilter(this.query)
+      this.filter.query = queryToFilter(this.query, this.prefilter, this.recordListModule.filterFields(this.options.fields))
       this.refresh()
     }, 500),
   },
@@ -493,7 +480,7 @@ export default {
       }
 
       if (filterRaw.includeQuery) {
-        const queryF = this.queryToFilter(filterRaw.query)
+        const queryF = queryToFilter(filterRaw.query, this.prefilter, this.recordListModule.filterFields(this.options.fields))
         if (e.filters) {
           e.filters = `(${e.filters}) AND `
         } else {
@@ -512,55 +499,6 @@ export default {
           jwt: this.$auth.JWT,
         },
       }))
-    },
-
-    // Takes fields and prefilter and merges it query expression over all columns we're showing
-    // ie: Return records that have strings in columns (fields) we're showing that start with <query> in case
-    //     of text or are exactly the same in case of numbers
-    queryToFilter (query = '') {
-      query = (query || '').trim()
-
-      if (!query) {
-        return this.prefilter || ''
-      }
-
-      const boolQuery = toBoolean(query)
-      const numQuery = Number.parseFloat(query)
-
-      // To SQLish LIKE param
-      const strQuery = query
-        // replace * with %
-        .replace(/[*%]+/g, '%')
-        // Remove all trailing * and %
-        .replace(/[%]+$/, '')
-        // Remove all leading * and %
-        .replace(/^[%]+/, '')
-
-      // When searching, always reset filter with prefilter + query
-      query = this.recordListModule.filterFields(this.options.fields).map(qf => {
-        if (qf.kind === 'Number' && !isNaN(numQuery)) {
-          return `${qf.name} = ${numQuery}`
-        }
-
-        if (qf.kind === 'Bool' && boolQuery !== undefined) {
-          if (boolQuery) {
-            return `${qf.name} = 'true'`
-          } else {
-            return `${qf.name} = 'false' OR ${qf.name} IS NULL`
-          }
-        }
-
-        if (['String', 'DateTime', 'Select', 'Url', 'Email'].includes(qf.kind)) {
-          return `${qf.name} LIKE '%${strQuery}%'`
-        }
-      }).filter(q => !!q)
-        .join(' OR ')
-
-      if (this.prefilter) {
-        return `(${this.prefilter}) AND (${query})`
-      }
-
-      return query
     },
 
     handleRowClicked ({ recordID }) {
@@ -633,7 +571,7 @@ export default {
         throw Error('Module incompatible, module mismatch')
       }
 
-      const filter = this.queryToFilter(this.query)
+      const filter = queryToFilter(this.query, this.prefilter, this.recordListModule.filterFields(this.options.fields))
 
       return this.$ComposeAPI.recordList({ ...this.recordListModule, ...this.filter, filter })
         .then(({ set, filter }) => {
