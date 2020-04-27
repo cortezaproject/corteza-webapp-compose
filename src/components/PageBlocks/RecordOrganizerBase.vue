@@ -1,50 +1,87 @@
 <template>
-  <wrap v-bind="$props" v-on="$listeners">
-    <div class="h-100">
-      <div v-if="!isConfigured" class="p-3 text-light bg-danger h-100">{{ $t('block.recordOrganizer.notConfigured') }}</div>
-      <i v-else-if="!roModule.canReadRecord" class="text-secondary d-block">{{ $t('block.recordList.record.noPermission') }}</i>
-      <div v-else class="h-100 mb-5">
-        <i v-if="!records.length" class="text-secondary d-block">{{ $t('block.recordOrganizer.noRecords') }}</i>
-        <draggable v-model="records"
-                   :disabled="!canReposition"
-                   :group="{ name: moduleID, put: canReposition }"
-                   class="h-100"
-                   @change="onDrop">
+  <wrap v-bind="$props" v-on="$listeners" :scrollable-body="false">
+    <template #default>
+      <div class="mh-100 m-0">
+        <div
+          v-if="!isConfigured"
+          class="p-3 text-danger"
+        >
+          {{ $t('block.recordOrganizer.notConfigured') }}
+        </div>
+        <div
+          v-else-if="!roModule.canReadRecord"
+          class="p-3 text-secondary"
+        >
+          {{ $t('block.recordList.record.noPermission') }}
+        </div>
+        <div
+          v-else-if="!records.length"
+          class="p-3 text-secondary"
+        >
+          {{ $t('block.recordOrganizer.noRecords') }}
+        </div>
+        <div
+          v-else
+          class="h-100 mb-5"
+        >
+          <draggable v-model="records"
+                     :disabled="!canReposition"
+                     :group="{ name: moduleID, put: canReposition }"
+                     class="h-100"
+                     @change="onDrop">
 
-          <router-link tag="b-card"
-                       v-for="record in records"
-                       :key="record.recordID"
-                       :class="{ 'mb-2': true, 'grab': canReposition }"
-                       :to="{ name: 'page.record', params: { pageID: roRecordPage.pageID, recordID: record.recordID }, query: null }"
-                       border-variant="primary">
+            <router-link tag="b-card"
+                         v-for="record in records"
+                         :key="record.recordID"
+                         :class="{ 'mb-2': true, 'grab': canReposition }"
+                         :to="{ name: 'page.record', params: { pageID: roRecordPage.pageID, recordID: record.recordID }, query: null }"
+                         border-variant="primary">
 
-            <b-card-title v-if="titleField">
-              <field-viewer v-if="titleField.canReadRecordValue"
-                            :field="titleField"
-                            :record="record"
-                            :namespace="namespace" valueOnly />
-              <i v-else class="text-secondary h6">{{ $t('field.noPermission') }}</i>
-            </b-card-title>
-            <b-card-text v-if="descriptionField">
-              <field-viewer v-if="descriptionField.canReadRecordValue"
-                            :field="descriptionField"
-                            :record="record"
-                            :namespace="namespace" valueOnly/>
-              <i v-else class="text-secondary h6">{{ $t('field.noPermission') }}</i>
-            </b-card-text>
-          </router-link>
-        </draggable>
-        <b-card-footer footer-bg-variant="white"
-                       class="fixed-bottom">
-          <b-button @click.prevent="createNewRecord"
-                    :disabled="!canAddRecord"
-                    size="sm"
-                    variant="outline-primary">
-            + {{ $t('block.recordList.addRecord') }}
-          </b-button>
-        </b-card-footer>
+              <b-card-title v-if="titleField">
+                <field-viewer v-if="titleField.canReadRecordValue"
+                              :field="titleField"
+                              :record="record"
+                              :namespace="namespace" valueOnly />
+                <i v-else class="text-secondary h6">{{ $t('field.noPermission') }}</i>
+              </b-card-title>
+              <b-card-text v-if="descriptionField">
+                <field-viewer v-if="descriptionField.canReadRecordValue"
+                              :field="descriptionField"
+                              :record="record"
+                              :namespace="namespace" valueOnly/>
+                <i v-else class="text-secondary h6">{{ $t('field.noPermission') }}</i>
+              </b-card-text>
+            </router-link>
+          </draggable>
+        </div>
       </div>
-    </div>
+    </template>
+    <template
+      #footer
+      v-if="canAddRecord"
+    >
+      <b-container
+        fluid
+        class="m-0 p-2"
+      >
+        <b-row
+          no-gutters
+        >
+          <b-col
+            class="pt-1 text-nowrap text-truncate"
+            cols="8"
+          >
+            <b-button
+              @click.prevent="createNewRecord"
+              size="sm"
+              variant="outline-primary"
+            >
+              + {{ $t('block.recordList.addRecord') }}
+            </b-button>
+          </b-col>
+        </b-row>
+      </b-container>
+    </template>
   </wrap>
 </template>
 
@@ -151,11 +188,15 @@ export default {
     }
 
     if (this.roModule) {
-      this.fetchRecords(this.roModule, this.expandFilter()).then(rr => {
-        this.records = rr
-        const fields = [this.titleField, this.descriptionField].filter(f => !!f)
-        this.fetchUsers(fields, this.records)
-      })
+      this.fetchRecords(this.roModule, this.expandFilter())
+        .then(rr => {
+          this.records = rr
+          const fields = [this.titleField, this.descriptionField].filter(f => !!f)
+          this.fetchUsers(fields, this.records)
+        })
+        .catch(e => {
+          console.error(e)
+        })
     }
   },
 
