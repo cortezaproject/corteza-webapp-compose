@@ -4,6 +4,7 @@ import {
   TextColor,
   TextBackground,
   Link,
+  HtmlPaster,
 } from '../extensions'
 
 import {
@@ -25,6 +26,7 @@ import {
 
 // Defines a set of formats that our document supports
 export const getFormats = () => [
+  new HtmlPaster(),
   new Bold(),
   new Italic(),
   new Underline(),
