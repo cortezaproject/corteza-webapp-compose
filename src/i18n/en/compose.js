@@ -433,6 +433,10 @@ export default {
         relative: 'Show relative value',
         relativePrecision: 'Precision:',
         add: 'Add metric',
+        fx: {
+          label: 'Post processing function',
+          description: 'n - current dataset value, m - previous dataset value',
+        },
         function: {
           label: 'Function',
           placeholder: 'Select metric aggregate function',
