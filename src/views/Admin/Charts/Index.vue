@@ -66,7 +66,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Chart from 'corteza-webapp-compose/src/lib/chart'
+import { compose } from '@cortezaproject/corteza-js'
 import Import from 'corteza-webapp-compose/src/components/Admin/Import'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 
@@ -88,7 +88,7 @@ export default {
   data () {
     const { namespaceID } = this.namespace
     return {
-      newChart: new Chart({ namespaceID }),
+      newChart: new compose.Chart({ config: { namespaceID } }),
     }
   },
 

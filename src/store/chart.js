@@ -1,4 +1,4 @@
-import Chart from '../lib/chart'
+import { compose } from '@cortezaproject/corteza-js'
 
 const types = {
   pending: 'pending',
@@ -45,7 +45,7 @@ export default function (ComposeAPI) {
         commit(types.pending)
         return ComposeAPI.chartList({ namespaceID }).then(({ set, filter }) => {
           if (set && set.length > 0) {
-            commit(types.updateSet, set.map(c => new Chart(c)))
+            commit(types.updateSet, set.map(c => new compose.Chart(c)))
           }
 
           commit(types.completed)
@@ -63,7 +63,7 @@ export default function (ComposeAPI) {
 
         commit(types.pending)
         return ComposeAPI.chartRead({ namespaceID, chartID }).then(raw => {
-          const chart = new Chart(raw)
+          const chart = new compose.Chart(raw)
           commit(types.updateSet, [chart])
           commit(types.completed)
           return chart
@@ -73,7 +73,7 @@ export default function (ComposeAPI) {
       async create ({ commit }, item) {
         commit(types.pending)
         return ComposeAPI.chartCreate(item).then(raw => {
-          const chart = new Chart(raw)
+          const chart = new compose.Chart(raw)
           commit(types.updateSet, [chart])
           commit(types.completed)
           return chart
@@ -83,7 +83,7 @@ export default function (ComposeAPI) {
       async update ({ commit }, item) {
         commit(types.pending)
         return ComposeAPI.chartUpdate(item).then(raw => {
-          const chart = new Chart(raw)
+          const chart = new compose.Chart(raw)
           commit(types.updateSet, [chart])
           commit(types.completed)
           return chart

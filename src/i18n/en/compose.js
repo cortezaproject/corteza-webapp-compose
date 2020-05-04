@@ -925,7 +925,7 @@ export default {
       deleteFailed: 'Could not delete this chart',
       createFailed: 'Could not create a chart',
       optionsBuildFailed: 'Could not build chart options',
-      unsupportedRenderer: 'Unsupported renderer: {{version}}',
+      unsupportedRenderer: 'Unsupported renderer',
       saved: 'Chart saved',
       deleted: 'Chart deleted',
       invalidConfig: {

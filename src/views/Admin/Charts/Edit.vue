@@ -2,7 +2,7 @@
   <div class="py-3">
     <b-container @submit.prevent="handleSave" tag="form">
       <b-row>
-        <b-col md="12">
+        <b-col v-if="chart" md="12">
           <b-card
             :title="$t('chart.edit.title')"
           >
@@ -58,6 +58,7 @@
     </b-container>
     <portal to="admin-toolbar">
       <editor-toolbar
+        v-if="chart"
         :back-link="{name: 'admin.charts'}"
         :hideDelete="!chart.canDeleteChart"
         :hideSave="!chart.canUpdateChart"
@@ -75,7 +76,6 @@ import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToo
 import { compose } from '@cortezaproject/corteza-js'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import ChartComponent from 'corteza-webapp-compose/src/components/Chart'
-import { Chart } from 'corteza-webapp-compose/src/lib/chart'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 
 const defaultReport = {
@@ -106,7 +106,7 @@ export default {
 
   data () {
     return {
-      chart: new Chart(),
+      chart: new compose.Chart(),
       error: null,
       processing: false,
     }
@@ -129,7 +129,7 @@ export default {
   mounted () {
     this.findChartByID({ chartID: this.chartID }).then((chart) => {
       // Make a copy so that we do not change store item by ref
-      this.chart = new Chart({ ...chart })
+      this.chart = new compose.Chart({ ...chart })
     }).catch(this.defaultErrorHandler(this.$t('notification.chart.loadFailed')))
   },
 
@@ -158,7 +158,7 @@ export default {
       delete (c.config.renderer.data)
 
       this.updateChart(c).then((chart) => {
-        this.chart = new Chart(chart)
+        this.chart = new compose.Chart(chart)
         this.raiseSuccessAlert(this.$t('notification.chart.saved'))
         if (closeOnSuccess) {
           this.redirect()

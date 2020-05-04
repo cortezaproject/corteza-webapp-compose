@@ -80,7 +80,6 @@ import { mapGetters, mapActions } from 'vuex'
 import PublicHeader from 'corteza-webapp-compose/src/components/Public/Header'
 import CircleStep from 'corteza-webapp-compose/src/components/Common/CircleStep'
 import { compose } from '@cortezaproject/corteza-js'
-import Chart from 'corteza-webapp-compose/src/lib/chart'
 
 const pushContentAbove = 610
 const demoPageHandle = 'demo_page'
@@ -202,7 +201,7 @@ export default {
 
     createNewChart () {
       const { namespaceID } = this.namespace
-      const newChart = new Chart({
+      const newChart = new compose.Chart({
         namespaceID,
         name: 'Demo Chart',
         handle: 'demo_chart',

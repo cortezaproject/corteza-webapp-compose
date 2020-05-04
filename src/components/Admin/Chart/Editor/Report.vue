@@ -162,13 +162,34 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
-import {
-  chartTypes,
-  hasRelativeDisplay,
-  aggregateFunctions,
-  dimensionFunctions,
-  predefinedFilters,
-} from 'corteza-webapp-compose/src/lib/chart'
+import { compose } from '@cortezaproject/corteza-js'
+
+const aggregateFunctions = [
+  {
+    value: 'COUNTD',
+    text: 'countd',
+  },
+  {
+    value: 'SUM',
+    text: 'sum',
+  },
+  {
+    value: 'MAX',
+    text: 'max',
+  },
+  {
+    value: 'MIN',
+    text: 'min',
+  },
+  {
+    value: 'AVG',
+    text: 'avg',
+  },
+  {
+    value: 'STD',
+    text: 'std',
+  },
+]
 
 export default {
   name: 'Report',
@@ -194,9 +215,9 @@ export default {
       customFilter: false,
 
       metricAggregates: aggregateFunctions.map(af => ({ ...af, text: this.$t(`chart.edit.metric.function.${af.text}`) })),
-      dimensionModifiers: dimensionFunctions.map(df => ({ ...df, text: this.$t(`chart.edit.dimension.function.${df.text}`) })),
-      predefinedFilters: predefinedFilters.map(pf => ({ ...pf, text: this.$t(`chart.edit.filter.${pf.text}`) })),
-      chartTypes: chartTypes.map(ct => ({ ...ct, text: this.$t(`chart.edit.metric.output.${ct.text}`) })),
+      dimensionModifiers: compose.chartUtil.dimensionFunctions.map(df => ({ ...df, text: this.$t(`chart.edit.dimension.function.${df.text}`) })),
+      predefinedFilters: compose.chartUtil.predefinedFilters.map(pf => ({ ...pf, text: this.$t(`chart.edit.filter.${pf.text}`) })),
+      chartTypes: Object.values(compose.chartUtil.ChartType).map(value => ({ value, text: this.$t(`chart.edit.metric.output.${value}`) })),
     }
   },
 
@@ -271,12 +292,12 @@ export default {
 
   watch: {
     'report.filter' (v) {
-      this.customFilter = !predefinedFilters.includes(v)
+      this.customFilter = !compose.chartUtil.predefinedFilters.includes(v)
     },
   },
 
   methods: {
-    hasRelativeDisplay,
+    hasRelativeDisplay: compose.chartUtil.hasRelativeDisplay,
 
     onDimFieldChange (f, d) {
       if (!this.isTemporalField(f)) {
