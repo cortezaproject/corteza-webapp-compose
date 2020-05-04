@@ -251,7 +251,9 @@
       @ok="refresh()"
     >
       <b-container class="p-0">
+        <!-- @TODO This section is used for filtering deleter/undeleted records -->
         <b-form-group
+          v-if="false"
           :label="$t('block.recordList.filter.deletedRecords')"
         >
           <b-form-radio-group
@@ -267,7 +269,7 @@
             name="radio-btn-outline"
           />
         </b-form-group>
-        <hr>
+        <hr v-if="false">
         <p>
           <b>
             {{ $t('block.recordList.filter.byValue') }}
