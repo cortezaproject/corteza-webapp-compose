@@ -182,8 +182,24 @@ export default {
       hideRecordCloneButton: 'Hide clone record button',
       hideRecordEditButton: 'Hide edit record button',
       hideRecordViewButton: 'Hide view record button',
-
       cancelSelection: 'cancel',
+
+      filter: {
+        title: 'Record list filter',
+        update: 'Update filter',
+        label: 'Filter',
+        addField: 'Add new filter field',
+        field: 'Filter field',
+        fieldPlaceholder: 'Pick a field',
+        fieldValue: 'Field value',
+        fieldValuePlaceholder: 'Input field filter',
+        deletedRecords: 'Deleted records',
+        without: 'Without',
+        including: 'Including',
+        only: 'Only',
+        byValue: 'Filter records based on field value',
+        note: 'Note: If Field value is undefined, the filter will look for records where that field value is undefined.',
+      },
       record: {
         newLabel: 'New records',
         hideAddButton: 'Hide add record button',

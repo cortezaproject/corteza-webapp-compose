@@ -50,9 +50,17 @@
               </template>
               <template v-slot:cell(actions)="{ item: m }">
                 <b-button
-                   @click="openPageBuilder(m)"
-                   variant="link"
-                   class="mr-2 pt-0 text-dark">{{ $t('general.label.pageBuilder') }}</b-button>
+                  @click="openPageBuilder(m)"
+                  variant="link"
+                  class="mr-2 pt-0 text-dark"
+                >
+                  {{ $t('general.label.pageBuilder') }}
+                </b-button>
+                <span v-if="m.canReadRecord">
+                  <router-link :to="{name: 'admin.modules.record.list', params: { moduleID: m.moduleID }}" class="mr-2 text-dark">
+                    <font-awesome-icon :icon="['fas', 'bars']"></font-awesome-icon>
+                  </router-link>
+                </span>
                 <span v-if="m.canUpdateModule || m.canDeleteModule">
                   <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="mr-2 text-dark">
                     <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>

@@ -40,6 +40,10 @@ export default [
         children: [
           r('admin.modules', 'modules', 'Admin/Modules/Index'),
           r('admin.modules.edit', 'modules/:moduleID/edit', 'Admin/Modules/Edit'),
+          r('admin.modules.record.list', 'modules/:moduleID/record/list', 'Admin/Modules/Records/List'),
+          r('admin.modules.record.view', 'modules/:moduleID/record/:recordID', 'Admin/Modules/Records/View'),
+          r('admin.modules.record.create', 'modules/:moduleID/record', 'Admin/Modules/Records/Create'),
+          r('admin.modules.record.edit', 'modules/:moduleID/record/:recordID/edit', 'Admin/Modules/Records/Edit'),
 
           r('admin.pages', 'pages', 'Admin/Pages/Index'),
           r('admin.pages.edit', 'pages/:pageID/edit', 'Admin/Pages/Edit'),

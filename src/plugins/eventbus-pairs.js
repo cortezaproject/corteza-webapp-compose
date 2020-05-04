@@ -2,6 +2,14 @@ const stdEventTypes = [
   'onManual',
 ]
 
+const recordPageEventTypes = [
+  'beforeFormSubmit',
+  'onFormSubmitError',
+  'afterFormSubmit',
+  'beforeDelete',
+  'afterDelete',
+]
+
 export default {
   compose: [
     ...stdEventTypes,
@@ -17,11 +25,11 @@ export default {
   ],
   'ui:compose:record-page': [
     ...stdEventTypes,
-    'beforeFormSubmit',
-    'onFormSubmitError',
-    'afterFormSubmit',
-    'beforeDelete',
-    'afterDelete',
+    ...recordPageEventTypes,
+  ],
+  'ui:compose:admin-record-page': [
+    ...stdEventTypes,
+    ...recordPageEventTypes,
   ],
   'ui:compose': [
     ...stdEventTypes,
