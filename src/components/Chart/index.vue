@@ -6,6 +6,7 @@
 
 <script>
 import ChartJS from 'chart.js'
+import _debounce from 'lodash/debounce'
 
 export default {
   props: {
@@ -42,7 +43,7 @@ export default {
   },
 
   methods: {
-    updateChart () {
+    updateChart: _debounce(function () {
       try {
         this.chart.isValid()
       } catch ({ message }) {
@@ -55,8 +56,12 @@ export default {
       }
       const { type, options, data, ...rest } = opt
 
+      const fx = function (n, m, ds) {
+        // eslint-disable-next-line
+        return eval(ds.modifiers.fx)
+      }
       const prepData = (report) => {
-        this.chart.prepData(report, data)
+        this.chart.prepData(report, data, fx)
       }
 
       const newRenderer = () => new ChartJS(this.$refs.chartCanvas.getContext('2d'), { type, options, data, ...rest })
@@ -85,7 +90,7 @@ export default {
         .finally(() => {
           this.$emit('updated')
         })
-    },
+    }, 500),
 
     error (msg) {
       /* eslint-disable no-console */

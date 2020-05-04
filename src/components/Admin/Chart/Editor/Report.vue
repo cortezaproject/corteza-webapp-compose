@@ -106,6 +106,11 @@
             </b-form-select>
           </b-form-group>
 
+          <b-form-group horizontal :label-cols="2" breakpoint="md" :label="$t('chart.edit.metric.fx.label')" :description="$t('chart.edit.metric.fx.description')">
+            <b-form-textarea v-model="m.fx"
+                             placeholder="n"></b-form-textarea>
+          </b-form-group>
+
           <b-form-group horizontal :label-cols="2" breakpoint="md" :label="$t('chart.edit.metric.output.label')">
             <b-form-select v-model="m.type"
                            :disabled="!m.field"
