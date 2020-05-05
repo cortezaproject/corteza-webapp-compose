@@ -100,30 +100,52 @@
         <b-form-text class="text-secondary small">{{ $t('block.recordOrganizer.groupField.footnote') }}</b-form-text>
       </b-form-group>
 
-      <b-form-group horizontal
-                    v-if="options.groupField"
-                    :label-cols="3"
-                    breakpoint="md"
-                    :label="$t('block.recordOrganizer.group.label')">
-        <b-form-input v-model="options.group" />
-
+      <b-form-group
+        v-if="options.groupField"
+        :label="$t('block.recordOrganizer.group.label')"
+        :label-cols="3"
+        breakpoint="md"
+        horizontal
+        class="mb-0"
+      >
+        <field-editor
+          class="mb-0"
+          valueOnly
+          v-bind="mock"
+        />
         <b-form-text class="text-secondary small">{{ $t('block.recordOrganizer.group.footnote') }}</b-form-text>
       </b-form-group>
     </div>
   </b-tab>
 </template>
 <script>
+import FieldEditor from '../ModuleFields/Editor'
 import { mapGetters } from 'vuex'
+import { compose, validator } from '@cortezaproject/corteza-js'
 import base from './base'
 
 export default {
   name: 'RecordOrganizer',
 
+  components: {
+    FieldEditor,
+  },
+
   extends: base,
 
   data () {
     return {
-      mockRecord: { values: {} },
+      /*
+        This are mocks that allow us to use the field editor component.
+        Since we want all the field kinds to work properly out of the box, the field editor component is best for this case.
+      */
+      mock: {
+        namespace: undefined,
+        module: undefined,
+        field: undefined,
+        record: undefined,
+        errors: new validator.Validated(),
+      },
     }
   },
 
@@ -131,17 +153,6 @@ export default {
     ...mapGetters({
       modules: 'module/set',
     }),
-
-    handleMockRecord: {
-      get () {
-        return this.mockRecord
-      },
-
-      set (record) {
-        this.options.group = record.values[this.groupField]
-        this.mockRecord = record
-      },
-    },
 
     selectedModule () {
       return this.modules.find(m => m.moduleID === this.options.moduleID)
@@ -162,11 +173,11 @@ export default {
     },
 
     groupFields () {
-      return this.selectedModule.fields.filter(({ kind, isMulti }) => kind === 'String' && !isMulti)
+      return this.selectedModule.fields.filter(({ isMulti }) => !isMulti)
     },
 
     group () {
-      return this.allFields.find(f => f.name === this.options.settingField)
+      return this.allFields.find(f => f.name === this.options.groupField)
     },
   },
 
@@ -177,22 +188,30 @@ export default {
         // this.o = new RecordOrganizer({ moduleID })
       },
     },
-  },
 
-  created () {
-    // this.setMockRecord(this.options.groupField)
-  },
+    'options.groupField': {
+      immediate: true,
+      handler (newGroupField, oldGroupField) {
+        // If this is not the immediate call
+        if (oldGroupField) {
+          this.options.group = undefined
+        }
 
-  methods: {
-    setMockRecord (groupField) {
-      const record = {
-        values: {},
-      }
+        if (newGroupField) {
+          newGroupField = this.groupFields.find(f => f.name === newGroupField)
+          this.mock.namespace = this.namespace
+          this.mock.field = compose.ModuleFieldMaker(newGroupField)
+          this.mock.field.apply({ name: 'group' })
+          this.mock.module = new compose.Module({ fields: [this.mock.field] }, this.namespace)
+          this.mock.record = new compose.Record(this.mock.module, { group: this.options.group })
+        }
+      },
+    },
 
-      if (groupField) {
-        record.values[groupField] = this.options.group
-      }
-      this.mockRecord = record
+    'mock.record.values.group': {
+      handler (group) {
+        this.options.group = group
+      },
     },
   },
 }
