@@ -8,7 +8,7 @@
       </label>
       <b-form-select
         v-model="f.options.moduleID"
-        :options="sortedModules"
+        :options="modules"
         text-field="name"
         value-field="moduleID"
         class="form-control"
@@ -107,12 +107,6 @@ export default {
       } else {
         return undefined
       }
-    },
-
-    sortedModules () {
-      const modules = this.modules
-      // JS's array sort is in place, so this raises Vuex warnings about mutations.
-      return modules.concat().sort((a, b) => a.name.localeCompare(b.name))
     },
 
     fields () {

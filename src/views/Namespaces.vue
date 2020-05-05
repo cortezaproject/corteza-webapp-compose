@@ -67,7 +67,6 @@ export default {
       loaded: false,
       error: '',
       alerts: [], // { variant: 'info', message: 'foo' },
-      /* eslint-disable*/
       namespaces: [],
       canCreateNamespace: false,
       canGrant: false,

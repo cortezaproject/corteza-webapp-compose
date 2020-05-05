@@ -43,7 +43,7 @@ export default function (ComposeAPI) {
         }
 
         commit(types.pending)
-        return ComposeAPI.moduleList({ namespaceID: namespace.namespaceID }).then(({ set, filter }) => {
+        return ComposeAPI.moduleList({ namespaceID: namespace.namespaceID, sort: 'name ASC' }).then(({ set, filter }) => {
           if (set && set.length > 0) {
             commit(types.updateSet, set.map(m => new compose.Module(m, namespace)))
           }
