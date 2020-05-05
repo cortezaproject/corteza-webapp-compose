@@ -86,6 +86,7 @@ export default {
 
     handleAddPageFormSubmit () {
       const { namespaceID } = this.namespace
+      this.page.weight = this.tree.length
       this.createPage({ ...this.page, namespaceID }).then(({ pageID }) => {
         this.$router.push({ name: 'admin.pages.edit', params: { pageID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))
