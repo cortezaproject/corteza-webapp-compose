@@ -161,6 +161,7 @@ export default {
         const pageIDs = afterParent.children.map(p => p.pageID)
         if (pageIDs.length > 1) {
           this.$ComposeAPI.pageReorder({ namespaceID, selfID: afterID, pageIDs: pageIDs }).then(() => {
+            this.$store.dispatch('page/load', { namespaceID, clear: true, force: true })
             this.raiseSuccessAlert(this.$t('notification.page.reordered'))
             this.$emit('reorder')
           }).catch(this.defaultErrorHandler(this.$t('notification.page.pageMoveFailed')))
