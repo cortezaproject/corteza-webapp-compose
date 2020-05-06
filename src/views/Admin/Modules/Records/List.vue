@@ -62,12 +62,12 @@
                 :placeholder="$t('general.label.search')" />
 
               <b-button
-                variant="outline-primary"
+                :variant="getFilterButtonInfo.variant"
                 size="sm"
                 class="float-right mr-1"
                 @click="openFilterModal"
               >
-                {{ $t('block.recordList.filter.label') }}
+                {{ getFilterButtonInfo.label }}
               </b-button>
             </b-col>
           </b-row>
@@ -159,15 +159,6 @@
               >
                 <font-awesome-icon
                   :icon="['far', 'edit']"
-                />
-              </b-button>
-              <b-button
-                variant="link"
-                class="p-0 m-0 pl-1 text-secondary"
-                @click.prevent="handleRowClicked(r)"
-              >
-                <font-awesome-icon
-                  :icon="['far', 'eye']"
                 />
               </b-button>
             </div>
@@ -378,6 +369,7 @@ export default {
 
       filterFields: {
         showModal: false,
+        active: false,
         items: [
           {
             name: '',
@@ -488,6 +480,18 @@ export default {
         ]
       }
       return fields
+    },
+
+    getFilterButtonInfo () {
+      let label = this.$t('block.recordList.filter.label')
+      let variant = 'outline-primary'
+
+      if (this.filterFields.active) {
+        label = `${label} ${this.$t('general.label.active')}`
+        variant = 'primary'
+      }
+
+      return { label, variant }
     },
   },
 
@@ -648,11 +652,14 @@ export default {
       }).join(' AND ')
 
       if (fieldsFilter) {
+        this.filterFields.active = true
         if (filter) {
           filter = `(${filter}) AND (${fieldsFilter})`
         } else {
           filter = `${fieldsFilter}`
         }
+      } else {
+        this.filterFields.active = false
       }
 
       return this.$ComposeAPI.recordList({ ...this.module, ...this.filter, filter })

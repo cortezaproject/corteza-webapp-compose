@@ -526,6 +526,7 @@ export default {
       handle: 'Handle',
       general: 'General',
       enabled: 'Enabled',
+      active: 'Active',
       welcome: 'Welcome!',
       urlPlaceholder: 'https://example.tld',
     },
