@@ -864,10 +864,10 @@
     pino "^5.16.0"
     ts-sinon "^1.0.25"
 
-"@cortezaproject/corteza-js@^2020.3.0-rc.14":
-  version "2020.3.0-rc.14"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-rc.14.tgz#792fe00f8ff3576aa21d4d9d781ea5fee685e702"
-  integrity sha512-iy+KJZQN78Sypw1xm7gtAwbwY9K+GwnOG1vdYQFuxB6yjG3+SxrmKD5mWk0HA4/pMZ3JSSlXqShBDz0IcY1kYg==
+"@cortezaproject/corteza-js@^2020.3.0-rc.16":
+  version "2020.3.0-rc.16"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-rc.16.tgz#a9f5c97544a6f4e24a946db8cd86c0727118fcb9"
+  integrity sha512-6W6oSdAM3HKPvixpalqHeKT/+/JnwPGrY16p1pI6IBYzBbXm3lBiYJNJ5dBub05jMf7XqGVU44+E1+ai1HC4jg==
   dependencies:
     axios "^0.19.1"
     hex-rgb "^4.1.0"
