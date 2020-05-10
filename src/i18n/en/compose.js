@@ -305,6 +305,16 @@ export default {
       label: 'Chart',
       display: 'Chart to display inside this block:',
       pick: 'Pick a chart',
+      add: 'Add chart',
+      addGeneric: 'Generic chart',
+      addFunnel: 'Funnel chart',
+      addGauge: 'Gauge chart',
+      edit: 'Edit chart',
+      configure: {
+        label: 'Configure chart',
+        reportsLabel: 'Reports',
+        reportLabel: 'Report {{l}}',
+      },
       preview: {
         chartId: 'Chart preview (ID {{0}})',
       },
@@ -408,6 +418,7 @@ export default {
         defaultValueLabel: 'Default value',
         defaultValueFootnote: 'Use this value for missing dimension values',
         calculateLabelCount: 'Calculate how many labels can be shown',
+        gaugeSteps: 'Gauge steps',
         function: {
           label: 'Function',
           placeholder: 'Select dimension modifier (bucket size)',
@@ -433,6 +444,7 @@ export default {
         relative: 'Show relative value',
         relativePrecision: 'Precision:',
         add: 'Add metric',
+        gaugeColor: 'Gauge color',
         fx: {
           label: 'Post processing function',
           description: 'n - current dataset value, m - previous dataset value',
@@ -482,6 +494,8 @@ export default {
       timeMinute: '{{t}}min',
       timeHour: '{{t}}h',
 
+      label: 'Label',
+      value: 'Value',
       openBookmarks: 'Open bookmarks',
       buttons: 'Buttons',
       name: 'Name',
@@ -503,6 +517,7 @@ export default {
       save: 'Save',
       saveAndClose: 'Save and close',
       add: 'Add',
+      remove: 'Remove',
       addNew: 'Add new',
       addValue: 'Add new value',
       close: 'Close',

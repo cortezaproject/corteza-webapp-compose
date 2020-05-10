@@ -5,8 +5,10 @@
 </template>
 
 <script>
+import { chartConstructor } from 'corteza-webapp-compose/src/lib/charts'
 import ChartJS from 'chart.js'
-import _debounce from 'lodash/debounce'
+import Funnel from 'chartjs-plugin-funnel'
+import Gauge from 'chartjs-gauge'
 
 export default {
   props: {
@@ -27,13 +29,21 @@ export default {
   },
 
   watch: {
-    chart: {
-      handler: function (nv) {
-        this.$nextTick(() => this.updateChart())
+    'chart.chartID': {
+      handler () {
+        this.$nextTick(() => {
+          this.updateChart()
+        })
       },
-      deep: true,
-      immediate: true,
     },
+  },
+
+  mounted () {
+    this.$nextTick(() => {
+      this.updateChart()
+    })
+
+    this.$root.$on('chart.update', this.requestChartUpdate)
   },
 
   beforeDestroy () {
@@ -43,54 +53,46 @@ export default {
   },
 
   methods: {
-    updateChart: _debounce(function () {
+    async updateChart () {
+      const chart = chartConstructor(this.chart)
+
       try {
-        this.chart.isValid()
+        chart.isValid()
       } catch ({ message }) {
         this.error(message)
         return
       }
-      const opt = this.chart.buildOptions()
-      if (!opt) {
+
+      const data = await chart.fetchReports({ reporter: this.reporter })
+      const options = chart.makeOptions()
+      const plugins = chart.plugins()
+      if (!options) {
         this.raiseWarningAlert(this.$t('notification.chart.optionsBuildFailed'))
       }
-      const { type, options, data, ...rest } = opt
+      const type = chart.baseChartType(data.datasets)
 
-      const fx = function (n, m, ds) {
-        // eslint-disable-next-line
-        return eval(ds.modifiers.fx)
+      const newRenderer = () => new ChartJS(this.$refs.chartCanvas.getContext('2d'), { options, plugins: [...plugins, Funnel, Gauge], data, type })
+      if (this.renderer) {
+        this.renderer.destroy()
       }
-      const prepData = (report) => {
-        this.chart.prepData(report, data, fx)
-      }
+      this.renderer = newRenderer()
 
-      const newRenderer = () => new ChartJS(this.$refs.chartCanvas.getContext('2d'), { type, options, data, ...rest })
-      const rerender = () => {
-        if (!this.renderer) {
-          this.renderer = newRenderer()
-        } else if (this.renderer.config.type !== type) {
-          this.renderer.destroy()
-          this.renderer = newRenderer()
-        } else if (rest.plugins && rest.plugins.length !== this.renderer.config.plugins) {
-          this.renderer.destroy()
-          this.renderer = newRenderer()
-        } else {
-          this.renderer.options = options
-          this.renderer.data = data
-          this.renderer.update()
-        }
+      this.$emit('updated')
+    },
+
+    requestChartUpdate ({ name, handle } = {}) {
+      if (!name && !handle) {
+        this.$nextTick(() => this.updateChart())
       }
 
-      this.chart.fetchReports({ reporter: this.reporter })
-        .then(prepData)
-        .then(rerender)
-        .catch(({ message }) => {
-          this.error(message)
-        })
-        .finally(() => {
-          this.$emit('updated')
-        })
-    }, 500),
+      if (name && this.chart && this.chart.name === name) {
+        this.$nextTick(() => this.updateChart())
+      }
+
+      if (handle && this.chart && this.chart.handle === handle) {
+        this.$nextTick(() => this.updateChart())
+      }
+    },
 
     error (msg) {
       /* eslint-disable no-console */
