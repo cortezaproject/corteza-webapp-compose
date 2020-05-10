@@ -86,9 +86,8 @@ export default {
   },
 
   data () {
-    const { namespaceID } = this.namespace
     return {
-      newChart: new compose.Chart({ config: { namespaceID } }),
+      newChart: new compose.Chart({}),
     }
   },
 
@@ -118,6 +117,7 @@ export default {
     }),
 
     create () {
+      this.newChart.namespaceID = this.namespace.namespaceID
       this.createChart(this.newChart).then((chart) => {
         this.$router.push({ name: 'admin.charts.edit', params: { chartID: chart.chartID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.chart.createFailed')))
