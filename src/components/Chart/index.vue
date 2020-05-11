@@ -9,6 +9,7 @@ import { chartConstructor } from 'corteza-webapp-compose/src/lib/charts'
 import ChartJS from 'chart.js'
 import Funnel from 'chartjs-plugin-funnel'
 import Gauge from 'chartjs-gauge'
+import csc from 'chartjs-plugin-colorschemes'
 
 export default {
   props: {
@@ -64,14 +65,14 @@ export default {
       }
 
       const data = await chart.fetchReports({ reporter: this.reporter })
-      const options = chart.makeOptions()
+      const options = chart.makeOptions(data)
       const plugins = chart.plugins()
       if (!options) {
         this.raiseWarningAlert(this.$t('notification.chart.optionsBuildFailed'))
       }
       const type = chart.baseChartType(data.datasets)
 
-      const newRenderer = () => new ChartJS(this.$refs.chartCanvas.getContext('2d'), { options, plugins: [...plugins, Funnel, Gauge], data, type })
+      const newRenderer = () => new ChartJS(this.$refs.chartCanvas.getContext('2d'), { options, plugins: [...plugins, Funnel, Gauge, csc], data, type })
       if (this.renderer) {
         this.renderer.destroy()
       }

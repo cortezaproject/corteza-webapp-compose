@@ -12,6 +12,23 @@
                 <fieldset v-if="modules">
                   <b-form-input v-model="chart.name" :placeholder="$t('chart.newPlaceholder')" class="mb-1"></b-form-input>
                   <b-form-input v-model="chart.handle" :placeholder="$t('general.placeholder.handle')" :state="handleState" class="mb-1"></b-form-input>
+
+                  <b-form-group>
+                    <b-form-select
+                      v-model="chart.config.colorScheme"
+                      :options="colorSchemes"
+                      class="mt-1"
+                    >
+                      <template slot="first">
+                        <option
+                          :value="undefined"
+                          disabled
+                        >
+                          {{ $t('chart.colorScheme') }}
+                        </option>
+                      </template>
+                    </b-form-select>
+                  </b-form-group>
                 </fieldset>
 
                 <!-- Some charts support multiple reports -->
@@ -128,6 +145,7 @@ import draggable from 'vuedraggable'
 import ReportItem from 'corteza-webapp-compose/src/components/Chart/ReportItem'
 import Reports from 'corteza-webapp-compose/src/components/Chart/Report'
 import { chartConstructor } from 'corteza-webapp-compose/src/lib/charts'
+import schemes from 'chartjs-plugin-colorschemes/src/colorschemes'
 
 const defaultReport = {
   moduleID: undefined,
@@ -172,6 +190,30 @@ export default {
       modules: 'module/set',
       modByID: 'module/getByID',
     }),
+
+    colorSchemes () {
+      const splicer = sc => {
+        const rr = (/(\D+)(\d+)$/gi).exec(sc)
+        return {
+          label: rr[1],
+          count: rr[2],
+        }
+      }
+      const capitalize = w => `${w[0].toUpperCase()}${w.slice(1)}`
+      const rr = []
+      for (const g in schemes) {
+        for (const sc in schemes[g]) {
+          const gn = splicer(sc)
+          rr.push({
+            text: `${capitalize(g)}: ${capitalize(gn.label)} (${this.$t('chart.colorLabel', gn)})`,
+            value: `${g}.${sc}`,
+            count: gn.count,
+          })
+        }
+      }
+
+      return rr
+    },
 
     defaultReport () {
       return Object.assign({}, defaultReport)

@@ -14,12 +14,6 @@
       >
         <template #item="{ item }">
           <div>
-            <span>
-              <input
-                type="color"
-                v-model="item.color"
-              />
-            </span>
             <span class="ml-1">
               {{ item.value }}
             </span>

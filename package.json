@@ -50,6 +50,7 @@
     "c3": "^0.7.12",
     "chart.js": "^2.7.3",
     "chartjs-gauge": "^0.1.2",
+    "chartjs-plugin-colorschemes": "^0.4.0",
     "chartjs-plugin-datalabels": "^0.7.0",
     "chartjs-plugin-funnel": "^1.1.5",
     "ejs": "^2.6.2",

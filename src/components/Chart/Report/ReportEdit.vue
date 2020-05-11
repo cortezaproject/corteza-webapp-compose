@@ -334,6 +334,17 @@ export default {
       },
     },
 
+    colorScheme: {
+      get () {
+        return this.report.colorScheme
+      },
+
+      set (v) {
+        this.report.colorScheme = v
+        this.$emit('update:report', { ...this.report, colorScheme: v })
+      },
+    },
+
     metrics: {
       get () {
         return this.report.metrics

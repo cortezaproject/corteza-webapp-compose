@@ -30,11 +30,6 @@
             :placeholder="$t('general.label.value')"
           />
 
-          <b-form-input
-            type="color"
-            v-model="step.color"
-          />
-
           <b-input-group-append>
             <b-button
               @click.prevent="dimension.meta.steps.splice(i, 1)"

@@ -395,6 +395,8 @@ export default {
     newLabel: 'Create a new chart:',
     newPlaceholder: 'Chart name',
     import: 'Import chart(s):',
+    colorScheme: 'Color scheme',
+    colorLabel: '{{count}} colors',
     edit: {
       title: 'Chart builder',
       modulePick: 'Pick a module',

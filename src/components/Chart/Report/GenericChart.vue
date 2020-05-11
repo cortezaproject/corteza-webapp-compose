@@ -3,7 +3,6 @@
     :report.sync="editReport"
     :modules="modules"
     :dimension-field-kind="['Select']"
-    :supported-metrics="1"
   >
     <template #metric-options="{ metric }">
       <b-form-group
