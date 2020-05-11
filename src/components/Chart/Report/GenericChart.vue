@@ -4,6 +4,75 @@
     :modules="modules"
     :dimension-field-kind="['Select']"
   >
+    <template #y-axis="{ report }">
+      <div class="border px-3 py-2 mb-2">
+        <h5 class="mb-3">
+          {{ $t('chart.edit.yAxis.label') }}
+        </h5>
+        <b-form-checkbox
+          v-model="report.yAxis.axisType"
+          value="logarithmic"
+          unchecked-value="linear"
+        >
+          {{ $t('chart.edit.yAxis.logarithmicScale') }}
+        </b-form-checkbox>
+
+        <b-form-checkbox
+          v-model="report.yAxis.axisPosition"
+          value="right"
+          unchecked-value="left"
+        >
+          {{ $t('chart.edit.yAxis.axisOnRight') }}
+        </b-form-checkbox>
+
+        <b-form-checkbox
+          v-model="report.yAxis.beginAtZero"
+          :value="true"
+          :unchecked-value="false"
+          checked
+        >
+          {{ $t('chart.edit.yAxis.axisScaleFromZero') }}
+        </b-form-checkbox>
+
+        <b-form-group
+          horizontal
+          :label-cols="2"
+          class="mt-1"
+          breakpoint="md"
+          :label="$t('chart.edit.yAxis.labelLabel')"
+        >
+          <b-form-input
+            v-model="report.yAxis.label"
+            :placeholder="$t('chart.edit.yAxis.labelPlaceholder')"
+          />
+        </b-form-group>
+
+        <b-form-group
+          horizontal
+          :label-cols="2"
+          class="mt-1"
+          breakpoint="md"
+          :label="$t('chart.edit.yAxis.minLabel')"
+        >
+          <b-form-input
+            v-model="report.yAxis.min"
+            :placeholder="$t('chart.edit.yAxis.minPlaceholder')"
+          />
+        </b-form-group>
+        <b-form-group
+          horizontal
+          :label-cols="2"
+          class="mt-1"
+          breakpoint="md"
+          :label="$t('chart.edit.yAxis.maxLabel')"
+        >
+          <b-form-input
+            v-model="report.yAxis.max"
+            :placeholder="$t('chart.edit.yAxis.maxPlaceholder')"
+          />
+        </b-form-group>
+      </div>
+    </template>
     <template #metric-options="{ metric }">
       <b-form-group
         horizontal
@@ -95,33 +164,6 @@
               />
             </b-form-group>
           </template>
-        </template>
-
-        <template v-else>
-          <b-form-checkbox
-            v-model="metric.axisType"
-            value="logarithmic"
-            unchecked-value="linear"
-          >
-            {{ $t('chart.edit.metric.logarithmicScale') }}
-          </b-form-checkbox>
-
-          <b-form-checkbox
-            v-model="metric.axisPosition"
-            value="right"
-            unchecked-value="left"
-          >
-            {{ $t('chart.edit.metric.axisOnRight') }}
-          </b-form-checkbox>
-
-          <b-form-checkbox
-            v-model="metric.beginAtZero"
-            :value="true"
-            :unchecked-value="false"
-            checked
-          >
-            {{ $t('chart.edit.metric.axisScaleFromZero') }}
-          </b-form-checkbox>
         </template>
 
         <b-form-checkbox

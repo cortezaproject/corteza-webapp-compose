@@ -59,6 +59,11 @@
       </div>
     </div>
 
+    <slot
+      name="y-axis"
+      :report="editReport"
+    />
+
     <!-- Configure report dimensions -->
     <div v-if="!!module">
       <div class="border px-3 py-2 mb-2">
