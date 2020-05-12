@@ -456,6 +456,14 @@ export default {
         relativePrecision: 'Precision:',
         add: 'Add metric',
         gaugeColor: 'Gauge color',
+        lineTension: {
+          label: 'Line tension',
+          placeholder: 'Line tension',
+          straight: 'Straight lines',
+          slight: 'Small curvatures',
+          medium: 'Medium curvatures',
+          curvy: 'Big curvatures',
+        },
         fx: {
           label: 'Post processing function',
           description: 'n - current dataset value, m - previous dataset value',

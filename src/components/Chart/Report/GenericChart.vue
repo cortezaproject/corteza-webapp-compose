@@ -166,13 +166,34 @@
           </template>
         </template>
 
-        <b-form-checkbox
-          v-model="metric.fill"
-          :value="true" :unchecked-value="false"
-          v-show="metric.type === 'line'"
-        >
-          {{ $t('chart.edit.metric.fillArea') }}
-        </b-form-checkbox>
+        <template v-if="metric.type === 'line'">
+          <b-form-checkbox
+            v-model="metric.fill"
+            :value="true" :unchecked-value="false"
+          >
+            {{ $t('chart.edit.metric.fillArea') }}
+          </b-form-checkbox>
+
+          <b-form-group
+            horizontal
+            breakpoint="md"
+            :label="$t('chart.edit.metric.lineTension.label')"
+          >
+            <b-form-select
+              v-model="metric.lineTension"
+              :options="tensionSteps"
+            >
+              <template slot="first">
+                <option
+                  disabled
+                  :value="undefined"
+                >
+                  {{ $t('chart.edit.metric.lineTension.placeholder') }}
+                </option>
+              </template>
+            </b-form-select>
+          </b-form-group>
+        </template>
 
         <b-form-checkbox
           v-model="metric.fixTooltips"
@@ -209,6 +230,17 @@ export default {
         .filter(v => !ignoredCharts.includes(v))
         .map(value => ({ value, text: this.$t(`chart.edit.metric.output.${value}`) })),
     }
+  },
+
+  computed: {
+    tensionSteps () {
+      return [
+        { text: this.$t('chart.edit.metric.lineTension.straight'), value: 0.0 },
+        { text: this.$t('chart.edit.metric.lineTension.slight'), value: 0.2 },
+        { text: this.$t('chart.edit.metric.lineTension.medium'), value: 0.4 },
+        { text: this.$t('chart.edit.metric.lineTension.curvy'), value: 0.6 },
+      ]
+    },
   },
 
   methods: {
