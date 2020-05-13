@@ -24,6 +24,8 @@ import SocialFeedBase from './SocialFeedBase'
 import SocialFeedConfigurator from './SocialFeedConfigurator'
 import MetricBase from './MetricBase'
 import MetricConfigurator from './MetricConfigurator'
+import RecorderBase from './RecorderBase'
+import RecorderConfigurator from './RecorderConfigurator'
 
 /**
  * List of all known page block components
@@ -53,6 +55,8 @@ const Registry = {
   SocialFeedConfigurator,
   MetricBase,
   MetricConfigurator,
+  RecorderBase,
+  RecorderConfigurator,
 }
 
 const defaultMode = 'Base'

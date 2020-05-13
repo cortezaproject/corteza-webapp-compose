@@ -85,6 +85,12 @@ export default {
           image: images.Record,
         },
         {
+          label: this.$t('block.recorder.label'),
+          recordPageOnly: false,
+          block: new compose.PageBlockRecorder(),
+          image: images.Content,
+        },
+        {
           label: this.$t('block.recordList.label'),
           recordPageOnly: false,
           block: new compose.PageBlockRecordList(),
