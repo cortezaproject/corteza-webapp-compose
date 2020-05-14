@@ -218,12 +218,19 @@ export default {
       const moduleID = this.field.options.moduleID
 
       if (moduleID && query.length > 0) {
-        // Prepare query
-        const filter = (this.field.options.queryFields || [this.field.options.labelField]).map(qf => {
+        // Determine what fields to use for searching
+        // Default to label field
+        let qf = this.field.options.queryFields
+        if (!qf || qf.length === 0) {
+          qf = [this.field.options.labelField]
+        }
+
+        // Construct query
+        const filter = qf.map(qf => {
           return `${qf} LIKE '%${query}%'`
         }).join(' OR ')
 
-        this.$ComposeAPI.recordList({ namespaceID, moduleID, filter, sort: this.sortString() }).then(({ set }) => {
+        this.fetchPrefiltered({ namespaceID, moduleID, filter, sort: this.sortString() }).then(set => {
           this.records = set.map(r => new compose.Record(this.module, r))
         })
       }
@@ -234,10 +241,24 @@ export default {
       const moduleID = this.field.options.moduleID
       const perPage = 10
       if (moduleID) {
-        this.$ComposeAPI.recordList({ namespaceID, moduleID, perPage }).then(({ set }) => {
+        this.fetchPrefiltered({ namespaceID, moduleID, perPage }).then(set => {
           this.latest = set.map(r => new compose.Record(this.module, r))
         })
       }
+    },
+
+    async fetchPrefiltered (q) {
+      // Support prefilters
+      let baseF = q.filter
+      if (this.field.options.prefilter) {
+        if (baseF) {
+          baseF = `(${this.field.options.prefilter}) AND (${baseF})`
+        } else {
+          baseF = this.field.options.prefilter
+        }
+      }
+
+      return this.$ComposeAPI.recordList({ ...q, filter: baseF }).then(({ set }) => set)
     },
 
     sortString () {

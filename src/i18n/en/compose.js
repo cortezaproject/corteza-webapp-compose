@@ -806,6 +806,9 @@ export default {
         recordFieldPlaceholder: 'Pick field',
         queryFieldsLabel: 'Query fields on search',
         suggestionPlaceholder: 'Start typing to search for records',
+        prefilterLabel: 'Prefilter records',
+        prefilterPlaceholder: 'field1 = 1 AND field2 = 232',
+        prefilterFootnote: 'Simplified SQL condition (WHERE ...) syntax is supported.',
       },
       string: {
         label: 'String',

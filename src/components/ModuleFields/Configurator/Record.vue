@@ -63,6 +63,21 @@
         :disabled="!module"
       />
     </b-form-group>
+    <b-form-group>
+      <label
+        class="d-block"
+      >
+        {{ $t('field.kind.record.prefilterLabel') }}
+      </label>
+      <b-form-textarea
+        v-model="f.options.prefilter"
+        class="form-control"
+        :placeholder="$t('field.kind.record.prefilterPlaceholder')"
+      />
+      <b-form-text>
+        {{ $t('field.kind.record.prefilterFootnote') }}
+      </b-form-text>
+    </b-form-group>
     <b-form-group v-if="field.isMulti">
       <label
         class="d-block"
