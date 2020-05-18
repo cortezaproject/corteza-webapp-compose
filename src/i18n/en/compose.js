@@ -408,9 +408,9 @@ export default {
         axisScaleFromZero: 'Always begin axis scale at zero',
         labelLabel: 'Axis label',
         labelPlaceholder: 'Axis label',
-        minLabel: 'Minimum value',
+        minLabel: 'Min value',
         minPlaceholder: 'Minimum value',
-        maxLabel: 'Maximum value',
+        maxLabel: 'Max value',
         maxPlaceholder: 'Maximum value',
       },
       filter: {
@@ -432,7 +432,7 @@ export default {
         defaultValueLabel: 'Default value',
         defaultValueFootnote: 'Use this value for missing dimension values',
         calculateLabelCount: 'Calculate how many labels can be shown',
-        gaugeSteps: 'Gauge steps',
+        gaugeSteps: 'Steps',
         function: {
           label: 'Function',
           placeholder: 'Select dimension modifier (bucket size)',
@@ -455,7 +455,7 @@ export default {
         relative: 'Show relative value',
         relativePrecision: 'Precision:',
         add: 'Add metric',
-        gaugeColor: 'Gauge color',
+        gaugeColor: 'Color',
         lineTension: {
           label: 'Line tension',
           placeholder: 'Line tension',

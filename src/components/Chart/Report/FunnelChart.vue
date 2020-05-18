@@ -11,6 +11,7 @@
         :items="makeOptions(field, dimension)"
         :selected.sync="dimension.meta.fields"
         key-prop="value"
+        class="cursor-pointer"
       >
         <template #item="{ item }">
           <div>
@@ -53,3 +54,9 @@ export default {
   },
 }
 </script>
+
+<style scoped lang="scss">
+  .cursor-pointer {
+    cursor: pointer;
+  }
+</style>

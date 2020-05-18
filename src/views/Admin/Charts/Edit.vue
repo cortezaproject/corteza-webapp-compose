@@ -36,14 +36,22 @@
                   v-if="supportsMultipleReports"
                   class="form-group mt-2"
                 >
-                  <b-form-group>
-                    <h4>
+                  <b-form-group class="mb-2">
+                    <h4 class="d-inline-block">
                       {{ $t('block.chart.configure.reportsLabel') }}
                     </h4>
-                    <div class="pl-3">
+                    <b-btn
+                      class="float-right p-0"
+                      variant="link"
+                      @click="onAddReport"
+                    >
+                      + {{ $t('general.label.add') }}
+                    </b-btn>
+                    <div class="ml-1">
                       <draggable
                         v-model="reports"
                         :options="{ handle:'.handle' }"
+                        class="w-100 d-inline-block"
                         element="tbody"
                       >
 
@@ -63,13 +71,6 @@
                     </div>
                   </b-form-group>
 
-                  <b-btn
-                    class="float-left mt-2"
-                    variant="link"
-                    @click="onAddReport"
-                  >
-                    + {{ $t('general.label.add') }}
-                  </b-btn>
                 </fieldset>
 
                 <!-- Generic report editing component -->

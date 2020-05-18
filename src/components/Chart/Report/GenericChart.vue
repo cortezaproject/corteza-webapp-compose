@@ -5,7 +5,7 @@
     :dimension-field-kind="['Select']"
   >
     <template #y-axis="{ report }">
-      <div class="border px-3 py-2 mb-2">
+      <div class="border p-2 mb-2">
         <h5 class="mb-3">
           {{ $t('chart.edit.yAxis.label') }}
         </h5>
@@ -37,7 +37,7 @@
         <b-form-group
           horizontal
           :label-cols="2"
-          class="mt-1"
+          class="mt-2"
           breakpoint="md"
           :label="$t('chart.edit.yAxis.labelLabel')"
         >

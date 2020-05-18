@@ -1,34 +1,32 @@
 <template>
-  <tr>
+  <tr class="w-100 d-inline-block">
     <td
-      v-if="!fixed"
+      class="handle align-middle w-100 d-inline-block"
+      :class="{ 'cursor-grab': !fixed }"
       v-b-tooltip.hover
-      class="handle text-center align-middle"
     >
       <font-awesome-icon
+        v-if="!fixed"
         :icon="['fas', 'sort']"
-        class="text-secondary"
+        class="text-secondary mr-1"
       />
-    </td>
-
-    <td>
       <slot
         name="report-label"
         :report="report"
       />
       <b-btn
-        variant="primary"
-        class="ml-2"
+        variant="link"
+        class="ml-1 float-right text-dark p-0"
         @click="$emit('edit', report)"
       >
-        {{ $t('general.label.edit') }}
+        <font-awesome-icon :icon="['far', 'edit']" />
       </b-btn>
       <b-btn
-        variant="outline-danger"
-        class="ml-1"
+        variant="link"
+        class="float-right text-danger p-0"
         @click="$emit('remove', report)"
       >
-        {{ $t('general.label.remove') }}
+        <font-awesome-icon :icon="['far', 'trash-alt']" />
       </b-btn>
     </td>
   </tr>
@@ -52,3 +50,9 @@ export default {
   },
 }
 </script>
+
+<style scoped lang="scss">
+  .cursor-grab {
+    cursor: grab;
+  }
+</style>

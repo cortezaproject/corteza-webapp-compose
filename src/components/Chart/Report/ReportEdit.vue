@@ -29,7 +29,7 @@
       v-if="!!module"
       class="mt-1"
     >
-      <div class="border px-3 py-2 mb-2">
+      <div class="border p-2 mb-2">
         <h5 class="mb-3">
           {{ $t('chart.edit.filter.label') }}
         </h5>
@@ -46,7 +46,10 @@
             </template>
           </b-form-select>
 
-          <b-form-checkbox v-model="customFilter">
+          <b-form-checkbox
+            v-model="customFilter"
+            class="mt-1"
+          >
             {{ $t('chart.edit.filter.customize') }}
           </b-form-checkbox>
 
@@ -66,7 +69,7 @@
 
     <!-- Configure report dimensions -->
     <div v-if="!!module">
-      <div class="border px-3 py-2 mb-2">
+      <div class="border p-2 mb-2">
         <fieldset
           v-for="(d, i) in dimensions"
           :key="i"

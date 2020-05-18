@@ -33,8 +33,8 @@
           <b-input-group-append>
             <b-button
               @click.prevent="dimension.meta.steps.splice(i, 1)"
-              variant="outline-danger"
-              class="border-0"
+              variant="link"
+              class="border-0 text-danger"
             >
               <font-awesome-icon :icon="['far', 'trash-alt']" />
             </b-button>
@@ -43,6 +43,7 @@
 
         <b-btn
           variant="link"
+          class="p-0"
           @click="dimension.meta.steps.push({ label: undefined, color: undefined, value: undefined })"
         >
           + {{ $t('general.label.add') }}
@@ -52,10 +53,7 @@
 
     <template #metric-options="{ metric }">
       <b-form-group
-        horizontal
-        breakpoint="md"
         :label="$t('chart.edit.metric.fx.label')"
-        :label-cols="2"
         :description="$t('chart.edit.metric.fx.description')"
       >
         <b-form-textarea
@@ -66,12 +64,12 @@
 
       <b-form-group
         horizontal
-        :label-cols="2"
-        breakpoint="md"
         :label="$t('chart.edit.metric.gaugeColor')"
+        :label-cols="2"
       >
         <b-form-input
           type="color"
+          class="p-0 border-0 color-picker"
           v-model="metric.backgroundColor"
         />
       </b-form-group>
@@ -114,3 +112,9 @@ export default {
   },
 }
 </script>
+
+<style scoped lang="scss">
+  .color-picker {
+    width: 30px;
+  }
+</style>
