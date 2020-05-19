@@ -59,25 +59,23 @@ export default {
 
       try {
         chart.isValid()
+
+        const data = await chart.fetchReports({ reporter: this.reporter })
+        const options = chart.makeOptions(data)
+        const plugins = chart.plugins()
+        if (!options) {
+          this.raiseWarningAlert(this.$t('notification.chart.optionsBuildFailed'))
+        }
+        const type = chart.baseChartType(data.datasets)
+
+        const newRenderer = () => new ChartJS(this.$refs.chartCanvas.getContext('2d'), { options, plugins: [...plugins, Funnel, Gauge, csc], data, type })
+        if (this.renderer) {
+          this.renderer.destroy()
+        }
+        this.renderer = newRenderer()
       } catch ({ message }) {
         this.error(message)
-        return
       }
-
-      const data = await chart.fetchReports({ reporter: this.reporter })
-      const options = chart.makeOptions(data)
-      const plugins = chart.plugins()
-      if (!options) {
-        this.raiseWarningAlert(this.$t('notification.chart.optionsBuildFailed'))
-      }
-      const type = chart.baseChartType(data.datasets)
-
-      const newRenderer = () => new ChartJS(this.$refs.chartCanvas.getContext('2d'), { options, plugins: [...plugins, Funnel, Gauge, csc], data, type })
-      if (this.renderer) {
-        this.renderer.destroy()
-      }
-      this.renderer = newRenderer()
-
       this.$emit('updated')
     },
 
