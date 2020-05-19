@@ -401,6 +401,7 @@ export default {
       title: 'Chart builder',
       modulePick: 'Pick a module',
       loadData: 'Load data',
+      unconfiguredReport: 'Unconfigured report',
       yAxis: {
         label: 'Y-axis',
         logarithmicScale: 'Logarithmic scale',

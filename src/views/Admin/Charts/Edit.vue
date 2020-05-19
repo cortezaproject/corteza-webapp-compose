@@ -64,7 +64,12 @@
                           @remove="onRemoveReport(i)"
                         >
                           <template #report-label>
-                            {{ moduleName(r.moduleID) }}
+                            <template v-if="r.moduleID">
+                              {{ moduleName(r.moduleID) }}
+                            </template>
+                            <template v-else>
+                              {{ $t('chart.edit.unconfiguredReport') }}
+                            </template>
                           </template>
                         </report-item>
                       </draggable>
