@@ -850,10 +850,10 @@
     openurl "1.1.1"
     yargs "6.6.0"
 
-"@cortezaproject/corteza-js@^2020.3.0-rc.21":
-  version "2020.3.0-rc.21"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-rc.21.tgz#08b162b134ae12b455799ab729c784c76d4899bb"
-  integrity sha512-evTIalGcOXgUoHk8far17kajNTBcTeQzC5/JMV+np0/EvWeQwDymvzxTOb4J+KTZyTGBUmY1SQbVsr3zFGbr2A==
+"@cortezaproject/corteza-js@^2020.3.0-rc.21", "@cortezaproject/corteza-js@^2020.3.0-rc.23":
+  version "2020.3.0-rc.23"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-rc.23.tgz#27d66f99ff6b60910d44806342d49f3d5b952420"
+  integrity sha512-mZ8r6ya89GdfTmgBKhTGrimJ4eLI8w6yXWHwqFF+223+L+96XK+oWBb1U0jciZix1+91CwXgs7bBSqBDhlApDA==
   dependencies:
     axios "^0.19.1"
     chart.js "^2.7.3"
