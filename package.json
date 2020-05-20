@@ -32,7 +32,7 @@
     }
   },
   "dependencies": {
-    "@cortezaproject/corteza-js": "^2020.3.0-rc.21",
+    "@cortezaproject/corteza-js": "^2020.3.0-rc.23",
     "@cortezaproject/corteza-vue": "^2020.3.0-rc.19",
     "@fortawesome/fontawesome-svg-core": "^1.2.21",
     "@fortawesome/free-regular-svg-icons": "^5.10.1",
@@ -49,7 +49,10 @@
     "bootstrap-vue": "^2.3.0",
     "c3": "^0.7.12",
     "chart.js": "^2.7.3",
+    "chartjs-gauge": "^0.1.2",
+    "chartjs-plugin-colorschemes": "^0.4.0",
     "chartjs-plugin-datalabels": "^0.7.0",
+    "chartjs-plugin-funnel": "^1.1.5",
     "ejs": "^2.6.2",
     "file-saver": "^2.0.2",
     "flush-promises": "^1.0.2",

@@ -850,10 +850,10 @@
     openurl "1.1.1"
     yargs "6.6.0"
 
-"@cortezaproject/corteza-js@^2020.3.0-rc.21":
-  version "2020.3.0-rc.21"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-rc.21.tgz#08b162b134ae12b455799ab729c784c76d4899bb"
-  integrity sha512-evTIalGcOXgUoHk8far17kajNTBcTeQzC5/JMV+np0/EvWeQwDymvzxTOb4J+KTZyTGBUmY1SQbVsr3zFGbr2A==
+"@cortezaproject/corteza-js@^2020.3.0-rc.21", "@cortezaproject/corteza-js@^2020.3.0-rc.23":
+  version "2020.3.0-rc.23"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-rc.23.tgz#27d66f99ff6b60910d44806342d49f3d5b952420"
+  integrity sha512-mZ8r6ya89GdfTmgBKhTGrimJ4eLI8w6yXWHwqFF+223+L+96XK+oWBb1U0jciZix1+91CwXgs7bBSqBDhlApDA==
   dependencies:
     axios "^0.19.1"
     chart.js "^2.7.3"
@@ -3714,7 +3714,7 @@ chardet@^0.7.0:
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
 
-chart.js@^2.7.3:
+chart.js@>2.7.0, chart.js@^2.7.3, chart.js@^2.8.0:
   version "2.9.3"
   resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.9.3.tgz#ae3884114dafd381bc600f5b35a189138aac1ef7"
   integrity sha512-+2jlOobSk52c1VU6fzkh3UwqHMdSlgH1xFv9FKMqHiNCpXsGPQa/+81AFa+i3jZ253Mq9aAycPwDjnn1XbRNNw==
@@ -3737,10 +3737,29 @@ chartjs-color@^2.1.0:
     chartjs-color-string "^0.6.0"
     color-convert "^1.9.3"
 
+chartjs-gauge@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/chartjs-gauge/-/chartjs-gauge-0.1.2.tgz#c991c87ec869a122ba5f47cc5be8f8b8254ac966"
+  integrity sha512-xWAFzAqnSHomoFMo8U/9uQJZtd/Zeh9rZDHEFaftcI14V/WKWnSiG49vw18Er64yA3p4HuT76KWBA+nQruKk7A==
+  dependencies:
+    chart.js "^2.8.0"
+
+chartjs-plugin-colorschemes@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/chartjs-plugin-colorschemes/-/chartjs-plugin-colorschemes-0.4.0.tgz#7a310c32411ef0b5135df1f47da4d379e22220f7"
+  integrity sha512-GUAulGFa6igdhi/xF9XopLJknwtXZT0wwEB+e/D4SJcRGY1HdwzX84pVn5BSpnk1idF6RJxZoA7w396R7BOE9A==
+
 chartjs-plugin-datalabels@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/chartjs-plugin-datalabels/-/chartjs-plugin-datalabels-0.7.0.tgz#f72e44edb2db45ef68913e9320bcc50398a205e6"
   integrity sha512-PKVUX14nYhH0wcdCpgOoC39Gbzvn6cZ7O9n+bwc02yKD9FTnJ7/TSrBcfebmolFZp1Rcicr9xbT0a5HUbigS7g==
+
+chartjs-plugin-funnel@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/chartjs-plugin-funnel/-/chartjs-plugin-funnel-1.1.5.tgz#45f262d5a1f322be326692fdde2a730a43fc21d2"
+  integrity sha512-iblHmQ+8ApfVLaWPVRM7+4GAzCIGyKh540rhEpUcjtmDgKdKkHQ9KNqm3QEEpHAWlb4RUWWIdI1dCDRHXxiLSw==
+  dependencies:
+    chart.js ">2.7.0"
 
 check-error@^1.0.2:
   version "1.0.2"

@@ -12,11 +12,81 @@
                 <fieldset v-if="modules">
                   <b-form-input v-model="chart.name" :placeholder="$t('chart.newPlaceholder')" class="mb-1"></b-form-input>
                   <b-form-input v-model="chart.handle" :placeholder="$t('general.placeholder.handle')" :state="handleState" class="mb-1"></b-form-input>
+
+                  <b-form-group>
+                    <b-form-select
+                      v-model="chart.config.colorScheme"
+                      :options="colorSchemes"
+                      class="mt-1"
+                    >
+                      <template slot="first">
+                        <option
+                          :value="undefined"
+                          disabled
+                        >
+                          {{ $t('chart.colorScheme') }}
+                        </option>
+                      </template>
+                    </b-form-select>
+                  </b-form-group>
                 </fieldset>
-                <report v-for="(report, index) in chart.config.reports"
-                        :report.sync="report"
-                        :modules="modules"
-                        :key="'report_'+index"></report>
+
+                <!-- Some charts support multiple reports -->
+                <fieldset
+                  v-if="supportsMultipleReports"
+                  class="form-group mt-2"
+                >
+                  <b-form-group class="mb-2">
+                    <h4 class="d-inline-block">
+                      {{ $t('block.chart.configure.reportsLabel') }}
+                    </h4>
+                    <b-btn
+                      class="float-right p-0"
+                      variant="link"
+                      @click="onAddReport"
+                    >
+                      + {{ $t('general.label.add') }}
+                    </b-btn>
+                    <div class="ml-1">
+                      <draggable
+                        v-model="reports"
+                        :options="{ handle:'.handle' }"
+                        class="w-100 d-inline-block"
+                        element="tbody"
+                      >
+
+                        <report-item
+                          v-for="(r, i) in reports"
+                          :key="i"
+                          :report="r"
+                          :fixed="reports.length === 1"
+                          @edit="onEditReport(i)"
+                          @remove="onRemoveReport(i)"
+                        >
+                          <template #report-label>
+                            <template v-if="r.moduleID">
+                              {{ moduleName(r.moduleID) }}
+                            </template>
+                            <template v-else>
+                              {{ $t('chart.edit.unconfiguredReport') }}
+                            </template>
+                          </template>
+                        </report-item>
+                      </draggable>
+                    </div>
+                  </b-form-group>
+
+                </fieldset>
+
+                <!-- Generic report editing component -->
+                <component
+                  :is="reportEditor"
+                  v-if="editReport"
+                  :report.sync="editReport"
+                  :modules="modules"
+                  :dimension-field-kind="['Select']"
+                  :supported-metrics="1"
+                />
               </b-col>
 
               <b-col md="6">
@@ -46,7 +116,7 @@
                   />
                 </div>
                 <!-- not supporting multiple reports for now
-<b-button @click.prevent="chart.config.reports.push(defaultReport)"
+<b-button @click.prevent="reports.push(defaultReport)"
         v-if="false"
         class="float-right">+ Add report</b-button>
 -->
@@ -77,6 +147,11 @@ import { compose } from '@cortezaproject/corteza-js'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import ChartComponent from 'corteza-webapp-compose/src/components/Chart'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
+import draggable from 'vuedraggable'
+import ReportItem from 'corteza-webapp-compose/src/components/Chart/ReportItem'
+import Reports from 'corteza-webapp-compose/src/components/Chart/Report'
+import { chartConstructor } from 'corteza-webapp-compose/src/lib/charts'
+import schemes from 'chartjs-plugin-colorschemes/src/colorschemes'
 
 const defaultReport = {
   moduleID: undefined,
@@ -90,6 +165,8 @@ export default {
     EditorToolbar,
     Export,
     ChartComponent,
+    draggable,
+    ReportItem,
   },
 
   props: {
@@ -109,13 +186,40 @@ export default {
       chart: new compose.Chart(),
       error: null,
       processing: false,
+
+      editReportIndex: undefined,
     }
   },
 
   computed: {
     ...mapGetters({
       modules: 'module/set',
+      modByID: 'module/getByID',
     }),
+
+    colorSchemes () {
+      const splicer = sc => {
+        const rr = (/(\D+)(\d+)$/gi).exec(sc)
+        return {
+          label: rr[1],
+          count: rr[2],
+        }
+      }
+      const capitalize = w => `${w[0].toUpperCase()}${w.slice(1)}`
+      const rr = []
+      for (const g in schemes) {
+        for (const sc in schemes[g]) {
+          const gn = splicer(sc)
+          rr.push({
+            text: `${capitalize(g)}: ${capitalize(gn.label)} (${this.$t('chart.colorLabel', gn)})`,
+            value: `${g}.${sc}`,
+            count: gn.count,
+          })
+        }
+      }
+
+      return rr
+    },
 
     defaultReport () {
       return Object.assign({}, defaultReport)
@@ -124,12 +228,59 @@ export default {
     handleState () {
       return handleState(this.chart.handle)
     },
+
+    supportsMultipleReports () {
+      if (!this.chart) {
+        return false
+      }
+
+      if (this.chart instanceof compose.FunnelChart) {
+        return true
+      }
+      return false
+    },
+
+    reportEditor () {
+      if (!this.chart) {
+        return undefined
+      }
+
+      if (this.chart instanceof compose.FunnelChart) {
+        return Reports.FunnelChart
+      }
+      if (this.chart instanceof compose.GaugeChart) {
+        return Reports.GagueChart
+      }
+      return Reports.GenericChart
+    },
+
+    reports: {
+      get () {
+        return this.chart.config.reports
+      },
+      set (r) {
+        this.chart.config.reports = r
+      },
+    },
+
+    editReport: {
+      get () {
+        if (this.editReportIndex !== undefined) {
+          return this.reports[this.editReportIndex]
+        }
+        return undefined
+      },
+      set (v) {
+        this.reports.splice(this.editReportIndex, 1, v)
+      },
+    },
   },
 
   mounted () {
     this.findChartByID({ chartID: this.chartID }).then((chart) => {
       // Make a copy so that we do not change store item by ref
-      this.chart = new compose.Chart({ ...chart })
+      this.chart = chartConstructor(chart)
+      this.onEditReport(0)
     }).catch(this.defaultErrorHandler(this.$t('notification.chart.loadFailed')))
   },
 
@@ -139,6 +290,10 @@ export default {
       updateChart: 'chart/update',
       deleteChart: 'chart/delete',
     }),
+
+    moduleName (moduleID) {
+      return this.modByID(moduleID).name
+    },
 
     reporter (r) {
       return this.$ComposeAPI.recordReport({ namespaceID: this.namespace.namespaceID, ...r })
@@ -158,7 +313,7 @@ export default {
       delete (c.config.renderer.data)
 
       this.updateChart(c).then((chart) => {
-        this.chart = new compose.Chart(chart)
+        this.chart = chartConstructor(chart)
         this.raiseSuccessAlert(this.$t('notification.chart.saved'))
         if (closeOnSuccess) {
           this.redirect()
@@ -175,6 +330,21 @@ export default {
 
     redirect () {
       this.$router.push({ name: 'admin.charts' })
+    },
+
+    onEditReport (i) {
+      this.editReportIndex = i
+    },
+
+    onRemoveReport (i) {
+      this.reports.splice(i, 1)
+      if (this.editReportIndex === i) {
+        this.editReportIndex = undefined
+      }
+    },
+
+    onAddReport () {
+      this.reports.push(this.chart.defReport())
     },
   },
 }

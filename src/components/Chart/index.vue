@@ -5,7 +5,11 @@
 </template>
 
 <script>
+import { chartConstructor } from 'corteza-webapp-compose/src/lib/charts'
 import ChartJS from 'chart.js'
+import Funnel from 'chartjs-plugin-funnel'
+import Gauge from 'chartjs-gauge'
+import csc from 'chartjs-plugin-colorschemes'
 
 export default {
   props: {
@@ -26,13 +30,21 @@ export default {
   },
 
   watch: {
-    chart: {
-      handler: function (nv) {
-        this.$nextTick(() => this.updateChart())
+    'chart.chartID': {
+      handler () {
+        this.$nextTick(() => {
+          this.updateChart()
+        })
       },
-      deep: true,
-      immediate: true,
     },
+  },
+
+  mounted () {
+    this.$nextTick(() => {
+      this.updateChart()
+    })
+
+    this.$root.$on('chart.update', this.requestChartUpdate)
   },
 
   beforeDestroy () {
@@ -42,49 +54,43 @@ export default {
   },
 
   methods: {
-    updateChart () {
+    async updateChart () {
+      const chart = chartConstructor(this.chart)
+
       try {
-        this.chart.isValid()
+        chart.isValid()
+
+        const data = await chart.fetchReports({ reporter: this.reporter })
+        const options = chart.makeOptions(data)
+        const plugins = chart.plugins()
+        if (!options) {
+          this.raiseWarningAlert(this.$t('notification.chart.optionsBuildFailed'))
+        }
+        const type = chart.baseChartType(data.datasets)
+
+        const newRenderer = () => new ChartJS(this.$refs.chartCanvas.getContext('2d'), { options, plugins: [...plugins, Funnel, Gauge, csc], data, type })
+        if (this.renderer) {
+          this.renderer.destroy()
+        }
+        this.renderer = newRenderer()
       } catch ({ message }) {
         this.error(message)
-        return
       }
-      const opt = this.chart.buildOptions()
-      if (!opt) {
-        this.raiseWarningAlert(this.$t('notification.chart.optionsBuildFailed'))
-      }
-      const { type, options, data, ...rest } = opt
+      this.$emit('updated')
+    },
 
-      const prepData = (report) => {
-        this.chart.prepData(report, data)
+    requestChartUpdate ({ name, handle } = {}) {
+      if (!name && !handle) {
+        this.$nextTick(() => this.updateChart())
       }
 
-      const newRenderer = () => new ChartJS(this.$refs.chartCanvas.getContext('2d'), { type, options, data, ...rest })
-      const rerender = () => {
-        if (!this.renderer) {
-          this.renderer = newRenderer()
-        } else if (this.renderer.config.type !== type) {
-          this.renderer.destroy()
-          this.renderer = newRenderer()
-        } else if (rest.plugins && rest.plugins.length !== this.renderer.config.plugins) {
-          this.renderer.destroy()
-          this.renderer = newRenderer()
-        } else {
-          this.renderer.options = options
-          this.renderer.data = data
-          this.renderer.update()
-        }
+      if (name && this.chart && this.chart.name === name) {
+        this.$nextTick(() => this.updateChart())
       }
 
-      this.chart.fetchReports({ reporter: this.reporter })
-        .then(prepData)
-        .then(rerender)
-        .catch(({ message }) => {
-          this.error(message)
-        })
-        .finally(() => {
-          this.$emit('updated')
-        })
+      if (handle && this.chart && this.chart.handle === handle) {
+        this.$nextTick(() => this.updateChart())
+      }
     },
 
     error (msg) {

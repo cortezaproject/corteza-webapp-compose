@@ -11,7 +11,29 @@
                     <b-input-group>
                       <input required type="text" v-model="newChart.name" class="form-control" id="name" :placeholder="$t('chart.newPlaceholder')" />
                       <b-input-group-append>
-                        <b-button type="submit" variant="dark">{{ $t('general.label.create') }}</b-button>
+                        <b-dropdown
+                            :text="$t('block.chart.add')"
+                          >
+                            <b-dropdown-item-button
+                              variant="primary"
+                              @click="create('generic')"
+                            >
+                              {{ $t('block.chart.addGeneric') }}
+                            </b-dropdown-item-button>
+                            <b-dropdown-item-button
+                              variant="primary"
+                              @click="create('funnel')"
+                            >
+                              {{ $t('block.chart.addFunnel') }}
+                            </b-dropdown-item-button>
+                            <b-dropdown-item-button
+                              variant="primary"
+                              @click="create('gauge')"
+                            >
+                              {{ $t('block.chart.addGauge') }}
+                            </b-dropdown-item-button>
+                          </b-dropdown>
+
                       </b-input-group-append>
                     </b-input-group>
                   </b-form-group>
@@ -116,9 +138,19 @@ export default {
       createChart: 'chart/create',
     }),
 
-    create () {
-      this.newChart.namespaceID = this.namespace.namespaceID
-      this.createChart(this.newChart).then((chart) => {
+    create (subType) {
+      let c = new compose.Chart({ ...this.newChart, namespaceID: this.namespace.namespaceID })
+      switch (subType) {
+        case 'gauge':
+          c = new compose.GaugeChart(c)
+          break
+
+        case 'funnel':
+          c = new compose.FunnelChart(c)
+          break
+      }
+
+      this.createChart(c).then((chart) => {
         this.$router.push({ name: 'admin.charts.edit', params: { chartID: chart.chartID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.chart.createFailed')))
     },
