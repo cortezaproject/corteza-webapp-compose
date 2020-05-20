@@ -503,14 +503,14 @@ export default {
 
       let start, end
       if (date.start) {
-        start = `${rangeBy}>='${date.start}'`
+        start = `DATE(${rangeBy})>='${date.start}'`
       }
       if (date.end) {
-        end = `${rangeBy}<='${date.end}'`
+        end = `DATE(${rangeBy})<='${date.end}'`
       }
 
       if (start && end) {
-        return `${start} AND ${end}`
+        return `(${start}) AND (${end})`
       }
       return start || end
     },
