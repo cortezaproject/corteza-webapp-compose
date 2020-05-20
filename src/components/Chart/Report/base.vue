@@ -21,7 +21,13 @@ export default {
     dimensionFieldKind: {
       type: Array,
       required: false,
-      default: () => ['Date', 'Select', 'Number', 'Bool'],
+      default: () => [
+        'DateTime',
+        'Select',
+        'Number',
+        'Bool',
+        'String',
+      ],
     },
   },
 

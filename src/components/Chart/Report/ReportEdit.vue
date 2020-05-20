@@ -320,7 +320,7 @@ export default {
     },
 
     dimensionFields () {
-      return [{ name: 'created_at', kind: 'Date' }].concat(this.module.fields).map(f => {
+      return [{ name: 'created_at', label: 'Created At', kind: 'DateTime' }].concat(this.module.fields).map(f => {
         const { name, label, kind, options } = f
         let disabled = !this.dimensionFieldKind.includes(kind)
         if (kind === 'String') {

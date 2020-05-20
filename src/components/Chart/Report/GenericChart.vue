@@ -2,7 +2,6 @@
   <report-edit
     :report.sync="editReport"
     :modules="modules"
-    :dimension-field-kind="['Select']"
   >
     <template #y-axis="{ report }">
       <div class="border p-2 mb-2">
