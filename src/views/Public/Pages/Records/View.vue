@@ -18,7 +18,6 @@
     <portal to="toolbar">
       <record-toolbar
         :module="module"
-        :isValid="isValid"
         :isDeleted="isDeleted"
         :inEditing="inEditing"
         :hideClone="inCreating"

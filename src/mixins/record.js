@@ -41,17 +41,6 @@ export default {
     },
   },
 
-  watch: {
-    'record.values': {
-      deep: true,
-      handler () {
-        if (!this.errors.valid()) {
-          this.errors = this.validator.run(this.record)
-        }
-      },
-    },
-  },
-
   methods: {
     /**
      * Handle form submit for record create & update
