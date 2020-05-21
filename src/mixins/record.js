@@ -66,17 +66,46 @@ export default {
      *
      * @returns {Promise<void>}
      */
-    handleFormSubmit (route = 'page.record') {
+    async handleFormSubmit (route = 'page.record') {
       const isNew = this.record.recordID === NoID
+      const queue = []
+
+      // Collect records from all record lines
+      this.page.blocks.forEach((b, index) => {
+        if (b.kind === 'RecordLines') {
+          const p = new Promise((resolve, reject) => {
+            this.$root.$emit(`record-line:collect:${index}`, resolve)
+          })
+
+          queue.push(p)
+        }
+      })
+      const pairs = await Promise.all(queue)
+
+      // Construct batch record payload
+      const records = pairs.reduce((acc, cur) => {
+        acc.push({
+          refField: cur.refField,
+          set: cur.records,
+        })
+        return acc
+      }, [])
+
+      // Append after the payload construction, so it is not presented as a
+      // sub record.
+      pairs.push({
+        module: this.module,
+        records: [this.record],
+      })
 
       return this
         .dispatchUiEvent('beforeFormSubmit')
-        .then(() => this.validateRecord())
+        .then(() => this.validateRecord(pairs))
         .then(() => {
           if (isNew) {
-            return this.$ComposeAPI.recordCreate(this.record)
+            return this.$ComposeAPI.recordCreate({ ...this.record, records })
           } else {
-            return this.$ComposeAPI.recordUpdate(this.record)
+            return this.$ComposeAPI.recordUpdate({ ...this.record, records })
           }
         })
         .catch(err => {
@@ -126,15 +155,39 @@ export default {
      *
      * @returns {Promise<void>}
      */
-    async validateRecord () {
-      this.errors = this.validator.run(this.record)
+    async validateRecord (pairs) {
+      // Cache validators for later use
+      const validators = {}
+      for (const p of pairs) {
+        validators[p.module.resourceID] = validators[p.module.resourceID] || new compose.RecordValidator(p.module)
+      }
+
+      const vRunner = () => {
+        // Reset errors
+        this.errors = new validator.Validated()
+
+        // validate
+        for (const p of pairs) {
+          const v = validators[p.module.resourceID]
+          const errs = new validator.Validated()
+          p.records.forEach((r, i) => {
+            const err = v.run(r)
+            if (!err.valid()) {
+              err.applyMeta({ resource: p.module.resourceID, item: i })
+              errs.push(...err.set)
+            }
+          })
+          this.errors.push(...errs.set)
+        }
+      }
+
+      vRunner()
       if (this.errors.valid()) {
         return
       }
 
       await this.dispatchUiEvent('onFormSubmitError')
-
-      this.errors = this.validator.run(this.record)
+      vRunner()
       if (!this.errors.valid()) {
         throw new Error(this.$t('notification.record.validationErrors'))
       }

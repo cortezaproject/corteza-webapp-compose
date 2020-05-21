@@ -60,7 +60,7 @@
         <template #head()="{ field }">
           {{ field.label }}
         </template>
-        <template #cell()="{ item: r, field }">
+        <template #cell()="{ item: r, field, index }">
           <field-editor
             v-if="field.moduleField.canUpdateRecordValue && field.edit"
             :field="field.moduleField"
@@ -68,7 +68,7 @@
             :record="r"
             :module="module"
             :namespace="namespace"
-            :errors="fieldErrors(field.moduleField.name)"
+            :errors="fieldErrors(field.moduleField.name, index)"
             class="mb-0"
           />
           <div
@@ -397,13 +397,15 @@ export default {
         })
     },
 
-    fieldErrors (name) {
+    fieldErrors (name, index) {
       if (!this.errors) {
         return new validator.Validated()
       }
 
       return this.errors
         .filterByMeta('field', name)
+        .filterByMeta('resource', this.relatedModule.resourceID)
+        .filterByMeta('item', index)
     },
 
     /**
