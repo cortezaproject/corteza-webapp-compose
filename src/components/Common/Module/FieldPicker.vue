@@ -3,7 +3,7 @@
       <div class="fields d-flex">
         <div class="available">
           <label>{{ $t('field.selector.available') }}</label>
-          <b-button @click.prevent="selectedFields = [...allFields]" variant="link" class="float-right">{{ $t('field.selector.selectAll') }}</b-button>
+          <b-button @click.prevent="selectedFields = [...availableFields]" variant="link" class="float-right">{{ $t('field.selector.selectAll') }}</b-button>
           <draggable
             class="drag-area border"
             :list.sync="availableFields"
@@ -63,6 +63,11 @@ export default {
       default: () => [],
     },
 
+    disableSystemFields: {
+      type: Boolean,
+      default: false,
+    },
+
     systemFields: {
       type: Array,
       default: null,
@@ -101,12 +106,17 @@ export default {
     },
 
     availableFields () {
-      const fields = [...this.allFields]
+      let fields = [...this.allFields]
 
       // Remove selected fields
-      return fields.filter(a =>
+      fields = fields.filter(a =>
         !this.fields.find(f => a.name === f.name),
       )
+
+      if (this.disableSystemFields) {
+        fields = fields.filter(a => !a.isSystem)
+      }
+      return fields
     },
   },
 
