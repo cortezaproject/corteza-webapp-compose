@@ -93,12 +93,20 @@
         <template #cell(actions)="{ item: r, index }">
           <div class="text-right">
             <c-input-confirm
-              v-if="relatedModule.canDeleteRecord"
+              v-if="relatedModule.canDeleteRecord && !r.deletedAt"
               variant="link"
               size="md"
               class="show-when-hovered"
               @confirmed="handleDeleteRecord(r, index)"
             />
+            <!-- Allow record restoration -->
+            <b-btn
+              v-else-if="r.deletedAt"
+              variant="outline-primary"
+              @click="restore(r, index)"
+            >
+              Restore
+            </b-btn>
           </div>
         </template>
         <template #head(selectable)>
@@ -330,32 +338,19 @@ export default {
         return
       }
 
-      const { moduleID, namespaceID } = this.selected[0]
-
-      // Assuming all records are of same module & namespace
-      const recordIDs = this.selected
-        .filter(r => r.moduleID === moduleID && r.namespaceID === namespaceID && r.recordID !== NoID)
-        .map(({ recordID }) => recordID)
-
-      this.$ComposeAPI
-        .recordBulkDelete({ moduleID, namespaceID, recordIDs })
-        .then(() => { this.getRecords() })
-        .catch(this.stdErr)
+      this.selected.forEach((r, i) => {
+        const nr = new compose.Record(this.relatedModule, { ...r, deletedAt: new Date() })
+        this.records.splice(i, 1, nr)
+        this.selected.splice(i, 1, nr)
+      })
     },
 
-    handleDeleteRecord (record, index) {
-      if (record.recordID === NoID) {
-        this.records.splice(index, 1)
-      } else {
-        return this
-          .dispatchUiEvent('beforeDelete')
-          .then(() => this.$ComposeAPI.recordDelete(record))
-          .then(() => {
-            this.getRecords()
-          })
-          .then(() => this.dispatchUiEvent('afterDelete'))
-          .catch(this.defaultErrorHandler(this.$t('notification.record.deleteFailed')))
-      }
+    handleDeleteRecord (record, i) {
+      this.records.splice(i, 1, new compose.Record(this.relatedModule, { ...record, deletedAt: new Date() }))
+    },
+
+    restore (record, i) {
+      this.records.splice(i, 1, new compose.Record(this.relatedModule, { ...record, deletedAt: undefined }))
     },
 
     handleAddRecord () {
