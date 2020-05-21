@@ -76,6 +76,7 @@ export default {
         acc.push({
           refField: cur.refField,
           set: cur.records,
+          module: cur.module,
         })
         return acc
       }, [])
@@ -88,7 +89,7 @@ export default {
       })
 
       return this
-        .dispatchUiEvent('beforeFormSubmit')
+        .dispatchUiEvent('beforeFormSubmit', this.record, { $records: records })
         .then(() => this.validateRecord(pairs))
         .then(() => {
           if (isNew) {
@@ -107,7 +108,7 @@ export default {
           throw err
         })
         .then((record) => this.record.apply(record))
-        .then(() => this.dispatchUiEvent('afterFormSubmit'))
+        .then(() => this.dispatchUiEvent('afterFormSubmit', this.record, { $records: records }))
         .then(() => {
           this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
         })
@@ -203,18 +204,19 @@ export default {
      *
      * @param eventType
      */
-    dispatchUiEvent (eventType) {
+    dispatchUiEvent (eventType, record = this.record, args = {}) {
       const resourceType = `ui:compose:${this.getUiEventResourceType || 'record-page'}`
 
-      const args = {
+      const argsBase = {
         errors: this.errors,
         validator: this.validator,
+        ...args,
       }
 
       return this
         .$EventBus
         .Dispatch(compose.RecordEvent(
-          this.record, { eventType, resourceType, args }))
+          record, { eventType, resourceType, args: argsBase }))
     },
   },
 }
