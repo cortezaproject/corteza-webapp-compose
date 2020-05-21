@@ -62,6 +62,23 @@ export default {
         noBorder: 'No border',
       },
     },
+    recordLines: {
+      label: 'Record lines',
+      fieldsEdit: {
+        label: 'Edit fields',
+      },
+      fieldsView: {
+        label: 'View fields',
+      },
+      parentField: {
+        label: 'Parent field',
+        footnote: 'Field that links records with the parent record',
+      },
+      positionField: {
+        label: 'Record sort field',
+        footnote: 'Records will be sorted based on this field',
+      },
+    },
     recordOrganizer: {
       label: 'Record organizer',
       noRecords: 'No records in module linked with record organizer. Drag and drop records here.',

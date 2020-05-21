@@ -85,10 +85,11 @@ export default {
           image: images.Record,
         },
         {
-          label: this.$t('block.recorder.label'),
-          recordPageOnly: false,
-          block: new compose.PageBlockRecorder(),
-          image: images.Content,
+          label: this.$t('block.recordLines.label'),
+          recordPageOnly: true,
+          block: new compose.PageBlockRecordLines(),
+          // @todo change record lines image
+          image: images.RecordList,
         },
         {
           label: this.$t('block.recordList.label'),
