@@ -4,135 +4,124 @@
     v-on="$listeners"
     :scrollable-body="false"
   >
-    <template #toolbar>
-      <b-container
-        v-if="options.selectable"
-        v-show="selected.length > 0"
-        ref="header"
-        class="m-0 p-0"
-        fluid
-      >
-        <b-row
-          no-gutters
-          class="text-light bg-secondary p-2"
-        >
-          <b-col
-            cols="4"
-            class="pt-1 text-nowrap"
-          >
-            {{ $t('block.recordList.selected', { count: selected.length, total: records.length }) }}
-            <a
-              class="text-light"
-              href="#"
-              @click.prevent="handleSelectAllOnPage({ isChecked: false })"
-            >
-              ({{ $t('block.recordList.cancelSelection') }})
-            </a>
-          </b-col>
-          <b-col
-            class="text-right"
-            cols="8"
-          >
-            <c-input-confirm
-              @confirmed="handleDeleteSelectedRecords()"
-              variant="link-light"
-            />
-          </b-col>
-        </b-row>
-      </b-container>
-    </template>
     <template #default>
-      <b-table
-        ref="table"
-        :small="false"
-        :items="records"
-        :fields="fields"
-        :busy="processing"
-        :selectable="options.selectable && inEditing"
-        select-mode="multi"
+      <b-table-simple
         sticky-header
         responsive
-        show-empty
-        no-sort-reset
         class="mh-100 m-0 mb-2 border-top"
-        @row-selected="handleRowSelected"
       >
-        <template #head()="{ field }">
-          {{ field.label }}
-        </template>
-        <template #cell()="{ item: r, field, index }">
-          <field-editor
-            v-if="field.moduleField.canUpdateRecordValue && field.edit"
-            :field="field.moduleField"
-            value-only
-            :record="r"
-            :module="module"
-            :namespace="namespace"
-            :errors="fieldErrors(field.moduleField.name, index)"
-            class="mb-0"
-          />
-          <div
-            v-else-if="field.moduleField.canReadRecordValue && !field.edit"
-            class="mb-0 my-auto"
-          >
-            <field-viewer
-              :field="field.moduleField"
-              value-only
-              :record="r"
-              :module="module"
-              :namespace="namespace"
+        <b-thead>
+          <b-tr>
+            <b-th
+              v-if="canReposition"
+              class="fit"
             />
-          </div>
-          <i
-            v-else
-            class="text-secondary"
-          >
-            {{ $t('field.noPermission') }}
-          </i>
-        </template>
-        <template #cell(actions)="{ item: r, index }">
-          <div class="text-right">
-            <c-input-confirm
-              v-if="relatedModule.canDeleteRecord && !r.deletedAt"
-              variant="link"
-              size="md"
-              class="show-when-hovered"
-              @confirmed="handleDeleteRecord(r, index)"
-            />
-            <!-- Allow record restoration -->
-            <b-btn
-              v-else-if="r.deletedAt"
-              variant="outline-primary"
-              @click="restore(r, index)"
+            <b-th
+              v-for="field in fields"
+              :key="field.key"
+              sticky-column
             >
-              Restore
-            </b-btn>
-          </div>
-        </template>
-        <template #head(selectable)>
-          <b-checkbox
-            :disabled="records.length === 0"
-            :checked="areAllRowsSelected"
-            @change="handleSelectAllOnPage({ isChecked: $event })"
-          />
-        </template>
-        <template #cell(selectable)="{ item, index, rowSelected }">
-          <b-checkbox
-            :checked="rowSelected"
-            @change="handleRowSelectCheckbox({ record: item, index, isChecked: $event })"
-          />
-        </template>
-        <template #table-busy>
-          <div class="text-center m-5">
-            <div>
-              <b-spinner
-                small
-                class="align-middle m-2"
+              {{ field.label }}
+            </b-th>
+            <b-th
+              v-if="inEditing"
+              class="fit"
+            />
+          </b-tr>
+        </b-thead>
+        <draggable
+          v-if="records.length && !processing"
+          :disabled="!canReposition"
+          v-model="records"
+          group="records"
+          element="b-tbody"
+          handle=".handle"
+          @change="onDrop"
+        >
+          <b-tr
+            v-for="(record, index) in records"
+            :key="`${index}${record.recordID}`"
+          >
+            <b-td
+              v-if="canReposition"
+              class="align-middle fit pr-0"
+            >
+              <font-awesome-icon
+                v-if="record.createdAt"
+                v-b-tooltip.hover
+                :icon="['fas', 'sort']"
+                :title="$t('general.tooltip.dragAndDrop')"
+                class="handle text-secondary"
               />
-            </div>
-          </div>
-        </template>
-      </b-table>
+            </b-td>
+            <b-td
+              v-for="field in fields"
+              :key="field.key"
+            >
+              <field-editor
+                v-if="field.moduleField.canUpdateRecordValue && field.edit"
+                :field="field.moduleField"
+                value-only
+                :record="record"
+                :module="module"
+                :namespace="namespace"
+                :errors="fieldErrors(field.moduleField.name)"
+                class="mb-0"
+              />
+              <div
+                v-else-if="field.moduleField.canReadRecordValue && !field.edit"
+                class="mb-0 my-auto"
+              >
+                <field-viewer
+                  :field="field.moduleField"
+                  value-only
+                  :record="record"
+                  :module="module"
+                  :namespace="namespace"
+                />
+              </div>
+              <i
+                v-else
+                class="text-secondary"
+              >
+                {{ $t('field.noPermission') }}
+              </i>
+            </b-td>
+            <b-td
+              v-if="inEditing"
+              class="text-right align-middle fit pl-0"
+            >
+              <!-- Allow record restoration -->
+              <b-btn
+                v-if="record.deletedAt"
+                variant="outline-primary"
+                @click="restore(record, index)"
+              >
+                Restore
+              </b-btn>
+              <c-input-confirm
+                v-else-if="relatedModule.canDeleteRecord"
+                variant="link"
+                size="md"
+                class="show-when-hovered"
+                @confirmed="handleDeleteRecord(record, index)"
+              />
+            </b-td>
+          </b-tr>
+        </draggable>
+        <b-tbody
+          v-else-if="processing"
+        >
+          <b-tr>
+            <b-td
+              class="text-center align-middle py-5"
+              :colspan="numOfFields"
+            >
+              <b-spinner />
+            </b-td>
+          </b-tr>
+        </b-tbody>
+      </b-table-simple>
     </template>
     <template #footer>
       <b-container
@@ -165,12 +154,14 @@ import { mapGetters } from 'vuex'
 import FieldViewer from 'corteza-webapp-compose/src/components/ModuleFields/Viewer'
 import FieldEditor from 'corteza-webapp-compose/src/components/ModuleFields/Editor'
 import users from 'corteza-webapp-compose/src/mixins/users'
+import draggable from 'vuedraggable'
 import { compose, validator, NoID } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
     FieldViewer,
     FieldEditor,
+    draggable,
   },
 
   extends: base,
@@ -192,7 +183,6 @@ export default {
       processing: false,
       filter: {},
       records: [],
-      selected: [],
     }
   },
 
@@ -200,16 +190,6 @@ export default {
     ...mapGetters({
       getModuleByID: 'module/getByID',
     }),
-
-    /**
-     * Check if all rows are selected
-     */
-    areAllRowsSelected () {
-      if (this.selected.length > 0 && this.records.length > 0) {
-        return this.selected.length === this.records.length
-      }
-      return false
-    },
 
     relatedModule () {
       if (this.options.moduleID) {
@@ -246,27 +226,23 @@ export default {
         fieldsView = this.relatedModule.fields.filter(({ isSystem }) => !isSystem)
       }
 
-      const configured = [
+      return [
         ...fieldsEdit,
         ...fieldsView,
       ]
+    },
 
-      const pre = []
-      const post = []
+    canReposition () {
+      return this.inEditing && !!this.options.positionField
+    },
 
-      if (this.options.selectable && this.inEditing) {
-        pre.push({ key: 'selectable', label: '', tdClass: 'selector align-middle', thClass: 'selector' })
-      }
+    numOfFields () {
+      let numOfFields = this.fields.length || 0
 
-      if (this.inEditing) {
-        post.push({ key: 'actions', label: '', tdClass: 'actions align-middle' })
-      }
+      if (this.inEditing) numOfFields++
+      if (this.canReposition) numOfFields++
 
-      return [
-        ...pre,
-        ...configured,
-        ...post,
-      ]
+      return numOfFields
     },
   },
 
@@ -296,7 +272,7 @@ export default {
 
       let sort = 'createdAt DESC'
       if (positionField) {
-        sort = `${positionField} DESC`
+        sort = `${positionField}`
       }
 
       this.filter = {
@@ -313,36 +289,35 @@ export default {
       })
     },
 
-    handleSelectAllOnPage ({ isChecked }) {
-      if (isChecked) {
-        this.$refs.table.selectAllRows()
-      } else {
-        this.$refs.table.clearSelected()
+    onDrop ({ moved, ...foo }) {
+      if (moved) {
+        const { element, newIndex } = moved
+        this.moveRecord(
+          element,
+          this.calcNewPosition(element, newIndex),
+        )
       }
     },
 
-    handleRowSelectCheckbox ({ index, isChecked }) {
-      if (isChecked) {
-        this.$refs.table.selectRow(index)
-      } else {
-        this.$refs.table.unselectRow(index)
-      }
-    },
-
-    handleRowSelected (selected) {
-      this.selected = selected
-    },
-
-    handleDeleteSelectedRecords () {
-      if (this.selected.length === 0) {
-        return
+    /**
+     * Calculates optimal position value for dropped record
+     */
+    calcNewPosition (record, newPosition = 0) {
+      if (newPosition <= 0) {
+        // Dropped in first place, easy-breezy
+        return 0
       }
 
-      this.selected.forEach((r, i) => {
-        const nr = new compose.Record(this.relatedModule, { ...r, deletedAt: new Date() })
-        this.records.splice(i, 1, nr)
-        this.selected.splice(i, 1, nr)
-      })
+      const total = this.records.length
+      if (newPosition > total) {
+        // Dropped at the end,
+        // make sure we don't put it too far away
+        return total
+      }
+
+      // Find position field on the record placed before the drop position
+      // fallback to 1
+      return parseInt(this.records[newPosition - 1].values[this.options.positionField] || 0) + 1
     },
 
     handleDeleteRecord (record, i) {
@@ -424,12 +399,57 @@ export default {
         .Dispatch(compose.RecordEvent(
           this.record, { eventType, resourceType, args }))
     },
+
+    /**
+     * Reposition record
+     *
+     * This is only a helper function and we do not keep any hard dependencies on
+     * the API client.
+     *
+     * @param {Record}            record,     Record we're moving
+     * @param {Number}            position    New position
+     * @returns {Promise<void>}
+     */
+    async moveRecord (record, position) {
+      const { namespaceID, moduleID, recordID } = record
+
+      if (moduleID !== this.options.moduleID) {
+        throw Error('Record incompatible, module mismatch')
+      }
+
+      const { positionField } = this.options
+      const args = {
+        recordID,
+        positionField,
+        position,
+      }
+
+      const params = {
+        procedure: 'organize',
+        namespaceID,
+        moduleID,
+        // map kv to [{ name: k, value: v }, ...]
+        args: Object.keys(args).map(name => ({ name, value: String(args[name]) })),
+      }
+
+      return this.$ComposeAPI.recordExec(params)
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+.table td.fit,
+.table th.fit {
+  white-space: nowrap;
+  width: 1%;
+}
+
 .b-table > tbody > tr:not(:hover) .show-when-hovered {
   visibility: hidden;
+}
+
+.handle {
+  cursor: grab;
 }
 </style>

@@ -13,6 +13,9 @@
           {{ module.name }}
         </option>
       </b-form-select>
+      <b-form-text class="text-secondary small">
+        {{ $t('block.recordLines.module.footnote') }}
+      </b-form-text>
     </b-form-group>
 
     <div
@@ -74,6 +77,7 @@
         :label-cols="3"
         breakpoint="md"
         :label="$t('block.recordLines.positionField.label')"
+        class="mb-0"
       >
         <b-form-select v-model="options.positionField">
           <option :value="undefined">
@@ -90,17 +94,6 @@
         <b-form-text class="text-secondary small">
           {{ $t('block.recordLines.positionField.footnote') }}
         </b-form-text>
-      </b-form-group>
-
-      <b-form-group
-        horizontal
-        :label-cols="3"
-        breakpoint="md"
-        class="mt-4"
-      >
-        <b-form-checkbox v-model="options.selectable">
-          {{ $t('block.recordList.selectable') }}
-        </b-form-checkbox>
       </b-form-group>
     </div>
   </b-tab>
@@ -120,6 +113,12 @@ export default {
 
   extends: base,
 
+  data () {
+    return {
+      availableModules: [],
+    }
+  },
+
   computed: {
     ...mapGetters({
       modules: 'module/set',
@@ -133,20 +132,22 @@ export default {
       }
     },
 
-    availableModules () {
-      return this.modules.filter(m => m.fields.find(({ kind }) => kind === 'Record'))
-    },
-
     parentFields () {
-      return this.relatedModule.fields.filter(({ kind, isMulti, options }) => {
-        if (kind === 'Record' && !isMulti) {
-          return options.moduleID === this.record.moduleID
-        }
-      })
+      if (this.relatedModule) {
+        return this.relatedModule.fields.filter(({ kind, isMulti, options }) => {
+          if (kind === 'Record' && !isMulti) {
+            return options.moduleID === this.record.moduleID
+          }
+        })
+      }
+      return []
     },
 
     positionFields () {
-      return this.relatedModule.fields.filter(({ kind, isMulti }) => kind === 'Number' && !isMulti)
+      if (this.relatedModule) {
+        return this.relatedModule.fields.filter(({ kind, isMulti }) => kind === 'Number' && !isMulti)
+      }
+      return []
     },
   },
 
@@ -157,6 +158,27 @@ export default {
       this.options.fieldsView = []
       this.options.parentField = ''
       this.options.positionField = ''
+    },
+  },
+
+  created () {
+    this.getAvailableModules()
+  },
+
+  methods: {
+    // Fetches modules that have atleast one record field and are not already used in a RecordLines block
+    getAvailableModules () {
+      const alreadyUsedModules = this.page.blocks.filter(({ kind, options }) => {
+        if (kind === 'RecordLines') {
+          if (options.moduleID && this.relatedModule) {
+            return options.moduleID !== this.options.moduleID
+          } else {
+            return true
+          }
+        }
+        return false
+      }).map(b => b.options.moduleID)
+      this.availableModules = this.modules.filter(m => m.fields.find(({ kind }) => kind === 'Record') && !alreadyUsedModules.includes(m.moduleID))
     },
   },
 }

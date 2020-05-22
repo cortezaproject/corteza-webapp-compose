@@ -64,6 +64,9 @@ export default {
     },
     recordLines: {
       label: 'Record lines',
+      module: {
+        footnote: 'Only modules that are not used in another RecordLines block on this page are available',
+      },
       fieldsEdit: {
         label: 'Edit fields',
       },
