@@ -377,7 +377,8 @@ export default {
 
   watch: {
     'report.filter' (v) {
-      this.customFilter = !compose.chartUtil.predefinedFilters.includes(v)
+      // !! is required, since :disabled="..." marks the field as disabled if '' is provided
+      this.customFilter = !!v && !compose.chartUtil.predefinedFilters.includes(v)
     },
   },
 
