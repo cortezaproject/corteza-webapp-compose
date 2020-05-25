@@ -60,6 +60,13 @@ export default {
           image: images.Content,
         },
         {
+          label: this.$t('block.metric.label'),
+          recordPageOnly: false,
+          block: new compose.PageBlockMetric(),
+          // @todo
+          image: undefined,
+        },
+        {
           label: this.$t('block.chart.label'),
           recordPageOnly: false,
           block: new compose.PageBlockChart(),
