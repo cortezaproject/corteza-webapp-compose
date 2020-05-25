@@ -4,27 +4,26 @@
       v-for="(m, i) in options.metrics"
       :key="i"
     >
-      <h4
-        class="p-2"
-        :style="genStyle(m.labelStyle)"
+      <div
+        v-for="(v, i) in formatResponse(m, i)"
+        :key="i"
       >
-        {{ m.label }}
-      </h4>
-      <p
-        class="p-2"
-        :style="genStyle(m.valueStyle)"
-      >
-        <span
-          v-for="(v, i) in formatResponse(m, i)"
-          :key="i"
+        <!-- <h3 :style="genStyle(m.labelStyle)">
+          {{ v.label }}
+        </h3> -->
+        <h3
+          class="p-2"
+          :style="genStyle(m.valueStyle)"
         >
-          <b>
-            {{ v.label }}
-          </b>
-          <br />
+          <span v-if="m.prefix">
+            {{ m.prefix }}
+          </span>
           {{ v.value }}
-        </span>
-      </p>
+          <span v-if="m.suffix">
+            {{ m.suffix }}
+          </span>
+        </h3>
+      </div>
     </div>
   </wrap>
 </template>
@@ -54,6 +53,12 @@ export default {
 
   mounted () {
     this.update()
+
+    this.$root.$on('metric.update', this.update)
+  },
+
+  beforeDestroy () {
+    this.$root.$off('metric.update', this.update)
   },
 
   methods: {
@@ -79,13 +84,6 @@ export default {
      * Performs some post processing on the provided data
      */
     formatResponse (m, i) {
-      if (this.previewMode) {
-        return [{
-          label: this.$t('block.metric.edit.previewMetricLabel'),
-          value: Math.floor(Math.random() * 1000) * 1000,
-        }]
-      }
-
       const vals = this.reports[i]
       if (!vals) {
         return []
@@ -95,6 +93,7 @@ export default {
         if (m.numberFormat) {
           value = numeral(value).format(m.numberFormat)
         }
+
         if (m.dateFormat) {
           label = moment(label).format(m.dateFormat)
         }

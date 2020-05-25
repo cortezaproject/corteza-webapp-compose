@@ -1,6 +1,8 @@
 <template>
   <div>
-    <b-tab title="Metric">
+    <b-tab
+      :title="$t('block.metric.edit.tabTitle')"
+    >
       <b-row>
         <b-col cols="12">
           <div
@@ -48,12 +50,26 @@
           <b-card
             class="mb-5"
           >
-            <h5>
-              {{ $t('block.metric.edit.editLabel') }}
-            </h5>
+            <fieldset>
+              <b-form-group
+                :label="$t('block.metric.edit.labelLabel')"
+              >
+                <b-form-input
+                  v-model="edit.label"
+                  :placeholder="$t('block.metric.edit.labelPlaceholder')"
+                  class="mb-1"
+                />
+              </b-form-group>
+            </fieldset>
 
             <fieldset>
-              <b-form-group>
+              <h5>
+                {{ $t('block.metric.edit.dimensionLabel') }}
+              </h5>
+              <b-form-group
+                :label="$t('block.metric.edit.moduleLabel')"
+                label-cols="2"
+              >
                 <b-form-select
                   v-model="edit.moduleID"
                   :options="modules"
@@ -72,15 +88,98 @@
                 </b-form-select>
               </b-form-group>
 
-              <b-form-group
-                :label="$t('block.metric.edit.labelLabel')"
+              <!-- <b-form-group
+                :label="$t('block.metric.edit.dimensionFieldLabel')"
                 label-cols="2"
               >
-                <b-form-input
-                  v-model="edit.label"
-                  :placeholder="$t('block.metric.edit.labelPlaceholder')"
+                <b-form-select
+                  v-model="edit.dimensionField"
+                  :options="fields"
+                  class="mt-1"
+                  text-field="label"
+                  value-field="name"
+                >
+                  <template slot="first">
+                    <option
+                      :value="undefined"
+                      disabled
+                    >
+                      {{ $t('block.metric.edit.dimensionFieldPlaceholder') }}
+                    </option>
+                  </template>
+                </b-form-select>
+              </b-form-group>
+
+              <template>
+                <b-form-group
+                  :label="$t('block.metric.edit.dateFormat')"
+                  label-cols="2"
+                >
+                  <b-form-input
+                    v-model="edit.dateFormat"
+                    :disabled="!edit.dimensionField || !isTemporalField(edit.dimensionField)"
+                    placeholder="YYYY-MM-DD"
+                    class="mb-1"
+                  />
+                </b-form-group>
+
+                <b-form-group
+                  :label="$t('block.metric.edit.bucketLabel')"
+                  label-cols="2"
+                >
+                  <b-form-select
+                    v-model="edit.bucketSize"
+                    :disabled="!edit.dimensionField || !isTemporalField(edit.dimensionField)"
+                    :options="dimensionModifiers"
+                  >
+                    <template slot="first">
+                      <option
+                        disabled
+                        :value="undefined"
+                      >
+                        {{ $t('block.metric.edit.bucketPlaceholder') }}
+                      </option>
+                    </template>
+                  </b-form-select>
+                </b-form-group>
+              </template> -->
+
+              <b-form-group
+                :label="$t('block.metric.edit.filterLabel')"
+                label-cols="2"
+              >
+                <b-form-textarea
+                  v-model="edit.filter"
+                  placeholder="(A > B) OR (A < C)"
                   class="mb-1"
                 />
+              </b-form-group>
+            </fieldset>
+
+            <fieldset>
+              <h5>
+                {{ $t('block.metric.edit.metricLabel') }}
+              </h5>
+
+              <b-form-group
+                :label="$t('block.metric.edit.metricFieldLabel')"
+                label-cols="2"
+              >
+                <b-form-select
+                  v-model="edit.metricField"
+                  :options="metricFields"
+                  text-field="name"
+                  value-field="name"
+                >
+                  <template slot="first">
+                    <option
+                      disabled
+                      :value="undefined"
+                    >
+                      {{ $t('block.metric.edit.metricFieldPlaceholder') }}
+                    </option>
+                  </template>
+                </b-form-select>
               </b-form-group>
 
               <b-form-group
@@ -89,6 +188,7 @@
               >
                 <b-form-select
                   v-model="edit.operation"
+                  :disabled="edit.metricField === 'count'"
                   :options="operations"
                   class="mt-1"
                 >
@@ -104,6 +204,18 @@
               </b-form-group>
 
               <b-form-group
+                :label="$t('block.metric.edit.transformFunctionLabel')"
+                :description="$t('block.metric.edit.transformFunctionDescription')"
+                label-cols="2"
+              >
+                <b-form-textarea
+                  v-model="edit.transformFx"
+                  placeholder="v"
+                  class="mb-1"
+                />
+              </b-form-group>
+
+              <b-form-group
                 :label="$t('block.metric.edit.numberFormat')"
                 label-cols="2"
               >
@@ -115,53 +227,34 @@
               </b-form-group>
 
               <b-form-group
-                :label="$t('block.metric.edit.dateFormat')"
+                :label="$t('block.metric.edit.prefixLabel')"
                 label-cols="2"
               >
                 <b-form-input
-                  v-model="edit.dateFormat"
-                  placeholder="YYYY-MM-DD"
+                  v-model="edit.prefix"
+                  placeholder="$"
                   class="mb-1"
                 />
               </b-form-group>
 
               <b-form-group
-                :label="$t('block.metric.edit.filterLabel')"
+                :label="$t('block.metric.edit.suffixLabel')"
                 label-cols="2"
               >
                 <b-form-input
-                  v-model="edit.filter"
-                  placeholder="(A > B) OR (A < C)"
+                  v-model="edit.suffix"
+                  placeholder="USD/mo"
                   class="mb-1"
                 />
-              </b-form-group>
-
-              <b-form-group
-                :label="$t('block.metric.edit.bucketLabel')"
-                label-cols="2"
-              >
-                <b-form-select
-                  v-model="edit.bucketSize"
-                  :options="dimensionModifiers"
-                >
-                  <template slot="first">
-                    <option
-                      disabled
-                      :value="undefined"
-                    >
-                      {{ $t('block.metric.edit.bucketPlaceholder') }}
-                    </option>
-                  </template>
-                </b-form-select>
               </b-form-group>
             </fieldset>
           </b-card>
 
-          <m-style :options="edit.labelStyle">
+          <!-- <m-style :options="edit.labelStyle">
             <h5 slot="title">
               {{ $t('block.metric.editStyle.labelLabel') }}
             </h5>
-          </m-style>
+          </m-style> -->
           <m-style
             class="mt-2"
             :options="edit.valueStyle"
@@ -174,9 +267,18 @@
 
         <b-col cols="12" md="5">
           <b-card>
+            <div class="text-right">
+              <b-btn
+                variant="outline-primary"
+                @click="$root.$emit('metric.update')"
+              >
+                {{ $t('block.metric.edit.refreshData') }}
+              </b-btn>
+            </div>
+
             <metric-base
+              class="mt-2"
               v-bind="$props"
-              preview-mode
             />
           </b-card>
         </b-col>
@@ -205,7 +307,26 @@ export default {
       edit: undefined,
       dimensionModifiers: compose.chartUtil.dimensionFunctions.map(df => ({ ...df, text: this.$t(`chart.edit.dimension.function.${df.text}`) })),
       operations: [
-        { text: this.$t('block.metric.edit.operationCount'), value: 'countd' },
+        {
+          value: 'countd',
+          text: this.$t('block.metric.edit.operationCountd'),
+        },
+        {
+          value: 'sum',
+          text: this.$t('block.metric.edit.operationSum'),
+        },
+        {
+          value: 'max',
+          text: this.$t('block.metric.edit.operationMax'),
+        },
+        {
+          value: 'min',
+          text: this.$t('block.metric.edit.operationMin'),
+        },
+        {
+          value: 'avg',
+          text: this.$t('block.metric.edit.operationAvg'),
+        },
       ],
     }
   },
@@ -213,7 +334,20 @@ export default {
   computed: {
     ...mapGetters({
       modules: 'module/set',
+      moduleByID: 'module/getByID',
     }),
+
+    fields () {
+      if (!this.edit || !this.edit.moduleID) {
+        return []
+      }
+
+      return this.moduleByID(this.edit.moduleID).fields.concat([{ name: 'created_at', label: 'Created At', kind: 'DateTime' }])
+    },
+
+    metricFields () {
+      return [{ name: 'count' }, ...this.fields.filter(f => f.kind === 'Number')]
+    },
 
     metrics: {
       get () {
@@ -227,6 +361,22 @@ export default {
     canAdd () {
       // if any label is not defined, then the metric is considered invalid
       return this.metrics.reduce((acc, m) => acc && m.label, true)
+    },
+  },
+
+  watch: {
+    'edit.dimensionField': function (df) {
+      if (!this.isTemporalField(df)) {
+        this.edit.bucketSize = undefined
+        this.edit.dateFormat = undefined
+      } else {
+        this.edit.dateFormat = this.edit.dateFormat || 'YYYY-MM-DD'
+      }
+    },
+    'edit.metricField': function (mf) {
+      if (mf === 'count') {
+        this.edit.operation = undefined
+      }
     },
   },
 
@@ -255,6 +405,14 @@ export default {
     removeMetric (i) {
       this.metrics.splice(i, 1)
       this.edit = undefined
+    },
+
+    isTemporalField (name) {
+      if (name === 'created_at') {
+        return true
+      }
+
+      return !!this.fields.find(f => f.name === name && f.kind === 'DateTime')
     },
   },
 }
