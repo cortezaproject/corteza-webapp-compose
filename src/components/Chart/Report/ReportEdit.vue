@@ -40,7 +40,7 @@
             :options="predefinedFilters"
           >
             <template slot="first">
-              <option :value="null">
+              <option :value="''">
                 {{ $t('chart.edit.filter.noFilter') }}
               </option>
             </template>
