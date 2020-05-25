@@ -41,6 +41,7 @@
                       {{ $t('block.chart.configure.reportsLabel') }}
                     </h4>
                     <b-btn
+                      v-if="reportsValid"
                       class="float-right p-0"
                       variant="link"
                       @click="onAddReport"
@@ -238,6 +239,14 @@ export default {
         return true
       }
       return false
+    },
+
+    reportsValid () {
+      if (!this.reports) {
+        return false
+      }
+
+      return !this.reports.find(({ moduleID }) => !moduleID)
     },
 
     reportEditor () {
