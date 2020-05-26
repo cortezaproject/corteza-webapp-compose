@@ -36,6 +36,7 @@
           group="records"
           element="b-tbody"
           handle=".handle"
+          @change="onChange"
         >
           <b-tr
             v-for="(record, index) in records"
@@ -182,6 +183,7 @@ export default {
       processing: false,
       filter: {},
       records: [],
+      localErrors: new validator.Validated(),
     }
   },
 
@@ -241,6 +243,17 @@ export default {
     },
   },
 
+  watch: {
+    // we will keep a local copy of the errors, so we can manipulate it at will
+    errors: {
+      handler: function (v) {
+        this.localErrors = new validator.Validated(...v.set)
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
+
   beforeDestroy () {
     this.$root.$off(`record-line:collect:${this.blockIndex}`)
   },
@@ -252,6 +265,39 @@ export default {
   },
 
   methods: {
+    onChange ({ moved }) {
+      const { newIndex: ni, oldIndex: oi } = moved
+
+      // stash away any errors that hapened on the affected item
+      const a = this.localErrors.set.find(({ meta: { item } }) => item === oi)
+      const ne = new validator.Validated(this.localErrors.set.find(({ meta: { item } }) => item !== oi))
+
+      // shift/unshift other errors
+      if (ni > oi) {
+        // shift middle down
+        for (const e of ne.set) {
+          if (e.meta.item <= ni && e.meta.item > oi) {
+            e.meta.item--
+          }
+        }
+      } else {
+        // shift middle up
+        for (const e of ne.set) {
+          if (e.meta.item >= ni && e.meta.item < oi) {
+            e.meta.item++
+          }
+        }
+      }
+
+      // unstash affected item's error
+      if (a) {
+        a.meta.item = ni
+        ne.push(a)
+      }
+
+      this.localErrors = ne
+    },
+
     prep () {
       const { moduleID, parentField, positionField } = this.options
 
@@ -298,6 +344,12 @@ export default {
     handleAddRecord () {
       const newRecord = new compose.Record({ recordID: NoID }, this.relatedModule)
       this.records.splice(0, 0, newRecord)
+
+      // adition shifts items down
+      for (const r of this.localErrors.set) {
+        r.meta.item++
+      }
+      this.localErrors = new validator.Validated(...this.localErrors.set)
     },
 
     /**
@@ -335,11 +387,11 @@ export default {
     },
 
     fieldErrors (name, index) {
-      if (!this.errors) {
+      if (!this.localErrors) {
         return new validator.Validated()
       }
 
-      return this.errors
+      return this.localErrors
         .filterByMeta('field', name)
         .filterByMeta('resource', this.relatedModule.resourceID)
         .filterByMeta('item', index)
@@ -357,7 +409,7 @@ export default {
       const resourceType = `ui:compose:${this.getUiEventResourceType || 'record-page'}`
 
       const args = {
-        errors: this.errors,
+        errors: this.localErrors,
         validator: this.validator,
       }
 
