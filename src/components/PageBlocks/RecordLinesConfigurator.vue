@@ -156,8 +156,9 @@ export default {
       // Every time moduleID changes
       this.options.fieldsEdit = []
       this.options.fieldsView = []
-      this.options.parentField = ''
-      this.options.positionField = ''
+      const f = this.relatedModule.fields.find(({ kind, options: { moduleID } }) => kind === 'Record' && moduleID === this.module.moduleID)
+      this.options.parentField = f ? f.name : undefined
+      this.options.positionField = undefined
     },
   },
 
