@@ -13,7 +13,7 @@
         <b-thead>
           <b-tr>
             <b-th
-              v-if="canReposition"
+              v-if="inEditing"
               class="fit"
             />
             <b-th
@@ -31,23 +31,22 @@
         </b-thead>
         <draggable
           v-if="records.length && !processing"
-          :disabled="!canReposition"
+          :disabled="!inEditing"
           v-model="records"
           group="records"
           element="b-tbody"
           handle=".handle"
-          @change="onDrop"
         >
           <b-tr
             v-for="(record, index) in records"
             :key="`${index}${record.recordID}`"
+            :variant="!!record.deletedAt ? 'danger' : undefined"
           >
             <b-td
-              v-if="canReposition"
+              v-if="inEditing"
               class="align-middle fit pr-0"
             >
               <font-awesome-icon
-                v-if="record.createdAt"
                 v-b-tooltip.hover
                 :icon="['fas', 'sort']"
                 :title="$t('general.tooltip.dragAndDrop')"
@@ -65,7 +64,7 @@
                 :record="record"
                 :module="module"
                 :namespace="namespace"
-                :errors="fieldErrors(field.moduleField.name)"
+                :errors="fieldErrors(field.moduleField.name, index)"
                 class="mb-0"
               />
               <div
@@ -226,21 +225,17 @@ export default {
         fieldsView = this.relatedModule.fields.filter(({ isSystem }) => !isSystem)
       }
 
-      return [
-        ...fieldsEdit,
-        ...fieldsView,
-      ]
-    },
-
-    canReposition () {
-      return this.inEditing && !!this.options.positionField
+      if (this.mode === 'base') {
+        return fieldsView
+      }
+      return fieldsEdit
     },
 
     numOfFields () {
       let numOfFields = this.fields.length || 0
 
       if (this.inEditing) numOfFields++
-      if (this.canReposition) numOfFields++
+      if (this.inEditing) numOfFields++
 
       return numOfFields
     },
@@ -278,6 +273,8 @@ export default {
       this.filter = {
         sort: sort,
         filter: filter,
+        // Record lines should display a relatively small number, so we can just ignore pagination
+        perPage: 0,
       }
     },
 
@@ -286,38 +283,8 @@ export default {
         records: this.records,
         module: this.relatedModule,
         refField: this.options.parentField,
+        posField: this.options.positionField,
       })
-    },
-
-    onDrop ({ moved, ...foo }) {
-      if (moved) {
-        const { element, newIndex } = moved
-        this.moveRecord(
-          element,
-          this.calcNewPosition(element, newIndex),
-        )
-      }
-    },
-
-    /**
-     * Calculates optimal position value for dropped record
-     */
-    calcNewPosition (record, newPosition = 0) {
-      if (newPosition <= 0) {
-        // Dropped in first place, easy-breezy
-        return 0
-      }
-
-      const total = this.records.length
-      if (newPosition > total) {
-        // Dropped at the end,
-        // make sure we don't put it too far away
-        return total
-      }
-
-      // Find position field on the record placed before the drop position
-      // fallback to 1
-      return parseInt(this.records[newPosition - 1].values[this.options.positionField] || 0) + 1
     },
 
     handleDeleteRecord (record, i) {
@@ -398,41 +365,6 @@ export default {
         .$EventBus
         .Dispatch(compose.RecordEvent(
           this.record, { eventType, resourceType, args }))
-    },
-
-    /**
-     * Reposition record
-     *
-     * This is only a helper function and we do not keep any hard dependencies on
-     * the API client.
-     *
-     * @param {Record}            record,     Record we're moving
-     * @param {Number}            position    New position
-     * @returns {Promise<void>}
-     */
-    async moveRecord (record, position) {
-      const { namespaceID, moduleID, recordID } = record
-
-      if (moduleID !== this.options.moduleID) {
-        throw Error('Record incompatible, module mismatch')
-      }
-
-      const { positionField } = this.options
-      const args = {
-        recordID,
-        positionField,
-        position,
-      }
-
-      const params = {
-        procedure: 'organize',
-        namespaceID,
-        moduleID,
-        // map kv to [{ name: k, value: v }, ...]
-        args: Object.keys(args).map(name => ({ name, value: String(args[name]) })),
-      }
-
-      return this.$ComposeAPI.recordExec(params)
     },
   },
 }

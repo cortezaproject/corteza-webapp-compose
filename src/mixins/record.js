@@ -71,6 +71,17 @@ export default {
       })
       const pairs = await Promise.all(queue)
 
+      for (const p of pairs) {
+        if (p.posField) {
+          let i = 0
+          for (const record of p.records) {
+            if (!record.deletedAt) {
+              record.values[p.posField] = i++
+            }
+          }
+        }
+      }
+
       // Construct batch record payload
       const records = pairs.reduce((acc, cur) => {
         acc.push({
