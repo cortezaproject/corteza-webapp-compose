@@ -21,7 +21,9 @@
               :key="field.key"
               sticky-column
             >
-              {{ field.label }}
+              <span :class="{ required: field.required }">
+                {{ field.label }}
+              </span>
             </b-th>
             <b-th
               v-if="inEditing"
@@ -208,6 +210,7 @@ export default {
           label: f.label || f.name,
           moduleField: f,
           edit: this.inEditing,
+          required: f.isRequired,
           tdClass: 'record-value',
         }))
       }
@@ -246,7 +249,7 @@ export default {
   watch: {
     // we will keep a local copy of the errors, so we can manipulate it at will
     errors: {
-      handler: function (v) {
+      handler: function (v = { set: [] }) {
         this.localErrors = new validator.Validated(...v.set)
       },
       deep: true,
@@ -435,5 +438,16 @@ export default {
 
 .handle {
   cursor: grab;
+}
+
+th .required::before {
+  content: "*";
+  display: inline-block;
+  color: $primary;
+  vertical-align: sub;
+  margin-left: -10px;
+  width: 10px;
+  height: 16px;
+  overflow: hidden;
 }
 </style>
