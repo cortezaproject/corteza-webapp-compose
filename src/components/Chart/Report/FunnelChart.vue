@@ -4,6 +4,7 @@
     :modules="modules"
     :dimension-field-kind="['Select']"
     :supported-metrics="1"
+    un-skippable
   >
     <template #dimension-options="{ dimension, field }">
       <picker

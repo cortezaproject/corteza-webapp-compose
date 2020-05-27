@@ -29,6 +29,12 @@ export default {
         'String',
       ],
     },
+
+    unSkippable: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 
   computed: {

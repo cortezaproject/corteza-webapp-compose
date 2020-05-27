@@ -124,31 +124,33 @@
             </b-form-select>
           </b-form-group>
 
-          <b-form-group
-            horizontal
-            :label-cols="2"
-            breakpoint="md"
-          >
-            <b-form-checkbox
-              v-model="d.skipMissing"
+          <template v-if="!unSkippable">
+            <b-form-group
+              horizontal
+              :label-cols="2"
+              breakpoint="md"
             >
-              {{ $t('chart.edit.dimension.skipMissingValues') }}
-            </b-form-checkbox>
-          </b-form-group>
+              <b-form-checkbox
+                v-model="d.skipMissing"
+              >
+                {{ $t('chart.edit.dimension.skipMissingValues') }}
+              </b-form-checkbox>
+            </b-form-group>
 
-          <b-form-group
-            v-if="!d.skipMissing"
-            horizontal
-            :label-cols="2"
-            breakpoint="md"
-            :label="$t('chart.edit.dimension.defaultValueLabel')"
-            :description="$t('chart.edit.dimension.defaultValueFootnote')"
-          >
-            <b-form-input
-              v-model="d.default"
-              :type="defaultValueInputType(d)"
-            />
-          </b-form-group>
+            <b-form-group
+              v-if="!d.skipMissing"
+              horizontal
+              :label-cols="2"
+              breakpoint="md"
+              :label="$t('chart.edit.dimension.defaultValueLabel')"
+              :description="$t('chart.edit.dimension.defaultValueFootnote')"
+            >
+              <b-form-input
+                v-model="d.default"
+                :type="defaultValueInputType(d)"
+              />
+            </b-form-group>
+          </template>
 
           <slot
             name="dimension-options"
