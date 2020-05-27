@@ -72,6 +72,11 @@ export default {
       type: Array,
       default: null,
     },
+
+    fieldSubset: {
+      type: Array,
+      default: () => [],
+    },
   },
 
   data () {
@@ -92,8 +97,13 @@ export default {
     },
 
     allFields () {
-      const mFields = this.module.fields
-        .filter(({ kind }) => !this.disabledTypes.find(t => t === kind))
+      let mFields = []
+      if (this.fieldSubset.length > 0) {
+        mFields = this.fieldSubset
+      } else {
+        mFields = this.module.fields
+      }
+      mFields = mFields.filter(({ kind }) => !this.disabledTypes.find(t => t === kind))
 
       let sysFields = []
       if (!this.disableSystemFields) {

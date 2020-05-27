@@ -24,25 +24,26 @@
       <hr>
       <b-form-group
         v-if="relatedModule"
-        :label="$t('block.recordLines.fieldsEdit.label')"
+        :label="$t('block.recordLines.fields.label')"
+        label-size="lg"
+      >
+        <field-picker
+          :module="relatedModule"
+          :fields.sync="fields"
+        />
+      </b-form-group>
+
+      <b-form-group
+        v-if="relatedModule && fields.length > 0"
+        :label="$t('block.recordLines.editFields.label')"
         label-size="lg"
         class="mb-0"
       >
         <field-picker
           :module="relatedModule"
-          :fields.sync="options.fieldsEdit"
+          :field-subset="fields.filter(f => !f.isSystem)"
+          :fields.sync="options.editFields"
           disable-system-fields
-        />
-      </b-form-group>
-
-      <b-form-group
-        v-if="relatedModule"
-        :label="$t('block.recordLines.fieldsView.label')"
-        label-size="lg"
-      >
-        <field-picker
-          :module="relatedModule"
-          :fields.sync="options.fieldsView"
         />
       </b-form-group>
 
@@ -116,6 +117,8 @@ export default {
   data () {
     return {
       availableModules: [],
+
+      fields: [],
     }
   },
 
@@ -154,16 +157,30 @@ export default {
   watch: {
     'options.moduleID' () {
       // Every time moduleID changes
-      this.options.fieldsEdit = []
-      this.options.fieldsView = []
+      this.fields = []
+      this.options.editFields = []
+      this.options.viewFields = []
       const f = this.relatedModule.fields.find(({ kind, options: { moduleID } }) => kind === 'Record' && moduleID === this.module.moduleID)
       this.options.parentField = f ? f.name : undefined
       this.options.positionField = undefined
+    },
+
+    fields () {
+      this.options.viewFields = this.fields.filter(f => !this.options.editFields.find(({ name }) => name === f.name))
+      this.options.editFields = this.options.editFields.filter(f => this.fields.find(({ name }) => name === f.name))
+    },
+
+    'options.editFields' () {
+      this.options.viewFields = this.fields.filter(f => !this.options.editFields.find(({ name }) => name === f.name))
     },
   },
 
   created () {
     this.getAvailableModules()
+    this.fields = [
+      ...this.options.viewFields,
+      ...this.options.editFields,
+    ]
   },
 
   methods: {

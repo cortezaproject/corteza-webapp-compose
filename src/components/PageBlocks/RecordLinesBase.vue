@@ -47,13 +47,13 @@
           >
             <b-td
               v-if="inEditing"
-              class="align-middle fit pr-0"
+              class="align-top fit pr-0"
             >
               <font-awesome-icon
                 v-b-tooltip.hover
                 :icon="['fas', 'sort']"
                 :title="$t('general.tooltip.dragAndDrop')"
-                class="handle text-secondary"
+                class="handle text-secondary mt-2"
               />
             </b-td>
             <b-td
@@ -72,7 +72,7 @@
               />
               <div
                 v-else-if="field.moduleField.canReadRecordValue && !field.edit"
-                class="mb-0 my-auto"
+                class="mb-0 mt-2"
               >
                 <field-viewer
                   :field="field.moduleField"
@@ -91,23 +91,27 @@
             </b-td>
             <b-td
               v-if="inEditing"
-              class="text-right align-middle fit pl-0"
+              class="text-right align-top fit pl-0"
             >
-              <!-- Allow record restoration -->
-              <b-btn
-                v-if="record.deletedAt"
-                variant="outline-primary"
-                @click="restore(record, index)"
+              <div
+                class="mt-1"
               >
-                Restore
-              </b-btn>
-              <c-input-confirm
-                v-else-if="relatedModule.canDeleteRecord"
-                variant="link"
-                size="md"
-                class="show-when-hovered"
-                @confirmed="handleDeleteRecord(record, index)"
-              />
+                <!-- Allow record restoration -->
+                <b-btn
+                  v-if="record.deletedAt"
+                  variant="outline-primary"
+                  @click="restore(record, index)"
+                >
+                  Restore
+                </b-btn>
+                <c-input-confirm
+                  v-else-if="relatedModule.canDeleteRecord"
+                  variant="link"
+                  size="md"
+                  class="show-when-hovered"
+                  @confirmed="handleDeleteRecord(record, index)"
+                />
+              </div>
             </b-td>
           </b-tr>
         </draggable>
@@ -116,7 +120,7 @@
         >
           <b-tr>
             <b-td
-              class="text-center align-middle py-5"
+              class="text-center align-top py-5"
               :colspan="numOfFields"
             >
               <b-spinner />
@@ -203,9 +207,9 @@ export default {
     },
 
     fields () {
-      let { fieldsEdit, fieldsView } = this.options
-      if (fieldsEdit.length > 0) {
-        fieldsEdit = this.relatedModule.filterFields(this.options.fieldsEdit).map(f => ({
+      let { editFields, viewFields } = this.options
+      if (editFields.length > 0) {
+        editFields = this.relatedModule.filterFields(this.options.editFields).map(f => ({
           key: f.name,
           label: f.label || f.name,
           moduleField: f,
@@ -215,32 +219,31 @@ export default {
         }))
       }
 
-      if (fieldsView.length > 0) {
-        fieldsView = this.relatedModule.filterFields(this.options.fieldsView).map(f => ({
+      if (viewFields.length > 0) {
+        viewFields = this.relatedModule.filterFields(this.options.viewFields).map(f => ({
           key: f.name,
           label: f.label || f.name,
           moduleField: f,
           edit: false,
           thClass: 'text-right',
-          tdClass: 'record-value align-middle text-right',
+          tdClass: 'record-value align-top text-right',
         }))
       }
 
-      if (fieldsEdit.length === 0 && fieldsView.length === 0) {
-        fieldsView = this.relatedModule.fields.filter(({ isSystem }) => !isSystem)
+      if (editFields.length === 0 && viewFields.length === 0) {
+        viewFields = this.relatedModule.fields.filter(({ isSystem }) => !isSystem)
       }
 
-      if (this.mode === 'base') {
-        return fieldsView
-      }
-      return fieldsEdit
+      return [
+        ...editFields,
+        ...viewFields,
+      ]
     },
 
     numOfFields () {
       let numOfFields = this.fields.length || 0
 
-      if (this.inEditing) numOfFields++
-      if (this.inEditing) numOfFields++
+      if (this.inEditing) numOfFields += 2
 
       return numOfFields
     },
