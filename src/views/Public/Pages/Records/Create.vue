@@ -25,6 +25,7 @@ export default {
   data () {
     return {
       inEditing: true,
+      inCreating: true,
     }
   },
 

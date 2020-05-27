@@ -21,6 +21,8 @@
         :isValid="isValid"
         :isDeleted="isDeleted"
         :inEditing="inEditing"
+        :hideClone="inCreating"
+        :hideAdd="inCreating"
         @add="handleAdd()"
         @clone="handleClone()"
         @edit="handleEdit()"
@@ -70,6 +72,13 @@ export default {
       type: String,
       required: false,
     },
+  },
+
+  data () {
+    return {
+      inEditing: false,
+      inCreating: false,
+    }
   },
 
   computed: {

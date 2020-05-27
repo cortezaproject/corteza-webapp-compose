@@ -19,7 +19,7 @@
         class="text-center"
       >
         <b-button
-          v-if="module.canCreateRecord"
+          v-if="module.canCreateRecord && !hideClone"
           variant="outline-secondary"
           class="m-1"
           @click.prevent="$emit('clone')"
@@ -28,7 +28,7 @@
         </b-button>
 
         <b-button
-          v-if="module.canCreateRecord"
+          v-if="module.canCreateRecord && !hideAdd"
           variant="outline-secondary"
           class="m-1"
           @click.prevent="$emit('add')"
@@ -89,6 +89,16 @@ export default {
     inEditing: {
       type: Boolean,
       required: true,
+    },
+
+    hideClone: {
+      type: Boolean,
+      default: () => false,
+    },
+
+    hideAdd: {
+      type: Boolean,
+      default: () => false,
     },
 
     isDeleted: {

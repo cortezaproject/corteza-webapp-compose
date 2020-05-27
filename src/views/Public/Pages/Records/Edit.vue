@@ -9,6 +9,7 @@ export default {
   data () {
     return {
       inEditing: true,
+      inCreating: false,
     }
   },
 
