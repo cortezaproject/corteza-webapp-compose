@@ -3,7 +3,7 @@
       <div class="fields d-flex">
         <div class="available">
           <label>{{ $t('field.selector.available') }}</label>
-          <b-button @click.prevent="selectedFields = [...availableFields]" variant="link" class="float-right">{{ $t('field.selector.selectAll') }}</b-button>
+          <b-button @click.prevent="selectedFields = [...allFields]" variant="link" class="float-right">{{ $t('field.selector.selectAll') }}</b-button>
           <draggable
             class="drag-area border"
             :list.sync="availableFields"
@@ -95,10 +95,14 @@ export default {
       const mFields = this.module.fields
         .filter(({ kind }) => !this.disabledTypes.find(t => t === kind))
 
-      let sysFields = this.module.systemFields()
-      if (this.systemFields) {
-        sysFields = sysFields.filter(({ name }) => this.systemFields.find(sf => sf === name))
+      let sysFields = []
+      if (!this.disableSystemFields) {
+        sysFields = this.module.systemFields()
+        if (this.systemFields) {
+          sysFields = sysFields.filter(({ name }) => this.systemFields.find(sf => sf === name))
+        }
       }
+
       return [
         ...mFields,
         ...sysFields,
@@ -113,9 +117,6 @@ export default {
         !this.fields.find(f => a.name === f.name),
       )
 
-      if (this.disableSystemFields) {
-        fields = fields.filter(a => !a.isSystem)
-      }
       return fields
     },
   },
