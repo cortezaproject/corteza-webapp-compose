@@ -378,9 +378,17 @@ export default {
   },
 
   watch: {
-    'report.filter' (v) {
-      // !! is required, since :disabled="..." marks the field as disabled if '' is provided
-      this.customFilter = !!v && !compose.chartUtil.predefinedFilters.includes(v)
+    'report.filter': {
+      handler: function (v) {
+        // !! is required, since :disabled="..." marks the field as disabled if '' is provided
+        console.log({
+          v,
+          xx: compose.chartUtil.predefinedFilters,
+        })
+        this.customFilter = (!!v && !!compose.chartUtil.predefinedFilters.find(({ value }) => value === v)) ||
+          (!!v)
+      },
+      immediate: true,
     },
   },
 
