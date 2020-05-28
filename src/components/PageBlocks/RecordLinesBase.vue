@@ -53,7 +53,7 @@
                 v-b-tooltip.hover
                 :icon="['fas', 'sort']"
                 :title="$t('general.tooltip.dragAndDrop')"
-                class="handle text-secondary mt-2"
+                class="handle text-secondary"
               />
             </b-td>
             <b-td
@@ -94,7 +94,7 @@
               class="text-right align-top fit pl-0"
             >
               <div
-                class="mt-1"
+                class="restore-button"
               >
                 <!-- Allow record restoration -->
                 <b-btn
@@ -207,37 +207,24 @@ export default {
     },
 
     fields () {
-      let { editFields, viewFields } = this.options
-      if (editFields.length > 0) {
-        editFields = this.relatedModule.filterFields(this.options.editFields).map(f => ({
-          key: f.name,
-          label: f.label || f.name,
-          moduleField: f,
-          edit: this.inEditing,
-          required: f.isRequired,
-          tdClass: 'record-value',
-        }))
-      }
+      const { editFields = [], viewFields = [] } = this.options
 
-      if (viewFields.length > 0) {
-        viewFields = this.relatedModule.filterFields(this.options.viewFields).map(f => ({
-          key: f.name,
-          label: f.label || f.name,
-          moduleField: f,
-          edit: false,
-          thClass: 'text-right',
-          tdClass: 'record-value align-top text-right',
-        }))
-      }
-
-      if (editFields.length === 0 && viewFields.length === 0) {
-        viewFields = this.relatedModule.fields.filter(({ isSystem }) => !isSystem)
-      }
-
-      return [
-        ...editFields,
-        ...viewFields,
-      ]
+      // Determine all viewable fields
+      return (viewFields.length ? this.relatedModule.filterFields(viewFields) : this.relatedModule.fields.filter(({ isSystem }) => !isSystem))
+        // Construct cell objects
+        .map((f, i) => {
+          // Editable fields a re a subset of viewable fields, so this will do the trick
+          const edit = this.inEditing && !!editFields.find(({ name }) => name === f.name)
+          return {
+            key: f.name + i,
+            label: f.label || f.name,
+            moduleField: f,
+            edit,
+            required: f.isRequired,
+            thClass: !edit ? 'text-right' : '',
+            tdClass: !edit ? 'record-value align-top text-right' : 'record-value',
+          }
+        })
     },
 
     numOfFields () {
@@ -439,8 +426,14 @@ export default {
   visibility: hidden;
 }
 
+// These two require custom styling, se we can center them perfectly
 .handle {
   cursor: grab;
+  margin-top: 10px;
+}
+
+.restore-button {
+  margin-top: 3px;
 }
 
 th .required::before {
