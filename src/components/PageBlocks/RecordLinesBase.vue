@@ -97,20 +97,30 @@
                 class="restore-button"
               >
                 <!-- Allow record restoration -->
-                <b-btn
+                <b-button
                   v-if="record.deletedAt"
-                  variant="outline-primary"
-                  @click="restore(record, index)"
+                  variant="link"
+                  size="md"
+                  :disabled="disabled"
+                  class="border-0 text-dark"
+                  @click.prevent="restore(record, index)"
                 >
-                  {{ $t('block.recordLines.restoreRecord') }}
-                </b-btn>
-                <c-input-confirm
+                  <font-awesome-icon
+                    :icon="['fa', 'trash-restore']"
+                  />
+                </b-button>
+                <b-button
                   v-else-if="relatedModule.canDeleteRecord"
                   variant="link"
                   size="md"
-                  class="show-when-hovered"
-                  @confirmed="handleDeleteRecord(record, index)"
-                />
+                  :disabled="disabled"
+                  class="border-0 show-when-hovered text-danger"
+                  @click.prevent="handleDeleteRecord(record, index)"
+                >
+                  <font-awesome-icon
+                    :icon="['far', 'trash-alt']"
+                  />
+                </b-button>
               </div>
             </b-td>
           </b-tr>
