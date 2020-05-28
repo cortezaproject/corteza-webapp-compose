@@ -102,7 +102,7 @@
                   variant="outline-primary"
                   @click="restore(record, index)"
                 >
-                  Restore
+                  {{ $t('block.recordLines.restoreRecord') }}
                 </b-btn>
                 <c-input-confirm
                   v-else-if="relatedModule.canDeleteRecord"
