@@ -265,6 +265,9 @@ export default {
         json: 'JSON Export',
         csv: 'CSV Export',
 
+        specifyTimezone: 'Export to timezone',
+        timezonePlaceholder: 'Select timezone',
+
         includeQuery: 'Filter by search query',
         query: 'Search query',
         all: 'Export all records',
