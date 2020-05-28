@@ -865,10 +865,10 @@
     pino "^5.16.0"
     ts-sinon "^1.0.25"
 
-"@cortezaproject/corteza-js@^2020.3.0-rc.29":
-  version "2020.3.0-rc.29"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-rc.29.tgz#c1fc2d891719f0896c33269b2c6054b704059b50"
-  integrity sha512-Ak7PMyW1uERBOMHJyg07bsCPI0VVv5sIgUdROKMsdL/4xuUfSTotBk0U/C/0vtRWyiKgh7ee2K58K0S+xne+5Q==
+"@cortezaproject/corteza-js@^2020.3.0-rc.30":
+  version "2020.3.0-rc.30"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-rc.30.tgz#5eed026f20c4e835158b0d7884c58eaa28d308dc"
+  integrity sha512-fslB/5+0XJQW7gZkggb4sOLYFM2HXXkGv4hStnnXYPAtKj2TatI8sJBDKW4xGhLpwlwfGzR0Fg089wPIjZMOVw==
   dependencies:
     axios "^0.19.1"
     chart.js "^2.7.3"
