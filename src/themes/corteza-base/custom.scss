@@ -27,6 +27,13 @@ button:disabled {
 .vs__dropdown-toggle {
   border-radius: 0;
   height: 35px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+
+  .vs__selected {
+    margin: 0;
+    height: 100%;
+  }
 }
 
 .vs__clear,

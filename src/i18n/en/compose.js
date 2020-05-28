@@ -62,6 +62,27 @@ export default {
         noBorder: 'No border',
       },
     },
+    recordLines: {
+      label: 'Record lines',
+      restoreRecord: 'Restore',
+      module: {
+        footnote: 'Only modules that are not used in another RecordLines block on this page are available',
+      },
+      fields: {
+        label: 'Fields',
+      },
+      editFields: {
+        label: 'Edit fields',
+      },
+      parentField: {
+        label: 'Parent field',
+        footnote: 'Field that links records with the parent record',
+      },
+      positionField: {
+        label: 'Record sort field',
+        footnote: 'Records will be sorted based on this field',
+      },
+    },
     recordOrganizer: {
       label: 'Record organizer',
       noRecords: 'No records in module linked with record organizer. Drag and drop records here.',

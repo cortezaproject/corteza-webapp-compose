@@ -109,7 +109,9 @@ export default {
         return new validator.Validated()
       }
 
-      return this.errors.filterByMeta('field', name)
+      return this.errors
+        .filterByMeta('field', name)
+        .filterByMeta('resource', this.module.resourceID)
     },
   },
 }
