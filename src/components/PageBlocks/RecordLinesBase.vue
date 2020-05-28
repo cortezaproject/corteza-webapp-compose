@@ -207,24 +207,37 @@ export default {
     },
 
     fields () {
-      const { editFields = [], viewFields = [] } = this.options
+      let { editFields, viewFields } = this.options
+      if (editFields.length > 0) {
+        editFields = this.relatedModule.filterFields(this.options.editFields).map(f => ({
+          key: f.name,
+          label: f.label || f.name,
+          moduleField: f,
+          edit: this.inEditing,
+          required: f.isRequired,
+          tdClass: 'record-value',
+        }))
+      }
 
-      // Determine all viewable fields
-      return (viewFields.length ? this.relatedModule.filterFields(viewFields) : this.relatedModule.fields.filter(({ isSystem }) => !isSystem))
-        // Construct cell objects
-        .map((f, i) => {
-          // Editable fields a re a subset of viewable fields, so this will do the trick
-          const edit = this.inEditing && !!editFields.find(({ name }) => name === f.name)
-          return {
-            key: f.name + i,
-            label: f.label || f.name,
-            moduleField: f,
-            edit,
-            required: f.isRequired,
-            thClass: !edit ? 'text-right' : '',
-            tdClass: !edit ? 'record-value align-top text-right' : 'record-value',
-          }
-        })
+      if (viewFields.length > 0) {
+        viewFields = this.relatedModule.filterFields(this.options.viewFields).map(f => ({
+          key: f.name,
+          label: f.label || f.name,
+          moduleField: f,
+          edit: false,
+          thClass: 'text-right',
+          tdClass: 'record-value align-top text-right',
+        }))
+      }
+
+      if (editFields.length === 0 && viewFields.length === 0) {
+        viewFields = this.relatedModule.fields.filter(({ isSystem }) => !isSystem)
+      }
+
+      return [
+        ...editFields,
+        ...viewFields,
+      ]
     },
 
     numOfFields () {
