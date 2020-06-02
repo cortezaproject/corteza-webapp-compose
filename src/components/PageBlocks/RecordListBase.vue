@@ -491,14 +491,16 @@ export default {
         }
       }
 
-      window.open(url.Make({
+      const exportUrl = url.Make({
         url: `${this.$ComposeAPI.baseURL}${this.$ComposeAPI.recordExportEndpoint(e)}`,
         query: {
           fields: e.fields,
           filter: e.filters,
           jwt: this.$auth.JWT,
         },
-      }))
+      })
+
+      window.open(exportUrl)
     },
 
     handleRowClicked ({ recordID }) {

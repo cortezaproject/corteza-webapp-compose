@@ -167,7 +167,7 @@ export default {
     },
     systemFields: {
       type: Array,
-      default: () => ['createdAt', 'updatedAt'],
+      default: () => ['ownedBy', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy'],
     },
     disabledTypes: {
       type: Array,
