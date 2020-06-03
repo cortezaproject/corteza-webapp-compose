@@ -1022,9 +1022,4 @@ th .required::before {
   height: 16px;
   overflow: hidden;
 }
-
-.table-responsive {
-  overflow-y: visible;
-  overflow-x: visible;
-}
 </style>
