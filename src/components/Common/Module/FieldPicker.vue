@@ -63,7 +63,17 @@ export default {
       default: () => [],
     },
 
+    disableSystemFields: {
+      type: Boolean,
+      default: false,
+    },
+
     systemFields: {
+      type: Array,
+      default: null,
+    },
+
+    fieldSubset: {
       type: Array,
       default: null,
     },
@@ -87,13 +97,27 @@ export default {
     },
 
     allFields () {
-      const mFields = this.module.fields
-        .filter(({ kind }) => !this.disabledTypes.find(t => t === kind))
-
-      let sysFields = this.module.systemFields()
-      if (this.systemFields) {
-        sysFields = sysFields.filter(({ name }) => this.systemFields.find(sf => sf === name))
+      let mFields = []
+      if (this.fieldSubset) {
+        mFields = this.fieldSubset
+      } else {
+        mFields = this.module.fields
       }
+
+      if (this.disabledTypes.length > 0) {
+        mFields = mFields.filter(({ kind }) => !this.disabledTypes.find(t => t === kind))
+      }
+
+      let sysFields = []
+      if (!this.disableSystemFields) {
+        sysFields = this.module.systemFields()
+        if (this.systemFields) {
+          sysFields = sysFields.filter(({ name }) => this.systemFields.find(sf => sf === name))
+        }
+      } else {
+        mFields = mFields.filter(({ isSystem }) => !isSystem)
+      }
+
       return [
         ...mFields,
         ...sysFields,
@@ -101,12 +125,14 @@ export default {
     },
 
     availableFields () {
-      const fields = [...this.allFields]
+      let fields = [...this.allFields]
 
       // Remove selected fields
-      return fields.filter(a =>
+      fields = fields.filter(a =>
         !this.fields.find(f => a.name === f.name),
       )
+
+      return fields
     },
   },
 
