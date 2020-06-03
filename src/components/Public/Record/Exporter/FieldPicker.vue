@@ -474,8 +474,7 @@ export default {
       if (rangeType === 'selection') {
         // @todo improve with IN operator when supported
         return `(${
-          this.selection.map(({ recordID }) => recordID)
-            .map(r => `recordID='${r}'`)
+          this.selection.map(r => `recordID='${r}'`)
             .join(' OR ')
         })`
       }

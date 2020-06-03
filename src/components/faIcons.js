@@ -31,6 +31,7 @@ import {
   faRemoveFormat,
   faTasks,
   faParagraph,
+  faTrashRestore,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -100,4 +101,5 @@ library.add(
   faParagraph,
   faClone,
   faPlusSquare,
+  faTrashRestore,
 )
