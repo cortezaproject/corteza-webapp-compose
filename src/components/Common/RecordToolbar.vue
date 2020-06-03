@@ -59,7 +59,7 @@
 
         <b-button
           v-else-if="module.canUpdateRecord"
-          :disabled="!isValid || isDeleted"
+          :disabled="isDeleted"
           class="m-1"
           variant="primary"
           @click.prevent="$emit('submit')"
@@ -79,11 +79,6 @@ export default {
     module: {
       type: compose.Module,
       required: false,
-    },
-
-    isValid: {
-      type: Boolean,
-      required: true,
     },
 
     inEditing: {

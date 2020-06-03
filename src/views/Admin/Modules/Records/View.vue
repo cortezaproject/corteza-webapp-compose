@@ -63,7 +63,6 @@
     </main>
     <record-toolbar
       :module="module"
-      :isValid="isValid"
       :isDeleted="isDeleted"
       :inEditing="inEditing"
       @add="handleAdd()"

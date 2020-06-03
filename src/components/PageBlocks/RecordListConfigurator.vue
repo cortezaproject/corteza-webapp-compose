@@ -6,7 +6,9 @@
         :label="$t('block.general.module')"
       >
         <b-form-select v-model="options.moduleID" required>
-          <option :value="undefined">{{ $t('general.label.none') }}</option>
+          <option value="0">
+            {{ $t('general.label.none') }}
+          </option>
           <option
             v-for="module in modules"
             :key="module.moduleID"
@@ -15,19 +17,122 @@
             {{ module.name }}
           </option>
         </b-form-select>
-        <i>
+        <b-form-text class="text-secondary small">
           <i18next path="block.recordList.moduleFootnote" tag="label">
-            <router-link :to="{ name: 'admin.pages'}">{{ $t('block.recordList.recordPages') }}</router-link>
+            <router-link :to="{ name: 'admin.pages'}">
+              {{ $t('block.recordList.recordPage') }}
+            </router-link>
           </i18next>
-        </i>
+        </b-form-text>
       </b-form-group>
 
-      <field-picker v-if="recordListModule" :module="recordListModule" :fields.sync="options.fields" />
+      <b-form-group
+        v-if="recordListModule"
+        :label="$t('block.recordList.fields')"
+        label-size="lg"
+      >
+        <field-picker
+          :module="recordListModule"
+          :fields.sync="options.fields"
+        />
+      </b-form-group>
 
-      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.newLabel')">
-          <b-form-checkbox v-model="options.hideAddButton">
-            {{ $t('block.recordList.record.hideAddButton') }}
+      <b-form-group
+        v-if="recordListModule"
+        horizontal
+        :label-cols="3"
+        breakpoint="md"
+        :label="$t('block.recordList.record.editable')"
+      >
+        <b-form-checkbox
+          v-model="options.editable"
+          :disabled="disableInlineEditor"
+        >
+          {{ $t('block.recordList.record.inlineEditorAllow') }}
+        </b-form-checkbox>
+      </b-form-group>
+
+      <div
+        v-if="options.editable"
+      >
+        <b-form-group
+          v-if="recordListModule && options.editable"
+          :label="$t('block.recordList.editFields')"
+          label-size="lg"
+          class="mb-0"
+        >
+          <field-picker
+            :module="recordListModule"
+            :field-subset="options.fields"
+            :fields.sync="options.editFields"
+            disable-system-fields
+          />
+        </b-form-group>
+
+        <b-form-group
+          horizontal
+          :label-cols="3"
+          breakpoint="md"
+          :label="$t('block.recordList.refField.label')"
+        >
+          <b-form-select
+            v-model="options.refField"
+            required
+          >
+            <option :value="undefined">
+              {{ $t('general.label.none') }}
+            </option>
+            <option
+              v-for="field in parentFields"
+              :key="field.fieldID"
+              :value="field.name">
+
+              {{ field.name }}
+            </option>
+          </b-form-select>
+          <b-form-text class="text-secondary small">
+            {{ $t('block.recordList.refField.footnote') }}
+          </b-form-text>
+        </b-form-group>
+
+        <b-form-group
+          horizontal
+          :label-cols="3"
+          breakpoint="md"
+          :label="$t('block.recordList.positionField.label')"
+        >
+          <b-form-select v-model="options.positionField">
+            <option :value="undefined">
+              {{ $t('general.label.none') }}
+            </option>
+            <option
+              v-for="field in positionFields"
+              :key="field.fieldID"
+              :value="field.name">
+
+              {{ field.label || field.name }}
+            </option>
+          </b-form-select>
+          <b-form-text class="text-secondary small">
+            {{ $t('block.recordList.positionField.footnote') }}
+          </b-form-text>
+        </b-form-group>
+
+        <b-form-group
+          v-if="options.positionField"
+          horizontal
+          :label-cols="3"
+          breakpoint="md"
+        >
+          <b-form-checkbox v-model="options.draggable">
+            {{ $t('block.recordList.record.draggable') }}
           </b-form-checkbox>
+        </b-form-group>
+      </div>
+      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.newLabel')">
+        <b-form-checkbox v-model="options.hideAddButton">
+          {{ $t('block.recordList.record.hideAddButton') }}
+        </b-form-checkbox>
       </b-form-group>
       <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.prefilterLabel')">
         <b-form-textarea :value="true"
@@ -44,7 +149,13 @@
           {{ $t('block.recordList.record.prefilterHideSearch') }}
         </b-form-checkbox>
       </b-form-group>
-      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.presortLabel')">
+      <b-form-group
+        v-if="!options.positionField"
+        horizontal
+        :label-cols="3"
+        breakpoint="md"
+        :label="$t('block.recordList.record.presortLabel')"
+      >
         <b-form-textarea :value="true"
                         :placeholder="$t('block.recordList.record.presortPlaceholder')"
                         v-model="options.presort"></b-form-textarea>
@@ -55,7 +166,13 @@
           {{ $t('block.recordList.record.presortHideSort') }}
         </b-form-checkbox>
       </b-form-group>
-      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.perPage')">
+      <b-form-group
+        v-if="!options.editable"
+        horizontal
+        :label-cols="3"
+        breakpoint="md"
+        :label="$t('block.recordList.record.perPage')"
+      >
         <b-form-input type="number" v-model.number="options.perPage"></b-form-input>
         <b-form-checkbox v-model="options.hidePaging">
           {{ $t('block.recordList.record.hidePaging') }}
@@ -70,16 +187,18 @@
         <b-form-checkbox v-model="options.selectable">
           {{ $t('block.recordList.selectable') }}
         </b-form-checkbox>
+      </b-form-group>
+      <b-form-group horizontal :label-cols="3" breakpoint="md" class="mt-4">
         <b-form-checkbox v-model="options.hideRecordReminderButton">
           {{ $t('block.recordList.hideRecordReminderButton') }}
         </b-form-checkbox>
         <b-form-checkbox v-model="options.hideRecordCloneButton">
           {{ $t('block.recordList.hideRecordCloneButton') }}
         </b-form-checkbox>
-        <b-form-checkbox v-model="options.hideRecordEditButton">
+        <b-form-checkbox v-model="options.hideRecordEditButton" :disabled="options.editable">
           {{ $t('block.recordList.hideRecordEditButton') }}
         </b-form-checkbox>
-        <b-form-checkbox v-model="options.hideRecordViewButton">
+        <b-form-checkbox v-model="options.hideRecordViewButton" :disabled="options.editable">
           {{ $t('block.recordList.hideRecordViewButton') }}
         </b-form-checkbox>
       </b-form-group>
@@ -120,12 +239,77 @@ export default {
         return undefined
       }
     },
+
+    // Tries to determine ID of the page we're supposed to redirect
+    recordPageID () {
+      // Relying on pages having unique moduleID,
+      const { moduleID } = this.recordListModule || {}
+      if (!moduleID) {
+        return undefined
+      }
+
+      const { pageID } = this.pages.find(p => p.moduleID === moduleID) || {}
+      if (!pageID) {
+        return undefined
+      }
+
+      return pageID
+    },
+
+    parentFields () {
+      if (this.recordListModule) {
+        return this.recordListModule.fields.filter(({ kind, isMulti, options }) => {
+          if (kind === 'Record' && !isMulti) {
+            return options.moduleID === this.record.moduleID
+          }
+        })
+      }
+      return []
+    },
+
+    positionFields () {
+      if (this.recordListModule) {
+        return this.recordListModule.fields.filter(({ kind, isMulti }) => kind === 'Number' && !isMulti)
+      }
+      return []
+    },
+
+    // This method checks if an inline editor record list with the same module exists on this page
+    disableInlineEditor () {
+      return !this.recordPageID
+    },
   },
 
   watch: {
     'options.moduleID' (newModuleID) {
       // Every time moduleID changes
       this.options.fields = []
+      this.options.editable = false
+      this.options.editFields = []
+    },
+
+    'options.editable' (value) {
+      this.options.editFields = []
+      this.options.positionField = undefined
+
+      if (value) {
+        this.options.hideRecordEditButton = true
+        this.options.hideRecordViewButton = true
+        this.options.hidePaging = true
+        const f = this.recordListModule.fields.find(({ kind, options: { moduleID } }) => moduleID === this.module.moduleID)
+        this.options.refField = f ? f.name : undefined
+      } else {
+        this.options.refField = undefined
+      }
+    },
+
+    'options.positionField' (v) {
+      if (!v) {
+        this.options.draggable = false
+      }
+
+      this.options.hideSorting = true
+      this.options.presort = ''
     },
   },
 }

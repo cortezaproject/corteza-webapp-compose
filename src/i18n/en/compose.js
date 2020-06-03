@@ -170,8 +170,8 @@ export default {
     },
     recordList: {
       label: 'Record list',
-      moduleFootnote: 'Disabled modules on the list do not have {{0}} available.',
-      recordPages: 'record pages',
+      moduleFootnote: 'Modules without a {{0}} can only be used in a record list as an inline editor',
+      recordPage: 'record page',
       addRecord: 'Add',
       pagination: 'Showing {{from}} to {{to}} of {{count}} records',
       paginationSingle: 'One record',
@@ -183,6 +183,16 @@ export default {
       hideRecordEditButton: 'Hide edit record button',
       hideRecordViewButton: 'Hide view record button',
       cancelSelection: 'cancel',
+      fields: 'Module fields',
+      editFields: 'Editable module fields',
+      parentField: {
+        label: 'Parent field',
+        footnote: 'Field that links records with the parent record',
+      },
+      positionField: {
+        label: 'Record sort field',
+        footnote: 'Records will be sorted based on this field',
+      },
 
       filter: {
         title: 'Record list filter',
@@ -201,6 +211,10 @@ export default {
         note: 'Note: If Field value is undefined, the filter will look for records where that field value is undefined.',
       },
       record: {
+        inlineEditor: 'Inline editor',
+        inlineEditorAllow: 'Allow inline record editing',
+        inlineEditorFootnote: 'Only one inline editor with the same module can be present the same page',
+        draggable: 'Can drag & drop records to order them',
         newLabel: 'New records',
         hideAddButton: 'Hide add record button',
         prefilterLabel: 'Prefilter records',
