@@ -850,10 +850,10 @@
     openurl "1.1.1"
     yargs "6.6.0"
 
-"@cortezaproject/corteza-js@^2020.3.0-rc.24":
-  version "2020.3.0-rc.24"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-rc.24.tgz#771fe2f4d2a459221bb965582c2b7190b548de31"
-  integrity sha512-1n7ylkReV1iabR1OR1Q1Sumby0fMRN2muGp2u4N9w4lMwqudr2VcBC2JvpOQyidxPr+Pvl0BVPfKdhKhMgQCdA==
+"@cortezaproject/corteza-js@^2020.3.0-rc.32":
+  version "2020.3.0-rc.32"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-rc.32.tgz#2a46068faf1355fb613284be09756c102359eafd"
+  integrity sha512-hHPIWYgh6nv2rOec0uEDloPKrSzcGi2/HYX8j06H+tke4i9Ozr9LRTS3h3DZEzYQrNoD/RYVNWZhrm0Mkj5C8A==
   dependencies:
     axios "^0.19.1"
     chart.js "^2.7.3"
@@ -865,27 +865,12 @@
     pino "^5.16.0"
     ts-sinon "^1.0.25"
 
-"@cortezaproject/corteza-js@^2020.3.0-rc.29":
-  version "2020.3.0-rc.29"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.3.0-rc.29.tgz#c1fc2d891719f0896c33269b2c6054b704059b50"
-  integrity sha512-Ak7PMyW1uERBOMHJyg07bsCPI0VVv5sIgUdROKMsdL/4xuUfSTotBk0U/C/0vtRWyiKgh7ee2K58K0S+xne+5Q==
+"@cortezaproject/corteza-vue@^2020.3.0-rc.22":
+  version "2020.3.0-rc.22"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2020.3.0-rc.22.tgz#96bd291e74c51e292c4539c529dfa3a72fffd038"
+  integrity sha512-72ofWohXkWWueGWRabgObqh6ODhzvrmKXfSqVaufphUDBX9MU1xVCj9XSpelRu+KkdNlJcRlZIglhheXxoy0Og==
   dependencies:
-    axios "^0.19.1"
-    chart.js "^2.7.3"
-    hex-rgb "^4.1.0"
-    lodash "^4.17.15"
-    minimatch "^3.0.4"
-    moment "^2.24.0"
-    numeral "^2.0.6"
-    pino "^5.16.0"
-    ts-sinon "^1.0.25"
-
-"@cortezaproject/corteza-vue@^2020.3.0-rc.20":
-  version "2020.3.0-rc.20"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2020.3.0-rc.20.tgz#8fa559c37420bc563e58957350069035ac46bc83"
-  integrity sha512-mt3NlpIY09hT5S6dZuBQXWo+YTQMJTwur+oYK8T2JWS/CMTWwW+ec7vQVqFaY9/ePk0i7wGBOrciRjUKSW3PBg==
-  dependencies:
-    "@cortezaproject/corteza-js" "^2020.3.0-rc.24"
+    "@cortezaproject/corteza-js" "^2020.3.0-rc.32"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
     "@fortawesome/free-solid-svg-icons" "^5.12.0"
     "@fortawesome/vue-fontawesome" "^0.1.9"
