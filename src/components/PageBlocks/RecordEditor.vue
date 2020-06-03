@@ -54,7 +54,7 @@ import FieldEditor from 'corteza-webapp-compose/src/components/ModuleFields/Edit
 import FieldViewer from 'corteza-webapp-compose/src/components/ModuleFields/Viewer'
 import users from 'corteza-webapp-compose/src/mixins/users'
 import base from './base'
-import { validator } from '@cortezaproject/corteza-js'
+import { validator, NoID } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
@@ -90,6 +90,13 @@ export default {
       // Show filtered & ordered list of fields
       return this.module.filterFields(this.options.fields)
     },
+
+    errorID () {
+      if (this.record.recordID !== NoID) {
+        return this.record.recordID
+      }
+      return 'r:parent:0'
+    },
   },
 
   created () {
@@ -109,7 +116,9 @@ export default {
         return new validator.Validated()
       }
 
-      return this.errors.filterByMeta('field', name)
+      return this.errors
+        .filterByMeta('field', name)
+        .filterByMeta('id', this.errorID)
     },
   },
 }

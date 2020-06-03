@@ -41,17 +41,6 @@ export default {
     },
   },
 
-  watch: {
-    'record.values': {
-      deep: true,
-      handler () {
-        if (!this.errors.valid()) {
-          this.errors = this.validator.run(this.record)
-        }
-      },
-    },
-  },
-
   methods: {
     /**
      * Handle form submit for record create & update
@@ -66,22 +55,67 @@ export default {
      *
      * @returns {Promise<void>}
      */
-    handleFormSubmit (route = 'page.record') {
+    async handleFormSubmit (route = 'page.record') {
       const isNew = this.record.recordID === NoID
+      const queue = []
+
+      // Collect records from all record lines
+      this.page.blocks.forEach((b, index) => {
+        if (b.kind === 'RecordList' && b.options.editable) {
+          const p = new Promise((resolve) => {
+            this.$root.$emit(`record-line:collect:${index}`, resolve)
+          })
+
+          queue.push(p)
+        }
+      })
+      const pairs = await Promise.all(queue)
+
+      for (const p of pairs) {
+        if (p.positionField) {
+          let i = 0
+          for (const item of p.items) {
+            if (!item.r.deletedAt) {
+              item.r.values[p.positionField] = i++
+            }
+          }
+        }
+      }
+
+      // Construct batch record payload
+      const records = pairs.reduce((acc, cur) => {
+        acc.push({
+          refField: cur.refField,
+          set: cur.items
+            .map(({ r }) => r)
+            .filter(({ deletedAt, recordID }) => recordID !== NoID || !deletedAt),
+          module: cur.module,
+          idPrefix: cur.idPrefix,
+        })
+        return acc
+      }, [])
+
+      // Append after the payload construction, so it is not presented as a
+      // sub record.
+      pairs.push({
+        module: this.module,
+        items: [{ r: this.record, id: 'r:parent:0' }],
+      })
 
       return this
-        .dispatchUiEvent('beforeFormSubmit')
-        .then(() => this.validateRecord())
+        .dispatchUiEvent('beforeFormSubmit', this.record, { $records: records })
+        .then(() => this.validateRecord(pairs))
         .then(() => {
           if (isNew) {
-            return this.$ComposeAPI.recordCreate(this.record)
+            return this.$ComposeAPI.recordCreate({ ...this.record, records })
           } else {
-            return this.$ComposeAPI.recordUpdate(this.record)
+            return this.$ComposeAPI.recordUpdate({ ...this.record, records })
           }
         })
         .catch(err => {
           const { details = undefined } = err
           if (!!details && Array.isArray(details) && details.length > 0) {
+            this.errors = new validator.Validated()
             this.errors.push(...details)
             throw new Error(this.$t('notification.record.validationErrors'))
           }
@@ -89,7 +123,7 @@ export default {
           throw err
         })
         .then((record) => this.record.apply(record))
-        .then(() => this.dispatchUiEvent('afterFormSubmit'))
+        .then(() => this.dispatchUiEvent('afterFormSubmit', this.record, { $records: records }))
         .then(() => {
           this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
         })
@@ -126,15 +160,43 @@ export default {
      *
      * @returns {Promise<void>}
      */
-    async validateRecord () {
-      this.errors = this.validator.run(this.record)
+    async validateRecord (pairs) {
+      // Cache validators for later use
+      const validators = {}
+      for (const p of pairs) {
+        validators[p.module.resourceID] = validators[p.module.resourceID] || new compose.RecordValidator(p.module)
+      }
+
+      const vRunner = () => {
+        // Reset errors
+        this.errors = new validator.Validated()
+
+        // validate
+        for (const p of pairs) {
+          const v = validators[p.module.resourceID]
+          const errs = new validator.Validated()
+
+          p.items.forEach(({ r, id }) => {
+            if (r.deletedAt) {
+              return
+            }
+            const err = v.run(r)
+            if (!err.valid()) {
+              err.applyMeta({ id })
+              errs.push(...err.set)
+            }
+          })
+          this.errors.push(...errs.set)
+        }
+      }
+
+      vRunner()
       if (this.errors.valid()) {
         return
       }
 
       await this.dispatchUiEvent('onFormSubmitError')
-
-      this.errors = this.validator.run(this.record)
+      vRunner()
       if (!this.errors.valid()) {
         throw new Error(this.$t('notification.record.validationErrors'))
       }
@@ -161,18 +223,19 @@ export default {
      *
      * @param eventType
      */
-    dispatchUiEvent (eventType) {
+    dispatchUiEvent (eventType, record = this.record, args = {}) {
       const resourceType = `ui:compose:${this.getUiEventResourceType || 'record-page'}`
 
-      const args = {
+      const argsBase = {
         errors: this.errors,
         validator: this.validator,
+        ...args,
       }
 
       return this
         .$EventBus
         .Dispatch(compose.RecordEvent(
-          this.record, { eventType, resourceType, args }))
+          record, { eventType, resourceType, args: argsBase }))
     },
   },
 }
