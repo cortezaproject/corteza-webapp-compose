@@ -51,6 +51,11 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    inlineEditor: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {

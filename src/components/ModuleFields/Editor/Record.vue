@@ -15,6 +15,9 @@
           @search="search"
           option-value="recordID"
           option-text="label"
+          :append-to-body="inlineEditor"
+          :calculate-position="calculatePosition"
+          class="bg-white"
           :placeholder="$t('field.kind.record.suggestionPlaceholder')"
           @input="selectChange($event)"
           ref="singleSelect"
@@ -27,6 +30,9 @@
           @search="search"
           option-value="recordID"
           option-text="label"
+          :append-to-body="inlineEditor"
+          :calculate-position="calculatePosition"
+          class="bg-white"
           :placeholder="$t('field.kind.record.suggestionPlaceholder')"
           multiple
           v-model="multipleSelected"
@@ -42,6 +48,9 @@
           @search="search"
           option-value="recordID"
           option-text="label"
+          :append-to-body="inlineEditor"
+          :calculate-position="calculatePosition"
+          class="bg-white"
           :placeholder="$t('field.kind.record.suggestionPlaceholder')"
           :value="getRecord(ctx.index)"
           @input="setRecord($event, ctx.index)"
@@ -60,7 +69,10 @@
         @search="search"
         option-value="recordID"
         option-text="label"
+        :append-to-body="inlineEditor"
+        :calculate-position="calculatePosition"
         :placeholder="$t('field.kind.record.suggestionPlaceholder')"
+        class="bg-white"
         v-model="selected"
       />
       <errors :errors="errors" />
@@ -72,6 +84,7 @@ import base from './base'
 import { VueSelect } from 'vue-select'
 import { compose } from '@cortezaproject/corteza-js'
 import _ from 'lodash'
+import { createPopper } from '@popperjs/core'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -285,6 +298,49 @@ export default {
         // Cant mutate props so we use magic(refs)
         this.$refs.singleSelect.mutableValue = null
       }
+    },
+
+    calculatePosition (dropdownList, component, { width }) {
+      /**
+       * We need to explicitly define the dropdown width since
+       * it is usually inherited from the parent with CSS.
+       */
+      dropdownList.style.width = width
+
+      /**
+       * Here we position the dropdownList relative to the $refs.toggle Element.
+       *
+       * The 'offset' modifier aligns the dropdown so that the $refs.toggle and
+       * the dropdownList overlap by 1 pixel.
+       *
+       * The 'toggleClass' modifier adds a 'drop-up' class to the Vue Select
+       * wrapper so that we can set some styles for when the dropdown is placed
+       * above.
+       */
+      const popper = createPopper(component.$refs.toggle, dropdownList, {
+        placement: 'bottom',
+        modifiers: [
+          {
+            name: 'offset',
+            options: {
+              offset: [0, -1],
+            },
+          },
+          {
+            name: 'toggleClass',
+            enabled: true,
+            phase: 'write',
+            fn ({ state }) {
+              component.$el.classList.toggle('drop-up', state.placement === 'top')
+            },
+          }],
+      })
+
+      /**
+       * To prevent memory leaks Popper needs to be destroyed.
+       * If you return function, it will be called just before dropdown is removed from DOM.
+       */
+      return () => popper.destroy()
     },
   },
 }
