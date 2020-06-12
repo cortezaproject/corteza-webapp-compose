@@ -71,9 +71,9 @@ export default {
   computed: {
     dateRule () {
       if (this.field.options.onlyFutureValues) {
-        return 'field.kind.dateTime.warning.pastValuesOnly'
-      } else if (this.field.options.onlyPastValues) {
         return 'field.kind.dateTime.warning.futureValuesOnly'
+      } else if (this.field.options.onlyPastValues) {
+        return 'field.kind.dateTime.warning.pastValuesOnly'
       } else {
         return ''
       }
