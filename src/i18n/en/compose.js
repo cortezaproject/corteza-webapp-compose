@@ -1065,7 +1065,8 @@ export default {
     },
     import: {
       typeMissmatch: 'Import error: trying to import object of type "{{type1}}" into a list of objects of type "{{type2}}"',
-      readingError: 'Error reading file',
+      errorOpening: 'Error reading file',
+      errorReading: 'Error reading file',
       failed: 'Import failed',
       successful: 'Import successful',
     },

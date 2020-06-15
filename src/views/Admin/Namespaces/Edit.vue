@@ -164,7 +164,7 @@ export default {
           if (closeOnSuccess) {
             this.$router.push({ name: 'root' })
           }
-        }).catch(this.raiseWarningAlert(this.$t('notification.namespace.saveFailed')))
+        }).catch(({ message }) => this.raiseWarningAlert(message, this.$t('notification.namespace.saveFailed')))
       } else {
         this.$store.dispatch('namespace/create', { name, slug, enabled, meta }).then((ns) => {
           this.namespace = new compose.Namespace(ns)
@@ -173,7 +173,7 @@ export default {
           if (closeOnSuccess) {
             this.$router.push({ name: 'root' })
           }
-        }).catch(this.raiseWarningAlert(this.$t('notification.namespace.createFailed')))
+        }).catch(({ message }) => this.raiseWarningAlert(message, this.$t('notification.namespace.createFailed')))
       }
     },
 
@@ -181,7 +181,7 @@ export default {
       const { namespaceID } = this.namespace
       this.$store.dispatch('namespace/delete', { namespaceID }).then(() => {
         this.$router.push({ name: 'root' })
-      }).catch(this.raiseWarningAlert(this.$t('notification.namespace.deleteFailed')))
+      }).catch(({ message }) => this.raiseWarningAlert(message, this.$t('notification.namespace.deleteFailed')))
     },
   },
 }

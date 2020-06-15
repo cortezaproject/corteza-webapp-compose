@@ -100,7 +100,7 @@ export default {
         }
         this.raiseSuccessAlert(this.$t('notification.import.successful'))
       } catch (e) {
-        this.raiseWarningAlert(this.$t('notification.import.failed'))
+        this.raiseWarningAlert(e.message, this.$t('notification.import.failed'))
       }
       this.cancelImport()
     },
@@ -126,7 +126,7 @@ export default {
       if (this.importObj.type === this.type) {
         this.show = true
       } else {
-        this.raiseWarningAlert(this.$t('notification.import.typeMissmatch', { type1: this.importObj.type, type2: this.type }))
+        this.raiseWarningAlert(this.$t('notification.import.typeMissmatch', { type1: this.importObj.type, type2: this.type }), this.$t('notification.import.failed'))
         this.importObj = null
       }
     },
@@ -150,13 +150,13 @@ export default {
               return { import: true, ...i }
             })
           } catch (err) {
-            this.raiseWarningAlert(err.message)
+            this.raiseWarningAlert(err.message, this.$t('notification.import.errorOpening'))
           } finally {
             this.processing = false
           }
         }
         reader.onerror = (evt) => {
-          this.raiseWarningAlert(this.$t('notification.import.errorReading'))
+          this.raiseWarningAlert(reader.error.message, this.$t('notification.import.errorReading'))
           this.processing = false
         }
       }
