@@ -1070,4 +1070,8 @@ export default {
       successful: 'Import successful',
     },
   },
+  toaster: {
+    warningTitle: 'Warning',
+    successTitle: 'Success',
+  },
 }

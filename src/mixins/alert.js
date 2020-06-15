@@ -1,18 +1,65 @@
-const success = { variant: 'success', countdown: 5 }
-const warning = { variant: 'warning', countdown: 120 }
+const success = {
+  variant: 'success',
+  options: {
+    'auto-hide-delay': 5000,
+    'no-auto-hide': false,
+  },
+  payload: {
+    title: 'Success',
+  },
+  actions: {},
+}
+const warning = {
+  variant: 'warning',
+  options: {
+    'auto-hide-delay': 120000,
+    'no-auto-hide': false,
+  },
+  payload: {
+    title: 'Warning',
+  },
+  actions: {},
+}
 
 export default {
   methods: {
-    raiseSuccessAlert (message) {
-      this.raiseAlert(Object.assign({}, success, { message: this.$t(message) }))
+    raiseSuccessAlert (text, title = this.$t('toaster.successTitle')) {
+      const w = {
+        ...success,
+        id: `${new Date().getTime()}`,
+        options: {
+          ...success.options,
+          notes: text,
+        },
+        payload: {
+          ...success.payload,
+          notes: text,
+          title,
+        },
+      }
+
+      this.raiseAlert(w)
     },
 
-    raiseWarningAlert (message) {
-      this.raiseAlert(Object.assign({}, warning, { message }))
+    raiseWarningAlert (text, title = this.$t('toaster.warningTitle')) {
+      const w = {
+        ...warning,
+        id: `${new Date().getTime()}`,
+        options: {
+          ...warning.options,
+        },
+        payload: {
+          ...warning.payload,
+          notes: text,
+          title,
+        },
+      }
+
+      this.raiseAlert(w)
     },
 
     raiseAlert (alert = {}) {
-      this.$root.$emit('alert', alert)
+      this.$root.$emit('notification.show', alert)
     },
 
     defaultErrorHandler (prefix) {
@@ -24,7 +71,7 @@ export default {
     },
 
     handleAlert (handler) {
-      this.$root.$on('alert', handler)
+      this.$root.$on('notification.show', handler)
     },
   },
 }
