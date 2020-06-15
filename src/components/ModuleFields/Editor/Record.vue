@@ -264,14 +264,24 @@ export default {
       // Support prefilters
       let baseF = q.filter
       if (this.field.options.prefilter) {
+        const pf = this.evaluatePrefilter(this.field.options.prefilter, { record: this.record, ...this.record })
         if (baseF) {
-          baseF = `(${this.field.options.prefilter}) AND (${baseF})`
+          baseF = `(${pf}) AND (${baseF})`
         } else {
-          baseF = this.field.options.prefilter
+          baseF = pf
         }
       }
 
       return this.$ComposeAPI.recordList({ ...q, filter: baseF }).then(({ set }) => set)
+    },
+
+    // Evaluates the given prefilter. Allows JS template literal expressions
+    // such as id = ${recordID}
+    evaluatePrefilter (prefilter, { record, recordID, ownerID, userID }) {
+      return (function (prefilter) {
+        /* eslint-disable no-eval */
+        return eval('`' + prefilter + '`')
+      })(prefilter)
     },
 
     sortString () {

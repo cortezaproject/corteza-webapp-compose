@@ -75,7 +75,11 @@
         :placeholder="$t('field.kind.record.prefilterPlaceholder')"
       />
       <b-form-text>
-        {{ $t('field.kind.record.prefilterFootnote') }}
+        <i18next path="field.kind.record.prefilterFootnote" tag="label">
+          <code>${recordID}</code>
+          <code>${ownerID}</code>
+          <code>${userID}</code>
+        </i18next>
       </b-form-text>
     </b-form-group>
     <b-form-group v-if="field.isMulti">

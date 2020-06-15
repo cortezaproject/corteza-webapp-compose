@@ -905,7 +905,7 @@ export default {
         suggestionPlaceholder: 'Start typing to search for records',
         prefilterLabel: 'Prefilter records',
         prefilterPlaceholder: 'field1 = 1 AND field2 = 232',
-        prefilterFootnote: 'Simplified SQL condition (WHERE ...) syntax is supported.',
+        prefilterFootnote: 'Simplified SQL condition (WHERE ...) syntax is supported. Variables like {{0}}, {{1}} and {{2}} are evaluated (when available)',
       },
       string: {
         label: 'String',
