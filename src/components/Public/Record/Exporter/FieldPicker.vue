@@ -14,6 +14,19 @@
       </b-form-group>
 
       <b-form-group>
+        <b-form-checkbox v-model="forTimezone">
+         {{ $t('block.recordList.export.specifyTimezone') }}
+        </b-form-checkbox>
+
+        <vue-select
+          v-if="forTimezone"
+          v-model="exportTimezone"
+          :options="timezones"
+          :placeholder="$t('block.recordList.export.timezonePlaceholder')"
+        />
+      </b-form-group>
+
+      <b-form-group>
         <b-form-checkbox v-model="includeQuery">
          {{ $t('block.recordList.export.includeQuery') }}
         </b-form-checkbox>
@@ -107,11 +120,14 @@
 import { compose } from '@cortezaproject/corteza-js'
 import FieldPicker from 'corteza-webapp-compose/src/components/Common/Module/FieldPicker'
 import moment from 'moment'
+import tz from 'compact-timezone-list'
+import { VueSelect } from 'vue-select'
 const fmtDate = (d) => d.format('YYYY-MM-DD')
 
 export default {
   components: {
     FieldPicker,
+    VueSelect,
   },
 
   props: {
@@ -178,6 +194,8 @@ export default {
   data () {
     return {
       fields: [],
+      forTimezone: false,
+      exportTimezone: undefined,
       filter: {
         rangeType: null,
         includeQuery: false,
@@ -193,6 +211,10 @@ export default {
   },
 
   computed: {
+    timezones () {
+      return tz.map(({ label, tzCode, offset }) => ({ label, tzCode, offset }))
+    },
+
     // These should be computed, because of i18n
     rangeTypeOptions () {
       return [
@@ -499,6 +521,7 @@ export default {
         fields: this.fields.map(({ name }) => name),
         filters: this.makeFilters(this.filter),
         filterRaw: this.filter,
+        timezone: this.forTimezone ? this.exportTimezone : undefined,
       })
     },
   },

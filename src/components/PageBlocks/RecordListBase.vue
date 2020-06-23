@@ -809,7 +809,7 @@ export default {
 
     onExport (e) {
       const { namespaceID, moduleID } = this.filter || {}
-      const { filterRaw } = e
+      const { filterRaw, timezone } = e
       e = {
         ...e,
         namespaceID,
@@ -821,6 +821,10 @@ export default {
         e.filename += ` - ${filterRaw.date.start} - ${filterRaw.date.end}`
       } else {
         e.filename += ` - ${filterRaw.rangeType}`
+      }
+
+      if (timezone) {
+        e.filename += ` - ${timezone.label}`
       }
 
       if (filterRaw.includeQuery) {
@@ -841,6 +845,7 @@ export default {
           fields: e.fields,
           filter: e.filters,
           jwt: this.$auth.JWT,
+          timezone: timezone ? timezone.tzCode : undefined,
         },
       })
 

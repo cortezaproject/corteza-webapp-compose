@@ -54,6 +54,7 @@
     "chartjs-plugin-colorschemes": "^0.4.0",
     "chartjs-plugin-datalabels": "^0.7.0",
     "chartjs-plugin-funnel": "^1.1.5",
+    "compact-timezone-list": "^1.0.6",
     "ejs": "^2.6.2",
     "file-saver": "^2.0.2",
     "flush-promises": "^1.0.2",
