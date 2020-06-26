@@ -151,17 +151,15 @@
             :key="field.key"
             sticky-column
             @click="handleSort(field)"
+            class="text-nowrap"
             :style="{
               cursor: field.sortable ? 'pointer' : 'default',
             }"
           >
-            <span :class="{ required: field.required }">
-              {{ field.label }}
-            </span>
             <b-btn
               v-if="field.sortable"
               class="float-right"
-              variant="link p-0"
+              variant="link p-0 ml-4"
             >
               <font-awesome-layers class="fa-">
                 <font-awesome-icon
@@ -180,6 +178,9 @@
                 />
               </font-awesome-layers>
             </b-btn>
+            <span :class="{ required: field.required }">
+              {{ field.label }}
+            </span>
           </b-th>
 
           <b-th />
