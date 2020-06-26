@@ -63,8 +63,7 @@ export default {
           label: this.$t('block.metric.label'),
           recordPageOnly: false,
           block: new compose.PageBlockMetric(),
-          // @todo
-          image: undefined,
+          image: images.Metric,
         },
         {
           label: this.$t('block.chart.label'),
