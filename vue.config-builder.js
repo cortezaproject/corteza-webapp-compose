@@ -92,6 +92,7 @@ module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias,
       scssNormal.use('resolve-url-loader')
         .loader('resolve-url-loader').options({
           keepQuery: true,
+          removeCR: true,
           root: path.join(root, 'src/themes', theme),
         })
         .before('sass-loader')
