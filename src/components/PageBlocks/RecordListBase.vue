@@ -950,7 +950,7 @@ export default {
       this.selected = []
       this.items = await this.$ComposeAPI.recordList({ ...this.recordListModule, ...this.filter, filter })
         .then(({ set, filter }) => {
-          const records = set.map(r => Object.freeze(new compose.Record(r, this.recordListModule)))
+          const records = set.map(r => new compose.Record(r, this.recordListModule))
 
           this.filter = { ...this.filter, ...filter }
 
