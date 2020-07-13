@@ -185,7 +185,7 @@ export default {
       cancelSelection: 'cancel',
       fields: 'Module fields',
       editFields: 'Editable module fields',
-      parentField: {
+      refField: {
         label: 'Parent field',
         footnote: 'Field that links records with the parent record',
       },

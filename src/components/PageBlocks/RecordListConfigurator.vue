@@ -42,7 +42,6 @@
         horizontal
         :label-cols="3"
         breakpoint="md"
-        :label="$t('block.recordList.record.editable')"
       >
         <b-form-checkbox
           v-model="options.editable"
@@ -228,13 +227,14 @@ export default {
 
   computed: {
     ...mapGetters({
+      getModuleByID: 'module/getByID',
       modules: 'module/set',
       pages: 'page/set',
     }),
 
     recordListModule () {
       if (this.options.moduleID !== '0') {
-        return this.$store.getters['module/getByID'](this.options.moduleID)
+        return this.getModuleByID(this.options.moduleID)
       } else {
         return undefined
       }
@@ -259,7 +259,7 @@ export default {
     parentFields () {
       if (this.recordListModule) {
         return this.recordListModule.fields.filter(({ kind, isMulti, options }) => {
-          if (kind === 'Record' && !isMulti) {
+          if (kind === 'Record' && !isMulti && this.record) {
             return options.moduleID === this.record.moduleID
           }
         })
