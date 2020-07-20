@@ -70,7 +70,7 @@
       @edit="handleEdit()"
       @delete="handleDelete()"
       @back="handleBack()"
-      @submit="handleFormSubmit('admin.modules.record.view')"
+      @submit="handleFormSubmitSimple('admin.modules.record.view')"
     />
   </div>
 </template>

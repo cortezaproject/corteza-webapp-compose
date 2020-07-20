@@ -135,6 +135,44 @@ export default {
     },
 
     /**
+     * Handle form submit for record browser
+     * @returns {Promise<void>}
+     */
+    handleFormSubmitSimple (route = 'page.record') {
+      const isNew = this.record.recordID === NoID
+
+      return this
+        .dispatchUiEvent('beforeFormSubmit')
+        .then(() => this.validateRecordSimple())
+        .then(() => {
+          if (isNew) {
+            return this.$ComposeAPI.recordCreate(this.record)
+          } else {
+            return this.$ComposeAPI.recordUpdate(this.record)
+          }
+        })
+        .catch(err => {
+          const { details = undefined } = err
+          if (!!details && Array.isArray(details) && details.length > 0) {
+            this.errors.push(...details)
+            throw new Error(this.$t('notification.record.validationErrors'))
+          }
+
+          throw err
+        })
+        .then((record) => this.record.apply(record))
+        .then(() => this.dispatchUiEvent('afterFormSubmit'))
+        .then(() => {
+          this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
+        })
+        .catch(this.defaultErrorHandler(this.$t(
+          isNew
+            ? 'notification.record.createFailed'
+            : 'notification.record.updateFailed',
+        )))
+    },
+
+    /**
      * On delete, preserve user's view. Show a notification that the record
      * has been deleted.
      */
@@ -197,6 +235,25 @@ export default {
 
       await this.dispatchUiEvent('onFormSubmitError')
       vRunner()
+      if (!this.errors.valid()) {
+        throw new Error(this.$t('notification.record.validationErrors'))
+      }
+    },
+
+    /**
+     * Validates record browser record
+     *
+     * @returns {Promise<void>}
+     */
+    async validateRecordSimple () {
+      this.errors = this.validator.run(this.record)
+      if (this.errors.valid()) {
+        return
+      }
+
+      await this.dispatchUiEvent('onFormSubmitError')
+
+      this.errors = this.validator.run(this.record)
       if (!this.errors.valid()) {
         throw new Error(this.$t('notification.record.validationErrors'))
       }
