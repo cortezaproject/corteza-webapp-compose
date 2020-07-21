@@ -20,6 +20,10 @@
           @input="updateValue($event)"
           ref="singleSelect"
         >
+          <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
+            <b-button class="flex-grow-1" @click="filter.page -= 1" :disabled="!hasPrevPage" size="sm">Prev</b-button>
+            <b-button class="flex-grow-1 ml-1" @click="filter.page += 1" :disabled="!hasNextPage" size="sm">Next</b-button>
+          </li>
         </vue-select>
         <vue-select
           v-else-if="field.options.selectType === 'multiple'"
@@ -34,6 +38,10 @@
           v-model="multipleSelected"
           multiple
         >
+          <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
+            <b-button class="flex-grow-1" @click="filter.page -= 1" :disabled="!hasPrevPage" size="sm">Prev</b-button>
+            <b-button class="flex-grow-1 ml-1" @click="filter.page += 1" :disabled="!hasNextPage" size="sm">Next</b-button>
+          </li>
         </vue-select>
       </template>
       <template v-slot:default="ctx">
@@ -51,6 +59,10 @@
           @search="search"
           @input="updateValue($event, ctx.index)"
         >
+          <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
+            <b-button class="flex-grow-1" @click="filter.page -= 1" :disabled="!hasPrevPage" size="sm">Prev</b-button>
+            <b-button class="flex-grow-1 ml-1" @click="filter.page += 1" :disabled="!hasNextPage" size="sm">Next</b-button>
+          </li>
         </vue-select>
         <span v-else>{{ getOptionLabel(getUserByIndex(ctx.index)) }}</span>
       </template>
@@ -70,7 +82,12 @@
         class="bg-white"
         @input="updateValue($event)"
         @search="search"
-      />
+      >
+        <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
+          <b-button class="flex-grow-1" @click="filter.page -= 1" :disabled="!hasPrevPage" size="sm">Prev</b-button>
+          <b-button class="flex-grow-1 ml-1" @click="filter.page += 1" :disabled="!hasNextPage" size="sm">Next</b-button>
+        </li>
+      </vue-select>
       <errors :errors="errors" />
     </template>
   </b-form-group>
@@ -93,6 +110,13 @@ export default {
     return {
       // list of items, ready to be displayed in the vue-select
       options: [],
+
+      filter: {
+        query: null,
+        page: 1,
+        perPage: 50,
+        count: 0,
+      },
     }
   },
 
@@ -121,6 +145,35 @@ export default {
           this.addUserToResolved(users)
           this.value = users.map(({ userID }) => userID)
         }
+      },
+    },
+
+    showPagination () {
+      const { count, perPage } = this.filter
+      return count > perPage
+    },
+
+    numOfPages () {
+      const { count, perPage } = this.filter
+      if (count > 0) {
+        return Math.ceil(count / perPage)
+      }
+      return 0
+    },
+
+    hasPrevPage () {
+      return this.filter.page > 1
+    },
+
+    hasNextPage () {
+      return this.filter.page < this.numOfPages
+    },
+  },
+
+  watch: {
+    'filter.page': {
+      handler () {
+        this.search(this.filter.query)
       },
     },
   },
@@ -192,13 +245,19 @@ export default {
     },
 
     search (query) {
+      if (query !== this.filter.query) {
+        this.filter.query = query
+        this.filter.page = 1
+      }
+
       if (query) {
         this.debouncedSearch(this, query)
       }
     },
 
     debouncedSearch: debounce((vm, query) => {
-      vm.$SystemAPI.userList({ query }).then(({ set }) => {
+      vm.$SystemAPI.userList(vm.filter).then(({ filter, set }) => {
+        vm.filter.count = filter.count
         vm.options = set.map(m => Object.freeze(m))
       })
     }, 300),
