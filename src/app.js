@@ -54,7 +54,7 @@ export default (options = {}) => {
         }
 
         this.loadBundle(bundleLoaderOpt)
-          .then(() => this.$ComposeAPI.automationList())
+          .then(() => this.$ComposeAPI.automationList({ excludeInvalid: true }))
           .then(this.makeAutomationScriptsRegistrator(
             // compose specific handler that routes onManual events for server-scripts
             // to the proper endpoint on the API
