@@ -151,36 +151,42 @@
             :key="field.key"
             sticky-column
             @click="handleSort(field)"
-            class="text-nowrap"
+            class="pr-0"
             :style="{
               cursor: field.sortable ? 'pointer' : 'default',
             }"
           >
-            <b-btn
-              v-if="field.sortable"
-              class="float-right"
-              variant="link p-0 ml-4"
+            <div
+              class="d-flex justify-content-between align-self-center"
             >
-              <font-awesome-layers class="fa-">
-                <font-awesome-icon
-                  :icon="['fas', 'sort-up']"
-                  :style="{
-                    color: 'gray',
-                    ...sorterStyle(field, 'ASC'),
-                  }"
-                />
-                <font-awesome-icon
-                  :icon="['fas', 'sort-down']"
-                  :style="{
-                    color: 'gray',
-                    ...sorterStyle(field, 'DESC'),
-                  }"
-                />
-              </font-awesome-layers>
-            </b-btn>
-            <span :class="{ required: field.required }">
-              {{ field.label }}
-            </span>
+              <div
+                :class="{ required: field.required }"
+                class="d-flex align-self-center text-nowrap"
+              >
+                {{ field.label }}
+              </div>
+              <b-btn
+                v-if="field.sortable"
+                variant="link p-0 ml-1"
+              >
+                <font-awesome-layers>
+                  <font-awesome-icon
+                    :icon="['fas', 'sort-up']"
+                    :style="{
+                      color: 'gray',
+                      ...sorterStyle(field, 'ASC'),
+                    }"
+                  />
+                  <font-awesome-icon
+                    :icon="['fas', 'sort-down']"
+                    :style="{
+                      color: 'gray',
+                      ...sorterStyle(field, 'DESC'),
+                    }"
+                  />
+                </font-awesome-layers>
+              </b-btn>
+            </div>
           </b-th>
 
           <b-th />
@@ -1019,12 +1025,12 @@ input {
   margin-top: 8px;
 }
 
-th .required::before {
+th .required::after {
   content: "*";
   display: inline-block;
   color: $primary;
   vertical-align: sub;
-  margin-left: -10px;
+  margin-left: 2px;
   width: 10px;
   height: 16px;
   overflow: hidden;
