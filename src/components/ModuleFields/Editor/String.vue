@@ -8,27 +8,36 @@
     <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
       <rich-text-input
         v-if="field.options.useRichTextEditor"
-        v-model="value[ctx.index]" />
-      <textarea
+        v-model="value[ctx.index]"
+      />
+
+      <b-form-textarea
         v-else-if="field.options.multiLine"
-        v-model="value[ctx.index]"></textarea>
-      <b-form-input v-else v-model="value[ctx.index]" />
+        v-model="value[ctx.index]"
+      />
+
+      <b-form-input
+        v-else
+        v-model="value[ctx.index]"
+      />
       <errors :errors="errors" />
     </multi>
 
     <template v-else>
       <rich-text-input
         v-if="field.options.useRichTextEditor"
-        v-model="value" />
+        v-model="value"
+      />
 
-      <textarea
+      <b-form-textarea
         v-else-if="field.options.multiLine"
-        class="w-100"
-        v-model="value"></textarea>
+        v-model="value"
+      />
 
       <b-form-input
         v-else
-        v-model="value"></b-form-input>
+        v-model="value"
+      />
       <errors :errors="errors" />
     </template>
   </b-form-group>
