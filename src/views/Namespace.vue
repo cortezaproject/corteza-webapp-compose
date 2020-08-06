@@ -245,8 +245,8 @@ export default {
       return Promise.reject(error)
     },
 
-    removeToast (id) {
-      const i = this.toasts.findIndex(r => r.id === id)
+    removeToast (reminderID) {
+      const i = this.toasts.findIndex(r => r.reminderID === reminderID)
       if (i > -1) {
         this.toasts.splice(i, 1)
       }
@@ -272,7 +272,7 @@ export default {
     },
 
     showReminder (r) {
-      const i = this.toasts.findIndex(({ id }) => id === r.id)
+      const i = this.toasts.findIndex(({ reminderID }) => reminderID === r.reminderID)
       if (i > -1 && (!r.editedAt || r.editedAt === this.toasts[i].editedAt)) {
         // Same reminder; no need to push it again
         return
@@ -285,7 +285,7 @@ export default {
         ...r.options,
       }
 
-      r.addAction('dismiss', {
+      r.actions.dismiss = {
         cb: this.onReminderHide,
         kind: 'Button',
         label: `<b>${this.$t('general.reminder.dismiss')}</b>`,
@@ -293,9 +293,9 @@ export default {
           variant: 'warning',
           class: ['float-right'],
         },
-      })
+      }
 
-      r.addAction('snooze', {
+      r.actions.snooze = {
         cb: this.onReminderSnooze,
         label: `<b>${this.$t('general.reminder.snooze')}</b>`,
         kind: 'Select',
@@ -311,7 +311,7 @@ export default {
             { kind: 'item-button', label: this.$t('general.label.timeHour', { t: 24 }), value: { duration: 1000 * 60 * 60 * 24 } },
           ],
         },
-      })
+      }
 
       if (i > -1) {
         this.toasts.splice(i, 1, r)

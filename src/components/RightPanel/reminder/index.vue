@@ -19,7 +19,7 @@
 import List from './List'
 import Edit from './Edit'
 import { mapGetters } from 'vuex'
-import { system } from '@cortezaproject/corteza-js'
+import { system, NoID } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
@@ -76,7 +76,7 @@ export default {
 
     onSave (r) {
       let h = 'reminderCreate'
-      if (r.reminderID) {
+      if (r.reminderID && r.reminderID !== NoID) {
         h = 'reminderUpdate'
       }
       this.$SystemAPI[h](r).then(r => {

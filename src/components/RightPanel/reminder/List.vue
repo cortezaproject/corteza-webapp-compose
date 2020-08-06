@@ -66,6 +66,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   props: {
     reminders: {
@@ -105,18 +107,18 @@ export default {
     },
 
     stdSort (a, b) {
-      if (!a.remindAtTime) {
+      if (!a.remindAt) {
         return -1
       }
-      if (!b.remindAtTime) {
+      if (!b.remindAt) {
         return 0
       }
 
-      return a.remindAtTime.diff(b.remindAtTime, 'ms')
+      return a.remindAt - b.remindAt
     },
 
-    makeTooltip ({ remindAtTime }) {
-      return remindAtTime.format('DD. MM. YYYY hh:mm')
+    makeTooltip ({ remindAt }) {
+      return moment(remindAt).format('DD. MM. YYYY hh:mm')
     },
   },
 }
