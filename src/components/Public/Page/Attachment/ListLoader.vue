@@ -163,23 +163,30 @@ export default {
   watch: {
     set: {
       immediate: true,
-      handler (set) {
-        this.attachments = set.map(a => {
+      async handler (set) {
+        // Handle attachments provided as objects
+        const att = set.map(a => {
           if (typeof a === 'object') {
             return new shared.Attachment(a, this.baseURL)
           } else {
             return null
           }
-        }).filter(a => !!a)
+        })
 
+        // Handle attachmentsprovided as attachmentID
         const namespaceID = this.namespace.namespaceID
-        set.forEach((attachmentID, index) => {
+        for (const [index, attachmentID] of Object.entries(set)) {
           if (typeof attachmentID === 'string') {
-            this.$ComposeAPI.attachmentRead({ kind: this.kind, attachmentID, namespaceID }).then(att => {
-              this.attachments.splice(index, 1, new shared.Attachment(att, this.baseURL))
+            await this.$ComposeAPI.attachmentRead({ kind: this.kind, attachmentID, namespaceID }).then(a => {
+              att.splice(index, 1, new shared.Attachment(a, this.baseURL))
             })
           }
-        })
+        }
+
+        // Filter out invalid/missing attachments
+        this.attachments = att
+          .filter(a => !!a)
+          .filter(a => typeof a === 'object')
       },
     },
   },
