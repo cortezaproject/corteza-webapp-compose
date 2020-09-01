@@ -4,18 +4,21 @@
     label-class="text-secondary"
     :class="formGroupStyleClasses"
   >
-    <multi v-if="field.isMulti" :value.sync="value" :singleInput="field.options.selectType !== 'each'">
-      <template v-slot:single>
-        <b-form-select v-if="field.options.selectType === 'default'" @change="selectChange" :options="selectOptions" ref="singleSelect" >
-          <template slot="first"><option disabled :value="undefined">{{ $t('field.kind.select.placeholder') }}</option></template>
-        </b-form-select>
-        <b-form-select v-if="field.options.selectType === 'multiple'" :options="selectOptions" v-model="value" :select-size="6" multiple />
-      </template>
-      <template v-slot:default="ctx">
-        <b-form-select v-if="field.options.selectType === 'each'" :options="selectOptions" v-model="value[ctx.index]" />
-        <span v-else>{{ findLabel(value[ctx.index]) }}</span>
-      </template>
-    </multi>
+    <template v-if="field.isMulti">
+      <multi :value.sync="value" :singleInput="field.options.selectType !== 'each'">
+        <template v-slot:single>
+          <b-form-select v-if="field.options.selectType === 'default'" @change="selectChange" :options="selectOptions" ref="singleSelect" >
+            <template slot="first"><option disabled :value="undefined">{{ $t('field.kind.select.placeholder') }}</option></template>
+          </b-form-select>
+          <b-form-select v-if="field.options.selectType === 'multiple'" :options="selectOptions" v-model="value" :select-size="6" multiple />
+        </template>
+        <template v-slot:default="ctx">
+          <b-form-select v-if="field.options.selectType === 'each'" :options="selectOptions" v-model="value[ctx.index]" />
+          <span v-else>{{ findLabel(value[ctx.index]) }}</span>
+        </template>
+      </multi>
+      <errors :errors="errors" />
+    </template>
 
     <template
       v-else
