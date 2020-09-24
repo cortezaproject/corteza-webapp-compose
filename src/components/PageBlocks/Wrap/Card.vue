@@ -4,12 +4,22 @@
       no-body
       class="h-100 border-0 shadow-sm rounded-lg"
       :class="blockClass"
-      :header="block.title"
-      header-class="sticky-top h5 pl-2"
+      :header="headerSet ? '' : block.title"
       :header-bg-variant="block.style.variants.headerBg"
       :header-text-variant="block.style.variants.headerText"
       :header-border-variant="block.style.variants.border"
     >
+      <b-card-header
+        v-if="headerSet"
+        class="sticky-top h5 pl-2"
+        :header-bg-variant="block.style.variants.headerBg"
+        :header-text-variant="block.style.variants.headerText"
+        :header-border-variant="block.style.variants.border"
+      >
+        <slot
+          name="header"
+        />
+      </b-card-header>
       <b-card-text
         v-if="block.description"
         class="p-2 m-0"
@@ -67,6 +77,10 @@ export default {
         'block',
         this.block.kind,
       ]
+    },
+
+    headerSet () {
+      return !!this.$scopedSlots.header
     },
 
     toolbarSet () {

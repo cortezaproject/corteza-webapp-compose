@@ -1,5 +1,24 @@
 <template>
   <wrap v-bind="$props" v-on="$listeners" :scrollable-body="false">
+    <template #header>
+      <div
+        class="d-flex align-items-center"
+      >
+        {{ block.title }}
+        <h4
+          class="mb-0"
+        >
+          <b-badge
+            v-if="block.isFederated || true"
+            variant="primary"
+            style="border-radius: 0.5rem;"
+            class="m-1 py-1 px-2"
+          >
+            {{ $t('block.recordList.federated') }}
+          </b-badge>
+        </h4>
+      </div>
+    </template>
     <template #toolbar>
       <b-container
         ref="header"
@@ -145,6 +164,7 @@
               @change="handleSelectAllOnPage({ isChecked: $event })"
             />
           </b-th>
+          <b-th />
 
           <b-th
             v-for="field in fields"
@@ -231,6 +251,15 @@
               :checked="selected.includes(item.id)"
               @change="onSelectRow($event, item)"
             />
+          </b-td>
+
+          <b-td>
+            <b-badge
+              v-if="block.isFederated || true"
+              variant="primary"
+            >
+              F
+            </b-badge>
           </b-td>
 
           <b-td

@@ -4,13 +4,29 @@
       <b-row>
         <b-col md="12">
           <b-card :title="$t('module.edit.title')" class="mb-5">
-            <div slot="header" class="text-right">
-              <export :list="[this.module]" type="module" />
-              <c-permissions-button
-                v-if="module.canGrant"
-                resource="compose:module-field:*"
-                link
-              />
+            <div
+              slot="header"
+              class="d-flex"
+            >
+              <b-button
+                variant="link"
+                class="p-0 mr-auto"
+                @click="federationSettings.modal = true"
+              >
+                <font-awesome-icon
+                  :icon="['fas', 'share-alt']"
+                />
+
+                {{ $t('module.edit.federationSettings.title') }}
+              </b-button>
+              <div>
+                <export :list="[this.module]" type="module" />
+                <c-permissions-button
+                  v-if="module.canGrant"
+                  resource="compose:module-field:*"
+                  link
+                />
+              </div>
             </div>
             <b-form-group>
               <label>{{ $t('module.newPlaceholder') }}</label>
@@ -124,9 +140,24 @@
         </b-col>
       </b-row>
     </b-container>
+     <b-modal
+      v-model="federationSettings.modal"
+      :title="federationModalTitle"
+      :ok-title="$t('general.label.saveAndClose')"
+      ok-only
+      ok-variant="dark"
+      size="lg"
+      @ok="handleFederationSettingsSave()"
+      body-class="p-0 border-top-0"
+      header-class="p-3 pb-0 border-bottom-0"
+    >
+      <federation-settings
+        :settings.sync="federationSettings"
+      />
+    </b-modal>
     <b-modal
       v-if="updateField"
-      :title="modalTitle"
+      :title="editModalTitle"
       :ok-title="$t('general.label.saveAndClose')"
       ok-only
       ok-variant="dark"
@@ -161,6 +192,7 @@ import draggable from 'vuedraggable'
 import FieldConfigurator from 'corteza-webapp-compose/src/components/ModuleFields/Configurator'
 import FieldRowEdit from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowEdit'
 import FieldRowView from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowView'
+import FederationSettings from 'corteza-webapp-compose/src/components/Admin/Module/FederationSettings'
 import { compose } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
@@ -173,6 +205,7 @@ export default {
     FieldConfigurator,
     FieldRowEdit,
     FieldRowView,
+    FederationSettings,
     EditorToolbar,
     Export,
     CircleStep,
@@ -192,6 +225,46 @@ export default {
 
   data () {
     return {
+      federationSettings: {
+        modal: false,
+        general: {
+          send: false,
+          receive: false,
+        },
+
+        downstream: {
+          0: {
+            copy: undefined,
+            fields: [
+              { name: 'TestField', label: 'Test Field' },
+            ],
+          },
+
+          1: {
+            copy: undefined,
+            fields: [
+              { name: 'TestField2', label: 'Test Field 2' },
+            ],
+          },
+        },
+
+        upstream: {
+          0: {
+            copy: undefined,
+            fields: [
+              { name: 'TestField2', label: 'Test Field 2' },
+            ],
+          },
+
+          1: {
+            copy: undefined,
+            fields: [
+              { name: 'TestField', label: 'Test Field' },
+            ],
+          },
+        },
+      },
+
       updateField: null,
       module: new compose.Module(),
       hasRecords: false,
@@ -219,7 +292,12 @@ export default {
       }, true)
     },
 
-    modalTitle () {
+    federationModalTitle () {
+      const { handle } = this.module
+      return handle ? this.$t('module.edit.federationSettings.specificTitle', { handle }) : this.$t('module.edit.federationSettings.title')
+    },
+
+    editModalTitle () {
       if (!this.updateField) {
         return
       }
@@ -275,6 +353,10 @@ export default {
       if (i > -1) {
         this.module.fields.splice(i, 1, field)
       }
+    },
+
+    handleFederationSettingsSave () {
+      // @todo
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {

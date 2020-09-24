@@ -45,6 +45,26 @@
               borderless
               responsive
             >
+              <template v-slot:cell(name)="{ item: m }">
+                <div
+                  class="d-flex justify-content-between"
+                >
+                  {{ m.name }}
+                  <h5
+                    class="mb-0"
+                  >
+                    <b-badge
+                      v-if="m.isFederated || m.name === 'Account'"
+                      pill
+                      variant="primary"
+                      class="m-1 py-1 px-2"
+                      style="border-radius: 0.5rem;"
+                    >
+                      {{ $t('module.federated') }}
+                    </b-badge>
+                  </h5>
+                </div>
+              </template>
               <template v-slot:cell(updatedAt)="{ item: m }">
                 {{ (m.updatedAt || m.createdAt) | locDateOnly }}
               </template>
