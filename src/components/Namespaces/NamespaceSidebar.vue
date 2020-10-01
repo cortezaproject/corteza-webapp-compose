@@ -19,7 +19,7 @@
 
       <b-list-group-item v-for="ns in filteredNamespaces.pinned"
                         :key="ns.namespaceID"
-                        :to="{ name: 'namespace', params: ns }"
+                        :to="{ name: 'namespace', params: toParams(ns) }"
                         class="p-2"
                         active-class="active text-primary border-top-0 border-bottom-0 disabled"
                         @click="removePin(ns)">
@@ -32,7 +32,7 @@
 
     <b-list-group-item v-for="ns in filteredNamespaces.regular"
                         :key="ns.namespaceID"
-                        :to="{ name: 'namespace', params: ns }"
+                        :to="{ name: 'namespace', params: toParams(ns) }"
                         class="p-2"
                         active-class="active text-primary border-top-0 border-bottom-0 disabled">
 
@@ -111,6 +111,12 @@ export default {
   },
 
   methods: {
+    toParams (ns = {}) {
+      return {
+        slug: ns.slug || ns.namespaceID,
+      }
+    },
+
     preProcess (value) {
       return (value || '').toLowerCase()
     },
