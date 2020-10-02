@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100 p-2">
+  <div class="h-100 p-2 overflow-hidden">
     <b-card
       no-body
       class="h-100 border-0 shadow-sm rounded-lg"
