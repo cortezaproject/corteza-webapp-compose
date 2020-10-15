@@ -432,7 +432,10 @@ export default {
       federationSettings: {
         title: 'Federation Settings',
         specificTitle: 'Federation Settings ({{handle}})',
+        pickServer: 'Pick a federated server',
         pickModule: 'Pick a federated module',
+        pickModuleField: 'Pick a module field',
+        errorFetchingData: 'Error fetching server data',
 
         general: {
           title: 'General',
@@ -441,7 +444,7 @@ export default {
         },
         downstream: {
           title: 'Downstream',
-          description: 'Selected fields you want to share with the selected network',
+          description: 'Select the fields you want to share with the selected network',
           allFields: 'All Fields',
         },
         upstream: {

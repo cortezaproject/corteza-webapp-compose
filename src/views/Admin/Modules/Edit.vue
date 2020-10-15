@@ -140,21 +140,7 @@
         </b-col>
       </b-row>
     </b-container>
-     <b-modal
-      v-model="federationSettings.modal"
-      :title="federationModalTitle"
-      :ok-title="$t('general.label.saveAndClose')"
-      ok-only
-      ok-variant="dark"
-      size="lg"
-      @ok="handleFederationSettingsSave()"
-      body-class="p-0 border-top-0"
-      header-class="p-3 pb-0 border-bottom-0"
-    >
-      <federation-settings
-        :settings.sync="federationSettings"
-      />
-    </b-modal>
+
     <b-modal
       v-if="updateField"
       :title="editModalTitle"
@@ -172,6 +158,13 @@
         :namespace="namespace"
       />
     </b-modal>
+
+    <federation-settings
+      :modal="federationSettings.modal"
+      :module="module"
+      @change="federationSettings.modal = ($event || false)"
+    />
+
     <portal to="admin-toolbar">
       <editor-toolbar
         :back-link="{name: 'admin.modules'}"
@@ -227,42 +220,6 @@ export default {
     return {
       federationSettings: {
         modal: false,
-        general: {
-          send: false,
-          receive: false,
-        },
-
-        downstream: {
-          0: {
-            copy: undefined,
-            fields: [
-              { name: 'TestField', label: 'Test Field' },
-            ],
-          },
-
-          1: {
-            copy: undefined,
-            fields: [
-              { name: 'TestField2', label: 'Test Field 2' },
-            ],
-          },
-        },
-
-        upstream: {
-          0: {
-            copy: undefined,
-            fields: [
-              { name: 'TestField2', label: 'Test Field 2' },
-            ],
-          },
-
-          1: {
-            copy: undefined,
-            fields: [
-              { name: 'TestField', label: 'Test Field' },
-            ],
-          },
-        },
       },
 
       updateField: null,
@@ -290,11 +247,6 @@ export default {
 
         return acc && f.isValid
       }, true)
-    },
-
-    federationModalTitle () {
-      const { handle } = this.module
-      return handle ? this.$t('module.edit.federationSettings.specificTitle', { handle }) : this.$t('module.edit.federationSettings.title')
     },
 
     editModalTitle () {
