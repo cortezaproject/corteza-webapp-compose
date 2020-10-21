@@ -625,12 +625,12 @@ export default {
 
   created () {
     this.prepRecordList()
-    this.$root.$on(`record-line:collect:${this.blockIndex}`, this.resolveRecords)
+    this.$root.$on(`record-line:collect:${this.page.pageID}-${this.blockIndex}`, this.resolveRecords)
     this.pullRecords()
   },
 
   beforeDestroy () {
-    this.$root.$off(`record-line:collect:${this.blockIndex}`)
+    this.$root.$off(`record-line:collect:${this.page.pageID}-${this.blockIndex}`)
   },
 
   methods: {
