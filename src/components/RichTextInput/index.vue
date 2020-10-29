@@ -108,8 +108,13 @@ export default {
      * Because of this, we are using `view.dom.innerHTML`. This should be improved at a later point
      */
     onUpdate () {
+      let content = this.editor.view.dom.innerHTML
+
+      // Makes sure to default to '' as the value if no text is present, for validation purposes
+      content = content !== '<p><br></p>' ? content : ''
+
       this.emittedContent = true
-      this.$emit('input', this.editor.view.dom.innerHTML)
+      this.$emit('input', content)
     },
   },
 }
