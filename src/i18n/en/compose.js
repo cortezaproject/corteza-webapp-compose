@@ -443,12 +443,12 @@ export default {
           receive: 'Receive new records from another organization (downstream)',
         },
         downstream: {
-          title: 'Downstream',
+          title: 'Map',
           description: 'Select the fields you want to share with the selected network',
           allFields: 'All Fields',
         },
         upstream: {
-          title: 'Upstream',
+          title: 'Expose',
           description: 'Match federated fields with existing ones:',
           allFields: 'All Fields',
         },
