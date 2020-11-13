@@ -54,7 +54,7 @@
                     class="mb-0"
                   >
                     <b-badge
-                      v-if="m.isFederated || m.name === 'Account'"
+                      v-if="Object.keys(m.labels || {}).includes('federation')"
                       pill
                       variant="primary"
                       class="m-1 py-1 px-2"

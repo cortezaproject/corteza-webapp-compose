@@ -9,7 +9,7 @@
           class="mb-0"
         >
           <b-badge
-            v-if="block.isFederated || true"
+            v-if="Object.keys(recordListModule.labels || {}).includes('federation')"
             variant="primary"
             style="border-radius: 0.5rem;"
             class="m-1 py-1 px-2"
@@ -255,7 +255,7 @@
 
           <b-td>
             <b-badge
-              v-if="block.isFederated || true"
+              v-if="Object.keys(item.r.labels || {}).includes('federation')"
               variant="primary"
             >
               F
