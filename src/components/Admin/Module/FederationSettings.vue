@@ -83,7 +83,7 @@
               :options="upstream[upstream.active].options"
               value-field="nodeID"
               text-field="name"
-              @change="setNodeStatus('upstream')"
+              @input="copyUpstreamFrom"
             />
           </b-form-group>
 
@@ -100,11 +100,10 @@
           >
 
             <b-form-checkbox
-              v-for="f in activeExposedModuleFields"
+              v-for="f in upstream[upstream.active].fields"
               :key="`${upstream.active}${f.name}`"
               v-model="f.value"
               class="mb-2"
-              @change="setNodeStatus('upstream')"
             >
               {{ f.label }}
             </b-form-checkbox>
@@ -157,12 +156,11 @@
           <b-form-group>
             <b-form-select
               :key="downstream.active"
-              v-model="sharedModule"
-              :options="sharedModuleOptions"
+              v-model="downstream[downstream.active].module"
+              :options="downstream[downstream.active].options"
               value-field="moduleID"
               text-field="name"
               class="w-50"
-              @change="setNodeStatus('downstream')"
             />
           </b-form-group>
 
@@ -172,14 +170,14 @@
           >
             {{ $t('module.edit.federationSettings.downstream.description') }}
             <b-form-checkbox
-              :checked="downstream[downstream.active].allFields"
+              :checked="downstream[downstream.active].allFields[downstream[downstream.active].module]"
               @change="selectAllFields($event, 'downstream')"
             >
               <strong>{{ $t('module.edit.federationSettings.downstream.allFields') }}</strong>
             </b-form-checkbox>
           </div>
           <div
-            v-if="sharedModule"
+            v-if="downstream[downstream.active].module"
             class="overflow-auto"
           >
             <!-- list of fields per shared module -->
@@ -190,7 +188,6 @@
             >
               <b-form-checkbox
                 v-model="sharedModule.map"
-                @change="setNodeStatus('downstream')"
               >
                 {{ sharedModule.label }}
               </b-form-checkbox>
@@ -203,7 +200,6 @@
                 value-field="name"
                 text-field="label"
                 class="w-50"
-                @change="setNodeStatus('downstream')"
               />
             </div>
           </div>
@@ -246,6 +242,7 @@ export default {
       sharedModule: null,
 
       sharedModules: {},
+      sharedModulesMapped: {},
       exposedModules: {},
       moduleMappings: {},
 
@@ -264,106 +261,13 @@ export default {
   },
 
   computed: {
-    //
-    // exposed modules
-    //
-    activeExposedModuleFields () {
-      return Object.values(this.activeExposedModules[this.upstream.active])[0] || []
-    },
-
-    activeExposedModules () {
-      const fields = {}
-
-      for (const node of this.servers) {
-        const nodeID = node.nodeID
-        const emFields = ((((this.exposedModules[nodeID] || [])[0]) || {}).fields) || []
-        const em = ((this.exposedModules[nodeID] || [])[0]) || {}
-        const emID = em.moduleID || ''
-
-        fields[nodeID] = {}
-        fields[nodeID][emID] = this.moduleFields.map((mf) => {
-          const r = {
-            name: mf.name,
-            kind: mf.kind,
-            map: false,
-            value: false,
-            label: mf.label,
-            isMulti: mf.isMulti,
-          }
-
-          if (!emFields.length) return r
-
-          return {
-            ...r,
-            map: null,
-            value: !!emFields.find(({ name }) => name === mf.name),
-          }
-        })
-      }
-
-      return fields
-    },
 
     //
     // shared modules
     //
     activeSharedModules () {
-      if (!this.sharedModule) return []
-      return (this.sharedModulesMapped[this.downstream.active] || {})[this.sharedModule] || []
-    },
-
-    sharedModuleOptions () {
-      return [
-        { moduleID: null, name: this.$t('module.edit.federationSettings.pickModule') },
-        ...Object.values(this.sharedModules[this.downstream.active]).map(m => ({ moduleID: m.moduleID, name: m.name })),
-      ]
-    },
-
-    // shared module fields get prepopulated here
-    // the module mappings also get applied here
-    // on top of the fields
-    sharedModulesMapped () {
-      var list = {}
-
-      // first, prefill the shared module fields
-      for (const nodeID in this.sharedModules) {
-        list[nodeID] = {}
-
-        for (const sm of this.sharedModules[nodeID]) {
-          var f = sm.fields
-
-          // is there any mappings for this shared module?
-          const mappedFields = ((this.moduleMappings[nodeID] || {})[sm.moduleID] || {}).fields || []
-
-          // fetch the shared module fields and slap the
-          // module mappings on top of them
-          f = f.map((el) => {
-            var found = false
-            var mapped = ''
-
-            if (mappedFields) {
-              const m = mappedFields.find((mf) => el.name === mf.origin.name)
-
-              mapped = ((m || {}).destination || {}).name || ''
-              found = !!mapped
-            }
-
-            return {
-              ...el,
-              map: found,
-              mapped,
-            }
-          })
-
-          list[nodeID][sm.moduleID] = f
-        }
-      }
-
-      return list
-    },
-
-    sharedModuleFields () {
-      return (this.getSharedModule() || {}).fields || []
+      if (!this.downstream[this.downstream.active].module) return []
+      return (this.sharedModulesMapped[this.downstream.active] || {})[this.downstream[this.downstream.active].module] || []
     },
 
     transformedModuleMappings () {
@@ -456,14 +360,55 @@ export default {
         await this.loadModuleMappings(node.nodeID).catch(this.defaultErrorHandler)
       }
 
+      this.sharedModulesMapped = this.getSharedModulesMapped()
+
       if (this.servers.length) {
         this.downstream.active = this.servers[0].nodeID
         this.upstream.active = this.servers[0].nodeID
       }
     },
 
-    getSharedModule () {
-      return (this.sharedModules[this.downstream.active] || []).find((el) => el.moduleID === this.sharedModule)
+    // shared module fields get prepopulated here
+    // the module mappings also get applied here
+    // on top of the fields
+    getSharedModulesMapped () {
+      var list = {}
+
+      // first, prefill the shared module fields
+      for (const nodeID in this.sharedModules) {
+        list[nodeID] = {}
+
+        for (const sm of this.sharedModules[nodeID]) {
+          var f = sm.fields
+
+          // is there any mappings for this shared module?
+          const mappedFields = ((this.moduleMappings[nodeID] || {})[sm.moduleID] || {}).fields || []
+
+          // fetch the shared module fields and slap the
+          // module mappings on top of them
+          f = f.map((el) => {
+            var found = false
+            var mapped = null
+
+            if (mappedFields) {
+              const m = mappedFields.find((mf) => el.name === mf.origin.name)
+
+              mapped = ((m || {}).destination || {}).name || null
+              found = !!mapped
+            }
+
+            return {
+              ...el,
+              map: found,
+              mapped,
+            }
+          })
+
+          list[nodeID][sm.moduleID] = f
+        }
+      }
+
+      return list
     },
 
     async handleFederationSettingsSave () {
@@ -471,8 +416,6 @@ export default {
       for (const nodeID in this.sharedModulesMapped) {
         for (const moduleID in this.sharedModulesMapped[nodeID]) {
           const fields = this.toModuleMappingFormat(this.sharedModulesMapped[nodeID][moduleID])
-
-          if (!fields.length) continue
 
           const payload = {
             nodeID,
@@ -486,38 +429,29 @@ export default {
         }
       }
 
+      const nodes = this.servers.map(s => s.nodeID)
+
       // upstream
-      for (const nodeID in this.activeExposedModules) {
-        for (const moduleID in this.activeExposedModules[nodeID]) {
-          const fields = this.activeExposedModules[nodeID][moduleID].filter((el) => el.value)
+      for (const nodeID of nodes) {
+        const fields = ((this.upstream[nodeID] || {}).fields || []).filter((el) => el.value)
 
-          // skip empty payloads
-          if (!fields.length) continue
-
-          const payload = {
-            nodeID,
-            moduleID,
-            composeModuleID: this.module.moduleID,
-            composeNamespaceID: this.module.namespaceID,
-            name: this.module.name,
-            handle: this.module.handle,
-            fields,
-          }
-
-          const response = await this.persistExposedModule(payload).catch(this.defaultErrorHandler)
-
-          if (!response && !response.moduleID) {
-            return
-          }
-
-          const index = this.exposedModules[nodeID].findIndex((el) => el.moduleID === response.moduleID)
-
-          if (index > 0) {
-            this.exposedModules[nodeID][index] = response
-          } else {
-            this.exposedModules[nodeID].push(response)
-          }
+        const payload = {
+          nodeID,
+          moduleID: (this.exposedModules[nodeID] || {}).moduleID,
+          composeModuleID: this.module.moduleID,
+          composeNamespaceID: this.module.namespaceID,
+          name: this.module.name,
+          handle: this.module.handle,
+          fields,
         }
+
+        const response = await this.persistExposedModule(payload).catch(this.defaultErrorHandler)
+
+        if (!response && !response.moduleID) {
+          return
+        }
+
+        this.exposedModules[nodeID] = response
       }
     },
 
@@ -561,25 +495,14 @@ export default {
       }))
     },
 
-    async getNodeUpstream (nodeID) {
+    getNodeUpstream (nodeID) {
       if (this.upstream[nodeID]) {
         return
       }
 
       this.upstream.processing = true
 
-      // Status of the node setting, different for each type (upstream/downstream)
-      // Each status calls(or doesn't) a different endpoint:
-      // 'ignore' - No endpoint called
-      // 'new' - Create endpoint
-      // 'update' - Update endpoint
-      let status = 'ignore'
-
-      const uSetting = await this.$FederationAPI.manageStructureReadShared({ nodeID, moduleID: this.module.moduleID })
-        .catch(err => {
-          status = 'new'
-          this.defaultErrorHandler(err)
-        })
+      const fields = (this.moduleFields || []).map(f => ({ ...f, value: false }))
 
       const upstream = {
         options: [
@@ -588,40 +511,55 @@ export default {
         ],
         copy: null,
         allFields: false,
-        fields: this.moduleFields || [],
-        status,
+        fields,
       }
 
-      const settingFields = ((uSetting || {}).fields || [])
+      const settingFields = ((this.exposedModules[nodeID] || {}).fields || [])
       settingFields.forEach(f => {
         const mf = (upstream.fields.find(({ name }) => name === f.name) || {})
         mf.value = true
         mf.map = f.map
       })
 
+      upstream.allFields = upstream.fields.filter(f => f.value).length === upstream.fields.length
+
       this.$set(this.upstream, nodeID, upstream)
       this.upstream.processing = false
     },
 
     async getNodeDownstream (nodeID) {
-      this.downstream.processing = true
-
-      const status = 'ignore'
-      const dSetting = {}
-
-      const downstream = {
-        module: null,
-        allFields: false,
-        fields: this.moduleFields || [],
-        status,
+      if (this.downstream[nodeID]) {
+        return
       }
 
-      const settingFields = ((dSetting || {}).fields || [])
+      this.downstream.processing = true
+
+      const fields = (this.moduleFields || []).map(f => ({ ...f, value: false }))
+      const downstream = {
+        options: [
+          { moduleID: null, name: this.$t('module.edit.federationSettings.pickModule') },
+          ...Object.values(this.sharedModules[this.downstream.active] || {}).map(m => ({ moduleID: m.moduleID, name: m.name })),
+        ],
+        module: null,
+        allFields: {},
+        fields,
+      }
+
+      const settingFields = (({} || {}).fields || [])
       settingFields.forEach(f => {
         const mf = (downstream.fields.find(({ name }) => name === f.name) || {})
         mf.value = true
         mf.map = f.map
       })
+
+      Object.entries(this.sharedModulesMapped[nodeID] || {}).forEach(([key, value]) => {
+        if (value.length) {
+          downstream.allFields[key] = (value || []).filter(f => f.map).length === value.length
+        } else {
+          downstream.allFields[key] = false
+        }
+      })
+      // upstream.fields.filter(f => f.map).length === upstream.fields.length
 
       this.$set(this.downstream, nodeID, downstream)
       this.downstream.processing = false
@@ -629,26 +567,29 @@ export default {
 
     selectAllFields (value, target) {
       const active = this[target].active
-      this[target][active].fields = this[target][active].fields.map(f => ({ ...f, value }))
-      this[target][active].allFields = true
-      this[target][active].status = 'update'
+
+      if (target === 'upstream') {
+        this.upstream[active].fields = this.upstream[active].fields.map(f => ({ ...f, value }))
+        this.upstream[active].allFields = value
+      } else if (target === 'downstream') {
+        this.sharedModulesMapped[active][this.downstream[active].module] = this.sharedModulesMapped[active][this.downstream[active].module].map(f => ({ ...f, map: value }))
+      }
     },
 
-    setNodeStatus (target, status = 'update') {
-      const active = this[target].active
-      this[target][active].status = status
-    },
+    copyUpstreamFrom (nodeID) {
+      this.upstream[this.upstream.active].fields = this.upstream[this.upstream.active].fields.map(f => {
+        let value = false
+        if (this.upstream[nodeID]) {
+          value = !!this.upstream[nodeID].fields.find(({ name, value }) => name === f.name && value)
+        } else {
+          value = !!this.exposedModules[nodeID].fields.find(({ name }) => name === f.name)
+        }
 
-    async getSharedModules (nodeID) {
-      return this.$FederationAPI.manageStructureListAll({ nodeID, shared: 1 })
-        .then((data) => data)
-        .catch(this.defaultErrorHandler)
-    },
-
-    async getExposedModules (nodeID) {
-      return this.$FederationAPI.manageStructureListAll({ nodeID, exposed: 1 })
-        .then((data) => data)
-        .catch(this.defaultErrorHandler)
+        return {
+          ...f,
+          value,
+        }
+      })
     },
 
     async getModuleMappings (nodeID, moduleID) {
@@ -677,7 +618,11 @@ export default {
         return
       }
 
-      this.sharedModules[nodeID] = await this.getSharedModules(nodeID)
+      await this.$FederationAPI.manageStructureListAll({ nodeID, shared: 1 })
+        .then((data) => {
+          this.sharedModules[nodeID] = data
+        })
+        .catch(this.defaultErrorHandler)
     },
 
     async loadExposedModules (nodeID) {
@@ -685,7 +630,14 @@ export default {
         return
       }
 
-      this.exposedModules[nodeID] = await this.getExposedModules(nodeID)
+      await this.$FederationAPI.manageStructureListAll({ nodeID, exposed: 1 })
+        .then((data) => {
+          const exposedModule = data.find(({ composeModuleID }) => composeModuleID === this.module.moduleID)
+          if (exposedModule) {
+            this.exposedModules[nodeID] = exposedModule
+          }
+        })
+        .catch(this.defaultErrorHandler)
     },
 
     async loadModuleMappings (nodeID) {
@@ -694,8 +646,13 @@ export default {
       }
 
       var mm = {}
-      for (const sm of this.sharedModules[nodeID]) {
-        mm[sm.moduleID] = await this.getModuleMappings(nodeID, sm.moduleID).catch(() => [])
+      for (const { moduleID } of this.sharedModules[nodeID]) {
+        mm[moduleID] = []
+        await this.$FederationAPI.manageStructureReadMappings({ nodeID, moduleID })
+          .then((data) => {
+            mm[moduleID] = data
+          })
+          .catch(this.defaultErrorHandler)
       }
 
       this.moduleMappings[nodeID] = mm

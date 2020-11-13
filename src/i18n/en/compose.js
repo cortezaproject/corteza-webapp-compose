@@ -444,12 +444,12 @@ export default {
         },
         downstream: {
           title: 'Map',
-          description: 'Select the fields you want to share with the selected network',
+          description: 'Match federated fields with existing ones:',
           allFields: 'All Fields',
         },
         upstream: {
           title: 'Expose',
-          description: 'Match federated fields with existing ones:',
+          description: 'Select the fields you want to share with the selected network',
           allFields: 'All Fields',
         },
       },
