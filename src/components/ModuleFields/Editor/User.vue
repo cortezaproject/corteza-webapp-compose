@@ -21,8 +21,8 @@
           ref="singleSelect"
         >
           <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
-            <b-button class="flex-grow-1" @click="filter.page -= 1" :disabled="!hasPrevPage" size="sm">Prev</b-button>
-            <b-button class="flex-grow-1 ml-1" @click="filter.page += 1" :disabled="!hasNextPage" size="sm">Next</b-button>
+            <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
+            <b-button class="flex-grow-1 ml-1" @click="filter.pageCursor = filter.nextPage" :disabled="!hasNextPage" size="sm">Next</b-button>
           </li>
         </vue-select>
         <vue-select
@@ -39,8 +39,8 @@
           multiple
         >
           <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
-            <b-button class="flex-grow-1" @click="filter.page -= 1" :disabled="!hasPrevPage" size="sm">Prev</b-button>
-            <b-button class="flex-grow-1 ml-1" @click="filter.page += 1" :disabled="!hasNextPage" size="sm">Next</b-button>
+            <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
+            <b-button class="flex-grow-1 ml-1" @click="filter.pageCursor = filter.nextPage" :disabled="!hasNextPage" size="sm">Next</b-button>
           </li>
         </vue-select>
       </template>
@@ -60,8 +60,8 @@
           @input="updateValue($event, ctx.index)"
         >
           <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
-            <b-button class="flex-grow-1" @click="filter.page -= 1" :disabled="!hasPrevPage" size="sm">Prev</b-button>
-            <b-button class="flex-grow-1 ml-1" @click="filter.page += 1" :disabled="!hasNextPage" size="sm">Next</b-button>
+            <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
+            <b-button class="flex-grow-1 ml-1" @click="filter.pageCursor = filter.nextPage" :disabled="!hasNextPage" size="sm">Next</b-button>
           </li>
         </vue-select>
         <span v-else>{{ getOptionLabel(getUserByIndex(ctx.index)) }}</span>
@@ -84,8 +84,8 @@
         @search="search"
       >
         <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
-          <b-button class="flex-grow-1" @click="filter.page -= 1" :disabled="!hasPrevPage" size="sm">Prev</b-button>
-          <b-button class="flex-grow-1 ml-1" @click="filter.page += 1" :disabled="!hasNextPage" size="sm">Next</b-button>
+          <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
+          <b-button class="flex-grow-1 ml-1" @click="filter.pageCursor = filter.nextPage" :disabled="!hasNextPage" size="sm">Next</b-button>
         </li>
       </vue-select>
       <errors :errors="errors" />
@@ -113,9 +113,10 @@ export default {
 
       filter: {
         query: null,
-        page: 1,
-        perPage: 50,
-        count: 0,
+        limit: 10,
+        pageCursor: '',
+        prevPage: '',
+        nextPage: '',
       },
     }
   },
@@ -130,8 +131,7 @@ export default {
     multipleSelected: {
       get () {
         const map = userID => {
-          return this.findByID(userID) ||
-                 { userID }
+          return this.findByID(userID) || { userID }
         }
 
         return this.field.isMulti ? this.value.map(map) : map(this.value)
@@ -149,43 +149,45 @@ export default {
     },
 
     showPagination () {
-      const { count, perPage } = this.filter
-      return count > perPage
-    },
-
-    numOfPages () {
-      const { count, perPage } = this.filter
-      if (count > 0) {
-        return Math.ceil(count / perPage)
-      }
-      return 0
+      return this.filter.query && (this.hasPrevPage || this.hasNextPage)
     },
 
     hasPrevPage () {
-      return this.filter.page > 1
+      return this.filter.prevPage
     },
 
     hasNextPage () {
-      return this.filter.page < this.numOfPages
+      return this.filter.nextPage
     },
   },
 
   watch: {
-    'filter.page': {
-      handler () {
-        this.search(this.filter.query)
+    'filter.pageCursor': {
+      handler (pageCursor) {
+        if (pageCursor && this.filter.query) {
+          this.fetchUsers()
+            .then(({ filter, set }) => {
+              this.options = set.map(m => Object.freeze(m))
+            })
+        }
+      },
+    },
+
+    value: {
+      async handler (value) {
+        value = this.field.isMulti ? [...value] : [value]
+        if (value) {
+          await this.resolveUsers(value)
+        }
       },
     },
   },
 
-  async beforeMount () {
-    await this
-      .resolveUsers(this.field.isMulti ? [...this.value] : [this.value])
-      .finally(() => {
-        if ((!this.value || this.value.length === 0) && this.field.options.presetWithAuthenticated) {
-          this.updateValue(this.$auth.user)
-        }
-      })
+  async created () {
+    // Prefill value with current user
+    if ((!this.value || this.value.length === 0) && this.field.options.presetWithAuthenticated) {
+      this.updateValue(this.$auth.user)
+    }
   },
 
   methods: {
@@ -244,23 +246,34 @@ export default {
       }
     },
 
-    search (query) {
+    search: debounce(function (query) {
       if (query !== this.filter.query) {
         this.filter.query = query
         this.filter.page = 1
       }
 
       if (query) {
-        this.debouncedSearch(this, query)
+        this.fetchUsers()
+          .then(({ filter, set }) => {
+            this.options = set.map(m => Object.freeze(m))
+          })
       }
-    },
-
-    debouncedSearch: debounce((vm, query) => {
-      vm.$SystemAPI.userList(vm.filter).then(({ filter, set }) => {
-        vm.filter.count = filter.count
-        vm.options = set.map(m => Object.freeze(m))
-      })
     }, 300),
+
+    async fetchUsers () {
+      if (this.filter.pageCursor) {
+        this.filter.sort = ''
+      }
+
+      return this.$SystemAPI.userList(this.filter)
+        .then(({ filter, set }) => {
+          this.filter = { ...this.filter, ...filter }
+          this.filter.pageCursor = undefined
+          this.filter.nextPage = filter.nextPage
+          this.filter.prevPage = filter.prevPage
+          return { filter, set }
+        })
+    },
 
     calculatePosition (dropdownList, component, { width }) {
       /**

@@ -244,10 +244,12 @@ export default {
       // Make a copy so that we do not change store item by ref
       this.module = module.clone()
 
+      const { moduleID, namespaceID } = this.module
+
       // Count existing records to see what we can do with this module
       this.$ComposeAPI
-        .recordList({ ...this.module, perPage: 1 })
-        .then(({ filter }) => { this.hasRecords = (filter.count > 0) })
+        .recordList({ moduleID, namespaceID, limit: 1 })
+        .then(({ set }) => { this.hasRecords = (set.length > 0) })
     })
   },
 

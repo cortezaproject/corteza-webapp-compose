@@ -173,9 +173,6 @@ export default {
       moduleFootnote: 'Modules without a {{0}} can only be used in a record list as an inline editor',
       recordPage: 'record page',
       addRecord: 'Add',
-      pagination: 'Showing {{from}} to {{to}} of {{count}} records',
-      paginationSingle: 'One record',
-      paginationSingle_plural: '{{count}} records',
       selected: '{{count}} of {{total}} records selected',
       selectable: 'Enable record selection',
       hideRecordReminderButton: 'Hide record reminder button',
@@ -185,10 +182,18 @@ export default {
       cancelSelection: 'cancel',
       fields: 'Module fields',
       editFields: 'Editable module fields',
+
+      pagination: {
+        first: '<<',
+        prev: 'Prev',
+        next: 'Next',
+      },
+
       refField: {
         label: 'Parent field',
         footnote: 'Field that links records with the parent record',
       },
+
       positionField: {
         label: 'Record sort field',
         footnote: 'Records will be sorted based on this field',

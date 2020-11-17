@@ -101,7 +101,7 @@ export default {
     fetchReminders () {
       this.$SystemAPI.reminderList({
         assignedTo: this.$auth.user.userID,
-        perPage: 0,
+        limit: 0,
       }).then(({ set: reminders = [] }) => {
         this.reminders = reminders.map(r => new system.Reminder(r))
       })
