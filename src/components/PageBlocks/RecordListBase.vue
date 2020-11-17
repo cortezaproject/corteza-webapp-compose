@@ -46,7 +46,7 @@
             <exporter-modal
               v-if="options.allowExport && !inlineEditing"
               :module="recordListModule"
-              :record-count="pagingStats.count"
+              :record-count="items.length"
               :query="query"
               :selection="selected"
               @export="onExport"
@@ -75,7 +75,7 @@
             cols="4"
             class="pt-1 text-nowrap"
           >
-            {{ $t('block.recordList.selected', { count: selected.length, total: filter.count }) }}
+            {{ $t('block.recordList.selected', { count: selected.length, total: items.length }) }}
             <a
               class="text-light"
               href="#"
@@ -387,34 +387,34 @@
         <b-row
           no-gutters
         >
-          <b-col
-            class="pt-1 text-nowrap text-truncate"
-            cols="8"
-          >
-            <span
-              v-if="filter.count > filter.perPage"
-            >
-              {{ $t('block.recordList.pagination', pagingStats) }}
-            </span>
-            <span
-              v-else
-            >
-              {{ $t('block.recordList.paginationSingle', pagingStats) }}
-            </span>
-          </b-col>
-          <b-col
-            cols="4"
-          >
-            <b-pagination
-              v-if="filter.count > filter.perPage"
-              align="right"
-              aria-controls="record-list"
-              class="m-0"
+          <b-col>
+            <b-button-group
               size="sm"
-              v-model="filter.page"
-              :per-page="filter.perPage"
-              :total-rows="filter.count"
-            />
+              class="float-right"
+            >
+              <b-button
+                size="sm"
+                variant="outline-primary"
+                :disabled="!hasPrevPage"
+                @click="goToPage()"
+              >
+                {{ $t('block.recordList.pagination.first') }}
+              </b-button>
+              <b-button
+                variant="primary"
+                :disabled="!hasPrevPage"
+                @click="goToPage('prevPage')"
+              >
+                {{ $t('block.recordList.pagination.prev') }}
+              </b-button>
+              <b-button
+                variant="primary"
+                :disabled="!hasNextPage"
+                @click="goToPage('nextPage')"
+              >
+                {{ $t('block.recordList.pagination.next') }}
+              </b-button>
+            </b-button-group>
           </b-col>
         </b-row>
       </b-container>
@@ -474,9 +474,10 @@ export default {
       filter: {
         filter: '',
         sort: '',
-        page: 1,
-        perPage: 20,
-        count: 0,
+        limit: 10,
+        pageCursor: '',
+        prevPage: '',
+        nextPage: '',
       },
 
       selected: [],
@@ -510,6 +511,14 @@ export default {
       return this.editing
     },
 
+    hasPrevPage () {
+      return this.filter.prevPage
+    },
+
+    hasNextPage () {
+      return this.filter.nextPage
+    },
+
     editing () {
       return this.mode === 'editor'
     },
@@ -518,7 +527,7 @@ export default {
       if (this.options.hidePaging) {
         return !this.items.length
       }
-      return this.pagingStats.count === 0
+      return this.items.length === 0
     },
 
     inlineEditing () {
@@ -535,20 +544,6 @@ export default {
     areAllRowsDeleted () {
       const selItems = this.items.filter(({ id }) => this.selected.includes(id))
       return !!this.selected.length && !selItems.find(({ r }) => !r.deletedAt)
-    },
-
-    pagingStats () {
-      const { page, perPage, count } = this.filter
-      let pages = Math.ceil(count / perPage)
-      if (pages < 1) { pages = 1 }
-
-      return {
-        from: ((page - 1) * perPage) + 1,
-        to: (page * perPage),
-        page,
-        count,
-        pages,
-      }
     },
 
     // Returns module, configured for this record list
@@ -613,10 +608,6 @@ export default {
   },
 
   watch: {
-    'filter.page' () {
-      this.refresh()
-    },
-
     query: throttle(function (e) {
       this.filter.query = queryToFilter(this.query, this.prefilter, this.recordListModule.filterFields(this.options.fields))
       this.refresh()
@@ -721,7 +712,7 @@ export default {
     // Sanitizes record list config and
     // prepares prefilter
     prepRecordList () {
-      const { moduleID, presort, prefilter, page, perPage, editable, refField, positionField } = this.options
+      const { moduleID, presort, prefilter, editable, perPage, refField, positionField } = this.options
 
       // Validate props
       if (!moduleID) {
@@ -742,7 +733,7 @@ export default {
       }
 
       const filter = []
-      let sort = 'createdAt DESC'
+      let sort = ''
 
       if (presort) {
         sort = presort
@@ -770,20 +761,11 @@ export default {
       }
 
       this.prefilter = filter.join(' AND ')
-      if (editable) {
-        this.filter = {
-          perPage: 0,
-          sort,
-          filter: this.prefilter || '',
-        }
-      } else {
-        this.filter = {
-          count: 0,
-          page: page || 1,
-          perPage: perPage || 20,
-          sort,
-          filter: this.prefilter || '',
-        }
+      const limit = editable ? 0 : perPage
+      this.filter = {
+        limit,
+        sort,
+        filter: this.prefilter || '',
       }
     },
 
@@ -900,6 +882,11 @@ export default {
       this.refresh()
     },
 
+    goToPage (page) {
+      this.filter.pageCursor = this.filter[page]
+      this.refresh()
+    },
+
     handleSelectAllOnPage ({ isChecked }) {
       if (isChecked) {
         this.selected = this.items.map(({ id }) => id)
@@ -958,11 +945,20 @@ export default {
       const filter = queryToFilter(this.query, this.prefilter, this.recordListModule.filterFields(this.options.fields))
       this.processing = true
       this.selected = []
-      this.items = await this.$ComposeAPI.recordList({ ...this.recordListModule, ...this.filter, filter })
+
+      const { moduleID, namespaceID } = this.recordListModule
+      if (this.filter.pageCursor) {
+        this.filter.sort = ''
+      }
+
+      this.items = await this.$ComposeAPI.recordList({ moduleID, namespaceID, ...this.filter, filter })
         .then(({ set, filter }) => {
           const records = set.map(r => new compose.Record(r, this.recordListModule))
 
           this.filter = { ...this.filter, ...filter }
+          this.filter.pageCursor = undefined
+          this.filter.nextPage = filter.nextPage
+          this.filter.prevPage = filter.prevPage
 
           // Extract user IDs from record values and load all users
           const fields = this.fields.filter(f => f.moduleField).map(f => f.moduleField)

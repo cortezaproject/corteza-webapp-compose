@@ -23,8 +23,8 @@
           ref="singleSelect"
         >
           <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
-            <b-button class="flex-grow-1" @click="filter.page -= 1" :disabled="!hasPrevPage" size="sm">Prev</b-button>
-            <b-button class="flex-grow-1 ml-1" @click="filter.page += 1" :disabled="!hasNextPage" size="sm">Next</b-button>
+            <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
+            <b-button class="flex-grow-1 ml-1" @click="filter.pageCursor = filter.nextPage" :disabled="!hasNextPage" size="sm">Next</b-button>
           </li>
         </vue-select>
         <vue-select
@@ -43,8 +43,8 @@
           v-model="multipleSelected"
         >
           <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
-            <b-button class="flex-grow-1" @click="filter.page -= 1" :disabled="!hasPrevPage" size="sm">Prev</b-button>
-            <b-button class="flex-grow-1 ml-1" @click="filter.page += 1" :disabled="!hasNextPage" size="sm">Next</b-button>
+            <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
+            <b-button class="flex-grow-1 ml-1" @click="filter.pageCursor = filter.nextPage" :disabled="!hasNextPage" size="sm">Next</b-button>
           </li>
         </vue-select>
       </template>
@@ -66,8 +66,8 @@
           @input="setRecord($event, ctx.index)"
         >
           <li v-if="showPagination" slot="list-footer" class="d-flex justify-conten mt-1 mx-1">
-            <b-button class="flex-grow-1" @click="filter.page -= 1" :disabled="!hasPrevPage" size="sm">Prev</b-button>
-            <b-button class="flex-grow-1 ml-1" @click="filter.page += 1" :disabled="!hasNextPage" size="sm">Next</b-button>
+            <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
+            <b-button class="flex-grow-1 ml-1" @click="filter.pageCursor = filter.nextPage" :disabled="!hasNextPage" size="sm">Next</b-button>
           </li>
         </vue-select>
         <span v-else>{{ (multipleSelected[ctx.index] || {}).label }}</span>
@@ -91,8 +91,8 @@
         v-model="selected"
       >
         <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
-          <b-button class="flex-grow-1" @click="filter.page -= 1" :disabled="!hasPrevPage" size="sm">Prev</b-button>
-          <b-button class="flex-grow-1 ml-1" @click="filter.page += 1" :disabled="!hasNextPage" size="sm">Next</b-button>
+          <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
+          <b-button class="flex-grow-1 ml-1" @click="filter.pageCursor = filter.nextPage" :disabled="!hasNextPage" size="sm">Next</b-button>
         </li>
       </vue-select>
       <errors :errors="errors" />
@@ -103,7 +103,7 @@
 import base from './base'
 import { VueSelect } from 'vue-select'
 import { compose } from '@cortezaproject/corteza-js'
-import { throttle, debounce } from 'lodash'
+import { debounce } from 'lodash'
 import { createPopper } from '@popperjs/core'
 import { mapGetters } from 'vuex'
 
@@ -121,9 +121,11 @@ export default {
       latest: [], // set of 10 latest records for default list
       filter: {
         query: null,
-        page: 1,
-        perPage: 50,
-        count: 0,
+        sort: '',
+        limit: 10,
+        pageCursor: '',
+        prevPage: '',
+        nextPage: '',
       },
     }
   },
@@ -175,41 +177,27 @@ export default {
     },
 
     showPagination () {
-      const { query, count, perPage } = this.filter
-      return query && count > perPage
-    },
-
-    numOfPages () {
-      const { count, perPage } = this.filter
-      if (count > 0) {
-        return Math.ceil(count / perPage)
-      }
-      return 0
+      return this.filter.query && (this.hasPrevPage || this.hasNextPage)
     },
 
     hasPrevPage () {
-      return this.filter.page > 1
+      return this.filter.prevPage
     },
 
     hasNextPage () {
-      return this.filter.page < this.numOfPages
+      return this.filter.nextPage
     },
   },
 
   watch: {
-    'field.options': {
-      deep: true,
-      handler () {
-        // Delay loading of referenced records for a bit
-        throttle((e) => {
-          this.loadLatest()
-        }, 500)()
-      },
-    },
-
-    'filter.page': {
-      handler () {
-        this.search(this.filter.query)
+    'filter.pageCursor': {
+      handler (pageCursor) {
+        if (pageCursor && this.filter.query) {
+          this.fetchPrefiltered(this.filter)
+            .then(({ filter, set }) => {
+              this.records = set.map(r => new compose.Record(this.module, r))
+            })
+        }
       },
     },
   },
@@ -280,10 +268,9 @@ export default {
     search: debounce(function (query) {
       if (query !== this.filter.query) {
         this.filter.query = query
-        this.filter.page = 1
+        this.filter.pageCursor = undefined
       }
-
-      const { page, perPage } = this.filter
+      const { limit, pageCursor } = this.filter
       const namespaceID = this.namespace.namespaceID
       const moduleID = this.field.options.moduleID
 
@@ -300,21 +287,22 @@ export default {
           return `${qf} LIKE '%${query}%'`
         }).join(' OR ')
 
-        this.fetchPrefiltered({ namespaceID, moduleID, filter, sort: this.sortString(), page, perPage }).then(({ filter, set }) => {
-          this.filter.count = filter.count
-          this.records = set.map(r => new compose.Record(this.module, r))
-        })
+        this.fetchPrefiltered({ namespaceID, moduleID, filter, sort: this.sortString(), limit, pageCursor })
+          .then(({ filter, set }) => {
+            this.records = set.map(r => new compose.Record(this.module, r))
+          })
       }
     }, 300),
 
     loadLatest () {
       const namespaceID = this.namespace.namespaceID
       const moduleID = this.field.options.moduleID
-      const perPage = 10
+      const { limit } = this.filter
       if (moduleID) {
-        this.fetchPrefiltered({ namespaceID, moduleID, perPage }).then(({ set }) => {
-          this.latest = set.map(r => new compose.Record(this.module, r))
-        })
+        this.fetchPrefiltered({ namespaceID, moduleID, limit })
+          .then(({ filter, set }) => {
+            this.latest = set.map(r => new compose.Record(this.module, r))
+          })
       }
     },
 
@@ -330,7 +318,18 @@ export default {
         }
       }
 
+      if (q.pageCursor) {
+        q.sort = ''
+      }
+
       return this.$ComposeAPI.recordList({ ...q, filter: baseF })
+        .then(({ filter, set }) => {
+          this.filter = { ...this.filter, ...filter }
+          this.filter.pageCursor = undefined
+          this.filter.nextPage = filter.nextPage
+          this.filter.prevPage = filter.prevPage
+          return { filter, set }
+        })
     },
 
     // Evaluates the given prefilter. Allows JS template literal expressions
@@ -343,7 +342,7 @@ export default {
     },
 
     sortString () {
-      return [this.field.options.labelField, 'updated_at DESC', 'created_at DESC'].filter(f => !!f).join(', ')
+      return [this.field.options.labelField].filter(f => !!f).join(', ')
     },
 
     fetchRecord (recordID) {
