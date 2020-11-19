@@ -13,6 +13,12 @@ module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias,
     Vue.config.productionTip = false
   }
 
+  if (isDevelopment) {
+    var Vue = require('vue')
+    Vue.config.devtools = true
+    Vue.config.performance = false
+  }
+
   const publicPath = isProduction ? '/' + appName : '/'
   const optimization = isTest ? {} : {
     usedExports: true,
