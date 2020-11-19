@@ -10,7 +10,7 @@
         class="p-2 border-bottom border-light"
       >
         <field-editor
-          v-if="field.canUpdateRecordValue"
+          v-if="isFieldEditable(field)"
           v-bind="{ ...$props, errors: fieldErrors(field.name) }"
           class="field"
           :field="field"
@@ -26,7 +26,7 @@
           </label>
           <field-viewer
             :field="field"
-            v-bind="$props"
+            v-bind="{ ...$props, errors: fieldErrors(field.name) }"
           />
         </div>
         <div
@@ -92,10 +92,8 @@ export default {
     },
 
     errorID () {
-      if (this.record.recordID !== NoID) {
-        return this.record.recordID
-      }
-      return 'r:parent:0'
+      const { recordID = NoID } = this.record || {}
+      return recordID === NoID ? 'parent:0' : recordID
     },
   },
 
@@ -119,6 +117,15 @@ export default {
       return this.errors
         .filterByMeta('field', name)
         .filterByMeta('id', this.errorID)
+    },
+
+    isFieldEditable (field) {
+      return field &&
+        field.canUpdateRecordValue &&
+        !(
+          field.expressions &&
+          field.expressions.value
+        )
     },
   },
 }

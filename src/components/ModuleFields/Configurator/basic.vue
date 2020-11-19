@@ -2,12 +2,38 @@
   <div>
     <b-form-checkbox
       v-model="field.isRequired"
-      :disabled="!field.cap.required"
+      :disabled="!field.cap.required || showvalueExpr"
       :value="true"
       :unchecked-value="false"
     >
       {{ $t('general.label.required') }}
     </b-form-checkbox>
+    <b-form-checkbox
+      v-model="showvalueExpr"
+      :disabled="field.isRequired"
+      :value="true"
+      :unchecked-value="false"
+    >
+      {{ $t('field.valueExpr.label') }}
+    </b-form-checkbox>
+    <b-form-group
+      v-show="showvalueExpr"
+      class="mt-2"
+    >
+      <b-input-group>
+        <b-input-group-append>
+          <b-button variant="dark">ƒ</b-button>
+        </b-input-group-append>
+        <b-form-input
+          :placeholder="$t('field.valueExpr.placeholder')"
+          v-model="field.expressions.value"
+        >
+        </b-form-input>
+      </b-input-group>
+      <b-form-text>
+        {{ $t('field.valueExpr.description') }}
+      </b-form-text>
+    </b-form-group>
     <b-form-checkbox
       v-if="false"
       v-model="field.isPrivate"
@@ -17,6 +43,7 @@
     >
       {{ $t('general.label.private') }}
     </b-form-checkbox>
+    <hr />
     <b-form-checkbox
       v-model="field.isMulti"
       :disabled="!field.cap.multi"
@@ -25,10 +52,8 @@
     >
       {{ $t('general.label.multi') }}
     </b-form-checkbox>
-
-    <hr />
     <b-form-group
-      v-if="mock.field"
+      v-if="mock.field && !showvalueExpr"
       :label="$t('field.defaultValue')"
       class="mt-3"
     >
@@ -65,6 +90,7 @@ export default {
 
   data () {
     return {
+      showvalueExpr: false,
       mock: {
         namespace: undefined,
         module: undefined,
@@ -124,7 +150,7 @@ export default {
    * Prepare mock values for default-value field editor
    */
   created () {
-    let { defaultValue, isMulti } = this.field
+    let { defaultValue, isMulti, expressions } = this.field
     if (!defaultValue) {
       defaultValue = []
     }
@@ -139,6 +165,21 @@ export default {
     this.mock.field.apply({ name: 'defValField' })
     this.mock.module = new compose.Module({ fields: [this.mock.field] }, this.namespace)
     this.mock.record = new compose.Record(this.mock.module, { defValField: defaultValue })
+
+    this.showvalueExpr = expressions.value && expressions.value.length > 0
+    if (!this.field.expressions.value) {
+      this.$set(this.field.expressions, 'value', '')
+    }
+  },
+
+  beforeDestroy () {
+    // Sanitize expression/required flag
+    if (this.showvalueExpr) {
+      this.field.required = false
+      this.field.defaultValue = []
+    } else {
+      this.field.expressions.value = undefined
+    }
   },
 }
 </script>

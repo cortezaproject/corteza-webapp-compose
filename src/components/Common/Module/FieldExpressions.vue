@@ -1,0 +1,50 @@
+<template>
+  <b-form-group
+    class="p-0 m-0"
+  >
+    <b-form-row
+      v-for="(expr, e) in value"
+      :key="e"
+      class="mb-2"
+      no-gutters>
+      <b-input-group>
+        <b-input-group-prepend>
+          <b-button variant="dark">ƒ</b-button>
+        </b-input-group-prepend>
+        <slot v-bind:value="value[e]">
+          <b-form-input
+            v-model="value[e]"
+            :placeholder="$t('field.expression.placeholder')"
+          />
+        </slot>
+        <b-input-group-addon
+          class="m-1"
+        >
+          <!-- no prompt/confirmation on empty input -->
+          <c-input-confirm
+            :no-prompt="value[e].length === 0"
+            @confirmed="$emit('remove', e)"
+          />
+        </b-input-group-addon>
+      </b-input-group>
+    </b-form-row>
+    <div>
+      <b-button
+        class="float-right mt-2"
+        @click="$emit('append')"
+      >
+        Add
+      </b-button>
+    </div>
+  </b-form-group>
+</template>
+<script>
+
+export default {
+  props: {
+    value: {
+      type: Array,
+    },
+  },
+}
+</script>

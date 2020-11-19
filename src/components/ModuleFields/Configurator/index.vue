@@ -29,6 +29,13 @@
         :field="field"
       />
     </b-tab>
+    <b-tab
+      :title="$t('general.label.validation')"
+    >
+      <validation
+        :field="field"
+      />
+    </b-tab>
   </b-tabs>
 </template>
 <script>
@@ -36,12 +43,14 @@ import base from './base'
 import * as Configurators from './loader'
 import multi from './multi'
 import basic from './basic'
+import validation from './validation'
 
 export default {
   components: {
     ...Configurators,
     multi,
     basic,
+    validation,
   },
 
   extends: base,

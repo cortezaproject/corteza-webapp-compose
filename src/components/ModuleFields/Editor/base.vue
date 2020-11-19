@@ -12,7 +12,7 @@
 </template>
 <script>
 import multi from './multi'
-import errors from './errors'
+import errors from '../errors'
 import { compose, validator } from '@cortezaproject/corteza-js'
 
 export default {

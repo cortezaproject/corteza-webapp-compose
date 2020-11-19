@@ -1,16 +1,25 @@
 <template>
   <span v-if="valueOnly">
     <div :class="{'multiline': field.isMulti}">{{ formatted }}</div>
+    <errors :errors="errors" />
   </span>
   <div v-else>
     <label>{{ field.label || field.name }}</label>
     <div :class="{'multiline': field.isMulti}">{{ formatted }}</div>
+    <errors :errors="errors" />
   </div>
 </template>
 <script>
-import { compose } from '@cortezaproject/corteza-js'
+import errors from '../errors'
+import { compose, validator } from '@cortezaproject/corteza-js'
 
 export default {
+  components: {
+    // errors is used in the components that extends base
+    // eslint-disable-next-line vue/no-unused-components
+    errors,
+  },
+
   props: {
     namespace: {
       type: compose.Namespace,
@@ -25,6 +34,11 @@ export default {
     record: {
       type: compose.Record,
       required: true,
+    },
+
+    errors: {
+      type: validator.Validated,
+      default () { return new validator.Validated() },
     },
 
     valueOnly: {

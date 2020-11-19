@@ -1,6 +1,7 @@
 var webpack = require('webpack')
 var exec = require('child_process').execSync
 var path = require('path')
+var Vue = require('vue')
 
 module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias, root = path.resolve('.'), env = process.env.NODE_ENV }) => {
   const isDevelopment = (env === 'development')
@@ -8,13 +9,11 @@ module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias,
   const isTest = (env === 'test')
 
   if (isTest) {
-    var Vue = require('vue')
     Vue.config.devtools = false
     Vue.config.productionTip = false
   }
 
   if (isDevelopment) {
-    var Vue = require('vue')
     Vue.config.devtools = true
     Vue.config.performance = false
   }

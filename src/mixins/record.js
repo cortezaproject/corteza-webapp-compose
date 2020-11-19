@@ -95,11 +95,12 @@ export default {
         return acc
       }, [])
 
+      const { recordID = NoID } = this.record || {}
       // Append after the payload construction, so it is not presented as a
       // sub record.
       pairs.push({
         module: this.module,
-        items: [{ r: this.record, id: 'r:parent:0' }],
+        items: [{ r: this.record, id: recordID === NoID ? 'parent:0' : recordID }],
       })
 
       return this
@@ -117,6 +118,9 @@ export default {
           if (!!details && Array.isArray(details) && details.length > 0) {
             this.errors = new validator.Validated()
             this.errors.push(...details)
+
+            console.debug(this.errors)
+
             throw new Error(this.$t('notification.record.validationErrors'))
           }
 
@@ -155,6 +159,9 @@ export default {
           const { details = undefined } = err
           if (!!details && Array.isArray(details) && details.length > 0) {
             this.errors.push(...details)
+
+            console.debug(this.errors)
+
             throw new Error(this.$t('notification.record.validationErrors'))
           }
 
@@ -236,6 +243,7 @@ export default {
       await this.dispatchUiEvent('onFormSubmitError')
       vRunner()
       if (!this.errors.valid()) {
+        console.debug(this.errors)
         throw new Error(this.$t('notification.record.validationErrors'))
       }
     },
@@ -255,6 +263,7 @@ export default {
 
       this.errors = this.validator.run(this.record)
       if (!this.errors.valid()) {
+        console.debug(this.errors)
         throw new Error(this.$t('notification.record.validationErrors'))
       }
     },

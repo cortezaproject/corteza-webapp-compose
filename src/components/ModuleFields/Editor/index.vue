@@ -30,7 +30,6 @@ export default {
 
       if (i >= 0) {
         return Editors[keys[i]]
-        // return this.$options.components[keys[i]]
       } else {
         return null
       }

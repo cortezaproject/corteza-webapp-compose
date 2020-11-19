@@ -74,6 +74,7 @@
       />
     </td>
     <td
+      v-if="false"
       class="text-center align-middle"
     >
       <b-form-checkbox
@@ -148,7 +149,6 @@ export default {
     fieldKinds () {
       return [...compose.ModuleFieldRegistry.keys()]
         // for now this field is hidden, since it's implementation is mia.
-        .filter(k => k !== 'Formula')
         .map(kind => {
           return { kind, label: this.$t(kind + '.label') }
         })

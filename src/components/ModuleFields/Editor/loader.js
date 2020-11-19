@@ -8,6 +8,3 @@ export { default as Url } from './Url'
 export { default as User } from './User'
 export { default as Record } from './Record'
 export { default as File } from './File'
-export {
-  Formula,
-} from '../Viewer/loader'
