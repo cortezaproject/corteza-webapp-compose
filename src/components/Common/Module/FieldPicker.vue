@@ -14,6 +14,7 @@
                  :key="field.name">
               <span v-if="field.label">{{ field.label }} ({{field.name}})</span>
               <span v-else>{{field.name}}</span>
+              <span v-if="field.isRequired">*</span>
               <span class="system float-right" v-if="field.isSystem">{{ $t('field.selector.systemField') }}</span>
             </div>
           </draggable>
@@ -31,6 +32,7 @@
                  :key="field.name">
               <span v-if="field.label">{{ field.label }} ({{field.name}})</span>
               <span v-else>{{field.name}}</span>
+              <span v-if="field.isRequired">*</span>
               <span class="system float-right" v-if="field.isSystem">{{ $t('field.selector.systemField') }}</span>
             </div>
           </draggable>
