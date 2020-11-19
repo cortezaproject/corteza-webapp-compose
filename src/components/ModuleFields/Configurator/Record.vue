@@ -129,7 +129,8 @@ export default {
     },
 
     fields () {
-      return this.module ? this.module.fields.map(f => { return { value: f.name, text: f.label || f.name } }) : []
+      const fields = this.module ? this.module.fields.map(f => { return { value: f.name, text: f.label || f.name } }) : []
+      return fields.sort((a, b) => a.text.localeCompare(b.text))
     },
   },
 

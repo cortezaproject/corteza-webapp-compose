@@ -21,11 +21,14 @@ export default {
   extends: base,
   computed: {
     selectOptions () {
-      var options = []
+      const options = []
       if (this.module) {
-        this.module.fields.forEach(function (element) {
-          options.push(element.name)
-        })
+        this.module.fields
+          .slice()
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .forEach(({ name }) => {
+            options.push(name)
+          })
       }
       return options
     },
