@@ -317,9 +317,10 @@ export default {
 
     handleRecordPageCreation () {
       // A simple record block w/o preselected fields
-      const recBlock = new compose.PageBlockRecord({ xywh: [0, 0, 12, 16] })
+      const blocks = [new compose.PageBlockRecord({ xywh: [0, 0, 12, 16] })]
+      const selfID = this.recordListPage.pageID
 
-      this.createRecordPage({ blocks: [recBlock] }).then(page => {
+      this.createRecordPage({ blocks, selfID }).then(page => {
         this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.createFailed')))
     },
