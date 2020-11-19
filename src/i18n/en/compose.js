@@ -590,6 +590,7 @@ export default {
       private: 'Private',
       updatedAt: '$t(field.system.updatedAt)',
       pageBuilder: 'Page builder',
+      recordPage: 'Record page',
       moduleName: 'Module name',
       search: 'Search',
       create: 'Create',
