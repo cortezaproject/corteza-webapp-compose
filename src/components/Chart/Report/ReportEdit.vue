@@ -318,7 +318,7 @@ export default {
     },
 
     metricFields () {
-      return [{ name: 'count' }, ...this.module.fields.filter(f => f.kind === 'Number')]
+      return [{ name: 'count' }, ...this.module.fields.filter(f => f.kind === 'Number').sort((a, b) => a.name.localeCompare(b.name))]
     },
 
     dimensionFields () {
@@ -330,7 +330,7 @@ export default {
           disabled = disabled || (options.useRichTextEditor || options.multiLine)
         }
         return { name, label, disabled }
-      })
+      }).sort((a, b) => a.name.localeCompare(b.name))
     },
 
     moduleID: {

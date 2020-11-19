@@ -148,7 +148,9 @@ export default {
       if (!this.module) {
         return []
       }
-      return [...this.module.fields].filter(f => ['String', 'Email', 'Url'].includes(f.kind))
+      return [...this.module.fields]
+        .filter(f => ['String', 'Email', 'Url'].includes(f.kind))
+        .sort((a, b) => a.label.localeCompare(b.label))
     },
 
     /**
@@ -160,7 +162,9 @@ export default {
       if (!this.module) {
         return []
       }
-      return [...this.module.fields, ...this.module.systemFields()]
+
+      const moduleFields = this.module.fields.slice().sort((a, b) => a.label.localeCompare(b.label))
+      return [...moduleFields, ...this.module.systemFields()]
         .filter(f => f.kind === 'DateTime' && !f.isMulti)
     },
   },

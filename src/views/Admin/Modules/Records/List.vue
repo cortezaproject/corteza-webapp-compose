@@ -440,13 +440,8 @@ export default {
       if (this.module) {
         return this.module.fields
           .filter(f => !['User', 'Record'].includes(f.kind))
-          .map(f => {
-            return {
-              label: f.label,
-              name: f.name,
-              kind: f.kind,
-            }
-          })
+          .map(({ label, name, kind }) => ({ label, name, kind }))
+          .sort((a, b) => a.label.localeCompare(b.label))
       } else {
         return []
       }

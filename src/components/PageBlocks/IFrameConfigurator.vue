@@ -48,6 +48,7 @@ export default {
 
       return this.module.fields
         .filter(({ kind }) => kind === 'Url')
+        .sort((a, b) => a.label.localeCompare(b.label))
     },
   },
 }

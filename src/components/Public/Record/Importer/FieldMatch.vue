@@ -116,6 +116,7 @@ export default {
     moduleFields () {
       return this.module.fields
         .map(({ name: value, label: text }) => ({ value, text }))
+        .sort((a, b) => a.text.localeCompare(b.text))
     },
   },
 
