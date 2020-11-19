@@ -50,11 +50,12 @@
               </template>
               <template v-slot:cell(actions)="{ item: m }">
                 <b-button
+                  v-if="pages.find(p => p.moduleID === m.moduleID)"
                   @click="openPageBuilder(m)"
                   variant="link"
                   class="mr-2 pt-0 text-dark"
                 >
-                  {{ $t('general.label.pageBuilder') }}
+                  {{ $t('general.label.recordPage') }}
                 </b-button>
                 <span v-if="m.canReadRecord">
                   <router-link :to="{name: 'admin.modules.record.list', params: { moduleID: m.moduleID }}" class="mr-2 text-dark">
@@ -174,25 +175,7 @@ export default {
       if (recordPage) {
         // Record page already exists
         this.$router.push(goto(recordPage))
-        return
       }
-
-      // Collect params and create new record page
-      const module = this.modules.find(m => m.moduleID === moduleID)
-      const { namespaceID } = this.namespace
-      const payload = {
-        namespaceID,
-        title: `${this.$t('module.forModule.recordPage')} "${module.name || moduleID}"`,
-        moduleID,
-        blocks: [],
-      }
-
-      // Create page and open it
-      this.createPage(payload)
-        .then(page => {
-          this.$router.push(goto(page))
-        })
-        .catch(this.defaultErrorHandler(this.$t('notification.page.createFailed')))
     },
   },
 }
