@@ -218,21 +218,46 @@ export default {
     handleSave ({ closeOnSuccess = false, previewOnSuccess = false } = {}) {
       const { namespaceID } = this.namespace
 
-      this.findPageByID({ namespaceID, pageID: this.pageID, force: true }).then(page => {
-        // Merge changes
-        this.page = new compose.Page({ namespaceID, ...page, blocks: this.page.blocks })
+      // If this is record page, check if all required fields are present in the record blocks.
+      if (this.module) {
+        const recordBlocks = this.page.blocks.filter(({ kind }) => kind === 'Record')
+        // Array of required fieldID's from the module
+        const requiredIDs = new Set([...this.module.fields.filter(({ isRequired = false }) => isRequired).map(({ fieldID }) => fieldID)])
 
-        this.updatePage(this.page).then((page) => {
-          this.raiseSuccessAlert(this.$t('notification.page.saved'))
-          if (closeOnSuccess) {
-            this.$router.push({ name: 'admin.pages' })
-          } else if (previewOnSuccess) {
-            this.$router.push({ name: 'page', params: { pageID: this.pageID } })
+        for (let i = 0; i < recordBlocks.length; i++) {
+          const fields = ((recordBlocks[i] || {}).options || {}).fields || []
+          // If no fields are in Record block, means all fields are present(default), no need to check
+          if (!fields.length) {
+            requiredIDs.clear()
+            break
           }
 
-          this.page = new compose.Page(page)
-        }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))
-      })
+          fields.filter(({ isRequired = false }) => isRequired).forEach(({ fieldID }) => {
+            requiredIDs.delete(fieldID)
+          })
+        }
+
+        if (requiredIDs.size > 0) {
+          this.defaultErrorHandler(this.$t('notification.page.saveFailedRequired'))()
+          return
+        }
+      }
+
+      this.findPageByID({ namespaceID, pageID: this.pageID, force: true })
+        .then(page => {
+          // Merge changes
+          this.page = new compose.Page({ namespaceID, ...page, blocks: this.page.blocks })
+
+          this.updatePage(this.page).then((page) => {
+            this.raiseSuccessAlert(this.$t('notification.page.saved'))
+            if (closeOnSuccess) {
+              this.$router.push({ name: 'admin.pages' })
+            } else if (previewOnSuccess) {
+              this.$router.push({ name: 'page', params: { pageID: this.pageID } })
+            }
+            this.page = new compose.Page(page)
+          }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))
+        })
     },
 
     handleDeletePage () {
