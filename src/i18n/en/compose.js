@@ -1019,6 +1019,7 @@ export default {
       createFailed: 'Could not create a page',
       loadFailed: 'Could not load the page tree',
       saveFailed: 'Could not save this page',
+      saveFailedRequired: 'Could not save this page, all required module fields must be present',
       deleteFailed: 'Could not delete this page',
       noPages: 'No pages found',
       reordered: 'Page reordered',

@@ -18,8 +18,9 @@ export default {
     defaultErrorHandler (prefix) {
       return (err = {}) => {
         /* eslint-disable no-console */
+        err = err.message ? (prefix + ': ' + this.$t(err.message)) : prefix
         console.error(err)
-        this.raiseWarningAlert(err.message ? (prefix + ': ' + this.$t(err.message)) : prefix)
+        this.raiseWarningAlert(err)
       }
     },
 
