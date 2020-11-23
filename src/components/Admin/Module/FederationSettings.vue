@@ -316,16 +316,18 @@ export default {
     'module.fields': {
       immediate: true,
       handler (fields) {
-        this.moduleFields = fields.map(f => {
-          return {
-            kind: f.kind,
-            name: f.name,
-            label: f.label,
-            isMulti: f.isMulti,
-            value: false,
-            map: null,
-          }
-        })
+        this.moduleFields = fields
+          .sort((a, b) => a.label.localeCompare(b.label))
+          .map(f => {
+            return {
+              kind: f.kind,
+              name: f.name,
+              label: f.label,
+              isMulti: f.isMulti,
+              value: false,
+              map: null,
+            }
+          })
       },
     },
 
@@ -379,7 +381,7 @@ export default {
         list[nodeID] = {}
 
         for (const sm of this.sharedModules[nodeID]) {
-          var f = sm.fields
+          var f = sm.fields.sort((a, b) => a.label.localeCompare(b.label))
 
           // is there any mappings for this shared module?
           const mappedFields = ((this.moduleMappings[nodeID] || {})[sm.moduleID] || {}).fields || []
