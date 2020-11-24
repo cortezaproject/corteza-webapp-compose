@@ -12,7 +12,7 @@
                 :endpoint="endpoint"
                 @uploaded="onUploaded"
                 :acceptedFiles="['application/json', 'text/csv']"
-                :maxFilesize="$s('Record.Attachments.MaxSize' || 100)"/>
+                :maxFilesize="$s('compose.Record.Attachments.MaxSize', 100)"/>
 
     </b-form-group>
 

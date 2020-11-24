@@ -61,7 +61,7 @@ export default (options = {}) => {
             compose.TriggerComposeServerScriptOnManual(this.$ComposeAPI),
           ))
 
-        this.$Settings.init({ api: this.$ComposeAPI }).finally(() => {
+        this.$Settings.init({ api: this.$SystemAPI }).finally(() => {
           this.loaded = true
         })
       } else {

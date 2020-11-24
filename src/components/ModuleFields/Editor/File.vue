@@ -6,8 +6,8 @@
   >
     <uploader :endpoint="endpoint"
               @uploaded="appendAttachment"
-              :acceptedFiles="$s('Page.Attachments.Mimetypes', ['*/*'])"
-              :maxFilesize="$s('Page.Attachments.MaxSize', 100)"/>
+              :acceptedFiles="$s('compose.Page.Attachments.Mimetypes', ['*/*'])"
+              :maxFilesize="$s('compose.Page.Attachments.MaxSize', 100)"/>
 
     <list-loader kind="record"
                  :set.sync="set"

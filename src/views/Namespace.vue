@@ -96,7 +96,7 @@ export default {
 
   data () {
     return {
-      nsSbVisible: this.$s('UI.NamespaceSwitcher.DefaultOpen', false),
+      nsSbVisible: this.$s('compose.UI.NamespaceSwitcher.DefaultOpen', false),
       loaded: false,
 
       error: '',
@@ -134,7 +134,7 @@ export default {
     },
 
     showNamespaceSidebar () {
-      return this.$s('UI.NamespaceSwitcher.Enabled', false) && this.enabledNamespaces.length > 1
+      return this.$s('compose.UI.NamespaceSwitcher.Enabled', false) && this.enabledNamespaces.length > 1
     },
   },
 

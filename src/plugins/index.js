@@ -33,5 +33,5 @@ Vue.use(plugins.UIHooks(), {
 })
 
 Vue.use(plugins.Auth(), { api: Vue.prototype.$SystemAPI })
-Vue.use(plugins.Settings, { api: Vue.prototype.$ComposeAPI })
+Vue.use(plugins.Settings, { api: Vue.prototype.$SystemAPI })
 Vue.use(plugins.Reminder, { api: Vue.prototype.$SystemAPI })
