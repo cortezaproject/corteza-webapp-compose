@@ -43,18 +43,18 @@
       >
         <b-list-group
           vertical
-          class="overflow-auto flex-grow-3"
+          class="overflow-auto server-list"
         >
           <b-list-group-item
             v-for="f in servers"
             :key="f.nodeID"
             href="#"
             :class="{ 'border border-primary': f.nodeID === upstream.active }"
-            class="border"
+            class="border text-truncate"
             @click="upstream.active = f.nodeID"
           >
             {{ f.name }}<br>
-            <small>{{ f.url }}</small>
+            <small>{{ f.baseURL }}</small>
           </b-list-group-item>
         </b-list-group>
 
@@ -103,6 +103,7 @@
               v-for="f in upstream[upstream.active].fields"
               :key="`${upstream.active}${f.name}`"
               v-model="f.value"
+              @change="setUpdated('upstream')"
               class="mb-2"
             >
               {{ f.label }}
@@ -124,18 +125,18 @@
       >
         <b-list-group
           vertical
-          class="overflow-auto"
+          class="overflow-auto server-list"
         >
           <b-list-group-item
             v-for="f in servers"
             :key="f.nodeID"
             href="#"
             :class="{ 'border border-primary': f.nodeID === downstream.active }"
-            class="border"
+            class="border text-truncate"
             @click="downstream.active = f.nodeID"
           >
             {{ f.name }}<br>
-            <small>{{ f.url }}</small>
+            <small>{{ f.baseURL }}</small>
           </b-list-group-item>
         </b-list-group>
 
@@ -188,6 +189,7 @@
             >
               <b-form-checkbox
                 v-model="sharedModule.map"
+                @change="setUpdated('downstream')"
               >
                 {{ sharedModule.label }}
               </b-form-checkbox>
@@ -200,6 +202,7 @@
                 value-field="name"
                 text-field="label"
                 class="w-50"
+                @change="setUpdated('downstream')"
               />
             </div>
           </div>
@@ -317,7 +320,6 @@ export default {
       immediate: true,
       handler (fields) {
         this.moduleFields = fields
-          .sort((a, b) => a.label.localeCompare(b.label))
           .map(f => {
             return {
               kind: f.kind,
@@ -328,6 +330,7 @@ export default {
               map: null,
             }
           })
+          .sort((a, b) => a.label.localeCompare(b.label))
       },
     },
 
@@ -417,6 +420,12 @@ export default {
       // module mappings (downstream)
       for (const nodeID in this.sharedModulesMapped) {
         for (const moduleID in this.sharedModulesMapped[nodeID]) {
+          const crtModule = this.sharedModules[nodeID].find(m => m.moduleID === moduleID)
+          // Check if node module downstream settings were updated
+          if (!crtModule || !(crtModule || {}).updated) {
+            continue
+          }
+
           const fields = this.toModuleMappingFormat(this.sharedModulesMapped[nodeID][moduleID])
 
           const payload = {
@@ -427,7 +436,12 @@ export default {
             fields,
           }
 
-          await this.persistModuleMappings(payload).catch(this.defaultErrorHandler)
+          await this.persistModuleMappings(payload)
+            .then(() => {
+              // Reset update flag
+              crtModule.updated = false
+            })
+            .catch(this.defaultErrorHandler)
         }
       }
 
@@ -435,6 +449,11 @@ export default {
 
       // upstream
       for (const nodeID of nodes) {
+        // Check if node upstream settings were updated
+        if (!this.upstream[nodeID] || !(this.upstream[nodeID] || {}).updated) {
+          continue
+        }
+
         const fields = ((this.upstream[nodeID] || {}).fields || []).filter((el) => el.value)
 
         const payload = {
@@ -447,7 +466,12 @@ export default {
           fields,
         }
 
-        const response = await this.persistExposedModule(payload).catch(this.defaultErrorHandler)
+        const response = await this.persistExposedModule(payload)
+          .then(() => {
+            // Reset update flag
+            (this.upstream[nodeID] || {}).updated = false
+          })
+          .catch(this.defaultErrorHandler)
 
         if (!response && !response.moduleID) {
           return
@@ -514,6 +538,7 @@ export default {
         copy: null,
         allFields: false,
         fields,
+        updated: false,
       }
 
       const settingFields = ((this.exposedModules[nodeID] || {}).fields || [])
@@ -561,7 +586,6 @@ export default {
           downstream.allFields[key] = false
         }
       })
-      // upstream.fields.filter(f => f.map).length === upstream.fields.length
 
       this.$set(this.downstream, nodeID, downstream)
       this.downstream.processing = false
@@ -573,8 +597,20 @@ export default {
       if (target === 'upstream') {
         this.upstream[active].fields = this.upstream[active].fields.map(f => ({ ...f, value }))
         this.upstream[active].allFields = value
+        this.upstream[active].updated = true
       } else if (target === 'downstream') {
         this.sharedModulesMapped[active][this.downstream[active].module] = this.sharedModulesMapped[active][this.downstream[active].module].map(f => ({ ...f, map: value }))
+        this.sharedModules[active].find(m => m.moduleID === this.downstream[active].module).updated = true
+      }
+    },
+
+    setUpdated (target) {
+      const active = this[target].active
+
+      if (target === 'upstream') {
+        this.upstream[active].updated = true
+      } else if (target === 'downstream') {
+        this.sharedModules[active].find(m => m.moduleID === this.downstream[active].module).updated = true
       }
     },
 
@@ -622,7 +658,7 @@ export default {
 
       await this.$FederationAPI.manageStructureListAll({ nodeID, shared: 1 })
         .then((data) => {
-          this.sharedModules[nodeID] = data
+          this.sharedModules[nodeID] = data.map(d => ({ ...d, updated: false }))
         })
         .catch(this.defaultErrorHandler)
     },
@@ -668,5 +704,9 @@ export default {
   min-height: 0;
   max-height: 70vh;
   display: flex;
+}
+
+.server-list {
+  max-width: 35%;
 }
 </style>
