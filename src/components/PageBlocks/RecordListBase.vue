@@ -835,6 +835,7 @@ export default {
       }
 
       if (filterRaw.includeQuery) {
+        // Prefilter + Query
         const queryF = queryToFilter(filterRaw.query, this.prefilter, this.recordListModule.filterFields(this.options.fields))
         if (e.filters) {
           e.filters = `(${e.filters}) AND `
@@ -844,6 +845,9 @@ export default {
         if (queryF) {
           e.filters += encodeURI(`(${queryF})`)
         }
+      } else {
+        // Include only prefilter
+        e.filters = queryToFilter('', this.prefilter, this.recordListModule.filterFields(this.options.fields))
       }
 
       const exportUrl = url.Make({
