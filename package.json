@@ -141,6 +141,9 @@
     "vue-template-compiler": "^2.6.11",
     "webpack": "^4.41.5"
   },
+  "resolutions": {
+    "**/**/highlight.js": "^9.18.2"
+  },
   "nyc": {
     "all": true,
     "reporter": [
