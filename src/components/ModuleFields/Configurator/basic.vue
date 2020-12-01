@@ -31,7 +31,14 @@
         </b-form-input>
       </b-input-group>
       <b-form-text>
-        {{ $t('field.valueExpr.description') }}
+        <i18next path="field.valueExpr.description" tag="label">
+          <a
+            target="_blank"
+            :href="expressionsHelp"
+          >
+            {{ $t('general.label.here') }}
+          </a>
+        </i18next>
       </b-form-text>
     </b-form-group>
     <b-form-checkbox
@@ -105,6 +112,10 @@ export default {
     ...mapGetters({
       getModuleByID: 'module/getByID',
     }),
+
+    expressionsHelp () {
+      return this.$router.resolve({ name: 'field.expressions.help' }).href
+    },
   },
 
   watch: {

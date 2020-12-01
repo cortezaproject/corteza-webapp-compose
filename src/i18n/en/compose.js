@@ -635,6 +635,7 @@ export default {
       welcome: 'Welcome!',
       urlPlaceholder: 'https://example.tld',
       validation: 'Validation',
+      here: 'here',
     },
     placeholder: {
       handle: 'handle (a - z, 0 - 9, underscore, dash)',
@@ -960,7 +961,7 @@ export default {
       label: 'Field value expression',
       placeholder: '((floor(numField1) + numField2) / 10) + 0.5',
       description: 'Place a formula or expression that calculates new numeric or combines and manipulates textual values.' +
-       'Additional information on specific expression syntax and list of functions is available in documentation',
+       'Additional information on specific expression syntax and list of functions is available {{0}}',
     },
     sanitizers: {
       label: 'Value sanitization',
