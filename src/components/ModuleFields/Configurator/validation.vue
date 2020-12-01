@@ -7,11 +7,12 @@
     >
       <field-expressions
         v-model="field.expressions.sanitizers"
+        :placeholder="$t('field.sanitizers.expression.placeholder')"
         @append="field.expressions.sanitizers.push('')"
         @remove="field.expressions.sanitizers.splice($event,1)"
       />
       <b-form-text>
-        info about what field value sanitizers are
+        {{ $t('field.sanitizers.description') }}
       </b-form-text>
     </b-form-group>
 
@@ -30,14 +31,14 @@
       >
         <b-form-input
           v-model="value.test"
-          :placeholder="$t('field.expression.placeholder')"
+          :placeholder="$t('field.validators.expression.placeholder')"
         />
         <b-input-group-prepend>
           <b-button variant="warning">!</b-button>
         </b-input-group-prepend>
         <b-form-input
           v-model="value.error"
-          :placeholder="$t('field.error.placeholder')"
+          :placeholder="$t('field.validators.error.placeholder')"
         />
       </field-expressions>
       <b-checkbox
@@ -47,42 +48,13 @@
         :unchecked-value="false"
         class="mt-2"
       >
-        Disable built-in validators
+        {{ $t('field.validators.disableBuiltIn') }}
       </b-checkbox>
 
       <b-form-text>
-        info about what field value validators are
+        {{ $t('field.validators.description') }}
       </b-form-text>
     </b-form-group>
-
-    <hr />
-
-    <b-form-group
-      class="mt-3"
-      :label="$t('field.formatters.label')"
-      label-size="lg"
-    >
-      <field-expressions
-        v-model="field.expressions.formatters"
-        @append="field.expressions.formatters.push('')"
-        @remove="field.expressions.formatters.splice($event,1)"
-      />
-
-      <b-form-text>
-        info about what field value formatters are
-      </b-form-text>
-
-      <b-checkbox
-        v-model="field.expressions.disableDefaultFormatters"
-        :disabled="field.expressions.formatters.length === 0"
-        :value="true"
-        :unchecked-value="false"
-        class="mt-2"
-      >
-        Disable built-in formatter
-      </b-checkbox>
-    </b-form-group>
-    <pre>{{ field.expressions }}</pre>
   </div>
 </template>
 

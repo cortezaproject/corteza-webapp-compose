@@ -14,7 +14,7 @@
         <slot v-bind:value="value[e]">
           <b-form-input
             v-model="value[e]"
-            :placeholder="$t('field.expression.placeholder')"
+            :placeholder="placeholder"
           />
         </slot>
         <b-input-group-addon
@@ -44,6 +44,11 @@ export default {
   props: {
     value: {
       type: Array,
+    },
+
+    placeholder: {
+      type: String,
+      default: () => {},
     },
   },
 }

@@ -634,6 +634,7 @@ export default {
       active: 'Active',
       welcome: 'Welcome!',
       urlPlaceholder: 'https://example.tld',
+      validation: 'Validation',
     },
     placeholder: {
       handle: 'handle (a - z, 0 - 9, underscore, dash)',
@@ -641,6 +642,7 @@ export default {
     tooltip: {
       dragAndDrop: 'Drag and drop to change order',
     },
+
   },
   permission: {
     saveChanges: 'Save changes',
@@ -953,6 +955,30 @@ export default {
       unselectAll: 'Unselect all',
       systemField: '(system field)',
       footnote: 'Add fields by dragging or double-clicking on them. Selected fields can also be reordered',
+    },
+    valueExpr: {
+      label: 'Field value expression',
+      placeholder: '((floor(numField1) + numField2) / 10) + 0.5',
+      description: 'Place a formula or expression that calculates new numeric or combines and manipulates textual values.' +
+       'Additional information on specific expression syntax and list of functions is available in documentation',
+    },
+    sanitizers: {
+      label: 'Value sanitization',
+      expression: {
+        placeholder: 'trim(value)',
+      },
+      description: 'Trim spaces from text or do other kinds of value manipulation before validation',
+    },
+    validators: {
+      label: 'Value validation',
+      expression: {
+        placeholder: 'value == ""',
+      },
+      error: {
+        placeholder: 'Text displayed when expression is true',
+      },
+      description: 'Set of expressions and error pairs that test validity of the input value.',
+      disableBuiltIn: 'Disable built-in validators',
     },
   },
   namespace: {
