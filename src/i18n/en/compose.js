@@ -960,8 +960,7 @@ export default {
     valueExpr: {
       label: 'Field value expression',
       placeholder: '((floor(numField1) + numField2) / 10) + 0.5',
-      description: 'Place a formula or expression that calculates new numeric or combines and manipulates textual values.' +
-       'Additional information on specific expression syntax and list of functions is available {{0}}',
+      description: 'Insert a formula or expression that calculates numeric values or combines and manipulates text values',
     },
     sanitizers: {
       label: 'Value sanitization',

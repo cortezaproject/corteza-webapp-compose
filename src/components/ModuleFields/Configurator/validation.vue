@@ -1,14 +1,35 @@
 <template>
   <div>
     <b-form-group
-      class="mt-3"
       :label="$t('field.sanitizers.label')"
       label-size="lg"
     >
+      <template #label>
+        <div
+          class="d-flex"
+        >
+          {{ $t('field.sanitizers.label') }}
+
+          <b-button
+            variant="link"
+            class="p-0 ml-1 mr-auto"
+            @click="field.expressions.sanitizers.push('')"
+          >
+            + Add
+          </b-button>
+
+          <b-button
+            variant="link"
+            class="p-0 ml-1"
+            @click="openExpressionsHelp('sanitizer')"
+          >
+            Examples
+          </b-button>
+        </div>
+      </template>
       <field-expressions
         v-model="field.expressions.sanitizers"
         :placeholder="$t('field.sanitizers.expression.placeholder')"
-        @append="field.expressions.sanitizers.push('')"
         @remove="field.expressions.sanitizers.splice($event,1)"
       />
       <b-form-text>
@@ -20,12 +41,34 @@
 
     <b-form-group
       class="mt-3"
-      :label="$t('field.validators.label')"
       label-size="lg"
     >
+      <template #label>
+        <div
+          class="d-flex"
+        >
+          {{ $t('field.validators.label') }}
+
+          <b-button
+            variant="link"
+            class="p-0 ml-1 mr-auto"
+            @click="field.expressions.validators.push({ test: '', error: '' })"
+          >
+            + Add
+          </b-button>
+
+          <b-button
+            variant="link"
+            class="p-0 ml-1"
+            @click="openExpressionsHelp('validator')"
+          >
+            Examples
+          </b-button>
+        </div>
+      </template>
+
       <field-expressions
         v-model="field.expressions.validators"
-        @append="field.expressions.validators.push({ test: '', error: '' })"
         @remove="field.expressions.validators.splice($event,1)"
         v-slot:default="{ value }"
       >
@@ -74,11 +117,6 @@ export default {
     },
   },
 
-  data () {
-    return {
-    }
-  },
-
   mounted () {
     if (!this.field.expressions.sanitizers) {
       this.$set(this.field.expressions, 'sanitizers', [])
@@ -99,6 +137,21 @@ export default {
     if (!this.field.expressions.disableDefaultFormatters) {
       this.$set(this.field.expressions, 'disableDefaultFormatters', false)
     }
+  },
+
+  methods: {
+    openExpressionsHelp (anchor) {
+      const helpRoute = this.$router.resolve({ name: 'field.expressions.help' })
+      window.open(`${helpRoute.href}#${anchor}`, '_blank',
+                                   `toolbar=no,
+                                    location=no,
+                                    status=no,
+                                    menubar=no,
+                                    scrollbars=yes,
+                                    resizable=yes,
+                                    width=960px,
+                                    height=1080px`)
+    },
   },
 }
 </script>

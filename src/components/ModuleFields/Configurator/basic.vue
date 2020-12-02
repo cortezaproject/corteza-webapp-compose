@@ -29,16 +29,17 @@
           v-model="field.expressions.value"
         >
         </b-form-input>
+        <b-input-group-append>
+          <b-button
+            variant="outline-secondary"
+            @click="openExpressionsHelp()"
+          >
+            ?
+          </b-button>
+        </b-input-group-append>
       </b-input-group>
       <b-form-text>
-        <i18next path="field.valueExpr.description" tag="label">
-          <a
-            target="_blank"
-            :href="expressionsHelp"
-          >
-            {{ $t('general.label.here') }}
-          </a>
-        </i18next>
+        {{ $t('field.valueExpr.description') }}
       </b-form-text>
     </b-form-group>
     <b-form-checkbox
@@ -112,10 +113,6 @@ export default {
     ...mapGetters({
       getModuleByID: 'module/getByID',
     }),
-
-    expressionsHelp () {
-      return this.$router.resolve({ name: 'field.expressions.help' }).href
-    },
   },
 
   watch: {
@@ -191,6 +188,21 @@ export default {
     } else {
       this.field.expressions.value = undefined
     }
+  },
+
+  methods: {
+    openExpressionsHelp () {
+      const helpRoute = this.$router.resolve({ name: 'field.expressions.help' })
+      window.open(`${helpRoute.href}#valueExpressions`, '_blank',
+                                   `toolbar=no,
+                                    location=no,
+                                    status=no,
+                                    menubar=no,
+                                    scrollbars=yes,
+                                    resizable=yes,
+                                    width=960px,
+                                    height=1080px`)
+    },
   },
 }
 </script>

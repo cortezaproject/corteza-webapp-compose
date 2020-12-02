@@ -28,14 +28,6 @@
         </b-input-group-addon>
       </b-input-group>
     </b-form-row>
-    <div>
-      <b-button
-        class="float-right mt-2"
-        @click="$emit('append')"
-      >
-        Add
-      </b-button>
-    </div>
   </b-form-group>
 </template>
 <script>

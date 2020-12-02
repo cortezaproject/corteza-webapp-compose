@@ -12,7 +12,6 @@ import {
   faCloudDownloadAlt,
   faTimes,
   faCheck,
-  faChevronLeft,
   faBold,
   faItalic,
   faUnderline,
@@ -32,6 +31,8 @@ import {
   faTasks,
   faParagraph,
   faTrashRestore,
+  faChevronLeft,
+  faChevronDown,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -80,7 +81,6 @@ library.add(
   faBell,
   faClock,
   faSquare,
-  faChevronLeft,
   faBold,
   faItalic,
   faUnderline,
@@ -102,4 +102,6 @@ library.add(
   faClone,
   faPlusSquare,
   faTrashRestore,
+  faChevronLeft,
+  faChevronDown,
 )

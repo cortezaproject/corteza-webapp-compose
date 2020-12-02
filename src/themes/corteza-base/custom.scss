@@ -5,6 +5,10 @@ html {
   overflow: hidden;
 }
 
+body {
+  height: 100%;
+}
+
 button:disabled {
   cursor: not-allowed;
   pointer-events: all !important;

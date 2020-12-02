@@ -5,7 +5,7 @@
   >
     <b-card
       title="Field Expresions"
-      class="mh-100"
+      class="h-100 mh-100"
       body-class="mh-100 overflow-auto"
     >
       <b-card-text
@@ -18,7 +18,18 @@
         To write the expression you can use the following operators:
         <ul>
           <li>
-            Variables: <code>fieldName</code>
+            Depending on where the field expression is used it has access to different variables:
+            <ul>
+              <li>
+                Value expressions: <code>old</code>(record), <code>new</code>(record), <code>field-name</code>
+              </li>
+              <li>
+                Sanitizers: <code>value</code>(new value)
+              </li>
+              <li>
+                Validators: <code>value</code>(new value), <code>oldValue</code>(old value), <code>values</code>(all new values)
+              </li>
+            </ul>
           </li>
           <li>
             Modifiers: <kbd>+</kbd> <kbd>-</kbd> <kbd>*</kbd> <kbd>/</kbd> <kbd>%</kbd> <kbd>**</kbd>
@@ -43,22 +54,50 @@
         </ul>
       </b-card-text>
 
-      <b-card>
+      <hr>
+
+      <h4>
+        Examples
+      </h4>
+      <b-card-text
+        class="px-2"
+      >
+        Below are a few examples of different use cases of field expressions.
+      </b-card-text>
+
+      <b-card
+        v-for="example of examples"
+        :key="example.name"
+        :id="example.id"
+        class="mt-2"
+        @mouseover="example.chevron = true"
+        @mouseleave="example.chevron = false"
+      >
         <h4
-          v-b-toggle.examples
-          class="mb-0"
+          class="d-flex mb-0"
+          @click="example.collapse = !example.collapse"
         >
-          Examples
+          <span
+            class="mr-auto"
+          >
+            {{ example.name }}
+          </span>
+          <transition name="fade" mode="out-in">
+            <font-awesome-icon
+              v-show="example.chevron"
+              :icon="['fas', example.collapse ? 'chevron-down' : 'chevron-left']"
+              class="pointer text-muted"
+            />
+          </transition>
         </h4>
         <b-collapse
-          id="examples"
-          visible
+          v-model="example.collapse"
         >
           <b-table
-            responsive
+            responsive="md"
             striped
-            :items="examples"
-            :fields="exampleFields"
+            :items="example.items"
+            :fields="example.fields"
             class="mt-2 mb-0"
           >
             <template #cell(expression)="data">
@@ -88,33 +127,47 @@
       <b-card-text
         class="px-2"
       >
-        We also provide a set of helper functions that extend the capabilites of field expressions.<br>
+        We provide a set of helper functions that extend the capabilites of field expressions.<br>
         <small
           class="text-muted"
         >
-          NOTE: Only the "General" functions can be used on all types of fields. The other functions are limited to their respective field types.
+          NOTE: Only the "General" functions can be used on all types of fields. The other functions are limited to their respective field type.
         </small>
       </b-card-text>
 
       <b-card
         v-for="category of categories"
         :key="category.name"
+        :id="category.id"
         class="mt-2"
+        @mouseover="category.chevron = true"
+        @mouseleave="category.chevron = false"
       >
         <h4
-          class="mb-0"
+          class="d-flex mb-0"
           @click="category.collapse = !category.collapse"
         >
-          {{ category.name }}
+          <span
+            class="mr-auto"
+          >
+            {{ category.name }}
+          </span>
+          <transition name="fade" mode="out-in">
+            <font-awesome-icon
+              v-show="category.chevron"
+              :icon="['fas', category.collapse ? 'chevron-down' : 'chevron-left']"
+              class="pointer text-muted"
+            />
+          </transition>
         </h4>
         <b-collapse
           v-model="category.collapse"
         >
           <b-table
-            fixed
+            responsive="md"
             striped
             :items="category.items"
-            :fields="fields"
+            :fields="categoryFields"
             class="mt-2 mb-0"
           >
             <template #cell(syntax)="data">
@@ -143,89 +196,150 @@
 export default {
   data () {
     return {
-      exampleFields: [
-        { key: 'expression', class: '' },
-        { key: 'field1', class: '' },
-        { key: 'field2', class: '' },
-        { key: 'result', class: '' },
-      ],
-      examples: [
-        { expression: '(field1  / 10) + 2', field1: '400', result: '42' },
-        { expression: 'field1 > 10', field1: '10', result: 'false' },
-        { expression: '(field1 > 10) || (field2 > field1)', field1: '10', field2: '11', result: 'true' },
-        { expression: '((floor(numField1) + numField2) / 10) + 2', field1: '21.6', field2: '19', result: '42' },
-      ],
-
-      fields: [
-        { key: 'name', class: 'w10' },
-        { key: 'description', class: 'w30' },
-        { key: 'syntax', class: 'w20 pr-5 text-nowrap' },
+      categoryFields: [
+        { key: 'syntax', class: 'w25 text-nowrap' },
+        { key: 'description', class: 'w30 pr-5' },
         { key: 'example', class: 'w25 text-nowrap' },
-        { key: 'result', class: 'w15 text-right text-nowrap pr-2' },
+        { key: 'result', class: 'w20 text-right text-nowrap' },
       ],
 
       categories: [
         {
+          id: 'general',
           name: 'General',
-          collapse: true,
+          collapse: false,
+          chevron: false,
           items: [
-            { name: 'Coalesce', description: 'Returns the first non null value', syntax: 'coalesce(v1, v2, ...)', example: 'coalesce(null, 0, 1, 2)', result: '0' },
+            { syntax: 'coalesce(v1, v2, ...)', description: 'Returns the first non null value', example: 'coalesce(null, 0, 1, 2)', result: '0' },
           ],
         },
         {
+          id: 'number',
           name: 'Number',
-          collapse: true,
+          collapse: false,
+          chevron: false,
           items: [
-            { name: 'Min', description: 'Returns item with the lowest value', syntax: 'min(n1, n2, ...)', example: 'min(0, 1, 2)', result: '0' },
-            { name: 'Max', description: 'Returns item with the highest value', syntax: 'max(n1, n2, ...)', example: 'max(0, 1, 2)', result: '2' },
-            { name: 'Round', description: 'Rounds a floating point number to the specified number of digits', syntax: 'round(number, digits)', example: 'round(3.14, 1)', result: '3.1' },
-            { name: 'Floor', description: 'Rounds number down to the nearest integer', syntax: 'floor(number)', example: 'floor(3.14)', result: '3' },
-            { name: 'Ceil', description: 'Rounds number up to the nearest integer', syntax: 'ceil(number)', example: 'ceil(3.14)', result: '4' },
+            { syntax: 'min(n1, n2, ...)', description: 'Returns item with the lowest value', example: 'min(0, 1, 2)', result: '0' },
+            { syntax: 'max(n1, n2, ...)', description: 'Returns item with the highest value', example: 'max(0, 1, 2)', result: '2' },
+            { syntax: 'round(number, digits)', description: 'Rounds a floating point number to the specified number of digits', example: 'round(3.14, 1)', result: '3.1' },
+            { syntax: 'floor(number)', description: 'Rounds number down to the nearest integer', example: 'floor(3.14)', result: '3' },
+            { syntax: 'ceil(number)', description: 'Rounds number up to the nearest integer', example: 'ceil(3.14)', result: '4' },
           ],
         },
         {
+          id: 'string',
           name: 'String',
-          collapse: true,
+          collapse: false,
+          chevron: false,
           items: [
-            { name: 'Trim', description: 'Removes spaces at the beginning and at the end of the string', syntax: 'trim(string)', example: 'trim(" foo ")', result: '"foo"' },
-            { name: 'Trim left', description: 'Removes character from the beginning of the string', syntax: 'trimLeft(string, character)', example: 'trim(" foo ", " ")', result: '"foo "' },
-            { name: 'Trim right', description: 'Removes character from the beginning of the string', syntax: 'trimRight(string, character)', example: 'trim(" foo ", " ")', result: '" foo"' },
-            { name: 'To lowercase', description: 'Converts all characters to lowercase', syntax: 'toLower(string)', example: 'toLower("FOO")', result: '"foo"' },
-            { name: 'To uppercase', description: 'Converts all characters to uppercase', syntax: 'toUpper(string)', example: 'toUpper("foo")', result: '"FOO"' },
-            { name: 'Shortest', description: 'Returns the shortest string', syntax: 'shortest(s1, s2, ...)', example: 'shortest("foo", "foobar")', result: '"foo"' },
-            { name: 'Longest', description: 'Returns the longest string', syntax: 'longest(s1, s2, ...)', example: 'longest("foo", "foobar")', result: '"foobar"' },
+            { syntax: 'trim(string)', description: 'Removes spaces at the beginning and at the end of the string', example: 'trim(" foo ")', result: '"foo"' },
+            { syntax: 'trimLeft(string, character)', description: 'Removes character from the beginning of the string', example: 'trim(" foo ", " ")', result: '"foo "' },
+            { syntax: 'trimRight(string, character)', description: 'Removes character from the end of the string', example: 'trim(" foo ", " ")', result: '" foo"' },
+            { syntax: 'toLower(string)', description: 'Converts all characters to lowercase', example: 'toLower("FOO")', result: '"foo"' },
+            { syntax: 'toUpper(string)', description: 'Converts all characters to uppercase', example: 'toUpper("foo")', result: '"FOO"' },
+            { syntax: 'shortest(s1, s2, ...)', description: 'Returns the shortest string', example: 'shortest("foo", "foobar")', result: '"foo"' },
+            { syntax: 'longest(s1, s2, ...)', description: 'Returns the longest string', example: 'longest("foo", "foobar")', result: '"foobar"' },
           ],
         },
         {
+          id: 'dateTime',
           name: 'Date and Time',
-          collapse: true,
+          collapse: false,
+          chevron: false,
           items: [
-            { name: 'To string', description: 'Returns DateTime string for the specified date and format', syntax: 'strftime(datetime, format)', example: 'strftime(datefield, "%Y-%m-%d")', result: '"1970-01-01"' },
-            { name: 'Modify date', description: 'Returns modified DateTime string', syntax: 'modTime(datetime, duration)', example: 'modTime(datefield), "+30m")', result: '"1970-01-01T00:30:00"' },
-            { name: 'Parse ISO date', description: 'Returns parsed ISO DateTime string', syntax: 'parseISOTime(datetime)', example: 'parseISOTime(datefield))', result: '"1970-01-01T00:00:00+00:00"' },
-            { name: 'Parse duration', description: 'Returns parsed duration', syntax: 'parseDuration(duration)', example: 'parseDuration("2h")', result: '"2h0m0s"' },
-            { name: 'Earliest', description: 'Returns earliest DateTime', syntax: 'earliest(d1, d2, ...)', example: 'earliest(datefield1, datefield2)', result: '"1970-01-01T00:00:00"' },
-            { name: 'Latest', description: 'Returns latest DateTime', syntax: 'latest(d1, d2, ...)', example: 'latest(datefield1, datefield2)', result: '"1970-01-01T00:30:00"' },
+            { syntax: 'strftime(datetime, format)', description: 'Returns DateTime string for the specified date and format', example: 'strftime(datefield, "%Y-%m-%d")', result: '"1970-01-01"' },
+            { syntax: 'modTime(datetime, duration)', description: 'Returns modified DateTime string', example: 'modTime(datefield, "+30m")', result: '"1970-01-01T00:30:00"' },
+            { syntax: 'parseISOTime(datetime)', description: 'Returns parsed ISO DateTime string', example: 'parseISOTime(datefield)', result: '"1970-01-01T00:00:00+00:00"' },
+            { syntax: 'parseDuration(duration)', description: 'Returns parsed duration', example: 'parseDuration("2h")', result: '"2h0m0s"' },
+            { syntax: 'earliest(d1, d2, ...)', description: 'Returns earliest DateTime', example: 'earliest(datefield1, datefield2)', result: '"1970-01-01T00:00:00"' },
+            { syntax: 'latest(d1, d2, ...)', description: 'Returns latest DateTime', example: 'latest(datefield1, datefield2)', result: '"1970-01-01T00:30:00"' },
           ],
         },
       ],
+
+      examples: [
+        {
+          id: 'valueExpressions',
+          name: 'Value expression',
+          collapse: false,
+          chevron: false,
+          fields: [
+            { key: 'expression', class: 'text-nowrap' },
+            { key: 'field1', label: 'field1', class: 'w10 text-nowrap' },
+            { key: 'old.values.field1', label: 'old.values.field1', class: 'w10 text-nowrap' },
+            { key: 'field2', label: 'field2', class: 'w10 text-nowrap' },
+            { key: 'result', class: 'w10 text-right' },
+          ],
+          items: [
+            { expression: '(field1  / 10) + 2', field1: '400', result: '42' },
+            { expression: '((floor(field1) + field2) / 10) + 2', field1: '21.6', field2: '19', result: '42' },
+          ],
+        },
+        {
+          id: 'sanitizer',
+          name: 'Sanitizer',
+          collapse: false,
+          chevron: false,
+          fields: [
+            { key: 'expression', class: 'text-nowrap' },
+            { key: 'value', label: 'value', class: 'w10 text-nowrap' },
+            { key: 'result', class: 'w10 text-right' },
+          ],
+          items: [
+            { expression: 'trim(value)', value: '" foo "', result: '"foo"' },
+            { expression: 'floor(value)', value: '42.42', result: '42' },
+          ],
+        },
+        {
+          id: 'validator',
+          name: 'Validator',
+          collapse: false,
+          chevron: false,
+          fields: [
+            { key: 'expression', class: 'text-nowrap' },
+            { key: 'value', label: 'value', class: 'w10 text-nowrap' },
+            { key: 'oldValue', label: 'oldValue', class: 'w10 text-nowrap' },
+
+            { key: 'result', class: 'w10 text-right' },
+          ],
+          items: [
+            { expression: 'oldValue > value', value: '41', oldValue: '42', result: 'false' },
+          ],
+        },
+      ],
+    }
+  },
+
+  mounted () {
+    if (this.$route.hash) {
+      const exampleID = this.$route.hash.substring(1)
+      this.examples.find(({ id }) => id === exampleID).collapse = true
     }
   },
 }
 </script>
 
 <style lang="scss" scoped>
+.pointer {
+  cursor: pointer;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
 .scroll {
+  height: 100%;
   max-height: 100vh;
   overflow-y: auto;
 }
 
 /deep/.w10 {
   width: 10%;
-}
-
-/deep/.w15 {
-  width: 15%;
 }
 
 /deep/.w20 {
