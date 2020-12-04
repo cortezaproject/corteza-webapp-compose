@@ -95,6 +95,13 @@ export default {
         return acc
       }, [])
 
+      // Filter out read-only fields from values
+      this.module.fields.forEach(({ name, canUpdateRecordValue }) => {
+        if (!canUpdateRecordValue) {
+          delete this.record.values[name]
+        }
+      })
+
       // Append after the payload construction, so it is not presented as a
       // sub record.
       pairs.push({
