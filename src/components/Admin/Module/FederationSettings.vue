@@ -103,7 +103,7 @@
               v-for="f in upstream[upstream.active].fields"
               :key="`${upstream.active}${f.name}`"
               v-model="f.value"
-              @change="setUpdated('upstream')"
+              @change="checkChange($event, 'upstream')"
               class="mb-2"
             >
               {{ f.label }}
@@ -115,7 +115,7 @@
           v-else
           class="d-flex flex-grow-1 align-items-center justify-content-center"
         >
-          {{ $t('module.edit.federationSettings.errorFetchingData') }}
+          {{ $t('module.edit.federationSettings.noNodes') }}
         </div>
       </b-tab>
 
@@ -185,17 +185,19 @@
             <div
               v-for="sharedModule in activeSharedModules"
               :key="`${downstream.active}_${sharedModule.name}`"
-              class="d-flex align-items-center justify-content-between mb-1"
+              class="d-flex align-items-center justify-content-between"
             >
               <b-form-checkbox
                 v-model="sharedModule.map"
-                @change="setUpdated('downstream')"
+                @change="checkChange($event, 'downstream')"
+                class="my-2"
               >
                 {{ sharedModule.label }}
               </b-form-checkbox>
 
               <!-- dropdown with a list of compose module fields -->
               <b-form-select
+                v-show="sharedModule.map"
                 :key="`${downstream.active}_${sharedModule.name}`"
                 v-model="sharedModule.mapped"
                 :options="transformedModuleFields"
@@ -212,7 +214,7 @@
           v-else
           class="d-flex flex-grow-1 align-items-center justify-content-center"
         >
-          {{ $t('module.edit.federationSettings.errorFetchingData') }}
+          {{ $t('module.edit.federationSettings.noNodes') }}
         </div>
       </b-tab>
     </b-tabs>
@@ -600,6 +602,7 @@ export default {
         this.upstream[active].updated = true
       } else if (target === 'downstream') {
         this.sharedModulesMapped[active][this.downstream[active].module] = this.sharedModulesMapped[active][this.downstream[active].module].map(f => ({ ...f, map: value }))
+        this.downstream[active].allFields[this.downstream[active].module] = value
         this.sharedModules[active].find(m => m.moduleID === this.downstream[active].module).updated = true
       }
     },
@@ -628,6 +631,21 @@ export default {
           value,
         }
       })
+    },
+
+    // When field checkbox changes, check and update allFields checkbox value
+    checkChange (value, target) {
+      const active = this[target].active
+
+      if (target === 'upstream') {
+        this.upstream[active].allFields = value ? !this.upstream[active].fields.find(f => f.value === !value) : false
+      } else if (target === 'downstream') {
+        console.log('aaa')
+        const allSameValue = !this.sharedModulesMapped[active][this.downstream[active].module].find(({ map }) => map === !value)
+        this.downstream[active].allFields[this.downstream[active].module] = value ? allSameValue : false
+      }
+
+      this.setUpdated(target)
     },
 
     async getModuleMappings (nodeID, moduleID) {

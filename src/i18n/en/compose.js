@@ -436,6 +436,7 @@ export default {
         pickModule: 'Pick a federated module',
         pickModuleField: 'Pick a module field',
         errorFetchingData: 'Error fetching server data',
+        noNodes: 'No federated servers available',
 
         general: {
           title: 'General',
