@@ -14,7 +14,7 @@
     "test:unit": "vue-cli-service test:unit",
     "test:unit:cc": "nyc vue-cli-service test:unit",
     "storybook": "start-storybook",
-    "cdeps": "yarn add @cortezaproject/corteza-js @cortezaproject/corteza-vue"
+    "cdeps": "yarn upgrade @cortezaproject/corteza-js @cortezaproject/corteza-vue"
   },
   "gitHooks": {
     "pre-commit": "yarn lint"
@@ -32,8 +32,8 @@
     }
   },
   "dependencies": {
-    "@cortezaproject/corteza-js": "^2020.9.3",
-    "@cortezaproject/corteza-vue": "^2020.9.3",
+    "@cortezaproject/corteza-js": "~2020.9",
+    "@cortezaproject/corteza-vue": "~2020.9",
     "@fortawesome/fontawesome-svg-core": "^1.2.21",
     "@fortawesome/free-regular-svg-icons": "^5.10.1",
     "@fortawesome/free-solid-svg-icons": "^5.10.1",
