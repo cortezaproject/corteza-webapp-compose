@@ -9,6 +9,7 @@
       <b-col cols="4">
         <b-button
           variant="link"
+          :disabled="processing"
           @click.prevent="$emit('back')"
         >
           &#171; {{ $t('general.label.back') }}
@@ -21,6 +22,7 @@
         <b-button
           v-if="module.canCreateRecord && !hideClone"
           variant="outline-secondary"
+          :disabled="processing"
           class="m-1"
           @click.prevent="$emit('clone')"
         >
@@ -30,6 +32,7 @@
         <b-button
           v-if="module.canCreateRecord && !hideAdd"
           variant="outline-secondary"
+          :disabled="processing"
           class="m-1"
           @click.prevent="$emit('add')"
         >
@@ -41,7 +44,7 @@
         class="text-right"
       >
         <c-input-confirm
-          :disabled="!module.canDeleteRecord || isDeleted"
+          :disabled="!module.canDeleteRecord || isDeleted || processing"
           @confirmed="$emit('delete')"
           class="m-1"
         >
@@ -59,7 +62,7 @@
 
         <b-button
           v-else-if="module.canUpdateRecord"
-          :disabled="isDeleted"
+          :disabled="isDeleted || processing"
           class="m-1"
           variant="primary"
           @click.prevent="$emit('submit')"
@@ -79,6 +82,11 @@ export default {
     module: {
       type: compose.Module,
       required: false,
+    },
+
+    processing: {
+      type: Boolean,
+      default: false,
     },
 
     inEditing: {

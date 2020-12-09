@@ -7,6 +7,7 @@ export default {
   data () {
     return {
       inEditing: false,
+      processing: false,
       record: null,
       errors: new validator.Validated(),
     }
@@ -56,6 +57,7 @@ export default {
      * @returns {Promise<void>}
      */
     async handleFormSubmit (route = 'page.record') {
+      this.processing = true
       const isNew = this.record.recordID === NoID
       const queue = []
 
@@ -139,6 +141,9 @@ export default {
             ? 'notification.record.createFailed'
             : 'notification.record.updateFailed',
         )))
+        .finally(() => {
+          this.processing = false
+        })
     },
 
     /**

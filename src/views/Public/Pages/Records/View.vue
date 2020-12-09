@@ -18,6 +18,7 @@
     <portal to="toolbar">
       <record-toolbar
         :module="module"
+        :processing="processing"
         :isDeleted="isDeleted"
         :inEditing="inEditing"
         :hideClone="inCreating"
