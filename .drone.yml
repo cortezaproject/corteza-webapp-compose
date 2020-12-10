@@ -22,17 +22,7 @@ steps:
       - refs/tags/20??.6.*
       - refs/tags/20??.9.*
       - refs/tags/20??.12.*
-
-  - name: "Build unstable release (develop)"
-    image: cortezaproject/corteza-webapp-builder
-    environment:
-      RELEASE_SFTP_KEY: { from_secret: RELEASE_SFTP_KEY }
-      RELEASE_SFTP_URI: { from_secret: RELEASE_SFTP_URI }
-    commands:
-    - make build release upload BUILD_VERSION=unstable
-    when:
-      event: [ push ]
-      branch: [ develop ]
+      - refs/tags/unstable
 
 trigger:
   event:
