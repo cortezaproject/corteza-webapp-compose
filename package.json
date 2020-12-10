@@ -143,7 +143,8 @@
   },
   "resolutions": {
     "**/**/highlight.js": "^10.4.1",
-    "**/**/moment": "^2.25.1"
+    "**/**/moment": "^2.25.1",
+    "**/**/prosemirror-model": "^1.11.2"
   },
   "nyc": {
     "all": true,
