@@ -394,6 +394,12 @@ export default {
     newLabel: 'Create a new module:',
     newPlaceholder: '$t(general.label.moduleName)',
     import: 'Import module(s):',
+
+    recordPage: {
+      create: 'Create record page',
+      edit: 'Edit record page',
+    },
+
     forModule: {
       recordPage: 'Record page for module',
       recordListPage: 'Record List page for module',
