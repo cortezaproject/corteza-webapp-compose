@@ -36,6 +36,7 @@ export default [
       },
       {
         ...r('admin', 'admin', 'Admin/Index'),
+        redirect: { name: 'admin.modules' },
 
         children: [
           r('admin.modules', 'modules', 'Admin/Modules/Index'),
