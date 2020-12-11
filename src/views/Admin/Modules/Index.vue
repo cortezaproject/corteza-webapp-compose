@@ -180,11 +180,18 @@ export default {
       // Collect params and create new record page
       const module = this.modules.find(m => m.moduleID === moduleID)
       const { namespaceID } = this.namespace
+
+      // Get recordList page if it exists
+      const selfID = (this.pages.find(p => {
+        return p.blocks.find(b => b.options.moduleID === module.moduleID)
+      }) || {}).pageID
+
       const payload = {
         namespaceID,
         title: `${this.$t('module.forModule.recordPage')} "${module.name || moduleID}"`,
         moduleID,
         blocks: [],
+        selfID,
       }
 
       // Create page and open it
