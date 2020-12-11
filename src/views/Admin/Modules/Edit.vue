@@ -320,7 +320,7 @@ export default {
     handleRecordPageCreation () {
       // A simple record block w/o preselected fields
       const blocks = [new compose.PageBlockRecord({ xywh: [0, 0, 12, 16] })]
-      const selfID = this.recordListPage.pageID
+      const selfID = (this.recordListPage || {}).pageID
 
       this.createRecordPage({ blocks, selfID }).then(page => {
         this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
