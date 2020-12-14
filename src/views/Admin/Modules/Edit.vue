@@ -4,13 +4,33 @@
       <b-row>
         <b-col md="12">
           <b-card :title="$t('module.edit.title')" class="mb-5">
-            <div slot="header" class="text-right">
-              <export :list="[this.module]" type="module" />
-              <c-permissions-button
-                v-if="module.canGrant"
-                resource="compose:module-field:*"
-                link
-              />
+            <div
+              slot="header"
+              class="d-flex justify-content-between align-items-center"
+            >
+              <div
+              >
+                <b-button
+                  v-if="federationEnabled"
+                  variant="link"
+                  class="p-0"
+                  @click="federationSettings.modal = true"
+                >
+                  <font-awesome-icon
+                    :icon="['fas', 'share-alt']"
+                  />
+
+                  {{ $t('module.edit.federationSettings.title') }}
+                </b-button>
+              </div>
+              <div>
+                <export :list="[this.module]" type="module" />
+                <c-permissions-button
+                  v-if="module.canGrant"
+                  resource="compose:module-field:*"
+                  link
+                />
+              </div>
             </div>
             <b-form-group>
               <label>{{ $t('module.newPlaceholder') }}</label>
@@ -124,9 +144,10 @@
         </b-col>
       </b-row>
     </b-container>
+
     <b-modal
       v-if="updateField"
-      :title="modalTitle"
+      :title="editModalTitle"
       :ok-title="$t('general.label.saveAndClose')"
       ok-only
       ok-variant="dark"
@@ -141,6 +162,14 @@
         :namespace="namespace"
       />
     </b-modal>
+
+    <federation-settings
+      v-if="federationEnabled"
+      :modal="federationSettings.modal"
+      :module="module"
+      @change="federationSettings.modal = ($event || false)"
+    />
+
     <portal to="admin-toolbar">
       <editor-toolbar
         :back-link="{name: 'admin.modules'}"
@@ -161,6 +190,7 @@ import draggable from 'vuedraggable'
 import FieldConfigurator from 'corteza-webapp-compose/src/components/ModuleFields/Configurator'
 import FieldRowEdit from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowEdit'
 import FieldRowView from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowView'
+import FederationSettings from 'corteza-webapp-compose/src/components/Admin/Module/FederationSettings'
 import { compose } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
@@ -173,6 +203,7 @@ export default {
     FieldConfigurator,
     FieldRowEdit,
     FieldRowView,
+    FederationSettings,
     EditorToolbar,
     Export,
     CircleStep,
@@ -196,6 +227,10 @@ export default {
       module: new compose.Module(),
       hasRecords: false,
       processing: false,
+
+      federationSettings: {
+        modal: false,
+      },
     }
   },
 
@@ -219,7 +254,7 @@ export default {
       }, true)
     },
 
-    modalTitle () {
+    editModalTitle () {
       if (!this.updateField) {
         return
       }
@@ -236,6 +271,10 @@ export default {
       return this.pages.find(p => {
         return p.blocks.find(b => b.options.moduleID === this.moduleID)
       })
+    },
+
+    federationEnabled () {
+      return !!this.$FederationAPI.baseURL
     },
   },
 
@@ -275,6 +314,10 @@ export default {
       if (i > -1) {
         this.module.fields.splice(i, 1, field)
       }
+    },
+
+    handleFederationSettingsSave () {
+      // @todo
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {

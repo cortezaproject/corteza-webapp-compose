@@ -33,6 +33,7 @@ import {
   faTrashRestore,
   faChevronLeft,
   faChevronDown,
+  faShareAlt,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -104,4 +105,5 @@ library.add(
   faTrashRestore,
   faChevronLeft,
   faChevronDown,
+  faShareAlt,
 )

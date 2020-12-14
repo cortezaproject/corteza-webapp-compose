@@ -170,6 +170,7 @@ export default {
     },
     recordList: {
       label: 'Record list',
+      federated: 'Federated',
       moduleFootnote: 'Modules without a {{0}} can only be used in a record list as an inline editor',
       recordPage: 'record page',
       addRecord: 'Add',
@@ -394,6 +395,7 @@ export default {
     newLabel: 'Create a new module:',
     newPlaceholder: '$t(general.label.moduleName)',
     import: 'Import module(s):',
+    federated: 'Federated',
 
     recordPage: {
       create: 'Create record page',
@@ -427,6 +429,32 @@ export default {
       newField: 'Add new field',
       systemFields: 'System fields:',
       reorderFields: 'Reorder fields',
+      federationSettings: {
+        title: 'Federation Settings',
+        specificTitle: 'Federation Settings ({{handle}})',
+        pickServer: 'Pick a federated server',
+        pickModule: 'Pick a federated module',
+        pickModuleField: 'Pick a module field',
+        errorFetchingData: 'Error fetching server data',
+        noNodes: 'No federated servers available',
+        noPermission: 'No permission to manage exposed module',
+
+        general: {
+          title: 'General',
+          send: 'Send new records to the federated network (upstream)',
+          receive: 'Receive new records from another organization (downstream)',
+        },
+        downstream: {
+          title: 'Map',
+          description: 'Match federated fields with existing ones:',
+          allFields: 'All Fields',
+        },
+        upstream: {
+          title: 'Expose',
+          description: 'Select the fields you want to share with the selected network',
+          allFields: 'All Fields',
+        },
+      },
       tooltip: {
         name: 'Must be a-z/A-Z, 0-9 or underscore',
         title: 'The name displayed in form input / data lists',
