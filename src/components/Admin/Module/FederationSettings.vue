@@ -17,7 +17,7 @@
       active-tab-class="tab-content h-auto overflow-auto"
       card
     >
-      <b-tab
+      <!-- <b-tab
         :title="$t('module.edit.federationSettings.general.title')"
         active
       >
@@ -36,7 +36,7 @@
             {{ $t('module.edit.federationSettings.general.receive') }}
           </b-form-checkbox>
         </b-form-group>
-      </b-tab>
+      </b-tab> -->
       <b-tab
         :title="$t('module.edit.federationSettings.upstream.title')"
         active
@@ -71,43 +71,54 @@
           v-else-if="upstream[upstream.active]"
           class="list-group flex-grow-1 ml-4"
         >
-          {{ $t('module.edit.federationSettings.upstream.description') }}
-          <b-form-group
-            label-cols-sm="4"
-            label-cols-lg="5"
-            label="Copy settings from"
-          >
-            <b-form-select
-              :key="upstream.active"
-              v-model="upstream[upstream.active].copy"
-              :options="upstream[upstream.active].options"
-              value-field="nodeID"
-              text-field="name"
-              @input="copyUpstreamFrom"
-            />
-          </b-form-group>
-
-          <b-form-checkbox
-            :checked="upstream[upstream.active].allFields"
-            class="mb-2"
-            @change="selectAllFields($event, 'upstream')"
-          >
-            <strong>{{ $t('module.edit.federationSettings.upstream.allFields') }}</strong>
-          </b-form-checkbox>
 
           <div
-            class="overflow-auto"
+            v-if="upstream[upstream.active].canManageModule"
           >
+            {{ $t('module.edit.federationSettings.upstream.description') }}
+            <b-form-group
+              label-cols-sm="4"
+              label-cols-lg="5"
+              label="Copy settings from"
+            >
+              <b-form-select
+                :key="upstream.active"
+                v-model="upstream[upstream.active].copy"
+                :options="upstream[upstream.active].options"
+                value-field="nodeID"
+                text-field="name"
+                @input="copyUpstreamFrom"
+              />
+            </b-form-group>
 
             <b-form-checkbox
-              v-for="f in upstream[upstream.active].fields"
-              :key="`${upstream.active}${f.name}`"
-              v-model="f.value"
-              @change="checkChange($event, 'upstream')"
+              :checked="upstream[upstream.active].allFields"
               class="mb-2"
+              @change="selectAllFields($event, 'upstream')"
             >
-              {{ f.label }}
+              <strong>{{ $t('module.edit.federationSettings.upstream.allFields') }}</strong>
             </b-form-checkbox>
+
+            <div
+              class="overflow-auto"
+            >
+              <b-form-checkbox
+                v-for="f in upstream[upstream.active].fields"
+                :key="`${upstream.active}${f.name}`"
+                v-model="f.value"
+                @change="checkChange($event, 'upstream')"
+                class="mb-2"
+              >
+                {{ f.label }}
+              </b-form-checkbox>
+            </div>
+          </div>
+
+          <div
+            v-else
+            class="d-flex flex-grow-1 align-items-center justify-content-center"
+          >
+            {{ $t('module.edit.federationSettings.noPermission') }}
           </div>
         </div>
 
@@ -350,15 +361,18 @@ export default {
   },
 
   async mounted () {
-    // faking FederationAPI base url for now
-    this.$FederationAPI.baseURL = window.ComposeAPI.replace('/compose', '/federation')
-    this.preload()
+    if (window.FederationAPI) {
+      this.$FederationAPI.baseURL = window.FederationAPI
+      this.preload()
+    }
   },
 
   methods: {
     async preload () {
-      this.servers = await this.$FederationAPI.nodeSearch({ status: 'paired' })
-        .then(({ set }) => set)
+      await this.$FederationAPI.nodeSearch({ status: 'paired' })
+        .then(({ set = [] }) => {
+          this.servers = set.filter(({ canManageNode }) => canManageNode)
+        })
         .catch(this.defaultErrorHandler)
 
       for (const node of this.servers) {
@@ -530,6 +544,7 @@ export default {
 
       this.upstream.processing = true
 
+      const exposedModule = this.exposedModules[nodeID] || {}
       const fields = (this.moduleFields || []).map(f => ({ ...f, value: false }))
 
       const upstream = {
@@ -541,14 +556,8 @@ export default {
         allFields: false,
         fields,
         updated: false,
+        canManageModule: !!exposedModule.canManageModule || !!(this.servers.find(s => s.nodeID === nodeID) || {}).canCreateModule,
       }
-
-      const settingFields = ((this.exposedModules[nodeID] || {}).fields || [])
-      settingFields.forEach(f => {
-        const mf = (upstream.fields.find(({ name }) => name === f.name) || {})
-        mf.value = true
-        mf.map = f.map
-      })
 
       upstream.allFields = upstream.fields.filter(f => f.value).length === upstream.fields.length
 
@@ -567,19 +576,14 @@ export default {
       const downstream = {
         options: [
           { moduleID: null, name: this.$t('module.edit.federationSettings.pickModule') },
-          ...Object.values(this.sharedModules[this.downstream.active] || {}).map(m => ({ moduleID: m.moduleID, name: m.name })),
+          ...Object.values(this.sharedModules[nodeID] || {})
+            .filter(({ canMapModule }) => canMapModule)
+            .map(m => ({ moduleID: m.moduleID, name: m.name })),
         ],
         module: null,
         allFields: {},
         fields,
       }
-
-      const settingFields = (({} || {}).fields || [])
-      settingFields.forEach(f => {
-        const mf = (downstream.fields.find(({ name }) => name === f.name) || {})
-        mf.value = true
-        mf.map = f.map
-      })
 
       Object.entries(this.sharedModulesMapped[nodeID] || {}).forEach(([key, value]) => {
         if (value.length) {
@@ -640,7 +644,6 @@ export default {
       if (target === 'upstream') {
         this.upstream[active].allFields = value ? !this.upstream[active].fields.find(f => f.value === !value) : false
       } else if (target === 'downstream') {
-        console.log('aaa')
         const allSameValue = !this.sharedModulesMapped[active][this.downstream[active].module].find(({ map }) => map === !value)
         this.downstream[active].allFields[this.downstream[active].module] = value ? allSameValue : false
       }
@@ -675,7 +678,7 @@ export default {
       }
 
       await this.$FederationAPI.manageStructureListAll({ nodeID, shared: 1 })
-        .then((data) => {
+        .then((data = []) => {
           this.sharedModules[nodeID] = data.map(d => ({ ...d, updated: false }))
         })
         .catch(this.defaultErrorHandler)
@@ -687,7 +690,7 @@ export default {
       }
 
       await this.$FederationAPI.manageStructureListAll({ nodeID, exposed: 1 })
-        .then((data) => {
+        .then((data = []) => {
           const exposedModule = data.find(({ composeModuleID }) => composeModuleID === this.module.moduleID)
           if (exposedModule) {
             this.exposedModules[nodeID] = exposedModule

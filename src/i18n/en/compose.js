@@ -437,6 +437,7 @@ export default {
         pickModuleField: 'Pick a module field',
         errorFetchingData: 'Error fetching server data',
         noNodes: 'No federated servers available',
+        noPermission: 'No permission to manage exposed module',
 
         general: {
           title: 'General',

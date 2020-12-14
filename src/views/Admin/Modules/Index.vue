@@ -47,7 +47,7 @@
             >
               <template v-slot:cell(name)="{ item: m }">
                 <div
-                  class="d-flex justify-content-between"
+                  class="d-flex justify-content-between align-items-start"
                 >
                   {{ m.name }}
                   <h5
@@ -57,7 +57,7 @@
                       v-if="Object.keys(m.labels || {}).includes('federation')"
                       pill
                       variant="primary"
-                      class="m-1 py-1 px-2"
+                      class="mx-1 py-1 px-2"
                       style="border-radius: 0.5rem;"
                     >
                       {{ $t('module.federated') }}

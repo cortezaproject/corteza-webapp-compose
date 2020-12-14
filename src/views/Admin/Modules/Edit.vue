@@ -6,19 +6,23 @@
           <b-card :title="$t('module.edit.title')" class="mb-5">
             <div
               slot="header"
-              class="d-flex"
+              class="d-flex justify-content-between align-items-center"
             >
-              <b-button
-                variant="link"
-                class="p-0 mr-auto"
-                @click="federationSettings.modal = true"
+              <div
               >
-                <font-awesome-icon
-                  :icon="['fas', 'share-alt']"
-                />
+                <b-button
+                  v-if="federationEnabled"
+                  variant="link"
+                  class="p-0"
+                  @click="federationSettings.modal = true"
+                >
+                  <font-awesome-icon
+                    :icon="['fas', 'share-alt']"
+                  />
 
-                {{ $t('module.edit.federationSettings.title') }}
-              </b-button>
+                  {{ $t('module.edit.federationSettings.title') }}
+                </b-button>
+              </div>
               <div>
                 <export :list="[this.module]" type="module" />
                 <c-permissions-button
@@ -160,6 +164,7 @@
     </b-modal>
 
     <federation-settings
+      v-if="federationEnabled"
       :modal="federationSettings.modal"
       :module="module"
       @change="federationSettings.modal = ($event || false)"
@@ -218,14 +223,14 @@ export default {
 
   data () {
     return {
-      federationSettings: {
-        modal: false,
-      },
-
       updateField: null,
       module: new compose.Module(),
       hasRecords: false,
       processing: false,
+
+      federationSettings: {
+        modal: false,
+      },
     }
   },
 
@@ -266,6 +271,10 @@ export default {
       return this.pages.find(p => {
         return p.blocks.find(b => b.options.moduleID === this.moduleID)
       })
+    },
+
+    federationEnabled () {
+      return !!this.$FederationAPI.baseURL
     },
   },
 
