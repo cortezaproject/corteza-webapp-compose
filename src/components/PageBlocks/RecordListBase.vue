@@ -980,7 +980,7 @@ export default {
         this.filter.sort = ''
       }
 
-      this.items = await this.$ComposeAPI.recordList({ moduleID, namespaceID, ...this.filter, filter })
+      await this.$ComposeAPI.recordList({ moduleID, namespaceID, ...this.filter, filter })
         .then(({ set, filter }) => {
           const records = set.map(r => new compose.Record(r, this.recordListModule))
 
@@ -993,7 +993,7 @@ export default {
           const fields = this.fields.filter(f => f.moduleField).map(f => f.moduleField)
           this.fetchUsers(fields, records)
 
-          return records.map(r => this.wrapRecord(r))
+          this.items = records.map(r => this.wrapRecord(r))
         })
         .catch(this.stdErr)
         .finally(() => {
