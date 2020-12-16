@@ -232,8 +232,11 @@ export default {
             break
           }
 
-          fields.filter(({ isRequired = false }) => isRequired).forEach(({ fieldID }) => {
-            requiredIDs.delete(fieldID)
+          fields.forEach(({ name }) => {
+            const field = this.module.fields.find(f => f.name === name)
+            if (field && field.isRequired) {
+              requiredIDs.delete(field.fieldID)
+            }
           })
         }
 
