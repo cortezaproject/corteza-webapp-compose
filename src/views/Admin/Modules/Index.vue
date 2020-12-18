@@ -202,6 +202,7 @@ export default {
       const { namespaceID } = this.namespace
 
       // Get recordList page if it exists
+      const blocks = [new compose.PageBlockRecord({ xywh: [0, 0, 12, 16] })]
       const selfID = (this.pages.find(p => {
         return p.blocks.find(b => b.options.moduleID === module.moduleID)
       }) || {}).pageID
@@ -210,7 +211,7 @@ export default {
         namespaceID,
         title: `${this.$t('module.forModule.recordPage')} "${module.name || moduleID}"`,
         moduleID,
-        blocks: [],
+        blocks,
         selfID,
       }
 

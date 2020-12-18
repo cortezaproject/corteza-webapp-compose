@@ -93,7 +93,8 @@
                       <circle-step
                         stepNumber="1"
                         :done="!!recordPage"
-                        small>
+                        small
+                      >
                         <b-button
                           v-if="recordPage"
                           :disabled="!namespace.canManageNamespace"
@@ -118,20 +119,22 @@
                       <circle-step
                         stepNumber="2"
                         :done="!!recordListPage"
-                        small>
+                        small
+                      >
                         <b-button
                           v-if="recordListPage"
+                          variant="outline-secondary"
                           :disabled="!namespace.canManageNamespace"
                           :to="{ name: 'admin.pages.builder', params: { pageID: recordListPage.pageID } }"
-                          variant="outline-secondary"
                         >
                           {{ $t('module.edit.steps.recordList') }}
                         </b-button>
                         <b-button
                           v-else
-                          @click="handleRecordListCreation"
+                          variant="outline-secondary"
                           :disabled="!namespace.canCreatePage || !recordPage"
-                          variant="outline-secondary">
+                          @click="handleRecordListCreation"
+                        >
                           {{ $t('module.edit.steps.recordList') }}
                         </b-button>
                       </circle-step>
@@ -341,7 +344,7 @@ export default {
       }).catch(this.defaultErrorHandler(this.$t('notification.module.deleteFailed')))
     },
 
-    async createRecordPage (page = {}) {
+    async createDefaultPage (page = {}) {
       if (this.recordPage) {
         return this.recordPage
       }
@@ -365,13 +368,13 @@ export default {
       const blocks = [new compose.PageBlockRecord({ xywh: [0, 0, 12, 16] })]
       const selfID = (this.recordListPage || {}).pageID
 
-      this.createRecordPage({ blocks, selfID }).then(page => {
+      this.createDefaultPage({ blocks, selfID }).then(page => {
         this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.page.createFailed')))
     },
 
     handleRecordListCreation () {
-      this.createRecordPage().then(recordPage => {
+      this.createDefaultPage().then(recordPage => {
         const { namespaceID } = this.namespace
         const { name, moduleID } = this.module
 
