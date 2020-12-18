@@ -170,6 +170,7 @@ export default {
 
       if (beforeID !== afterID) {
         // Page moved to a different parent
+        data.weight = 1
         data.selfID = afterID
         data.namespaceID = namespaceID
 
