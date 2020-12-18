@@ -3,7 +3,7 @@ var exec = require('child_process').execSync
 var path = require('path')
 var Vue = require('vue')
 
-module.exports = ({ appFlavour, appName, appLabel, version, theme, packageAlias, root = path.resolve('.'), env = process.env.NODE_ENV }) => {
+module.exports = ({ appFlavour, appName, appLabel, version = process.env.BUILD_VERSION, theme, packageAlias, root = path.resolve('.'), env = process.env.NODE_ENV }) => {
   const isDevelopment = (env === 'development')
   const isProduction = (env === 'production')
   const isTest = (env === 'test')

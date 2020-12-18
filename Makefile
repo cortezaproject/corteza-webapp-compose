@@ -29,7 +29,7 @@ test:
 	$(YARN) test:unit
 
 build:
-	$(YARN) build $(BUILD_FLAGS)
+	export BUILD_VERSION=${BUILD_VERSION} && $(YARN) build $(BUILD_FLAGS)
 
 release:
 	@ echo $(RELEASE_NAME)

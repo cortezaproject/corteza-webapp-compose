@@ -58,12 +58,12 @@
             </div>
           </div>
         </div>
-        <small
-          class="text-secondary mt-5"
-        >
-          {{ frontendVersion }}
-        </small>
       </div>
+      <small
+        class="fixed-bottom text-secondary m-2"
+      >
+        {{ frontendVersion }}
+      </small>
     </div>
     <div class="error text-danger text-center position-absolute" v-if="error">{{ error }}</div>
     <c-permissions-modal />
