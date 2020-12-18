@@ -43,7 +43,7 @@
               </template>
               <exporter-modal
                 :module="module"
-                :record-count="records.length"
+                :record-count="items.length"
                 :query="query"
                 :selection="selected"
                 @export="onExport"
@@ -79,7 +79,7 @@
               cols="4"
               class="pt-1 text-nowrap"
             >
-              {{ $t('block.recordList.selected', { count: selected.length, total: records.length }) }}
+              {{ $t('block.recordList.selected', { count: selected.length, total: items.length }) }}
               <a
                 class="text-light"
                 href="#"
@@ -113,7 +113,7 @@
           selectable
           select-mode="multi"
           class="mh-100 m-0 mb-2 border-top"
-          :items="records"
+          :items="items"
           :fields="fields"
           no-sort-reset
           @sort-changed="handleSort"
@@ -165,7 +165,7 @@
           </template>
           <template #head(selectable)>
             <b-checkbox
-              :disabled="records.length === 0"
+              :disabled="items.length === 0"
               :checked="areAllRowsSelected"
               @change="handleSelectAllOnPage({ isChecked: $event })"
             />
@@ -199,10 +199,26 @@
           <b-row
             no-gutters
           >
-            <b-col>
+             <b-col
+              class="d-flex justify-content-between align-items-center"
+            >
+              <div
+                class="mr-auto text-nowrap text-truncate"
+              >
+                <span
+                  v-if="pagination.count > filter.limit"
+                >
+                  {{ $t('block.recordList.pagination.showing', getPagination) }}
+                </span>
+                <span
+                  v-else
+                >
+                  {{ $t('block.recordList.pagination.single', getPagination) }}
+                </span>
+              </div>
+
               <b-button-group
                 size="sm"
-                class="float-right"
               >
                 <b-button
                   size="sm"
@@ -227,7 +243,7 @@
                   {{ $t('block.recordList.pagination.next') }}
                 </b-button>
               </b-button-group>
-            </b-col>
+             </b-col>
           </b-row>
         </b-container>
       </b-card-footer>
@@ -239,7 +255,7 @@
       size="xl"
       ok-only
       :ok-title="$t('block.recordList.filter.update')"
-      @ok="refresh()"
+      @ok="pullRecords(true)"
     >
       <b-container class="p-0">
         <!-- @TODO This section is used for filtering deleter/undeleted records -->
@@ -367,6 +383,8 @@ export default {
     return {
       query: null,
 
+      items: [],
+
       filterFields: {
         showModal: false,
         active: false,
@@ -377,6 +395,12 @@ export default {
             kind: '',
           },
         ],
+      },
+
+      pagination: {
+        reset: true,
+        count: 0,
+        page: 1,
       },
 
       filter: {
@@ -407,7 +431,7 @@ export default {
     },
 
     areAllRowsSelected () {
-      return this.selected.length === this.records.length
+      return this.selected.length === this.items.length
     },
 
     module () {
@@ -482,13 +506,30 @@ export default {
     hasNextPage () {
       return this.filter.nextPage
     },
+
+    getPagination () {
+      const { count = 0, page = 1 } = this.pagination
+      const { limit = 20 } = this.filter
+
+      return {
+        from: ((page - 1) * limit) + 1,
+        to: Math.min((page * limit), count),
+        page,
+        perPage: limit,
+        count,
+      }
+    },
   },
 
   watch: {
     query: throttle(function (e) {
       this.filter.query = queryToFilter(this.query, '', this.module.filterFields(this.module.fields.slice(0, 5)))
-      this.refresh()
+      this.pullRecords(true)
     }, 500),
+  },
+
+  created () {
+    this.pullRecords(true)
   },
 
   methods: {
@@ -574,7 +615,7 @@ export default {
 
     handleSort ({ sortBy, sortDesc = false }) {
       this.filter.sort = `${sortBy} ${sortDesc ? 'DESC' : ''}`.trim()
-      this.refresh()
+      this.pullRecords(true)
     },
 
     handleSelectAllOnPage ({ isChecked }) {
@@ -611,17 +652,22 @@ export default {
 
       this.$ComposeAPI
         .recordBulkDelete({ moduleID, namespaceID, recordIDs })
-        .then(() => { this.refresh() })
+        .then(() => { this.pullRecords(true) })
         .catch(this.stdErr)
     },
 
     goToPage (page) {
       this.filter.pageCursor = this.filter[page]
-      this.refresh()
+      if (this.filter.pageCursor) {
+        this.pagination.page += page === 'nextPage' ? 1 : -1
+      } else {
+        this.pagination.page = 1
+      }
+      this.pullRecords()
     },
 
-    refresh () {
-      this.$refs.table.refresh()
+    refresh (resetPagination = false) {
+      this.pullRecords(true)
     },
 
     /**
@@ -630,7 +676,7 @@ export default {
      * Will ignore b-tables input arguments for filter
      * and assemble them on our own
      */
-    records () {
+    async pullRecords (resetPagination = false) {
       let filter = queryToFilter(this.query, '', this.module.filterFields(this.module.fields.slice(0, 5)))
 
       const fieldsFilter = this.filterFields.items.filter(f => f.name).map(f => {
@@ -657,7 +703,15 @@ export default {
         this.filter.sort = ''
       }
 
-      return this.$ComposeAPI.recordList({ moduleID, namespaceID, ...this.filter, filter })
+      const paginationOptions = {
+        incTotal: resetPagination,
+      }
+
+      if (!this.filter.pageCursor) {
+        this.pagination.page = 1
+      }
+
+      await this.$ComposeAPI.recordList({ moduleID, namespaceID, ...this.filter, filter, ...paginationOptions })
         .then(({ set, filter }) => {
           const records = set.map(r => Object.freeze(new compose.Record(r, this.module)))
 
@@ -666,11 +720,15 @@ export default {
           this.filter.nextPage = filter.nextPage
           this.filter.prevPage = filter.prevPage
 
+          if (resetPagination) {
+            this.pagination.count = filter.total || 0
+          }
+
           // Extract user IDs from record values and load all users
           const fields = this.fields.filter(f => f.moduleField).map(f => f.moduleField)
           this.fetchUsers(fields, records)
 
-          return records
+          this.items = records
         })
         .catch(this.stdErr)
     },

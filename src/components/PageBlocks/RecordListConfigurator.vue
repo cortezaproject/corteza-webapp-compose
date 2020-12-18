@@ -172,9 +172,15 @@
         breakpoint="md"
         :label="$t('block.recordList.record.perPage')"
       >
-        <b-form-input type="number" v-model.number="options.perPage"></b-form-input>
+        <b-form-input type="number" v-model.number="options.perPage" class="mb-2"></b-form-input>
         <b-form-checkbox v-model="options.hidePaging">
           {{ $t('block.recordList.record.hidePaging') }}
+        </b-form-checkbox>
+        <b-form-checkbox v-if="!options.hidePaging" v-model="options.fullPageNavigation">
+          {{ $t('block.recordList.record.fullPageNavigation') }}
+        </b-form-checkbox>
+        <b-form-checkbox v-model="options.showTotalCount">
+          {{ $t('block.recordList.record.showTotalCount') }}
         </b-form-checkbox>
       </b-form-group>
       <b-form-group horizontal :label-cols="3" breakpoint="md" class="mt-4">

@@ -154,7 +154,7 @@
         hover
         responsive
         sticky-header
-        class="mh-100 m-0 mb-2 border-top"
+        class="h-100 m-0 mb-2 border-top"
       >
 
       <b-thead>
@@ -419,34 +419,70 @@
         <b-row
           no-gutters
         >
-          <b-col>
-            <b-button-group
-              size="sm"
-              class="float-right"
+          <b-col
+            class="d-flex justify-content-between align-items-center"
+          >
+            <div
             >
-              <b-button
+              <div
+                v-if="options.showTotalCount"
+                class="mr-auto text-nowrap text-truncate"
+              >
+                <span
+                  v-if="pagination.count > options.perPage"
+                >
+                  {{ $t('block.recordList.pagination.showing', getPagination) }}
+                </span>
+                <span
+                  v-else
+                >
+                  {{ $t('block.recordList.pagination.single', getPagination) }}
+                </span>
+              </div>
+            </div>
+            <div
+              v-if="!options.hidePaging && !inlineEditing"
+            >
+              <b-pagination
+                v-if="options.fullPageNavigation"
+                align="right"
+                aria-controls="record-list"
+                class="m-0"
                 size="sm"
-                variant="outline-primary"
-                :disabled="!hasPrevPage"
-                @click="goToPage()"
+                :value="getPagination.page"
+                :per-page="getPagination.perPage"
+                :total-rows="getPagination.count"
+                @change="goToPage"
+              />
+
+              <b-button-group
+                v-else
+                size="sm"
               >
-                {{ $t('block.recordList.pagination.first') }}
-              </b-button>
-              <b-button
-                variant="primary"
-                :disabled="!hasPrevPage"
-                @click="goToPage('prevPage')"
-              >
-                {{ $t('block.recordList.pagination.prev') }}
-              </b-button>
-              <b-button
-                variant="primary"
-                :disabled="!hasNextPage"
-                @click="goToPage('nextPage')"
-              >
-                {{ $t('block.recordList.pagination.next') }}
-              </b-button>
-            </b-button-group>
+                <b-button
+                  size="sm"
+                  variant="outline-primary"
+                  :disabled="!hasPrevPage"
+                  @click="goToPage()"
+                >
+                  {{ $t('block.recordList.pagination.first') }}
+                </b-button>
+                <b-button
+                  variant="primary"
+                  :disabled="!hasPrevPage"
+                  @click="goToPage('prevPage')"
+                >
+                  {{ $t('block.recordList.pagination.prev') }}
+                </b-button>
+                <b-button
+                  variant="primary"
+                  :disabled="!hasNextPage"
+                  @click="goToPage('nextPage')"
+                >
+                  {{ $t('block.recordList.pagination.next') }}
+                </b-button>
+              </b-button-group>
+            </div>
           </b-col>
         </b-row>
       </b-container>
@@ -512,6 +548,12 @@ export default {
         nextPage: '',
       },
 
+      pagination: {
+        pages: [],
+        page: 1,
+        count: 0,
+      },
+
       selected: [],
 
       sortBy: undefined,
@@ -549,6 +591,19 @@ export default {
 
     hasRightActions () {
       return this.editing
+    },
+
+    getPagination () {
+      const { page = 1, count = 0 } = this.pagination
+      const { perPage = 10 } = this.options
+
+      return {
+        from: ((page - 1) * perPage) + 1,
+        to: Math.min((page * perPage), count),
+        page,
+        perPage,
+        count,
+      }
     },
 
     hasPrevPage () {
@@ -650,7 +705,7 @@ export default {
   watch: {
     query: throttle(function (e) {
       this.filter.query = queryToFilter(this.query, this.prefilter, this.recordListModule.filterFields(this.options.fields))
-      this.refresh()
+      this.refresh(true)
     }, 500),
   },
 
@@ -658,7 +713,7 @@ export default {
     this.prepRecordList()
     this.$root.$on(`record-line:collect:${this.page.pageID}-${this.blockIndex}`, this.resolveRecords)
     this.$root.$on(`page-block:validate:${this.page.pageID}-${this.blockIndex}`, this.validatePageBlock)
-    this.pullRecords()
+    this.pullRecords(true)
   },
 
   beforeDestroy () {
@@ -943,11 +998,21 @@ export default {
         }
       }
       this.sortBy = key
-      this.refresh()
+      this.refresh(true)
     },
 
     goToPage (page) {
-      this.filter.pageCursor = this.filter[page]
+      if (page >= 1) {
+        this.filter.pageCursor = (this.pagination.pages[page - 1] || {}).cursor
+        this.pagination.page = page
+      } else {
+        this.filter.pageCursor = this.filter[page]
+        if (this.filter.pageCursor) {
+          this.pagination.page += page === 'nextPage' ? 1 : -1
+        } else {
+          this.pagination.page = 1
+        }
+      }
       this.refresh()
     },
 
@@ -986,13 +1051,13 @@ export default {
 
         this.$ComposeAPI
           .recordBulkDelete({ moduleID, namespaceID, recordIDs: this.selected })
-          .then(() => { this.refresh() })
+          .then(() => { this.refresh(true) })
           .catch(this.stdErr)
       }
     },
 
-    refresh () {
-      this.pullRecords()
+    refresh (resetPagination = false) {
+      this.pullRecords(resetPagination)
     },
 
     /**
@@ -1001,7 +1066,7 @@ export default {
      * Will ignore b-tables input arguments for filter
      * and assemble them on our own
      */
-    async pullRecords () {
+    async pullRecords (resetPagination = false) {
       if (this.recordListModule.moduleID !== this.options.moduleID) {
         throw Error('Module incompatible, module mismatch')
       }
@@ -1015,7 +1080,16 @@ export default {
         this.filter.sort = ''
       }
 
-      await this.$ComposeAPI.recordList({ moduleID, namespaceID, ...this.filter, filter })
+      let paginationOptions = {}
+      if (resetPagination) {
+        const { fullPageNavigation = false, showTotalCount = false } = this.options
+        paginationOptions = {
+          incPageNavigation: fullPageNavigation,
+          incTotal: showTotalCount,
+        }
+      }
+
+      await this.$ComposeAPI.recordList({ moduleID, namespaceID, ...this.filter, filter, ...paginationOptions })
         .then(({ set, filter }) => {
           const records = set.map(r => new compose.Record(r, this.recordListModule))
 
@@ -1023,6 +1097,34 @@ export default {
           this.filter.pageCursor = undefined
           this.filter.nextPage = filter.nextPage
           this.filter.prevPage = filter.prevPage
+
+          if (resetPagination) {
+            let count = this.pagination.count || 0
+
+            if (paginationOptions.incTotal) {
+              count = filter.total || 0
+              this.filter.incTotal = false
+            }
+
+            if (paginationOptions.incPageNavigation) {
+              const pages = filter.pageNavigation || []
+              this.pagination.pages = pages
+
+              if (!paginationOptions.incTotal) {
+                if (pages.length > 1) {
+                  const lastPageCount = pages[pages.length - 1].items
+                  count = ((pages.length - 1) * this.options.perPage) + lastPageCount
+                } else {
+                  count = records.length
+                }
+              }
+
+              this.filter.incPageNavigation = false
+            }
+
+            this.pagination.count = count
+            this.pagination.page = 1
+          }
 
           // Extract user IDs from record values and load all users
           const fields = this.fields.filter(f => f.moduleField).map(f => f.moduleField)

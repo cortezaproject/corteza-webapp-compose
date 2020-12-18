@@ -186,6 +186,10 @@ export default {
       editFields: 'Editable module fields',
 
       pagination: {
+        showing: 'Showing {{from}} to {{to}} of {{count}} records',
+        single: 'One record',
+        single_plural: '{{count}} records',
+
         first: '<<',
         prev: 'Prev',
         next: 'Next',
@@ -234,6 +238,8 @@ export default {
         presortHideSort: 'Hide sorting',
         perPage: 'Records per page',
         hidePaging: 'Hide paging',
+        showTotalCount: 'Show total record count',
+        fullPageNavigation: 'Full page navigation',
         noPermission: 'No permission to read record',
       },
       preview: {
