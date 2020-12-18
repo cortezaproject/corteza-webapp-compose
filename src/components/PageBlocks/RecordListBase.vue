@@ -273,7 +273,7 @@
               :record="item.r"
               :module="module"
               :namespace="namespace"
-              :errors="recordErrors(item)"
+              :errors="recordErrors(item, field)"
               inline-editor
               class="mb-0"
               @click.stop
@@ -681,7 +681,11 @@ export default {
     },
 
     // Grabs errors specific to this record item
-    recordErrors (item) {
+    recordErrors (item, field) {
+      if (field) {
+        return this.errors.filterByMeta('id', item.id)
+          .filterByMeta('field', field.key)
+      }
       return this.errors.filterByMeta('id', item.id)
     },
 
