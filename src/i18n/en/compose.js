@@ -103,6 +103,7 @@ export default {
       srcDesc: 'Used as a fallback when set in combination with record field.',
       srcFieldLabel: 'Field (URL) from record to use for the iframe',
       srcFieldDesc: 'Only available on record pages and on modules with existing "url" field kind',
+      pickURLField: 'Pick an URL field',
     },
     calendar: {
       label: 'Calendar',

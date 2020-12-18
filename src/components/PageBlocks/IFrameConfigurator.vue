@@ -1,28 +1,23 @@
 <template>
   <b-tab :title="$t('block.iframe.label')">
     <b-form-group
+      v-if="enableFromRecordURL"
       class="form-group"
       :label="$t('block.iframe.srcFieldLabel')"
       :description="$t('block.iframe.srcFieldDesc')"
-      :disabled="fields.length > 0"
+      :disabled="!fields.length"
     >
       <b-select
-        class="form-control"
-        type="url"
         v-model="options.srcField"
-      >
-        <option
-          v-for="({ name, label, kind }) in fields"
-          :key="name"
-          :value="name">
-          {{ label || name }} {{ kind }}
-        </option>
-      </b-select>
+        type="url"
+        class="form-control"
+        :options="fieldOptions"
+      />
     </b-form-group>
     <b-form-group
       class="form-group"
       :label="$t('block.iframe.srcLabel')"
-      :description="$t('block.iframe.srcDesc')"
+      :description="enableFromRecordURL ? $t('block.iframe.srcDesc') : ''"
     >
       <b-form-input
         class="form-control"
@@ -48,7 +43,19 @@ export default {
 
       return this.module.fields
         .filter(({ kind }) => kind === 'Url')
-        .sort((a, b) => a.label.localeCompare(b.label))
+        .map(({ name, label }) => ({ value: name, text: label }))
+        .sort((a, b) => a.text.localeCompare(b.text))
+    },
+
+    fieldOptions () {
+      return [
+        { value: '', text: this.$t('block.iframe.pickURLField') },
+        ...this.fields,
+      ]
+    },
+
+    enableFromRecordURL () {
+      return this.page.moduleID !== '0'
     },
   },
 }
