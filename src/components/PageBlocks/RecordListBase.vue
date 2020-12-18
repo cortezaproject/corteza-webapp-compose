@@ -646,11 +646,13 @@ export default {
   created () {
     this.prepRecordList()
     this.$root.$on(`record-line:collect:${this.page.pageID}-${this.blockIndex}`, this.resolveRecords)
+    this.$root.$on(`page-block:validate:${this.page.pageID}-${this.blockIndex}`, this.validatePageBlock)
     this.pullRecords()
   },
 
   beforeDestroy () {
     this.$root.$off(`record-line:collect:${this.page.pageID}-${this.blockIndex}`)
+    this.$root.$off(`page-block:validate:${this.page.pageID}-${this.blockIndex}`)
   },
 
   methods: {
@@ -721,6 +723,24 @@ export default {
         positionField: this.options.positionField,
         idPrefix: this.idPrefix,
       })
+    },
+
+    validatePageBlock (resolve) {
+      // For now, only record lines should be validated
+      if (!this.options.editable) {
+        resolve({ valid: true })
+      }
+
+      // Find all required fields
+      const req = new Set(this.module.fields.filter(({ isRequired = false }) => isRequired).map(({ name }) => name))
+
+      // Check if all required fields are there
+      for (const f of this.options.editFields) {
+        req.delete(f.name)
+      }
+
+      // If required fields are satisfied, then the validation passes
+      resolve({ valid: !req.size })
     },
 
     handleDeleteInline (item, i) {

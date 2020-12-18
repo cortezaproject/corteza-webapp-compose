@@ -215,35 +215,31 @@ export default {
       this.editor = null
     },
 
-    handleSave ({ closeOnSuccess = false, previewOnSuccess = false } = {}) {
+    async handleSave ({ closeOnSuccess = false, previewOnSuccess = false } = {}) {
       const { namespaceID } = this.namespace
 
-      // If this is record page, check if all required fields are present in the record blocks.
-      if (this.module) {
-        const recordBlocks = this.page.blocks.filter(({ kind }) => kind === 'Record')
-        // Array of required fieldID's from the module
-        const requiredIDs = new Set([...this.module.fields.filter(({ isRequired = false }) => isRequired).map(({ fieldID }) => fieldID)])
+      // Record blocks
+      if (this.module && !this.validateModuleFieldSelection(this.module, this.page)) {
+        this.defaultErrorHandler(this.$t('notification.page.saveFailedRequired'))()
+        return
+      }
 
-        for (let i = 0; i < recordBlocks.length; i++) {
-          const fields = ((recordBlocks[i] || {}).options || {}).fields || []
-          // If no fields are in Record block, means all fields are present(default), no need to check
-          if (!fields.length) {
-            requiredIDs.clear()
-            break
-          }
-
-          fields.forEach(({ name }) => {
-            const field = this.module.fields.find(f => f.name === name)
-            if (field && field.isRequired) {
-              requiredIDs.delete(field.fieldID)
-            }
+      // Cecord lines blocks
+      const queue = []
+      this.page.blocks.forEach((b, index) => {
+        if (b.kind === 'RecordList' && b.options.editable) {
+          const p = new Promise((resolve) => {
+            this.$root.$emit(`page-block:validate:${this.page.pageID}-${index}`, resolve)
           })
-        }
 
-        if (requiredIDs.size > 0) {
-          this.defaultErrorHandler(this.$t('notification.page.saveFailedRequired'))()
-          return
+          queue.push(p)
         }
+      })
+
+      const validated = await Promise.all(queue)
+      if (validated.find(({ valid }) => !valid)) {
+        this.defaultErrorHandler(this.$t('notification.page.saveFailedRequired'))()
+        return
       }
 
       this.findPageByID({ namespaceID, pageID: this.pageID, force: true })
@@ -261,6 +257,30 @@ export default {
             this.page = new compose.Page(page)
           }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))
         })
+    },
+
+    validateModuleFieldSelection (module, page) {
+      // Find all required fields
+      const req = new Set(module.fields.filter(({ isRequired = false }) => isRequired).map(({ name }) => name))
+
+      // Check if all required fields are there
+      for (const b of page.blocks) {
+        if (b.kind !== 'Record') {
+          continue
+        }
+
+        // If no fields are in Record block, means all fields are present(default), no need to check
+        if (!b.options || !b.options.fields.length) {
+          return true
+        }
+
+        for (const f of b.options.fields) {
+          req.delete(f.name)
+        }
+      }
+
+      // If required fields are satisfied, then the validation passes
+      return !req.size
     },
 
     handleDeletePage () {
