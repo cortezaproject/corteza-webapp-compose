@@ -1,6 +1,9 @@
 <template>
   <wrap v-bind="$props" v-on="$listeners" :scrollable-body="false">
-    <template #header>
+    <template
+      v-if="showHeader"
+      #header
+    >
       <div
         class="d-flex align-items-center"
       >
@@ -21,7 +24,7 @@
     </template>
     <template #toolbar>
       <b-container
-        ref="header"
+        ref="toolbar"
         class="m-0 p-2"
         fluid
       >
@@ -405,7 +408,7 @@
     </template>
 
     <template
-      v-if="!options.hidePaging && !inlineEditing"
+      v-if="showFooter"
       #footer
     >
       <b-container
@@ -534,6 +537,14 @@ export default {
       if (this.options.draggable && this.inlineEditing) base++
       if (this.options.selectable) base++
       return base
+    },
+
+    showHeader () {
+      return !!(this.block.title || Object.keys(this.recordListModule.labels || {}).includes('federation'))
+    },
+
+    showFooter () {
+      return !this.options.hidePaging && !this.inlineEditing
     },
 
     hasRightActions () {
