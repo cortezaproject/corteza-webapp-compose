@@ -2,7 +2,7 @@
   <sortable-tree
     :draggable="namespace.canCreatePage"
     :data="{children:list}"
-    element="ul"
+    tag="ul"
     mixinParentKey="parent"
     class="list-group"
     @changePosition="handleChangePosition">

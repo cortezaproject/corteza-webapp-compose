@@ -60,7 +60,7 @@
                   <th></th>
                 </tr>
                 </thead>
-                <draggable v-model="module.fields" :options="{handle:'.handle'}" element="tbody">
+                <draggable v-model="module.fields" :options="{handle:'.handle'}" tag="tbody">
                   <field-row-edit v-for="(field, index) in module.fields"
                                   @edit="handleFieldEdit(module.fields[index])"
                                   @delete="module.fields.splice(index, 1)"

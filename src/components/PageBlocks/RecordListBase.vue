@@ -221,7 +221,7 @@
         :disabled="!inlineEditing || !options.draggable"
         v-model="items"
         group="items"
-        element="b-tbody"
+        tag="b-tbody"
         handle=".handle"
       >
         <b-tr

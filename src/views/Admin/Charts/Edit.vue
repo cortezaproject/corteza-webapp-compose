@@ -53,7 +53,7 @@
                         v-model="reports"
                         :options="{ handle:'.handle' }"
                         class="w-100 d-inline-block"
-                        element="tbody"
+                        tag="tbody"
                       >
 
                         <report-item
