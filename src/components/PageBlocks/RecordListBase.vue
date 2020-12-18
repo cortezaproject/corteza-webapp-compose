@@ -1,5 +1,5 @@
 <template>
-  <wrap v-bind="$props" v-on="$listeners" :scrollable-body="false">
+  <wrap v-if="recordListModule" v-bind="$props" v-on="$listeners" :scrollable-body="false">
     <template
       v-if="showHeader"
       #header
@@ -1067,6 +1067,10 @@ export default {
      * and assemble them on our own
      */
     async pullRecords (resetPagination = false) {
+      if (!this.recordListModule) {
+        return
+      }
+
       if (this.recordListModule.moduleID !== this.options.moduleID) {
         throw Error('Module incompatible, module mismatch')
       }
