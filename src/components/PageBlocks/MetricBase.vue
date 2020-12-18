@@ -112,9 +112,12 @@ export default {
       const rtr = []
       const namespaceID = this.namespace.namespaceID
       const reporter = r => this.$ComposeAPI.recordReport({ ...r, namespaceID })
+
       for (const m of this.options.metrics) {
-        const vals = await this.block.fetch({ m }, reporter)
-        rtr.push(vals)
+        if (m.moduleID) {
+          const vals = await this.block.fetch({ m }, reporter)
+          rtr.push(vals)
+        }
       }
 
       this.reports = rtr
