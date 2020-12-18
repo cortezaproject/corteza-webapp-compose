@@ -84,7 +84,7 @@ export default {
       },
       group: {
         label: 'Key value',
-        footnote: 'Value that will be set to the key field',
+        footnote: 'Value that will be set to the key field. This does not affect the filtering. Make sure to specify the prefilter where needed.',
       },
       preview: {
         label: 'Record Organizer block for module {{0}}. Label field {{1}}, Description field {{2}}. Value setting field: {{3}}, Sorted by position field: {{4}}.',

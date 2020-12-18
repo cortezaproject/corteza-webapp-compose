@@ -33,8 +33,8 @@
 
       <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.prefilterLabel')">
         <b-form-textarea :value="true"
-                        :placeholder="$t('block.recordList.record.prefilterPlaceholder')"
-                        v-model.trim="options.filter"></b-form-textarea>
+                         :placeholder="$t('block.recordList.record.prefilterPlaceholder')"
+                         v-model.trim="options.filter" />
           <b-form-text>
             <i18next path="block.recordList.record.prefilterFootnote" tag="label">
               <code>${recordID}</code>
