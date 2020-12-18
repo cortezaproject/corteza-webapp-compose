@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div
+    v-if="loaded"
+  >
     <b-form-group
       :label="$t('field.sanitizers.label')"
       label-size="lg"
@@ -117,6 +119,12 @@ export default {
     },
   },
 
+  data () {
+    return {
+      loaded: false,
+    }
+  },
+
   mounted () {
     if (!this.field.expressions.sanitizers) {
       this.$set(this.field.expressions, 'sanitizers', [])
@@ -137,6 +145,8 @@ export default {
     if (!this.field.expressions.disableDefaultFormatters) {
       this.$set(this.field.expressions, 'disableDefaultFormatters', false)
     }
+
+    this.loaded = true
   },
 
   methods: {
