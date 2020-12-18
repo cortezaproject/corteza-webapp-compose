@@ -5,17 +5,17 @@
       #header
     >
       <div
-        class="d-flex align-items-center"
+        class="w-100"
       >
         {{ block.title }}
         <h4
-          class="mb-0"
+          class="d-inline-block mb-0"
         >
           <b-badge
             v-if="Object.keys(recordListModule.labels || {}).includes('federation')"
             variant="primary"
             style="border-radius: 0.5rem;"
-            class="m-1 py-1 px-2"
+            class="py-1"
           >
             {{ $t('block.recordList.federated') }}
           </b-badge>
