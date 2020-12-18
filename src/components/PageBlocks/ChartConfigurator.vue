@@ -3,7 +3,7 @@
     <fieldset class="form-group">
       <b-form-group>
         <label>{{ $t('block.chart.display') }}</label>
-        <b-form-select v-model="options.chartID" :options="charts" text-field="name" value-field="chartID">
+        <b-form-select v-model="options.chartID" :options="filterCharts()" text-field="name" value-field="chartID">
           <template slot="first">
             <option disabled>{{ $t('block.chart.pick') }}</option>
           </template>
@@ -25,6 +25,19 @@ export default {
     ...mapGetters({
       charts: 'chart/set',
     }),
+  },
+
+  methods: {
+    filterCharts () {
+      const rr = []
+      for (const c of this.charts) {
+        try {
+          c.isValid()
+          rr.push(c)
+        } catch (e) {}
+      }
+      return rr
+    },
   },
 }
 </script>
