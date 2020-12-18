@@ -22,15 +22,28 @@ export default (options = {}) => {
   options = {
     el: '#app',
     name: 'compose',
-    template: '<router-view v-if="loaded"/>',
+    template: '<div v-if="loaded"><router-view/><vue-progress-bar /></div>',
 
     mixins: [
       mixins.corredor,
     ],
 
     data: () => ({ loaded: false }),
+    mounted () {
+      this.$Progress.finish()
+    },
     created () {
       if (this.$auth.is()) {
+        // Setup the progress bar
+        this.$Progress.start()
+        this.$router.beforeEach((to, from, next) => {
+          this.$Progress.start()
+          next()
+        })
+        this.$router.afterEach((to, from) => {
+          this.$Progress.finish()
+        })
+
         // ref to vue is needed inside compose helper
         // load and register bundle and list of client/server scripts
 

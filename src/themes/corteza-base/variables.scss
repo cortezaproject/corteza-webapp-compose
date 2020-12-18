@@ -79,6 +79,7 @@ $input-focus-border-color:     $primary !default;
 // to determine default event colors
 :export {
   primary: $primary;
+  danger: $danger;
   secondary: $secondary;
 }
 /* stylelint-enable */
