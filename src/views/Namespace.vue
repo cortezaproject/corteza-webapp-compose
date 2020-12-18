@@ -172,6 +172,7 @@ export default {
     namespace: {
       handler (namespace) {
         if (!namespace) {
+          this.$router.push({ name: 'root' })
           return
         }
 
