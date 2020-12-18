@@ -88,7 +88,7 @@
       </field-expressions>
       <b-checkbox
         v-model="field.expressions.disableDefaultValidators"
-        :disabled="field.expressions.validators.length === 0"
+        :disabled="!field.expressions.validators || field.expressions.validators.length === 0"
         :value="true"
         :unchecked-value="false"
         class="mt-2"

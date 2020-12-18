@@ -102,7 +102,7 @@
 <script>
 import base from './base'
 import { VueSelect } from 'vue-select'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import { debounce } from 'lodash'
 import { createPopper } from '@popperjs/core'
 import { mapGetters } from 'vuex'
@@ -274,7 +274,7 @@ export default {
       const namespaceID = this.namespace.namespaceID
       const moduleID = this.field.options.moduleID
 
-      if (moduleID && query.length > 0) {
+      if (moduleID && moduleID !== NoID && query.length > 0) {
         // Determine what fields to use for searching
         // Default to label field
         let qf = this.field.options.queryFields
@@ -298,7 +298,7 @@ export default {
       const namespaceID = this.namespace.namespaceID
       const moduleID = this.field.options.moduleID
       const { limit } = this.filter
-      if (moduleID) {
+      if (moduleID && moduleID !== NoID) {
         this.fetchPrefiltered({ namespaceID, moduleID, limit })
           .then(({ filter, set }) => {
             this.latest = set.map(r => new compose.Record(this.module, r))
