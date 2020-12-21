@@ -711,14 +711,14 @@ export default {
 
   created () {
     this.prepRecordList()
-    this.$root.$on(`record-line:collect:${this.page.pageID}-${this.blockIndex}`, this.resolveRecords)
-    this.$root.$on(`page-block:validate:${this.page.pageID}-${this.blockIndex}`, this.validatePageBlock)
+    this.$root.$on(`record-line:collect:${this.page.pageID}-${(this.record || {}).recordID || '0'}-${this.blockIndex}`, this.resolveRecords)
+    this.$root.$on(`page-block:validate:${this.page.pageID}-${(this.record || {}).recordID || '0'}-${this.blockIndex}`, this.validatePageBlock)
     this.pullRecords(true)
   },
 
   beforeDestroy () {
-    this.$root.$off(`record-line:collect:${this.page.pageID}-${this.blockIndex}`)
-    this.$root.$off(`page-block:validate:${this.page.pageID}-${this.blockIndex}`)
+    this.$root.$off(`record-line:collect:${this.page.pageID}-${(this.record || {}).recordID || '0'}-${this.blockIndex}`)
+    this.$root.$off(`page-block:validate:${this.page.pageID}-${(this.record || {}).recordID || '0'}-${this.blockIndex}`)
   },
 
   methods: {
