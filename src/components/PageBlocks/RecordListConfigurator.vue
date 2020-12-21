@@ -179,7 +179,7 @@
         <b-form-checkbox v-if="!options.hidePaging" v-model="options.fullPageNavigation">
           {{ $t('block.recordList.record.fullPageNavigation') }}
         </b-form-checkbox>
-        <b-form-checkbox v-model="options.showTotalCount">
+        <b-form-checkbox v-if="!options.hidePaging" v-model="options.showTotalCount">
           {{ $t('block.recordList.record.showTotalCount') }}
         </b-form-checkbox>
       </b-form-group>
