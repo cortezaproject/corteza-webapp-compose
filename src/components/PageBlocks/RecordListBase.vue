@@ -154,7 +154,7 @@
         hover
         responsive
         sticky-header
-        class="h-100 m-0 mb-2 border-top"
+        class="mh-100 h-100 m-0 mb-2 border-top"
       >
 
       <b-thead>
