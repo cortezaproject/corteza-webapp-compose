@@ -373,12 +373,12 @@ export default {
         .then(({ set = [] }) => {
           this.servers = set.filter(({ canManageNode }) => canManageNode)
         })
-        .catch(this.defaultErrorHandler)
+        .catch(this.defaultErrorHandler())
 
       for (const node of this.servers) {
-        await this.loadSharedModules(node.nodeID).catch(this.defaultErrorHandler)
-        await this.loadExposedModules(node.nodeID).catch(this.defaultErrorHandler)
-        await this.loadModuleMappings(node.nodeID).catch(this.defaultErrorHandler)
+        await this.loadSharedModules(node.nodeID).catch(this.defaultErrorHandler())
+        await this.loadExposedModules(node.nodeID).catch(this.defaultErrorHandler())
+        await this.loadModuleMappings(node.nodeID).catch(this.defaultErrorHandler())
       }
 
       this.sharedModulesMapped = this.getSharedModulesMapped()
@@ -457,7 +457,7 @@ export default {
               // Reset update flag
               crtModule.updated = false
             })
-            .catch(this.defaultErrorHandler)
+            .catch(this.defaultErrorHandler())
         }
       }
 
@@ -487,7 +487,7 @@ export default {
             // Reset update flag
             (this.upstream[nodeID] || {}).updated = false
           })
-          .catch(this.defaultErrorHandler)
+          .catch(this.defaultErrorHandler())
 
         if (!response && !response.moduleID) {
           return
@@ -654,7 +654,7 @@ export default {
     async getModuleMappings (nodeID, moduleID) {
       return this.$FederationAPI.manageStructureReadMappings({ nodeID, moduleID })
         .then((data) => data)
-        .catch(this.defaultErrorHandler)
+        .catch(this.defaultErrorHandler())
     },
 
     async persistExposedModule (payload) {
@@ -666,7 +666,7 @@ export default {
     },
 
     async persistModuleMappings (payload) {
-      return this.$FederationAPI.manageStructureCreateMappings(payload).catch(this.defaultErrorHandler)
+      return this.$FederationAPI.manageStructureCreateMappings(payload).catch(this.defaultErrorHandler())
     },
 
     //
@@ -681,7 +681,7 @@ export default {
         .then((data = []) => {
           this.sharedModules[nodeID] = data.map(d => ({ ...d, updated: false }))
         })
-        .catch(this.defaultErrorHandler)
+        .catch(this.defaultErrorHandler())
     },
 
     async loadExposedModules (nodeID) {
@@ -696,7 +696,7 @@ export default {
             this.exposedModules[nodeID] = exposedModule
           }
         })
-        .catch(this.defaultErrorHandler)
+        .catch(this.defaultErrorHandler())
     },
 
     async loadModuleMappings (nodeID) {
@@ -711,7 +711,7 @@ export default {
           .then((data) => {
             mm[moduleID] = data
           })
-          .catch(this.defaultErrorHandler)
+          .catch(this.defaultErrorHandler())
       }
 
       this.moduleMappings[nodeID] = mm
