@@ -408,7 +408,7 @@ export default {
         deleted: 0,
         filter: '',
         sort: '',
-        limit: 1,
+        limit: 20,
         pageCursor: '',
         prevPage: '',
         nextPage: '',
