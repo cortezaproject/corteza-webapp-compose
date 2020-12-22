@@ -6,7 +6,10 @@
     <b-row
       no-gutters
     >
-      <b-col cols="4">
+      <b-col
+        cols="4"
+        class="d-flex justify-content-start align-items-center"
+      >
         <b-button
           variant="link"
           :disabled="processing"
@@ -17,10 +20,10 @@
       </b-col>
       <b-col
         cols="4"
-        class="text-center"
+        class="d-flex justify-content-center align-items-center"
       >
         <b-button
-          v-if="module.canCreateRecord && !hideClone"
+          v-if="module.canCreateRecord && !hideClone && record"
           variant="outline-secondary"
           :disabled="processing"
           class="m-1"
@@ -40,11 +43,12 @@
         </b-button>
       </b-col>
       <b-col
+        v-if="module && record && !isDeleted"
         cols="4"
-        class="text-right"
+        class="d-flex justify-content-end align-items-center"
       >
         <c-input-confirm
-          :disabled="!module.canDeleteRecord || isDeleted || processing"
+          :disabled="!module.canDeleteRecord || processing"
           @confirmed="$emit('delete')"
           class="m-1"
         >
@@ -52,22 +56,23 @@
         </c-input-confirm>
 
         <b-button
-          v-if="module.canUpdateRecord && !isDeleted && !inEditing"
-          variant="outline-secondary"
-          class="m-1"
-          @click.prevent="$emit('edit')"
-        >
-          {{ $t('general.label.edit') }}
-        </b-button>
-
-        <b-button
-          v-else-if="module.canUpdateRecord"
-          :disabled="isDeleted || processing"
+          v-if="inEditing"
+          :disabled="!canSave || processing"
           class="m-1"
           variant="primary"
           @click.prevent="$emit('submit')"
         >
           {{ $t('general.label.save') }}
+        </b-button>
+
+        <b-button
+          v-else
+          :disabled="!module.canUpdateRecord"
+          variant="outline-secondary"
+          class="m-1"
+          @click.prevent="$emit('edit')"
+        >
+          {{ $t('general.label.edit') }}
         </b-button>
       </b-col>
     </b-row>
@@ -81,6 +86,11 @@ export default {
   props: {
     module: {
       type: compose.Module,
+      required: false,
+    },
+
+    record: {
+      type: compose.Record,
       required: false,
     },
 
@@ -107,6 +117,16 @@ export default {
     isDeleted: {
       type: Boolean,
       default: true,
+    },
+  },
+
+  computed: {
+    canSave () {
+      if (this.record) {
+        return this.record.recordID === '0' ? this.module.canCreateRecord : this.module.canUpdateRecord
+      }
+
+      return false
     },
   },
 }

@@ -120,14 +120,16 @@
             />
             <c-input-confirm
               v-if="!inlineEditing"
-              @confirmed="handleDeleteSelectedRecords()"
               variant="link-light"
+              :disabled="!recordListModule.canDeleteRecord"
+              @confirmed="handleDeleteSelectedRecords()"
             />
             <b-button
               v-else-if="!areAllRowsDeleted"
               variant="link"
               size="md"
               class="border-0 text-dark"
+              :disabled="!recordListModule.canDeleteRecord"
               @click.prevent="handleDeleteSelectedRecords()"
             >
               <font-awesome-icon

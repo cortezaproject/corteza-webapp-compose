@@ -93,8 +93,9 @@
               cols="8"
             >
               <c-input-confirm
-                @confirmed="handleDeleteSelectedRecords()"
                 variant="link-light"
+                :disabled="!module.canDeleteRecord"
+                @confirmed="handleDeleteSelectedRecords()"
               />
             </b-col>
           </b-row>

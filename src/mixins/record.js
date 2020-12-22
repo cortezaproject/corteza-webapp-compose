@@ -8,7 +8,7 @@ export default {
     return {
       inEditing: false,
       processing: false,
-      record: null,
+      record: undefined,
       errors: new validator.Validated(),
     }
   },

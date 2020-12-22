@@ -63,6 +63,7 @@
     </main>
     <record-toolbar
       :module="module"
+      :record="record"
       :processing="processing"
       :isDeleted="isDeleted"
       :inEditing="inEditing"
@@ -140,7 +141,6 @@ export default {
 
   methods: {
     loadRecord () {
-      this.record = null
       if (this.$attrs.recordID && this.$attrs.moduleID) {
         const { namespaceID } = this.$attrs.namespace
         const { moduleID, recordID } = this.$attrs

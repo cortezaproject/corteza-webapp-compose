@@ -18,6 +18,7 @@
     <portal to="toolbar">
       <record-toolbar
         :module="module"
+        :record="record"
         :processing="processing"
         :isDeleted="isDeleted"
         :inEditing="inEditing"
@@ -103,7 +104,6 @@ export default {
 
   methods: {
     loadRecord () {
-      this.record = null
       if (this.page && this.recordID && this.page.moduleID) {
         const { namespaceID, moduleID } = this.page
         const module = Object.freeze(this.getModuleByID(moduleID).clone())
