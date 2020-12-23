@@ -1,7 +1,7 @@
 {
   "name": "corteza-webapp-compose",
   "description": "Corteza Compose WebApp",
-  "version": "2020.12.0-rc.5",
+  "version": "2020.12.0",
   "license": "Apache-2.0",
   "contributors": [
     "Denis Arh <denis.arh@gmail.com>"
