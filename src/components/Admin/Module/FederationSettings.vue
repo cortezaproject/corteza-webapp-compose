@@ -194,23 +194,23 @@
           >
             <!-- list of fields per shared module -->
             <div
-              v-for="sharedModule in activeSharedModules"
-              :key="`${downstream.active}_${sharedModule.name}`"
+              v-for="sharedModuleFields in activeSharedModules"
+              :key="`${downstream.active}_${sharedModuleFields.name}`"
               class="d-flex align-items-center justify-content-between"
             >
               <b-form-checkbox
-                v-model="sharedModule.map"
+                v-model="sharedModuleFields.map"
                 @change="checkChange($event, 'downstream')"
                 class="my-2"
               >
-                {{ sharedModule.label }}
+                {{ sharedModuleFields.label }}
               </b-form-checkbox>
 
               <!-- dropdown with a list of compose module fields -->
               <b-form-select
-                v-show="sharedModule.map"
-                :key="`${downstream.active}_${sharedModule.name}`"
-                v-model="sharedModule.mapped"
+                v-show="sharedModuleFields.map"
+                :key="`${downstream.active}_${sharedModuleFields.name}`"
+                v-model="sharedModuleFields.mapped"
                 :options="transformedModuleFields"
                 value-field="name"
                 text-field="label"
@@ -545,7 +545,11 @@ export default {
       this.upstream.processing = true
 
       const exposedModule = this.exposedModules[nodeID] || {}
+
       const fields = (this.moduleFields || []).map(f => ({ ...f, value: false }))
+      exposedModule.fields.forEach(({ name }) => {
+        fields.find(f => f.name === name).value = true
+      })
 
       const upstream = {
         options: [
@@ -580,7 +584,7 @@ export default {
             .filter(({ canMapModule }) => canMapModule)
             .map(m => ({ moduleID: m.moduleID, name: m.name })),
         ],
-        module: null,
+        module: ((this.sharedModules[nodeID] || []).find(({ handle }) => handle === this.module.handle) || {}).moduleID || null,
         allFields: {},
         fields,
       }
