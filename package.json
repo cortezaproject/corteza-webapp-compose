@@ -46,7 +46,7 @@
     "@fullcalendar/vue": "^4.3.1",
     "@panter/vue-i18next": "^0.15.0",
     "@popperjs/core": "^2.4.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap-vue": "^2.3.0",
     "c3": "^0.7.12",
     "chart.js": "2.9.3",
