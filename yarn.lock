@@ -850,12 +850,12 @@
     openurl "1.1.1"
     yargs "6.6.0"
 
-"@cortezaproject/corteza-js@^2020.12.0":
-  version "2020.12.0"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.12.0.tgz#1bf6560cac84941bf3d5955e3dfac9c5fbeb9eb4"
-  integrity sha512-jOteWf1u3Rbsf3QyqdIYFhJ3eGlgF9zeUINcW0WOgQfyEKhTWUtxSCLcl/jjYLD70hO3rbUPMSMKm5VmSR19CQ==
+"@cortezaproject/corteza-js@^2020.12.1":
+  version "2020.12.1"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.12.1.tgz#49d62b7aca5eebc2c8811db539bd237c454b40ae"
+  integrity sha512-6ltIQw1oW1Pq4GWb1UNpoS8OWwE1Nph52+Anu9yQGmod10+X4A2OI0qvIGg82b+9UEh8yH5t3wLACTar/XIJ5g==
   dependencies:
-    axios "^0.19.1"
+    axios "^0.21.1"
     chart.js "2.9.3"
     hex-rgb "^4.1.0"
     lodash "^4.17.15"
@@ -866,12 +866,12 @@
     pino "^5.16.0"
     ts-sinon "^1.0.25"
 
-"@cortezaproject/corteza-vue@^2020.12.0":
-  version "2020.12.0"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2020.12.0.tgz#fdac549e16d3ff37264d1592b6e9087d0fea4df2"
-  integrity sha512-CuOSGQxs1sCEFgDOIrlXTZEd9Is2meJHpkFNDfUpOuW6l0JZMKjqvZigp1qoUrGnfOiZdEmVexvwcg1Swx090Q==
+"@cortezaproject/corteza-vue@^2020.12.1":
+  version "2020.12.1"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2020.12.1.tgz#1ed9599d7e42e3cbd6925f4190b2ce9c3e8e1a29"
+  integrity sha512-SGV5GCy4EU1Pmq8Ex/M0g6X2cv46JRd4bCVvsfEWZOmZvdpzLjeS+vtx0ATJ2ua0KeuH0cnpL8quXvVC0UVVWA==
   dependencies:
-    "@cortezaproject/corteza-js" "^2020.12.0"
+    "@cortezaproject/corteza-js" "^2020.12.1"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
     "@fortawesome/free-solid-svg-icons" "^5.12.0"
     "@fortawesome/vue-fontawesome" "^0.1.9"
@@ -2718,13 +2718,6 @@ axios@^0.15.3:
   integrity sha1-LJ1jiy4ZGgjqHWzJiOrda6W9wFM=
   dependencies:
     follow-redirects "1.0.0"
-
-axios@^0.19.1:
-  version "0.19.2"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.19.2.tgz#3ea36c5d8818d0d5f8a8a97a6d36b86cdc00cb27"
-  integrity sha512-fjgm5MvRHLhx+osE2xoekY70AhARk3a6hkN+3Io1jc00jtquGvxYlKlsFUhmUET0V5te6CcZI7lcv2Ym61mjHA==
-  dependencies:
-    follow-redirects "1.5.10"
 
 axios@^0.21.1:
   version "0.21.1"
