@@ -97,17 +97,18 @@ export default {
     recordID: {
       immediate: true,
       handler () {
+        this.record = undefined
         this.loadRecord()
       },
     },
   },
 
   methods: {
-    loadRecord () {
+    async loadRecord () {
       if (this.page && this.recordID && this.page.moduleID) {
         const { namespaceID, moduleID } = this.page
         const module = Object.freeze(this.getModuleByID(moduleID).clone())
-        this.$ComposeAPI
+        await this.$ComposeAPI
           .recordRead({ namespaceID, moduleID, recordID: this.recordID })
           .then(record => {
             this.record = new compose.Record(module, record)
