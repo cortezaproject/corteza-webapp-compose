@@ -937,20 +937,11 @@ export default {
         e.filename += ` - ${timezone.label}`
       }
 
-      if (filterRaw.includeQuery) {
-        // Prefilter + Query
-        const queryF = queryToFilter(filterRaw.query, this.prefilter, this.recordListModule.filterFields(this.options.fields))
-        if (e.filters) {
-          e.filters = `(${e.filters}) AND `
-        } else {
-          e.filters = ''
-        }
-        if (queryF) {
-          e.filters += encodeURI(`(${queryF})`)
-        }
-      } else {
-        // Include only prefilter
-        e.filters = queryToFilter('', this.prefilter, this.recordListModule.filterFields(this.options.fields))
+      const queryF = queryToFilter(filterRaw.includeQuery ? filterRaw.query : undefined, this.prefilter, this.recordListModule.filterFields(this.options.fields))
+      if (e.filters && queryF) {
+        e.filters = `(${e.filters}) AND ${encodeURI(queryF)}`
+      } else if (queryF) {
+        e.filters = encodeURI(queryF)
       }
 
       const exportUrl = url.Make({
