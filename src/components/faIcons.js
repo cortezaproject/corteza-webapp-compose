@@ -43,6 +43,7 @@ import {
   faAngleDoubleRight,
   faEllipsisH,
   faEyeSlash,
+  faArrowRight,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -126,4 +127,5 @@ library.add(
   faAngleDoubleRight,
   faEllipsisH,
   faEyeSlash,
+  faArrowRight,
 )

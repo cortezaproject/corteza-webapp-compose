@@ -21,6 +21,8 @@
                   @fieldsMatched="onFieldsMatched"
                   @importFailed="onImportFailed"
                   @back="onBack"
+                  @reset="onReset"
+                  @close="onClose"
                   v-on="$listeners">
 
           <label v-if="progress.failed"
@@ -39,6 +41,7 @@
 import FileUpload from './FileUpload'
 import FieldMatch from './FieldMatch'
 import Progress from './Progress'
+import ErrorReport from './ErrorReport'
 
 export default {
   name: 'Importer',
@@ -60,7 +63,7 @@ export default {
       step: 0,
       showModal: false,
       session: {},
-      components: [FileUpload, FieldMatch, Progress],
+      components: [FileUpload, FieldMatch, Progress, ErrorReport],
     }
   },
 
@@ -99,7 +102,17 @@ export default {
 
     onImportFailed (e) {
       this.session.progress = e
+      this.step = 3
+    },
+
+    onReset () {
       this.step = 0
+      this.$set(this, 'session', {})
+      this.$emit('reset')
+    },
+
+    onClose () {
+      this.showModal = false
     },
   },
 }
