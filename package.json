@@ -1,7 +1,7 @@
 {
   "name": "corteza-webapp-compose",
   "description": "Corteza Compose WebApp",
-  "version": "2020.12.1",
+  "version": "2020.12.2",
   "license": "Apache-2.0",
   "contributors": [
     "Denis Arh <denis.arh@gmail.com>"
@@ -147,7 +147,7 @@
     "**/**/moment": "2.25.3",
     "**/**/prosemirror-model": "^1.11.2",
     "**/**/chart.js": "2.9.3",
-    "**/**/immer": "8.0.1"
+    "**/**/immer": "8.0.1 "
   },
   "nyc": {
     "all": true,
