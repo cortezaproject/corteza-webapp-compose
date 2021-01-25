@@ -65,7 +65,6 @@ export default {
         // Update happened due to external content change, not model change
         if (!this.emittedContent) {
           this.editor.setContent(val)
-          this.correctSelection()
         }
 
         this.emittedContent = false
