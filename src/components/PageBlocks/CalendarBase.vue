@@ -217,7 +217,22 @@ export default {
           case compose.PageBlockCalendar.feedResources.record:
             this.findModuleByID({ namespace: this.namespace, moduleID: feed.options.moduleID })
               .then((module) => {
-                compose.PageBlockCalendar.RecordFeed(this.$ComposeAPI, module, this.namespace, feed, this.loaded)
+                const ff = {
+                  ...feed,
+                  options: { ...feed.options },
+                }
+
+                // Interpolate prefilter variables
+                if (ff.options.prefilter) {
+                  ff.options.prefilter = this.evaluatePrefilter(ff.options.prefilter, {
+                    record: this.record,
+                    recordID: (this.record || {}).recordID || 0,
+                    ownerID: (this.record || {}).userID || 0,
+                    userID: (this.$auth.user || {}).userID || 0,
+                  })
+                }
+
+                compose.PageBlockCalendar.RecordFeed(this.$ComposeAPI, module, this.namespace, ff, this.loaded)
                   .then(events => {
                     this.events.push(...events)
                   })
@@ -231,6 +246,15 @@ export default {
             break
         }
       })
+    },
+
+    // Evaluates the given prefilter. Allows JS template literal expressions
+    // such as id = ${recordID}
+    evaluatePrefilter (prefilter, { record, recordID, ownerID, userID }) {
+      return (function (prefilter) {
+        /* eslint-disable no-eval */
+        return eval('`' + prefilter + '`')
+      })(prefilter)
     },
 
     /**
