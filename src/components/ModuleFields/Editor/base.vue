@@ -2,7 +2,7 @@
   <div>
     <fieldset class="form-group">
       <label
-        class="text-secondary small"
+        class="text-primary"
       >
         {{ label }}
       </label>
@@ -66,7 +66,7 @@ export default {
         // CSS class "small" is set on form group
         // because of font-size: inherit prop on .col-form-label on
         // wrapping element
-        small: true,
+        small: false,
       }
     },
 

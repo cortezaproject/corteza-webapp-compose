@@ -1,7 +1,7 @@
 <template>
   <b-form-group
     :label="label"
-    label-class="text-secondary"
+    label-class="text-primary"
     :class="formGroupStyleClasses"
   >
     <template v-if="field.isMulti">

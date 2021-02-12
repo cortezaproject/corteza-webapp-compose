@@ -18,12 +18,12 @@ $headings-font-family:  $semibold !default;
 // Color system
 $white:         #fff !default;
 $black:         #000 !default;
-$primary:       #568ba2 !default;
-$secondary:     #E4E9EF !default;
+$primary:       #4D7281 !default;
+$secondary:     #90A3B1 !default;
 $success:       #719430 !default;
 $warning:       #F5D380 !default;
 $danger:        #E85568 !default;
-$light:         #F3F3F5 !default;
+$light:         #E4E9EF !default;
 $dark:          #1e2224 !default;
 
 // Options
@@ -33,11 +33,11 @@ $enable-gradients: true !default;
 // Body
 $body-bg: $light !default;
 
-// Tables
-$table-cell-padding: 0.5rem !default;
-$table-cell-padding-sm: 0.25rem !default;
+// Card
+$card-border-radius: 1rem !default;
 
-$table-border-width: 0 !default;
+  // Tables
+$table-cell-padding-sm: 0.25rem !default;
 
 // Buttons
 $btn-font-size: $font-size-base !default;

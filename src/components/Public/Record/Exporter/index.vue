@@ -2,7 +2,7 @@
   <div>
     <b-button @click="toggleModal"
               size="lg"
-              variant="secondary">
+              variant="light">
       {{ $t('general.label.export') }}
     </b-button>
     <b-modal

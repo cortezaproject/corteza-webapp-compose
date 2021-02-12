@@ -6,10 +6,10 @@
     >
       <div
         v-for="(field, index) in fields"
-        class="p-2 border-bottom border-light"
+        class="mt-3 px-3"
         :key="index">
         <label
-          class="text-secondary small"
+          class="text-primary"
         >
           {{ field.label || field.name }}
         </label>

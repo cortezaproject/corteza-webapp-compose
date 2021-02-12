@@ -26,7 +26,7 @@
             >
               <template v-if="module.canCreateRecord">
                 <router-link
-                  class="btn btn-sm btn-outline-primary float-left"
+                  class="btn btn-sm btn-primary float-left"
                   :to="{
                     name: 'admin.modules.record.create',
                     params: { moduleID: module.moduleID },

@@ -37,7 +37,7 @@
             <template v-if="!options.hideAddButton && recordListModule.canCreateRecord">
               <template v-if="inlineEditing">
                   <b-btn
-                    variant="outline-primary"
+                    variant="primary"
                     class="float-left"
                     @click="addInline"
                   >
@@ -230,7 +230,7 @@
           :key="`${index}${item.r.recordID}`"
           :variant="!!item.r.deletedAt ? 'danger' : undefined"
           :class="{ 'pointer': !(options.editable && editing) }"
-          class="border-bottom"
+          class="border-light"
           @click="handleRowClicked(item)"
         >
           <b-td

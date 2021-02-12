@@ -2,12 +2,11 @@
   <wrap v-bind="$props" v-on="$listeners">
     <div
       v-if="record"
-      class="p-0"
+      class="mt-3 px-3"
     >
       <div
         v-for="field in fields"
         :key="field.id"
-        class="p-2 border-bottom border-light"
       >
         <field-editor
           v-if="isFieldEditable(field)"
@@ -20,7 +19,7 @@
           class="field"
         >
           <label
-            class="text-secondary small"
+            class="text-primary"
           >
             {{ field.label || field.name }}
           </label>
@@ -34,7 +33,7 @@
         >
           <label>{{ field.label || field.name }}</label>
           <i
-            class="text-secondary"
+            class="text-dark"
           >
             {{ $t('field.noPermission') }}
           </i>

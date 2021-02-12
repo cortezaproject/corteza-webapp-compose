@@ -2,7 +2,7 @@
   <div>
     <b-button @click="showModal=true"
               size="lg"
-              variant="secondary">
+              variant="light">
       {{ $t('general.label.import') }}
     </b-button>
 

@@ -2,15 +2,14 @@
   <div class="h-100 p-2 overflow-hidden">
     <b-card
       no-body
-      class="h-100 border-0 shadow-sm rounded-lg"
+      class="h-100 border-0 shadow-sm"
       :class="blockClass"
-      header-class="sticky-top h5 px-2"
+      header-class="sticky-top h4 bg-white border-0 px-3"
       :header="headerSet ? '' : block.title"
     >
       <b-card-header
         v-if="headerSet"
-        class="sticky-top h4 px-2 bg-white"
-        :header-bg-variant="block.style.variants.headerBg"
+        class="sticky-top h4 bg-white border-0 px-2"
         :header-text-variant="block.style.variants.headerText"
       >
         <slot
@@ -32,7 +31,6 @@
         />
       </div>
       <b-card-body
-        :body-bg-variant="block.style.variants.bodyBg"
         class="p-0"
         :class="{ 'overflow-auto': scrollableBody }"
       >
