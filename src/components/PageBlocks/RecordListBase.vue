@@ -14,7 +14,6 @@
           <b-badge
             v-if="Object.keys(recordListModule.labels || {}).includes('federation')"
             variant="primary"
-            style="border-radius: 0.5rem;"
             class="py-1"
           >
             {{ $t('block.recordList.federated') }}
@@ -39,7 +38,7 @@
               <template v-if="inlineEditing">
                   <b-btn
                     variant="outline-primary"
-                    class="btn btn-sm btn-outline-primary float-left"
+                    class="float-left"
                     @click="addInline"
                   >
                     + {{ $t('block.recordList.addRecord') }}
@@ -48,7 +47,7 @@
 
               <template v-else-if="!inlineEditing && recordPageID">
                 <router-link
-                  class="btn btn-sm btn-outline-primary float-left"
+                  class="btn btn-lg btn-primary float-left"
                   :to="{
                     name: 'page.record.create',
                     params: { pageID: recordPageID, refRecord: record },
@@ -82,7 +81,6 @@
               v-if="!options.hideSearch && !inlineEditing"
               v-model="query"
               class="float-right mw-100"
-              size="sm"
               type="search"
               :placeholder="$t('general.label.search')" />
 
@@ -91,7 +89,7 @@
         <b-row
           v-if="options.selectable"
           v-show="selected.length > 0"
-          class="text-light bg-secondary p-2 mt-2"
+          class="bg-light p-2 mt-2 no-gutters"
         >
           <b-col
             cols="4"
@@ -99,7 +97,6 @@
           >
             {{ $t('block.recordList.selected', { count: selected.length, total: items.length }) }}
             <a
-              class="text-light"
               href="#"
               @click.prevent="handleSelectAllOnPage({ isChecked: false })"
             >
@@ -128,7 +125,7 @@
               v-else-if="!areAllRowsDeleted"
               variant="link"
               size="md"
-              class="border-0 text-dark"
+              class="text-danger"
               :disabled="!recordListModule.canDeleteRecord"
               @click.prevent="handleDeleteSelectedRecords()"
             >
@@ -140,7 +137,7 @@
               v-else
               variant="link"
               size="md"
-              class="border-0 text-dark"
+              class="text-danger"
               @click.prevent="handleRestoreSelectedRecords()"
             >
               <font-awesome-icon
@@ -196,14 +193,16 @@
               >
                 <font-awesome-layers>
                   <font-awesome-icon
-                    :icon="['fas', 'sort-up']"
+                    :icon="['fas', 'angle-up']"
+                    class="mb-1"
                     :style="{
                       color: 'gray',
                       ...sorterStyle(field, 'ASC'),
                     }"
                   />
                   <font-awesome-icon
-                    :icon="['fas', 'sort-down']"
+                    :icon="['fas', 'angle-down']"
+                    class="mt-1"
                     :style="{
                       color: 'gray',
                       ...sorterStyle(field, 'DESC'),
@@ -231,6 +230,7 @@
           :key="`${index}${item.r.recordID}`"
           :variant="!!item.r.deletedAt ? 'danger' : undefined"
           :class="{ 'pointer': !(options.editable && editing) }"
+          class="border-bottom"
           @click="handleRowClicked(item)"
         >
           <b-td
@@ -248,11 +248,9 @@
 
           <b-td
             v-if="options.selectable"
-            class="align-top pr-0"
             @click.stop
           >
             <b-form-checkbox
-              class="checkbox-adjust-offset"
               :checked="selected.includes(item.id)"
               @change="onSelectRow($event, item)"
             />
@@ -300,7 +298,7 @@
             </div>
             <i
               v-else
-              class="text-secondary"
+              class="text-primary"
             >
               {{ $t('field.noPermission') }}
             </i>
@@ -339,7 +337,7 @@
             <b-button
               v-if="!inlineEditing && !options.hideRecordReminderButton"
               variant="link"
-              class="p-0 m-0 pl-1 text-secondary"
+              class="p-0 m-0 pl-1 text-primary"
               @click.prevent="createReminder(item.r)">
               <font-awesome-icon
                 :icon="['far', 'bell']"
@@ -360,7 +358,7 @@
               <b-button
                 v-else
                 variant="link"
-                class="p-0 m-0 pl-1 text-secondary"
+                class="p-0 m-0 pl-1 text-primary"
                 @click="handleCloneInline(item.r)"
               >
                 <font-awesome-icon
@@ -373,7 +371,7 @@
               <b-button
                 v-if="!options.hideRecordEditButton && recordListModule.canUpdateRecord && recordPageID"
                 variant="link"
-                class="p-0 m-0 pl-1 text-secondary"
+                class="p-0 m-0 pl-1 text-primary"
                 :to="{ name: 'page.record.edit', params: { pageID: recordPageID, recordID: item.r.recordID }, query: null }"
               >
                 <font-awesome-icon
@@ -383,7 +381,7 @@
               <b-button
                 v-if="!options.hideRecordViewButton && recordPageID"
                 variant="link"
-                class="p-0 m-0 pl-1 text-secondary"
+                class="p-0 m-0 pl-1 text-primary"
                 :to="{ name: 'page.record', params: { pageID: recordPageID, recordID: item.r.recordID }, query: null }"
               >
                 <font-awesome-icon

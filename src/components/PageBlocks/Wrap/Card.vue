@@ -6,16 +6,12 @@
       :class="blockClass"
       header-class="sticky-top h5 px-2"
       :header="headerSet ? '' : block.title"
-      :header-bg-variant="block.style.variants.headerBg"
-      :header-text-variant="block.style.variants.headerText"
-      :header-border-variant="block.style.variants.border"
     >
       <b-card-header
         v-if="headerSet"
-        class="sticky-top h5 px-2"
+        class="sticky-top h4 px-2 bg-white"
         :header-bg-variant="block.style.variants.headerBg"
         :header-text-variant="block.style.variants.headerText"
-        :header-border-variant="block.style.variants.border"
       >
         <slot
           name="header"

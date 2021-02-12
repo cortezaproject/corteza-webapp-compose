@@ -1,9 +1,8 @@
 <template>
   <div>
     <b-button @click="toggleModal"
-              size="sm"
-              variant="outline-primary">
-
+              size="lg"
+              variant="secondary">
       {{ $t('general.label.export') }}
     </b-button>
     <b-modal

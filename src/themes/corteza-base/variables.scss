@@ -10,7 +10,7 @@ $fonts_dir : './fonts/' !default;
 $regular: 'nunito_sansregular' !default;
 $bold: 'nunito_sansbold' !default;
 $semibold: 'nunito_sanssemibold' !default;
-$font-size-base: 0.85rem !default;
+$font-size-base: 1rem !default;
 
 $font-family-base:      $regular !default;
 $headings-font-family:  $semibold !default;
@@ -19,7 +19,7 @@ $headings-font-family:  $semibold !default;
 $white:         #fff !default;
 $black:         #000 !default;
 $primary:       #568ba2 !default;
-$secondary:     #90A3B1 !default;
+$secondary:     #E4E9EF !default;
 $success:       #719430 !default;
 $warning:       #F5D380 !default;
 $danger:        #E85568 !default;
@@ -27,11 +27,8 @@ $light:         #F3F3F5 !default;
 $dark:          #1e2224 !default;
 
 // Options
-$enable-rounded:   false !default;
+$enable-rounded:   true !default;
 $enable-gradients: true !default;
-
-// Components
-$border-radius: 0 !default;
 
 // Body
 $body-bg: $light !default;
@@ -49,6 +46,7 @@ $btn-padding-x: 1em !default;
 $btn-focus-width: 0 !default;
 $btn-focus-box-shadow: none !default;
 $btn-active-box-shadow: none !default;
+$btn-font-size-lg: 15px !default;
 
 // Navbar
 $navbar-bg:             $white !default;
