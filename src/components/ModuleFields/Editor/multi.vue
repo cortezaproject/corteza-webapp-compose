@@ -5,19 +5,16 @@
     </div>
     <draggable :list.sync="val" handle=".handle">
       <div v-for="(v, index) of val" :key="index" class="mb-1">
-        <b-row no-gutters>
-          <b-col cols="1" class="text-center my-auto pr-3">
+        <b-row class="px-2">
+          <b-col cols="10">
             <font-awesome-icon v-b-tooltip.hover
                               :icon="['fas', 'sort']"
                               :title="$t('general.tooltip.dragAndDrop')"
-                              class="handle text-secondary" />
-          </b-col>
-
-          <b-col cols="10">
+                              class="handle text-secondary mr-3" />
             <slot v-bind:index="index"></slot>
           </b-col>
 
-          <b-col v-if="removable" cols="1" class="text-center my-auto pl-3">
+          <b-col v-if="removable" cols="2" class="text-right pl-3">
             <font-awesome-icon :icon="['fas', 'times']"
                                @click="removeValue(index)"
                                class="pointer text-secondary" />

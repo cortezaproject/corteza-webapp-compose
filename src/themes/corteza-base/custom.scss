@@ -25,19 +25,20 @@ button:disabled {
 }
 
 .vs__dropdown-toggle {
-  height: 35px;
   padding-top: 6px;
   padding-bottom: 6px;
+  border-width: 2px;
+  border-color: $light;
 
   .vs__selected {
     margin: 0;
-    height: 100%;
   }
 }
 
 .vs__clear,
 .vs__open-indicator {
   fill: $secondary;
+  display: inline-flex;
 }
 
 .ns-logo {
@@ -148,14 +149,13 @@ fieldset.required {
     }
   }
 
-  legend::before {
+  legend::after {
     content: "*";
     display: inline-block;
-    color: $primary;
-    vertical-align: sub;
-    margin-right: -5px;
+    color: $danger;
     width: 10px;
-    height: 16px;
+    height: 18px;
+    margin-left: 5px;
     overflow: hidden;
   }
 }

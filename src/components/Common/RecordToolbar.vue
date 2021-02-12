@@ -12,10 +12,12 @@
       >
         <b-button
           variant="link"
+          class="text-dark"
           :disabled="processing"
           @click.prevent="$emit('back')"
         >
-          &#171; {{ $t('general.label.back') }}
+          <font-awesome-icon :icon="['fas', 'chevron-left']"></font-awesome-icon>
+          {{ $t('general.label.back') }}
         </b-button>
       </b-col>
       <b-col
@@ -24,7 +26,7 @@
       >
         <b-button
           v-if="module.canCreateRecord && !hideClone && record"
-          variant="outline-secondary"
+          variant="light"
           :disabled="processing"
           class="m-1"
           @click.prevent="$emit('clone')"
@@ -34,7 +36,7 @@
 
         <b-button
           v-if="module.canCreateRecord && !hideAdd"
-          variant="outline-secondary"
+          variant="light"
           :disabled="processing"
           class="m-1"
           @click.prevent="$emit('add')"
@@ -68,7 +70,7 @@
         <b-button
           v-else
           :disabled="!module.canUpdateRecord"
-          variant="outline-secondary"
+          variant="light"
           class="m-1"
           @click.prevent="$emit('edit')"
         >

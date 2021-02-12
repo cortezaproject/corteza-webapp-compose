@@ -36,7 +36,7 @@ $body-bg: $light !default;
 // Card
 $card-border-radius: 1rem !default;
 
-  // Tables
+// Tables
 $table-cell-padding-sm: 0.25rem !default;
 
 // Buttons
@@ -68,9 +68,13 @@ $sidebar-height:        calc(100vh - #{$navbar-height}) !default;
 
 // Forms
 $input-font-size: $font-size-base !default;
-$input-btn-focus-width:        0 !default;
-$input-focus-box-shadow:       none !default;
-$input-focus-border-color:     $primary !default;
+
+$input-border-color:  $light !default;
+$input-border-width:  2px !default;
+
+$input-btn-focus-width:     0 !default;
+$input-focus-box-shadow:    none !default;
+$input-focus-border-color:  $primary !default;
 
 /* stylelint-disable */
 // This is used within corteza-webapp-compose/src/lib/block/Calendar/feedLoader/
