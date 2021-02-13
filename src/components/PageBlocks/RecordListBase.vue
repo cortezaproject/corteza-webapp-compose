@@ -416,21 +416,13 @@
         fluid
         class="m-0 p-2"
       >
-        <b-row
-          no-gutters
-        >
-          <b-col
-            class="d-flex justify-content-between align-items-center"
-          >
-            <div
-            >
-              <div
-                v-if="options.showTotalCount"
-                class="mr-auto text-nowrap text-truncate"
+        <b-row no-gutters>
+          <b-col class="d-flex justify-content-between align-items-center">
+            <div>
+              <div v-if="options.showTotalCount"
+                  class="ml-2 text-nowrap font-weight-bold"
               >
-                <span
-                  v-if="pagination.count > options.perPage"
-                >
+                <span v-if="pagination.count > options.perPage">
                   {{ $t('block.recordList.pagination.showing', getPagination) }}
                 </span>
                 <span
@@ -448,38 +440,46 @@
                 align="right"
                 aria-controls="record-list"
                 class="m-0"
-                size="sm"
+                pills
+                variant="link"
                 :value="getPagination.page"
                 :per-page="getPagination.perPage"
                 :total-rows="getPagination.count"
                 @change="goToPage"
-              />
-
-              <b-button-group
-                v-else
-                size="sm"
               >
+                <template #first-text><font-awesome-icon :icon="['fas', 'angle-double-left']" /></template>
+                <template #prev-text><font-awesome-icon :icon="['fas', 'angle-left']" /></template>
+                <template #next-text><font-awesome-icon :icon="['fas', 'angle-right']" /></template>
+                <template #last-text><font-awesome-icon :icon="['fas', 'angle-double-right']" /></template>
+                <template #elipsis-text><font-awesome-icon :icon="['fas', 'ellipsis-h']" /></template>
+              </b-pagination>
+
+              <b-button-group v-else>
                 <b-button
-                  size="sm"
-                  variant="outline-primary"
                   :disabled="!hasPrevPage"
+                  variant="link"
+                  class="text-dark"
                   @click="goToPage()"
                 >
-                  {{ $t('block.recordList.pagination.first') }}
+                  <font-awesome-icon :icon="['fas', 'angle-double-left']" />
                 </b-button>
                 <b-button
-                  variant="primary"
                   :disabled="!hasPrevPage"
+                  variant="link"
+                  class="text-dark"
                   @click="goToPage('prevPage')"
                 >
+                  <font-awesome-icon :icon="['fas', 'angle-left']" />
                   {{ $t('block.recordList.pagination.prev') }}
                 </b-button>
                 <b-button
-                  variant="primary"
                   :disabled="!hasNextPage"
+                  variant="link"
+                  class="text-dark"
                   @click="goToPage('nextPage')"
                 >
                   {{ $t('block.recordList.pagination.next') }}
+                  <font-awesome-icon :icon="['fas', 'angle-right']" />
                 </b-button>
               </b-button-group>
             </div>

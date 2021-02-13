@@ -190,8 +190,7 @@ export default {
         single: 'One record',
         single_plural: '{{count}} records',
 
-        first: '<<',
-        prev: 'Prev',
+        prev: 'Previous',
         next: 'Next',
       },
 

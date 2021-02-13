@@ -16,7 +16,9 @@ button:disabled {
 
 thead th,
 label,
-legend {
+legend,
+strong,
+.font-weight-bold {
   font-family: $bold;
 }
 
@@ -71,6 +73,28 @@ legend {
 
 .ProseMirror.ProseMirror-focused {
   outline: none;
+}
+
+// Pagination
+.page-item {
+  .page-link {
+    background-color: transparent;
+    color: $dark;
+    border-width: 0;
+  }
+  &.disabled {
+      cursor: not-allowed;
+    .page-link {
+      background-color: transparent;
+    }
+  }
+
+  &.active {
+    .page-link {
+      background-color: $dark;
+      border-width: 0;
+    }
+  }
 }
 
 // Rich text content styling
