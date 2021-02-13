@@ -36,6 +36,7 @@ import {
   faShareAlt,
   faAngleUp,
   faAngleDown,
+  faExternalLinkAlt,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -55,6 +56,7 @@ import {
   faSquare,
   faClone,
   faPlusSquare,
+  faEnvelope,
 } from '@fortawesome/free-regular-svg-icons'
 
 library.add(
@@ -110,4 +112,6 @@ library.add(
   faShareAlt,
   faAngleUp,
   faAngleDown,
+  faEnvelope,
+  faExternalLinkAlt,
 )

@@ -3,7 +3,10 @@
   <b-button variant="link"
             :to="backLink"
             v-if="backLink"
-            class="float-left">&#171; {{ $t('general.label.backWithoutSave') }}</b-button>
+            class="float-left text-dark">
+    <font-awesome-icon :icon="['fas', 'chevron-left']"></font-awesome-icon>
+    {{ $t('general.label.backWithoutSave') }}
+  </b-button>
   <slot />
 
   <c-input-confirm
@@ -22,7 +25,7 @@
             class="float-right">{{ $t('general.label.save') }}</b-button>
   <b-button v-if="!hideSave"
             :disabled="disableSave"
-            variant="primary" @click.prevent="$emit('saveAndClose')"
+            variant="secondary" @click.prevent="$emit('saveAndClose')"
             class="float-right mr-1">{{ $t('general.label.saveAndClose') }}</b-button>
 </div>
 </template>

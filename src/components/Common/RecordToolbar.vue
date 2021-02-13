@@ -53,6 +53,8 @@
           :disabled="disableDelete"
           @confirmed="$emit('delete')"
           class="m-1"
+          size="md"
+          :borderless="false"
         >
           {{ $t('general.label.delete') }}
         </c-input-confirm>
