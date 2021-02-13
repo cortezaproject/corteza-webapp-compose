@@ -14,6 +14,12 @@ button:disabled {
   pointer-events: all !important;
 }
 
+thead th,
+label,
+legend {
+  font-family: $bold;
+}
+
 .vue-grid-layout {
   transition: none !important;
 }

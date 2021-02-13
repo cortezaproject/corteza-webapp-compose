@@ -1,9 +1,44 @@
 <template>
   <div class="py-3">
     <b-container>
-      <b-row>
+      <b-row no-gutters>
+        <h1>{{ $t('chart.title') }}</h1>
         <b-col md="12">
-          <b-card class="mb-2">
+          <b-card no-body>
+            <b-card-header header-bg-variant="white">
+            <b-button type="submit" variant="primary" size="lg">{{ $t('general.label.create') }}</b-button>
+            <b-button type="submit" variant="light" size="lg" class="ml-1">Import</b-button>
+            <export :list="charts" type="chart" class="ml-1"/>
+            <c-permissions-button
+              v-if="namespace.canGrant"
+              resource="compose:module:*"
+              class="float-right mt-1"
+              link
+            />
+            </b-card-header>
+            <b-card-body class="p-0">
+              <b-table
+                :fields="tableFields"
+                :items="charts"
+                head-variant="light"
+                responsive
+              >
+                <template v-slot:cell(actions)="{ item: c }">
+                <span v-if="c.canUpdateChart || c.canDeleteChart">
+                  <router-link :to="{name: 'admin.charts.edit', params: { chartID: c.chartID }}" class="text-dark pr-2">
+                    <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
+                  </router-link>
+                </span>
+                  <c-permissions-button
+                    v-if="c.canGrant"
+                    :title="c.name"
+                    :target="c.name"
+                    :resource="'compose:chart:'+c.chartID"
+                    link
+                  />
+                </template>
+              </b-table>
+            </b-card-body>
             <b-row align-v="center">
               <b-col md="5">
                 <b-form v-if="namespace.canCreateChart" @submit.prevent="create">
@@ -44,7 +79,7 @@
                         :namespace="namespace" type="chart" />
               </b-col>
               <b-col md="2" class="text-right">
-                <export :list="charts" type="chart"/>
+
                 <c-permissions-button
                   v-if="namespace.canGrant"
                   resource="compose:chart:*"
@@ -52,34 +87,6 @@
                 />
               </b-col>
             </b-row>
-          </b-card>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col md="12">
-          <b-card :title="$t('chart.title')">
-            <b-table
-              :fields="tableFields"
-              :items="charts"
-              striped
-              borderless
-              responsive
-            >
-              <template v-slot:cell(actions)="{ item: c }">
-                <span v-if="c.canUpdateChart || c.canDeleteChart">
-                  <router-link :to="{name: 'admin.charts.edit', params: { chartID: c.chartID }}" class="text-dark pr-2">
-                    <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
-                  </router-link>
-                </span>
-                <c-permissions-button
-                  v-if="c.canGrant"
-                  :title="c.name"
-                  :target="c.name"
-                  :resource="'compose:chart:'+c.chartID"
-                  link
-                />
-              </template>
-            </b-table>
           </b-card>
         </b-col>
       </b-row>

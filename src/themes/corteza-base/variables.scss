@@ -22,13 +22,13 @@ $primary:       #4D7281 !default;
 $secondary:     #90A3B1 !default;
 $success:       #719430 !default;
 $warning:       #F5D380 !default;
-$danger:        #E85568 !default;
+$danger:        #E54122 !default;
 $light:         #E4E9EF !default;
 $dark:          #1e2224 !default;
 
 // Options
 $enable-rounded:   true !default;
-$enable-gradients: true !default;
+$enable-gradients: false !default;
 
 // Body
 $body-bg: $light !default;
@@ -43,10 +43,13 @@ $table-cell-padding-sm: 0.25rem !default;
 $btn-font-size: $font-size-base !default;
 $btn-padding-y: 0.25em !default;
 $btn-padding-x: 1em !default;
-$btn-focus-width: 0 !default;
-$btn-focus-box-shadow: none !default;
+
+$btn-focus-width:       0 !default;
+$btn-focus-box-shadow:  none !default;
 $btn-active-box-shadow: none !default;
-$btn-font-size-lg: 15px !default;
+
+$btn-font-size-lg:  16px !default;
+$btn-font-family:   $semibold;
 
 // Navbar
 $navbar-bg:             $white !default;

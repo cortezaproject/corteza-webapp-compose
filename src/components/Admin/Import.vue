@@ -1,12 +1,12 @@
 <template>
   <b-form ref="importForm" @submit.prevent class="import-form">
-    <b-form-group :label="$t(`${type}.import`)">
+    <b-form-group>
       <b-input-group>
         <b-form-file @change="loadFile" />
-        <b-button v-if="importObj && !processing" variant="dark" @click="openModal">
+        <b-button v-if="importObj && !processing" variant="light" @click="openModal">
           {{ $t('general.label.import') }}
         </b-button>
-        <b-button v-if="importObj && processing" variant="dark" @click="cancelImport">
+        <b-button v-if="importObj && processing" variant="light" @click="cancelImport">
           {{ $t('general.label.cancel') }}
         </b-button>
         <h6 v-if="processing" class="my-auto ml-3 ">

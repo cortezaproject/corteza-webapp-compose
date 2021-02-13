@@ -398,15 +398,13 @@ export default {
     },
   },
   module: {
-    title: 'List of modules',
-    newLabel: 'Create a new module:',
-    newPlaceholder: '$t(general.label.moduleName)',
-    import: 'Import module(s):',
+    title: 'List of Modules',
+    newPlaceholder: 'Module Name',
     federated: 'Federated',
 
     recordPage: {
       create: 'Create record page',
-      edit: 'Edit record page',
+      edit: 'Page builder',
     },
 
     forModule: {
