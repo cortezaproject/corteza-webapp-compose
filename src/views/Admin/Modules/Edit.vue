@@ -3,17 +3,19 @@
     <b-container @submit.prevent="handleSave" tag="form" v-if="module">
       <b-row>
         <b-col md="12">
-          <b-card>
+          <b-card header-bg-variant="white">
             <div slot="header"
               class="d-flex justify-content-between align-items-center"
             >
               <h2>
                 {{ $t('module.edit.title') }}
               </h2>
+              <div>
               <b-button
                 v-if="federationEnabled"
-                variant="link"
-                class="p-0"
+                variant="light"
+                size="lg"
+                class="mr-1"
                 @click="federationSettings.modal = true"
               >
                 <font-awesome-icon
@@ -22,12 +24,12 @@
 
                 {{ $t('module.edit.federationSettings.title') }}
               </b-button>
-              <div>
                 <export :list="[this.module]" type="module" />
                 <c-permissions-button
                   v-if="module.canGrant"
                   resource="compose:module-field:*"
                   link
+                  class="ml-1"
                 />
               </div>
             </div>
@@ -50,8 +52,8 @@
                 <thead>
                 <tr>
                   <th></th>
-                  <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.name')" class="info">{{ $t('general.label.name') }}</th>
-                  <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.title')" class="info">{{ $t('general.label.title') }}</th>
+                  <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.name')" class="info ">{{ $t('general.label.name') }}</th>
+                  <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.title')" class="info ">{{ $t('general.label.title') }}</th>
                   <th>{{ $t('general.label.type') }}</th>
                   <th v-b-tooltip.hover :title="$t('module.edit.tooltip.multi')" class="info text-center">{{ $t('general.label.multi') }}</th>
                   <th v-b-tooltip.hover :title="$t('module.edit.tooltip.required')" class="info text-center">{{ $t('general.label.required') }}</th>
@@ -71,7 +73,9 @@
                 <tr>
                   <th colspan="7">
                     <b-button @click="handleNewField"
-                              variant="link">+ {{ $t('module.edit.newField') }}</b-button>
+                              class="ml-4"
+                              variant="primary">+ {{ $t('module.edit.newField') }}
+                    </b-button>
                   </th>
                 </tr>
               </table>
@@ -152,7 +156,7 @@
       :title="editModalTitle"
       :ok-title="$t('general.label.saveAndClose')"
       ok-only
-      ok-variant="dark"
+      ok-variant="primary"
       size="lg"
       @ok="handleFieldSave(updateField)"
       @hide="updateField=null"

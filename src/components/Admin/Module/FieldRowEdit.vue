@@ -61,6 +61,7 @@
         :disabled="!value.cap.multi"
         :value="true"
         :unchecked-value="false"
+        size="lg"
       />
     </td>
     <td
@@ -71,6 +72,7 @@
         :disabled="!value.cap.required"
         :value="true"
         :unchecked-value="false"
+        size="lg"
       />
     </td>
     <td

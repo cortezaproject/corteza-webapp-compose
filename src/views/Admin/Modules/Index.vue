@@ -141,14 +141,17 @@ export default {
         {
           key: 'name',
           sortable: true,
+          tdClass: 'align-middle',
         },
         {
           key: 'handle',
           sortable: true,
+          tdClass: 'align-middle',
         },
         {
           key: 'updatedAt',
           sortable: true,
+          tdClass: 'align-middle',
         },
         {
           key: 'actions',

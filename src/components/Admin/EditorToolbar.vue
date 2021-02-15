@@ -25,7 +25,7 @@
             class="float-right">{{ $t('general.label.save') }}</b-button>
   <b-button v-if="!hideSave"
             :disabled="disableSave"
-            variant="secondary" @click.prevent="$emit('saveAndClose')"
+            variant="light" @click.prevent="$emit('saveAndClose')"
             class="float-right mr-1">{{ $t('general.label.saveAndClose') }}</b-button>
 </div>
 </template>

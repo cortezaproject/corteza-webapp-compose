@@ -473,7 +473,7 @@ export default {
     },
   },
   page: {
-    title: 'List of pages',
+    title: 'List of Pages',
     visible: 'Visible',
     notVisible: 'Not visible',
     preview: 'Preview',
@@ -494,7 +494,7 @@ export default {
     },
   },
   chart: {
-    title: 'List of charts',
+    title: 'List of Charts',
     newLabel: 'Create a new chart:',
     newPlaceholder: 'Chart name',
     import: 'Import chart(s):',
