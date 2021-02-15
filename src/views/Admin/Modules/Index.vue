@@ -1,4 +1,4 @@
-<template>
+"<template>
   <div class="py-3">
     <b-container>
       <b-row no-gutters>
@@ -46,13 +46,14 @@
               <b-table
                 :fields="tableFields"
                 :items="modules"
+                @row-clicked="handleRowClicked"
                 head-variant="light"
+                tbody-tr-class="pointer"
                 responsive
+                hover
               >
                 <template v-slot:cell(name)="{ item: m }">
-                  <div
-                    class="d-flex justify-content-between align-items-start"
-                  >
+                  <div>
                     {{ m.name }}
                     <h5
                       class="mb-0"
@@ -61,7 +62,6 @@
                         v-if="Object.keys(m.labels || {}).includes('federation')"
                         pill
                         variant="primary"
-                        class="mx-1 py-1 px-2"
                       >
                         {{ $t('module.federated') }}
                       </b-badge>
@@ -82,11 +82,6 @@
                   <span v-if="m.canReadRecord">
                     <router-link :to="{name: 'admin.modules.record.list', params: { moduleID: m.moduleID }}" class="mr-2 text-dark">
                       <font-awesome-icon :icon="['fas', 'bars']"></font-awesome-icon>
-                    </router-link>
-                  </span>
-                  <span v-if="m.canUpdateModule || m.canDeleteModule">
-                    <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="mr-2 text-dark">
-                      <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
                     </router-link>
                   </span>
                   <c-permissions-button
@@ -226,13 +221,17 @@ export default {
         })
         .catch(this.defaultErrorHandler(this.$t('notification.page.createFailed')))
     },
+
+    handleRowClicked ({ moduleID, canUpdateModule, canDeleteModule }) {
+      if (!(canUpdateModule || canDeleteModule)) {
+        return
+      }
+      this.$router.push({
+        name: 'admin.modules.edit',
+        params: { moduleID },
+        query: null,
+      })
+    },
   },
 }
 </script>
-<style lang="scss" scoped>
-table {
-  tr {
-    cursor: pointer;
-  }
-}
-</style>

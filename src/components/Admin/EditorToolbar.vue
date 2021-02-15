@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center bg-white w-100 border-top border-primary p-3">
+  <div class="text-center bg-white shadow border-top py-3 px-3 m-0 container-fluid">
   <b-button variant="link"
             :to="backLink"
             v-if="backLink"

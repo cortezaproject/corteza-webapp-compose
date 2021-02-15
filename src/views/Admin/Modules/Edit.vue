@@ -3,26 +3,25 @@
     <b-container @submit.prevent="handleSave" tag="form" v-if="module">
       <b-row>
         <b-col md="12">
-          <b-card :title="$t('module.edit.title')" class="mb-5">
-            <div
-              slot="header"
+          <b-card>
+            <div slot="header"
               class="d-flex justify-content-between align-items-center"
             >
-              <div
+              <h2>
+                {{ $t('module.edit.title') }}
+              </h2>
+              <b-button
+                v-if="federationEnabled"
+                variant="link"
+                class="p-0"
+                @click="federationSettings.modal = true"
               >
-                <b-button
-                  v-if="federationEnabled"
-                  variant="link"
-                  class="p-0"
-                  @click="federationSettings.modal = true"
-                >
-                  <font-awesome-icon
-                    :icon="['fas', 'share-alt']"
-                  />
+                <font-awesome-icon
+                  :icon="['fas', 'share-alt']"
+                />
 
-                  {{ $t('module.edit.federationSettings.title') }}
-                </b-button>
-              </div>
+                {{ $t('module.edit.federationSettings.title') }}
+              </b-button>
               <div>
                 <export :list="[this.module]" type="module" />
                 <c-permissions-button
