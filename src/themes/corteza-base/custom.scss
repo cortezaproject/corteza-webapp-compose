@@ -62,7 +62,7 @@ strong,
 
 .vs__clear,
 .vs__open-indicator {
-  fill: $secondary;
+  fill: $gray-900;
   display: inline-flex;
 }
 
@@ -118,6 +118,15 @@ strong,
 
 // Rich text content styling
 .rt-content {
+  &.editor {
+    border-radius: 4px;
+    border: 2px solid $light;
+  }
+
+  .editor__content {
+    min-height: 200px;
+  }
+
   .btn {
     width: 60px;
   }
