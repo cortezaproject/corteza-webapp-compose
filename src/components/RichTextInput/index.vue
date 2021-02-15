@@ -1,7 +1,7 @@
 <template>
   <b-card no-body class="editor rt-content">
     <template v-if="editor">
-      <b-card-header>
+      <b-card-header header-class="p-0">
         <editor-menu-bar
           :editor="editor"
           v-slot="{ commands, isActive, getMarkAttrs, getNodeAttrs }">
