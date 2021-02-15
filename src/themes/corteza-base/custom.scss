@@ -14,6 +14,12 @@ button:disabled {
   pointer-events: all !important;
 }
 
+.btn-link {
+  &:focus {
+    text-decoration: none;
+  }
+}
+
 thead th,
 label,
 legend,
@@ -30,6 +36,10 @@ strong,
   transition: none !important;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+.v-select {
+  min-width: 250px;
 }
 
 .vs__dropdown-toggle {
@@ -82,8 +92,10 @@ strong,
     color: $dark;
     border-width: 0;
   }
+
   &.disabled {
-      cursor: not-allowed;
+    cursor: not-allowed;
+
     .page-link {
       background-color: transparent;
     }

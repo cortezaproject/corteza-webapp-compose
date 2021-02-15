@@ -230,25 +230,25 @@
           :key="`${index}${item.r.recordID}`"
           :variant="!!item.r.deletedAt ? 'danger' : undefined"
           :class="{ 'pointer': !(options.editable && editing) }"
-          class="border-light"
           @click="handleRowClicked(item)"
         >
           <b-td
             v-if="options.draggable && inlineEditing"
-            class="align-top pr-0"
+            class="align-middle pr-0"
             @click.stop
           >
             <font-awesome-icon
               v-b-tooltip.hover
               :icon="['fas', 'sort']"
               :title="$t('general.tooltip.dragAndDrop')"
-              class="handle text-secondary sort-adjust-offset"
+              class="handle text-secondary"
             />
           </b-td>
 
           <b-td
             v-if="options.selectable"
             @click.stop
+            class="align-middle pr-0"
           >
             <b-form-checkbox
               :checked="selected.includes(item.id)"
@@ -256,11 +256,10 @@
             />
           </b-td>
 
-          <b-td>
-            <b-badge
-              v-if="Object.keys(item.r.labels || {}).includes('federation')"
-              variant="primary"
-            >
+          <b-td class="align-middle pl-0">
+            <b-badge v-if="Object.keys(item.r.labels || {}).includes('federation')"
+                     variant="primary"
+                     class="align-text-top">
               F
             </b-badge>
           </b-td>
@@ -433,7 +432,7 @@
               </div>
             </div>
             <div
-              v-if="!options.hidePaging && !inlineEditing"
+              v-if="showPageNavigation && !options.hidePaging && !inlineEditing"
             >
               <b-pagination
                 v-if="options.fullPageNavigation"
@@ -612,6 +611,10 @@ export default {
 
     hasNextPage () {
       return this.filter.nextPage
+    },
+
+    showPageNavigation () {
+      return this.hasNextPage || this.hasPrevPage
     },
 
     editing () {
@@ -1161,24 +1164,6 @@ input {
 
 .pointer {
   cursor: pointer;
-}
-
-// This bits are required to properly align non editable items
-// in an inline editable record list
-.checkbox-adjust-offset {
-  margin-top: 7px;
-}
-
-.sort-adjust-offset {
-  margin-top: 10px;
-}
-
-.remove-adjust-offset {
-  margin-top: 5px;
-}
-
-.field-adjust-offset {
-  margin-top: 8px;
 }
 
 th .required::after {
