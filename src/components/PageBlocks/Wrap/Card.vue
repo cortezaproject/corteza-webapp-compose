@@ -4,12 +4,13 @@
       no-body
       class="h-100 border-0 shadow-sm"
       :class="blockClass"
-      header-class="sticky-top h4 bg-white border-0 px-3"
+      header-class="sticky-top h4 bg-white border-0"
+      :header-text-variant="block.style.variants.headerText"
       :header="headerSet ? '' : block.title"
     >
       <b-card-header
         v-if="headerSet"
-        class="sticky-top h4 bg-white border-0 px-2"
+        class="sticky-top h4 bg-white border-0"
         :header-text-variant="block.style.variants.headerText"
       >
         <slot
@@ -24,7 +25,6 @@
       </b-card-text>
       <div
         v-if="toolbarSet"
-        class="p-0 m-0"
       >
         <slot
           name="toolbar"

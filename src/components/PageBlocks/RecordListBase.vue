@@ -24,12 +24,11 @@
     <template #toolbar>
       <b-container
         ref="toolbar"
-        class="m-0 p-2"
+        class="pb-2"
         fluid
       >
         <b-row
           no-gutters
-          class="m-0 p-0"
         >
          <b-col
             cols="6"
@@ -153,7 +152,7 @@
         hover
         responsive
         sticky-header
-        class="mh-100 h-100 m-0 mb-2 border-top"
+        class="mh-100 h-100 border-top"
       >
 
       <b-thead>
@@ -164,6 +163,7 @@
               :disabled="disableSelectAll"
               :checked="areAllRowsSelected && !disableSelectAll"
               @change="handleSelectAllOnPage({ isChecked: $event })"
+              class="ml-1"
             />
           </b-th>
           <b-th />
@@ -251,6 +251,7 @@
             class="align-middle pr-0"
           >
             <b-form-checkbox
+              class="ml-1"
               :checked="selected.includes(item.id)"
               @change="onSelectRow($event, item)"
             />
