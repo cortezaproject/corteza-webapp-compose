@@ -69,6 +69,13 @@ $navbar-toggler-font-size:  24px !default;
 $sidebar-width:         250px !default;
 $sidebar-height:        calc(100vh - #{$navbar-height}) !default;
 
+// Pagination
+$pagination-color:        $dark;
+$pagination-disabled-bg:  transparent;
+$pagination-bg:           transparent;
+$pagination-active-bg:    $dark;
+$pagination-border-width: 0;
+
 // Forms
 $input-font-size: $font-size-base !default;
 

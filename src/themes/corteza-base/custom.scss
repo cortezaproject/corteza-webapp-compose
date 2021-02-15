@@ -32,6 +32,12 @@ strong,
   font-family: $bold;
 }
 
+thead th {
+  &:focus {
+    outline: none;
+  }
+}
+
 .vue-grid-layout {
   transition: none !important;
 }
@@ -94,25 +100,8 @@ strong,
 
 // Pagination
 .page-item {
-  .page-link {
-    background-color: transparent;
-    color: $dark;
-    border-width: 0;
-  }
-
   &.disabled {
     cursor: not-allowed;
-
-    .page-link {
-      background-color: transparent;
-    }
-  }
-
-  &.active {
-    .page-link {
-      background-color: $dark;
-      border-width: 0;
-    }
   }
 }
 
