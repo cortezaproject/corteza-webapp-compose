@@ -44,7 +44,7 @@
             :disabled="!value.cap.configurable"
             @click.prevent="$emit('edit')"
             class="px-2"
-            variant="secondary"
+            variant="light"
           >
             <font-awesome-icon
               :icon="['fas', 'wrench']"

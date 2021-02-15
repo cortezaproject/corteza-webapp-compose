@@ -2,7 +2,6 @@
   <wrap v-bind="$props" v-on="$listeners">
     <div
       v-if="module && record"
-      class="p-0"
     >
       <div
         v-for="(field, index) in fields"
