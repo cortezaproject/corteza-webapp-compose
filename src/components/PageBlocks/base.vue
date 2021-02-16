@@ -15,7 +15,7 @@ export default {
 
     blockIndex: {
       type: Number,
-      default: () => 0,
+      default: () => -1,
     },
 
     namespace: {

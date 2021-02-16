@@ -217,6 +217,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import { NoID } from '@cortezaproject/corteza-js'
 import base from './base'
 import FieldPicker from 'corteza-webapp-compose/src/components/Common/Module/FieldPicker'
 import AutomationTab from './Shared/AutomationTab'
@@ -239,27 +240,20 @@ export default {
     }),
 
     recordListModule () {
-      if (this.options.moduleID !== '0') {
+      if (this.options.moduleID !== NoID) {
         return this.getModuleByID(this.options.moduleID)
       } else {
         return undefined
       }
     },
 
-    // Tries to determine ID of the page we're supposed to redirect
-    recordPageID () {
+    recordListModuleRecordPage () {
       // Relying on pages having unique moduleID,
-      const { moduleID } = this.recordListModule || {}
-      if (!moduleID) {
+      if (this.options.moduleID !== NoID) {
+        return this.pages.find(p => p.moduleID === this.options.moduleID)
+      } else {
         return undefined
       }
-
-      const { pageID } = this.pages.find(p => p.moduleID === moduleID) || {}
-      if (!pageID) {
-        return undefined
-      }
-
-      return pageID
     },
 
     parentFields () {
@@ -280,9 +274,23 @@ export default {
       return []
     },
 
-    // This method checks if an inline editor record list with the same module exists on this page
+    /*
+     Inline record editor is disabled if:
+      - Page is not record page
+      - An inline record editor for the same module already exists
+      - Record list module doesn't have record page (inline record autoselected and disabled)
+    */
     disableInlineEditor () {
-      return !this.recordPageID
+      const thisModuleID = this.options.moduleID
+
+      // Finds another inline editor block with the same recordListModulea as this one
+      const otherInlineWithSameModule = !!this.page.blocks.find(({ kind, options }, index) => {
+        if (this.blockIndex !== index) {
+          return kind === 'RecordList' && options.editable && options.moduleID === thisModuleID
+        }
+      })
+
+      return this.page.moduleID === NoID || otherInlineWithSameModule || !this.recordListModuleRecordPage
     },
   },
 
@@ -291,10 +299,17 @@ export default {
       // Every time moduleID changes
       this.options.fields = []
       this.options.editable = false
-      this.options.editFields = []
+
+      // If recordListModule doesn't have record page, auto check inline record editor
+      if (newModuleID !== NoID) {
+        if (!this.recordListModuleRecordPage) {
+          this.options.editable = true
+        }
+      }
     },
 
     'options.editable' (value) {
+      console.log('aa')
       this.options.editFields = []
       this.options.positionField = undefined
 
@@ -302,7 +317,7 @@ export default {
         this.options.hideRecordEditButton = true
         this.options.hideRecordViewButton = true
         this.options.hidePaging = true
-        const f = this.recordListModule.fields.find(({ kind, options: { moduleID } }) => moduleID === this.module.moduleID)
+        const f = this.recordListModule.fields.find(({ options: { moduleID } }) => moduleID === this.module.moduleID)
         this.options.refField = f ? f.name : undefined
       } else {
         this.options.refField = undefined

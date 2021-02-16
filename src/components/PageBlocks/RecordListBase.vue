@@ -804,7 +804,7 @@ export default {
       }
 
       // Find all required fields
-      const req = new Set(this.module.fields.filter(({ isRequired = false }) => isRequired).map(({ name }) => name))
+      const req = new Set(this.recordListModule.fields.filter(({ isRequired = false }) => isRequired).map(({ name }) => name))
 
       // Check if all required fields are there
       for (const f of this.options.editFields) {

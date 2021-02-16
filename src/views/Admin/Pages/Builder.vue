@@ -93,6 +93,7 @@
         :module="module"
         :page="page"
         :block.sync="editor.block"
+        :block-index="editor.index"
         :record="record"
       />
     </b-modal>
