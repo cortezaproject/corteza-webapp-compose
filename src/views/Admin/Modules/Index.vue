@@ -1,9 +1,9 @@
 "<template>
   <div class="py-3">
-    <b-container>
+    <b-container fluid>
       <b-row no-gutters>
+        <b-col xl="8" offset-xl="2">
         <h1>{{ $t('module.title') }}</h1>
-        <b-col md="12">
 <!--          <b-card class="mb-2">-->
 <!--            <b-row align-v="center">-->
 <!--              <b-col md="5">-->

@@ -37,6 +37,10 @@ b,
   font-family: $bold;
 }
 
+th {
+  white-space: nowrap;
+}
+
 .vue-grid-layout {
   transition: none !important;
 }

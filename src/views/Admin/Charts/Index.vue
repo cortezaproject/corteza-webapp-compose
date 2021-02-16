@@ -1,9 +1,9 @@
 <template>
   <div class="py-3">
-    <b-container>
+    <b-container fluid>
       <b-row no-gutters>
+        <b-col xl="8" offset-xl="2">
         <h1>{{ $t('chart.title') }}</h1>
-        <b-col md="12">
           <b-card no-body>
             <b-card-header header-bg-variant="white">
             <b-button type="submit" variant="primary" size="lg">{{ $t('general.label.create') }}</b-button>
@@ -20,15 +20,16 @@
               <b-table
                 :fields="tableFields"
                 :items="charts"
+                @row-clicked="handleRowClicked"
                 head-variant="light"
+                tbody-tr-class="pointer"
                 responsive
+                hover
               >
+                <template v-slot:cell(updatedAt)="{ item: c }">
+                  {{ (c.updatedAt || c.createdAt) | locDateOnly }}
+                </template>
                 <template v-slot:cell(actions)="{ item: c }">
-                <span v-if="c.canUpdateChart || c.canDeleteChart">
-                  <router-link :to="{name: 'admin.charts.edit', params: { chartID: c.chartID }}" class="text-dark pr-2">
-                    <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
-                  </router-link>
-                </span>
                   <c-permissions-button
                     v-if="c.canGrant"
                     :title="c.name"
@@ -130,6 +131,17 @@ export default {
         {
           key: 'name',
           sortable: true,
+          tdClass: 'align-middle',
+        },
+        {
+          key: 'handle',
+          sortable: true,
+          tdClass: 'align-middle',
+        },
+        {
+          key: 'updatedAt',
+          sortable: true,
+          tdClass: 'align-middle',
         },
         {
           key: 'actions',
@@ -160,6 +172,16 @@ export default {
       this.createChart(c).then((chart) => {
         this.$router.push({ name: 'admin.charts.edit', params: { chartID: chart.chartID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.chart.createFailed')))
+    },
+    handleRowClicked ({ chartID, canUpdateChart, canDeleteChart }) {
+      if (!(canUpdateChart || canDeleteChart)) {
+        return
+      }
+      this.$router.push({
+        name: 'admin.charts.edit',
+        params: { chartID },
+        query: null,
+      })
     },
   },
 }
