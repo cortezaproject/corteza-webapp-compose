@@ -8,6 +8,7 @@
     >
       {{ frontendVersion }}
     </small>
+<<<<<<< HEAD
     <b-container class="pt-2 pb-5">
       <b-row>
         <b-col>
@@ -34,6 +35,54 @@
             <router-link :to="{ name: 'pages', params: { slug: (n.slug || n.namespaceID) } }" class="text-decoration-none">
               <namespace-item :namespace="n" />
             </router-link>
+=======
+    <div v-if="loaded" class="vh-100 overflow-auto flex-grow-1">
+      <b-container class="pt-2 pb-5">
+        <b-row>
+          <b-col>
+            <div
+             class="float-right pt-2"
+            >
+              <c-permissions-button
+                v-if="canGrant"
+                resource="compose:namespace:*"
+                link
+              />
+            </div>
+            <h1
+              class="text-center"
+            >
+              {{ $t('namespace.title') }}
+            </h1>
+          </b-col>
+        </b-row>
+        <div v-if="canCreateNamespace">
+          <b-button size="lg"
+                    :to="{ name: 'namespace.create' }"
+                    variant="primary"
+          >
+            {{ $t('namespace.create') }}
+          </b-button>
+        </div>
+
+        <b-row>
+          <div class="col-md-6 col-lg-4 col-12 mt-4" v-for="(n) in namespaces" :key="n.namespaceID">
+            <div v-if="n.enabled" class="h-100">
+              <namespace-item :namespace="n">
+                <b-button variant="primary"
+                          :to="{ name: 'pages', params: { slug: (n.slug || n.namespaceID) } }"
+                          class="float-right"
+                >
+                  {{ $t('namespace.clickOpen') }}
+                </b-button>
+              </namespace-item>
+            </div>
+            <namespace-item v-else :namespace="n">
+              <span class="text-muted ml-5">
+                {{ $t('namespace.disabled') }}
+              </span>
+            </namespace-item>
+>>>>>>> Attempt namespaces picker redesign
           </div>
           <namespace-item v-else :namespace="n" />
         </div>
