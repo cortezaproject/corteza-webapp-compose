@@ -1,8 +1,14 @@
 <template>
-  <list-loader kind="record"
-               :set="set"
-               :namespace="namespace"
-               :mode="field.options.mode"></list-loader>
+  <div
+    @click.stop
+  >
+    <list-loader
+      kind="record"
+      :set="set"
+      :namespace="namespace"
+      :mode="field.options.mode"
+    />
+  </div>
 </template>
 <script>
 import base from './base'
