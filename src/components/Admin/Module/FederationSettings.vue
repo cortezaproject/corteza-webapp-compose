@@ -547,7 +547,10 @@ export default {
       const exposedModule = this.exposedModules[nodeID] || {}
 
       const fields = (this.moduleFields || []).map(f => ({ ...f, value: false }))
-      exposedModule.fields.forEach(({ name }) => {
+
+      const exposedFields = exposedModule.fields || []
+
+      exposedFields.forEach(({ name }) => {
         fields.find(f => f.name === name).value = true
       })
 
