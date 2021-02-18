@@ -4,13 +4,13 @@
       no-body
       class="h-100 border-0 shadow-sm"
       :class="blockClass"
-      header-class="sticky-top h4 bg-white border-0 text-nowrap text-truncate overflow-hidden"
+      header-class="sticky-top h4 bg-white border-0 text-nowrap"
       :header-text-variant="block.style.variants.headerText"
       :header="headerSet ? '' : block.title"
     >
       <b-card-header
         v-if="headerSet"
-        class="sticky-top h4 bg-white border-0 text-nowrap text-truncate overflow-hidden"
+        class="sticky-top h4 bg-white border-0 text-nowrap"
         :header-text-variant="block.style.variants.headerText"
       >
         <slot
