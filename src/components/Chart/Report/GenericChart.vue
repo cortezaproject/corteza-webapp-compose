@@ -4,10 +4,11 @@
     :modules="modules"
   >
     <template #y-axis="{ report }">
-      <div class="border p-2 mb-2">
-        <h5 class="mb-3">
+      <hr>
+      <div>
+        <h4 class="mb-3">
           {{ $t('chart.edit.yAxis.label') }}
-        </h5>
+        </h4>
         <b-form-checkbox
           v-model="report.yAxis.axisType"
           value="logarithmic"
@@ -71,18 +72,19 @@
           />
         </b-form-group>
       </div>
+      <hr>
     </template>
     <template #metric-options="{ metric }">
       <b-form-group
         horizontal
         :label-cols="2"
-        class="mt-1"
         breakpoint="md"
-        :label="$t('chart.edit.metric.labelLabel')"
+        :label="$t('chart.edit.metric.labelColor')"
       >
         <b-form-input
           v-model="metric.backgroundColor"
           type="color"
+          class="color-picker"
         />
       </b-form-group>
 
@@ -247,3 +249,8 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+.color-picker {
+  max-width: 50px;
+}
+</style>

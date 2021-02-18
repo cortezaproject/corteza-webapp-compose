@@ -1,6 +1,5 @@
 <template>
-  <b-tabs active-nav-item-class="bg-grey"
-          nav-wrapper-class="bg-white"
+  <b-tabs nav-wrapper-class="bg-white border-bottom"
           active-tab-class="tab-content h-auto overflow-auto"
           card>
 

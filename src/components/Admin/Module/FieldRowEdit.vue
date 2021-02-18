@@ -27,7 +27,7 @@
       />
     </td>
     <td>
-      <b-input-group>
+      <b-input-group class="field-type">
         <b-select
           v-model="value.kind"
           :disabled="disabled"
@@ -164,3 +164,11 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+td {
+  input,
+  .field-type {
+    min-width: 150px;
+  }
+}
+</style>

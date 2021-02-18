@@ -1,14 +1,19 @@
 <template>
   <div class="py-3">
-    <b-container @submit.prevent="handleSave" tag="form">
-      <b-row>
-        <b-col v-if="chart" md="12">
-          <b-card
-            :title="$t('chart.edit.title')"
-          >
-            <export :list="[chart]" type="chart" class="float-right" slot="header"/>
+    <b-container @submit.prevent="handleSave" tag="form" fluid>
+      <b-row no-gutters>
+        <b-col v-if="chart" xl="8" offset-xl="2">
+          <b-card header-class="bg-white">
+            <div slot="header"
+                 class="d-flex justify-content-between align-items-center"
+            >
+              <h2>
+                {{ $t('chart.edit.title') }}
+              </h2>
+              <export :list="[chart]" type="chart" class="float-right" slot="header"/>
+            </div>
             <b-row>
-              <b-col md="6">
+              <b-col lg="8">
                 <fieldset v-if="modules">
                   <b-form-input v-model="chart.name" :placeholder="$t('chart.newPlaceholder')" class="mb-1"></b-form-input>
                   <b-form-input v-model="chart.handle" :placeholder="$t('general.placeholder.handle')" :state="handleState" class="mb-1"></b-form-input>
@@ -90,7 +95,7 @@
                 />
               </b-col>
 
-              <b-col md="6">
+              <b-col lg="4">
                 <b-button v-if="!error"
                           @click.prevent="update"
                           :disabled="processing"

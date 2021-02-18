@@ -29,39 +29,36 @@
       v-if="!!module"
       class="mt-1"
     >
-      <div class="border p-2 mb-2">
-        <h5 class="mb-3">
-          {{ $t('chart.edit.filter.label') }}
-        </h5>
-        <b-form-group>
-          <b-form-select
-            v-model="report.filter"
-            :disabled="customFilter"
-            :options="predefinedFilters"
-          >
-            <template slot="first">
-              <option :value="''">
-                {{ $t('chart.edit.filter.noFilter') }}
-              </option>
-            </template>
-          </b-form-select>
+      <h4 class="mb-3">
+        {{ $t('chart.edit.filter.label') }}
+      </h4>
+      <b-form-group>
+        <b-form-select
+          v-model="report.filter"
+          :disabled="customFilter"
+          :options="predefinedFilters"
+        >
+          <template slot="first">
+            <option :value="''">
+              {{ $t('chart.edit.filter.noFilter') }}
+            </option>
+          </template>
+        </b-form-select>
 
-          <b-form-checkbox
-            v-model="customFilter"
-            class="mt-1"
-          >
-            {{ $t('chart.edit.filter.customize') }}
-          </b-form-checkbox>
+        <b-form-checkbox
+          v-model="customFilter"
+          class="mt-1"
+        >
+          {{ $t('chart.edit.filter.customize') }}
+        </b-form-checkbox>
 
-          <b-form-textarea
-            v-if="customFilter"
-            v-model="report.filter"
-            placeholder="a = 1 AND b > 2"
-          />
-        </b-form-group>
-      </div>
+        <b-form-textarea
+          v-if="customFilter"
+          v-model="report.filter"
+          placeholder="a = 1 AND b > 2"
+        />
+      </b-form-group>
     </div>
-
     <slot
       name="y-axis"
       :report="editReport"
@@ -69,14 +66,14 @@
 
     <!-- Configure report dimensions -->
     <div v-if="!!module">
-      <div class="border p-2 mb-2">
+      <div>
         <fieldset
           v-for="(d, i) in dimensions"
           :key="i"
         >
-          <h5 class="mb-3">
+          <h4 class="mb-3">
             {{ $t('chart.edit.dimension.label') }}
-          </h5>
+          </h4>
 
           <b-form-group
             horizontal
@@ -162,14 +159,18 @@
 
       <!-- Configure report metrics -->
       <draggable
-        class="metrics border px-3 py-2"
+        class="metrics mb-3"
         :list.sync="metrics"
         :options="{ group: 'metrics_'+moduleID, sort: true }"
       >
+        <hr>
+        <h4 class="mb-3">
+          {{ $t('chart.edit.metric.title') }}
+        </h4>
         <fieldset
           v-for="(m,i) in metrics"
           :key="i"
-          class="main-fieldset"
+          class="main-fieldset mb-3"
         >
           <font-awesome-icon
             class="align-baseline text-secondary mr-2"
@@ -245,8 +246,7 @@
     <b-button
       v-if="canAddMetric"
       @click.prevent="addMetric"
-      variant="link"
-      class="float-right"
+      variant="primary"
     >
       + {{ $t('chart.edit.metric.add') }}
     </b-button>

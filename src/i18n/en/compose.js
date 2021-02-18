@@ -539,9 +539,11 @@ export default {
         },
       },
       metric: {
-        label: 'Metrics (numeric fields)',
+        title: 'Metrics (numeric fields)',
+        label: 'Metric',
         labelLabel: 'Label',
         labelPlaceholder: 'Total',
+        labelColor: 'Label color',
         fieldLabel: 'Field',
         fieldPlaceholder: 'Select metric field',
         fillArea: 'Fill area below the line',

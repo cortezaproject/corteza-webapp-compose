@@ -1,8 +1,8 @@
 <template>
   <div class="py-3">
-    <b-container @submit.prevent="handleSave" tag="form" v-if="module">
-      <b-row>
-        <b-col md="12">
+    <b-container @submit.prevent="handleSave" tag="form" v-if="module" fluid>
+      <b-row no-gutters>
+        <b-col xl="8" offset-xl="2">
           <b-card header-bg-variant="white">
             <div slot="header"
               class="d-flex justify-content-between align-items-center"
@@ -48,7 +48,7 @@
             </b-form-group>
             <b-form-group>
               <h5 class="mt-1">{{ $t('module.edit.manageRecordFields') }}</h5>
-              <table class="table table-sm table-borderless">
+              <table class="table table-sm table-borderless table-responsive-lg">
                 <thead>
                 <tr>
                   <th></th>
