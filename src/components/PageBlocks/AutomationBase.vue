@@ -2,7 +2,7 @@
   <wrap v-bind="$props" v-on="$listeners">
     <automation-buttons
       class="d-flex flex-wrap"
-      button-class="m-1 flex-fill"
+      button-class="my-1 mx-3 flex-fill"
       :buttons="options.buttons"
       v-bind="$props"
     />
