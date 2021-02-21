@@ -143,28 +143,24 @@ export default {
       immediate: true,
       handler (slug) {
         this.loaded = false
-        this.$auth.check().then((user) => {
-          if (!user) {
-            // check performed: no error & no user,
-            // redirect to auth
-            throw new Error()
-          }
-          this.initReminders()
+        this.$auth.check()
+          .then(() => {
+            this.initReminders()
 
-          this.$store.dispatch('namespace/load').then(() => {
-            const ns = this.$store.getters['namespace/getByUrlPart'](slug)
-            if (ns) {
-              return ns
-            }
-            return this.$store.dispatch('namespace/load', { force: true }).then(() => {
-              return this.$store.getters['namespace/getByUrlPart'](slug)
-            })
-          }).then(namespace => {
-            this.namespace = namespace
-          }).catch(this.errHandler)
-        }).catch(() => {
-          this.$auth.open()
-        })
+            this.$store.dispatch('namespace/load').then(() => {
+              const ns = this.$store.getters['namespace/getByUrlPart'](slug)
+              if (ns) {
+                return ns
+              }
+              return this.$store.dispatch('namespace/load', { force: true }).then(() => {
+                return this.$store.getters['namespace/getByUrlPart'](slug)
+              })
+            }).then(namespace => {
+              this.namespace = namespace
+            }).catch(this.errHandler)
+          }).catch(() => {
+            this.$auth.open()
+          })
       },
     },
 

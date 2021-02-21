@@ -40,6 +40,9 @@ Vue.use(plugins.UIHooks(), {
   verbose: notProduction || verboseUIHooks,
 })
 
-Vue.use(plugins.Auth(), { api: Vue.prototype.$SystemAPI })
 Vue.use(plugins.Settings, { api: Vue.prototype.$SystemAPI })
 Vue.use(plugins.Reminder, { api: Vue.prototype.$SystemAPI })
+Vue.use(plugins.Auth(), {
+  baseURL: window.authURL,
+  redirectURI: `${window.location.origin}/compose/auth`,
+})
