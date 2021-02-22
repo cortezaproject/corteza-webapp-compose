@@ -1,7 +1,6 @@
 <template>
   <div
     class="centering-wrap inactive-area d-flex"
-    v-if="$auth.is()"
   >
     <c-toaster
       :toasts="toasts"
@@ -143,24 +142,19 @@ export default {
       immediate: true,
       handler (slug) {
         this.loaded = false
-        this.$auth.check()
-          .then(() => {
-            this.initReminders()
+        this.initReminders()
 
-            this.$store.dispatch('namespace/load').then(() => {
-              const ns = this.$store.getters['namespace/getByUrlPart'](slug)
-              if (ns) {
-                return ns
-              }
-              return this.$store.dispatch('namespace/load', { force: true }).then(() => {
-                return this.$store.getters['namespace/getByUrlPart'](slug)
-              })
-            }).then(namespace => {
-              this.namespace = namespace
-            }).catch(this.errHandler)
-          }).catch(() => {
-            this.$auth.open()
+        this.$store.dispatch('namespace/load').then(() => {
+          const ns = this.$store.getters['namespace/getByUrlPart'](slug)
+          if (ns) {
+            return ns
+          }
+          return this.$store.dispatch('namespace/load', { force: true }).then(() => {
+            return this.$store.getters['namespace/getByUrlPart'](slug)
           })
+        }).then(namespace => {
+          this.namespace = namespace
+        }).catch(this.errHandler)
       },
     },
 
