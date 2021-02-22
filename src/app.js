@@ -29,11 +29,13 @@ export default (options = {}) => {
     ],
 
     data: () => ({ loaded: false }),
+
     mounted () {
       this.$Progress.finish()
     },
-    created () {
-      if (this.$auth.is()) {
+
+    async created () {
+      this.$auth.handle().then(({ accessTokenFn, user }) => {
         // Setup the progress bar
         this.$Progress.start()
         this.$router.beforeEach((to, from, next) => {
@@ -60,7 +62,7 @@ export default (options = {}) => {
           ctx: new corredor.ComposeCtx(
             {
               $invoker: this.$auth.user,
-              authToken: this.$auth.JWT,
+              accessToken: this.$auth.accessToken,
             },
             this,
           ),
@@ -77,9 +79,16 @@ export default (options = {}) => {
         this.$Settings.init({ api: this.$SystemAPI }).finally(() => {
           this.loaded = true
         })
-      } else {
-        this.loaded = true
-      }
+      }).catch((err) => {
+        if (err instanceof Error && err.message === 'Unauthenticated') {
+          // user not logged-in,
+          // start with authentication flow
+          this.$auth.startAuthenticationFlow()
+          return
+        }
+
+        throw err
+      })
     },
     router,
     store,

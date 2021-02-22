@@ -1,5 +1,3 @@
-import { components } from '@cortezaproject/corteza-vue'
-
 // public route builder/helper
 function r (name, path, component) {
   return {
@@ -63,8 +61,6 @@ export default [
 
   // Help site for field expressions
   { name: 'field.expressions.help', path: '/field-expressions-help', component: () => import('../components/Common/Module/ExpressionsHelp.vue') },
-
-  { path: '/auth', name: 'auth', component: components.CDevAuth },
 
   // When everything else fails, go to namespaces
   { path: '*', redirect: { name: 'root' } },

@@ -949,7 +949,7 @@ export default {
         query: {
           fields: e.fields,
           filter: e.filters,
-          jwt: this.$auth.JWT,
+          jwt: this.$auth.accessToken,
           timezone: timezone ? timezone.tzCode : undefined,
         },
       })
