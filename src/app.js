@@ -29,81 +29,65 @@ export default (options = {}) => {
     ],
 
     data: () => ({ loaded: false }),
+
     mounted () {
       this.$Progress.finish()
     },
+
     async created () {
-      const urlParams = new URLSearchParams(window.location.search)
-      const code = urlParams.getAll('code')[0]
-
-      if (code) {
-        await this.$auth.useCode(code)
-          .then(() => {
-            // In case the api client jwt hasn't been set yet
-            this.$SystemAPI.setJWT(this.$auth.JWT)
-            this.$ComposeAPI.setJWT(this.$auth.JWT)
-            this.$FederationAPI.setJWT(this.$auth.JWT)
-          })
-          .catch(() => {
-            this.$auth.open()
-          })
-      }
-
-      await this.$auth.check()
-        .then(() => {
-          if (!code) {
-            return this.$auth.refresh()
-          }
-        })
-        .catch(() => {
-          this.$auth.open()
-        })
-
-      // Setup the progress bar
-      this.$Progress.start()
-      this.$router.beforeEach((to, from, next) => {
+      this.$auth.handle().then(({ accessTokenFn, user }) => {
+        // Setup the progress bar
         this.$Progress.start()
-        next()
-      })
-      this.$router.afterEach((to, from) => {
-        this.$Progress.finish()
-      })
+        this.$router.beforeEach((to, from, next) => {
+          this.$Progress.start()
+          next()
+        })
+        this.$router.afterEach((to, from) => {
+          this.$Progress.finish()
+        })
 
-      // ref to vue is needed inside compose helper
-      // load and register bundle and list of client/server scripts
+        // ref to vue is needed inside compose helper
+        // load and register bundle and list of client/server scripts
 
-      const bundleLoaderOpt = {
-        // Name of the bundle to load
-        bundle: 'compose',
+        const bundleLoaderOpt = {
+          // Name of the bundle to load
+          bundle: 'compose',
 
-        // Debug logging
-        verbose: notProduction || verboseEventbus,
+          // Debug logging
+          verbose: notProduction || verboseEventbus,
 
-        // Context for exec function (client scripts only!)
-        //
-        // Extended with additional helpers
-        ctx: new corredor.ComposeCtx(
-          {
-            $invoker: this.$auth.user,
-            authToken: this.$auth.JWT,
-          },
-          this,
-        ),
-      }
-
-      this.loadBundle(bundleLoaderOpt)
-        .then(() => this.$ComposeAPI.automationList({ excludeInvalid: true }))
-        .then(this.makeAutomationScriptsRegistrator(
-          // compose specific handler that routes onManual events for server-scripts
-          // to the proper endpoint on the API
-          compose.TriggerComposeServerScriptOnManual(this.$ComposeAPI),
-        ))
-
-      this.$Settings.init({ api: this.$SystemAPI }).finally(() => {
-        this.loaded = true
-        if (code) {
-          this.$router.push({ name: 'root' })
+          // Context for exec function (client scripts only!)
+          //
+          // Extended with additional helpers
+          ctx: new corredor.ComposeCtx(
+            {
+              $invoker: this.$auth.user,
+              accessToken: this.$auth.accessToken,
+            },
+            this,
+          ),
         }
+
+        this.loadBundle(bundleLoaderOpt)
+          .then(() => this.$ComposeAPI.automationList({ excludeInvalid: true }))
+          .then(this.makeAutomationScriptsRegistrator(
+            // compose specific handler that routes onManual events for server-scripts
+            // to the proper endpoint on the API
+            compose.TriggerComposeServerScriptOnManual(this.$ComposeAPI),
+          ))
+
+        this.$Settings.init({ api: this.$SystemAPI }).finally(() => {
+          this.loaded = true
+        })
+      }).catch((err) => {
+        if (err instanceof Error && err.message === 'Unauthenticated') {
+          // user not logged-in,
+          // start with authentication flow
+          this.$auth.startAuthenticationFlow()
+          return
+        }
+
+        throw err
       })
     },
     router,
