@@ -78,6 +78,7 @@ export default (options = {}) => {
 
         this.$Settings.init({ api: this.$SystemAPI }).finally(() => {
           this.loaded = true
+          this.$router.replace({ query: { ...this.$route.query, code: undefined } })
         })
       }).catch((err) => {
         if (err instanceof Error && err.message === 'Unauthenticated') {
