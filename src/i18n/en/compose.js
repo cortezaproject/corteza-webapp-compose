@@ -1047,7 +1047,10 @@ export default {
       description: 'The short name will be used in the URL',
     },
     enabled: {
-      label: 'Enable namespace',
+      label: 'Enable on namespace list',
+    },
+    application: {
+      label: 'Enable on application list',
     },
   },
   preview: {
@@ -1075,6 +1078,13 @@ export default {
       deleteFailed: 'Could not delete this namespace',
       createFailed: 'Could not create namespace',
       saved: 'Namespace saved',
+      disabled: 'Namespace disabled - redirecting',
+
+      application: {
+        fetchFailed: 'Could not fetch namespace application',
+        createFailed: 'Could not create namespace application',
+        saveFailed: 'Could not save namespace application',
+      },
     },
     field: {
       unsupportedKind: 'Unsupported field kind {{kind}}',
