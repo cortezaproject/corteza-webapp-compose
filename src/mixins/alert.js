@@ -4,7 +4,7 @@ const warning = { variant: 'warning', countdown: 120 }
 export default {
   methods: {
     raiseSuccessAlert (message) {
-      this.raiseAlert(Object.assign({}, success, { message: this.$t(message) }))
+      this.raiseAlert(Object.assign({}, success, { message }))
     },
 
     raiseWarningAlert (message) {
