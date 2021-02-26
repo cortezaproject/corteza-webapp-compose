@@ -5,15 +5,6 @@
     <c-toaster
       :toasts="toasts"
     />
-    <div class="alert-holder">
-      <b-alert v-for="(a,i) in alerts"
-               :variant=" a.variant || 'info'"
-               :key="'alert:'+i"
-               :show="a.countdown"
-               dismissible
-               @dismiss-count-down="a.countdown=$event"
-               @dismissed="alerts.splice(i, 0)">{{ a.message }}</b-alert>
-    </div>
     <div class="d-none d-md-block">
       <namespace-sidebar
         :namespaces="enabledNamespaces"
@@ -166,6 +157,12 @@ export default {
           return
         }
 
+        if (!namespace.enabled) {
+          this.raiseWarningAlert(this.$t('notification.namespace.disabled'))
+          this.$router.push({ name: 'root' })
+          return
+        }
+
         const p = { namespace, namespaceID: namespace.namespaceID, clear: true }
 
         this.$store.dispatch('module/clearSet')
@@ -314,17 +311,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.alert-holder {
-  position: absolute;
-  width: 100%;
-  top: 55px;
-
-  .alert {
-    z-index: 1040;
-    box-shadow: 0 0 2px 0 rgba($secondary, 0.75);
-  }
-}
-
 .error {
   font-size: 24px;
   background-color: $white;
@@ -332,5 +318,11 @@ export default {
   height: 20vh;
   padding: 60px;
   top: 40vh;
+}
+</style>
+
+<style lang="scss">
+.alert-holder {
+  top: 55px;
 }
 </style>
