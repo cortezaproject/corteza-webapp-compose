@@ -1,55 +1,56 @@
 <template>
-  <main class="w-100 flex-grow">
+  <div
+    v-if="loaded"
+    class="h-100 overflow-auto flex-grow-1"
+  >
     <small
       class="p-1 text-secondary position-absolute version"
     >
       {{ frontendVersion }}
     </small>
-    <div v-if="loaded" class="vh-100 overflow-auto flex-grow-1">
-      <b-container class="pt-2 pb-5">
-        <b-row>
-          <b-col>
-            <div
-             class="float-right pt-2"
-            >
-              <c-permissions-button
-                v-if="canGrant"
-                resource="compose:namespace:*"
-                link
-              />
-            </div>
-            <h1
-              class="text-center"
-            >
-              {{ $t('namespace.title') }}
-            </h1>
-          </b-col>
-        </b-row>
-
-        <b-row>
-          <div class="col-md-6 col-lg-4 col-12 mt-4" v-for="(n) in namespaces" :key="n.namespaceID">
-            <div v-if="n.enabled">
-              <router-link :to="{ name: 'pages', params: { slug: (n.slug || n.namespaceID) } }">
-                <namespace-item :namespace="n" />
-              </router-link>
-            </div>
-            <namespace-item v-else :namespace="n" />
+    <b-container class="pt-2 pb-5">
+      <b-row>
+        <b-col>
+          <div
+            class="float-right pt-2"
+          >
+            <c-permissions-button
+              v-if="canGrant"
+              resource="compose:namespace:*"
+              link
+            />
           </div>
-          <div v-if="canCreateNamespace" class="add-wrap col-md-6 col-lg-4 col-12 mt-4">
-            <router-link :to="{ name: 'namespace.create' }">
-              <div class="add-namespace">
-                <span class="add-icon">+</span>
-                <label class="add-text text-center d-block">
-                    {{ $t('namespace.create') }}
-                </label>
-              </div>
+          <h1
+            class="text-center"
+          >
+            {{ $t('namespace.title') }}
+          </h1>
+        </b-col>
+      </b-row>
+
+      <b-row>
+        <div class="col-md-6 col-lg-4 col-12 mt-4" v-for="(n) in namespaces" :key="n.namespaceID">
+          <div v-if="n.enabled">
+            <router-link :to="{ name: 'pages', params: { slug: (n.slug || n.namespaceID) } }" class="text-decoration-none">
+              <namespace-item :namespace="n" />
             </router-link>
           </div>
-        </b-row>
-      </b-container>
-      <c-permissions-modal />
-    </div>
-  </main>
+          <namespace-item v-else :namespace="n" />
+        </div>
+        <div v-if="canCreateNamespace" class="add-wrap col-md-6 col-lg-4 col-12 mt-4">
+          <router-link :to="{ name: 'namespace.create' }">
+            <div class="add-namespace">
+              <span class="add-icon">+</span>
+              <label class="add-text text-center d-block">
+                  {{ $t('namespace.create') }}
+              </label>
+            </div>
+          </router-link>
+        </div>
+      </b-row>
+    </b-container>
+    <c-permissions-modal />
+  </div>
 </template>
 <script>
 import NamespaceItem from 'corteza-webapp-compose/src/components/Namespaces/NamespaceItem'
