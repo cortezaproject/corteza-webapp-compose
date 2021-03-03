@@ -38,7 +38,7 @@
 
               </b-form-group>
               <div
-                class="d-flex align-items-baseline"
+                class="d-flex align-items-center"
               >
                 <b-form-group
                   :label="$t('namespace.slug.label')"
@@ -70,6 +70,58 @@
                   </b-form-checkbox>
                 </b-form-group>
               </div>
+
+              <b-form-group>
+                <template #label>
+                  <div
+                    class="d-flex"
+                  >
+                    {{ $t('namespace.logo.label') }}
+                    <b-button
+                      variant="link"
+                      class="d-flex align-items-center border-0 p-0 ml-2"
+                      v-b-modal.logo
+                    >
+                      <font-awesome-icon
+                      :icon="['far', 'eye']"
+                    />
+                    </b-button>
+                  </div>
+                </template>
+
+                  <!-- v-model="namespace.logo" -->
+                <b-form-file
+                  v-model="namespaceAssets.logo"
+                  accept="image/*"
+                  :placeholder="$t('namespace.logo.placeholder')"
+                />
+              </b-form-group>
+
+              <b-form-group>
+                <template #label>
+                  <div
+                    class="d-flex"
+                  >
+                    {{ $t('namespace.icon.label') }}
+                    <b-button
+                      v-if="namespace.meta.icon"
+                      variant="link"
+                      class="d-flex align-items-center border-0 p-0 ml-2"
+                      v-b-modal.icon
+                    >
+                      <font-awesome-icon
+                      :icon="['far', 'eye']"
+                    />
+                    </b-button>
+                  </div>
+                </template>
+                <b-form-file
+                  v-model="namespaceAssets.icon"
+                  accept="image/*"
+                  :placeholder="$t('namespace.icon.placeholder')"
+                />
+              </b-form-group>
+
               <b-form-group :label="$t('namespace.subtitle.label')">
                 <b-form-input
                   v-model="namespace.meta.subtitle"
@@ -90,6 +142,45 @@
           </b-col>
         </b-row>
       </b-container>
+      <b-modal
+        id="logo"
+        hide-header
+        hide-footer
+        centered
+        body-class="p-1"
+      >
+        <div class="ns-wrap">
+          <div>
+            <b-img
+              v-if="logoPreview"
+              :src="logoPreview"
+              fluid-grow
+            />
+            <div
+              v-else
+              class="ns-logo"
+            >
+              <i class="d-block m-auto" />
+            </div>
+          </div>
+        </div>
+      </b-modal>
+      <b-modal
+        id="icon"
+        hide-header
+        hide-footer
+        centered
+        body-class="p-1"
+      >
+        <div class="ns-wrap">
+          <div>
+            <b-img
+              :src="iconPreview"
+              fluid-grow
+            />
+          </div>
+        </div>
+      </b-modal>
     </div>
     <editor-toolbar
       :back-link="{name: 'root'}"
@@ -123,6 +214,10 @@ export default {
       loaded: false,
 
       namespace: new compose.Namespace({ enabled: true }),
+      namespaceAssets: {
+        logo: undefined,
+        icon: undefined,
+      },
 
       application: undefined,
       isApplication: false,
@@ -137,6 +232,14 @@ export default {
 
     slugState () {
       return handleState(this.namespace.slug)
+    },
+
+    logoPreview () {
+      return this.namespace.meta.logo || ''
+    },
+
+    iconPreview () {
+      return this.namespace.meta.icon || ''
     },
 
     nameState () {
@@ -176,12 +279,14 @@ export default {
   methods: {
     async fetchNamespace (namespaceID) {
       if (namespaceID) {
-        this.$store.dispatch('namespace/findByID', { namespaceID })
+        await this.$store.dispatch('namespace/findByID', { namespaceID })
           .then((ns) => {
             this.namespace = new compose.Namespace(ns)
             this.fetchApplication()
           })
       }
+
+      this.loaded = true
     },
 
     fetchApplication () {
@@ -191,7 +296,6 @@ export default {
             this.application = set[0]
             this.isApplication = this.application.enabled
           }
-          this.loaded = true
         })
         .catch(this.defaultErrorHandler(this.$t('notification.namespace.application.fetchFailed')))
     },
@@ -204,28 +308,49 @@ export default {
     },
 
     async handleSave ({ closeOnSuccess = false } = {}) {
-      const { namespaceID, name, slug, enabled, meta } = this.namespace
+      let { namespaceID, name, slug, enabled, meta } = this.namespace
+      let assets
 
-      await this.handleApplicationSave()
+      // Firstly handle any new namespace assets
+      if (this.namespaceAssets.logo || this.namespaceAssets.icon) {
+        try {
+          assets = await this.uploadAssets()
+          meta = { ...meta, ...assets }
+        } catch (e) {
+          this.defaultErrorHandler(this.$t('notification.namespace.assetUploadFailed'))
+          return
+        }
+      }
 
       if (this.isEdit) {
-        this.$store.dispatch('namespace/update', { namespaceID, name, slug, enabled, meta }).then((ns) => {
-          this.namespace = new compose.Namespace(ns)
+        try {
+          await this.$store.dispatch('namespace/update', { namespaceID, name, slug, enabled, meta }).then((ns) => {
+            this.namespace = new compose.Namespace(ns)
 
-          this.raiseSuccessAlert(this.$t('notification.namespace.saved'))
-          if (closeOnSuccess) {
-            this.$router.push({ name: 'root' })
-          }
-        }).catch(this.defaultErrorHandler(this.$t('notification.namespace.saveFailed')))
+            this.raiseSuccessAlert(this.$t('notification.namespace.saved'))
+          })
+        } catch (e) {
+          this.defaultErrorHandler(this.$t('notification.namespace.saveFailed'))
+          return
+        }
       } else {
-        this.$store.dispatch('namespace/create', { name, slug, enabled, meta }).then((ns) => {
-          this.namespace = new compose.Namespace(ns)
+        try {
+          await this.$store.dispatch('namespace/create', { name, slug, enabled, meta }).then((ns) => {
+            this.namespace = new compose.Namespace(ns)
 
-          this.raiseSuccessAlert(this.$t('notification.namespace.saved'))
-          if (closeOnSuccess) {
-            this.$router.push({ name: 'root' })
-          }
-        }).catch(this.defaultErrorHandler(this.$t('notification.namespace.createFailed')))
+            this.raiseSuccessAlert(this.$t('notification.namespace.saved'))
+          })
+        } catch (e) {
+          this.defaultErrorHandler(this.$t('notification.namespace.createFailed'))
+          return
+        }
+      }
+
+      await this.handleApplicationSave()
+        .catch(() => this.defaultErrorHandler(this.$t('notification.namespace.createAppFailed')))
+
+      if (closeOnSuccess) {
+        this.$router.push({ name: 'root' })
       }
     },
 
@@ -251,6 +376,11 @@ export default {
 
         this.application.unify.listed = enabled
 
+        // Assets
+        // Don't take note of the ID, it will be different on the system side
+        this.application.unify.icon = this.application.unify.icon || this.namespace.meta.icon
+        this.application.unify.logo = this.application.unify.logo || this.namespace.meta.logo
+
         return this.$SystemAPI.applicationUpdate({ ...this.application, enabled })
           .then(app => { this.application = app })
           .catch(this.defaultErrorHandler(this.$t('notification.namespace.application.saveFailed')))
@@ -263,8 +393,8 @@ export default {
             name: this.namespace.name,
             listed: true,
             url: `/compose/ns/${this.namespace.slug}/pages`,
-            icon: '/applications/default_icon.png',
-            logo: '/applications/default_logo.jpg',
+            icon: this.namespace.meta.icon || '/applications/default_icon.png',
+            logo: this.namespace.meta.logo || '/applications/default_logo.jpg',
           },
         }
         return this.$SystemAPI.applicationCreate({ ...application })
@@ -272,6 +402,55 @@ export default {
           .catch(this.defaultErrorHandler(this.$t('notification.namespace.application.createFailed')))
       }
     },
+
+    async uploadAssets () {
+      const rr = {}
+
+      const rq = async (file) => {
+        var formData = new FormData()
+        formData.append('upload', file)
+
+        const rsp = await this.$ComposeAPI.api().request({
+          method: 'post',
+          url: this.$ComposeAPI.namespaceUploadEndpoint(),
+          data: formData,
+        })
+        if (rsp.data.error) {
+          throw new Error(rsp.data.error)
+        }
+        return rsp.data.response
+      }
+
+      const baseURL = this.$ComposeAPI.baseURL
+
+      if (this.namespaceAssets.logo) {
+        const rsp = await rq(this.namespaceAssets.logo)
+        rr.logo = baseURL + rsp.url
+        rr.logoID = rsp.attachmentID
+
+        this.namespaceAssets.logo = undefined
+      }
+
+      if (this.namespaceAssets.icon) {
+        const rsp = await rq(this.namespaceAssets.icon)
+        rr.icon = baseURL + rsp.url
+        rr.iconID = rsp.attachmentID
+
+        this.namespaceAssets.icon = undefined
+      }
+
+      return rr
+    },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.ns-logo i {
+  height: 90px;
+  width: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position-y: center;
+}
+</style>

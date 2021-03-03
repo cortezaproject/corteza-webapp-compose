@@ -1046,6 +1046,10 @@ export default {
       placeholder: 'Enter a short name for the namespace',
       description: 'The short name will be used in the URL',
     },
+    thumbnail: {
+      label: 'Thumbnail',
+      placeholder: 'Choose a thumbnail or drop it here...',
+    },
     enabled: {
       label: 'Enable on namespace list',
     },
@@ -1079,6 +1083,7 @@ export default {
       createFailed: 'Could not create namespace',
       saved: 'Namespace saved',
       disabled: 'Namespace disabled - redirecting',
+      assetUploadFailed: 'Could not upload attached assets',
 
       application: {
         fetchFailed: 'Could not fetch namespace application',

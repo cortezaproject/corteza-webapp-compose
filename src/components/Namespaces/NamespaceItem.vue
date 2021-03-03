@@ -2,8 +2,13 @@
   <div class="ns-wrap">
     <div :class="{ 'ns-label': true, 'pointer': isEnabled }">
       <label
-        class="ns-visual ns-logo text-center d-block">
-        <i class="d-block m-auto" />
+        class="ns-visual ns-logo text-center d-block"
+      >
+        <b-img
+          v-if="namespace.thumbnail"
+          :src="namespace.thumbnail"
+        />
+        <i v-else class="d-block m-auto" />
       </label>
       <div>
         <label :class="{'ns-text': true, 'subtitle': namespace.meta.subtitle}" class="text-center d-block">
@@ -140,6 +145,12 @@ export default {
       background-size: contain;
       background-repeat: no-repeat;
       background-position-y: center;
+      width: 75%;
+    }
+
+    img {
+      transform: translateY(10px);
+      height: $nsvisualheight - 10px;
       width: 75%;
     }
   }
