@@ -468,7 +468,6 @@ export default {
     notVisible: 'Not visible',
     preview: 'Preview',
     recordPage: 'Record page for {{ 0 }}',
-    newLabel: 'Create a new page:',
     newPlaceholder: 'Page title',
     noBlock: 'No block added yet',
     import: 'Import page(s):',

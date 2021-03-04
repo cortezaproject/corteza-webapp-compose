@@ -1,38 +1,37 @@
 <template>
   <div class="py-3">
-    <b-container>
-      <b-row>
-        <b-col md="12">
-          <b-card class="mb-2">
-            <b-row align-v="center">
-              <b-col md="5">
-                <b-form @submit.prevent="handleAddPageFormSubmit">
-                  <b-form-group v-if="namespace.canCreatePage" :label="$t('page.newLabel')">
-                    <b-input-group >
-                      <input required type="text" v-model="page.title" class="form-control" id="name" :placeholder="$t('page.newPlaceholder')" />
-                      <b-input-group-append>
-                        <b-button type="submit" variant="dark">{{ $t('general.label.create') }}</b-button>
-                      </b-input-group-append>
-                    </b-input-group>
-                  </b-form-group>
-                </b-form>
-              </b-col>
-              <b-col offset-md="5" md="2" class="text-right">
-                <c-permissions-button
-                  v-if="namespace.canGrant"
-                  resource="compose:page:*"
-                  link
-                />
-              </b-col>
-            </b-row>
-          </b-card>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col md="12">
-          <b-card :title="$t('page.title')">
+    <b-container fluid>
+      <b-row no-gutters>
+        <b-col xl="8" offset-xl="2">
+          <h1>{{ $t('page.title') }}</h1>
+          <b-card :title="$t('page.title')" no-body>
+            <b-card-header header-bg-variant="white" class="pb-0">
+              <b-row no-gutters>
+                <b-col cols="10" md="6">
+                  <b-form @submit.prevent="handleAddPageFormSubmit" class="pb-0">
+                    <b-form-group v-if="namespace.canCreatePage" class="mb-0">
+                      <b-input-group>
+                        <input required type="text" v-model="page.title" class="form-control" id="name" :placeholder="$t('page.newPlaceholder')" />
+                        <b-input-group-append>
+                          <b-button type="submit" variant="primary">{{ $t('general.label.create') }}</b-button>
+                        </b-input-group-append>
+                      </b-input-group>
+                    </b-form-group>
+                  </b-form>
+                </b-col>
+                <b-col cols="2" md="6">
+                  <c-permissions-button
+                    v-if="namespace.canGrant"
+                    resource="compose:page:*"
+                    class="float-right mt-1 mr-4"
+                    link
+                  />
+                </b-col>
+              </b-row>
+            </b-card-header>
             <page-tree
               :namespace="namespace"
+              class="pb-2"
               @reorder="handleReorder"
               v-model="tree"/>
           </b-card>
@@ -98,10 +97,69 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-  /deep/ .exist-li {
+<style lang="scss">
+//!important usage to over-ride library styling
+$content-height: 50px;
+$blank-li-height: 0;
+$left-padding: 5px;
+$border-color: #E4E9EF;
+$hover-color: rgba(0, 0, 0, 0.075);
+$dropping-color: #90A3B1;
+
+.sortable-tree {
+  ul {
     .content {
-      background: rgba(0, 0, 0, 0.03);
+      height: 100% !important;
+      min-height: $content-height !important;
+      line-height: $content-height !important;
+
+      &:hover {
+        background: $hover-color;
+      }
     }
   }
+
+  li {
+    white-space: nowrap;
+    background: white;
+
+    &.blank-li {
+      padding-top: 1px !important;
+      height: $blank-li-height !important;
+    }
+
+    &::before {
+      top: $content-height / -2 !important;
+      border-left: 2px solid $border-color !important;
+    }
+
+    &::after {
+      height: $content-height !important;
+      top: $content-height / 2 !important;
+      border-color: #fff !important;
+    }
+
+    &.parent-li:nth-last-child(2)::before {
+      height: $content-height !important;
+      top: $content-height / -2 !important;
+    }
+  }
+
+  .parent-li {
+    border-top: 1px solid $border-color;
+
+    .exist-li {
+      border-top: none;
+
+      &::after {
+        border-top: 2px solid $border-color !important;
+      }
+    }
+  }
+}
+
+.droper {
+  background: $dropping-color !important;
+}
+
 </style>

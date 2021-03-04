@@ -26,6 +26,15 @@ $danger:        #E54122 !default;
 $light:         #E4E9EF !default;
 $dark:          #1e2224 !default;
 
+// Grid - maybe not the smartest idea to change this but let's see
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1500px
+) !default;
+
 // Options
 $enable-rounded:   true !default;
 $enable-gradients: false !default;

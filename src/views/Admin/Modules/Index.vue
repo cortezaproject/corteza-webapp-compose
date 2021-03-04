@@ -75,7 +75,7 @@
                   <b-button
                     @click="openPageBuilder(m)"
                     variant="link"
-                    class="mr-2 pt-0"
+                    class="mr-3 p-0"
                   >
                     {{ pages.find(p => p.moduleID === m.moduleID) ?  $t('module.recordPage.edit') : $t('module.recordPage.create') }}
                   </b-button>

@@ -9,82 +9,92 @@
     <template
       slot-scope="{item}"
     >
-      <div
+      <b-row
+        no-gutters
         v-if="item.pageID"
-        class="wrap d-flex"
+        class="wrap d-flex pr-2"
         :class="{ 'bg-warning': !isValid(item) }"
       >
-        <div
-          class="flex-fill ml-1"
+        <b-col
+          cols="12"
+          xl="6"
+          lg="5"
+          class="flex-fill"
           :class="{'grab': namespace.canCreatePage}"
         >
           {{ item.title }}
-        </div>
-        <div
-          class="prop-col text-left"
+        </b-col>
+        <b-col
+          cols="12"
+          xl="6"
+          lg="7"
+          class="text-right"
         >
-          <span
-            v-if="item.moduleID !== '0'"
-          >
-            <i18next
-              path="page.recordPage"
-              tag="label"
+          <span class="text-right ml-3">
+            <span
+              class="d-none d-md-inline-block mr-5"
             >
-              <router-link
-                :to="{ name: 'admin.modules.edit', params: { moduleID: item.moduleID }}"
+              <span
+                v-if="item.moduleID !== '0'"
               >
-                {{ moduleName(item) }}
-              </router-link>
-            </i18next>
-          </span>
-          <span
-            v-else-if="item.visible"
-          >
-            {{ $t('page.visible') }}
-          </span>
-          <span
-            v-else-if="!item.visible"
-            class="text-danger"
-          >
-            {{ $t('page.notVisible') }}
-          </span>
-        </div>
-        <div class="fixed-width text-right ml-3">
-          <router-link
-            v-if="item.blocks && item.blocks.length >= 1"
-            :to="{name: 'page', params: { pageID: item.pageID }}"
-            class="mr-2 text-dark d-inline-block">
-            <font-awesome-icon
-              :icon="['far', 'eye']"
-              :title="$t('page.preview')"
+                <i18next
+                  path="page.recordPage"
+                >
+                  <router-link
+                    :to="{ name: 'admin.modules.edit', params: { moduleID: item.moduleID }}"
+                  >
+                    {{ moduleName(item) }}
+                  </router-link>
+                </i18next>
+              </span>
+              <span
+                v-else-if="item.visible"
+              >
+                {{ $t('page.visible') }}
+              </span>
+              <span
+                v-else-if="!item.visible"
+                class="text-danger"
+              >
+                {{ $t('page.notVisible') }}
+              </span>
+            </span>
+            <router-link
+              v-if="item.blocks && item.blocks.length >= 1"
+              :to="{name: 'page', params: { pageID: item.pageID }}"
+              class="mr-2 text-dark d-inline-block">
+              <font-awesome-icon
+                :icon="['far', 'eye']"
+                :title="$t('page.preview')"
+              />
+            </router-link>
+            <router-link
+              v-if="item.canUpdatePage"
+              :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
+              class="mr-2"
+            >
+              {{ $t('general.label.pageBuilder') }}
+            </router-link>
+            <c-permissions-button
+              v-if="namespace.canGrant"
+              :title="item.title"
+              :target="item.title"
+              :resource="'compose:page:'+item.pageID"
+              link
             />
-          </router-link>
-          <router-link
-            v-if="item.canUpdatePage"
-            :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
-            class="mr-2 text-dark"
-          >
-            {{ $t('general.label.pageBuilder') }}
-          </router-link>
-          <router-link
-            v-if="item.canUpdatePage"
-            :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
-            class="mr-2 text-dark d-inline-block edit"
-          >
-            <font-awesome-icon
-              v-if="item.moduleID === '0'"
-              :icon="['far', 'edit']"
-            />
-          </router-link>
-          <c-permissions-button
-            v-if="namespace.canGrant"
-            :title="item.title"
-            :target="item.title"
-            :resource="'compose:page:'+item.pageID"
-            link
-          />
-        </div>
-      </div>
+            <router-link
+              v-if="item.canUpdatePage"
+              :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
+              class="ml-2 d-inline-block edit"
+            >
+              <font-awesome-icon
+                v-if="item.moduleID === '0'"
+                :icon="['far', 'edit']"
+              />
+            </router-link>
+          </span>
+        </b-col>
+      </b-row>
     </template>
   </sortable-tree>
 </template>
@@ -199,28 +209,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
-ul {
-  li {
-    div.wrap {
-      font-size: 0.9em;
-
-      div.prop-col {
-        font-size: 0.8em;
-      }
-    }
-  }
-}
-
-.fixed-width {
-  width: 170px;
-}
-
 .edit {
-  width: 25px;
+  width: 30px;
 }
 
 .grab {
   cursor: grab;
+  z-index: 1;
 }
 </style>

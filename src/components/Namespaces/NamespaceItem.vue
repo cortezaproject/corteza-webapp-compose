@@ -80,7 +80,6 @@ export default {
   },
 }
 </script>
-<<<<<<< HEAD
 <style lang="scss" scoped>
   $nsheight: 200px;
   $nsvisualheight: 100px;
@@ -206,5 +205,3 @@ export default {
     }
   }
 </style>
-=======
->>>>>>> Attempt namespaces picker redesign
