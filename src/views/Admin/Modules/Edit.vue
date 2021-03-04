@@ -71,9 +71,9 @@
                                   :key="index"></field-row-edit>
                 </draggable>
                 <tr>
+                  <th colspan="1" />
                   <th colspan="7">
                     <b-button @click="handleNewField"
-                              class="ml-4"
                               variant="primary">+ {{ $t('module.edit.newField') }}
                     </b-button>
                   </th>

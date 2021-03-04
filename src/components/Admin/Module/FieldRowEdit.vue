@@ -5,8 +5,8 @@
       class="handle text-center align-middle"
     >
       <font-awesome-icon
-        :icon="['fas', 'sort']"
-        class="text-secondary"
+        :icon="['fas', 'bars']"
+        class="text-light grab"
       />
     </td>
     <td>
