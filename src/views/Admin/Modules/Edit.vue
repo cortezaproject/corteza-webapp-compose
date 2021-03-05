@@ -277,7 +277,7 @@ export default {
     },
 
     federationEnabled () {
-      return !!this.$FederationAPI.baseURL
+      return !!this.$FederationAPI.baseURL && this.module.moduleID
     },
   },
 

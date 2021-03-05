@@ -393,14 +393,14 @@ export default {
     // the module mappings also get applied here
     // on top of the fields
     getSharedModulesMapped () {
-      var list = {}
+      const list = {}
 
       // first, prefill the shared module fields
       for (const nodeID in this.sharedModules) {
         list[nodeID] = {}
 
         for (const sm of this.sharedModules[nodeID]) {
-          var f = sm.fields.sort((a, b) => a.label.localeCompare(b.label))
+          let f = sm.fields.sort((a, b) => a.label.localeCompare(b.label))
 
           // is there any mappings for this shared module?
           const mappedFields = ((this.moduleMappings[nodeID] || {})[sm.moduleID] || {}).fields || []
@@ -408,8 +408,8 @@ export default {
           // fetch the shared module fields and slap the
           // module mappings on top of them
           f = f.map((el) => {
-            var found = false
-            var mapped = null
+            let found = false
+            let mapped = (this.moduleFields.find(({ name }) => name === el.name) || {}).name || null
 
             if (mappedFields) {
               const m = mappedFields.find((mf) => el.name === mf.origin.name)
@@ -658,12 +658,6 @@ export default {
       this.setUpdated(target)
     },
 
-    async getModuleMappings (nodeID, moduleID) {
-      return this.$FederationAPI.manageStructureReadMappings({ nodeID, moduleID })
-        .then((data) => data)
-        .catch(this.defaultErrorHandler())
-    },
-
     async persistExposedModule (payload) {
       if (payload.moduleID) {
         return this.$FederationAPI.manageStructureUpdateExposed(payload)
@@ -711,14 +705,14 @@ export default {
         return
       }
 
-      var mm = {}
+      const mm = {}
       for (const { moduleID } of this.sharedModules[nodeID]) {
         mm[moduleID] = []
-        await this.$FederationAPI.manageStructureReadMappings({ nodeID, moduleID })
+        await this.$FederationAPI.manageStructureReadMappings({ nodeID, moduleID, composeModuleID: this.module.moduleID })
           .then((data) => {
             mm[moduleID] = data
           })
-          .catch(this.defaultErrorHandler())
+          .catch(() => {})
       }
 
       this.moduleMappings[nodeID] = mm
