@@ -48,7 +48,7 @@
         class="d-flex justify-content-end align-items-center"
       >
         <c-input-confirm
-          :disabled="!module.canDeleteRecord || processing"
+          :disabled="disableDelete"
           @confirmed="$emit('delete')"
           class="m-1"
         >
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 
 export default {
   props: {
@@ -127,6 +127,10 @@ export default {
       }
 
       return false
+    },
+
+    disableDelete () {
+      return this.isDeleted || !this.module.canDeleteRecord || this.processing || this.record.recordID === NoID
     },
   },
 }
