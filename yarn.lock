@@ -850,10 +850,10 @@
     openurl "1.1.1"
     yargs "6.6.0"
 
-"@cortezaproject/corteza-js@^2020.12.1":
-  version "2020.12.1"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.12.1.tgz#49d62b7aca5eebc2c8811db539bd237c454b40ae"
-  integrity sha512-6ltIQw1oW1Pq4GWb1UNpoS8OWwE1Nph52+Anu9yQGmod10+X4A2OI0qvIGg82b+9UEh8yH5t3wLACTar/XIJ5g==
+"@cortezaproject/corteza-js@~2020.12.4":
+  version "2020.12.4"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.12.4.tgz#17c08e590d921e676e92066f26ea2d53247a888e"
+  integrity sha512-7hKvtLMqHGyCgv/nbPHheJo805JXKzxB2iA6luW9bdRkIyAHjEIX8p8JQxUG2XU831i05xtp+ZRXMxyWX4ouKA==
   dependencies:
     axios "^0.21.1"
     chart.js "2.9.3"
@@ -866,12 +866,12 @@
     pino "^5.16.0"
     ts-sinon "^1.0.25"
 
-"@cortezaproject/corteza-vue@^2020.12.1":
-  version "2020.12.1"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2020.12.1.tgz#1ed9599d7e42e3cbd6925f4190b2ce9c3e8e1a29"
-  integrity sha512-SGV5GCy4EU1Pmq8Ex/M0g6X2cv46JRd4bCVvsfEWZOmZvdpzLjeS+vtx0ATJ2ua0KeuH0cnpL8quXvVC0UVVWA==
+"@cortezaproject/corteza-vue@~2020.12.3":
+  version "2020.12.3"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2020.12.3.tgz#d2e57d77707982f41d6bc1338c97591cfdb6b260"
+  integrity sha512-Q7sKJlU+CegNh/lwqb8LBCrbFVV0zj1uz8y5xbESzQ5ur0RNYHEhBnyl26z22qA6wv7ZAd+kxSepe888r7pztg==
   dependencies:
-    "@cortezaproject/corteza-js" "^2020.12.1"
+    "@cortezaproject/corteza-js" "~2020.12.4"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
     "@fortawesome/free-solid-svg-icons" "^5.12.0"
     "@fortawesome/vue-fontawesome" "^0.1.9"
@@ -7445,7 +7445,7 @@ ignore@^5.1.1:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.1.4.tgz#84b7b3dbe64552b6ef0eca99f6743dbec6d97adf"
   integrity sha512-MzbUSahkTW1u7JpKKjY7LCARd1fU5W2rLdxlM4kdkayuCwZImjkpluF9CM1aLewYJguPDqewLam18Y6AU69A8A==
 
-immer@1.10.0, immer@8.0.1:
+immer@1.10.0, "immer@8.0.1 ":
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/immer/-/immer-8.0.1.tgz#9c73db683e2b3975c424fb0572af5889877ae656"
   integrity sha512-aqXhGP7//Gui2+UrEtvxZxSquQVXTpZ7KDxfCcKAF3Vysvw0CViVaW9RZ1j1xlIYqaaaipBoqdqeibkc18PNvA==
