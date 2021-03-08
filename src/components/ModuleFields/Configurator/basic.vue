@@ -121,9 +121,13 @@ export default {
         if (!Array.isArray(dv)) {
           dv = [dv]
         }
+
         // Transform to backend value struct
         this.field.defaultValue = dv.map(v => {
-          return { name: this.field.name, value: v }
+          if (v !== undefined && v.toString) {
+            v = v.toString()
+          }
+          return { value: v }
         })
       },
       deep: true,
