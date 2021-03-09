@@ -228,3 +228,11 @@ fieldset.required {
     box-shadow: 0 0 2px 0 rgba($secondary, 0.75);
   }
 }
+
+// Align Metric to bottom
+.Metric {
+  .card-body {
+    display: flex;
+    align-items: flex-end;
+  }
+}

@@ -26,6 +26,8 @@ $danger:        #E54122 !default;
 $light:         #E4E9EF !default;
 $dark:          #1e2224 !default;
 
+$gray-200:      #F3F3F5 !default;
+
 // Grid - maybe not the smartest idea to change this but let's see
 $grid-breakpoints: (
   xs: 0,
@@ -41,11 +43,12 @@ $enable-gradients: false !default;
 $enable-responsive-font-sizes: true !default;
 
 // Body
-$body-bg: $light !default;
+$body-bg: $gray-200 !default;
 
 // Card
 $card-border-radius: 1rem !default;
 $card-border-width:  0;
+$card-cap-bg:        $gray-200 !default;
 
 // Tables
 $table-cell-padding-sm: 0.25rem !default;

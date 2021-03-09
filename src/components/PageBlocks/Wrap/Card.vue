@@ -10,7 +10,7 @@
     >
       <b-card-header
         v-if="headerSet"
-        class="sticky-top h4 bg-white border-0 text-nowrap"
+        class="sticky-top h4 bg-white border-0 text-nowrap pb-1"
         :header-text-variant="block.style.variants.headerText"
       >
         <slot
