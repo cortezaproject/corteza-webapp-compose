@@ -23,7 +23,7 @@
                   <c-permissions-button
                     v-if="namespace.canGrant"
                     resource="compose:page:*"
-                    class="float-right mt-1 mr-4"
+                    class="float-right btn mr-2"
                     link
                   />
                 </b-col>
@@ -124,13 +124,12 @@ $dropping-color: #90A3B1;
     background: white;
 
     &.blank-li {
-      padding-top: 1px !important;
       height: $blank-li-height !important;
     }
 
     &::before {
       top: $content-height / -2 !important;
-      border-left: 2px solid $border-color !important;
+      border-left: 2px solid white !important;
     }
 
     &::after {
@@ -153,6 +152,24 @@ $dropping-color: #90A3B1;
 
       &::after {
         border-top: 2px solid $border-color !important;
+      }
+
+      &::before {
+        border-left-color: $border-color !important;
+      }
+    }
+
+    &.exist-li {
+      &::before {
+        border-color: white !important;
+      }
+
+      .parent-li {
+        &.exist-li {
+          &::before {
+            border-color: $border-color !important;
+          }
+        }
       }
     }
   }

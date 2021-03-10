@@ -38,7 +38,7 @@
               <c-permissions-button
                 v-if="namespace.canGrant"
                 resource="compose:module:*"
-                class="float-right mt-1"
+                class="float-right mt-1 btn pr-0"
                 link
               />
             </b-card-header>
@@ -75,12 +75,12 @@
                   <b-button
                     @click="openPageBuilder(m)"
                     variant="link"
-                    class="mr-3 p-0"
+                    class="p-0"
                   >
                     {{ pages.find(p => p.moduleID === m.moduleID) ?  $t('module.recordPage.edit') : $t('module.recordPage.create') }}
                   </b-button>
                   <span v-if="m.canReadRecord">
-                    <router-link :to="{name: 'admin.modules.record.list', params: { moduleID: m.moduleID }}" class="mr-2 text-dark">
+                    <router-link :to="{name: 'admin.modules.record.list', params: { moduleID: m.moduleID }}" class="btn px-2 text-dark">
                       <font-awesome-icon :icon="['fas', 'bars']"></font-awesome-icon>
                     </router-link>
                   </span>
@@ -89,6 +89,7 @@
                     :title="m.name"
                     :target="m.name"
                     :resource="'compose:module:'+m.moduleID"
+                    class="btn px-2"
                     link
                   />
                 </template>

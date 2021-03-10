@@ -29,7 +29,7 @@
                   v-if="module.canGrant"
                   resource="compose:module-field:*"
                   link
-                  class="ml-1"
+                  class="btn"
                 />
               </div>
             </div>

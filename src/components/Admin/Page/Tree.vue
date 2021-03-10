@@ -19,7 +19,7 @@
           cols="12"
           xl="6"
           lg="5"
-          class="flex-fill"
+          class="flex-fill pl-2"
           :class="{'grab': namespace.canCreatePage}"
         >
           {{ item.title }}

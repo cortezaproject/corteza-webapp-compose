@@ -4,7 +4,7 @@
       no-body
       class="h-100 border-0 shadow-sm"
       :class="blockClass"
-      header-class="sticky-top h4 bg-white border-0 text-nowrap"
+      header-class="sticky-top h4 bg-white border-0 text-nowrap pb-1"
       :header-text-variant="block.style.variants.headerText"
       :header="headerSet ? '' : block.title"
     >
