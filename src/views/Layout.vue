@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column w-100 vh-100">
+  <div class="d-flex flex-column w-100 vh-100 overflow-auto">
     <div class="alert-holder">
       <b-alert
         v-for="(a,i) in alerts"
