@@ -2,8 +2,11 @@
   <b-form ref="importForm" @submit.prevent class="import-form">
     <b-form-group>
       <b-input-group>
-        <b-form-file @change="loadFile" />
-        <b-button v-if="importObj && !processing" variant="light" @click="openModal">
+        <b-form-file @change="loadFile"
+                     :placeholder="$t('general.label.importPlaceholder')"
+                     class="font-wight-normal pointer"
+        />
+        <b-button v-if="importObj && !processing" variant="primary" size="lg" class="ml-1" @click="openModal">
           {{ $t('general.label.import') }}
         </b-button>
         <b-button v-if="importObj && processing" variant="light" @click="cancelImport">
@@ -17,10 +20,10 @@
     <b-modal v-if="importObj" size="lg" v-model="show" id="importModal" :title="$t(`${type}.import`)">
       <b-container class="p-0">
         <b-row no-gutters class="mb-3">
-          <b-button variant="secondary" @click="selectAll(true)">
+          <b-button variant="light" @click="selectAll(true)">
             {{ $t('field.selector.selectAll') }}
           </b-button>
-          <b-button class="ml-2" variant="secondary" @click="selectAll(false)">
+          <b-button class="ml-2" variant="light" @click="selectAll(false)">
             {{ $t('field.selector.unselectAll') }}
           </b-button>
         </b-row>
@@ -36,8 +39,8 @@
         <b-button
             :disabled="!importObj.list.filter(i => i.import).length > 0"
             variant="primary"
+            size="lg"
             @click="jsonImport(importObj)">
-
             {{ $t('general.label.import') }}
         </b-button>
       </div>
@@ -164,3 +167,26 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+$input-height: 42px;
+$line-height: 30px;
+
+.custom-file-input {
+  height: $input-height;
+}
+
+.custom-file-label {
+  height: $input-height;
+  font-family: $regular;
+
+  &::after {
+    height: 100%;
+    font-family: $btn-font-family;
+    line-height: $line-height;
+    background-color: $light;
+    color: $dark;
+    font-weight: 400;
+    padding: $btn-padding-y $btn-padding-x;
+  }
+}
+</style>
