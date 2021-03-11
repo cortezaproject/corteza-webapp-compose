@@ -40,7 +40,7 @@ export function getFieldFilter (field, query) {
     }
   }
 
-  if (['String', 'DateTime', 'Select', 'Url', 'Email'].includes(field.kind)) {
+  if (['String', 'Url', 'Select', 'Email'].includes(field.kind)) {
     return `${field.name} LIKE '%${strQuery}%'`
   }
 }
