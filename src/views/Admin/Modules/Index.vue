@@ -142,7 +142,8 @@ export default {
         {
           key: 'name',
           sortable: true,
-          tdClass: 'align-middle',
+          tdClass: 'align-middle pl-4',
+          thClass: 'pl-4',
         },
         {
           key: 'handle',

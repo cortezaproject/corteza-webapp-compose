@@ -23,6 +23,7 @@
                 @row-clicked="handleRowClicked"
                 head-variant="light"
                 tbody-tr-class="pointer"
+                tbody-td-class="Test"
                 responsive
                 hover
               >
@@ -36,6 +37,7 @@
                     :target="c.name"
                     :resource="'compose:chart:'+c.chartID"
                     link
+                    class="btn px-2"
                   />
                 </template>
               </b-table>
@@ -131,7 +133,8 @@ export default {
         {
           key: 'name',
           sortable: true,
-          tdClass: 'align-middle',
+          tdClass: 'align-middle pl-4',
+          thClass: 'pl-4',
         },
         {
           key: 'handle',

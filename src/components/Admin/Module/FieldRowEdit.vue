@@ -2,7 +2,7 @@
   <tr>
     <td
       v-b-tooltip.hover
-      class="handle text-center align-middle"
+      class="handle align-middle"
     >
       <font-awesome-icon
         :icon="['fas', 'bars']"
@@ -54,40 +54,44 @@
       </b-input-group>
     </td>
     <td
-      class="text-center align-middle"
+      class="align-middle pl-2 text-nowrap"
     >
       <b-form-checkbox
         v-model="value.isMulti"
         :disabled="!value.cap.multi"
         :value="true"
         :unchecked-value="false"
-        size="lg"
-      />
+      >
+        {{ $t('general.label.multi') }}
+      </b-form-checkbox>
     </td>
     <td
-      class="text-center align-middle"
+      class="align-middle"
     >
       <b-form-checkbox
         v-model="value.isRequired"
         :disabled="!value.cap.required"
         :value="true"
         :unchecked-value="false"
-        size="lg"
-      />
+      >
+        {{ $t('general.label.required') }}
+      </b-form-checkbox>
     </td>
     <td
       v-if="false"
-      class="text-center align-middle"
+      class="align-middle"
     >
       <b-form-checkbox
         v-model="value.isPrivate"
         :disabled="!value.cap.private"
         :value="true"
         :unchecked-value="false"
-      />
+      >
+        {{ $t('general.label.private') }}
+      </b-form-checkbox>
     </td>
     <td
-      class="text-right align-middle"
+      class="text-right align-middle pr-2"
       style="min-width: 100px;"
     >
       <c-input-confirm
@@ -110,10 +114,6 @@
 import { compose } from '@cortezaproject/corteza-js'
 
 export default {
-  i18nOptions: {
-    keyPrefix: 'module.fieldKinds',
-  },
-
   props: {
     value: {
       type: Object,
@@ -152,7 +152,7 @@ export default {
       return [...compose.ModuleFieldRegistry.keys()]
         // for now this field is hidden, since it's implementation is mia.
         .map(kind => {
-          return { kind, label: this.$t(kind + '.label') }
+          return { kind, label: this.$t('module.fieldKinds.' + kind + '.label') }
         })
     },
   },
@@ -169,6 +169,10 @@ td {
   input,
   .field-type {
     min-width: 150px;
+  }
+
+  .handle {
+    width: 30px;
   }
 }
 </style>

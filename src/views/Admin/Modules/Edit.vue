@@ -3,7 +3,9 @@
     <b-container @submit.prevent="handleSave" tag="form" v-if="module" fluid>
       <b-row no-gutters>
         <b-col xl="8" offset-xl="2">
-          <b-card header-bg-variant="white">
+          <b-card header-bg-variant="white"
+                  no-body
+          >
             <div slot="header"
               class="d-flex justify-content-between align-items-center"
             >
@@ -29,123 +31,137 @@
                   v-if="module.canGrant"
                   resource="compose:module-field:*"
                   link
-                  class="btn"
+                  class="btn pr-2"
                 />
               </div>
             </div>
-            <b-form-group>
-              <label>{{ $t('module.newPlaceholder') }}</label>
-              <b-form-input required
-                            v-model="module.name"
-                            :placeholder="$t('module.newPlaceholder')"></b-form-input>
-            </b-form-group>
-            <b-form-group>
-              <label>{{ $t('general.label.handle') }}</label>
-              <b-form-input v-model="module.handle"
-                            :state="handleState"
-                            class="mb-2"
-                            :placeholder="$t('general.placeholder.handle')"></b-form-input>
-            </b-form-group>
-            <b-form-group>
+            <b-container fluid class="px-4">
+              <h5 class="mb-3">{{ $t('module.edit.moduleInfo') }}</h5>
+              <b-row>
+                <b-col cols="12" md="6" xl="4">
+                  <b-form-group>
+                    <label class="text-primary">{{ $t('module.newPlaceholder') }}</label>
+                    <b-form-input required
+                                  v-model="module.name"
+                                  :placeholder="$t('module.newPlaceholder')"></b-form-input>
+                  </b-form-group>
+                </b-col>
+                <b-col cols="12" md="6" xl="4">
+                <b-form-group>
+                  <label class="text-primary">{{ $t('general.label.handle') }}</label>
+                  <b-form-input v-model="module.handle"
+                                :state="handleState"
+                                class="mb-2"
+                                :placeholder="$t('general.placeholder.handle')"></b-form-input>
+                </b-form-group>
+                </b-col>
+              </b-row>
+            </b-container>
+            <hr>
+            <b-container fluid class="px-4">
               <h5 class="mt-1">{{ $t('module.edit.manageRecordFields') }}</h5>
-              <table class="table table-sm table-borderless table-responsive-lg">
-                <thead>
-                <tr>
-                  <th></th>
-                  <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.name')" class="info ">{{ $t('general.label.name') }}</th>
-                  <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.title')" class="info ">{{ $t('general.label.title') }}</th>
-                  <th>{{ $t('general.label.type') }}</th>
-                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.multi')" class="info text-center">{{ $t('general.label.multi') }}</th>
-                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.required')" class="info text-center">{{ $t('general.label.required') }}</th>
-                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.private')" class="info text-center" v-if="false">{{ $t('general.label.private') }}</th>
-                  <th></th>
-                </tr>
-                </thead>
-                <draggable v-model="module.fields" :options="{handle:'.handle'}" tag="tbody">
-                  <field-row-edit v-for="(field, index) in module.fields"
-                                  @edit="handleFieldEdit(module.fields[index])"
-                                  @delete="module.fields.splice(index, 1)"
-                                  v-model="module.fields[index]"
-                                  :canGrant="namespace.canGrant"
-                                  :hasRecords="hasRecords"
-                                  :key="index"></field-row-edit>
-                </draggable>
-                <tr>
-                  <th colspan="1" />
-                  <th colspan="7">
-                    <b-button @click="handleNewField"
-                              variant="primary">+ {{ $t('module.edit.newField') }}
-                    </b-button>
-                  </th>
-                </tr>
-              </table>
-              <div class="d-flex mt-5">
-                <table class="w-50">
-                  <tbody>
+              <b-row no-gutters>
+                <b-form-group class="w-100">
+                  <table class="table table-sm table-borderless table-responsive-lg">
+                    <thead>
                     <tr>
-                      <th colspan="7">{{ $t('module.edit.systemFields') }}</th>
+                      <th></th>
+                      <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.name')" class="text-primary">{{ $t('general.label.name') }}</th>
+                      <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.title')" class="text-primary">{{ $t('general.label.title') }}</th>
+                      <th class="text-primary">{{ $t('general.label.type') }}</th>
+                      <th v-b-tooltip.hover :title="$t('module.edit.tooltip.attributes')" class="text-primary">{{ $t('general.label.attributes') }}</th>
+                      <th></th>
+                      <th v-if="false"></th>
+                      <th></th>
                     </tr>
-                    <field-row-view v-for="(field, index) in module.systemFields()"
-                                    :field="field"
-                                    :key="index"></field-row-view>
-                  </tbody>
-                </table>
-                <div class="d-flex flex-column w-50">
-                  <b-row align-v="center" class="text-center justify-content-between mt-4">
-                    <b-col>
-                      <circle-step
-                        stepNumber="1"
-                        :done="!!recordPage"
-                        small
-                      >
-                        <b-button
-                          v-if="recordPage"
-                          :disabled="!namespace.canManageNamespace"
-                          :to="{ name: 'admin.pages.builder', params: { pageID: recordPage.pageID } }"
-                          variant="outline-secondary"
-                        >
-                          {{ $t('module.edit.steps.recordPage') }}
+                    </thead>
+                    <draggable v-model="module.fields" :options="{handle:'.handle'}" tag="tbody">
+                      <field-row-edit v-for="(field, index) in module.fields"
+                                      @edit="handleFieldEdit(module.fields[index])"
+                                      @delete="module.fields.splice(index, 1)"
+                                      v-model="module.fields[index]"
+                                      :canGrant="namespace.canGrant"
+                                      :hasRecords="hasRecords"
+                                      :key="index"></field-row-edit>
+                    </draggable>
+                    <tr>
+                      <th colspan="1" />
+                      <th colspan="7">
+                        <b-button @click="handleNewField"
+                                  variant="primary">+ {{ $t('module.edit.newField') }}
                         </b-button>
-                        <b-button
-                          v-else
-                          @click="handleRecordPageCreation"
-                          variant="outline-secondary"
-                        >
-                          {{ $t('module.edit.steps.recordPage') }}
-                        </b-button>
-                      </circle-step>
-                    </b-col>
-                    <b-col>
-                      <hr />
-                    </b-col>
-                    <b-col>
-                      <circle-step
-                        stepNumber="2"
-                        :done="!!recordListPage"
-                        small
-                      >
-                        <b-button
-                          v-if="recordListPage"
-                          variant="outline-secondary"
-                          :disabled="!namespace.canManageNamespace"
-                          :to="{ name: 'admin.pages.builder', params: { pageID: recordListPage.pageID } }"
-                        >
-                          {{ $t('module.edit.steps.recordList') }}
-                        </b-button>
-                        <b-button
-                          v-else
-                          variant="outline-secondary"
-                          :disabled="!namespace.canCreatePage || !recordPage"
-                          @click="handleRecordListCreation"
-                        >
-                          {{ $t('module.edit.steps.recordList') }}
-                        </b-button>
-                      </circle-step>
-                    </b-col>
-                  </b-row>
-                </div>
-              </div>
-            </b-form-group>
+                      </th>
+                    </tr>
+                  </table>
+                  <div class="d-flex mt-5">
+                    <table class="w-50">
+                      <tbody>
+                        <tr>
+                          <th colspan="7">{{ $t('module.edit.systemFields') }}</th>
+                        </tr>
+                        <field-row-view v-for="(field, index) in module.systemFields()"
+                                        :field="field"
+                                        :key="index"></field-row-view>
+                      </tbody>
+                    </table>
+                    <div class="d-flex flex-column w-50">
+                      <b-row align-v="center" class="text-center justify-content-between mt-4">
+                        <b-col>
+                          <circle-step
+                            stepNumber="1"
+                            :done="!!recordPage"
+                            small
+                          >
+                            <b-button
+                              v-if="recordPage"
+                              :disabled="!namespace.canManageNamespace"
+                              :to="{ name: 'admin.pages.builder', params: { pageID: recordPage.pageID } }"
+                              variant="outline-secondary"
+                            >
+                              {{ $t('module.edit.steps.recordPage') }}
+                            </b-button>
+                            <b-button
+                              v-else
+                              @click="handleRecordPageCreation"
+                              variant="outline-secondary"
+                            >
+                              {{ $t('module.edit.steps.recordPage') }}
+                            </b-button>
+                          </circle-step>
+                        </b-col>
+                        <b-col>
+                          <hr />
+                        </b-col>
+                        <b-col>
+                          <circle-step
+                            stepNumber="2"
+                            :done="!!recordListPage"
+                            small
+                          >
+                            <b-button
+                              v-if="recordListPage"
+                              variant="outline-secondary"
+                              :disabled="!namespace.canManageNamespace"
+                              :to="{ name: 'admin.pages.builder', params: { pageID: recordListPage.pageID } }"
+                            >
+                              {{ $t('module.edit.steps.recordList') }}
+                            </b-button>
+                            <b-button
+                              v-else
+                              variant="outline-secondary"
+                              :disabled="!namespace.canCreatePage || !recordPage"
+                              @click="handleRecordListCreation"
+                            >
+                              {{ $t('module.edit.steps.recordList') }}
+                            </b-button>
+                          </circle-step>
+                        </b-col>
+                      </b-row>
+                    </div>
+                  </div>
+                </b-form-group>
+              </b-row>
+            </b-container>
           </b-card>
         </b-col>
       </b-row>

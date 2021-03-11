@@ -417,6 +417,7 @@ export default {
 
     edit: {
       title: 'Edit module',
+      moduleInfo: 'Module info',
       manageRecordFields: 'Manage record fields',
       moduleFieldSettings: 'Module field settings',
       specificFieldSettings: 'Field settings ({{name}})',
@@ -452,7 +453,7 @@ export default {
       tooltip: {
         name: 'Must be a-z/A-Z, 0-9 or underscore',
         title: 'The name displayed in form input / data lists',
-        multi: 'Allows the field to hold multiple values',
+        attributes: 'Select if the field can hold multiple values, if it\'s required field or if contains sensitive data',
         required: 'Required field',
         private: 'Sensitive data',
       },
@@ -618,6 +619,7 @@ export default {
       title: 'Title',
       description: 'Description',
       type: 'Type',
+      attributes: 'Attributes',
       multi: 'Multi value',
       required: 'Required',
       private: 'Private',
