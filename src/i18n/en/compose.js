@@ -1013,7 +1013,7 @@ export default {
   namespace: {
     clickOpen: 'Click to open',
     title: 'Low Code Namespaces',
-    create: 'Create namespace',
+    create: 'Create new namespace',
     edit: 'Edit namespace',
     disabled: 'Namespace is disabled',
     setPermissions: 'Set namespace permissions',

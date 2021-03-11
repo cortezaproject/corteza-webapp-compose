@@ -1,68 +1,33 @@
-<template>
-  <div class="ns-wrap">
-    <div :class="{ 'ns-label': true, 'pointer': isEnabled }">
-      <label
-        class="ns-visual ns-logo text-center d-block"
-      >
-        <b-img
-          v-if="namespace.thumbnail"
-          :src="namespace.thumbnail"
-        />
-        <i v-else class="d-block m-auto" />
-      </label>
-      <div>
-        <label :class="{'ns-text': true, 'subtitle': namespace.meta.subtitle}" class="text-center d-block">
-          {{ namespace.name }}
-          <span v-if="namespace.meta.subtitle">
-            <br>{{ namespace.meta.subtitle }}
-          </span>
-        </label>
-      </div>
-    </div>
-    <!-- this should appear on hover -->
-    <div class="ns-display-options text-center">
-      <div :class="{'options actions': namespace.canUpdateNamespace, 'no-edit': !namespace.canUpdateNamespace}">
-        <span v-if="namespace.canUpdateNamespace">
-          <router-link :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }" class="p-0 float-right">
-            <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
-          </router-link>
-        </span>
-      </div>
-      <div class="extra-text text p-1">
-        <p class="text-left" v-if="namespace.meta.description">{{ namespace.meta.description }}</p>
-        <label v-else :class="{ 'click': true, 'pointer': isEnabled }">
-          <span v-if="isEnabled">
-            {{ $t('namespace.clickOpen') }}
-          </span>
-          <span v-else>
-            {{ $t('namespace.disabled') }}
-          </span>
-        </label>
-      </div>
-    </div>
-  </div>
-<!--  <b-card class="h-100"-->
-<!--          footer-bg-variant="white"-->
-<!--  >-->
-<!--    <h2 class="h5">{{ namespace.name }}</h2>-->
-<!--    <p v-if="namespace.meta.subtitle"-->
-<!--       class="font-weight-bold"-->
-<!--    >-->
-<!--          {{ namespace.meta.subtitle }}-->
-<!--    </p>-->
-<!--    <p v-if="namespace.meta.description">-->
-<!--      {{ namespace.meta.description }}-->
-<!--    </p>-->
-<!--    <span v-if="namespace.canUpdateNamespace"-->
-<!--          slot="footer"-->
-<!--    >-->
-<!--      <b-button :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }" variant="light">-->
-<!--        <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>-->
-<!--        Edit-->
-<!--      </b-button>-->
-<!--      <slot />-->
-<!--    </span>-->
-<!--  </b-card>-->
+<template class="h-100">
+  <b-card class="h-100"
+          footer-bg-variant="white"
+  >
+    <h2 class="h5">{{ namespace.name }}</h2>
+    <p v-if="namespace.meta.subtitle"
+       class="font-weight-bold"
+    >
+          {{ namespace.meta.subtitle }}
+    </p>
+    <p v-if="namespace.meta.description">
+      {{ namespace.meta.description }}
+    </p>
+    <span slot="footer">
+      <b-button v-if="namespace.enabled"
+                :to="{ name: 'pages', params: { slug: (namespace.slug || namespace.namespaceID) } }"
+                variant="light"
+                size="lg">
+        Visit namespace
+      </b-button>
+      <b-button v-if="namespace.canUpdateNamespace"
+                :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }"
+                variant="light"
+                class="float-right"
+                size="lg">
+        <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
+      </b-button>
+      <slot />
+    </span>
+  </b-card>
 </template>
 <script>
 export default {

@@ -1,7 +1,7 @@
 <template>
   <div
+    class="overflow-auto"
     v-if="loaded"
-    class="h-100 overflow-auto flex-grow-1"
   >
     <small
       class="p-1 text-secondary position-absolute version"
@@ -20,78 +20,29 @@
               link
             />
           </div>
-          <h1
-            class="text-center"
-          >
+          <h1>
             {{ $t('namespace.title') }}
           </h1>
         </b-col>
       </b-row>
-
       <b-row>
-        <div class="col-md-6 col-lg-4 col-12 mt-4" v-for="(n) in namespaces" :key="n.namespaceID">
-          <div v-if="n.enabled">
-            <router-link :to="{ name: 'pages', params: { slug: (n.slug || n.namespaceID) } }" class="text-decoration-none">
-              <namespace-item :namespace="n" />
-            </router-link>
-<!--    <div v-if="loaded" class="vh-100 overflow-auto flex-grow-1">-->
-<!--      <b-container class="pt-2 pb-5">-->
-<!--        <b-row>-->
-<!--          <b-col>-->
-<!--            <div-->
-<!--             class="float-right pt-2"-->
-<!--            >-->
-<!--              <c-permissions-button-->
-<!--                v-if="canGrant"-->
-<!--                resource="compose:namespace:*"-->
-<!--                link-->
-<!--              />-->
-<!--            </div>-->
-<!--            <h1-->
-<!--              class="text-center"-->
-<!--            >-->
-<!--              {{ $t('namespace.title') }}-->
-<!--            </h1>-->
-<!--          </b-col>-->
-<!--        </b-row>-->
-<!--        <div v-if="canCreateNamespace">-->
-<!--          <b-button size="lg"-->
-<!--                    :to="{ name: 'namespace.create' }"-->
-<!--                    variant="primary"-->
-<!--          >-->
-<!--            {{ $t('namespace.create') }}-->
-<!--          </b-button>-->
-<!--        </div>-->
-<!--        <b-row>-->
-<!--          <div class="col-md-6 col-lg-4 col-12 mt-4" v-for="(n) in namespaces" :key="n.namespaceID">-->
-<!--            <div v-if="n.enabled" class="h-100">-->
-<!--              <namespace-item :namespace="n">-->
-<!--                <b-button variant="primary"-->
-<!--                          :to="{ name: 'pages', params: { slug: (n.slug || n.namespaceID) } }"-->
-<!--                          class="float-right"-->
-<!--                >-->
-<!--                  {{ $t('namespace.clickOpen') }}-->
-<!--                </b-button>-->
-<!--              </namespace-item>-->
-<!--            </div>-->
-<!--            <namespace-item v-else :namespace="n">-->
-<!--              <span class="text-muted ml-5">-->
-<!--                {{ $t('namespace.disabled') }}-->
-<!--              </span>-->
-<!--            </namespace-item>-->
-          </div>
-          <namespace-item v-else :namespace="n" />
-        </div>
-        <div v-if="canCreateNamespace" class="add-wrap col-md-6 col-lg-4 col-12 mt-4">
-          <router-link :to="{ name: 'namespace.create' }">
-            <div class="add-namespace">
-              <span class="add-icon">+</span>
-              <label class="add-text text-center d-block">
-                  {{ $t('namespace.create') }}
-              </label>
-            </div>
-          </router-link>
-        </div>
+        <b-col v-if="canCreateNamespace"
+               cols="6"
+               class="mt-2"
+        >
+          <b-btn :to="{ name: 'namespace.create' }"
+                 variant="primary"
+                 size="lg"
+          >
+              {{ $t('namespace.create') }}
+          </b-btn>
+        </b-col>
+      </b-row>
+
+      <b-row align-v="stretch">
+        <b-col cols="12" md="6" lg="4" class="mt-4" v-for="(n) in namespaces" :key="n.namespaceID">
+          <namespace-item :namespace="n" />
+        </b-col>
       </b-row>
     </b-container>
     <c-permissions-modal />
@@ -150,56 +101,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.add-wrap {
-  display: block;
-  text-align: center;
-
-  .add-icon {
-    font-size: 80px;
-    height: 110px;
-    line-height: 100px;
-    display: block;
-    text-align: center;
-    cursor: pointer;
-
-    i {
-      font-size: 85px;
-      font-style: normal;
-    }
-  }
-
-  .add-text {
-    color: $secondary;
-    font-size: 20px;
-    cursor: pointer;
-  }
-
-  .add-namespace {
-    border: 3px solid #fff;
-    min-height: 200px;
-    max-height: 200px;
-
-    &:hover,
-    &:focus {
-      background-color: #fff;
-
-      i {
-        color: #000;
-      }
-
-      .add-text {
-        color: #000;
-      }
-    }
-  }
-
-  a {
-    &:hover {
-      text-decoration: none;
-    }
-  }
-}
-
 .version {
   bottom: 0;
   right: 15px;
