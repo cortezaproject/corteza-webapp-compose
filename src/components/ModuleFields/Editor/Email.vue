@@ -8,6 +8,7 @@
     <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
       <b-form-input
         type="email"
+        class="mr-2"
         v-model="value[ctx.index]"
       />
       <errors :errors="errors" />

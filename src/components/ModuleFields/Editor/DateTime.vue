@@ -14,6 +14,7 @@
         v-b-tooltip.hover
         :title="$t(dateRule)"
         type="date"
+        class="mr-2"
         :value="getDate(ctx.index)"
         :required="field.isRequired"
         :state="state"
@@ -23,6 +24,7 @@
       <b-form-input
         v-if="!field.options.onlyDate"
         type="time"
+        class="mr-2"
         :value="getTime(ctx.index)"
         :required="field.isRequired"
         :state="state"

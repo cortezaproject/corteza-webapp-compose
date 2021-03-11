@@ -9,16 +9,19 @@
       <rich-text-input
         v-if="field.options.useRichTextEditor"
         v-model="value[ctx.index]"
+        class="mr-2"
       />
 
       <b-form-textarea
         v-else-if="field.options.multiLine"
         v-model="value[ctx.index]"
+        class="mr-2"
       />
 
       <b-form-input
         v-else
         v-model="value[ctx.index]"
+        class="mr-2"
       />
       <errors :errors="errors" />
     </multi>
@@ -27,16 +30,19 @@
       <rich-text-input
         v-if="field.options.useRichTextEditor"
         v-model="value"
+        class="mr-2"
       />
 
       <b-form-textarea
         v-else-if="field.options.multiLine"
         v-model="value"
+        class="mr-2"
       />
 
       <b-form-input
         v-else
         v-model="value"
+        class="mr-2"
       />
       <errors :errors="errors" />
     </template>
