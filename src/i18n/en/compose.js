@@ -390,6 +390,7 @@ export default {
     title: 'List of Modules',
     newPlaceholder: 'Module Name',
     federated: 'Federated',
+    import: 'Module import',
 
     recordPage: {
       create: 'Create record page',
@@ -466,10 +467,11 @@ export default {
   page: {
     title: 'List of Pages',
     visible: 'Visible',
-    notVisible: 'Not visible',
-    preview: 'Preview',
-    recordPage: 'Record page for {{ 0 }}',
+    notVisible: 'Hidden',
+    invalid: 'Invalid configuration',
+    view: 'View',
     newPlaceholder: 'Page title',
+    instructions: 'Drag and drop pages to adjust the order and hierarchy.',
     noBlock: 'No block added yet',
     import: 'Import page(s):',
     edit: {
@@ -653,6 +655,7 @@ export default {
       view: 'View',
       processing: 'Processing...',
       import: 'Import',
+      importPlaceholder: 'Upload files to import',
       export: 'Export',
       cancel: 'Cancel',
       next: 'Next',

@@ -3,18 +3,59 @@
     <b-container fluid>
       <b-row no-gutters>
         <b-col xl="8" offset-xl="2">
-        <h1>{{ $t('chart.title') }}</h1>
+        <h1 class="mb-4">{{ $t('chart.title') }}</h1>
           <b-card no-body>
             <b-card-header header-bg-variant="white">
-            <b-button type="submit" variant="primary" size="lg">{{ $t('general.label.create') }}</b-button>
-            <b-button type="submit" variant="light" size="lg" class="ml-1">Import</b-button>
-            <export :list="charts" type="chart" class="ml-1"/>
-            <c-permissions-button
-              v-if="namespace.canGrant"
-              resource="compose:module:*"
-              class="float-right mt-1"
-              link
-            />
+              <b-row>
+                <b-col cols="12" lg="4">
+                  <b-form v-if="namespace.canCreateChart" @submit.prevent="create">
+                    <b-form-group>
+                      <b-input-group>
+                        <b-input required type="text" v-model="newChart.name" class="chart-name-input" id="name" :placeholder="$t('chart.newPlaceholder')" />
+                        <b-input-group-append>
+                          <b-dropdown
+                            variant="primary"
+                            size="lg"
+                            :text="$t('block.chart.add')"
+                            >
+                              <b-dropdown-item-button
+                                variant="dark"
+                                @click="create('generic')"
+                              >
+                                {{ $t('block.chart.addGeneric') }}
+                              </b-dropdown-item-button>
+                              <b-dropdown-item-button
+                                variant="dark"
+                                @click="create('funnel')"
+                              >
+                                {{ $t('block.chart.addFunnel') }}
+                              </b-dropdown-item-button>
+                              <b-dropdown-item-button
+                                variant="dark"
+                                @click="create('gauge')"
+                              >
+                                {{ $t('block.chart.addGauge') }}
+                              </b-dropdown-item-button>
+                            </b-dropdown>
+                        </b-input-group-append>
+                      </b-input-group>
+                    </b-form-group>
+                  </b-form>
+                </b-col>
+                <b-col cols="12" lg="4">
+                  <import v-if="namespace.canCreateChart"
+                          :namespace="namespace" type="chart" />
+                </b-col>
+                <b-col cols="12" lg="4" class="d-flex align-items-baseline justify-content-between justify-content-lg-end">
+                  <export :list="charts" type="chart"/>
+                  <c-permissions-button
+                    v-if="namespace.canGrant"
+                    resource="compose:chart:*"
+                    class="btn mt-1 pr-0"
+                    link
+                  />
+                </b-col>
+              </b-row>
             </b-card-header>
             <b-card-body class="p-0">
               <b-table
@@ -23,7 +64,6 @@
                 @row-clicked="handleRowClicked"
                 head-variant="light"
                 tbody-tr-class="pointer"
-                tbody-td-class="Test"
                 responsive
                 hover
               >
@@ -42,54 +82,6 @@
                 </template>
               </b-table>
             </b-card-body>
-            <b-row align-v="center">
-              <b-col md="5">
-                <b-form v-if="namespace.canCreateChart" @submit.prevent="create">
-                  <b-form-group :label="$t('chart.newLabel')">
-                    <b-input-group>
-                      <input required type="text" v-model="newChart.name" class="form-control" id="name" :placeholder="$t('chart.newPlaceholder')" />
-                      <b-input-group-append>
-                        <b-dropdown
-                            :text="$t('block.chart.add')"
-                          >
-                            <b-dropdown-item-button
-                              variant="primary"
-                              @click="create('generic')"
-                            >
-                              {{ $t('block.chart.addGeneric') }}
-                            </b-dropdown-item-button>
-                            <b-dropdown-item-button
-                              variant="primary"
-                              @click="create('funnel')"
-                            >
-                              {{ $t('block.chart.addFunnel') }}
-                            </b-dropdown-item-button>
-                            <b-dropdown-item-button
-                              variant="primary"
-                              @click="create('gauge')"
-                            >
-                              {{ $t('block.chart.addGauge') }}
-                            </b-dropdown-item-button>
-                          </b-dropdown>
-
-                      </b-input-group-append>
-                    </b-input-group>
-                  </b-form-group>
-                </b-form>
-              </b-col>
-              <b-col md="5">
-                <import v-if="namespace.canCreateChart"
-                        :namespace="namespace" type="chart" />
-              </b-col>
-              <b-col md="2" class="text-right">
-
-                <c-permissions-button
-                  v-if="namespace.canGrant"
-                  resource="compose:chart:*"
-                  link
-                />
-              </b-col>
-            </b-row>
           </b-card>
         </b-col>
       </b-row>
@@ -189,3 +181,10 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+$input-height: 42px;
+
+.chart-name-input {
+  height: $input-height;
+}
+</style>

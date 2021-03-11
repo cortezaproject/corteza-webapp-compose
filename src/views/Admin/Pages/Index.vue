@@ -3,32 +3,45 @@
     <b-container fluid>
       <b-row no-gutters>
         <b-col xl="8" offset-xl="2">
-          <h1>{{ $t('page.title') }}</h1>
+          <h1 class="mb-4">{{ $t('page.title') }}</h1>
           <b-card :title="$t('page.title')" no-body>
-            <b-card-header header-bg-variant="white" class="pb-0">
-              <b-row no-gutters>
-                <b-col cols="10" md="6">
+            <b-card-header header-bg-variant="white">
+              <b-row class="align-items-center">
+                <b-col cols="10" lg="4">
                   <b-form @submit.prevent="handleAddPageFormSubmit" class="pb-0">
                     <b-form-group v-if="namespace.canCreatePage" class="mb-0">
                       <b-input-group>
-                        <input required type="text" v-model="page.title" class="form-control" id="name" :placeholder="$t('page.newPlaceholder')" />
+                        <b-input required type="text" v-model="page.title" class="page-name-input" id="name" :placeholder="$t('page.newPlaceholder')" />
                         <b-input-group-append>
-                          <b-button type="submit" variant="primary">{{ $t('general.label.create') }}</b-button>
+                          <b-button type="submit" variant="primary" size="lg">{{ $t('general.label.create') }}</b-button>
                         </b-input-group-append>
                       </b-input-group>
                     </b-form-group>
                   </b-form>
                 </b-col>
-                <b-col cols="2" md="6">
+                <b-col cols="2" lg="8">
                   <c-permissions-button
                     v-if="namespace.canGrant"
                     resource="compose:page:*"
-                    class="float-right btn mr-2"
+                    class="float-right btn pr-0"
                     link
                   />
                 </b-col>
               </b-row>
             </b-card-header>
+            <b-row class="pages-list-header border-top align-content-center mb-n4" no-gutters>
+              <b-col
+                cols="12"
+                class="pl-4"
+              >
+                <span class="font-weight-bold">
+                  {{ $t('page.newPlaceholder') }}
+                </span>
+                <span class="text-muted font-italic ml-3">
+                  {{ $t('page.instructions') }}
+                </span>
+              </b-col>
+            </b-row>
             <page-tree
               :namespace="namespace"
               class="pb-2"
@@ -99,12 +112,17 @@ export default {
 </script>
 <style lang="scss">
 //!important usage to over-ride library styling
+$input-height: 42px;
 $content-height: 50px;
 $blank-li-height: 0;
 $left-padding: 5px;
 $border-color: #E4E9EF;
-$hover-color: rgba(0, 0, 0, 0.075);
+$hover-color: $gray-200;
 $dropping-color: #90A3B1;
+
+.page-name-input {
+  height: $input-height;
+}
 
 .sortable-tree {
   ul {
@@ -177,6 +195,14 @@ $dropping-color: #90A3B1;
 
 .droper {
   background: $dropping-color !important;
+}
+
+.pages-list-header {
+  min-height: $content-height;
+  background-color: $gray-200;
+  margin-top: 1rem;
+  border-bottom: 2px solid $light;
+  z-index: 1;
 }
 
 </style>

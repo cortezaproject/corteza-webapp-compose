@@ -3,44 +3,43 @@
     <b-container fluid>
       <b-row no-gutters>
         <b-col xl="8" offset-xl="2">
-        <h1>{{ $t('module.title') }}</h1>
-<!--          <b-card class="mb-2">-->
-<!--            <b-row align-v="center">-->
-<!--              <b-col md="5">-->
-<!--                <b-form v-if="namespace.canCreateModule"-->
-<!--                      @submit.prevent="create">-->
-<!--                  <b-form-group>-->
-<!--                    <b-input-group>-->
-<!--                      <b-input required type="text"-->
-<!--                               v-model="newModule.name"-->
-<!--                               id="name"-->
-<!--                               :placeholder="$t('module.newPlaceholder')" />-->
-<!--                      <b-input-group-append>-->
-<!--                        <b-button type="submit" variant="primary">{{ $t('general.label.create') }}</b-button>-->
-<!--                      </b-input-group-append>-->
-<!--                    </b-input-group>-->
-<!--                  </b-form-group>-->
-<!--                </b-form>-->
-<!--              </b-col>-->
-<!--              <b-col md="5">-->
-<!--                <import v-if="namespace.canCreateModule"-->
-<!--                        :namespace="namespace"-->
-<!--                        variant="primary"-->
-<!--                        type="module" />-->
-<!--              </b-col>-->
-<!--            </b-row>-->
-<!--          </b-card>-->
+        <h1 class="mb-4">{{ $t('module.title') }}</h1>
           <b-card no-body>
             <b-card-header header-bg-variant="white">
-              <b-button type="submit" variant="primary" size="lg">{{ $t('general.label.create') }}</b-button>
-              <b-button type="submit" variant="light" size="lg" class="ml-1">Import</b-button>
-              <export :list="modules" type="module" class="ml-1"/>
-              <c-permissions-button
-                v-if="namespace.canGrant"
-                resource="compose:module:*"
-                class="float-right mt-1 btn pr-0"
-                link
-              />
+              <b-row>
+                <b-col cols="12" lg="4">
+                  <b-form v-if="namespace.canCreateModule"
+                          @submit.prevent="create"
+                  >
+                    <b-form-group>
+                      <b-input-group>
+                        <b-input required type="text"
+                                 v-model="newModule.name"
+                                 id="name"
+                                 class="module-name-input"
+                                 :placeholder="$t('module.newPlaceholder')" />
+                        <b-input-group-append>
+                          <b-button type="submit" variant="primary" size="lg">{{ $t('general.label.create') }}</b-button>
+                        </b-input-group-append>
+                      </b-input-group>
+                    </b-form-group>
+                  </b-form>
+                </b-col>
+                <b-col cols="12" lg="4">
+                  <import v-if="namespace.canCreateModule"
+                          :namespace="namespace"
+                          type="module" />
+                </b-col>
+                <b-col cols="12" lg="4" class="d-flex align-items-baseline justify-content-between justify-content-lg-end">
+                  <export :list="modules" type="module"/>
+                  <c-permissions-button
+                    v-if="namespace.canGrant"
+                    resource="compose:module:*"
+                    class="mt-1 btn pr-0"
+                    link
+                  />
+                </b-col>
+              </b-row>
             </b-card-header>
             <b-card-body class="p-0">
               <b-table
@@ -75,7 +74,6 @@
                   <b-button
                     @click="openPageBuilder(m)"
                     variant="link"
-                    class="p-0"
                   >
                     {{ pages.find(p => p.moduleID === m.moduleID) ?  $t('module.recordPage.edit') : $t('module.recordPage.create') }}
                   </b-button>
@@ -104,14 +102,14 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { compose } from '@cortezaproject/corteza-js'
-// import Import from 'corteza-webapp-compose/src/components/Admin/Import'
+import Import from 'corteza-webapp-compose/src/components/Admin/Import'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 
 export default {
   name: 'ModuleList',
 
   components: {
-    // Import,
+    Import,
     Export,
   },
 
@@ -240,3 +238,10 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+$input-height: 42px;
+
+.module-name-input {
+  height: $input-height;
+}
+</style>
