@@ -41,11 +41,25 @@
           lg="7"
           class="text-right pr-2"
         >
+          <router-link
+            v-if="item.canUpdatePage"
+            :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
+            class="btn btn-light mr-2"
+          >{{ $t('general.label.pageBuilder') }}
+          </router-link>
+          <span class="view d-inline-block">
+            <router-link
+              v-if="item.blocks && item.blocks.length >= 1"
+              :to="{name: 'page', params: { pageID: item.pageID }}"
+              class="btn">
+              {{ $t('page.view') }}
+            </router-link>
+          </span>
           <span
-            v-if="item.moduleID !== '0'"
-            class="d-none d-md-inline-block"
+            class="d-none d-md-inline-block edit text-left"
           >
             <router-link
+              v-if="item.moduleID !== '0'"
               v-b-tooltip.hover.top
               :title="moduleName(item)"
               class="btn text-primary"
@@ -53,40 +67,23 @@
             >
               {{ $t('module.edit.title') }}
             </router-link>
-          </span>
-          <span class="ml-3">
             <router-link
-              v-if="item.blocks && item.blocks.length >= 1"
-              :to="{name: 'page', params: { pageID: item.pageID }}"
-              class="d-inline-block btn">
-              {{ $t('page.view') }}
-            </router-link>
-            <router-link
-              v-if="item.canUpdatePage"
-              :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
+              v-if="item.canUpdatePage && item.moduleID === '0'"
+              :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
               class="btn text-primary"
-            >{{ $t('general.label.pageBuilder') }}
+            >
+              {{ $t('page.edit.title') }}
             </router-link>
-            <span class="edit d-inline-block">
-              <router-link
-                v-if="item.canUpdatePage"
-                :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
-                class="mx-2"
-              >
-                <font-awesome-icon
-                  v-if="item.moduleID === '0'"
-                  :icon="['far', 'edit']"
-                />
-              </router-link>
-            </span>
-            <c-permissions-button
-              v-if="namespace.canGrant"
-              :title="item.title"
-              :target="item.title"
-              :resource="'compose:page:'+item.pageID"
-              link
-            />
+
           </span>
+          <c-permissions-button
+            v-if="namespace.canGrant"
+            :title="item.title"
+            :target="item.title"
+            :resource="'compose:page:'+item.pageID"
+            link
+            class="ml-3"
+          />
         </b-col>
       </b-row>
     </template>
@@ -203,8 +200,15 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+$edit-width: 130px;
+$view-width: 70px;
+
 .edit {
-  width: 30px;
+  width: $edit-width;
+}
+
+.view {
+  width: $view-width;
 }
 
 .grab {
