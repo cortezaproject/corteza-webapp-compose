@@ -3,8 +3,8 @@
   <b-button variant="link"
             :to="backLink"
             v-if="backLink"
-            class="float-left text-dark">
-    <font-awesome-icon :icon="['fas', 'chevron-left']"></font-awesome-icon>
+            class="float-left text-dark back">
+    <font-awesome-icon :icon="['fas', 'chevron-left']" class="back-icon"></font-awesome-icon>
     {{ $t('general.label.backWithoutSave') }}
   </b-button>
   <slot />
@@ -55,3 +55,15 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+.back {
+  &:hover {
+    text-decoration: none;
+
+    .back-icon {
+      transition: transform 0.3s ease-out;
+      transform: translateX(-4px);
+    }
+  }
+}
+</style>

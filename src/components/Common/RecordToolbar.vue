@@ -12,11 +12,11 @@
       >
         <b-button
           variant="link"
-          class="text-dark"
+          class="text-dark back"
           :disabled="processing"
           @click.prevent="$emit('back')"
         >
-          <font-awesome-icon :icon="['fas', 'chevron-left']"></font-awesome-icon>
+          <font-awesome-icon :icon="['fas', 'chevron-left']" class="back-icon"></font-awesome-icon>
           {{ $t('general.label.back') }}
         </b-button>
       </b-col>
@@ -139,3 +139,15 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+.back {
+  &:hover {
+    text-decoration: none;
+
+    .back-icon {
+      transition: transform 0.3s ease-out;
+      transform: translateX(-4px);
+    }
+  }
+}
+</style>
