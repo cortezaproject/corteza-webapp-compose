@@ -10,40 +10,42 @@
       >
         <b-row>
           <b-col
-            offset-lg="2"
+            offset-xl="2"
             xl="8"
           >
             <div
              class="float-right mt-3"
             >
-              <c-permissions-button
-                v-if="isEdit && namespace.canGrant"
-                :title="namespace.name"
-                :target="namespace.name"
-                :resource="'compose:namespace:'+namespace.namespaceID"
-                link
-              />
             </div>
-            <b-form>
-              <h1 class="text-center mt-4">
-                {{ isEdit ? $t('namespace.edit') : $t('namespace.create') }}
-              </h1>
-              <b-form-group :label="$t('namespace.name.label')">
-                <b-form-input
-                  v-model="namespace.name"
-                  type="text"
-                  required
-                  :state="nameState"
-                  :placeholder="$t('namespace.name.placeholder')" />
-
-              </b-form-group>
-              <div
-                class="d-flex align-items-center"
-              >
+            <b-card class="my-4"
+                    header-bg-variant="white"
+            >
+              <div slot="header"
+                   class="d-flex justify-content-between align-items-center">
+                <h2>
+                  {{ isEdit ? $t('namespace.edit') : $t('namespace.create') }}
+                </h2>
+                <c-permissions-button
+                  v-if="isEdit && namespace.canGrant"
+                  :title="namespace.name"
+                  :target="namespace.name"
+                  :resource="'compose:namespace:'+namespace.namespaceID"
+                  link
+                  class="btn p-0"
+                />
+              </div>
+              <b-form>
+                <b-form-group :label="$t('namespace.name.label')">
+                  <b-form-input
+                    v-model="namespace.name"
+                    type="text"
+                    required
+                    :state="nameState"
+                    :placeholder="$t('namespace.name.placeholder')" />
+                </b-form-group>
                 <b-form-group
                   :label="$t('namespace.slug.label')"
                   :description="$t('namespace.slug.description')"
-                  class="w-50"
                 >
                   <b-form-input
                     v-model="namespace.slug"
@@ -52,10 +54,7 @@
                     :placeholder="$t('namespace.slug.placeholder')"
                   />
                 </b-form-group>
-
-                <b-form-group
-                  class="ml-auto mr-auto"
-                >
+                <b-form-group>
                   <b-form-checkbox
                     v-model="namespace.enabled"
                     class="mb-3"
@@ -69,76 +68,69 @@
                     {{ $t('namespace.application.label') }}
                   </b-form-checkbox>
                 </b-form-group>
-              </div>
+                <hr>
+                <b-form-group>
+                  <template #label>
+                    <div class="d-flex align-items-center">
+                      {{ $t('namespace.logo.label') }}
+                      <b-button
+                        variant="primary"
+                        size="sm"
+                        class="py-0 ml-2"
+                        v-b-modal.logo
+                      >
+                        Preview
+                      </b-button>
+                    </div>
+                  </template>
 
-              <b-form-group>
-                <template #label>
-                  <div
-                    class="d-flex"
-                  >
-                    {{ $t('namespace.logo.label') }}
-                    <b-button
-                      variant="link"
-                      class="d-flex align-items-center border-0 p-0 ml-2"
-                      v-b-modal.logo
-                    >
-                      <font-awesome-icon
-                      :icon="['far', 'eye']"
-                    />
-                    </b-button>
-                  </div>
-                </template>
+                    <!-- v-model="namespace.logo" -->
+                  <b-form-file
+                    v-model="namespaceAssets.logo"
+                    accept="image/*"
+                    :placeholder="$t('namespace.logo.placeholder')"
+                  />
+                </b-form-group>
 
-                  <!-- v-model="namespace.logo" -->
-                <b-form-file
-                  v-model="namespaceAssets.logo"
-                  accept="image/*"
-                  :placeholder="$t('namespace.logo.placeholder')"
-                />
-              </b-form-group>
+                <b-form-group>
+                  <template #label>
+                    <div class="d-flex align-items-center">
+                      {{ $t('namespace.icon.label') }}
+                      <b-button
+                        v-if="namespace.meta.icon"
+                        variant="primary"
+                        class="py-0 ml-2"
+                        v-b-modal.icon
+                      >
+                        Preview
+                      </b-button>
+                    </div>
+                  </template>
+                  <b-form-file
+                    v-model="namespaceAssets.icon"
+                    accept="image/*"
+                    :placeholder="$t('namespace.icon.placeholder')"
+                  />
+                </b-form-group>
 
-              <b-form-group>
-                <template #label>
-                  <div
-                    class="d-flex"
-                  >
-                    {{ $t('namespace.icon.label') }}
-                    <b-button
-                      v-if="namespace.meta.icon"
-                      variant="link"
-                      class="d-flex align-items-center border-0 p-0 ml-2"
-                      v-b-modal.icon
-                    >
-                      <font-awesome-icon
-                      :icon="['far', 'eye']"
-                    />
-                    </b-button>
-                  </div>
-                </template>
-                <b-form-file
-                  v-model="namespaceAssets.icon"
-                  accept="image/*"
-                  :placeholder="$t('namespace.icon.placeholder')"
-                />
-              </b-form-group>
+                <b-form-group :label="$t('namespace.subtitle.label')">
+                  <b-form-input
+                    v-model="namespace.meta.subtitle"
+                    type="text"
+                    :placeholder="$t('namespace.subtitle.placeholder')" />
 
-              <b-form-group :label="$t('namespace.subtitle.label')">
-                <b-form-input
-                  v-model="namespace.meta.subtitle"
-                  type="text"
-                  :placeholder="$t('namespace.subtitle.placeholder')" />
+                </b-form-group>
 
-              </b-form-group>
+                <b-form-group :label="$t('namespace.description.label')">
+                  <b-form-textarea
+                    v-model="namespace.meta.description"
+                    :placeholder="$t('namespace.description.placeholder')"
+                    rows="3"
+                    max-rows="5" />
 
-              <b-form-group :label="$t('namespace.description.label')">
-                <b-form-textarea
-                  v-model="namespace.meta.description"
-                  :placeholder="$t('namespace.description.placeholder')"
-                  rows="3"
-                  max-rows="5" />
-
-              </b-form-group>
-            </b-form>
+                </b-form-group>
+              </b-form>
+            </b-card>
           </b-col>
         </b-row>
       </b-container>
