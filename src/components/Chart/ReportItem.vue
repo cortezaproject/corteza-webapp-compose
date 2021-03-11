@@ -7,8 +7,8 @@
     >
       <font-awesome-icon
         v-if="!fixed"
-        :icon="['fas', 'sort']"
-        class="text-secondary mr-1"
+        :icon="['fas', 'bars']"
+        class="text-light mr-1"
       />
       <slot
         name="report-label"

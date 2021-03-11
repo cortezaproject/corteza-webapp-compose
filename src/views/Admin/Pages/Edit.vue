@@ -41,9 +41,12 @@
                                rows="8"></b-form-textarea>
               <b-form-checkbox v-model="page.visible"
                                switch
-                               class="mt-3"
-                               id="visible">
-                               {{ $t('page.edit.visible') }}</b-form-checkbox>
+                               size="lg"
+                               class="mt-3 d-inline"
+                               id="visible" />
+                <label class="m-1">
+                  {{ $t('page.edit.visible') }}
+                </label>
             </b-form>
           </b-card>
         </b-col>

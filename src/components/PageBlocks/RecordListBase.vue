@@ -37,6 +37,7 @@
               <template v-if="inlineEditing">
                   <b-btn
                     variant="primary"
+                    size="lg"
                     class="float-left"
                     @click="addInline"
                   >
@@ -239,9 +240,9 @@
           >
             <font-awesome-icon
               v-b-tooltip.hover
-              :icon="['fas', 'sort']"
+              :icon="['fas', 'bars']"
               :title="$t('general.tooltip.dragAndDrop')"
-              class="handle text-secondary"
+              class="handle text-light"
             />
           </b-td>
 

@@ -6,9 +6,9 @@
           <div class="row no-gutters">
             <div v-if="enableOrder" class="col-sm-1 my-auto text-center">
               <font-awesome-icon v-b-tooltip.hover
-                              :icon="['fas', 'sort']"
+                              :icon="['fas', 'bars']"
                               :title="$t('general.tooltip.dragAndDrop')"
-                              class="handle text-secondary" />
+                              class="handle text-light" />
             </div>
             <div :class="{'col-sm-9': enableOrder, 'col-sm-10': !enableOrder}">
               <attachment-link :attachment="a" />
