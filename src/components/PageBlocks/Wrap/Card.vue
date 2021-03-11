@@ -19,7 +19,7 @@
       </b-card-header>
       <b-card-text
         v-if="block.description"
-        class="p-2 m-0"
+        class="py-2 px-4 m-0"
       >
         {{ block.description }}
       </b-card-text>
