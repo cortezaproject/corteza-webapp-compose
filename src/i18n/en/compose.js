@@ -475,7 +475,7 @@ export default {
     edit: {
       title: 'Edit page',
       pageDescription: 'Page description',
-      visible: 'Page visible',
+      visible: 'Page visibility',
     },
     build: {
       addBlock: 'Add block',
