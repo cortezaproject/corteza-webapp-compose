@@ -29,10 +29,9 @@
       >
         <b-row
           no-gutters
+          class="align-items-center justify-content-between"
         >
-         <b-col
-            cols="6"
-          >
+         <div class="text-nowrap flex-grow-1">
             <template v-if="!options.hideAddButton && recordListModule.canCreateRecord">
               <template v-if="inlineEditing">
                   <b-btn
@@ -73,10 +72,8 @@
               @export="onExport"
               class="ml-1 float-left"
             />
-          </b-col>
-          <b-col
-            cols="6"
-          >
+          </div>
+          <div class="mt-1 flex-grow-1">
             <b-input
               v-if="!options.hideSearch && !inlineEditing"
               v-model="query"
@@ -84,16 +81,16 @@
               type="search"
               :placeholder="$t('general.label.search')" />
 
-          </b-col>
+          </div>
         </b-row>
         <b-row
           v-if="options.selectable"
           v-show="selected.length > 0"
-          class="bg-light p-2 mt-2 no-gutters"
+          class="mt-2 no-gutters"
         >
           <b-col
             cols="4"
-            class="pt-1 text-nowrap"
+            class="pt-1 text-nowrap font-weight-bold"
           >
             {{ $t('block.recordList.selected', { count: selected.length, total: items.length }) }}
             <a
@@ -125,11 +122,11 @@
               v-else-if="!areAllRowsDeleted"
               variant="link"
               size="md"
-              class="text-danger"
               :disabled="!recordListModule.canDeleteRecord"
               @click.prevent="handleDeleteSelectedRecords()"
             >
               <font-awesome-icon
+                class="text-danger"
                 :icon="['far', 'trash-alt']"
               />
             </b-button>
@@ -1154,10 +1151,6 @@ export default {
       }
     }
   }
-}
-
-input {
-  width: 200px;
 }
 
 .handle {

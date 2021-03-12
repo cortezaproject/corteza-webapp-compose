@@ -171,7 +171,7 @@ export default {
       hideRecordCloneButton: 'Hide clone record button',
       hideRecordEditButton: 'Hide edit record button',
       hideRecordViewButton: 'Hide view record button',
-      cancelSelection: 'cancel',
+      cancelSelection: 'Cancel',
       fields: 'Module fields',
       editFields: 'Editable module fields',
 

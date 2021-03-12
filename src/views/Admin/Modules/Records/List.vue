@@ -18,11 +18,9 @@
         >
           <b-row
             no-gutters
-            class="m-0 p-0"
+            class="m-0 p-0 align-items-center justify-content-between"
           >
-            <b-col
-              cols="6"
-            >
+            <div class="text-nowrap flex-grow-1">
               <template v-if="module.canCreateRecord">
                 <router-link
                   class="btn btn-lg btn-primary float-left"
@@ -56,18 +54,15 @@
               >
                 {{ getFilterButtonInfo.label }}
               </b-button>
-            </b-col>
-            <b-col
-              cols="6"
-            >
+            </div>
+            <div class="mt-1 flex-grow-1">
               <b-input
                 v-model="query"
                 class="float-right mw-100"
                 type="search"
-                style="width: 200px;"
                 :placeholder="$t('general.label.search')" />
 
-            </b-col>
+            </div>
           </b-row>
           <b-row
             v-show="selected.length > 0"
