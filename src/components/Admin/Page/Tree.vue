@@ -39,7 +39,7 @@
           cols="12"
           xl="6"
           lg="7"
-          class="text-right pr-2"
+          class="text-right pr-2 mb-1"
         >
           <router-link
             v-if="item.canUpdatePage"
@@ -82,7 +82,7 @@
             :target="item.title"
             :resource="'compose:page:'+item.pageID"
             link
-            class="ml-3"
+            class="btn"
           />
         </b-col>
       </b-row>

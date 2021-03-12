@@ -113,7 +113,7 @@ export default {
 <style lang="scss">
 //!important usage to over-ride library styling
 $input-height: 42px;
-$content-height: 50px;
+$content-height: 48px;
 $blank-li-height: 0;
 $left-padding: 5px;
 $border-color: #E4E9EF;

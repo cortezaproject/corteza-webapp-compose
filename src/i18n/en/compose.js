@@ -393,6 +393,7 @@ export default {
     searchPlaceholder: 'Type here to search among all modules...',
     federated: 'Federated',
     import: 'Module import',
+    allRecords: 'All records',
 
     recordPage: {
       create: 'Create record page',

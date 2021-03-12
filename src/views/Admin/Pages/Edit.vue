@@ -11,7 +11,7 @@
                   {{ $t('page.edit.title') }}
                 </h2>
                 <router-link :to="{name: 'admin.pages.builder'}"
-                             class="btn pr-2 text-primary">
+                             class="btn btn-light pr-2">
                              {{ $t('general.label.pageBuilder') }}
                 </router-link>
               </div>
