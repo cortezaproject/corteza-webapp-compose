@@ -3,64 +3,83 @@
     <b-container fluid>
       <b-row no-gutters>
         <b-col xl="8" offset-xl="2">
-        <h1 class="mb-4">{{ $t('chart.title') }}</h1>
+        <h1 class="mb-4">
+          {{ $t('chart.title') }}
+
+          <c-permissions-button
+            v-if="namespace.canGrant"
+            resource="compose:chart:*"
+            class="btn mt-1 pr-0 float-right"
+            link
+          />
+        </h1>
           <b-card no-body>
             <b-card-header header-bg-variant="white">
-              <b-row>
-                <b-col cols="12" lg="4">
-                  <b-form v-if="namespace.canCreateChart" @submit.prevent="create">
-                    <b-form-group>
-                      <b-input-group>
-                        <b-input required type="text" v-model="newChart.name" class="chart-name-input" id="name" :placeholder="$t('chart.newPlaceholder')" />
-                        <b-input-group-append>
-                          <b-dropdown
-                            variant="primary"
-                            size="lg"
-                            :text="$t('block.chart.add')"
-                            >
-                              <b-dropdown-item-button
-                                variant="dark"
-                                @click="create('generic')"
-                              >
-                                {{ $t('block.chart.addGeneric') }}
-                              </b-dropdown-item-button>
-                              <b-dropdown-item-button
-                                variant="dark"
-                                @click="create('funnel')"
-                              >
-                                {{ $t('block.chart.addFunnel') }}
-                              </b-dropdown-item-button>
-                              <b-dropdown-item-button
-                                variant="dark"
-                                @click="create('gauge')"
-                              >
-                                {{ $t('block.chart.addGauge') }}
-                              </b-dropdown-item-button>
-                            </b-dropdown>
-                        </b-input-group-append>
-                      </b-input-group>
-                    </b-form-group>
-                  </b-form>
-                </b-col>
-                <b-col cols="12" lg="4">
-                  <import v-if="namespace.canCreateChart"
-                          :namespace="namespace" type="chart" />
-                </b-col>
-                <b-col cols="12" lg="4" class="d-flex align-items-baseline justify-content-between justify-content-lg-end">
-                  <export :list="charts" type="chart"/>
-                  <c-permissions-button
-                    v-if="namespace.canGrant"
-                    resource="compose:chart:*"
-                    class="btn mt-1 pr-0"
-                    link
+              <b-row
+                no-gutters
+              >
+                <b-col
+                  cols="6"
+                >
+                  <b-dropdown
+                    v-if="namespace.canCreateChart"
+                    variant="primary"
+                    size="lg"
+                    class="float-left"
+                    :text="$t('block.chart.add')"
+                    >
+                      <b-dropdown-item-button
+                        variant="dark"
+                        @click="$router.push({ name: 'admin.charts.create', params: { category: 'generic' } })"
+                      >
+                        {{ $t('block.chart.addGeneric') }}
+                      </b-dropdown-item-button>
+                      <b-dropdown-item-button
+                        variant="dark"
+                        @click="$router.push({ name: 'admin.charts.create', params: { category: 'funnel' } })"
+                      >
+                        {{ $t('block.chart.addFunnel') }}
+                      </b-dropdown-item-button>
+                      <b-dropdown-item-button
+                        variant="dark"
+                        @click="$router.push({ name: 'admin.charts.create', params: { category: 'gauge' } })"
+                      >
+                        {{ $t('block.chart.addGauge') }}
+                      </b-dropdown-item-button>
+                    </b-dropdown>
+
+                  <import
+                    v-if="namespace.canCreateChart"
+                    :namespace="namespace"
+                    type="chart"
+                    class="float-left ml-2"
                   />
+
+                  <export
+                    :list="charts"
+                    type="chart"
+                    class="float-left ml-2"
+                  />
+                </b-col>
+                <b-col
+                  cols="6"
+                >
+                  <b-input
+                    v-model.trim="query"
+                    class="float-right mw-100"
+                    type="search"
+                    :placeholder="$t('chart.searchPlaceholder')" />
+
                 </b-col>
               </b-row>
             </b-card-header>
+
             <b-card-body class="p-0">
               <b-table
                 :fields="tableFields"
                 :items="charts"
+                :filter="query"
+                :filter-included-fields="['handle', 'name']"
                 @row-clicked="handleRowClicked"
                 head-variant="light"
                 tbody-tr-class="pointer"
@@ -111,6 +130,8 @@ export default {
 
   data () {
     return {
+      query: '',
+
       newChart: new compose.Chart({}),
     }
   },

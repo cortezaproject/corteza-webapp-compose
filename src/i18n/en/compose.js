@@ -324,7 +324,7 @@ export default {
       label: 'Chart',
       display: 'Chart to display inside this block:',
       pick: 'Pick a chart',
-      add: 'Add chart',
+      add: 'Create New Chart',
       addGeneric: 'Generic chart',
       addFunnel: 'Funnel chart',
       addGauge: 'Gauge chart',
@@ -389,6 +389,8 @@ export default {
   module: {
     title: 'List of Modules',
     newPlaceholder: 'Module Name',
+    createLabel: 'Create New Module',
+    searchPlaceholder: 'Type here to search among all modules...',
     federated: 'Federated',
     import: 'Module import',
 
@@ -489,6 +491,7 @@ export default {
     title: 'List of Charts',
     newLabel: 'Create a new chart:',
     newPlaceholder: 'Chart name',
+    searchPlaceholder: 'Type here to search among all charts...',
     import: 'Import chart(s):',
     colorScheme: 'Color scheme',
     colorLabel: '{{count}} colors',
@@ -554,6 +557,13 @@ export default {
         relativePrecision: 'Precision:',
         add: 'Add metric',
         gaugeColor: 'Color',
+        legend: {
+          positionPlaceholder: 'Legend position',
+          top: 'Top',
+          left: 'Left',
+          bottom: 'Bottom',
+          right: 'Right',
+        },
         lineTension: {
           label: 'Line tension',
           placeholder: 'Line tension',
@@ -1018,6 +1028,7 @@ export default {
   namespace: {
     clickOpen: 'Click to open',
     title: 'Low Code Namespaces',
+    searchPlaceholder: 'Type here to search among all namespaces...',
     create: 'Create new namespace',
     edit: 'Edit namespace',
     disabled: 'Namespace is disabled',

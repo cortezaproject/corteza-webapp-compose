@@ -1,43 +1,56 @@
 <template>
-  <b-form ref="importForm" @submit.prevent class="import-form">
-    <b-form-group>
+  <div>
+    <b-btn
+      variant="light"
+      size="lg"
+      class="float-left"
+      @click="showModal=true"
+    >
+      {{ $t('general.label.import') }}
+    </b-btn>
+
+    <b-modal
+      v-model="showModal"
+    >
       <b-input-group>
-        <b-form-file @change="loadFile"
-                     :placeholder="$t('general.label.importPlaceholder')"
-                     class="font-wight-normal pointer"
-        />
-        <b-button v-if="importObj && !processing" variant="primary" size="lg" class="ml-1" @click="openModal">
-          {{ $t('general.label.import') }}
-        </b-button>
-        <b-button v-if="importObj && processing" variant="light" @click="cancelImport">
-          {{ $t('general.label.cancel') }}
-        </b-button>
-        <h6 v-if="processing" class="my-auto ml-3 ">
-          {{ $t('general.label.processing') }}
-        </h6>
+        <!-- To handle file upload -->
+        <template v-if="!importObj">
+          <b-form-file
+            @change="loadFile"
+            :placeholder="$t('general.label.importPlaceholder')"
+            class="font-wight-normal pointer"
+          />
+
+          <h6 v-if="processing" class="my-auto ml-3 ">
+            {{ $t('general.label.processing') }}
+          </h6>
+        </template>
+
+        <!-- To confirm selection & import -->
+        <template v-else>
+          <b-container class="p-0">
+          <b-row no-gutters class="mb-3">
+            <b-button variant="light" @click="selectAll(true)">
+              {{ $t('field.selector.selectAll') }}
+            </b-button>
+            <b-button class="ml-2" variant="light" @click="selectAll(false)">
+              {{ $t('field.selector.unselectAll') }}
+            </b-button>
+          </b-row>
+          <b-row no-gutters>
+            <b-col cols="3" v-for="(o, index) in importObj.list" :key="index" class="form-check">
+                <b-form-checkbox v-model="o.import">
+                  {{ o.name || o.title }}
+                </b-form-checkbox>
+            </b-col>
+          </b-row>
+        </b-container>
+        </template>
       </b-input-group>
-    </b-form-group>
-    <b-modal v-if="importObj" size="lg" v-model="show" id="importModal" :title="$t(`${type}.import`)">
-      <b-container class="p-0">
-        <b-row no-gutters class="mb-3">
-          <b-button variant="light" @click="selectAll(true)">
-            {{ $t('field.selector.selectAll') }}
-          </b-button>
-          <b-button class="ml-2" variant="light" @click="selectAll(false)">
-            {{ $t('field.selector.unselectAll') }}
-          </b-button>
-        </b-row>
-        <b-row no-gutters>
-          <b-col cols="3" v-for="(o, index) in importObj.list" :key="index" class="form-check">
-              <b-form-checkbox v-model="o.import">
-                {{ o.name || o.title }}
-              </b-form-checkbox>
-          </b-col>
-        </b-row>
-      </b-container>
+
       <div slot="modal-footer">
         <b-button
-            :disabled="!importObj.list.filter(i => i.import).length > 0"
+            :disabled="!importObj || !importObj.list.filter(i => i.import).length > 0"
             variant="primary"
             size="lg"
             @click="jsonImport(importObj)">
@@ -45,7 +58,7 @@
         </b-button>
       </div>
     </b-modal>
-  </b-form>
+  </div>
 </template>
 
 <script>
@@ -67,14 +80,12 @@ export default {
 
   data () {
     return {
+      showModal: false,
       importObj: null,
-      importErr: null,
       processing: false,
-      show: false,
       classes: {
         module: compose.Module,
         chart: Chart,
-        // 'trigger': Trigger,
       },
     }
   },
@@ -88,7 +99,6 @@ export default {
   methods: {
     async jsonImport ({ list, type }) {
       this.processing = true
-      this.show = false
       const { namespaceID } = this.namespace
       const ItemClass = this.classes[type]
       try {
@@ -125,19 +135,10 @@ export default {
       })
     },
 
-    openModal () {
-      if (this.importObj.type === this.type) {
-        this.show = true
-      } else {
-        this.raiseWarningAlert(this.$t('notification.import.typeMissmatch', { type1: this.importObj.type, type2: this.type }))
-        this.importObj = null
-      }
-    },
-
     cancelImport () {
       this.importObj = null
       this.processing = false
-      this.$refs.importForm.reset()
+      this.showModal = false
     },
 
     loadFile (e) {

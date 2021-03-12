@@ -43,6 +43,7 @@ export default [
 
             children: [
               r('admin.modules', 'modules', 'Admin/Modules/Index'),
+              r('admin.modules.create', 'modules/new', 'Admin/Modules/Edit'),
               r('admin.modules.edit', 'modules/:moduleID/edit', 'Admin/Modules/Edit'),
               r('admin.modules.record.list', 'modules/:moduleID/record/list', 'Admin/Modules/Records/List'),
               r('admin.modules.record.view', 'modules/:moduleID/record/:recordID', 'Admin/Modules/Records/View'),
@@ -54,6 +55,7 @@ export default [
               r('admin.pages.builder', 'pages/:pageID/builder', 'Admin/Pages/Builder'),
 
               r('admin.charts', 'charts', 'Admin/Charts/Index'),
+              r('admin.charts.create', 'charts/new/:category?', 'Admin/Charts/Edit'),
               r('admin.charts.edit', 'charts/:chartID/edit', 'Admin/Charts/Edit'),
 
               r('admin.configuration', 'configuration', 'Admin/Configuration/Index'),

@@ -104,7 +104,10 @@
                                         :key="index"></field-row-view>
                       </tbody>
                     </table>
-                    <div class="d-flex flex-column w-50">
+                    <div
+                      v-if="!creatingModule"
+                      class="d-flex flex-column w-50"
+                    >
                       <b-row align-v="center" class="text-center justify-content-between mt-4">
                         <b-col>
                           <circle-step
@@ -195,8 +198,8 @@
     <portal to="admin-toolbar">
       <editor-toolbar
         :back-link="{name: 'admin.modules'}"
-        :hideDelete="!module.canDeleteModule"
-        :hideSave="!module.canUpdateModule"
+        :hideDelete="hideDelete"
+        :hideSave="hideSave"
         :disable-save="!fieldsValid || processing"
         @delete="handleDelete"
         @save="handleSave()"
@@ -213,7 +216,7 @@ import FieldConfigurator from 'corteza-webapp-compose/src/components/ModuleField
 import FieldRowEdit from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowEdit'
 import FieldRowView from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowView'
 import FederationSettings from 'corteza-webapp-compose/src/components/Admin/Module/FederationSettings'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
@@ -239,7 +242,8 @@ export default {
 
     moduleID: {
       type: String,
-      required: true,
+      required: false,
+      default: NoID,
     },
   },
 
@@ -298,26 +302,51 @@ export default {
     federationEnabled () {
       return !!this.$FederationAPI.baseURL && this.module.moduleID
     },
+
+    hideDelete () {
+      return this.module.moduleID === NoID || !this.module.canDeleteModule
+    },
+
+    hideSave () {
+      return this.module.moduleID !== NoID && !this.module.canUpdateModule
+    },
+
+    creatingModule () {
+      return this.module.moduleID === NoID
+    },
   },
 
-  created () {
-    this.findModuleByID({ namespace: this.namespace, moduleID: this.moduleID }).then((module) => {
-      // Make a copy so that we do not change store item by ref
-      this.module = module.clone()
+  watch: {
+    moduleID: {
+      handler: function (moduleID) {
+        if (moduleID === NoID) {
+          this.module = new compose.Module(
+            { fields: [new compose.ModuleFieldString({ fieldID: NoID, name: 'Sample' })] },
+            this.namespace,
+          )
+        } else {
+          this.findModuleByID({ namespace: this.namespace, moduleID: moduleID }).then((module) => {
+            // Make a copy so that we do not change store item by ref
+            this.module = module.clone()
 
-      const { moduleID, namespaceID } = this.module
+            const { moduleID, namespaceID } = this.module
 
-      // Count existing records to see what we can do with this module
-      this.$ComposeAPI
-        .recordList({ moduleID, namespaceID, limit: 1 })
-        .then(({ set }) => { this.hasRecords = (set.length > 0) })
-    })
+            // Count existing records to see what we can do with this module
+            this.$ComposeAPI
+              .recordList({ moduleID, namespaceID, limit: 1 })
+              .then(({ set }) => { this.hasRecords = (set.length > 0) })
+          })
+        }
+      },
+      immediate: true,
+    },
   },
 
   methods: {
     ...mapActions({
       findModuleByID: 'module/findByID',
       updateModule: 'module/update',
+      createModule: 'module/create',
       deleteModule: 'module/delete',
       createPage: 'page/create',
       updatePage: 'page/update',
@@ -344,16 +373,32 @@ export default {
 
     handleSave ({ closeOnSuccess = false } = {}) {
       this.processing = true
-      this.updateModule(this.module).then((module) => {
-        this.module = new compose.Module({ ...module }, this.namespace)
-        this.raiseSuccessAlert(this.$t('notification.module.saved'))
-        if (closeOnSuccess) {
-          this.redirect()
-        }
-      }).catch(this.defaultErrorHandler(this.$t('notification.module.saveFailed')))
-        .finally(() => {
-          this.processing = false
-        })
+
+      if (this.module.moduleID === NoID) {
+        this.createModule(this.module).then((module) => {
+          this.module = new compose.Module({ ...module }, this.namespace)
+          this.raiseSuccessAlert(this.$t('notification.module.saved'))
+          if (closeOnSuccess) {
+            this.redirect()
+          } else {
+            this.$router.push({ name: 'admin.modules.edit', params: { moduleID: this.module.moduleID } })
+          }
+        }).catch(this.defaultErrorHandler(this.$t('notification.module.saveFailed')))
+          .finally(() => {
+            this.processing = false
+          })
+      } else {
+        this.updateModule(this.module).then((module) => {
+          this.module = new compose.Module({ ...module }, this.namespace)
+          this.raiseSuccessAlert(this.$t('notification.module.saved'))
+          if (closeOnSuccess) {
+            this.redirect()
+          }
+        }).catch(this.defaultErrorHandler(this.$t('notification.module.saveFailed')))
+          .finally(() => {
+            this.processing = false
+          })
+      }
     },
 
     handleDelete () {

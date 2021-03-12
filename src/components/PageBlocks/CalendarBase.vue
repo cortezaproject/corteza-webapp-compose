@@ -1,6 +1,43 @@
 <template>
   <wrap v-bind="$props" v-on="$listeners">
     <div class="calendar-container m-2">
+      <div>
+        <b-btn
+          variant="link"
+          @click="api().prev()"
+        >
+          (left)
+        </b-btn>
+        <span>
+          {{ title }}
+        </span>
+        <b-btn
+          variant="link"
+          @click="api().next()"
+        >
+          (other left)
+        </b-btn>
+      </div>
+      <div>
+        <div>
+          <b-btn
+            v-for="view in views"
+            :key="view"
+            variant="link"
+            @click="api().changeView(view)"
+          >
+            {{ $t(`block.calendar.view.${view}`) }}
+          </b-btn>
+        </div>
+        <div>
+          <b-btn
+            variant="link"
+            @click="api().today()"
+          >
+            today
+          </b-btn>
+        </div>
+      </div>
       <full-calendar
         :events="events"
         ref="fc"
@@ -55,6 +92,7 @@ export default {
     return {
       events: [],
       locale: undefined,
+      title: '',
 
       loaded: {
         start: null,
@@ -70,7 +108,7 @@ export default {
 
     config () {
       return {
-        header: this.block.getHeader(),
+        header: false,
         height: 'parent',
         themeSystem: 'corteza',
         defaultView: this.block.defaultView,
@@ -89,20 +127,25 @@ export default {
           }),
         ],
 
-        // Use available views to define custom view labels.
-        // See src/i18n/en/compose.js for i18n definitons
-        buttonText: compose.PageBlockCalendar.availableViews()
-          .map(view => ({ view, label: this.$t(`block.calendar.view.${view}`) }))
-          .reduce((acc, cur) => {
-            acc[cur.view] = cur.label
-            return acc
-          }, {}),
-
         // Handle event fetching when view/date-range changes
-        datesRender: ({ view: { currentStart, currentEnd } = {} } = {}) => {
+        datesRender: ({ view: { currentStart, currentEnd, title } = {} } = {}) => {
           this.loadEvents(moment(currentStart), moment(currentEnd))
+          // eslint-disable-next-line
+          this.title = title
         },
       }
+    },
+
+    header () {
+      return this.block.options.header
+    },
+
+    views () {
+      if (this.header.hide) {
+        return []
+      }
+
+      return this.block.reorderViews(this.header.views)
     },
   },
 
@@ -143,6 +186,11 @@ export default {
       }
 
       this.locale = require(`@fullcalendar/core/locales/${lng}`)
+    },
+
+    // Proxy to the FC API
+    api () {
+      return this.$refs.fc.getApi()
     },
 
     /**

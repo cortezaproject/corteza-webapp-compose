@@ -3,41 +3,55 @@
     <b-container fluid>
       <b-row no-gutters>
         <b-col xl="8" offset-xl="2">
-        <h1 class="mb-4">{{ $t('module.title') }}</h1>
+          <h1 class="mb-4">
+            {{ $t('module.title') }}
+            <c-permissions-button
+              v-if="namespace.canGrant"
+              resource="compose:module:*"
+              class="mt-1 btn pr-0 float-right"
+              link
+            />
+          </h1>
           <b-card no-body>
             <b-card-header header-bg-variant="white">
-              <b-row>
-                <b-col cols="12" lg="4">
-                  <b-form v-if="namespace.canCreateModule"
-                          @submit.prevent="create"
+              <b-row
+                no-gutters
+              >
+                <b-col
+                  cols="6"
+                >
+                  <b-btn
+                    v-if="namespace.canCreateModule"
+                    variant="primary"
+                    size="lg"
+                    class="float-left"
+                    :to="{ name: 'admin.modules.create' }"
                   >
-                    <b-form-group>
-                      <b-input-group>
-                        <b-input required type="text"
-                                 v-model="newModule.name"
-                                 id="name"
-                                 class="module-name-input"
-                                 :placeholder="$t('module.newPlaceholder')" />
-                        <b-input-group-append>
-                          <b-button type="submit" variant="primary" size="lg">{{ $t('general.label.create') }}</b-button>
-                        </b-input-group-append>
-                      </b-input-group>
-                    </b-form-group>
-                  </b-form>
-                </b-col>
-                <b-col cols="12" lg="4">
-                  <import v-if="namespace.canCreateModule"
-                          :namespace="namespace"
-                          type="module" />
-                </b-col>
-                <b-col cols="12" lg="4" class="d-flex align-items-baseline justify-content-between justify-content-lg-end">
-                  <export :list="modules" type="module"/>
-                  <c-permissions-button
-                    v-if="namespace.canGrant"
-                    resource="compose:module:*"
-                    class="mt-1 btn pr-0"
-                    link
+                    {{ $t('module.createLabel') }}
+                  </b-btn>
+
+                  <import
+                    v-if="namespace.canCreateModule"
+                    :namespace="namespace"
+                    type="module"
+                    class="float-left ml-2"
                   />
+
+                  <export
+                    :list="modules"
+                    type="module"
+                    class="float-left ml-2"
+                  />
+                </b-col>
+                <b-col
+                  cols="6"
+                >
+                  <b-input
+                    v-model.trim="query"
+                    class="float-right mw-100"
+                    type="search"
+                    :placeholder="$t('module.searchPlaceholder')" />
+
                 </b-col>
               </b-row>
             </b-card-header>
@@ -45,6 +59,8 @@
               <b-table
                 :fields="tableFields"
                 :items="modules"
+                :filter="query"
+                :filter-included-fields="['handle', 'name']"
                 @row-clicked="handleRowClicked"
                 head-variant="light"
                 tbody-tr-class="pointer"
@@ -122,6 +138,8 @@ export default {
 
   data () {
     return {
+      query: '',
+
       newModule: new compose.Module(
         { fields: [new compose.ModuleFieldString({ fieldID: '0', name: 'Sample' })] },
         this.namespace,

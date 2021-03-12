@@ -143,6 +143,22 @@
         label=""
       >
         <template v-if="hasRelativeDisplay(metric)">
+          <template v-if="metric.type === 'pie' || metric.type === 'doughnut'">
+            <b-form-select
+              v-model="metric.legendPosition"
+              :options="legendPositions"
+            >
+              <template slot="first">
+                <option
+                  disabled
+                  :value="undefined"
+                >
+                  {{ $t('chart.edit.metric.legend.positionPlaceholder') }}
+                </option>
+              </template>
+            </b-form-select>
+          </template>
+
           <b-form-checkbox
             v-model="metric.relativeValue"
             :value="true"
@@ -230,6 +246,13 @@ export default {
       chartTypes: Object.values(compose.chartUtil.ChartType)
         .filter(v => !ignoredCharts.includes(v))
         .map(value => ({ value, text: this.$t(`chart.edit.metric.output.${value}`) })),
+
+      legendPositions: [
+        { value: 'top', text: this.$t('chart.edit.metric.legend.top') },
+        { value: 'left', text: this.$t('chart.edit.metric.legend.left') },
+        { value: 'bottom', text: this.$t('chart.edit.metric.legend.bottom') },
+        { value: 'right', text: this.$t('chart.edit.metric.legend.right') },
+      ],
     }
   },
 
