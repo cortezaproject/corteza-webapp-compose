@@ -1,49 +1,49 @@
 <template>
   <wrap v-bind="$props" v-on="$listeners">
     <div class="calendar-container m-2">
-      <div>
+      <div class="d-flex align-items-baseline justify-content-center mb-2">
         <b-btn
           variant="link"
+          class="text-dark"
           @click="api().prev()"
         >
-          (left)
+          <font-awesome-icon :icon="['fas', 'angle-left']" />
         </b-btn>
-        <span>
+        <span class="h5">
           {{ title }}
         </span>
         <b-btn
           variant="link"
+          class="text-dark"
           @click="api().next()"
         >
-          (other left)
+          <font-awesome-icon :icon="['fas', 'angle-right']" />
         </b-btn>
       </div>
       <div>
-        <div>
-          <b-btn
-            v-for="view in views"
-            :key="view"
-            variant="link"
-            @click="api().changeView(view)"
-          >
-            {{ $t(`block.calendar.view.${view}`) }}
-          </b-btn>
-        </div>
-        <div>
-          <b-btn
-            variant="link"
-            @click="api().today()"
-          >
-            today
-          </b-btn>
-        </div>
+        <b-btn
+          v-for="view in views"
+          :key="view"
+          variant="light"
+          class="mr-1 mb-1"
+          @click="api().changeView(view)"
+        >
+          {{ $t(`block.calendar.view.${view}`) }}
+        </b-btn>
+        <b-btn
+          variant="light"
+          class="float-right mb-1"
+          @click="api().today()"
+        >
+          {{ $t(`block.calendar.today`) }}
+        </b-btn>
       </div>
       <full-calendar
         :events="events"
         ref="fc"
         v-bind="config"
         @eventClick="handleEventClick"
-        class="m-1"
+        class="my-1"
       />
     </div>
   </wrap>
@@ -62,7 +62,7 @@ import { BootstrapTheme } from '@fullcalendar/bootstrap'
 import { createPlugin } from '@fullcalendar/core'
 
 /**
- * FullCalendar corteza theme definition.
+ * FullCalendar Corteza theme definition.
  */
 export class CortezaTheme extends BootstrapTheme {}
 CortezaTheme.prototype.classes.widget = 'corteza-unthemed'

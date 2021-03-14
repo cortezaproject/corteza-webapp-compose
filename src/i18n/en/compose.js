@@ -106,11 +106,11 @@ export default {
       viewLabel: '$t(block.calendar.label)',
       feedLabel: 'Configure events source',
       feedPlaceholder: 'Select a feed source',
+      today: 'Today',
       view: {
         enabled: 'Enabled views',
         default: 'Default view',
         footnote: 'Make sure default is one of the available views',
-
         dayGridMonth: 'Month',
         timeGridWeek: 'Week',
         timeGridDay: 'Day',
