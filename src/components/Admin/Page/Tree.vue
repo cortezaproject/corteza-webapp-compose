@@ -82,7 +82,7 @@
             :target="item.title"
             :resource="'compose:page:'+item.pageID"
             link
-            class="btn"
+            class="btn px-2"
           />
         </b-col>
       </b-row>

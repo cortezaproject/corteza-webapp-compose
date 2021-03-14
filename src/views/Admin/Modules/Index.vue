@@ -3,23 +3,26 @@
     <b-container fluid>
       <b-row no-gutters>
         <b-col xl="8" offset-xl="2">
-          <h1 class="mb-4">
-            {{ $t('module.title') }}
+          <div class="d-flex mb-3 align-items-center">
+            <h1 class="m-0">
+              {{ $t('module.title') }}
+            </h1>
             <c-permissions-button
               v-if="namespace.canGrant"
               resource="compose:module:*"
-              class="mt-1 btn pr-0 float-right"
+              class="btn"
               link
             />
-          </h1>
+          </div>
           <b-card no-body>
-            <b-card-header header-bg-variant="white">
+            <b-card-header header-bg-variant="white"
+                           class="py-3"
+            >
               <b-row
+                class="align-items-center justify-content-between"
                 no-gutters
               >
-                <b-col
-                  cols="6"
-                >
+                <div class="text-nowrap flex-grow-1">
                   <b-btn
                     v-if="namespace.canCreateModule"
                     variant="primary"
@@ -42,17 +45,15 @@
                     type="module"
                     class="float-left ml-2"
                   />
-                </b-col>
-                <b-col
-                  cols="6"
-                >
+                </div>
+                <div class="flex-grow-1 mt-1">
                   <b-input
                     v-model.trim="query"
-                    class="float-right mw-100"
+                    class="mw-100"
                     type="search"
                     :placeholder="$t('module.searchPlaceholder')" />
 
-                </b-col>
+                </div>
               </b-row>
             </b-card-header>
             <b-card-body class="p-0">
@@ -159,7 +160,7 @@ export default {
         {
           key: 'name',
           sortable: true,
-          tdClass: 'align-middle pl-4',
+          tdClass: 'align-middle pl-4 text-nowrap',
           thClass: 'pl-4',
         },
         {
