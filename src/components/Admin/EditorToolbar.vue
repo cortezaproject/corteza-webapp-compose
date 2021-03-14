@@ -20,7 +20,7 @@
           size="lg"
           variant="danger"
           :borderless="false"
-          class="mr-2"
+          class="mx-1"
         >
           {{ $t('general.label.delete') }}
         </c-input-confirm>
@@ -28,7 +28,7 @@
                   :disabled="disableSave"
                   variant="light" @click.prevent="$emit('saveAndClose')"
                   size="lg"
-                  class="mr-2">
+                  class="mx-1">
           {{ $t('general.label.saveAndClose') }}
         </b-button>
         <b-button v-if="!hideSave"
@@ -36,7 +36,7 @@
                   variant="primary"
                   size="lg"
                   @click.prevent="$emit('save')"
-                  class="mr-2">
+                  class="mx-1">
           {{ $t('general.label.save') }}
         </b-button>
       </div>
