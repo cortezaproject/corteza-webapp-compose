@@ -2,20 +2,16 @@
   <div class="h-100 p-2 overflow-hidden">
     <b-card
       no-body
-      class="h-100 border-0 shadow-sm rounded-lg"
+      class="h-100 border-0 shadow-sm"
       :class="blockClass"
-      header-class="sticky-top h5 px-2"
-      :header="headerSet ? '' : block.title"
-      :header-bg-variant="block.style.variants.headerBg"
+      header-class="sticky-top h4 bg-white border-0 text-nowrap pb-1"
       :header-text-variant="block.style.variants.headerText"
-      :header-border-variant="block.style.variants.border"
+      :header="headerSet ? '' : block.title"
     >
       <b-card-header
         v-if="headerSet"
-        class="sticky-top h5 px-2"
-        :header-bg-variant="block.style.variants.headerBg"
+        class="sticky-top h4 bg-white border-0 text-nowrap pb-1"
         :header-text-variant="block.style.variants.headerText"
-        :header-border-variant="block.style.variants.border"
       >
         <slot
           name="header"
@@ -23,20 +19,18 @@
       </b-card-header>
       <b-card-text
         v-if="block.description"
-        class="p-2 m-0"
+        class="py-2 px-4 m-0"
       >
         {{ block.description }}
       </b-card-text>
       <div
         v-if="toolbarSet"
-        class="p-0 m-0"
       >
         <slot
           name="toolbar"
         />
       </div>
       <b-card-body
-        :body-bg-variant="block.style.variants.bodyBg"
         class="p-0"
         :class="{ 'overflow-auto': scrollableBody }"
       >

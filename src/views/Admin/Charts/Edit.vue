@@ -1,14 +1,21 @@
 <template>
   <div class="py-3">
-    <b-container @submit.prevent="handleSave" tag="form">
-      <b-row>
-        <b-col v-if="chart" md="12">
-          <b-card
-            :title="$t('chart.edit.title')"
+    <b-container @submit.prevent="handleSave" tag="form" fluid>
+      <b-row no-gutters>
+        <b-col v-if="chart" xl="8" offset-xl="2">
+          <b-card header-bg-variant="white"
+                  header-class="border-bottom"
           >
-            <export :list="[chart]" type="chart" class="float-right" slot="header"/>
+            <div slot="header"
+                 class="d-flex justify-content-between align-items-center"
+            >
+              <h1 class="mb-3">
+                {{ $t('chart.edit.title') }}
+              </h1>
+              <export :list="[chart]" type="chart" class="float-right" slot="header"/>
+            </div>
             <b-row>
-              <b-col md="6">
+              <b-col lg="8">
                 <fieldset v-if="modules">
                   <b-form-input v-model="chart.name" :placeholder="$t('chart.newPlaceholder')" class="mb-1"></b-form-input>
                   <b-form-input v-model="chart.handle" :placeholder="$t('general.placeholder.handle')" :state="handleState" class="mb-1"></b-form-input>
@@ -90,7 +97,7 @@
                 />
               </b-col>
 
-              <b-col md="6">
+              <b-col lg="4">
                 <b-button v-if="!error"
                           @click.prevent="update"
                           :disabled="processing"
@@ -131,8 +138,8 @@
       <editor-toolbar
         v-if="chart"
         :back-link="{name: 'admin.charts'}"
-        :hideDelete="!chart.canDeleteChart"
-        :hideSave="!chart.canUpdateChart"
+        :hideDelete="hideDelete"
+        :hideSave="hideSave"
         @delete="handleDelete"
         @save="handleSave()"
         @saveAndClose="handleSave({ closeOnSuccess: true })">
@@ -144,7 +151,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import Report from 'corteza-webapp-compose/src/components/Admin/Chart/Editor/Report'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import ChartComponent from 'corteza-webapp-compose/src/components/Chart'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
@@ -178,7 +185,13 @@ export default {
 
     chartID: {
       type: String,
-      required: true,
+      required: false,
+      default: NoID,
+    },
+
+    category: {
+      type: String,
+      required: false,
     },
   },
 
@@ -283,19 +296,48 @@ export default {
         this.reports.splice(this.editReportIndex, 1, v)
       },
     },
+
+    hideDelete () {
+      return this.chart.chartID === NoID || !this.chart.canDeleteChart
+    },
+
+    hideSave () {
+      return this.chart.chartID !== NoID && !this.chart.canUpdateChart
+    },
   },
 
-  mounted () {
-    this.findChartByID({ chartID: this.chartID }).then((chart) => {
-      // Make a copy so that we do not change store item by ref
-      this.chart = chartConstructor(chart)
-      this.onEditReport(0)
-    }).catch(this.defaultErrorHandler(this.$t('notification.chart.loadFailed')))
+  watch: {
+    chartID: {
+      handler: function (chartID) {
+        if (chartID === NoID) {
+          let c = new compose.Chart({ namespaceID: this.namespace.namespaceID })
+          switch (this.category) {
+            case 'gauge':
+              c = new compose.GaugeChart(c)
+              break
+
+            case 'funnel':
+              c = new compose.FunnelChart(c)
+              break
+          }
+          this.chart = c
+          this.onEditReport(0)
+        } else {
+          this.findChartByID({ chartID: this.chartID }).then((chart) => {
+            // Make a copy so that we do not change store item by ref
+            this.chart = chartConstructor(chart)
+            this.onEditReport(0)
+          }).catch(this.defaultErrorHandler(this.$t('notification.chart.loadFailed')))
+        }
+      },
+      immediate: true,
+    },
   },
 
   methods: {
     ...mapActions({
       findChartByID: 'chart/findByID',
+      createChart: 'chart/create',
       updateChart: 'chart/update',
       deleteChart: 'chart/delete',
     }),
@@ -321,13 +363,25 @@ export default {
       const c = Object.assign({}, this.chart)
       delete (c.config.renderer.data)
 
-      this.updateChart(c).then((chart) => {
-        this.chart = chartConstructor(chart)
-        this.raiseSuccessAlert(this.$t('notification.chart.saved'))
-        if (closeOnSuccess) {
-          this.redirect()
-        }
-      }).catch(this.defaultErrorHandler(this.$t('notification.chart.saveFailed')))
+      if (this.chart.chartID === NoID) {
+        this.createChart(c).then((chart) => {
+          this.chart = chartConstructor(chart)
+          this.raiseSuccessAlert(this.$t('notification.chart.saved'))
+          if (closeOnSuccess) {
+            this.redirect()
+          } else {
+            this.$router.push({ name: 'admin.charts.edit', params: { chartID: this.chart.chartID } })
+          }
+        }).catch(this.defaultErrorHandler(this.$t('notification.chart.saveFailed')))
+      } else {
+        this.updateChart(c).then((chart) => {
+          this.chart = chartConstructor(chart)
+          this.raiseSuccessAlert(this.$t('notification.chart.saved'))
+          if (closeOnSuccess) {
+            this.redirect()
+          }
+        }).catch(this.defaultErrorHandler(this.$t('notification.chart.saveFailed')))
+      }
     },
 
     handleDelete () {

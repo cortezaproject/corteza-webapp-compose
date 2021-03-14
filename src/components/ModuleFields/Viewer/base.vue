@@ -1,11 +1,11 @@
 <template>
   <span v-if="valueOnly">
-    <div :class="{'multiline': field.isMulti}">{{ formatted }}</div>
+    <div :class="classes">{{ formatted }}</div>
     <errors :errors="errors" />
   </span>
   <div v-else>
     <label>{{ field.label || field.name }}</label>
-    <div :class="{'multiline': field.isMulti}">{{ formatted }}</div>
+    <div :class="classes">{{ formatted }}</div>
     <errors :errors="errors" />
   </div>
 </template>
@@ -61,6 +61,13 @@ export default {
         return this.value.join(this.field.options.multiDelimiter)
       }
       return this.value
+    },
+
+    classes () {
+      if (this.field.isMulti) {
+        return ['multiline']
+      }
+      return []
     },
   },
 }

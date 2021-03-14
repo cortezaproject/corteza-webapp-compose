@@ -1,38 +1,57 @@
 <template>
   <div class="py-3">
-    <b-container>
-      <b-row>
-        <b-col md="12">
-          <b-card class="mb-2">
-            <b-row align-v="center">
-              <b-col md="5">
-                <b-form @submit.prevent="handleAddPageFormSubmit">
-                  <b-form-group v-if="namespace.canCreatePage" :label="$t('page.newLabel')">
-                    <b-input-group >
-                      <input required type="text" v-model="page.title" class="form-control" id="name" :placeholder="$t('page.newPlaceholder')" />
-                      <b-input-group-append>
-                        <b-button type="submit" variant="dark">{{ $t('general.label.create') }}</b-button>
-                      </b-input-group-append>
-                    </b-input-group>
-                  </b-form-group>
-                </b-form>
-              </b-col>
-              <b-col offset-md="5" md="2" class="text-right">
-                <c-permissions-button
-                  v-if="namespace.canGrant"
-                  resource="compose:page:*"
-                  link
-                />
+    <b-container fluid>
+      <b-row no-gutters>
+        <b-col xl="8" offset-xl="2">
+          <b-card :title="$t('page.title')" no-body>
+            <b-card-header header-bg-variant="white"
+                           class="py-3"
+            >
+              <h1 class="mb-3">
+                {{ $t('page.title') }}
+              </h1>
+              <b-row
+                no-gutters
+              >
+                <b-col xl="4" lg="5" md="7">
+                  <b-form @submit.prevent="handleAddPageFormSubmit" class="mr-1">
+                    <b-form-group v-if="namespace.canCreatePage" class="mb-1">
+                      <b-input-group>
+                        <b-input required type="text" v-model="page.title" class="page-name-input" id="name" :placeholder="$t('page.newPlaceholder')" />
+                        <b-input-group-append>
+                          <b-button type="submit" variant="primary" size="lg">{{ $t('page.createLabel') }}</b-button>
+                        </b-input-group-append>
+                      </b-input-group>
+                    </b-form-group>
+                  </b-form>
+                </b-col>
+                <b-col xl="8" lg="7" md="5">
+                  <c-permissions-button
+                    v-if="namespace.canGrant"
+                    resource="compose:page:*"
+                    class="btn-lg"
+                    :buttonLabel="$t('general.label.permissions')"
+                    buttonVariant="light"
+                  />
+                </b-col>
+              </b-row>
+            </b-card-header>
+            <b-row class="pages-list-header border-top align-content-center mb-n4" no-gutters>
+              <b-col
+                cols="12"
+                class="pl-4"
+              >
+                <span class="font-weight-bold">
+                  {{ $t('page.newPlaceholder') }}
+                </span>
+                <span class="text-muted font-italic ml-3">
+                  {{ $t('page.instructions') }}
+                </span>
               </b-col>
             </b-row>
-          </b-card>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col md="12">
-          <b-card :title="$t('page.title')">
             <page-tree
               :namespace="namespace"
+              class="pb-2"
               @reorder="handleReorder"
               v-model="tree"/>
           </b-card>
@@ -98,10 +117,99 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-  /deep/ .exist-li {
+<style lang="scss">
+//!important usage to over-ride library styling
+$input-height: 42px;
+$content-height: 48px;
+$blank-li-height: 0;
+$left-padding: 5px;
+$border-color: #E4E9EF;
+$hover-color: $gray-200;
+$dropping-color: #90A3B1;
+
+.page-name-input {
+  height: $input-height;
+}
+
+.sortable-tree {
+  ul {
     .content {
-      background: rgba(0, 0, 0, 0.03);
+      height: 100% !important;
+      min-height: $content-height !important;
+      line-height: $content-height !important;
+
+      &:hover {
+        background: $hover-color;
+      }
     }
   }
+
+  li {
+    white-space: nowrap;
+    background: white;
+
+    &.blank-li {
+      height: $blank-li-height !important;
+    }
+
+    &::before {
+      top: $content-height / -2 !important;
+      border-left: 2px solid white !important;
+    }
+
+    &::after {
+      height: $content-height !important;
+      top: $content-height / 2 !important;
+      border-color: #fff !important;
+    }
+
+    &.parent-li:nth-last-child(2)::before {
+      height: $content-height !important;
+      top: $content-height / -2 !important;
+    }
+  }
+
+  .parent-li {
+    border-top: 1px solid $border-color;
+
+    .exist-li {
+      border-top: none;
+
+      &::after {
+        border-top: 2px solid $border-color !important;
+      }
+
+      &::before {
+        border-left-color: $border-color !important;
+      }
+    }
+
+    &.exist-li {
+      &::before {
+        border-color: white !important;
+      }
+
+      .parent-li {
+        &.exist-li {
+          &::before {
+            border-color: $border-color !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.droper {
+  background: $dropping-color !important;
+}
+
+.pages-list-header {
+  min-height: $content-height;
+  background-color: $gray-200;
+  margin-top: 1rem;
+  border-bottom: 2px solid $light;
+  z-index: 1;
+}
+
 </style>

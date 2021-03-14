@@ -1,12 +1,49 @@
 <template>
   <wrap v-bind="$props" v-on="$listeners">
     <div class="calendar-container m-2">
+      <div class="d-flex align-items-baseline justify-content-center mb-2">
+        <b-btn
+          variant="link"
+          class="text-dark"
+          @click="api().prev()"
+        >
+          <font-awesome-icon :icon="['fas', 'angle-left']" />
+        </b-btn>
+        <span class="h5">
+          {{ title }}
+        </span>
+        <b-btn
+          variant="link"
+          class="text-dark"
+          @click="api().next()"
+        >
+          <font-awesome-icon :icon="['fas', 'angle-right']" />
+        </b-btn>
+      </div>
+      <div>
+        <b-btn
+          v-for="view in views"
+          :key="view"
+          variant="light"
+          class="mr-1 mb-1"
+          @click="api().changeView(view)"
+        >
+          {{ $t(`block.calendar.view.${view}`) }}
+        </b-btn>
+        <b-btn
+          variant="light"
+          class="float-right mb-1"
+          @click="api().today()"
+        >
+          {{ $t(`block.calendar.today`) }}
+        </b-btn>
+      </div>
       <full-calendar
         :events="events"
         ref="fc"
         v-bind="config"
         @eventClick="handleEventClick"
-        class="m-1"
+        class="my-1"
       />
     </div>
   </wrap>
@@ -25,7 +62,7 @@ import { BootstrapTheme } from '@fullcalendar/bootstrap'
 import { createPlugin } from '@fullcalendar/core'
 
 /**
- * FullCalendar corteza theme definition.
+ * FullCalendar Corteza theme definition.
  */
 export class CortezaTheme extends BootstrapTheme {}
 CortezaTheme.prototype.classes.widget = 'corteza-unthemed'
@@ -55,6 +92,7 @@ export default {
     return {
       events: [],
       locale: undefined,
+      title: '',
 
       loaded: {
         start: null,
@@ -70,7 +108,7 @@ export default {
 
     config () {
       return {
-        header: this.block.getHeader(),
+        header: false,
         height: 'parent',
         themeSystem: 'corteza',
         defaultView: this.block.defaultView,
@@ -89,20 +127,25 @@ export default {
           }),
         ],
 
-        // Use available views to define custom view labels.
-        // See src/i18n/en/compose.js for i18n definitons
-        buttonText: compose.PageBlockCalendar.availableViews()
-          .map(view => ({ view, label: this.$t(`block.calendar.view.${view}`) }))
-          .reduce((acc, cur) => {
-            acc[cur.view] = cur.label
-            return acc
-          }, {}),
-
         // Handle event fetching when view/date-range changes
-        datesRender: ({ view: { currentStart, currentEnd } = {} } = {}) => {
+        datesRender: ({ view: { currentStart, currentEnd, title } = {} } = {}) => {
           this.loadEvents(moment(currentStart), moment(currentEnd))
+          // eslint-disable-next-line
+          this.title = title
         },
       }
+    },
+
+    header () {
+      return this.block.options.header
+    },
+
+    views () {
+      if (this.header.hide) {
+        return []
+      }
+
+      return this.block.reorderViews(this.header.views)
     },
   },
 
@@ -143,6 +186,11 @@ export default {
       }
 
       this.locale = require(`@fullcalendar/core/locales/${lng}`)
+    },
+
+    // Proxy to the FC API
+    api () {
+      return this.$refs.fc.getApi()
     },
 
     /**

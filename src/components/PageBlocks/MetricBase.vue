@@ -3,6 +3,7 @@
     <div
       v-for="(m, i) in options.metrics"
       :key="i"
+      class="text-center mx-auto"
     >
       <div
         v-for="(v, i) in formatResponse(m, i)"
@@ -12,7 +13,7 @@
           {{ v.label }}
         </h3> -->
         <h3
-          class="p-2"
+          class="p-0 m-0"
           :style="genStyle(m.valueStyle)"
         >
           <span v-if="m.prefix">

@@ -34,6 +34,15 @@ import {
   faChevronLeft,
   faChevronDown,
   faShareAlt,
+  faExternalLinkAlt,
+  faAngleUp,
+  faAngleDown,
+  faAngleLeft,
+  faAngleRight,
+  faAngleDoubleLeft,
+  faAngleDoubleRight,
+  faEllipsisH,
+  faEyeSlash,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -53,6 +62,7 @@ import {
   faSquare,
   faClone,
   faPlusSquare,
+  faEnvelope,
 } from '@fortawesome/free-regular-svg-icons'
 
 library.add(
@@ -106,4 +116,14 @@ library.add(
   faChevronLeft,
   faChevronDown,
   faShareAlt,
+  faEnvelope,
+  faAngleUp,
+  faAngleDown,
+  faAngleLeft,
+  faAngleRight,
+  faExternalLinkAlt,
+  faAngleDoubleLeft,
+  faAngleDoubleRight,
+  faEllipsisH,
+  faEyeSlash,
 )

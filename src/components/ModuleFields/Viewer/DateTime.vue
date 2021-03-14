@@ -10,6 +10,13 @@ export default {
       }
       return this.value ? this.field.formatValue(this.value) : null
     },
+
+    classes () {
+      if (this.field.isMulti) {
+        return ['multiline', 'text-nowrap']
+      }
+      return ['text-nowrap']
+    },
   },
 }
 </script>

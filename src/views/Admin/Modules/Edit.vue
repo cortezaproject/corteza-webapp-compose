@@ -1,148 +1,160 @@
 <template>
   <div class="py-3">
-    <b-container @submit.prevent="handleSave" tag="form" v-if="module">
-      <b-row>
-        <b-col md="12">
-          <b-card :title="$t('module.edit.title')" class="mb-5">
-            <div
-              slot="header"
-              class="d-flex justify-content-between align-items-center"
-            >
-              <div
-              >
-                <b-button
-                  v-if="federationEnabled"
-                  variant="link"
-                  class="p-0"
-                  @click="federationSettings.modal = true"
-                >
-                  <font-awesome-icon
-                    :icon="['fas', 'share-alt']"
-                  />
+    <b-container @submit.prevent="handleSave" tag="form" v-if="module" fluid>
+      <b-row no-gutters>
+        <b-col xl="8" offset-xl="2">
+          <b-card header-bg-variant="white"
+                  no-body
+                  header-class="border-bottom"
+          >
+            <div slot="header">
+              <h1 class="mb-3">
+                {{ $t('module.edit.title') }}
+              </h1>
+              <b-row no-gutters
+                     class="align-items-end">
+                <div class="flex-grow-1 text-nowrap">
+                  <b-button
+                    v-if="federationEnabled"
+                    variant="light"
+                    size="lg"
+                    class="mr-1"
+                    @click="federationSettings.modal = true"
+                  >
+                    <font-awesome-icon
+                      :icon="['fas', 'share-alt']"
+                    />
 
-                  {{ $t('module.edit.federationSettings.title') }}
-                </b-button>
-              </div>
-              <div>
-                <export :list="[this.module]" type="module" />
-                <c-permissions-button
-                  v-if="module.canGrant"
-                  resource="compose:module-field:*"
-                  link
-                />
-              </div>
-            </div>
-            <b-form-group>
-              <label>{{ $t('module.newPlaceholder') }}</label>
-              <b-form-input required
-                            v-model="module.name"
-                            :placeholder="$t('module.newPlaceholder')"></b-form-input>
-            </b-form-group>
-            <b-form-group>
-              <label>{{ $t('general.label.handle') }}</label>
-              <b-form-input v-model="module.handle"
-                            :state="handleState"
-                            class="mb-2"
-                            :placeholder="$t('general.placeholder.handle')"></b-form-input>
-            </b-form-group>
-            <b-form-group>
-              <h5 class="mt-1">{{ $t('module.edit.manageRecordFields') }}</h5>
-              <table class="table table-sm table-borderless">
-                <thead>
-                <tr>
-                  <th></th>
-                  <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.name')" class="info">{{ $t('general.label.name') }}</th>
-                  <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.title')" class="info">{{ $t('general.label.title') }}</th>
-                  <th>{{ $t('general.label.type') }}</th>
-                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.multi')" class="info text-center">{{ $t('general.label.multi') }}</th>
-                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.required')" class="info text-center">{{ $t('general.label.required') }}</th>
-                  <th v-b-tooltip.hover :title="$t('module.edit.tooltip.private')" class="info text-center" v-if="false">{{ $t('general.label.private') }}</th>
-                  <th></th>
-                </tr>
-                </thead>
-                <draggable v-model="module.fields" :options="{handle:'.handle'}" tag="tbody">
-                  <field-row-edit v-for="(field, index) in module.fields"
-                                  @edit="handleFieldEdit(module.fields[index])"
-                                  @delete="module.fields.splice(index, 1)"
-                                  v-model="module.fields[index]"
-                                  :canGrant="namespace.canGrant"
-                                  :hasRecords="hasRecords"
-                                  :key="index"></field-row-edit>
-                </draggable>
-                <tr>
-                  <th colspan="7">
-                    <b-button @click="handleNewField"
-                              variant="link">+ {{ $t('module.edit.newField') }}</b-button>
-                  </th>
-                </tr>
-              </table>
-              <div class="d-flex mt-5">
-                <table class="w-50">
-                  <tbody>
-                    <tr>
-                      <th colspan="7">{{ $t('module.edit.systemFields') }}</th>
-                    </tr>
-                    <field-row-view v-for="(field, index) in module.systemFields()"
-                                    :field="field"
-                                    :key="index"></field-row-view>
-                  </tbody>
-                </table>
-                <div class="d-flex flex-column w-50">
-                  <b-row align-v="center" class="text-center justify-content-between mt-4">
-                    <b-col>
-                      <circle-step
-                        stepNumber="1"
-                        :done="!!recordPage"
-                        small
-                      >
-                        <b-button
-                          v-if="recordPage"
-                          :disabled="!namespace.canManageNamespace"
-                          :to="{ name: 'admin.pages.builder', params: { pageID: recordPage.pageID } }"
-                          variant="outline-secondary"
-                        >
-                          {{ $t('module.edit.steps.recordPage') }}
-                        </b-button>
-                        <b-button
-                          v-else
-                          @click="handleRecordPageCreation"
-                          variant="outline-secondary"
-                        >
-                          {{ $t('module.edit.steps.recordPage') }}
-                        </b-button>
-                      </circle-step>
-                    </b-col>
-                    <b-col>
-                      <hr />
-                    </b-col>
-                    <b-col>
-                      <circle-step
-                        stepNumber="2"
-                        :done="!!recordListPage"
-                        small
-                      >
-                        <b-button
-                          v-if="recordListPage"
-                          variant="outline-secondary"
-                          :disabled="!namespace.canManageNamespace"
-                          :to="{ name: 'admin.pages.builder', params: { pageID: recordListPage.pageID } }"
-                        >
-                          {{ $t('module.edit.steps.recordList') }}
-                        </b-button>
-                        <b-button
-                          v-else
-                          variant="outline-secondary"
-                          :disabled="!namespace.canCreatePage || !recordPage"
-                          @click="handleRecordListCreation"
-                        >
-                          {{ $t('module.edit.steps.recordList') }}
-                        </b-button>
-                      </circle-step>
-                    </b-col>
-                  </b-row>
+                    {{ $t('module.edit.federationSettings.title') }}
+                  </b-button>
+                    <export :list="[this.module]"
+                            type="module"
+                            class="mr-1"
+                    />
+                    <c-permissions-button
+                      v-if="module.canGrant"
+                      resource="compose:module-field:*"
+                      :buttonLabel="$t('general.label.permissions')"
+                      buttonVariant="light"
+                      class="btn-lg mr-1"
+                    />
                 </div>
-              </div>
-            </b-form-group>
+                <div v-if="!creatingModule" class="flex-grow-1 text-nowrap d-flex justify-content-md-end mt-1">
+                      <b-button
+                        v-if="recordPage"
+                        :disabled="!namespace.canManageNamespace"
+                        :to="{ name: 'admin.pages.builder', params: { pageID: recordPage.pageID } }"
+                        variant="light"
+                        class="mr-1"
+                        size="lg"
+                      >
+                        {{ $t('module.recordPage.edit') }}
+                      </b-button>
+                      <b-button
+                        v-else
+                        @click="handleRecordPageCreation"
+                        variant="primary"
+                        size="lg"
+                        class="mr-1"
+                      >
+                        {{ $t('module.recordPage.create') }}
+                      </b-button>
+                      <b-button
+                        v-if="recordListPage"
+                        variant="light"
+                        class="mr-1"
+                        size="lg"
+                        :disabled="!namespace.canManageNamespace"
+                        :to="{ name: 'admin.pages.builder', params: { pageID: recordListPage.pageID } }"
+                      >
+                        {{ $t('module.edit.steps.recordList') }}
+                      </b-button>
+                      <b-button
+                        v-else
+                        variant="light"
+                        class="mr-1"
+                        size="lg"
+                        :disabled="!namespace.canCreatePage || !recordPage"
+                        @click="handleRecordListCreation"
+                      >
+                        {{ $t('module.edit.steps.recordList') }}
+                      </b-button>
+                </div>
+              </b-row>
+            </div>
+            <b-container fluid class="px-4">
+              <h5 class="my-3">{{ $t('module.edit.moduleInfo') }}</h5>
+              <b-row>
+                <b-col cols="12" md="6" xl="4">
+                  <b-form-group>
+                    <label class="text-primary">{{ $t('module.newLabel') }}</label>
+                    <b-form-input required
+                                  v-model="module.name"
+                                  :placeholder="$t('module.newPlaceholder')"></b-form-input>
+                  </b-form-group>
+                </b-col>
+                <b-col cols="12" md="6" xl="4">
+                <b-form-group>
+                  <label class="text-primary">{{ $t('general.label.handle') }}</label>
+                  <b-form-input v-model="module.handle"
+                                :state="handleState"
+                                class="mb-2"
+                                :placeholder="$t('general.placeholder.handle')"></b-form-input>
+                </b-form-group>
+                </b-col>
+              </b-row>
+            </b-container>
+            <hr>
+            <b-container fluid class="px-4">
+              <h5 class="mb-3 mt-1">{{ $t('module.edit.manageRecordFields') }}</h5>
+              <b-row no-gutters>
+                <b-form-group class="w-100">
+                  <table class="table table-sm table-borderless table-responsive-lg">
+                    <thead>
+                    <tr>
+                      <th></th>
+                      <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.name')" class="text-primary">{{ $t('general.label.name') }}</th>
+                      <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.title')" class="text-primary">{{ $t('general.label.title') }}</th>
+                      <th class="text-primary">{{ $t('general.label.type') }}</th>
+                      <th v-b-tooltip.hover :title="$t('module.edit.tooltip.attributes')" class="text-primary">{{ $t('general.label.attributes') }}</th>
+                      <th></th>
+                      <th v-if="false"></th>
+                      <th></th>
+                    </tr>
+                    </thead>
+                    <draggable v-model="module.fields" :options="{handle:'.handle'}" tag="tbody">
+                      <field-row-edit v-for="(field, index) in module.fields"
+                                      @edit="handleFieldEdit(module.fields[index])"
+                                      @delete="module.fields.splice(index, 1)"
+                                      v-model="module.fields[index]"
+                                      :canGrant="namespace.canGrant"
+                                      :hasRecords="hasRecords"
+                                      :key="index"></field-row-edit>
+                    </draggable>
+                    <tr>
+                      <th colspan="1" />
+                      <th colspan="7">
+                        <b-button @click="handleNewField"
+                                  variant="primary">+ {{ $t('module.edit.newField') }}
+                        </b-button>
+                      </th>
+                    </tr>
+                  </table>
+                  <div class="d-flex mt-5">
+                    <table class="w-50">
+                      <tbody>
+                        <tr>
+                          <th colspan="7">{{ $t('module.edit.systemFields') }}</th>
+                        </tr>
+                        <field-row-view v-for="(field, index) in module.systemFields()"
+                                        :field="field"
+                                        :key="index"></field-row-view>
+                      </tbody>
+                    </table>
+                  </div>
+                </b-form-group>
+              </b-row>
+            </b-container>
           </b-card>
         </b-col>
       </b-row>
@@ -153,7 +165,7 @@
       :title="editModalTitle"
       :ok-title="$t('general.label.saveAndClose')"
       ok-only
-      ok-variant="dark"
+      ok-variant="primary"
       size="lg"
       @ok="handleFieldSave(updateField)"
       @hide="updateField=null"
@@ -176,8 +188,8 @@
     <portal to="admin-toolbar">
       <editor-toolbar
         :back-link="{name: 'admin.modules'}"
-        :hideDelete="!module.canDeleteModule"
-        :hideSave="!module.canUpdateModule"
+        :hideDelete="hideDelete"
+        :hideSave="hideSave"
         :disable-save="!fieldsValid || processing"
         @delete="handleDelete"
         @save="handleSave()"
@@ -194,11 +206,10 @@ import FieldConfigurator from 'corteza-webapp-compose/src/components/ModuleField
 import FieldRowEdit from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowEdit'
 import FieldRowView from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowView'
 import FederationSettings from 'corteza-webapp-compose/src/components/Admin/Module/FederationSettings'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
-import CircleStep from 'corteza-webapp-compose/src/components/Common/CircleStep'
 
 export default {
   components: {
@@ -209,7 +220,6 @@ export default {
     FederationSettings,
     EditorToolbar,
     Export,
-    CircleStep,
   },
 
   props: {
@@ -220,7 +230,8 @@ export default {
 
     moduleID: {
       type: String,
-      required: true,
+      required: false,
+      default: NoID,
     },
   },
 
@@ -279,26 +290,51 @@ export default {
     federationEnabled () {
       return !!this.$FederationAPI.baseURL && this.module.moduleID
     },
+
+    hideDelete () {
+      return this.module.moduleID === NoID || !this.module.canDeleteModule
+    },
+
+    hideSave () {
+      return this.module.moduleID !== NoID && !this.module.canUpdateModule
+    },
+
+    creatingModule () {
+      return this.module.moduleID === NoID
+    },
   },
 
-  created () {
-    this.findModuleByID({ namespace: this.namespace, moduleID: this.moduleID }).then((module) => {
-      // Make a copy so that we do not change store item by ref
-      this.module = module.clone()
+  watch: {
+    moduleID: {
+      handler: function (moduleID) {
+        if (moduleID === NoID) {
+          this.module = new compose.Module(
+            { fields: [new compose.ModuleFieldString({ fieldID: NoID, name: 'Sample' })] },
+            this.namespace,
+          )
+        } else {
+          this.findModuleByID({ namespace: this.namespace, moduleID: moduleID }).then((module) => {
+            // Make a copy so that we do not change store item by ref
+            this.module = module.clone()
 
-      const { moduleID, namespaceID } = this.module
+            const { moduleID, namespaceID } = this.module
 
-      // Count existing records to see what we can do with this module
-      this.$ComposeAPI
-        .recordList({ moduleID, namespaceID, limit: 1 })
-        .then(({ set }) => { this.hasRecords = (set.length > 0) })
-    })
+            // Count existing records to see what we can do with this module
+            this.$ComposeAPI
+              .recordList({ moduleID, namespaceID, limit: 1 })
+              .then(({ set }) => { this.hasRecords = (set.length > 0) })
+          })
+        }
+      },
+      immediate: true,
+    },
   },
 
   methods: {
     ...mapActions({
       findModuleByID: 'module/findByID',
       updateModule: 'module/update',
+      createModule: 'module/create',
       deleteModule: 'module/delete',
       createPage: 'page/create',
       updatePage: 'page/update',
@@ -325,16 +361,32 @@ export default {
 
     handleSave ({ closeOnSuccess = false } = {}) {
       this.processing = true
-      this.updateModule(this.module).then((module) => {
-        this.module = new compose.Module({ ...module }, this.namespace)
-        this.raiseSuccessAlert(this.$t('notification.module.saved'))
-        if (closeOnSuccess) {
-          this.redirect()
-        }
-      }).catch(this.defaultErrorHandler(this.$t('notification.module.saveFailed')))
-        .finally(() => {
-          this.processing = false
-        })
+
+      if (this.module.moduleID === NoID) {
+        this.createModule(this.module).then((module) => {
+          this.module = new compose.Module({ ...module }, this.namespace)
+          this.raiseSuccessAlert(this.$t('notification.module.saved'))
+          if (closeOnSuccess) {
+            this.redirect()
+          } else {
+            this.$router.push({ name: 'admin.modules.edit', params: { moduleID: this.module.moduleID } })
+          }
+        }).catch(this.defaultErrorHandler(this.$t('notification.module.saveFailed')))
+          .finally(() => {
+            this.processing = false
+          })
+      } else {
+        this.updateModule(this.module).then((module) => {
+          this.module = new compose.Module({ ...module }, this.namespace)
+          this.raiseSuccessAlert(this.$t('notification.module.saved'))
+          if (closeOnSuccess) {
+            this.redirect()
+          }
+        }).catch(this.defaultErrorHandler(this.$t('notification.module.saveFailed')))
+          .finally(() => {
+            this.processing = false
+          })
+      }
     },
 
     handleDelete () {
@@ -407,9 +459,3 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-.steps {
-  padding: 0;
-  padding-top: 20vh;
-}
-</style>

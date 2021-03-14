@@ -1,13 +1,14 @@
 <template>
   <b-form-group
     :label="label"
-    label-class="text-secondary"
+    label-class="text-primary"
     :class="formGroupStyleClasses"
     :state="state"
   >
     <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
       <b-form-input
         type="email"
+        class="mr-2"
         v-model="value[ctx.index]"
       />
       <errors :errors="errors" />

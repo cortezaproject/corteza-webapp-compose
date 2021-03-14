@@ -1,7 +1,7 @@
 <template>
   <div v-if="!!page" class="d-flex w-100 overflow-hidden">
     <main
-      class="flex-grow-1 overflow-auto d-flex"
+      class="flex-grow-1 overflow-auto d-flex p-2"
     >
       <router-view
         v-if="recordID || isRecordCreatePage"

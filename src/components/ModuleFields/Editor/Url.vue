@@ -1,12 +1,13 @@
 <template>
   <b-form-group
     :label="label"
-    label-class="text-secondary"
+    label-class="text-primary"
     :class="formGroupStyleClasses"
   >
     <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
       <b-form-input
         type="url"
+        class="mr-2"
         placeholder="Example URL: https://example.com"
         :formatter="fixUrl"
         lazy-formatter

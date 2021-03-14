@@ -4,29 +4,26 @@
       no-body
       class="h-100 border-0 shadow-sm rounded-lg"
       :header="title"
-      header-class="sticky-top h5 pl-2"
+      header-class="sticky-top h4 border-0"
       header-bg-variant="white"
-      header-text-variant="primary"
-      header-border-variant="primary"
+      header-text-variant="dark"
     >
       <div
         class="p-0 m-0"
       >
         <b-container
           ref="header"
-          class="m-0 p-2"
+          class="pb-2"
           fluid
         >
           <b-row
             no-gutters
-            class="m-0 p-0"
+            class="m-0 p-0 align-items-center justify-content-between"
           >
-            <b-col
-              cols="6"
-            >
+            <div class="text-nowrap flex-grow-1">
               <template v-if="module.canCreateRecord">
                 <router-link
-                  class="btn btn-sm btn-outline-primary float-left"
+                  class="btn btn-lg btn-primary float-left"
                   :to="{
                     name: 'admin.modules.record.create',
                     params: { moduleID: module.moduleID },
@@ -49,31 +46,28 @@
                 @export="onExport"
                 class="ml-1 float-left"
               />
-            </b-col>
-            <b-col
-              cols="6"
-            >
-              <b-input
-                v-model="query"
-                class="float-right mw-100"
-                size="sm"
-                type="search"
-                style="width: 200px;"
-                :placeholder="$t('general.label.search')" />
-
               <b-button
                 :variant="getFilterButtonInfo.variant"
-                size="sm"
-                class="float-right mr-1"
+                size="lg"
+                class="ml-1"
                 @click="openFilterModal"
               >
                 {{ getFilterButtonInfo.label }}
               </b-button>
-            </b-col>
+            </div>
+            <div class="mt-1 flex-grow-1">
+              <b-input
+                v-model="query"
+                class="float-right mw-100"
+                type="search"
+                :placeholder="$t('general.label.search')" />
+
+            </div>
           </b-row>
           <b-row
             v-show="selected.length > 0"
-            class="text-light bg-secondary p-2 mt-2"
+            no-gutters
+            class="bg-light mt-2 p-2"
           >
             <b-col
               cols="4"
@@ -81,7 +75,6 @@
             >
               {{ $t('block.recordList.selected', { count: selected.length, total: items.length }) }}
               <a
-                class="text-light"
                 href="#"
                 @click.prevent="handleSelectAllOnPage({ isChecked: false })"
               >
@@ -166,6 +159,7 @@
           </template>
           <template #head(selectable)>
             <b-checkbox
+              class="ml-1"
               :disabled="items.length === 0"
               :checked="areAllRowsSelected"
               @change="handleSelectAllOnPage({ isChecked: $event })"
@@ -173,6 +167,7 @@
           </template>
           <template #cell(selectable)="{ item, index, rowSelected }">
             <b-checkbox
+              class="ml-1"
               :checked="rowSelected"
               @change="handleRowSelectCheckbox({ record: item, index, isChecked: $event })"
             />
@@ -204,7 +199,7 @@
               class="d-flex justify-content-between align-items-center"
             >
               <div
-                class="mr-auto text-nowrap text-truncate"
+                class="ml-2 text-nowrap text-truncate font-weight-bold"
               >
                 <span
                   v-if="pagination.count > filter.limit"
@@ -222,26 +217,30 @@
                 size="sm"
               >
                 <b-button
-                  size="sm"
-                  variant="outline-primary"
+                  variant="link"
+                  class="text-dark"
                   :disabled="!hasPrevPage"
                   @click="goToPage()"
                 >
-                  {{ $t('block.recordList.pagination.first') }}
+                  <font-awesome-icon :icon="['fas', 'angle-double-left']" />
                 </b-button>
                 <b-button
-                  variant="primary"
+                  variant="link"
+                  class="text-dark"
                   :disabled="!hasPrevPage"
                   @click="goToPage('prevPage')"
                 >
+                  <font-awesome-icon :icon="['fas', 'angle-left']" />
                   {{ $t('block.recordList.pagination.prev') }}
                 </b-button>
                 <b-button
-                  variant="primary"
+                  variant="link"
+                  class="text-dark"
                   :disabled="!hasNextPage"
                   @click="goToPage('nextPage')"
                 >
                   {{ $t('block.recordList.pagination.next') }}
+                  <font-awesome-icon :icon="['fas', 'angle-right']" />
                 </b-button>
               </b-button-group>
              </b-col>
@@ -328,7 +327,7 @@
                     <font-awesome-icon
                       :icon="['fas', 'times']"
                       @click="removeFilterField(index)"
-                      class="pointer text-secondary my-auto ml-2"
+                      class="pointer text-danger my-auto ml-2"
                     />
                   </b-input-group-append>
                 </b-input-group>
@@ -338,8 +337,7 @@
           <hr class="mt-0">
         </div>
         <b-button
-          variant="outline-primary"
-          size="sm"
+          variant="light"
           @click="addFilterField()"
         >
           + {{ $t('block.recordList.filter.addField') }}
@@ -490,7 +488,7 @@ export default {
 
     getFilterButtonInfo () {
       let label = this.$t('block.recordList.filter.label')
-      let variant = 'outline-primary'
+      let variant = 'light'
 
       if (this.filterFields.active) {
         label = `${label} ${this.$t('general.label.active')}`
@@ -750,9 +748,5 @@ export default {
       }
     }
   }
-}
-
-.pointer {
-  cursor: pointer;
 }
 </style>

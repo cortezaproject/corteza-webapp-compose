@@ -1,8 +1,8 @@
 <template>
   <div>
     <b-button @click="showModal=true"
-              size="sm"
-              variant="outline-primary">
+              size="lg"
+              variant="light">
       {{ $t('general.label.import') }}
     </b-button>
 

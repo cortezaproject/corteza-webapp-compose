@@ -1,100 +1,115 @@
-<template>
+"<template>
   <div class="py-3">
-    <b-container>
-      <b-row>
-        <b-col md="12">
-          <b-card class="mb-2">
-            <b-row align-v="center">
-              <b-col md="5">
-                <b-form v-if="namespace.canCreateModule"
-                      @submit.prevent="create">
-                  <b-form-group :label="$t('module.newLabel')">
-                    <b-input-group>
-                      <b-input required type="text"
-                               v-model="newModule.name"
-                               id="name"
-                               :placeholder="$t('module.newPlaceholder')" />
-                      <b-input-group-append>
-                        <b-button type="submit" variant="dark">{{ $t('general.label.create') }}</b-button>
-                      </b-input-group-append>
-                    </b-input-group>
-                  </b-form-group>
-                </b-form>
-              </b-col>
-              <b-col md="5">
-                <import v-if="namespace.canCreateModule"
-                        :namespace="namespace"
-                        variant="primary"
-                        type="module" />
-              </b-col>
-              <b-col md="2" class="text-right">
-                <export :list="modules" type="module" />
-                <c-permissions-button
-                  v-if="namespace.canGrant"
-                  resource="compose:module:*"
-                  link
-                />
-              </b-col>
-            </b-row>
-          </b-card>
-          <b-card :title="$t('module.title')">
-            <b-table
-              :fields="tableFields"
-              :items="modules"
-              striped
-              borderless
-              responsive
+    <b-container fluid>
+      <b-row no-gutters>
+        <b-col xl="8" offset-xl="2">
+          <b-card no-body>
+            <b-card-header header-bg-variant="white"
+                           class="py-3"
             >
-              <template v-slot:cell(name)="{ item: m }">
-                <div
-                  class="d-flex justify-content-between align-items-start"
-                >
-                  {{ m.name }}
-                  <h5
-                    class="mb-0"
+              <h1 class="mb-3">
+                {{ $t('module.title') }}
+              </h1>
+              <b-row
+                class="align-items-center justify-content-between"
+                no-gutters
+              >
+                <div class="text-nowrap flex-grow-1">
+                  <b-btn
+                    v-if="namespace.canCreateModule"
+                    variant="primary"
+                    size="lg"
+                    class="mr-1 float-left"
+                    :to="{ name: 'admin.modules.create' }"
                   >
-                    <b-badge
-                      v-if="Object.keys(m.labels || {}).includes('federation')"
-                      pill
-                      variant="primary"
-                      class="mx-1 py-1 px-2"
-                      style="border-radius: 0.5rem;"
-                    >
-                      {{ $t('module.federated') }}
-                    </b-badge>
-                  </h5>
+                    {{ $t('module.createLabel') }}
+                  </b-btn>
+
+                  <import
+                    v-if="namespace.canCreateModule"
+                    :namespace="namespace"
+                    type="module"
+                    class="mr-1 float-left"
+                  />
+
+                  <export
+                    :list="modules"
+                    type="module"
+                    class="mr-1 float-left"
+                  />
+                  <c-permissions-button
+                    v-if="namespace.canGrant"
+                    resource="compose:module:*"
+                    :buttonLabel="$t('general.label.permissions')"
+                    buttonVariant="light"
+                    class="btn-lg"
+                  />
                 </div>
-              </template>
-              <template v-slot:cell(updatedAt)="{ item: m }">
-                {{ (m.updatedAt || m.createdAt) | locDateOnly }}
-              </template>
-              <template v-slot:cell(actions)="{ item: m }">
-                <b-button
-                  @click="openPageBuilder(m)"
-                  variant="link"
-                  class="mr-2 pt-0 text-dark"
-                >
-                  {{ pages.find(p => p.moduleID === m.moduleID) ?  $t('module.recordPage.edit') : $t('module.recordPage.create') }}
-                </b-button>
-                <span v-if="m.canReadRecord">
-                  <router-link :to="{name: 'admin.modules.record.list', params: { moduleID: m.moduleID }}" class="mr-2 text-dark">
-                    <font-awesome-icon :icon="['fas', 'bars']"></font-awesome-icon>
-                  </router-link>
-                </span>
-                <span v-if="m.canUpdateModule || m.canDeleteModule">
-                  <router-link :to="{name: 'admin.modules.edit', params: { moduleID: m.moduleID }}" class="mr-2 text-dark">
-                    <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
-                  </router-link>
-                </span>
-                <c-permissions-button
-                  v-if="m.canGrant"
-                  :title="m.name"
-                  :target="m.name"
-                  :resource="'compose:module:'+m.moduleID"
-                  link
-                />
-              </template>
-            </b-table>
+                <div class="flex-grow-1 mt-1">
+                  <b-input
+                    v-model.trim="query"
+                    class="mw-100"
+                    type="search"
+                    :placeholder="$t('module.searchPlaceholder')" />
+
+                </div>
+              </b-row>
+            </b-card-header>
+            <b-card-body class="p-0">
+              <b-table
+                :fields="tableFields"
+                :items="modules"
+                :filter="query"
+                :filter-included-fields="['handle', 'name']"
+                @row-clicked="handleRowClicked"
+                head-variant="light"
+                tbody-tr-class="pointer"
+                responsive
+                hover
+              >
+                <template v-slot:cell(name)="{ item: m }">
+                  <div>
+                    {{ m.name }}
+                    <h5
+                      class="mb-0"
+                    >
+                      <b-badge
+                        v-if="Object.keys(m.labels || {}).includes('federation')"
+                        pill
+                        variant="primary"
+                      >
+                        {{ $t('module.federated') }}
+                      </b-badge>
+                    </h5>
+                  </div>
+                </template>
+                <template v-slot:cell(updatedAt)="{ item: m }">
+                  {{ (m.updatedAt || m.createdAt) | locDateOnly }}
+                </template>
+                <template v-slot:cell(actions)="{ item: m }">
+                  <b-button
+                    @click="openPageBuilder(m)"
+                    variant="light"
+                    class="mr-2"
+                  >
+                    {{ pages.find(p => p.moduleID === m.moduleID) ?  $t('module.recordPage.edit') : $t('module.recordPage.create') }}
+                  </b-button>
+                  <span v-if="m.canReadRecord">
+                    <router-link :to="{name: 'admin.modules.record.list', params: { moduleID: m.moduleID }}" class="btn px-2 text-dark">
+                      {{ $t('module.allRecords') }}
+                    </router-link>
+                  </span>
+                  <c-permissions-button
+                    v-if="m.canGrant"
+                    :title="m.name"
+                    :target="m.name"
+                    :resource="'compose:module:'+m.moduleID"
+                    class="btn px-2"
+                    link
+                  />
+                </template>
+              </b-table>
+            </b-card-body>
           </b-card>
         </b-col>
       </b-row>
@@ -124,6 +139,8 @@ export default {
 
   data () {
     return {
+      query: '',
+
       newModule: new compose.Module(
         { fields: [new compose.ModuleFieldString({ fieldID: '0', name: 'Sample' })] },
         this.namespace,
@@ -142,14 +159,18 @@ export default {
         {
           key: 'name',
           sortable: true,
+          tdClass: 'align-middle pl-4 text-nowrap',
+          thClass: 'pl-4',
         },
         {
           key: 'handle',
           sortable: true,
+          tdClass: 'align-middle',
         },
         {
           key: 'updatedAt',
           sortable: true,
+          tdClass: 'align-middle',
         },
         {
           key: 'actions',
@@ -222,13 +243,24 @@ export default {
         })
         .catch(this.defaultErrorHandler(this.$t('notification.page.createFailed')))
     },
+
+    handleRowClicked ({ moduleID, canUpdateModule, canDeleteModule }) {
+      if (!(canUpdateModule || canDeleteModule)) {
+        return
+      }
+      this.$router.push({
+        name: 'admin.modules.edit',
+        params: { moduleID },
+        query: null,
+      })
+    },
   },
 }
 </script>
 <style lang="scss" scoped>
-table {
-  tr {
-    cursor: pointer;
-  }
+$input-height: 42px;
+
+.module-name-input {
+  height: $input-height;
 }
 </style>

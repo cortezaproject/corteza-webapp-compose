@@ -1,85 +1,105 @@
 <template>
   <div class="py-3">
-    <b-container>
-      <b-row>
-        <b-col md="12">
-          <b-card class="mb-2">
-            <b-row align-v="center">
-              <b-col md="5">
-                <b-form v-if="namespace.canCreateChart" @submit.prevent="create">
-                  <b-form-group :label="$t('chart.newLabel')">
-                    <b-input-group>
-                      <input required type="text" v-model="newChart.name" class="form-control" id="name" :placeholder="$t('chart.newPlaceholder')" />
-                      <b-input-group-append>
-                        <b-dropdown
-                            :text="$t('block.chart.add')"
-                          >
-                            <b-dropdown-item-button
-                              variant="primary"
-                              @click="create('generic')"
-                            >
-                              {{ $t('block.chart.addGeneric') }}
-                            </b-dropdown-item-button>
-                            <b-dropdown-item-button
-                              variant="primary"
-                              @click="create('funnel')"
-                            >
-                              {{ $t('block.chart.addFunnel') }}
-                            </b-dropdown-item-button>
-                            <b-dropdown-item-button
-                              variant="primary"
-                              @click="create('gauge')"
-                            >
-                              {{ $t('block.chart.addGauge') }}
-                            </b-dropdown-item-button>
-                          </b-dropdown>
-
-                      </b-input-group-append>
-                    </b-input-group>
-                  </b-form-group>
-                </b-form>
-              </b-col>
-              <b-col md="5">
-                <import v-if="namespace.canCreateChart"
-                        :namespace="namespace" type="chart" />
-              </b-col>
-              <b-col md="2" class="text-right">
-                <export :list="charts" type="chart"/>
-                <c-permissions-button
-                  v-if="namespace.canGrant"
-                  resource="compose:chart:*"
-                  link
-                />
-              </b-col>
-            </b-row>
-          </b-card>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col md="12">
-          <b-card :title="$t('chart.title')">
-            <b-table
-              :fields="tableFields"
-              :items="charts"
-              striped
-              borderless
-              responsive
+    <b-container fluid>
+      <b-row no-gutters>
+        <b-col xl="8" offset-xl="2">
+          <b-card no-body>
+            <b-card-header header-bg-variant="white"
+                           class="py-3"
             >
-              <template v-slot:cell(actions)="{ item: c }">
-                <span v-if="c.canUpdateChart || c.canDeleteChart">
-                  <router-link :to="{name: 'admin.charts.edit', params: { chartID: c.chartID }}" class="text-dark pr-2">
-                    <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
-                  </router-link>
-                </span>
-                <c-permissions-button
-                  v-if="c.canGrant"
-                  :title="c.name"
-                  :target="c.name"
-                  :resource="'compose:chart:'+c.chartID"
-                  link
-                />
-              </template>
-            </b-table>
+              <h1 class="mb-3">
+                {{ $t('chart.title') }}
+              </h1>
+              <b-row
+                class="align-items-center justify-content-between"
+                no-gutters
+              >
+                <div class="text-nowrap flex-grow-1">
+                  <b-dropdown
+                    v-if="namespace.canCreateChart"
+                    variant="primary"
+                    size="lg"
+                    class="float-left mr-1"
+                    :text="$t('block.chart.add')"
+                    >
+                      <b-dropdown-item-button
+                        variant="dark"
+                        @click="$router.push({ name: 'admin.charts.create', params: { category: 'generic' } })"
+                      >
+                        {{ $t('block.chart.addGeneric') }}
+                      </b-dropdown-item-button>
+                      <b-dropdown-item-button
+                        variant="dark"
+                        @click="$router.push({ name: 'admin.charts.create', params: { category: 'funnel' } })"
+                      >
+                        {{ $t('block.chart.addFunnel') }}
+                      </b-dropdown-item-button>
+                      <b-dropdown-item-button
+                        variant="dark"
+                        @click="$router.push({ name: 'admin.charts.create', params: { category: 'gauge' } })"
+                      >
+                        {{ $t('block.chart.addGauge') }}
+                      </b-dropdown-item-button>
+                    </b-dropdown>
+
+                  <import
+                    v-if="namespace.canCreateChart"
+                    :namespace="namespace"
+                    type="chart"
+                    class="float-left mr-1"
+                  />
+
+                  <export
+                    :list="charts"
+                    type="chart"
+                    class="float-left mr-1"
+                  />
+                  <c-permissions-button
+                    v-if="namespace.canGrant"
+                    resource="compose:chart:*"
+                    :buttonLabel="$t('general.label.permissions')"
+                    buttonVariant="light"
+                    class="btn-lg"
+                  />
+                </div>
+                <div class="flex-grow-1 mt-1">
+                  <b-input
+                    v-model.trim="query"
+                    class="float-right mw-100"
+                    type="search"
+                    :placeholder="$t('chart.searchPlaceholder')" />
+
+                </div>
+              </b-row>
+            </b-card-header>
+
+            <b-card-body class="p-0">
+              <b-table
+                :fields="tableFields"
+                :items="charts"
+                :filter="query"
+                :filter-included-fields="['handle', 'name']"
+                @row-clicked="handleRowClicked"
+                head-variant="light"
+                tbody-tr-class="pointer"
+                responsive
+                hover
+              >
+                <template v-slot:cell(updatedAt)="{ item: c }">
+                  {{ (c.updatedAt || c.createdAt) | locDateOnly }}
+                </template>
+                <template v-slot:cell(actions)="{ item: c }">
+                  <c-permissions-button
+                    v-if="c.canGrant"
+                    :title="c.name"
+                    :target="c.name"
+                    :resource="'compose:chart:'+c.chartID"
+                    link
+                    class="btn px-2"
+                  />
+                </template>
+              </b-table>
+            </b-card-body>
           </b-card>
         </b-col>
       </b-row>
@@ -109,6 +129,8 @@ export default {
 
   data () {
     return {
+      query: '',
+
       newChart: new compose.Chart({}),
     }
   },
@@ -123,6 +145,18 @@ export default {
         {
           key: 'name',
           sortable: true,
+          tdClass: 'align-middle pl-4 text-nowrap',
+          thClass: 'pl-4',
+        },
+        {
+          key: 'handle',
+          sortable: true,
+          tdClass: 'align-middle',
+        },
+        {
+          key: 'updatedAt',
+          sortable: true,
+          tdClass: 'align-middle',
         },
         {
           key: 'actions',
@@ -154,6 +188,23 @@ export default {
         this.$router.push({ name: 'admin.charts.edit', params: { chartID: chart.chartID } })
       }).catch(this.defaultErrorHandler(this.$t('notification.chart.createFailed')))
     },
+    handleRowClicked ({ chartID, canUpdateChart, canDeleteChart }) {
+      if (!(canUpdateChart || canDeleteChart)) {
+        return
+      }
+      this.$router.push({
+        name: 'admin.charts.edit',
+        params: { chartID },
+        query: null,
+      })
+    },
   },
 }
 </script>
+<style lang="scss" scoped>
+$input-height: 42px;
+
+.chart-name-input {
+  height: $input-height;
+}
+</style>

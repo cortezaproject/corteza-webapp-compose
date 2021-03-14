@@ -22,7 +22,7 @@
         <div
           v-for="field in fieldSet"
           :key="field.id"
-          class="p-2 border-bottom border-light"
+          class="p-2"
         >
           <div
             v-if="field.canReadRecordValue"
@@ -38,10 +38,9 @@
 
             <div
               v-else
+              class="mt-3 px-3"
             >
-              <label
-                class="text-secondary small"
-              >
+              <label class="text-primary">
                 {{ field.label || field.name }}
               </label>
               <field-viewer

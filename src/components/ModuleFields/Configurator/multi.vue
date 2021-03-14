@@ -1,7 +1,6 @@
 <template>
   <div>
     <b-form-group v-if="field.isMulti"
-                  class="mt-3"
                   :label="$t('field.options.multiDelimiter.label')">
       <b-form-radio-group v-model="field.options.multiDelimiter"
                           :options="selectOptions"

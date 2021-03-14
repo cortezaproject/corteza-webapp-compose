@@ -10,7 +10,7 @@ $fonts_dir : './fonts/' !default;
 $regular: 'nunito_sansregular' !default;
 $bold: 'nunito_sansbold' !default;
 $semibold: 'nunito_sanssemibold' !default;
-$font-size-base: 0.85rem !default;
+$font-size-base: 1rem !default;
 
 $font-family-base:      $regular !default;
 $headings-font-family:  $semibold !default;
@@ -18,37 +18,53 @@ $headings-font-family:  $semibold !default;
 // Color system
 $white:         #fff !default;
 $black:         #000 !default;
-$primary:       #568ba2 !default;
+$primary:       #4D7281 !default;
 $secondary:     #90A3B1 !default;
 $success:       #719430 !default;
 $warning:       #F5D380 !default;
-$danger:        #E85568 !default;
-$light:         #F3F3F5 !default;
+$danger:        #E54122 !default;
+$light:         #E4E9EF !default;
 $dark:          #1e2224 !default;
 
-// Options
-$enable-rounded:   false !default;
-$enable-gradients: true !default;
+$gray-200:      #F3F3F5 !default;
 
-// Components
-$border-radius: 0 !default;
+// Grid - maybe not the smartest idea to change this but let's see
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1500px
+) !default;
+
+// Options
+$enable-rounded:   true !default;
+$enable-gradients: false !default;
+$enable-responsive-font-sizes: true !default;
 
 // Body
-$body-bg: $light !default;
+$body-bg: $gray-200 !default;
+
+// Card
+$card-border-radius: 1rem !default;
+$card-border-width:  0;
+$card-cap-bg:        $gray-200 !default;
 
 // Tables
-$table-cell-padding: 0.5rem !default;
 $table-cell-padding-sm: 0.25rem !default;
-
-$table-border-width: 0 !default;
+$table-hover-bg:     $gray-200 !default;
 
 // Buttons
 $btn-font-size: $font-size-base !default;
 $btn-padding-y: 0.25em !default;
 $btn-padding-x: 1em !default;
-$btn-focus-width: 0 !default;
-$btn-focus-box-shadow: none !default;
+
+$btn-focus-width:       0 !default;
+$btn-focus-box-shadow:  none !default;
 $btn-active-box-shadow: none !default;
+
+$btn-font-size-lg:  16px !default;
+$btn-font-family:   $semibold;
 
 // Navbar
 $navbar-bg:             $white !default;
@@ -68,11 +84,22 @@ $navbar-toggler-font-size:  24px !default;
 $sidebar-width:         250px !default;
 $sidebar-height:        calc(100vh - #{$navbar-height}) !default;
 
+// Pagination
+$pagination-color:        $dark;
+$pagination-disabled-bg:  transparent;
+$pagination-bg:           transparent;
+$pagination-active-bg:    $dark;
+$pagination-border-width: 0;
+
 // Forms
 $input-font-size: $font-size-base !default;
-$input-btn-focus-width:        0 !default;
-$input-focus-box-shadow:       none !default;
-$input-focus-border-color:     $primary !default;
+
+$input-border-color:  $light !default;
+$input-border-width:  2px !default;
+
+$input-btn-focus-width:     0 !default;
+$input-focus-box-shadow:    none !default;
+$input-focus-border-color:  $primary !default;
 
 /* stylelint-disable */
 // This is used within corteza-webapp-compose/src/lib/block/Calendar/feedLoader/

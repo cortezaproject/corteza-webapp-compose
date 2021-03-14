@@ -14,7 +14,6 @@
           <b-badge
             v-if="Object.keys(recordListModule.labels || {}).includes('federation')"
             variant="primary"
-            style="border-radius: 0.5rem;"
             class="py-1"
           >
             {{ $t('block.recordList.federated') }}
@@ -25,21 +24,20 @@
     <template #toolbar>
       <b-container
         ref="toolbar"
-        class="m-0 p-2"
+        class="py-2"
         fluid
       >
         <b-row
           no-gutters
-          class="m-0 p-0"
+          class="align-items-center justify-content-between"
         >
-         <b-col
-            cols="6"
-          >
+         <div class="text-nowrap flex-grow-1">
             <template v-if="!options.hideAddButton && recordListModule.canCreateRecord">
               <template v-if="inlineEditing">
                   <b-btn
-                    variant="outline-primary"
-                    class="btn btn-sm btn-outline-primary float-left"
+                    variant="primary"
+                    size="lg"
+                    class="float-left"
                     @click="addInline"
                   >
                     + {{ $t('block.recordList.addRecord') }}
@@ -48,7 +46,7 @@
 
               <template v-else-if="!inlineEditing && recordPageID">
                 <router-link
-                  class="btn btn-sm btn-outline-primary float-left"
+                  class="btn btn-lg btn-primary float-left"
                   :to="{
                     name: 'page.record.create',
                     params: { pageID: recordPageID, refRecord: record },
@@ -74,32 +72,28 @@
               @export="onExport"
               class="ml-1 float-left"
             />
-          </b-col>
-          <b-col
-            cols="6"
-          >
+          </div>
+          <div class="mt-1 flex-grow-1">
             <b-input
               v-if="!options.hideSearch && !inlineEditing"
               v-model="query"
               class="float-right mw-100"
-              size="sm"
               type="search"
               :placeholder="$t('general.label.search')" />
 
-          </b-col>
+          </div>
         </b-row>
         <b-row
           v-if="options.selectable"
           v-show="selected.length > 0"
-          class="text-light bg-secondary p-2 mt-2"
+          class="mt-2 no-gutters"
         >
           <b-col
             cols="4"
-            class="pt-1 text-nowrap"
+            class="pt-1 text-nowrap font-weight-bold"
           >
             {{ $t('block.recordList.selected', { count: selected.length, total: items.length }) }}
             <a
-              class="text-light"
               href="#"
               @click.prevent="handleSelectAllOnPage({ isChecked: false })"
             >
@@ -128,11 +122,11 @@
               v-else-if="!areAllRowsDeleted"
               variant="link"
               size="md"
-              class="border-0 text-dark"
               :disabled="!recordListModule.canDeleteRecord"
               @click.prevent="handleDeleteSelectedRecords()"
             >
               <font-awesome-icon
+                class="text-danger"
                 :icon="['far', 'trash-alt']"
               />
             </b-button>
@@ -140,7 +134,7 @@
               v-else
               variant="link"
               size="md"
-              class="border-0 text-dark"
+              class="text-danger"
               @click.prevent="handleRestoreSelectedRecords()"
             >
               <font-awesome-icon
@@ -156,7 +150,7 @@
         hover
         responsive
         sticky-header
-        class="mh-100 h-100 m-0 mb-2 border-top"
+        class="mh-100 h-100 border-top"
       >
 
       <b-thead>
@@ -167,6 +161,7 @@
               :disabled="disableSelectAll"
               :checked="areAllRowsSelected && !disableSelectAll"
               @change="handleSelectAllOnPage({ isChecked: $event })"
+              class="ml-1"
             />
           </b-th>
           <b-th />
@@ -196,14 +191,16 @@
               >
                 <font-awesome-layers>
                   <font-awesome-icon
-                    :icon="['fas', 'sort-up']"
+                    :icon="['fas', 'angle-up']"
+                    class="mb-1"
                     :style="{
                       color: 'gray',
                       ...sorterStyle(field, 'ASC'),
                     }"
                   />
                   <font-awesome-icon
-                    :icon="['fas', 'sort-down']"
+                    :icon="['fas', 'angle-down']"
+                    class="mt-1"
                     :style="{
                       color: 'gray',
                       ...sorterStyle(field, 'DESC'),
@@ -235,34 +232,33 @@
         >
           <b-td
             v-if="options.draggable && inlineEditing"
-            class="align-top pr-0"
+            class="align-middle pr-0"
             @click.stop
           >
             <font-awesome-icon
               v-b-tooltip.hover
-              :icon="['fas', 'sort']"
+              :icon="['fas', 'bars']"
               :title="$t('general.tooltip.dragAndDrop')"
-              class="handle text-secondary sort-adjust-offset"
+              class="handle text-light"
             />
           </b-td>
 
           <b-td
             v-if="options.selectable"
-            class="align-top pr-0"
             @click.stop
+            class="align-middle pr-0"
           >
             <b-form-checkbox
-              class="checkbox-adjust-offset"
+              class="ml-1"
               :checked="selected.includes(item.id)"
               @change="onSelectRow($event, item)"
             />
           </b-td>
 
-          <b-td>
-            <b-badge
-              v-if="Object.keys(item.r.labels || {}).includes('federation')"
-              variant="primary"
-            >
+          <b-td class="align-middle pl-0">
+            <b-badge v-if="Object.keys(item.r.labels || {}).includes('federation')"
+                     variant="primary"
+                     class="align-text-top">
               F
             </b-badge>
           </b-td>
@@ -300,7 +296,7 @@
             </div>
             <i
               v-else
-              class="text-secondary"
+              class="text-primary"
             >
               {{ $t('field.noPermission') }}
             </i>
@@ -339,7 +335,7 @@
             <b-button
               v-if="!inlineEditing && !options.hideRecordReminderButton"
               variant="link"
-              class="p-0 m-0 pl-1 text-secondary"
+              class="p-0 m-0 pl-1 text-primary"
               @click.prevent="createReminder(item.r)">
               <font-awesome-icon
                 :icon="['far', 'bell']"
@@ -360,7 +356,7 @@
               <b-button
                 v-else
                 variant="link"
-                class="p-0 m-0 pl-1 text-secondary"
+                class="p-0 m-0 pl-1 text-primary"
                 @click="handleCloneInline(item.r)"
               >
                 <font-awesome-icon
@@ -373,7 +369,7 @@
               <b-button
                 v-if="!options.hideRecordEditButton && recordListModule.canUpdateRecord && recordPageID"
                 variant="link"
-                class="p-0 m-0 pl-1 text-secondary"
+                class="p-0 m-0 pl-1 text-primary"
                 :to="{ name: 'page.record.edit', params: { pageID: recordPageID, recordID: item.r.recordID }, query: null }"
               >
                 <font-awesome-icon
@@ -383,7 +379,7 @@
               <b-button
                 v-if="!options.hideRecordViewButton && recordPageID"
                 variant="link"
-                class="p-0 m-0 pl-1 text-secondary"
+                class="p-0 m-0 pl-1 text-primary"
                 :to="{ name: 'page.record', params: { pageID: recordPageID, recordID: item.r.recordID }, query: null }"
               >
                 <font-awesome-icon
@@ -418,21 +414,13 @@
         fluid
         class="m-0 p-2"
       >
-        <b-row
-          no-gutters
-        >
-          <b-col
-            class="d-flex justify-content-between align-items-center"
-          >
-            <div
-            >
-              <div
-                v-if="options.showTotalCount"
-                class="mr-auto text-nowrap text-truncate"
+        <b-row no-gutters>
+          <b-col class="d-flex justify-content-between align-items-center">
+            <div>
+              <div v-if="options.showTotalCount"
+                  class="ml-2 text-nowrap font-weight-bold"
               >
-                <span
-                  v-if="pagination.count > options.perPage"
-                >
+                <span v-if="pagination.count > options.perPage">
                   {{ $t('block.recordList.pagination.showing', getPagination) }}
                 </span>
                 <span
@@ -443,45 +431,53 @@
               </div>
             </div>
             <div
-              v-if="!options.hidePaging && !inlineEditing"
+              v-if="showPageNavigation && !options.hidePaging && !inlineEditing"
             >
               <b-pagination
                 v-if="options.fullPageNavigation"
                 align="right"
                 aria-controls="record-list"
                 class="m-0"
-                size="sm"
+                pills
+                variant="link"
                 :value="getPagination.page"
                 :per-page="getPagination.perPage"
                 :total-rows="getPagination.count"
                 @change="goToPage"
-              />
-
-              <b-button-group
-                v-else
-                size="sm"
               >
+                <template #first-text><font-awesome-icon :icon="['fas', 'angle-double-left']" /></template>
+                <template #prev-text><font-awesome-icon :icon="['fas', 'angle-left']" /></template>
+                <template #next-text><font-awesome-icon :icon="['fas', 'angle-right']" /></template>
+                <template #last-text><font-awesome-icon :icon="['fas', 'angle-double-right']" /></template>
+                <template #elipsis-text><font-awesome-icon :icon="['fas', 'ellipsis-h']" /></template>
+              </b-pagination>
+
+              <b-button-group v-else>
                 <b-button
-                  size="sm"
-                  variant="outline-primary"
                   :disabled="!hasPrevPage"
+                  variant="link"
+                  class="text-dark"
                   @click="goToPage()"
                 >
-                  {{ $t('block.recordList.pagination.first') }}
+                  <font-awesome-icon :icon="['fas', 'angle-double-left']" />
                 </b-button>
                 <b-button
-                  variant="primary"
                   :disabled="!hasPrevPage"
+                  variant="link"
+                  class="text-dark"
                   @click="goToPage('prevPage')"
                 >
+                  <font-awesome-icon :icon="['fas', 'angle-left']" />
                   {{ $t('block.recordList.pagination.prev') }}
                 </b-button>
                 <b-button
-                  variant="primary"
                   :disabled="!hasNextPage"
+                  variant="link"
+                  class="text-dark"
                   @click="goToPage('nextPage')"
                 >
                   {{ $t('block.recordList.pagination.next') }}
+                  <font-awesome-icon :icon="['fas', 'angle-right']" />
                 </b-button>
               </b-button-group>
             </div>
@@ -614,6 +610,10 @@ export default {
 
     hasNextPage () {
       return this.filter.nextPage
+    },
+
+    showPageNavigation () {
+      return this.hasNextPage || this.hasPrevPage
     },
 
     editing () {
@@ -1153,34 +1153,12 @@ export default {
   }
 }
 
-input {
-  width: 200px;
-}
-
 .handle {
   cursor: grab;
 }
 
 .pointer {
   cursor: pointer;
-}
-
-// This bits are required to properly align non editable items
-// in an inline editable record list
-.checkbox-adjust-offset {
-  margin-top: 7px;
-}
-
-.sort-adjust-offset {
-  margin-top: 10px;
-}
-
-.remove-adjust-offset {
-  margin-top: 5px;
-}
-
-.field-adjust-offset {
-  margin-top: 8px;
 }
 
 th .required::after {

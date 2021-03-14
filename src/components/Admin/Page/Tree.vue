@@ -9,82 +9,83 @@
     <template
       slot-scope="{item}"
     >
-      <div
+      <b-row
+        no-gutters
         v-if="item.pageID"
-        class="wrap d-flex"
-        :class="{ 'bg-warning': !isValid(item) }"
+        class="wrap d-flex pr-2"
       >
-        <div
-          class="flex-fill ml-1"
+        <b-col
+          cols="12"
+          xl="6"
+          lg="5"
+          class="flex-fill pl-2 overflow-hidden"
           :class="{'grab': namespace.canCreatePage}"
         >
           {{ item.title }}
-        </div>
-        <div
-          class="prop-col text-left"
-        >
           <span
-            v-if="item.moduleID !== '0'"
-          >
-            <i18next
-              path="page.recordPage"
-              tag="label"
-            >
-              <router-link
-                :to="{ name: 'admin.modules.edit', params: { moduleID: item.moduleID }}"
-              >
-                {{ moduleName(item) }}
-              </router-link>
-            </i18next>
-          </span>
-          <span
-            v-else-if="item.visible"
-          >
-            {{ $t('page.visible') }}
-          </span>
-          <span
-            v-else-if="!item.visible"
+            v-if="!item.visible && item.moduleID == '0'"
             class="text-danger"
           >
-            {{ $t('page.notVisible') }}
-          </span>
-        </div>
-        <div class="fixed-width text-right ml-3">
-          <router-link
-            v-if="item.blocks && item.blocks.length >= 1"
-            :to="{name: 'page', params: { pageID: item.pageID }}"
-            class="mr-2 text-dark d-inline-block">
-            <font-awesome-icon
-              :icon="['far', 'eye']"
-              :title="$t('page.preview')"
-            />
-          </router-link>
+                <font-awesome-icon
+                  :icon="['fas', 'eye-slash']"
+                  :title="$t('page.notVisible')"
+                />
+              </span>
+          <b-badge variant="danger" v-if="!isValid(item)">
+            {{ $t('page.invalid') }}
+          </b-badge>
+        </b-col>
+        <b-col
+          cols="12"
+          xl="6"
+          lg="7"
+          class="text-right pr-2"
+        >
           <router-link
             v-if="item.canUpdatePage"
             :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
-            class="mr-2 text-dark"
-          >
-            {{ $t('general.label.pageBuilder') }}
+            class="btn btn-light mr-2"
+          >{{ $t('general.label.pageBuilder') }}
           </router-link>
-          <router-link
-            v-if="item.canUpdatePage"
-            :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
-            class="mr-2 text-dark d-inline-block edit"
+          <span class="view d-inline-block">
+            <router-link
+              v-if="item.blocks && item.blocks.length >= 1"
+              :to="{name: 'page', params: { pageID: item.pageID }}"
+              class="btn">
+              {{ $t('page.view') }}
+            </router-link>
+          </span>
+          <span
+            class="d-none d-md-inline-block edit text-left"
           >
-            <font-awesome-icon
-              v-if="item.moduleID === '0'"
-              :icon="['far', 'edit']"
-            />
-          </router-link>
+            <router-link
+              v-if="item.moduleID !== '0'"
+              v-b-tooltip.hover.top
+              :title="moduleName(item)"
+              class="btn text-primary"
+              :to="{ name: 'admin.modules.edit', params: { moduleID: item.moduleID }}"
+            >
+              {{ $t('module.edit.title') }}
+            </router-link>
+            <router-link
+              v-if="item.canUpdatePage && item.moduleID === '0'"
+              :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
+              class="btn text-primary"
+            >
+              {{ $t('page.edit.title') }}
+            </router-link>
+
+          </span>
           <c-permissions-button
             v-if="namespace.canGrant"
             :title="item.title"
             :target="item.title"
             :resource="'compose:page:'+item.pageID"
             link
+            class="btn px-2"
           />
-        </div>
-      </div>
+        </b-col>
+      </b-row>
     </template>
   </sortable-tree>
 </template>
@@ -199,28 +200,19 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
-ul {
-  li {
-    div.wrap {
-      font-size: 0.9em;
-
-      div.prop-col {
-        font-size: 0.8em;
-      }
-    }
-  }
-}
-
-.fixed-width {
-  width: 170px;
-}
+$edit-width: 130px;
+$view-width: 70px;
 
 .edit {
-  width: 25px;
+  width: $edit-width;
+}
+
+.view {
+  width: $view-width;
 }
 
 .grab {
   cursor: grab;
+  z-index: 1;
 }
 </style>

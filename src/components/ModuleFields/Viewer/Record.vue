@@ -13,7 +13,7 @@
           </span>
         </span>
       </div>
-      <div v-else>
+      <div v-else class="text-nowrap">
         <div v-if="linkToRecord()" @click.stop><router-link :to="linkToRecord()">{{ format() }}</router-link></div>
         <div v-else>{{ format() }}</div>
       </div>

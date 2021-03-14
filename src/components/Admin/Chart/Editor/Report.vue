@@ -15,7 +15,7 @@
     </fieldset>
 
     <div v-if="!!module" class="mt-1">
-      <div class="border px-3 py-2 mb-2">
+      <div class="mb-2">
         <h5 class="mb-3">{{ $t('chart.edit.filter.label') }}</h5>
         <b-form-group>
           <b-form-select v-model="report.filter"
@@ -35,7 +35,7 @@
     </div>
 
     <div v-if="!!module">
-      <div class="border px-3 py-2 mb-2">
+      <div class="px-3 py-2 mb-2">
         <fieldset v-for="(d,i) in dimensions" :key="'d'+i">
           <h5 class="mb-3"> {{ $t('chart.edit.dimension.label') }} </h5>
           <b-form-group horizontal :label-cols="2" breakpoint="md" :label="$t('chart.edit.dimension.fieldLabel')">
@@ -74,7 +74,7 @@
           <!--</b-form-group>-->
         </fieldset>
       </div>
-      <draggable class="metrics border px-3 py-2" :list.sync="metrics" :options="{ group: 'metrics_'+moduleID, sort: true }">
+      <draggable class="metrics px-3 py-2" :list.sync="metrics" :options="{ group: 'metrics_'+moduleID, sort: true }">
         <fieldset v-for="(m,i) in metrics" :key="'m'+i" class="main-fieldset">
           <font-awesome-icon class="align-baseline text-secondary mr-2" v-if="metrics.length>1" :icon="['fas', 'grip-vertical']"></font-awesome-icon>
           <h5 class="mb-3 d-inline-block">{{ $t('chart.edit.metric.label') }}</h5>
