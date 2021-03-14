@@ -39,7 +39,7 @@
           cols="12"
           xl="6"
           lg="7"
-          class="text-right pr-2 mb-1"
+          class="text-right pr-2"
         >
           <router-link
             v-if="item.canUpdatePage"

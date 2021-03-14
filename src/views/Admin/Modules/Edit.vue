@@ -5,42 +5,89 @@
         <b-col xl="8" offset-xl="2">
           <b-card header-bg-variant="white"
                   no-body
+                  header-class="border-bottom"
           >
-            <div slot="header"
-              class="d-flex justify-content-between align-items-center"
-            >
-              <h2>
+            <div slot="header">
+              <h1 class="mb-3">
                 {{ $t('module.edit.title') }}
-              </h2>
-              <div>
-              <b-button
-                v-if="federationEnabled"
-                variant="light"
-                size="lg"
-                class="mr-1"
-                @click="federationSettings.modal = true"
-              >
-                <font-awesome-icon
-                  :icon="['fas', 'share-alt']"
-                />
+              </h1>
+              <b-row no-gutters
+                     class="align-items-end">
+                <div class="flex-grow-1 text-nowrap">
+                  <b-button
+                    v-if="federationEnabled"
+                    variant="light"
+                    size="lg"
+                    class="mr-1"
+                    @click="federationSettings.modal = true"
+                  >
+                    <font-awesome-icon
+                      :icon="['fas', 'share-alt']"
+                    />
 
-                {{ $t('module.edit.federationSettings.title') }}
-              </b-button>
-                <export :list="[this.module]" type="module" />
-                <c-permissions-button
-                  v-if="module.canGrant"
-                  resource="compose:module-field:*"
-                  link
-                  class="btn pr-2"
-                />
-              </div>
+                    {{ $t('module.edit.federationSettings.title') }}
+                  </b-button>
+                    <export :list="[this.module]"
+                            type="module"
+                            class="mr-1"
+                    />
+                    <c-permissions-button
+                      v-if="module.canGrant"
+                      resource="compose:module-field:*"
+                      :buttonLabel="$t('general.label.permissions')"
+                      buttonVariant="light"
+                      class="btn-lg mr-1"
+                    />
+                </div>
+                <div v-if="!creatingModule" class="flex-grow-1 text-nowrap d-flex justify-content-md-end mt-1">
+                      <b-button
+                        v-if="recordPage"
+                        :disabled="!namespace.canManageNamespace"
+                        :to="{ name: 'admin.pages.builder', params: { pageID: recordPage.pageID } }"
+                        variant="light"
+                        class="mr-1"
+                        size="lg"
+                      >
+                        {{ $t('module.recordPage.edit') }}
+                      </b-button>
+                      <b-button
+                        v-else
+                        @click="handleRecordPageCreation"
+                        variant="primary"
+                        size="lg"
+                        class="mr-1"
+                      >
+                        {{ $t('module.recordPage.create') }}
+                      </b-button>
+                      <b-button
+                        v-if="recordListPage"
+                        variant="light"
+                        class="mr-1"
+                        size="lg"
+                        :disabled="!namespace.canManageNamespace"
+                        :to="{ name: 'admin.pages.builder', params: { pageID: recordListPage.pageID } }"
+                      >
+                        {{ $t('module.edit.steps.recordList') }}
+                      </b-button>
+                      <b-button
+                        v-else
+                        variant="light"
+                        class="mr-1"
+                        size="lg"
+                        :disabled="!namespace.canCreatePage || !recordPage"
+                        @click="handleRecordListCreation"
+                      >
+                        {{ $t('module.edit.steps.recordList') }}
+                      </b-button>
+                </div>
+              </b-row>
             </div>
             <b-container fluid class="px-4">
-              <h5 class="mb-3">{{ $t('module.edit.moduleInfo') }}</h5>
+              <h5 class="my-3">{{ $t('module.edit.moduleInfo') }}</h5>
               <b-row>
                 <b-col cols="12" md="6" xl="4">
                   <b-form-group>
-                    <label class="text-primary">{{ $t('module.newPlaceholder') }}</label>
+                    <label class="text-primary">{{ $t('module.newLabel') }}</label>
                     <b-form-input required
                                   v-model="module.name"
                                   :placeholder="$t('module.newPlaceholder')"></b-form-input>
@@ -59,7 +106,7 @@
             </b-container>
             <hr>
             <b-container fluid class="px-4">
-              <h5 class="mt-1">{{ $t('module.edit.manageRecordFields') }}</h5>
+              <h5 class="mb-3 mt-1">{{ $t('module.edit.manageRecordFields') }}</h5>
               <b-row no-gutters>
                 <b-form-group class="w-100">
                   <table class="table table-sm table-borderless table-responsive-lg">
@@ -104,63 +151,6 @@
                                         :key="index"></field-row-view>
                       </tbody>
                     </table>
-                    <div
-                      v-if="!creatingModule"
-                      class="d-flex flex-column w-50"
-                    >
-                      <b-row align-v="center" class="text-center justify-content-between mt-4">
-                        <b-col>
-                          <circle-step
-                            stepNumber="1"
-                            :done="!!recordPage"
-                            small
-                          >
-                            <b-button
-                              v-if="recordPage"
-                              :disabled="!namespace.canManageNamespace"
-                              :to="{ name: 'admin.pages.builder', params: { pageID: recordPage.pageID } }"
-                              variant="outline-secondary"
-                            >
-                              {{ $t('module.edit.steps.recordPage') }}
-                            </b-button>
-                            <b-button
-                              v-else
-                              @click="handleRecordPageCreation"
-                              variant="outline-secondary"
-                            >
-                              {{ $t('module.edit.steps.recordPage') }}
-                            </b-button>
-                          </circle-step>
-                        </b-col>
-                        <b-col>
-                          <hr />
-                        </b-col>
-                        <b-col>
-                          <circle-step
-                            stepNumber="2"
-                            :done="!!recordListPage"
-                            small
-                          >
-                            <b-button
-                              v-if="recordListPage"
-                              variant="outline-secondary"
-                              :disabled="!namespace.canManageNamespace"
-                              :to="{ name: 'admin.pages.builder', params: { pageID: recordListPage.pageID } }"
-                            >
-                              {{ $t('module.edit.steps.recordList') }}
-                            </b-button>
-                            <b-button
-                              v-else
-                              variant="outline-secondary"
-                              :disabled="!namespace.canCreatePage || !recordPage"
-                              @click="handleRecordListCreation"
-                            >
-                              {{ $t('module.edit.steps.recordList') }}
-                            </b-button>
-                          </circle-step>
-                        </b-col>
-                      </b-row>
-                    </div>
                   </div>
                 </b-form-group>
               </b-row>
@@ -220,7 +210,6 @@ import { compose, NoID } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
-import CircleStep from 'corteza-webapp-compose/src/components/Common/CircleStep'
 
 export default {
   components: {
@@ -231,7 +220,6 @@ export default {
     FederationSettings,
     EditorToolbar,
     Export,
-    CircleStep,
   },
 
   props: {
@@ -471,9 +459,3 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-.steps {
-  padding: 0;
-  padding-top: 20vh;
-}
-</style>

@@ -3,21 +3,13 @@
     <b-container fluid>
       <b-row no-gutters>
         <b-col xl="8" offset-xl="2">
-          <div class="d-flex mb-3 align-items-center">
-            <h1 class="m-0">
-              {{ $t('module.title') }}
-            </h1>
-            <c-permissions-button
-              v-if="namespace.canGrant"
-              resource="compose:module:*"
-              class="btn"
-              link
-            />
-          </div>
           <b-card no-body>
             <b-card-header header-bg-variant="white"
                            class="py-3"
             >
+              <h1 class="mb-3">
+                {{ $t('module.title') }}
+              </h1>
               <b-row
                 class="align-items-center justify-content-between"
                 no-gutters
@@ -27,7 +19,7 @@
                     v-if="namespace.canCreateModule"
                     variant="primary"
                     size="lg"
-                    class="float-left"
+                    class="mr-1 float-left"
                     :to="{ name: 'admin.modules.create' }"
                   >
                     {{ $t('module.createLabel') }}
@@ -37,13 +29,20 @@
                     v-if="namespace.canCreateModule"
                     :namespace="namespace"
                     type="module"
-                    class="float-left ml-2"
+                    class="mr-1 float-left"
                   />
 
                   <export
                     :list="modules"
                     type="module"
-                    class="float-left ml-2"
+                    class="mr-1 float-left"
+                  />
+                  <c-permissions-button
+                    v-if="namespace.canGrant"
+                    resource="compose:module:*"
+                    :buttonLabel="$t('general.label.permissions')"
+                    buttonVariant="light"
+                    class="btn-lg"
                   />
                 </div>
                 <div class="flex-grow-1 mt-1">

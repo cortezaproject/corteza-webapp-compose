@@ -3,23 +3,19 @@
     <b-container fluid>
       <b-row no-gutters>
         <b-col xl="8" offset-xl="2">
-          <div class="d-flex mb-3 align-items-center">
-            <h1 class="m-0">{{ $t('page.title') }}</h1>
-            <c-permissions-button
-              v-if="namespace.canGrant"
-              resource="compose:page:*"
-              class="float-right btn pr-0"
-              link
-            />
-          </div>
           <b-card :title="$t('page.title')" no-body>
             <b-card-header header-bg-variant="white"
                            class="py-3"
             >
-              <b-row class="align-items-center">
-                <b-col cols="10" lg="4">
-                  <b-form @submit.prevent="handleAddPageFormSubmit" class="pb-0">
-                    <b-form-group v-if="namespace.canCreatePage" class="mb-0">
+              <h1 class="mb-3">
+                {{ $t('page.title') }}
+              </h1>
+              <b-row
+                no-gutters
+              >
+                <b-col xl="4" lg="5" md="7">
+                  <b-form @submit.prevent="handleAddPageFormSubmit" class="mr-1">
+                    <b-form-group v-if="namespace.canCreatePage" class="mb-1">
                       <b-input-group>
                         <b-input required type="text" v-model="page.title" class="page-name-input" id="name" :placeholder="$t('page.newPlaceholder')" />
                         <b-input-group-append>
@@ -28,6 +24,15 @@
                       </b-input-group>
                     </b-form-group>
                   </b-form>
+                </b-col>
+                <b-col xl="8" lg="7" md="5">
+                  <c-permissions-button
+                    v-if="namespace.canGrant"
+                    resource="compose:page:*"
+                    class="btn-lg"
+                    :buttonLabel="$t('general.label.permissions')"
+                    buttonVariant="light"
+                  />
                 </b-col>
               </b-row>
             </b-card-header>

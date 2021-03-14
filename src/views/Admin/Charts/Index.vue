@@ -3,21 +3,13 @@
     <b-container fluid>
       <b-row no-gutters>
         <b-col xl="8" offset-xl="2">
-          <div class="d-flex mb-3 align-items-center">
-            <h1 class="m-0">
-              {{ $t('chart.title') }}
-            </h1>
-            <c-permissions-button
-              v-if="namespace.canGrant"
-              resource="compose:chart:*"
-              class="btn"
-              link
-            />
-          </div>
           <b-card no-body>
             <b-card-header header-bg-variant="white"
                            class="py-3"
             >
+              <h1 class="mb-3">
+                {{ $t('chart.title') }}
+              </h1>
               <b-row
                 class="align-items-center justify-content-between"
                 no-gutters
@@ -27,7 +19,7 @@
                     v-if="namespace.canCreateChart"
                     variant="primary"
                     size="lg"
-                    class="float-left"
+                    class="float-left mr-1"
                     :text="$t('block.chart.add')"
                     >
                       <b-dropdown-item-button
@@ -54,13 +46,20 @@
                     v-if="namespace.canCreateChart"
                     :namespace="namespace"
                     type="chart"
-                    class="float-left ml-2"
+                    class="float-left mr-1"
                   />
 
                   <export
                     :list="charts"
                     type="chart"
-                    class="float-left ml-2"
+                    class="float-left mr-1"
+                  />
+                  <c-permissions-button
+                    v-if="namespace.canGrant"
+                    resource="compose:chart:*"
+                    :buttonLabel="$t('general.label.permissions')"
+                    buttonVariant="light"
+                    class="btn-lg"
                   />
                 </div>
                 <div class="flex-grow-1 mt-1">

@@ -388,7 +388,8 @@ export default {
   },
   module: {
     title: 'List of Modules',
-    newPlaceholder: 'Module Name',
+    newLabel: 'Module Name *',
+    newPlaceholder: 'Name used on the list of modules',
     createLabel: 'New Module',
     searchPlaceholder: 'Type here to search all modules in this namespace',
     federated: 'Federated',
@@ -682,6 +683,7 @@ export default {
       urlPlaceholder: 'https://example.tld',
       validation: 'Validation',
       here: 'here',
+      permissions: 'Permissions',
     },
     placeholder: {
       handle: 'handle (a - z, 0 - 9, underscore, dash)',

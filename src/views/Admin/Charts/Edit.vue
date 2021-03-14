@@ -3,13 +3,15 @@
     <b-container @submit.prevent="handleSave" tag="form" fluid>
       <b-row no-gutters>
         <b-col v-if="chart" xl="8" offset-xl="2">
-          <b-card header-class="bg-white">
+          <b-card header-bg-variant="white"
+                  header-class="border-bottom"
+          >
             <div slot="header"
                  class="d-flex justify-content-between align-items-center"
             >
-              <h2>
+              <h1 class="mb-3">
                 {{ $t('chart.edit.title') }}
-              </h2>
+              </h1>
               <export :list="[chart]" type="chart" class="float-right" slot="header"/>
             </div>
             <b-row>

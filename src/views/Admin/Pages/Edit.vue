@@ -4,14 +4,15 @@
       <b-row no-gutters>
         <b-col xl="8" offset-xl="2">
           <b-card header-bg-variant="white"
+                  header-class="border-bottom"
           >
             <div slot="header">
               <div class="d-flex justify-content-between align-items-center">
-                <h2>
+                <h1 class="mb-3">
                   {{ $t('page.edit.title') }}
-                </h2>
+                </h1>
                 <router-link :to="{name: 'admin.pages.builder'}"
-                             class="btn btn-light pr-2">
+                             class="btn btn-light btn-lg pr-2">
                              {{ $t('general.label.pageBuilder') }}
                 </router-link>
               </div>
