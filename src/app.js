@@ -35,7 +35,7 @@ export default (options = {}) => {
     },
 
     async created () {
-      this.$auth.handle().then(({ accessTokenFn, user }) => {
+      return this.$auth.handle().then(({ accessTokenFn, user }) => {
         // Setup the progress bar
         this.$Progress.start()
         this.$router.beforeEach((to, from, next) => {
@@ -67,6 +67,9 @@ export default (options = {}) => {
             this,
           ),
         }
+
+        // start workflow prompt watcher
+        this.$store.dispatch('wfPrompts/watch')
 
         this.loadBundle(bundleLoaderOpt)
           .then(() => this.$ComposeAPI.automationList({ excludeInvalid: true }))
@@ -102,6 +105,7 @@ export default (options = {}) => {
         throw err
       })
     },
+
     router,
     store,
     i18n: i18n(),

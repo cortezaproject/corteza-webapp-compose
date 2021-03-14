@@ -15,7 +15,13 @@ const verboseUIHooks = window.location.search.includes('verboseUIHooks')
 const verboseEventbus = window.location.search.includes('verboseEventbus')
 
 Vue.use(VTooltip)
-Vue.use(BootstrapVue)
+Vue.use(BootstrapVue, {
+  BToast: {
+    // see https://bootstrap-vue.org/docs/components/toast#comp-ref-b-toast-props
+    autoHideDelay: 7000,
+    toaster: 'b-toaster-bottom-right',
+  },
+})
 Vue.use(Router)
 Vue.use(Vuex)
 Vue.use(VueProgressBar, {
@@ -30,6 +36,7 @@ Vue.use(plugins.Auth(), { app: 'compose' })
 Vue.use(plugins.CortezaAPI('compose'))
 Vue.use(plugins.CortezaAPI('system'))
 Vue.use(plugins.CortezaAPI('federation'))
+Vue.use(plugins.CortezaAPI('automation'))
 
 Vue.use(plugins.EventBus(), {
   strict: notProduction,
