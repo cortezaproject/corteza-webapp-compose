@@ -110,8 +110,9 @@
       >
         <b-button
           v-if="page.canUpdatePage"
-          variant="outline-secondary"
-          class="mr-1"
+          variant="light"
+          size="lg"
+          class="mr-1 float-right"
           v-b-modal.createBlockSelector>
           + {{ $t('page.build.addBlock') }}
         </b-button>
