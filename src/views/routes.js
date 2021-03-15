@@ -63,13 +63,13 @@ export default [
           },
 
           { path: '*', redirect: { name: 'pages' } },
-
-          // Help site for field expressions
-          { name: 'field.expressions.help', path: '/field-expressions-help', component: () => import('../components/Common/Module/ExpressionsHelp.vue') },
         ],
       },
     ],
   },
+
+  // Help site for field expressions
+  { name: 'field.expressions.help', path: '/field-expressions-help', component: () => import('../components/Common/Module/ExpressionsHelp.vue') },
 
   // When everything else fails, go to namespaces
   { path: '*', redirect: { name: 'root' } },
