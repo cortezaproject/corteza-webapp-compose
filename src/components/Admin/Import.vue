@@ -11,6 +11,8 @@
 
     <b-modal
       v-model="showModal"
+      size="lg"
+      :title="$t('general.label.import')"
     >
       <b-input-group>
         <!-- To handle file upload -->
@@ -38,7 +40,10 @@
             </b-button>
           </b-row>
           <b-row no-gutters>
-            <b-col cols="3" v-for="(o, index) in importObj.list" :key="index" class="form-check">
+            <b-col cols="12"
+                   sm="6"
+                   lg="4"
+                   v-for="(o, index) in importObj.list" :key="index">
                 <b-form-checkbox v-model="o.import">
                   {{ o.name || o.title }}
                 </b-form-checkbox>
