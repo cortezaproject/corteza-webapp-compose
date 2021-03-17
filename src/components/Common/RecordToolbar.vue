@@ -39,7 +39,7 @@
           {{ $t('general.label.clone') }}
         </b-button>
         <b-button
-          v-else
+          v-if="!inEditing"
           :disabled="!module.canUpdateRecord"
           variant="light"
           size="lg"
