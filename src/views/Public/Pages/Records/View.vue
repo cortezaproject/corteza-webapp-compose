@@ -84,7 +84,8 @@ export default {
 
   computed: {
     newRouteParams () {
-      const { recordID, ...params } = this.$route.params
+      // Remove recordID and values from route params
+      const { recordID, values, ...params } = this.$route.params
       return params
     },
 
