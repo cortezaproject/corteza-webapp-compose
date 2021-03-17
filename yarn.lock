@@ -850,10 +850,10 @@
     openurl "1.1.1"
     yargs "6.6.0"
 
-"@cortezaproject/corteza-js@~2020.12.4":
-  version "2020.12.4"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2020.12.4.tgz#17c08e590d921e676e92066f26ea2d53247a888e"
-  integrity sha512-7hKvtLMqHGyCgv/nbPHheJo805JXKzxB2iA6luW9bdRkIyAHjEIX8p8JQxUG2XU831i05xtp+ZRXMxyWX4ouKA==
+"@cortezaproject/corteza-js@>2021.3.0-rc", "@cortezaproject/corteza-js@^2021.3.0-rc.1":
+  version "2021.3.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.3.0-rc.1.tgz#8a69abfab63a2c69af107b68b7b1e079348ad0a7"
+  integrity sha512-zBoA+kQdYyAj0cC8eqI6QtCvT2gSDQVRPkhvxEPGe9iOSsyfLM7rUvc4oSuGoW/LtMgGN4s5bUHEUyUoxsM4lA==
   dependencies:
     axios "^0.21.1"
     chart.js "2.9.3"
@@ -866,12 +866,12 @@
     pino "^5.16.0"
     ts-sinon "^1.0.25"
 
-"@cortezaproject/corteza-vue@~2020.12.3":
-  version "2020.12.3"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2020.12.3.tgz#d2e57d77707982f41d6bc1338c97591cfdb6b260"
-  integrity sha512-Q7sKJlU+CegNh/lwqb8LBCrbFVV0zj1uz8y5xbESzQ5ur0RNYHEhBnyl26z22qA6wv7ZAd+kxSepe888r7pztg==
+"@cortezaproject/corteza-vue@>2021.3.0-rc":
+  version "2021.3.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.3.0-rc.1.tgz#eeba9b5f5e0b5a07557c0be7ea3883b3ac520db8"
+  integrity sha512-ZXLZdV7fHmhG9ZtypsF5//bQcBSPlvOJPIe5jrmO1zllAiEf0gl9cJB/079ZtlGtCHhQWiPH/soyKOnuaBZtOA==
   dependencies:
-    "@cortezaproject/corteza-js" "~2020.12.4"
+    "@cortezaproject/corteza-js" "^2021.3.0-rc.1"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
     "@fortawesome/free-solid-svg-icons" "^5.12.0"
     "@fortawesome/vue-fontawesome" "^0.1.9"
@@ -884,6 +884,7 @@
     qs "^6.9.1"
     v-photoswipe "^1.0.3-1"
     vue "^2.6.11"
+    vuex "^3.6.2"
     websocket-extensions "^0.1.4"
 
 "@emotion/cache@^10.0.27", "@emotion/cache@^10.0.9":
@@ -14405,6 +14406,11 @@ vuex@^3.1.1:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.1.2.tgz#a2863f4005aa73f2587e55c3fadf3f01f69c7d4d"
   integrity sha512-ha3jNLJqNhhrAemDXcmMJMKf1Zu4sybMPr9KxJIuOpVcsDQlTBYLLladav2U+g1AvdYDG5Gs0xBTb0M5pXXYFQ==
+
+vuex@^3.6.2:
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.6.2.tgz#236bc086a870c3ae79946f107f16de59d5895e71"
+  integrity sha512-ETW44IqCgBpVomy520DT5jf8n0zoCac+sxWnn+hMe/CzaSejb/eVw2YToiXYX+Ex/AuHHia28vWTq4goAexFbw==
 
 w3c-hr-time@^1.0.1:
   version "1.0.1"
