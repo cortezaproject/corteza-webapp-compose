@@ -1,10 +1,5 @@
 <template>
   <div class="d-flex flex-column w-100 vh-100">
-    <public-header
-      :page="page"
-      :namespace="namespace"
-      @toggleNav="navVisible = $event"
-    />
     <div v-if="showSteps" class="d-flex flex-column m-5 vh-75">
       <h1 class="display-3">{{ $t('general.label.welcome') }}</h1>
       <p class="lead">

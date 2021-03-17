@@ -188,9 +188,9 @@ export default {
     },
 
     screenSize: {
-      type: Boolean,
+      type: String,
       required: false,
-      default: false,
+      default: 's',
     },
   },
 
