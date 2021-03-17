@@ -77,7 +77,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import PublicHeader from 'corteza-webapp-compose/src/components/Public/Header'
 import CircleStep from 'corteza-webapp-compose/src/components/Common/CircleStep'
 import { compose } from '@cortezaproject/corteza-js'
 
@@ -88,7 +87,6 @@ export default {
   name: 'public-root',
 
   components: {
-    PublicHeader,
     CircleStep,
   },
 

@@ -11,6 +11,10 @@ export default {
     adminPanel: 'Admin panel',
     more: 'More',
   },
+  sidebar: {
+    searchPlaceholder: 'Search pages...',
+    createNS: '+ Add new',
+  },
   onboarding: {
     message: {
       noPages: 'It seems this namespace has no visible pages yet.',

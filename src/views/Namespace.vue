@@ -1,20 +1,37 @@
 <template>
   <div
-    class="centering-wrap inactive-area d-flex"
+    class="d-flex"
   >
     <c-toaster
       :toasts="toasts"
     />
-    <div class="d-none d-md-block">
-      <namespace-sidebar
-        :namespaces="enabledNamespaces"
-        v-if="showNamespaceSidebar"
-        :namespace="namespace"
-        :visible.sync="nsSbVisible"
+
+    <namespace-sidebar
+      :namespaces="enabledNamespaces"
+      :pages="pagesClean"
+      :namespace="namespace"
+      :screen-size="screenSize"
+    />
+
+    <!-- These divs simplify the process of determining what nav variation should be used -->
+    <template>
+      <div
+        class="d-block d-lg-none"
+        v-b-visible="setScreenSizeS"
       />
-    </div>
+      <div
+        class="d-none d-lg-block d-xl-none"
+        v-b-visible="setScreenSizeLG"
+      />
+      <div
+        class="d-none d-xl-block"
+        v-b-visible="setScreenSizeXL"
+      />
+    </template>
+
     <router-view
       v-if="loaded && namespace"
+      class="namespace-content"
       :namespace="namespace"
     />
     <div
@@ -63,7 +80,7 @@
 import moment from 'moment'
 import { mapGetters } from 'vuex'
 import NamespaceSidebar from '../components/Namespaces/NamespaceSidebar'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import { components } from '@cortezaproject/corteza-vue'
 const { CToaster } = components
 
@@ -84,7 +101,6 @@ export default {
 
   data () {
     return {
-      nsSbVisible: this.$s('compose.UI.NamespaceSwitcher.DefaultOpen', false),
       loaded: false,
 
       error: '',
@@ -92,6 +108,8 @@ export default {
       namespace: null,
       namespaces: [],
       toasts: [],
+
+      screenSize: undefined,
     }
   },
 
@@ -101,6 +119,7 @@ export default {
       modulePending: 'module/pending',
       chartPending: 'chart/pending',
       pagePending: 'page/pending',
+      pages: 'page/set',
     }),
 
     parts () {
@@ -123,6 +142,10 @@ export default {
 
     showNamespaceSidebar () {
       return this.$s('compose.UI.NamespaceSwitcher.Enabled', false) && this.enabledNamespaces.length > 1
+    },
+
+    pagesClean () {
+      return this.pages.filter(({ moduleID, visible }) => visible && moduleID === NoID)
     },
   },
 
@@ -198,6 +221,22 @@ export default {
   },
 
   methods: {
+    setScreenSizeS (yes) {
+      if (yes) {
+        this.screenSize = 's'
+      }
+    },
+    setScreenSizeLG (yes) {
+      if (yes) {
+        this.screenSize = 'lg'
+      }
+    },
+    setScreenSizeXL (yes) {
+      if (yes) {
+        this.screenSize = 'xl'
+      }
+    },
+
     async namespaceLoader () {
       return this.$ComposeAPI.namespaceList().then(({ set }) => {
         this.namespaces = set.map(ns => new compose.Namespace(ns))
@@ -299,6 +338,10 @@ export default {
   height: 20vh;
   padding: 60px;
   top: 40vh;
+}
+
+.namespace-content {
+  padding-top: 55px;
 }
 </style>
 

@@ -47,7 +47,7 @@ $body-bg: $gray-200 !default;
 
 // Card
 $card-border-radius: 1rem !default;
-$card-border-width:  0;
+$card-border-width:  0 !default;
 $card-cap-bg:        $gray-200 !default;
 
 // Tables
@@ -64,7 +64,7 @@ $btn-focus-box-shadow:  none !default;
 $btn-active-box-shadow: none !default;
 
 $btn-font-size-lg:  16px !default;
-$btn-font-family:   $semibold;
+$btn-font-family:   $semibold !default;
 
 // Navbar
 $navbar-bg:             $white !default;
@@ -85,11 +85,11 @@ $sidebar-width:         250px !default;
 $sidebar-height:        calc(100vh - #{$navbar-height}) !default;
 
 // Pagination
-$pagination-color:        $dark;
-$pagination-disabled-bg:  transparent;
-$pagination-bg:           transparent;
-$pagination-active-bg:    $dark;
-$pagination-border-width: 0;
+$pagination-color:        $dark !default;
+$pagination-disabled-bg:  transparent !default;
+$pagination-bg:           transparent !default;
+$pagination-active-bg:    $dark !default;
+$pagination-border-width: 0 !default;
 
 // Forms
 $input-font-size: $font-size-base !default;
