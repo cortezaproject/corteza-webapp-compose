@@ -3,7 +3,7 @@
     <div
       v-for="(m, i) in options.metrics"
       :key="i"
-      class="text-center mx-auto"
+      class="h-100 d-flex align-items-end justify-content-center overflow-hidden"
     >
       <div
         v-for="(v, i) in formatResponse(m, i)"
@@ -13,7 +13,7 @@
           {{ v.label }}
         </h3> -->
         <h3
-          class="p-0 m-0"
+          class="text-truncate"
           :style="genStyle(m.valueStyle)"
         >
           <span v-if="m.prefix">
@@ -126,3 +126,8 @@ export default {
   },
 }
 </script>
+<style scoped lang="scss">
+h3 {
+  line-height: 1;
+}
+</style>

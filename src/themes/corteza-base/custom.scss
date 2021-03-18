@@ -229,14 +229,6 @@ fieldset.required {
   }
 }
 
-// Align Metric to bottom
-.Metric {
-  .card-body {
-    display: flex;
-    align-items: flex-end;
-  }
-}
-
 // Over-ride Bootstrap clear search input icon
 input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
