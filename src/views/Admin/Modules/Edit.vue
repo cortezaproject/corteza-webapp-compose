@@ -59,26 +59,6 @@
                       >
                         {{ $t('module.recordPage.create') }}
                       </b-button>
-                      <b-button
-                        v-if="recordListPage"
-                        variant="light"
-                        class="mr-1"
-                        size="lg"
-                        :disabled="!namespace.canManageNamespace"
-                        :to="{ name: 'admin.pages.builder', params: { pageID: recordListPage.pageID } }"
-                      >
-                        {{ $t('module.edit.steps.recordList') }}
-                      </b-button>
-                      <b-button
-                        v-else
-                        variant="light"
-                        class="mr-1"
-                        size="lg"
-                        :disabled="!namespace.canCreatePage || !recordPage"
-                        @click="handleRecordListCreation"
-                      >
-                        {{ $t('module.edit.steps.recordList') }}
-                      </b-button>
                 </div>
               </b-row>
             </div>
