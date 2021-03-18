@@ -1035,6 +1035,7 @@ export default {
     searchPlaceholder: 'Type here to search among all namespaces...',
     create: 'Create new namespace',
     edit: 'Edit namespace',
+    visit: 'Visit namespace',
     disabled: 'Namespace is disabled',
     setPermissions: 'Set namespace permissions',
     name: {

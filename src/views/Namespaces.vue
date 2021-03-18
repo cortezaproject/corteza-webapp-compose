@@ -11,36 +11,15 @@
     <b-container class="pt-2 pb-5">
       <b-row no-gutters>
         <b-col>
-          <div
-            class="float-right pt-2"
-          >
-            <c-permissions-button
-              v-if="canGrant"
-              resource="compose:namespace:*"
-              link
-            />
-          </div>
-
-          <b-col
-            cols="12"
-            lg="6"
-            class="px-0"
-          >
-            <h1>
-              {{ $t('namespace.title') }}
-            </h1>
-            <b-input
-              v-model.trim="query"
-              class="float-right mw-100"
-              type="search"
-              :placeholder="$t('namespace.searchPlaceholder')" />
-          </b-col>
+          <h1>
+            {{ $t('namespace.title') }}
+          </h1>
         </b-col>
       </b-row>
-      <b-row>
-        <b-col v-if="canCreateNamespace"
-               cols="6"
-               class="mt-2"
+      <b-row no-gutters
+             class="align-items-center justify-content-between">
+        <div v-if="canCreateNamespace"
+             class="mt-2 text-nowrap flex-grow-1"
         >
           <b-btn :to="{ name: 'namespace.create' }"
                  variant="primary"
@@ -48,7 +27,21 @@
           >
               {{ $t('namespace.create') }}
           </b-btn>
-        </b-col>
+          <c-permissions-button
+            v-if="canGrant"
+            resource="compose:namespace:*"
+            buttonVariant="light"
+            :buttonLabel="$t('general.label.permissions')"
+            class="ml-1 btn-lg"
+          />
+        </div>
+        <div class="flex-grow-1 mt-1">
+          <b-input
+            v-model.trim="query"
+            class="float-right mw-100"
+            type="search"
+            :placeholder="$t('namespace.searchPlaceholder')" />
+        </div>
       </b-row>
 
       <b-row align-v="stretch">

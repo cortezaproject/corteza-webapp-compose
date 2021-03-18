@@ -1,6 +1,7 @@
 <template class="h-100">
-  <b-card class="h-100"
+  <b-card class="h-100 shadow-sm"
           footer-bg-variant="white"
+          body-class="pb-0"
   >
     <h2 class="h5">{{ namespace.name }}</h2>
     <p v-if="namespace.meta.subtitle"
@@ -8,7 +9,9 @@
     >
           {{ namespace.meta.subtitle }}
     </p>
-    <p v-if="namespace.meta.description">
+    <p v-if="namespace.meta.description"
+       class="m-0"
+    >
       {{ namespace.meta.description }}
     </p>
     <span slot="footer">
@@ -16,14 +19,14 @@
                 :to="{ name: 'pages', params: { slug: (namespace.slug || namespace.namespaceID) } }"
                 variant="light"
                 size="lg">
-        Visit namespace
+        {{ $t('namespace.visit') }}
       </b-button>
       <b-button v-if="namespace.canUpdateNamespace"
                 :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }"
                 variant="light"
                 class="float-right"
                 size="lg">
-        <font-awesome-icon :icon="['far', 'edit']"></font-awesome-icon>
+        <font-awesome-icon :icon="['far', 'edit']"/>
       </b-button>
       <slot />
     </span>
