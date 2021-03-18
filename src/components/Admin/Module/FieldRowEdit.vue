@@ -101,10 +101,11 @@
       />
       <c-permissions-button
         v-if="canGrant"
+        class="text-dark px-0"
+        buttonVariant="link"
         :title="value.name"
         :target="value.name"
         :resource="'compose:module-field:'+value.fieldID"
-        link
       />
     </td>
   </tr>

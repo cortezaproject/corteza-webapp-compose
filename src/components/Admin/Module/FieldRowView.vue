@@ -1,9 +1,9 @@
 <template>
   <tr>
     <td></td>
-    <td>{{ field.name }}</td>
-    <td>{{ field.label }}</td>
-    <td>{{ field.kind }}</td>
+    <td class="pl-3">{{ field.name }}</td>
+    <td class="pl-3">{{ field.label }}</td>
+    <td class="pl-3">{{ field.kind }}</td>
   </tr>
 </template>
 

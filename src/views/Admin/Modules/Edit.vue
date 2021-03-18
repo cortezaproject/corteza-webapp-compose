@@ -112,26 +112,27 @@
                                       :key="index"></field-row-edit>
                     </draggable>
                     <tr>
-                      <th colspan="1" />
-                      <th colspan="7">
+                      <td colspan="1" />
+                      <td colspan="7">
                         <b-button @click="handleNewField"
-                                  variant="primary">+ {{ $t('module.edit.newField') }}
+                                  class="mb-5"
+                                  variant="primary">
+                          + {{ $t('module.edit.newField') }}
                         </b-button>
-                      </th>
+                      </td>
                     </tr>
+                    <tr>
+                      <td colspan="7"
+                          class="font-weight-bold"
+                      >
+                        {{ $t('module.edit.systemFields') }}
+                      </td>
+                    </tr>
+                    <field-row-view v-for="(field, index) in module.systemFields()"
+                                    :field="field"
+                                    class="mt-4"
+                                    :key="index"></field-row-view>
                   </table>
-                  <div class="d-flex mt-5">
-                    <table class="w-50">
-                      <tbody>
-                        <tr>
-                          <th colspan="7">{{ $t('module.edit.systemFields') }}</th>
-                        </tr>
-                        <field-row-view v-for="(field, index) in module.systemFields()"
-                                        :field="field"
-                                        :key="index"></field-row-view>
-                      </tbody>
-                    </table>
-                  </div>
                 </b-form-group>
               </b-row>
             </b-container>
