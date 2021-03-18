@@ -1,23 +1,118 @@
 <template>
   <div>
     <div
-      class="mobile-top-nav bg-white p-3"
+      class="header-navigation d-flex align-items-center justify-content-between position-absolute sticky-top"
     >
-      <b-btn
-        variant="link"
-        @click="expanded=true"
-        class="float-left"
+      <div class="header d-flex align-items-center"
+           :class="{
+        'bg-light shadow-sm': expanded,
+          }"
       >
-        (OPEN!)
-      </b-btn>
-
-      <div class="logo-ph float-left" />
+        <b-btn
+          variant="outline-light"
+          @click="expanded=!expanded"
+          size="lg"
+          class="text-dark border-0 mx-2"
+        >
+          <font-awesome-icon
+            :icon="['fas', 'bars']"
+          />
+        </b-btn>
+        <div class="logo ml-3"
+             :class="{
+            'd-none': !expanded,
+            }"
+        />
+        <h3 class="m-0"
+            :class="{
+            'd-none': expanded,
+            }"
+        >
+          Page title
+        </h3>
+<!--        <b-input-->
+<!--          v-model.trim="query"-->
+<!--          class="col-lg-7 col-xl-5"-->
+<!--          type="search"-->
+<!--          :placeholder="$t('sidebar.searchPlaceholder')"-->
+<!--        />-->
+      </div>
+      <div class="text-nowrap d-flex flex-grow-1 justify-content-end">
+        <b-form-input type="text"
+                      name="search"
+                      placeholder="Search..."
+                      class="ml-3" />
+        <b-dropdown size="lg"
+                    variant="outline-light"
+                    toggle-class="text-decoration-none text-dark border-0"
+                    menu-class="border-0 shadow-sm text-dark font-weight-bold mt-2"
+                    right
+                    no-caret>
+          <template #button-content>
+            <font-awesome-icon
+              class="m-0 h5"
+              :icon="['far', 'question-circle']"
+            />
+            <span class="sr-only">Help</span>
+          </template>
+          <b-dropdown-item href="https://forum.cortezaproject.org/"
+                           target="_blank">
+            {{ $t('navigation.help.forum') }}
+          </b-dropdown-item>
+          <b-dropdown-item href="http://docs.cortezaproject.org/"
+                           target="_blank">
+            {{ $t('navigation.help.documentation') }}
+          </b-dropdown-item>
+          <b-dropdown-item href="mailto:info@crust.tech"
+                           target="_blank">
+            {{ $t('navigation.help.feedback') }}
+          </b-dropdown-item>
+        </b-dropdown>
+        <b-dropdown size="lg"
+                    variant="outline-light"
+                    toggle-class="text-decoration-none text-dark border-0"
+                    menu-class="border-0 shadow-sm text-dark font-weight-bold mt-2"
+                    right
+                    no-caret>
+          <template #button-content>
+            <font-awesome-icon
+              class="m-0 h5"
+              :icon="['fas', 'user-cog']"
+            />
+            <span class="sr-only">
+              {{ $t('navigation.help.forum') }}
+            </span>
+          </template>
+          <b-dropdown-text class="text-muted mb-2">
+            Logged in as Denis Arh
+          </b-dropdown-text>
+          <b-dropdown-item href="">
+            {{ $t('navigation.userSettings.profile') }}
+          </b-dropdown-item>
+          <b-dropdown-item href="">
+            {{ $t('navigation.userSettings.changePassword') }}
+          </b-dropdown-item>
+          <b-dropdown-item href="">
+            {{ $t('navigation.userSettings.logout') }}
+          </b-dropdown-item>
+        </b-dropdown>
+        <b-btn
+          variant="outline-light"
+          to="#"
+          size="lg"
+          class="text-dark border-0 mr-2"
+        >
+          <font-awesome-icon
+            class="m-0 h5"
+            :icon="['fas', 'grip-horizontal']"
+          />
+        </b-btn>
+      </div>
     </div>
-
     <div
       v-if="showBackdrop"
       class="position-fixed backdrop vh-100"
-      @click="expanded=false"
+      @click="expanded=!expanded"
     />
 
     <!--
@@ -34,29 +129,17 @@
     </template>
 
     <nav
-      class="bg-white"
+      class="bg-white shadow-sm"
       :class="{
         'collapsed': !expanded,
       }"
     >
 
-      <header class="position-sticky fixed-top">
+      <header class="position-sticky fixed-top bg-light">
         <b-container
           fluid
-          class="bg-light pt-4"
         >
-          <b-row>
-            <b-col class="d-inline-flex align-items-center">
-              <div class="logo-ph" />
-              <span
-                class="ml-2"
-              >
-                Corteza#
-              </span>
-            </b-col>
-          </b-row>
-
-          <b-row class="mt-3">
+          <b-row class="mt-2">
             <b-col>
               <vue-select
                 key="namespaceID"
@@ -79,7 +162,7 @@
           </b-row>
 
           <b-row
-            class="mt-3 pt-4 pb-2 bg-white"
+            class="mt-3 py-3 bg-white"
           >
             <b-col>
               <b-input
@@ -93,10 +176,6 @@
         </b-container>
       </header>
 
-      <div
-        class="header-delimiter bg-light"
-      />
-
       <sidebar-nav-item
         :items="navItems"
         :start-expanded="!!query"
@@ -106,45 +185,21 @@
       />
 
       <!-- Footer -->
-      <footer class="position-sticky fixed-bottom bg-white">
+      <footer class="position-sticky fixed-bottom bg-white pb-2">
         <b-container
           fluid
         >
-        <b-row>
-          <b-col>
-            <b-btn
-              v-if="expanded"
-              variant="link"
-              class="float-left"
-              @click="expanded=false"
-            >
-              left
-            </b-btn>
-
-            <b-btn
-              variant="link"
-              class="float-right"
-            >
-              logout
-            </b-btn>
-            <b-btn
-              variant="link"
-              class="float-right"
-              :to="{ name: 'admin.modules' }"
-            >
-              admin
-            </b-btn>
-
-            <b-btn
-              v-if="!expanded"
-              variant="link"
-              class="float-right"
-              @click="expanded=true"
-            >
-              right
-            </b-btn>
-          </b-col>
-        </b-row>
+          <b-row>
+            <b-col>
+              <b-btn
+                variant="light"
+                block
+                :to="{ name: 'admin.modules' }"
+              >
+                {{ $t('navigation.adminPanel') }}
+              </b-btn>
+            </b-col>
+          </b-row>
         </b-container>
       </footer>
     </nav>
@@ -296,22 +351,71 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$header-height: 60px;
+$sidebar-bg: #F4F7FA;
+$nav-width: 320px;
+$logo-width: 150px;
+
+input[type=text] {
+  width: 90px;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+  background: transparent;
+  border: none;
+
+  /* When the input field gets focus, change its width to 100% */
+  &:focus {
+    width: 100%;
+    background: white;
+    border: 2px solid #4D7281;
+  }
+
+  &::placeholder {
+    color: black;
+    content: "test";
+  }
+}
+
+.right-inner-addon i {
+  position: absolute;
+  right: 0;
+  padding: 10px 12px;
+  pointer-events: none;
+}
+
+.bg-light {
+  background-color: $sidebar-bg !important;
+}
 
 .backdrop {
   background-color: #1e1e1eA5;
-  top: 0;
+  top: $header-height;
   left: 0;
   width: 100vw;
   height: 100vh;
   z-index: 9000;
 }
 
-.mobile-top-nav {
+.header-navigation {
   width: 100vw;
-  position: fixed;
-  top: 0;
-  height: 55px;
-  overflow: hidden;
+  min-height: $header-height;
+
+  .logo {
+    height: calc(#{$header-height} / 2);
+    min-width: $logo-width;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .header {
+    width: $nav-width;
+    height: $header-height;
+  }
+}
+
+.sidebar-nav-trigger {
+  height: $header-height;
 }
 
 .spacer {
@@ -319,16 +423,16 @@ export default {
   transition: width 0.1s;
 
   &.expanded {
-    width: 350px;
+    width: $nav-width;
   }
 }
 
 nav {
-  width: 320px;
-  height: 100vh;
+  width: $nav-width;
+  height: calc(100vh - #{$header-height});
   position: fixed;
   left: 0;
-  top: 0;
+  bottom: 0;
   z-index: 10000;
   display: flex;
   flex-direction: column;
@@ -340,13 +444,7 @@ nav {
   transition: transform 0.1s;
 
   &.collapsed {
-    transform: translateX(-320px);
-  }
-
-  .header-delimiter {
-    width: calc(100% - 20px);
-    margin: 0 auto;
-    height: 1px;
+    transform: translateX(-($nav-width));
   }
 
   header {
@@ -360,10 +458,6 @@ nav {
     flex-grow: 1;
     height: 100%;
     overflow-y: auto;
-  }
-
-  footer {
-    flex-grow: 0;
   }
 }
 

@@ -85,6 +85,12 @@ th {
   }
 }
 
+.header-navigation {
+  .logo {
+    background-image: url($logo);
+  }
+}
+
 .loader {
   display: flex;
   align-items: center;

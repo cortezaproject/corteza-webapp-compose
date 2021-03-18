@@ -10,6 +10,16 @@ export default {
     configuration: 'Configuration',
     adminPanel: 'Admin panel',
     more: 'More',
+    help: {
+      forum: 'Help',
+      documentation: 'Documentation',
+      feedback: 'Send feedback',
+    },
+    userSettings: {
+      profile: 'Profile',
+      changePassword: 'Change password',
+      logout: 'Logout',
+    },
   },
   sidebar: {
     searchPlaceholder: 'Search pages...',
