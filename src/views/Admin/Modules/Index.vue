@@ -3,7 +3,9 @@
     <b-container fluid>
       <b-row no-gutters>
         <b-col xl="8" offset-xl="2">
-          <b-card no-body>
+          <b-card no-body
+                  class="shadow-sm"
+          >
             <b-card-header header-bg-variant="white"
                            class="py-3"
             >

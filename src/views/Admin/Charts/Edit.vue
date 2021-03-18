@@ -5,6 +5,7 @@
         <b-col v-if="chart" xl="8" offset-xl="2">
           <b-card header-bg-variant="white"
                   header-class="border-bottom"
+                  class="shadow-sm"
           >
             <div slot="header"
                  class="d-flex justify-content-between align-items-center"

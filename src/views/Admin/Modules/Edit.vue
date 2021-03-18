@@ -5,7 +5,7 @@
         <b-col xl="8" offset-xl="2">
           <b-card header-bg-variant="white"
                   no-body
-                  header-class="border-bottom"
+                  header-class="border-bottom shadow-sm"
           >
             <div slot="header">
               <h1 class="mb-3">

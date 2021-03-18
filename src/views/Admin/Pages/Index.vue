@@ -3,7 +3,10 @@
     <b-container fluid>
       <b-row no-gutters>
         <b-col xl="8" offset-xl="2">
-          <b-card :title="$t('page.title')" no-body>
+          <b-card :title="$t('page.title')"
+                  no-body
+                  class="shadow-sm"
+          >
             <b-card-header header-bg-variant="white"
                            class="py-3"
             >
