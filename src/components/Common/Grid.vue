@@ -9,7 +9,7 @@
   >
     <div
       v-if="isStretchable"
-      class="flex-grow-1 d-flex"
+      class="flex-grow-1 d-flex w-100"
     >
       <div
         v-for="(item, index) in grid"

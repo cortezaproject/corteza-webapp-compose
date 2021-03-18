@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-grow-1">
+  <div class="d-flex flex-grow-1 w-100">
     <b-alert v-if="isDeleted"
              show
              variant="info">

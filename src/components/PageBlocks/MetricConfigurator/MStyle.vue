@@ -1,11 +1,11 @@
 <template>
-  <b-card>
+  <b-card no-body>
     <slot name="title" />
 
     <fieldset>
       <b-form-group
         :label="$t('block.metric.editStyle.color')"
-        label-cols="2"
+        label-cols="4"
       >
         <b-form-input
           type="color"
@@ -16,7 +16,7 @@
 
       <b-form-group
         :label="$t('block.metric.editStyle.backgroundColor')"
-        label-cols="2"
+        label-cols="4"
       >
         <b-form-input
           type="color"
@@ -27,7 +27,7 @@
 
       <b-form-group
         :label="$t('block.metric.editStyle.fontSize')"
-        label-cols="2"
+        label-cols="4"
       >
         <b-form-input
           type="number"

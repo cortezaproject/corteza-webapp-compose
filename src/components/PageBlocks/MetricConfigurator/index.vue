@@ -3,7 +3,7 @@
     <b-tab
       :title="$t('block.metric.edit.tabTitle')"
     >
-      <b-row>
+      <b-row no-gutters>
         <b-col cols="12">
           <div
             v-for="(m, i) in metrics"
@@ -11,7 +11,7 @@
             class="mb-2"
           >
             <b-btn
-              variant="primary"
+              variant="light"
               class="mr-1"
               @click="editMetric(m)"
             >
@@ -25,7 +25,7 @@
               {{ $t('general.label.remove') }}
             </b-btn>
 
-            <span>
+            <span class="btn">
               {{ m.label || $t('block.metric.defaultMetricLabel') }}
             </span>
           </div>
@@ -45,10 +45,11 @@
         <b-col
           v-if="edit"
           cols="12"
-          md="7"
+          lg="7"
         >
           <b-card
             class="mb-5"
+            no-body
           >
             <fieldset>
               <b-form-group
@@ -66,10 +67,8 @@
               <h5>
                 {{ $t('block.metric.edit.dimensionLabel') }}
               </h5>
-              <b-form-group
-                :label="$t('block.metric.edit.moduleLabel')"
-                label-cols="2"
-              >
+              <b-form-group>
+                <label>{{ $t('block.metric.edit.moduleLabel') }}</label>
                 <b-form-select
                   v-model="edit.moduleID"
                   :options="modules"
@@ -144,10 +143,8 @@
                 </b-form-group>
               </template> -->
 
-              <b-form-group
-                :label="$t('block.metric.edit.filterLabel')"
-                label-cols="2"
-              >
+              <b-form-group>
+                <label>{{ $t('block.metric.edit.filterLabel') }}</label>
                 <b-form-textarea
                   v-model="edit.filter"
                   placeholder="(A > B) OR (A < C)"
@@ -161,10 +158,8 @@
                 {{ $t('block.metric.edit.metricLabel') }}
               </h5>
 
-              <b-form-group
-                :label="$t('block.metric.edit.metricFieldLabel')"
-                label-cols="2"
-              >
+              <b-form-group>
+                <label>{{ $t('block.metric.edit.metricFieldLabel') }}</label>
                 <b-form-select
                   v-model="edit.metricField"
                   :options="metricFields"
@@ -182,10 +177,8 @@
                 </b-form-select>
               </b-form-group>
 
-              <b-form-group
-                :label="$t('block.metric.edit.operationLabel')"
-                label-cols="2"
-              >
+              <b-form-group>
+                <label>{{ $t('block.metric.edit.operationLabel') }}</label>
                 <b-form-select
                   v-model="edit.operation"
                   :disabled="edit.metricField === 'count'"
@@ -203,22 +196,18 @@
                 </b-form-select>
               </b-form-group>
 
-              <b-form-group
-                :label="$t('block.metric.edit.transformFunctionLabel')"
-                :description="$t('block.metric.edit.transformFunctionDescription')"
-                label-cols="2"
-              >
+              <b-form-group>
+                <label>{{ $t('block.metric.edit.transformFunctionLabel') }}</label>
                 <b-form-textarea
                   v-model="edit.transformFx"
                   placeholder="v"
                   class="mb-1"
                 />
+                <small>{{ $t('block.metric.edit.transformFunctionDescription') }}</small>
               </b-form-group>
 
-              <b-form-group
-                :label="$t('block.metric.edit.numberFormat')"
-                label-cols="2"
-              >
+              <b-form-group>
+                <label>{{ $t('block.metric.edit.numberFormat')}}</label>
                 <b-form-input
                   v-model="edit.numberFormat"
                   placeholder="0.00"
@@ -226,10 +215,8 @@
                 />
               </b-form-group>
 
-              <b-form-group
-                :label="$t('block.metric.edit.prefixLabel')"
-                label-cols="2"
-              >
+              <b-form-group>
+                <label>{{ $t('block.metric.edit.prefixLabel')}}</label>
                 <b-form-input
                   v-model="edit.prefix"
                   placeholder="$"
@@ -237,10 +224,8 @@
                 />
               </b-form-group>
 
-              <b-form-group
-                :label="$t('block.metric.edit.suffixLabel')"
-                label-cols="2"
-              >
+              <b-form-group>
+                <label>{{ $t('block.metric.edit.suffixLabel')}}</label>
                 <b-form-input
                   v-model="edit.suffix"
                   placeholder="USD/mo"
@@ -265,7 +250,7 @@
           </m-style>
         </b-col>
 
-        <b-col cols="12" md="5">
+        <b-col cols="12" lg="5">
           <b-card>
             <div class="text-right">
               <b-btn
