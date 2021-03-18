@@ -60,7 +60,7 @@
     "flush-promises": "^1.0.2",
     "fstream": "^1.0.12",
     "hex-rgb": "^4.1.0",
-    "html-parse-stringify": "^1.0.3",
+    "html-parse-stringify": "^2.0.1",
     "i": "^0.3.6",
     "i18next": "^17.0.9",
     "i18next-browser-languagedetector": "^3.0.2",
