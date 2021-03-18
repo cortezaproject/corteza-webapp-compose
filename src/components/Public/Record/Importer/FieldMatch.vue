@@ -3,9 +3,18 @@
           footer-bg-variant="white">
 
     <b-form-group>
-      <label class="mb-4">
-        {{ $t('block.recordList.import.matchFields') }}
-      </label>
+      <div class="mb-4">
+        <label>
+          {{ $t('block.recordList.import.matchFields') }}
+        </label>
+        <br />
+        <small
+          v-if="hasRequiredFileField"
+          class="text-danger"
+        >
+          {{ $t('block.recordList.import.hasRequiredFileFields') }}
+        </small>
+      </div>
 
       <b-table small
                :fields="tableFields"
@@ -79,6 +88,7 @@ export default {
   data () {
     return {
       rows: [],
+      unsupportedFields: [],
     }
   },
 
@@ -115,8 +125,13 @@ export default {
 
     moduleFields () {
       return this.module.fields
+        .filter(({ kind }) => kind !== 'File')
         .map(({ name: value, label: text }) => ({ value, text }))
         .sort((a, b) => a.text.localeCompare(b.text))
+    },
+
+    hasRequiredFileField () {
+      return !!this.module.fields.find(({ kind, isRequired }) => kind === 'File' && isRequired)
     },
   },
 

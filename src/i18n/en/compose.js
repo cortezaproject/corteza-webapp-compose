@@ -288,6 +288,7 @@ export default {
         dropzoneFileAdded: '{{name}} was uploaded and is ready for import ({{count}} record)',
         dropzoneFileAdded_plural: '{{name}} was uploaded and is ready for import ({{count}} records)',
         matchFields: 'Match imported columns with existing ones:',
+        hasRequiredFileFields: 'This module has required file upload fields that are not yet supported via the importer',
         fileColumns: 'File columns',
         moduleFields: 'Module fields',
         pickModuleField: 'Pick a module field',
