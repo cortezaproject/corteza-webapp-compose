@@ -29,7 +29,7 @@
       >
         <b-row
           no-gutters
-          class="align-items-center justify-content-between"
+          class="align-items-baseline justify-content-between"
         >
          <div class="text-nowrap flex-grow-1">
             <template v-if="!options.hideAddButton && recordListModule.canCreateRecord">
