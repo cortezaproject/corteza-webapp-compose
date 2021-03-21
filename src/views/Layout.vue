@@ -4,24 +4,17 @@
       <router-view />
     </main>
     <c-prompts />
+    <c-permissions-modal />
   </div>
 </template>
 <script>
 import { components } from '@cortezaproject/corteza-vue'
+const { CPrompts, CPermissionsModal } = components
 
 export default {
   components: {
-    CPrompts: components.CPrompts,
-  },
-
-  data () {
-    return {
-      alerts: [], // { variant: 'info', message: 'foo' },
-    }
-  },
-
-  beforeDestroy () {
-    this.$root.$off('alert')
+    CPrompts,
+    CPermissionsModal,
   },
 }
 </script>

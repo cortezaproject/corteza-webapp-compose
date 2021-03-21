@@ -50,18 +50,14 @@
         </b-col>
       </b-row>
     </b-container>
-    <c-permissions-modal />
   </div>
 </template>
 <script>
 import NamespaceItem from 'corteza-webapp-compose/src/components/Namespaces/NamespaceItem'
-import { components } from '@cortezaproject/corteza-vue'
-const { CPermissionsModal } = components
 
 export default {
   components: {
     NamespaceItem,
-    CPermissionsModal,
   },
 
   data () {

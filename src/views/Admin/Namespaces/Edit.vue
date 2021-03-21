@@ -184,21 +184,17 @@
       @save="handleSave()"
       @saveAndClose="handleSave({ closeOnSuccess: true })"
     />
-    <c-permissions-modal />
   </div>
 </template>
 
 <script>
 import { compose, NoID } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
-import { components } from '@cortezaproject/corteza-vue'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
-const { CPermissionsModal } = components
 
 export default {
   components: {
     EditorToolbar,
-    CPermissionsModal,
   },
 
   data () {
