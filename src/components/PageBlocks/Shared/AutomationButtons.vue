@@ -104,7 +104,7 @@ export default {
       // etc...
       this.$EventBus
         .Dispatch(ev, b.script)
-        .catch(this.defaultErrorHandler(this.$t('notification.automation.scriptFailed')))
+        .catch(this.toastErrorHandler(this.$t('notification.automation.scriptFailed')))
         .finally(() => {
           this.processing = false
         })

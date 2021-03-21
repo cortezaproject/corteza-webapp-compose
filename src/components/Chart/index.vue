@@ -64,7 +64,7 @@ export default {
         const options = chart.makeOptions(data)
         const plugins = chart.plugins()
         if (!options) {
-          this.raiseWarningAlert(this.$t('notification.chart.optionsBuildFailed'))
+          this.toastWarning(this.$t('notification.chart.optionsBuildFailed'))
         }
         const type = chart.baseChartType(data.datasets)
 

@@ -196,7 +196,7 @@ export default {
     create () {
       this.createModule(this.newModule)
         .then((module) => this.openEditor(module))
-        .catch(this.defaultErrorHandler(this.$t('notification.module.createFailed')))
+        .catch(this.toastErrorHandler(this.$t('notification.module.createFailed')))
     },
 
     openEditor (module) {
@@ -243,7 +243,7 @@ export default {
         .then(page => {
           this.$router.push(goto(page))
         })
-        .catch(this.defaultErrorHandler(this.$t('notification.page.createFailed')))
+        .catch(this.toastErrorHandler(this.$t('notification.page.createFailed')))
     },
 
     handleRowClicked ({ moduleID, canUpdateModule, canDeleteModule }) {

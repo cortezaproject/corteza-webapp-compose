@@ -114,7 +114,7 @@ export default {
       }
 
       this.page = new compose.Page(page)
-    }).catch(this.defaultErrorHandler(this.$t('notification.page.loadFailed')))
+    }).catch(this.toastErrorHandler(this.$t('notification.page.loadFailed')))
   },
   methods: {
     ...mapActions({
@@ -126,17 +126,17 @@ export default {
       const { namespaceID } = this.namespace
       this.updatePage({ namespaceID, ...this.page }).then((page) => {
         this.page = page.clone()
-        this.raiseSuccessAlert(this.$t('notification.page.saved'))
+        this.toastSuccess(this.$t('notification.page.saved'))
         if (closeOnSuccess) {
           this.$router.push({ name: 'admin.pages' })
         }
-      }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification.page.saveFailed')))
     },
 
     handleDeletePage () {
       this.deletePage(this.page).then(() => {
         this.$router.push({ name: 'admin.pages' })
-      }).catch(this.defaultErrorHandler(this.$t('notification.page.deleteFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification.page.deleteFailed')))
     },
   },
 }

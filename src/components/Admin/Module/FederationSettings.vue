@@ -373,12 +373,12 @@ export default {
         .then(({ set = [] }) => {
           this.servers = set.filter(({ canManageNode }) => canManageNode)
         })
-        .catch(this.defaultErrorHandler())
+        .catch(this.toastErrorHandler())
 
       for (const node of this.servers) {
-        await this.loadSharedModules(node.nodeID).catch(this.defaultErrorHandler())
-        await this.loadExposedModules(node.nodeID).catch(this.defaultErrorHandler())
-        await this.loadModuleMappings(node.nodeID).catch(this.defaultErrorHandler())
+        await this.loadSharedModules(node.nodeID).catch(this.toastErrorHandler())
+        await this.loadExposedModules(node.nodeID).catch(this.toastErrorHandler())
+        await this.loadModuleMappings(node.nodeID).catch(this.toastErrorHandler())
       }
 
       this.sharedModulesMapped = this.getSharedModulesMapped()
@@ -457,7 +457,7 @@ export default {
               // Reset update flag
               crtModule.updated = false
             })
-            .catch(this.defaultErrorHandler())
+            .catch(this.toastErrorHandler())
         }
       }
 
@@ -487,7 +487,7 @@ export default {
             // Reset update flag
             (this.upstream[nodeID] || {}).updated = false
           })
-          .catch(this.defaultErrorHandler())
+          .catch(this.toastErrorHandler())
 
         if (!response && !response.moduleID) {
           return
@@ -667,7 +667,7 @@ export default {
     },
 
     async persistModuleMappings (payload) {
-      return this.$FederationAPI.manageStructureCreateMappings(payload).catch(this.defaultErrorHandler())
+      return this.$FederationAPI.manageStructureCreateMappings(payload).catch(this.toastErrorHandler())
     },
 
     //
@@ -682,7 +682,7 @@ export default {
         .then((data = []) => {
           this.sharedModules[nodeID] = data.map(d => ({ ...d, updated: false }))
         })
-        .catch(this.defaultErrorHandler())
+        .catch(this.toastErrorHandler())
     },
 
     async loadExposedModules (nodeID) {
@@ -697,7 +697,7 @@ export default {
             this.exposedModules[nodeID] = exposedModule
           }
         })
-        .catch(this.defaultErrorHandler())
+        .catch(this.toastErrorHandler())
     },
 
     async loadModuleMappings (nodeID) {

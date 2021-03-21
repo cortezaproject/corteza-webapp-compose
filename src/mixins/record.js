@@ -140,7 +140,7 @@ export default {
         .then(() => {
           this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
         })
-        .catch(this.defaultErrorHandler(this.$t(
+        .catch(this.toastErrorHandler(this.$t(
           isNew
             ? 'notification.record.createFailed'
             : 'notification.record.updateFailed',
@@ -184,7 +184,7 @@ export default {
         .then(() => {
           this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
         })
-        .catch(this.defaultErrorHandler(this.$t(
+        .catch(this.toastErrorHandler(this.$t(
           isNew
             ? 'notification.record.createFailed'
             : 'notification.record.updateFailed',
@@ -203,7 +203,7 @@ export default {
           this.record.deletedAt = (new Date()).toISOString()
         })
         .then(() => this.dispatchUiEvent('afterDelete'))
-        .catch(this.defaultErrorHandler(this.$t('notification.record.deleteFailed')))
+        .catch(this.toastErrorHandler(this.$t('notification.record.deleteFailed')))
     },
 
     /**

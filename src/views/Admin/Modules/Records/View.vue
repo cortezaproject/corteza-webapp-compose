@@ -150,7 +150,7 @@ export default {
             this.record = new compose.Record(module, record)
             this.fetchUsers(this.module.fields, [this.record])
           })
-          .catch(this.defaultErrorHandler(this.$t('notification.record.loadFailed')))
+          .catch(this.toastErrorHandler(this.$t('notification.record.loadFailed')))
       }
     },
 

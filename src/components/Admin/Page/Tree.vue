@@ -163,9 +163,9 @@ export default {
         if (pageIDs.length > 1) {
           this.$ComposeAPI.pageReorder({ namespaceID, selfID: afterID, pageIDs: pageIDs }).then(() => {
             this.$store.dispatch('page/load', { namespaceID, clear: true, force: true })
-            this.raiseSuccessAlert(this.$t('notification.page.reordered'))
+            this.toastSuccess(this.$t('notification.page.reordered'))
             this.$emit('reorder')
-          }).catch(this.defaultErrorHandler(this.$t('notification.page.pageMoveFailed')))
+          }).catch(this.toastErrorHandler(this.$t('notification.page.pageMoveFailed')))
         }
       }
 
@@ -177,7 +177,7 @@ export default {
 
         this.updatePage(data).then(() => {
           reorder()
-        }).catch(this.defaultErrorHandler(this.$t('notification.page.pageMoveFailed')))
+        }).catch(this.toastErrorHandler(this.$t('notification.page.pageMoveFailed')))
       } else {
         reorder()
       }

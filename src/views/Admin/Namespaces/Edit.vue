@@ -289,7 +289,7 @@ export default {
             this.isApplication = this.application.enabled
           }
         })
-        .catch(this.defaultErrorHandler(this.$t('notification.namespace.application.fetchFailed')))
+        .catch(this.toastErrorHandler(this.$t('notification.namespace.application.fetchFailed')))
     },
 
     fetchEffective () {
@@ -309,7 +309,7 @@ export default {
           assets = await this.uploadAssets()
           meta = { ...meta, ...assets }
         } catch (e) {
-          this.defaultErrorHandler(this.$t('notification.namespace.assetUploadFailed'))
+          this.toastErrorHandler(this.$t('notification.namespace.assetUploadFailed'))
           return
         }
       }
@@ -319,10 +319,10 @@ export default {
           await this.$store.dispatch('namespace/update', { namespaceID, name, slug, enabled, meta }).then((ns) => {
             this.namespace = new compose.Namespace(ns)
 
-            this.raiseSuccessAlert(this.$t('notification.namespace.saved'))
+            this.toastSuccess(this.$t('notification.namespace.saved'))
           })
         } catch (e) {
-          this.defaultErrorHandler(this.$t('notification.namespace.saveFailed'))
+          this.toastErrorHandler(this.$t('notification.namespace.saveFailed'))
           return
         }
       } else {
@@ -330,16 +330,16 @@ export default {
           await this.$store.dispatch('namespace/create', { name, slug, enabled, meta }).then((ns) => {
             this.namespace = new compose.Namespace(ns)
 
-            this.raiseSuccessAlert(this.$t('notification.namespace.saved'))
+            this.toastSuccess(this.$t('notification.namespace.saved'))
           })
         } catch (e) {
-          this.defaultErrorHandler(this.$t('notification.namespace.createFailed'))
+          this.toastErrorHandler(this.$t('notification.namespace.createFailed'))
           return
         }
       }
 
       await this.handleApplicationSave()
-        .catch(() => this.defaultErrorHandler(this.$t('notification.namespace.createAppFailed')))
+        .catch(() => this.toastErrorHandler(this.$t('notification.namespace.createAppFailed')))
 
       if (closeOnSuccess) {
         this.$router.push({ name: 'root' })
@@ -350,7 +350,7 @@ export default {
       const { namespaceID } = this.namespace
       this.$store.dispatch('namespace/delete', { namespaceID }).then(() => {
         this.$router.push({ name: 'root' })
-      }).catch(this.defaultErrorHandler(this.$t('notification.namespace.deleteFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification.namespace.deleteFailed')))
     },
 
     async handleApplicationSave () {
@@ -375,7 +375,7 @@ export default {
 
         return this.$SystemAPI.applicationUpdate({ ...this.application, enabled })
           .then(app => { this.application = app })
-          .catch(this.defaultErrorHandler(this.$t('notification.namespace.application.saveFailed')))
+          .catch(this.toastErrorHandler(this.$t('notification.namespace.application.saveFailed')))
       } else if (this.isApplication) {
         // If namespace not an application - create one and enable
         const application = {
@@ -391,7 +391,7 @@ export default {
         }
         return this.$SystemAPI.applicationCreate({ ...application })
           .then(app => { this.application = app })
-          .catch(this.defaultErrorHandler(this.$t('notification.namespace.application.createFailed')))
+          .catch(this.toastErrorHandler(this.$t('notification.namespace.application.createFailed')))
       }
     },
 

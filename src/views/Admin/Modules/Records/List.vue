@@ -652,7 +652,7 @@ export default {
       this.$ComposeAPI
         .recordBulkDelete({ moduleID, namespaceID, recordIDs })
         .then(() => { this.pullRecords(true) })
-        .catch(this.defaultErrorHandler(this.$t('notification.record.deleteFailed')))
+        .catch(this.toastErrorHandler(this.$t('notification.record.deleteFailed')))
     },
 
     goToPage (page) {
@@ -729,7 +729,7 @@ export default {
 
           this.items = records
         })
-        .catch(this.defaultErrorHandler(this.$t('notification.record.listLoadFailed')))
+        .catch(this.toastErrorHandler(this.$t('notification.record.listLoadFailed')))
     },
   },
 }

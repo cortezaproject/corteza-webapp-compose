@@ -1070,9 +1070,13 @@ export default {
       placeholder: 'Enter a short name for the namespace',
       description: 'The short name will be used in the URL',
     },
-    thumbnail: {
-      label: 'Thumbnail',
-      placeholder: 'Choose a thumbnail or drop it here...',
+    logo: {
+      label: 'Logo',
+      placeholder: 'Choose an image for namespace logo or drop it here...',
+    },
+    icon: {
+      label: 'Icon',
+      placeholder: 'Choose an image for namespace icon or drop it here...',
     },
     enabled: {
       label: 'Enable on namespace list',
@@ -1099,6 +1103,9 @@ export default {
       },
     },
     general: {
+      success: 'Success',
+      error: 'Error',
+      warning: 'Warning',
       composeAccessNotAllowed: 'Not allowed to access Compose',
     },
     namespace: {

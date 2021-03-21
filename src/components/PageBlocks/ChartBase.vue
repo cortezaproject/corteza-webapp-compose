@@ -35,7 +35,7 @@ export default {
     const { namespaceID } = this.namespace
     this.findChartByID({ chartID, namespaceID }).then((chart) => {
       this.chart = chart
-    }).catch(this.defaultErrorHandler(this.$t('notification.chart.loadFailed')))
+    }).catch(this.toastErrorHandler(this.$t('notification.chart.loadFailed')))
   },
 
   methods: {

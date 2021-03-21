@@ -222,7 +222,7 @@ export default {
 
       // Record blocks
       if (this.module && !this.validateModuleFieldSelection(this.module, this.page)) {
-        this.defaultErrorHandler(this.$t('notification.page.saveFailedRequired'))()
+        this.toastErrorHandler(this.$t('notification.page.saveFailedRequired'))()
         return
       }
 
@@ -240,7 +240,7 @@ export default {
 
       const validated = await Promise.all(queue)
       if (validated.find(({ valid }) => !valid)) {
-        this.defaultErrorHandler(this.$t('notification.page.saveFailedRequired'))()
+        this.toastErrorHandler(this.$t('notification.page.saveFailedRequired'))()
         return
       }
 
@@ -250,14 +250,14 @@ export default {
           this.page = new compose.Page({ namespaceID, ...page, blocks: this.page.blocks })
 
           this.updatePage(this.page).then((page) => {
-            this.raiseSuccessAlert(this.$t('notification.page.saved'))
+            this.toastSuccess(this.$t('notification.page.saved'))
             if (closeOnSuccess) {
               this.$router.push({ name: 'admin.pages' })
             } else if (previewOnSuccess) {
               this.$router.push({ name: 'page', params: { pageID: this.pageID } })
             }
             this.page = new compose.Page(page)
-          }).catch(this.defaultErrorHandler(this.$t('notification.page.saveFailed')))
+          }).catch(this.toastErrorHandler(this.$t('notification.page.saveFailed')))
         })
     },
 
@@ -288,7 +288,7 @@ export default {
     handleDeletePage () {
       this.deletePage(this.page).then(() => {
         this.$router.push({ name: 'admin.pages' })
-      }).catch(this.defaultErrorHandler(this.$t('notification.page.deleteFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification.page.deleteFailed')))
     },
 
     /**

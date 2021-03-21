@@ -2,7 +2,7 @@ import { storiesOf } from '@storybook/vue'
 import Viewer from 'corteza-webapp-compose/src/lib/block/View/'
 import i18n from 'corteza-webapp-compose/src/i18n'
 import store from '../store'
-import alert from 'corteza-webapp-compose/src/mixins/alert'
+import toast from 'corteza-webapp-compose/src/mixins/toast'
 import users from 'corteza-webapp-compose/src/mixins/users'
 import { withKnobs, object } from '@storybook/addon-knobs'
 
@@ -66,7 +66,7 @@ recordOrganizer.add('RecordOrganizer', () => ({
   store,
 
   mixins: [
-    alert,
+    toast,
     users,
   ],
 

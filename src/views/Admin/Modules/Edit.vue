@@ -346,24 +346,24 @@ export default {
       if (this.module.moduleID === NoID) {
         this.createModule(this.module).then((module) => {
           this.module = new compose.Module({ ...module }, this.namespace)
-          this.raiseSuccessAlert(this.$t('notification.module.saved'))
+          this.toastSuccess(this.$t('notification.module.saved'))
           if (closeOnSuccess) {
             this.redirect()
           } else {
             this.$router.push({ name: 'admin.modules.edit', params: { moduleID: this.module.moduleID } })
           }
-        }).catch(this.defaultErrorHandler(this.$t('notification.module.saveFailed')))
+        }).catch(this.toastErrorHandler(this.$t('notification.module.saveFailed')))
           .finally(() => {
             this.processing = false
           })
       } else {
         this.updateModule(this.module).then((module) => {
           this.module = new compose.Module({ ...module }, this.namespace)
-          this.raiseSuccessAlert(this.$t('notification.module.saved'))
+          this.toastSuccess(this.$t('notification.module.saved'))
           if (closeOnSuccess) {
             this.redirect()
           }
-        }).catch(this.defaultErrorHandler(this.$t('notification.module.saveFailed')))
+        }).catch(this.toastErrorHandler(this.$t('notification.module.saveFailed')))
           .finally(() => {
             this.processing = false
           })
@@ -372,9 +372,9 @@ export default {
 
     handleDelete () {
       this.deleteModule(this.module).then(() => {
-        this.raiseSuccessAlert(this.$t('notification.module.deleted'))
+        this.toastSuccess(this.$t('notification.module.deleted'))
         this.$router.push({ name: 'admin.modules' })
-      }).catch(this.defaultErrorHandler(this.$t('notification.module.deleteFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification.module.deleteFailed')))
     },
 
     async createDefaultPage (page = {}) {
@@ -403,7 +403,7 @@ export default {
 
       this.createDefaultPage({ blocks, selfID }).then(page => {
         this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
-      }).catch(this.defaultErrorHandler(this.$t('notification.page.createFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification.page.createFailed')))
     },
 
     handleRecordListCreation () {
@@ -431,7 +431,7 @@ export default {
         this.createPage(page).then((page) => {
           this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
         })
-      }).catch(this.defaultErrorHandler(this.$t('notification.page.createFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification.page.createFailed')))
     },
 
     redirect () {

@@ -1,5 +1,5 @@
 import Vue from 'vue'
 
-import alert from './alert'
+import toast from './toast'
 
-Vue.mixin(alert)
+Vue.mixin(toast)

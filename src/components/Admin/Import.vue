@@ -116,9 +116,9 @@ export default {
             break
           }
         }
-        this.raiseSuccessAlert(this.$t('notification.import.successful'))
+        this.toastSuccess(this.$t('notification.import.successful'))
       } catch (e) {
-        this.raiseWarningAlert(this.$t('notification.import.failed'))
+        this.toastWarning(this.$t('notification.import.failed'))
       }
       this.cancelImport()
     },
@@ -159,13 +159,13 @@ export default {
               return { import: true, ...i }
             })
           } catch (err) {
-            this.raiseWarningAlert(err.message)
+            this.toastWarning(err.message)
           } finally {
             this.processing = false
           }
         }
         reader.onerror = (evt) => {
-          this.raiseWarningAlert(this.$t('notification.import.errorReading'))
+          this.toastWarning(this.$t('notification.import.errorReading'))
           this.processing = false
         }
       }

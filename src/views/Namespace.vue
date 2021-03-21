@@ -158,7 +158,7 @@ export default {
         }
 
         if (!namespace.enabled) {
-          this.raiseWarningAlert(this.$t('notification.namespace.disabled'))
+          this.toastDanger(this.$t('notification.namespace.disabled'))
           this.$router.push({ name: 'root' })
           return
         }
@@ -189,7 +189,6 @@ export default {
 
   created () {
     this.error = ''
-    this.handleAlert((alert) => this.alerts.push(alert))
     this.$root.$on('namespaces.listLoad', this.namespaceLoader)
     this.$root.$on('reminder.show', this.showReminder)
 

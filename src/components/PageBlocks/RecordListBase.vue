@@ -1045,7 +1045,7 @@ export default {
         this.$ComposeAPI
           .recordBulkDelete({ moduleID, namespaceID, recordIDs: this.selected })
           .then(() => { this.refresh(true) })
-          .catch(this.defaultErrorHandler(this.$t('notification.record.deleteFailed')))
+          .catch(this.toastErrorHandler(this.$t('notification.record.deleteFailed')))
       }
     },
 
@@ -1129,7 +1129,7 @@ export default {
 
           this.items = records.map(r => this.wrapRecord(r))
         })
-        .catch(this.defaultErrorHandler(this.$t('notification.record.listLoadFailed')))
+        .catch(this.toastErrorHandler(this.$t('notification.record.listLoadFailed')))
         .finally(() => {
           this.processing = false
         })
