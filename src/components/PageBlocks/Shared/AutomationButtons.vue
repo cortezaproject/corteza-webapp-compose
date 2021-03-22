@@ -60,14 +60,18 @@ export default {
     },
 
     isValid (b) {
-      return !!b.script && !!this.$UIHooks.FindByScript(b.script)
+      if (b.workflowID) {
+        return true
+      }
+
+      if (b.script) {
+        return !!this.$UIHooks.FindByScript(b.script)
+      }
+
+      return false
     },
 
     handle (b) {
-      if (!b.script) {
-        return
-      }
-
       this.processing = true
 
       // Base of the raise event:
@@ -91,6 +95,53 @@ export default {
           break
         case 'compose':
           ev = compose.ComposeEvent(ev)
+      }
+
+      console.log(ev)
+      if (b.workflowID) {
+        const { workflowID, stepID } = b
+        const input = {}
+        const composeTypes = ['Record', 'Page', 'Module', 'Namespace', 'Chart']
+
+        // This logic might be more comfortable of in corteza-js
+        for (const key in ev.args) {
+          let type = 'Any'
+          switch (typeof ev.args[key]) {
+            case 'string':
+              type = 'String'
+              break
+
+            case 'boolean':
+              type = 'Boolean'
+              break
+
+            case 'object':
+              if (composeTypes.includes(ev.args[key].constructor.name)) {
+                type = `Compose${ev.args[key].constructor.name}`
+              }
+
+              break
+          }
+
+          input[key] = { '@value': ev.args[key], '@type': type }
+        }
+
+        this.$AutomationAPI
+          .workflowExec({
+            workflowID,
+            stepID,
+            input,
+          })
+          .catch(this.toastErrorHandler(this.$t('notification.automation.scriptFailed')))
+          .finally(() => {
+            this.processing = false
+          })
+
+        return
+      }
+
+      if (!b.script) {
+        return
       }
 
       // @todo this is not a complete implementation

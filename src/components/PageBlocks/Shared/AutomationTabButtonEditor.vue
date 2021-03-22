@@ -1,17 +1,17 @@
 <template>
   <b-card
-    :header="$t('block.automation.editButton')"
+    :header="workflow ? $t('editTitle.workflow') : $t('editTitle.script')"
     footer-class="text-right"
   >
     <b-form-group
-      :label="$t('block.automation.buttonLabel')"
+      :label="$t('buttonLabel')"
     >
       <b-input
         v-model="button.label"
       />
     </b-form-group>
     <b-form-group
-      :label="$t('block.automation.buttonVariant')"
+      :label="$t('buttonVariant')"
     >
       <b-select
         class="w-100"
@@ -28,8 +28,13 @@
       </b-select>
     </b-form-group>
 
+    <h5
+      v-if="workflow"
+    >
+      {{ workflow.meta.label || $t('noLabel') }} (stepID: {{ trigger.stepID }})
+    </h5>
     <code
-      v-if="button.script"
+      v-else-if="button.script"
     >
       {{ button.script }}
     </code>
@@ -38,19 +43,19 @@
       variant="warning"
       v-else
     >
-      {{ $t('block.automation.noAction' )}}
+      {{ $t('noScript' )}}
     </b-alert>
     <p
-      v-if="description"
+      v-if="workflow && workflow.meta"
       class="mb-0 mt-2"
     >
-      {{ description }}
+      {{ workflow.meta.description || $t('noDescription') }}
     </p>
     <p
-      v-else
+      v-else-if="script"
       class="mb-0 mt-2"
     >
-      <i>{{ $t('block.automation.noDescription') }}</i>
+      {{ script.description || $t('noDescription') }}
     </p>
     <template #footer>
       <c-input-confirm
@@ -62,14 +67,23 @@
 </template>
 <script>
 export default {
+  i18nOptions: {
+    keyPrefix: 'block.automation',
+  },
+
   props: {
     button: {
       type: Object,
       required: true,
     },
 
-    description: {
-      type: String,
+    script: {
+      type: Object,
+      required: false,
+    },
+
+    trigger: {
+      type: Object,
       required: false,
     },
   },
@@ -84,7 +98,11 @@ export default {
         'success',
         'danger',
         'warning',
-      ].map(variant => ({ variant, label: this.$t(`block.automation.${variant}Button`) }))
+      ].map(variant => ({ variant, label: this.$t(`${variant}Button`) }))
+    },
+
+    workflow () {
+      return this.trigger ? this.trigger.workflow : undefined
     },
   },
 }

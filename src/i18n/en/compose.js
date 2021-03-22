@@ -141,11 +141,12 @@ export default {
       label: 'Automation',
       editButton: 'Edit',
       configuredButtons: 'Configured buttons',
-      availableScripts: 'Available scripts ({{count}})',
+      availableScriptsAndWorkflow: 'Available scripts and workflows ({{count}})',
       addPlaceholderLabel: 'Add placeholder (dummy button)',
       searchPlaceholder: 'Filter available scripts by label, script name and description',
-      noAction: 'There is no action/script configured with this button',
+      noScript: 'There is no script or workflow configured with this button',
       noScripts: 'There are no manual scripts compatible with this page block',
+      noLabel: 'Unlabeled',
       noDescription: 'No description',
       dummyButtonLabel: 'Dummy',
       removeAll: 'Remove all',
@@ -158,6 +159,16 @@ export default {
       dangerButton: 'Danger',
       warningButton: 'Warning',
       darkButton: 'Dark',
+
+      badge: {
+        workflow: 'workflow',
+        script: 'script',
+      },
+
+      editTitle: {
+        workflow: 'Edit workflow button',
+        script: 'Edit automation script button',
+      },
     },
     recordList: {
       label: 'Record list',
