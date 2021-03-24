@@ -7,7 +7,27 @@
     <multi v-if="field.isMulti" :value.sync="value" :singleInput="field.options.selectType !== 'each'" :removable="field.options.selectType !== 'multiple'">
       <template v-slot:single>
         <vue-select
-          v-if="field.options.selectType === 'default'"
+          v-if="field.options.selectType === 'multiple'"
+          :filterable="false"
+          :options="options"
+          :disabled="!module"
+          @search="search"
+          option-value="recordID"
+          option-text="label"
+          :append-to-body="inlineEditor"
+          :calculate-position="calculatePosition"
+          class="bg-white"
+          :placeholder="$t('field.kind.record.suggestionPlaceholder')"
+          multiple
+          v-model="multipleSelected"
+        >
+          <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
+            <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
+            <b-button class="flex-grow-1 ml-1" @click="filter.pageCursor = filter.nextPage" :disabled="!hasNextPage" size="sm">Next</b-button>
+          </li>
+        </vue-select>
+        <vue-select
+          v-else
           :filterable="false"
           :options="options"
           :disabled="!module"
@@ -21,26 +41,6 @@
           :placeholder="$t('field.kind.record.suggestionPlaceholder')"
           @input="selectChange($event)"
           ref="singleSelect"
-        >
-          <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
-            <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
-            <b-button class="flex-grow-1 ml-1" @click="filter.pageCursor = filter.nextPage" :disabled="!hasNextPage" size="sm">Next</b-button>
-          </li>
-        </vue-select>
-        <vue-select
-          v-else-if="field.options.selectType === 'multiple'"
-          :filterable="false"
-          :options="options"
-          :disabled="!module"
-          @search="search"
-          option-value="recordID"
-          option-text="label"
-          :append-to-body="inlineEditor"
-          :calculate-position="calculatePosition"
-          class="bg-white"
-          :placeholder="$t('field.kind.record.suggestionPlaceholder')"
-          multiple
-          v-model="multipleSelected"
         >
           <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
             <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
