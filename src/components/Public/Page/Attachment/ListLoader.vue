@@ -156,7 +156,7 @@ export default {
     },
 
     baseURL () {
-      return url.Make({ url: window.ComposeAPI })
+      return url.Make({ url: window.CortezaAPI + '/compose' })
     },
   },
 

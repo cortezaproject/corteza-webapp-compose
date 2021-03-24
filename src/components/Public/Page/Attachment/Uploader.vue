@@ -100,7 +100,7 @@ export default {
     },
 
     baseUrl () {
-      return window.ComposeAPI
+      return window.CortezaAPI + '/compose'
     },
 
     progresBarStyle () {
