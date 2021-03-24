@@ -1,7 +1,7 @@
 // This mixin is used on View component of Records.
 
 import { compose, validator, NoID } from '@cortezaproject/corteza-js'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data () {
@@ -43,6 +43,10 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      updatePrompts: 'wfPrompts/update',
+    }),
+
     /**
      * Handle form submit for record create & update
      *
@@ -137,6 +141,7 @@ export default {
         })
         .then((record) => this.record.apply(record))
         .then(() => this.dispatchUiEvent('afterFormSubmit', this.record, { $records: records }))
+        .then(() => this.updatePrompts())
         .then(() => {
           this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
         })
@@ -181,6 +186,7 @@ export default {
         })
         .then((record) => this.record.apply(record))
         .then(() => this.dispatchUiEvent('afterFormSubmit'))
+        .then(() => this.updatePrompts())
         .then(() => {
           this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
         })
@@ -203,6 +209,7 @@ export default {
           this.record.deletedAt = (new Date()).toISOString()
         })
         .then(() => this.dispatchUiEvent('afterDelete'))
+        .then(() => this.updatePrompts())
         .catch(this.toastErrorHandler(this.$t('notification.record.deleteFailed')))
     },
 
