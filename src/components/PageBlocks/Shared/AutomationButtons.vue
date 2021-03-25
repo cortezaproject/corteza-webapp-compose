@@ -97,7 +97,6 @@ export default {
           ev = compose.ComposeEvent(ev)
       }
 
-      console.log(ev)
       if (b.workflowID) {
         const { workflowID, stepID } = b
         const input = {}
@@ -131,6 +130,11 @@ export default {
             workflowID,
             stepID,
             input,
+          })
+          .then(() => {
+            setTimeout(() => {
+              this.$store.dispatch('wfPrompts/update')
+            }, 500)
           })
           .catch(this.toastErrorHandler(this.$t('notification.automation.scriptFailed')))
           .finally(() => {

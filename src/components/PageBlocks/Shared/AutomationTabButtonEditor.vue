@@ -28,11 +28,16 @@
       </b-select>
     </b-form-group>
 
-    <h5
+    <div
       v-if="workflow"
     >
-      {{ workflow.meta.label || $t('noLabel') }} (stepID: {{ trigger.stepID }})
-    </h5>
+      <h5>
+        {{ workflow.meta.name || $t('noLabel') }}
+      </h5>
+      <var>
+        stepID: {{ trigger.stepID }}
+      </var>
+    </div>
     <code
       v-else-if="button.script"
     >
