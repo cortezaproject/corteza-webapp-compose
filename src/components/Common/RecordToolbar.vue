@@ -49,7 +49,7 @@
           {{ $t('general.label.edit') }}
         </b-button>
         <b-button
-          v-if="module.canCreateRecord && !hideAdd"
+          v-if="module.canCreateRecord && !hideAdd && !inEditing"
           variant="primary"
           size="lg"
           :disabled="processing"
