@@ -39,7 +39,7 @@
                 </b-col>
               </b-row>
             </b-card-header>
-            <b-row class="pages-list-header border-top align-content-center mb-n4" no-gutters>
+            <b-row class="pages-list-header border-top align-content-center" no-gutters>
               <b-col
                 cols="12"
                 class="pl-4"
@@ -124,11 +124,11 @@ export default {
 //!important usage to over-ride library styling
 $input-height: 42px;
 $content-height: 48px;
-$blank-li-height: 0;
+$blank-li-height: 5px;
 $left-padding: 5px;
-$border-color: #E4E9EF;
+$border-color: $light;
 $hover-color: $gray-200;
-$dropping-color: #90A3B1;
+$dropping-color: $secondary;
 
 .page-name-input {
   height: $input-height;
@@ -153,11 +153,16 @@ $dropping-color: #90A3B1;
 
     &.blank-li {
       height: $blank-li-height !important;
+
+      &:nth-last-of-type(1)::before {
+        border-left-color: white !important;
+        height: 0;
+      }
     }
 
     &::before {
       top: $content-height / -2 !important;
-      border-left: 2px solid white !important;
+      border-left-color: white !important;
     }
 
     &::after {
@@ -175,15 +180,22 @@ $dropping-color: #90A3B1;
   .parent-li {
     border-top: 1px solid $border-color;
 
-    .exist-li {
+    .exist-li, .blank-li {
       border-top: none;
 
       &::after {
         border-top: 2px solid $border-color !important;
+        margin-left: 0;
       }
 
       &::before {
-        border-left-color: $border-color !important;
+        border-left: 2px solid $border-color !important;
+      }
+    }
+
+    &.blank-li {
+      &::before {
+        border-left: 2px solid $border-color !important;
       }
     }
 
@@ -211,6 +223,7 @@ $dropping-color: #90A3B1;
   min-height: $content-height;
   background-color: $gray-200;
   margin-top: 1rem;
+  margin-bottom: -1.8rem !important;
   border-bottom: 2px solid $light;
   z-index: 1;
 }
