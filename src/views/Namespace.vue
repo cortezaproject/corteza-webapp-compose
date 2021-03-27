@@ -56,7 +56,6 @@
       </small>
     </div>
     <div class="error text-danger text-center position-absolute" v-if="error">{{ error }}</div>
-    <c-permissions-modal />
   </div>
 </template>
 
@@ -66,14 +65,13 @@ import { mapGetters } from 'vuex'
 import NamespaceSidebar from '../components/Namespaces/NamespaceSidebar'
 import { compose } from '@cortezaproject/corteza-js'
 import { components } from '@cortezaproject/corteza-vue'
-const { CPermissionsModal, CToaster } = components
+const { CToaster } = components
 
 export default {
   name: 'Namespace',
 
   components: {
     CToaster,
-    CPermissionsModal,
     NamespaceSidebar,
   },
 
