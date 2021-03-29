@@ -25,7 +25,6 @@ export default {
     },
 
     toast (msg, opt = { variant: 'success' }) {
-      console.log('showing toast', { msg })
       this.$bvToast.toast(msg, opt)
     },
 

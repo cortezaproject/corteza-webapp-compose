@@ -309,7 +309,6 @@ export default {
     },
 
     'options.editable' (value) {
-      console.log('aa')
       this.options.editFields = []
       this.options.positionField = undefined
 
