@@ -27,38 +27,49 @@
 
                     {{ $t('module.edit.federationSettings.title') }}
                   </b-button>
-                    <export :list="[this.module]"
-                            type="module"
-                            class="mr-1"
-                    />
-                    <c-permissions-button
-                      v-if="module.canGrant"
-                      resource="compose:module-field:*"
-                      :buttonLabel="$t('general.label.permissions')"
-                      buttonVariant="light"
-                      class="btn-lg mr-1"
-                    />
+                  <export :list="[this.module]"
+                          type="module"
+                          class="mr-1"
+                  />
+
+                  <c-permissions-button
+                    v-if="module.canGrant"
+                    :title="module.name"
+                    :target="module.name"
+                    :resource="`compose:module:${module.moduleID}`"
+                    :buttonLabel="$t('general.label.permissions')"
+                    buttonVariant="light"
+                    class="btn-lg mr-1"
+                  />
+
+                  <c-permissions-button
+                    v-if="module.canGrant"
+                    resource="compose:module-field:*"
+                    :buttonLabel="$t('module.edit.fieldPermissions')"
+                    buttonVariant="light"
+                    class="btn-lg ml-auto"
+                  />
                 </div>
                 <div v-if="!creatingModule" class="flex-grow-1 text-nowrap d-flex justify-content-md-end mt-1">
-                      <b-button
-                        v-if="recordPage"
-                        :disabled="!namespace.canManageNamespace"
-                        :to="{ name: 'admin.pages.builder', params: { pageID: recordPage.pageID } }"
-                        variant="light"
-                        class="mr-1"
-                        size="lg"
-                      >
-                        {{ $t('module.recordPage.edit') }}
-                      </b-button>
-                      <b-button
-                        v-else
-                        @click="handleRecordPageCreation"
-                        variant="primary"
-                        size="lg"
-                        class="mr-1"
-                      >
-                        {{ $t('module.recordPage.create') }}
-                      </b-button>
+                  <b-button
+                    v-if="recordPage"
+                    :disabled="!namespace.canManageNamespace"
+                    :to="{ name: 'admin.pages.builder', params: { pageID: recordPage.pageID } }"
+                    variant="light"
+                    class="mr-1"
+                    size="lg"
+                  >
+                    {{ $t('module.recordPage.edit') }}
+                  </b-button>
+                  <b-button
+                    v-else
+                    @click="handleRecordPageCreation"
+                    variant="primary"
+                    size="lg"
+                    class="mr-1"
+                  >
+                    {{ $t('module.recordPage.create') }}
+                  </b-button>
                 </div>
               </b-row>
             </div>

@@ -455,6 +455,7 @@ export default {
       newField: 'Add new field',
       systemFields: 'System fields:',
       reorderFields: 'Reorder fields',
+      fieldPermissions: 'Field permissions',
       federationSettings: {
         title: 'Federation Settings',
         specificTitle: 'Federation Settings ({{handle}})',
