@@ -4,13 +4,17 @@
       no-body
       class="h-100 border-0 shadow-sm"
       :class="blockClass"
-      header-class="sticky-top h5 bg-white border-0 text-nowrap pb-1 text-truncate"
+      header-class="sticky-top border-0 text-nowrap text-truncate"
+      header-bg-variant="white"
+      header-tag="h5"
       :header-text-variant="block.style.variants.headerText"
       :header="headerSet ? '' : block.title"
     >
       <b-card-header
         v-if="headerSet"
-        class="sticky-top h5 bg-white border-0 text-nowrap pb-1 text-truncate"
+        class="sticky-top border-0 text-nowrap text-truncate"
+        header-bg-variant="white"
+        header-tag="h5"
         :header-text-variant="block.style.variants.headerText"
       >
         <slot

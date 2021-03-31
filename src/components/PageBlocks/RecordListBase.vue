@@ -4,27 +4,19 @@
       v-if="showHeader"
       #header
     >
-      <div
-        class="w-100"
+      {{ block.title }}
+      <b-badge
+        v-if="Object.keys(recordListModule.labels || {}).includes('federation')"
+        variant="primary"
+        class="d-inline-block mb-0"
       >
-        {{ block.title }}
-        <h4
-          class="d-inline-block mb-0"
-        >
-          <b-badge
-            v-if="Object.keys(recordListModule.labels || {}).includes('federation')"
-            variant="primary"
-            class="py-1"
-          >
-            {{ $t('block.recordList.federated') }}
-          </b-badge>
-        </h4>
-      </div>
+        {{ $t('block.recordList.federated') }}
+      </b-badge>
     </template>
     <template #toolbar>
       <b-container
         ref="toolbar"
-        class="py-2"
+        class="pb-2"
         fluid
       >
         <b-row
