@@ -23,6 +23,7 @@
           @confirmed="$emit('delete')"
           class="mx-1"
           size="lg"
+          sizeConfirm="lg"
           variant="danger"
           :borderless="false"
         >

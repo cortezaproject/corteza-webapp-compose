@@ -18,6 +18,7 @@
           v-if="!hideDelete"
           @confirmed="$emit('delete')"
           size="lg"
+          sizeConfirm="lg"
           variant="danger"
           :borderless="false"
           class="mx-1"
