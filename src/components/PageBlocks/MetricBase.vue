@@ -3,27 +3,17 @@
     <div
       v-for="(m, i) in options.metrics"
       :key="i"
-      class="h-100 d-flex align-items-end justify-content-center overflow-hidden"
+      class="h-100 d-flex align-items-center justify-content-center overflow-hidden"
     >
       <div
         v-for="(v, i) in formatResponse(m, i)"
         :key="i"
+        class="w-100 px-2 py-1"
       >
         <!-- <h3 :style="genStyle(m.labelStyle)">
           {{ v.label }}
         </h3> -->
-        <h3
-          class="text-truncate"
-          :style="genStyle(m.valueStyle)"
-        >
-          <span v-if="m.prefix">
-            {{ m.prefix }}
-          </span>
-          {{ v.value }}
-          <span v-if="m.suffix">
-            {{ m.suffix }}
-          </span>
-        </h3>
+        <metric-item :metric="m" :value="v" />
       </div>
     </div>
   </wrap>
@@ -33,8 +23,13 @@
 import base from './base'
 import numeral from 'numeral'
 import moment from 'moment'
+import MetricItem from './Metric/Item'
 
 export default {
+  components: {
+    MetricItem,
+  },
+
   extends: base,
 
   props: {
@@ -63,24 +58,6 @@ export default {
   },
 
   methods: {
-    /**
-     * Generates style for the given metric as defined in configurator
-     */
-    genStyle (s = {}) {
-      const d = {
-        color: s.color,
-        backgroundColor: s.backgroundColor,
-        fontSize: s.fontSize ? s.fontSize + 'px' : undefined,
-      }
-
-      for (const v of Object.keys(d)) {
-        if (d[v] === undefined) {
-          delete d[v]
-        }
-      }
-      return d
-    },
-
     /**
      * Performs some post processing on the provided data
      */
