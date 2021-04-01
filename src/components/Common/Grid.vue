@@ -45,6 +45,7 @@
         :key="item.i"
         class="grid-item"
         ref="items"
+        :min-h="2"
         v-bind="{ ...item }"
       >
         <slot
