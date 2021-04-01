@@ -8,7 +8,7 @@
       <div
         v-for="(v, i) in formatResponse(m, i)"
         :key="i"
-        class="w-100 px-2 py-1"
+        class="w-100 h-100 px-2 py-1"
       >
         <!-- <h3 :style="genStyle(m.labelStyle)">
           {{ v.label }}
