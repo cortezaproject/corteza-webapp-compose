@@ -1,5 +1,5 @@
 <template class="h-100">
-  <b-card class="h-100 shadow-sm"
+  <b-card class="h-100 shadow-sm ns-item"
           footer-bg-variant="white"
           body-class="pb-0"
   >
@@ -49,6 +49,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+$ns-min-height: 150px;
+
+.ns-item {
+  min-height: $ns-min-height;
+}
+
 .ns-title,
 .ns-subtitle,
 .ns-description {
