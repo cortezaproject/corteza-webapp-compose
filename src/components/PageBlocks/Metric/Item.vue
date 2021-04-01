@@ -4,7 +4,7 @@
   >
     <svg
       :viewBox="getVB"
-      class="h-100 w-100 d-flex align-items-end pb-2"
+      class="h-100 w-100 align-items-end d-flex"
       width="100%"
       height="100%"
     >
