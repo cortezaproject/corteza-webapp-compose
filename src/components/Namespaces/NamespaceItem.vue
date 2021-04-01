@@ -3,14 +3,14 @@
           footer-bg-variant="white"
           body-class="pb-0"
   >
-    <h2 class="h5">{{ namespace.name }}</h2>
+    <h2 class="h5 overflow-hidden ns-title">{{ namespace.name }}</h2>
     <p v-if="namespace.meta.subtitle"
-       class="font-weight-bold"
+       class="font-weight-bold overflow-hidden ns-subtitle"
     >
           {{ namespace.meta.subtitle }}
     </p>
     <p v-if="namespace.meta.description"
-       class="m-0"
+       class="m-0 overflow-hidden ns-description"
     >
       {{ namespace.meta.description }}
     </p>
@@ -48,3 +48,20 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+.ns-title,
+.ns-subtitle,
+.ns-description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+.ns-title,
+.ns-subtitle {
+  -webkit-line-clamp: 2;
+}
+
+.ns-description {
+  -webkit-line-clamp: 4;
+}
+</style>
