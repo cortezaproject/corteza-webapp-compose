@@ -1,6 +1,6 @@
 <template>
   <wrap v-bind="$props" v-on="$listeners">
-    <div class="rt-content">
+    <div class="rt-content px-4 py-2">
       <div v-html="options.body"></div>
     </div>
   </wrap>
