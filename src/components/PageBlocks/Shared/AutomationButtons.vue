@@ -15,6 +15,7 @@
 <script>
 import { compose } from '@cortezaproject/corteza-js'
 import base from '../base'
+import { capitalize } from 'lodash'
 
 export default {
   extends: base,
@@ -100,7 +101,6 @@ export default {
       if (b.workflowID) {
         const { workflowID, stepID } = b
         const input = {}
-        const composeTypes = ['Record', 'Page', 'Module', 'Namespace', 'Chart']
 
         // This logic might be more comfortable of in corteza-js
         for (const key in ev.args) {
@@ -115,8 +115,9 @@ export default {
               break
 
             case 'object':
-              if (composeTypes.includes(ev.args[key].constructor.name)) {
-                type = `Compose${ev.args[key].constructor.name}`
+              if (ev.args[key].resourceType) {
+                // converts foo:bar into FooBar
+                type = ev.args[key].resourceType.split(':').map(capitalize).join('')
               }
 
               break
