@@ -4,7 +4,7 @@
       :namespace="namespace"
     />
     <router-view
-      class="flex-grow-1 overflow-auto"
+      class="flex-grow-1 overflow-auto p-2"
       :namespace="namespace"
     />
     <portal-target

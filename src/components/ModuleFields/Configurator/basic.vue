@@ -174,6 +174,7 @@ export default {
 
     this.mock.namespace = this.namespace
     this.mock.field = compose.ModuleFieldMaker(this.field)
+    this.mock.field.apply({ label: this.mock.field.label || 'Default value' })
     this.mock.field.apply({ name: 'defValField' })
     this.mock.module = new compose.Module({ fields: [this.mock.field] }, this.namespace)
     this.mock.record = new compose.Record(this.mock.module, { defValField: defaultValue })

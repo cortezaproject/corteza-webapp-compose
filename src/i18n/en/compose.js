@@ -1059,6 +1059,7 @@ export default {
   namespace: {
     clickOpen: 'Click to open',
     title: 'Low Code Namespaces',
+    noResults: 'No namespaces found',
     searchPlaceholder: 'Type here to search among all namespaces...',
     create: 'Create new namespace',
     edit: 'Edit namespace',

@@ -162,17 +162,6 @@ export default {
   },
 
   watch: {
-    'filter.pageCursor': {
-      handler (pageCursor) {
-        if (pageCursor && this.filter.query) {
-          this.fetchUsers()
-            .then(({ filter, set }) => {
-              this.options = set.map(m => Object.freeze(m))
-            })
-        }
-      },
-    },
-
     value: {
       async handler (value) {
         value = this.field.isMulti ? [...value] : [value]
@@ -188,6 +177,11 @@ export default {
     if ((!this.value || this.value.length === 0) && this.field.options.presetWithAuthenticated) {
       this.updateValue(this.$auth.user)
     }
+
+    this.fetchUsers()
+      .then(({ filter, set }) => {
+        this.options = set.map(m => Object.freeze(m))
+      })
   },
 
   methods: {
@@ -249,7 +243,9 @@ export default {
     search: debounce(function (query) {
       if (query !== this.filter.query) {
         this.filter.query = query
-        this.filter.page = 1
+        this.filter.pageCursor = undefined
+        this.filter.nextPage = undefined
+        this.filter.prevPage = undefined
       }
 
       if (query) {

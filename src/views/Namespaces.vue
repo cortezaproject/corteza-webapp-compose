@@ -44,9 +44,22 @@
         </div>
       </b-row>
 
-      <b-row align-v="stretch">
+      <b-row
+        v-if="namespacesFiltered && namespacesFiltered.length"
+        align-v="stretch"
+      >
         <b-col cols="12" md="6" lg="4" class="mt-4" v-for="(n) in namespacesFiltered" :key="n.namespaceID">
           <namespace-item :namespace="n" />
+        </b-col>
+      </b-row>
+      <b-row
+        v-else
+        class="mt-4"
+      >
+        <b-col>
+          <h3 class="text-left">
+            {{ $t('namespace.noResults') }}
+          </h3>
         </b-col>
       </b-row>
     </b-container>
