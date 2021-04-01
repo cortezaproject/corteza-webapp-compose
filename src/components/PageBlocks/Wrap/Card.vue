@@ -4,7 +4,7 @@
       no-body
       class="h-100 border-0 shadow-sm"
       :class="blockClass"
-      header-class="sticky-top border-0 text-nowrap text-truncate"
+      header-class="sticky-top border-0 text-nowrap text-truncate px-3"
       header-bg-variant="white"
       header-tag="h5"
       :header-text-variant="block.style.variants.headerText"
@@ -12,7 +12,7 @@
     >
       <b-card-header
         v-if="headerSet"
-        class="sticky-top border-0 text-nowrap text-truncate"
+        class="sticky-top border-0 text-nowrap text-truncate px-3"
         header-bg-variant="white"
         header-tag="h5"
         :header-text-variant="block.style.variants.headerText"
@@ -23,7 +23,7 @@
       </b-card-header>
       <b-card-text
         v-if="block.description"
-        class="py-2 px-4 m-0"
+        class="px-3 text-truncate m-0"
       >
         {{ block.description }}
       </b-card-text>
