@@ -10,9 +10,8 @@
     >
       <text
         ref="metricItem"
-        y="75%"
+        y="50%"
         x="50%"
-        dy="-0.4em"
         text-anchor="middle"
         dominant-baseline="central"
         text-rendering="geometricPrecision"
