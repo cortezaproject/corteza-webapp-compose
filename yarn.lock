@@ -850,10 +850,10 @@
     openurl "1.1.1"
     yargs "6.6.0"
 
-"@cortezaproject/corteza-js@>2021.3.0-rc":
-  version "2021.3.0-rc.4"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.3.0-rc.4.tgz#ec406743c4b537f41dc371bd5eab1c2b5f7ddfcb"
-  integrity sha512-HS+r5FTqPonqCUJrl7ot3/K6mvXfdEHr7C+wJbX4memJJRzkwcEcgW3KeImcNx9pR1MGFfJURk0tSnogqN2/Tw==
+"@cortezaproject/corteza-js@^2021.3.0":
+  version "2021.3.0"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.3.0.tgz#fb95fdebd8cd6b0402c5d318d9a124190f9397e0"
+  integrity sha512-le4xIW5qIlzjeR2VvBy1tido9M1v8jFlc+iWvy1HARTiTgs0Vxb+8Fe1fvWkqmT8g2TwwknQSD0r+ks6LLALyQ==
   dependencies:
     axios "^0.21.1"
     chart.js "2.9.3"
@@ -866,12 +866,12 @@
     pino "^5.16.0"
     ts-sinon "^1.0.25"
 
-"@cortezaproject/corteza-vue@>2021.3.0-rc":
-  version "2021.3.0-rc.4"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.3.0-rc.4.tgz#3ae9bf726303725f1c5518c5f43966c4de57ebb2"
-  integrity sha512-5m4YySm4sy4HB3moEYylrUy7emegpF4NivW85My4PDuaflmZHLizG4FOGPJ7euhSefrL3P4vL41TufYjivbnSA==
+"@cortezaproject/corteza-vue@^2021.3.0":
+  version "2021.3.0"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.3.0.tgz#fb3e90a03ebc25e72cff0cbae599bb076cd18d95"
+  integrity sha512-laS9NSgYNphbl6C22zNzehnKl/vTGlItNMlglPMHKmqmzIzSCSTmRuYWUtgUalruHq9xULgdfzXQ1+ZmYkyFRQ==
   dependencies:
-    "@cortezaproject/corteza-js" ">2021.3.0-rc"
+    "@cortezaproject/corteza-js" "^2021.3.0"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
     "@fortawesome/free-solid-svg-icons" "^5.12.0"
     "@fortawesome/vue-fontawesome" "^0.1.9"
@@ -1651,9 +1651,9 @@
     webpack "^4.33.0"
 
 "@types/chai@*":
-  version "4.2.15"
-  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.2.15.tgz#b7a6d263c2cecf44b6de9a051cf496249b154553"
-  integrity sha512-rYff6FI+ZTKAPkJUoyz7Udq3GaoDZnxYDEvdEdFZASiA7PoErltHezDishqQiSDWrGxvxmplH304jyzQmjp0AQ==
+  version "4.2.16"
+  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.2.16.tgz#f09cc36e18d28274f942e7201147cce34d97e8c8"
+  integrity sha512-vI5iOAsez9+roLS3M3+Xx7w+WRuDtSmF8bQkrbcIJ2sC1PcDgVoA0WGpa+bIrJ+y8zqY2oi//fUctkxtIcXJCw==
 
 "@types/color-name@^1.1.1":
   version "1.1.1"
