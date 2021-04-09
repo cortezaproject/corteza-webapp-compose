@@ -2,11 +2,12 @@
   <wrap v-bind="$props" v-on="$listeners">
     <div
       v-if="record"
-      class="mt-3 px-3"
+      class="px-3"
     >
       <div
         v-for="field in fields"
         :key="field.id"
+        class="mt-3"
       >
         <field-editor
           v-if="isFieldEditable(field)"
@@ -15,28 +16,32 @@
           :field="field"
         />
         <div
-          v-else-if="field.canReadRecordValue"
-          class="field"
+          v-else
         >
           <label
             class="text-primary"
           >
             {{ field.label || field.name }}
           </label>
-          <field-viewer
-            :field="field"
-            v-bind="{ ...$props, errors: fieldErrors(field.name) }"
-          />
-        </div>
-        <div
-          v-else
-        >
-          <label>{{ field.label || field.name }}</label>
-          <i
-            class="text-dark"
+          <div
+            v-if="field.canReadRecordValue"
+            class="value"
           >
-            {{ $t('field.noPermission') }}
-          </i>
+            <field-viewer
+              :field="field"
+              v-bind="{ ...$props, errors: fieldErrors(field.name) }"
+              value-only
+            />
+          </div>
+          <div
+            v-else
+          >
+            <i
+              class="text-warning"
+            >
+              {{ $t('field.noPermission') }}
+            </i>
+          </div>
         </div>
       </div>
     </div>
@@ -121,6 +126,7 @@ export default {
     isFieldEditable (field) {
       return field &&
         field.canUpdateRecordValue &&
+        !field.isSystem &&
         !(
           field.expressions &&
           field.expressions.value

@@ -1,13 +1,10 @@
 <script>
-import * as Editors from './loader'
-import { User as UserViewer, DateTime as DateTimeViewer } from '../Viewer/loader'
 import base from './base'
+import * as Editors from './loader'
 
 export default {
   components: {
     ...Editors,
-    UserViewer,
-    DateTimeViewer,
   },
 
   extends: base,
@@ -15,16 +12,6 @@ export default {
   computed: {
     component () {
       const kind = this.field.kind.toLocaleLowerCase()
-
-      if (this.field.isSystem) {
-        switch (this.field.kind) {
-          case 'User':
-            return UserViewer
-          case 'DateTime':
-            return DateTimeViewer
-        }
-      }
-
       const keys = Object.keys(this.$options.components)
       const i = keys.map(c => c.toLocaleLowerCase()).findIndex(c => c === kind)
 
