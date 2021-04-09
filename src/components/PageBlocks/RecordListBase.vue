@@ -679,7 +679,7 @@ export default {
         key: mf.name,
         label: mf.label || mf.name,
         moduleField: mf,
-        sortable: !this.options.hideSorting && !(this.options.editable && this.editing) && !mf.isMulti,
+        sortable: !this.options.hideSorting && !(this.options.editable && this.editing) && !mf.isMulti && mf.isSortable,
         tdClass: 'record-value',
         editable: !!editable.find(f => mf.name === f),
         required: this.inlineEditing && mf.isRequired,

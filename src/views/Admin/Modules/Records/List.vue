@@ -471,7 +471,7 @@ export default {
           key: mf.name,
           label: mf.label || mf.name,
           moduleField: mf,
-          sortable: true,
+          sortable: !mf.isMulti && mf.isSortable,
           tdClass: 'record-value',
         }))
 
