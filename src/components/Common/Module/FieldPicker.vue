@@ -7,7 +7,8 @@
           <draggable
             class="drag-area border"
             :list.sync="availableFields"
-            :options="{ group: 'fields', sort: false }">
+            :group="group"
+          >
             <div v-for="field in availableFields"
                  @dblclick="selectedFields.push(field)"
                  class="field"
@@ -21,11 +22,12 @@
         </div>
         <div class="selected">
           <label>{{ $t('field.selector.selected') }}</label>
-          <b-button @click.prevent="selectedFields.splice(0)" variant="link" class="float-right">{{ $t('field.selector.unselectAll') }}</b-button>
+          <b-button @click.prevent="selectedFields = []" variant="link" class="float-right">{{ $t('field.selector.unselectAll') }}</b-button>
           <draggable
             class="drag-area border"
-            :list.sync="selectedFields"
-            :options="{ group:'fields' }">
+            v-model="selectedFields"
+            :group="group"
+          >
             <div v-for="(field, index) in selectedFields"
                  @dblclick="selectedFields.splice(index,1)"
                  class="field"
@@ -79,6 +81,11 @@ export default {
       type: Array,
       default: null,
     },
+
+    group: {
+      type: String,
+      default: 'fields',
+    },
   },
 
   data () {
@@ -90,7 +97,7 @@ export default {
   computed: {
     selectedFields: {
       get () {
-        return this.fields
+        return this.allFields.filter(a => this.fields.some(f => a.name === f.name))
       },
 
       set (f) {
@@ -101,7 +108,7 @@ export default {
     allFields () {
       let mFields = []
       if (this.fieldSubset) {
-        mFields = this.fieldSubset
+        mFields = this.module.filterFields(this.fieldSubset)
       } else {
         mFields = this.module.fields
       }
@@ -127,14 +134,8 @@ export default {
     },
 
     availableFields () {
-      let fields = [...this.allFields]
-
       // Remove selected fields
-      fields = fields.filter(a =>
-        !this.fields.find(f => a.name === f.name),
-      )
-
-      return fields
+      return this.allFields.filter(a => !this.fields.some(f => a.name === f.name))
     },
   },
 
