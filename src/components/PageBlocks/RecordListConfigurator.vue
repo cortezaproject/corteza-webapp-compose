@@ -64,6 +64,7 @@
             :module="recordListModule"
             :field-subset="options.fields"
             :fields.sync="options.editFields"
+            group="edit-fields"
             disable-system-fields
           />
         </b-form-group>
@@ -330,6 +331,10 @@ export default {
 
       this.options.hideSorting = true
       this.options.presort = ''
+    },
+
+    'options.fields' (fields) {
+      this.options.editFields = this.options.editFields.filter(a => fields.some(b => a.name === b.name))
     },
   },
 }
