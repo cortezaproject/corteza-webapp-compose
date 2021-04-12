@@ -116,11 +116,14 @@ export default {
 
   data () {
     return {
+      query: '',
+
       fetchedRecords: [],
       records: [],
       latest: [], // set of 10 latest records for default list
+
       filter: {
-        query: null,
+        query: '',
         sort: '',
         limit: 10,
         pageCursor: '',
@@ -136,7 +139,7 @@ export default {
     }),
 
     options () {
-      return (this.filter.query ? this.records : this.latest).map(this.convert).filter(v => v)
+      return (this.query ? this.records : this.latest).map(this.convert).filter(v => v)
     },
 
     module () {
@@ -266,8 +269,8 @@ export default {
     },
 
     search: debounce(function (query) {
-      if (query !== this.filter.query) {
-        this.filter.query = query
+      if (query !== this.query) {
+        this.query = query
         this.filter.pageCursor = undefined
       }
       const { limit, pageCursor } = this.filter
