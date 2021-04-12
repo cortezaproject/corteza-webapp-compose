@@ -16,7 +16,7 @@
     <template #toolbar>
       <b-container
         ref="toolbar"
-        class="pb-2"
+        class="pb-2 pt-1"
         fluid
       >
         <b-row

@@ -2,6 +2,7 @@
   <b-card class="h-100 shadow-sm ns-item"
           footer-bg-variant="white"
           body-class="pb-0"
+          footer-class="pb-3"
   >
     <h2 class="h5 overflow-hidden ns-title">{{ namespace.name }}</h2>
     <p v-if="namespace.meta.subtitle"
