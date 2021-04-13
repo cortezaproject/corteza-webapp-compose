@@ -12,9 +12,12 @@
       class="flex-grow-1 d-flex w-100"
     >
       <div
-        v-for="(item, index) in grid"
+        v-for="(item, index) in sortedGrid"
         :key="item.i"
-        class="w-100"
+        class="flex-grow-1"
+        :style="{
+          width: ((item.w * 100) / 12) + '%',
+        }"
       >
         <slot
           :block="blocks[item.i]"
@@ -109,6 +112,10 @@ export default {
         this.grid = layout
         this.handleLayoutUpdate(layout)
       },
+    },
+
+    sortedGrid () {
+      return Array.from(this.grid).sort((a, b) => Math.sqrt(a.x * a.x + a.y * a.y) - Math.sqrt(b.x * b.x + b.y * b.y))
     },
 
     isStretchable () {
