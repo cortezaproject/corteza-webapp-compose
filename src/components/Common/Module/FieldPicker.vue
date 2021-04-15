@@ -135,7 +135,7 @@ export default {
       }
 
       return [
-        ...mFields.sort((a, b) => a.label.localeCompare(b.label)),
+        ...[...mFields].sort((a, b) => a.label.localeCompare(b.label)),
         ...sysFields,
       ]
     },
