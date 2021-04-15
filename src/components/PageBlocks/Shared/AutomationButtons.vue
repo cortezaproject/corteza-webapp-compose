@@ -13,9 +13,8 @@
   </div>
 </template>
 <script>
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, automation } from '@cortezaproject/corteza-js'
 import base from '../base'
-import { capitalize } from 'lodash'
 
 export default {
   extends: base,
@@ -100,31 +99,7 @@ export default {
 
       if (b.workflowID) {
         const { workflowID, stepID } = b
-        const input = {}
-
-        // This logic might be more comfortable of in corteza-js
-        for (const key in ev.args) {
-          let type = 'Any'
-          switch (typeof ev.args[key]) {
-            case 'string':
-              type = 'String'
-              break
-
-            case 'boolean':
-              type = 'Boolean'
-              break
-
-            case 'object':
-              if (ev.args[key].resourceType) {
-                // converts foo:bar into FooBar
-                type = ev.args[key].resourceType.split(':').map(capitalize).join('')
-              }
-
-              break
-          }
-
-          input[key] = { '@value': ev.args[key], '@type': type }
-        }
+        const input = automation.Encode(ev.args)
 
         this.$AutomationAPI
           .workflowExec({
