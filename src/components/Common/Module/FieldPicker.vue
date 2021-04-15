@@ -10,7 +10,7 @@
             :group="group"
           >
             <div v-for="field in availableFields"
-                 @dblclick="selectedFields.push(field)"
+                 @dblclick="selectedFields = [field, ...selectedFields]"
                  class="field"
                  :key="field.name">
               <span v-if="field.label">{{ field.label }} ({{field.name}})</span>
@@ -28,8 +28,8 @@
             v-model="selectedFields"
             :group="group"
           >
-            <div v-for="(field, index) in selectedFields"
-                 @dblclick="selectedFields.splice(index,1)"
+            <div v-for="(field) in selectedFields"
+                 @dblclick="selectedFields = selectedFields.filter(({ name }) => field.name !== name)"
                  class="field"
                  :key="field.name">
               <span v-if="field.label">{{ field.label }} ({{field.name}})</span>
@@ -97,7 +97,14 @@ export default {
   computed: {
     selectedFields: {
       get () {
-        return this.allFields.filter(a => this.fields.some(f => a.name === f.name))
+        // Needs to be done this way so it retains order of fields
+        return this.fields.reduce((fields, field) => {
+          field = this.allFields.find(({ name }) => name === field.name)
+          if (field) {
+            fields.push(field)
+          }
+          return fields
+        }, [])
       },
 
       set (f) {
