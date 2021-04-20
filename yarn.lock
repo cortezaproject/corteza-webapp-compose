@@ -851,9 +851,9 @@
     yargs "6.6.0"
 
 "@cortezaproject/corteza-js@^2021.3.0":
-  version "2021.3.2"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.3.2.tgz#7bf7b618c7f731e24398692a19fca963de466026"
-  integrity sha512-bPC8L9YiW/KxJVQGkrAz72TnLWNbTCAnHZqL8U9hGYWLDPdrM35k16k6XC4tYYkxL4OHMaOQMHrgBW8KG3+mlw==
+  version "2021.3.3"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.3.3.tgz#40127c40fe5fdf4e98982f1ceebc30b937c4cf8e"
+  integrity sha512-GvKNkfdb/3lhUkOdjXCIEXrehawzTXQU8KHeeiskFMaF+i1QhK/hidTV/OCjKzfrC8OL6kAAnXg/65MiZnbOdg==
   dependencies:
     axios "^0.21.1"
     chart.js "2.9.3"
@@ -867,9 +867,9 @@
     ts-sinon "^1.0.25"
 
 "@cortezaproject/corteza-vue@^2021.3.0":
-  version "2021.3.2"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.3.2.tgz#4504d62dfb04d2eaae33f01eb29ea3b7b5014af8"
-  integrity sha512-X6GGC+iFZ6B66nYFpwvGRtPDJK6n3cPwE/qI47WBTkaJRiyO5ehONLl2d5FTRy/enhwEw4J9ulMd9OW1pMOk8g==
+  version "2021.3.3"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.3.3.tgz#97deb394af86f036c8b1120f2c6bf483f20fb6c5"
+  integrity sha512-CMLGIn2VPO/E5Tj2ldpqEX3GAMClk+8xjyQneIoUsN5WMXtWesQTFQ+eyqc9NGHHPMcoQ2icK7u2BdnTFbK/2Q==
   dependencies:
     "@cortezaproject/corteza-js" "^2021.3.0"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
@@ -1264,6 +1264,13 @@
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@sinonjs/fake-timers/-/fake-timers-6.0.1.tgz#293674fccb3262ac782c7aadfdeca86b10c75c40"
   integrity sha512-MZPUxrmFubI36XS1DI3qmI0YdN1gks62JtFZvxR67ljjSNCeK6U08Zx4msEWOXuofgqUt6zPHSi1H9fbjR/NRA==
+  dependencies:
+    "@sinonjs/commons" "^1.7.0"
+
+"@sinonjs/fake-timers@^7.0.4":
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/@sinonjs/fake-timers/-/fake-timers-7.0.5.tgz#558a7f8145a01366c44b3dcbdd7172c05c461564"
+  integrity sha512-fUt6b15bjV/VW93UP5opNXJxdwZSbK1EdiwnhN7XrQrcpaOhMJpZ/CjwFpM3THpxwA+YviBUJKSuEqKlCK5alw==
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
@@ -1707,9 +1714,9 @@
   integrity sha512-Onhn+z72D2O2Pb2ql2xukJ55rglumsVo1H6Fmyi8mlU9SvKdBk/pUSUAiBY/d9bAOF7VVWajX3sths/+g6ZiAQ==
 
 "@types/node@^11.15.20":
-  version "11.15.50"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.15.50.tgz#a8c76622a20320d4a04adf2002b04737c510ef11"
-  integrity sha512-kG/ZmA/uD1L1gVD7vVXQB6v+ICZlJgvakrodHiltT3Zq0YjXq5H9tfgop8MsdMGCwrcLJg9QCQDRP4DZsn9T/g==
+  version "11.15.52"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.15.52.tgz#5579c11b77e08c72720c46f7c379df8ff7fad73a"
+  integrity sha512-fLxyEL5bGfxKJVlnA03LIhNF9Mjcc5h1m/98vCxJYEfhG+qrlKet7u57NKGqws6rZLQHVlWNDJJyouC7HNHWPQ==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -1781,7 +1788,14 @@
     "@types/chai" "*"
     "@types/sinon" "*"
 
-"@types/sinon@*", "@types/sinon@^9.0.5":
+"@types/sinon@*":
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-10.0.0.tgz#eecc3847af03d45ffe53d55aaaaf6ecb28b5e584"
+  integrity sha512-jDZ55oCKxqlDmoTBBbBBEx+N8ZraUVhggMZ9T5t+6/Dh8/4NiOjSUfpLrPiEwxQDlAe3wpAkoXhWvE6LibtsMQ==
+  dependencies:
+    "@sinonjs/fake-timers" "^7.0.4"
+
+"@types/sinon@^9.0.5":
   version "9.0.11"
   resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-9.0.11.tgz#7af202dda5253a847b511c929d8b6dda170562eb"
   integrity sha512-PwP4UY33SeeVKodNE37ZlOsR9cReypbMJOhZ7BVE0lB+Hix3efCOxiJWiE5Ia+yL9Cn2Ch72EjFTRze8RZsNtg==
@@ -9818,9 +9832,9 @@ object-inspect@^1.7.0:
   integrity sha512-a7pEHdh1xKIAgTySUGgLMx/xwDZskN1Ud6egYYN3EdRW4ZMPNEDUTF+hwy2LUC+Bl+SyLXANnwz/jyh/qutKUw==
 
 object-inspect@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-1.9.0.tgz#c90521d74e1127b67266ded3394ad6116986533a"
-  integrity sha512-i3Bp9iTqwhaLZBxGkRfo5ZbE07BQRT7MGu8+nNgwW9ItGp1TzCTw2DLEoWwjClxBjOFI/hWljTAmYGCEwmtnOw==
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-1.10.2.tgz#b6385a3e2b7cae0b5eafcf90cddf85d128767f30"
+  integrity sha512-gz58rdPpadwztRrPjZE9DZLOABUpTGdcANUgOwBFO1C+HZZhePoP83M65WGDmbpwFYJSWqavbl4SgDn4k8RYTA==
 
 object-is@^1.0.1:
   version "1.0.2"
