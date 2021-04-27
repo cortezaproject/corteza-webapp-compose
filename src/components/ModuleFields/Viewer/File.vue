@@ -7,6 +7,7 @@
       :set="set"
       :namespace="namespace"
       :mode="field.options.mode"
+      :hide-file-name="field.options.hideFileName"
     />
   </div>
 </template>

@@ -11,6 +11,7 @@
         :set="options.attachments"
         :namespace="namespace"
         :mode="options.mode"
+        :hide-file-name="options.hideFileName"
       />
     </div>
   </wrap>

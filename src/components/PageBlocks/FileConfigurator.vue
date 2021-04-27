@@ -11,6 +11,13 @@
                           :options="modes">
       </b-form-radio-group>
     </b-form-group>
+    <b-form-checkbox
+      :disabled="!enableFileNameHiding"
+      v-model="options.hideFileName"
+      class="mb-3"
+    >
+      {{ $t('field.kind.file.view.showName') }}
+    </b-form-checkbox>
     <uploader
       :endpoint="endpoint"
       @uploaded="appendAttachment"
@@ -55,6 +62,10 @@ export default {
         { value: 'single', text: this.$t('field.kind.file.view.single') },
         { value: 'gallery', text: this.$t('field.kind.file.view.gallery') },
       ]
+    },
+
+    enableFileNameHiding () {
+      return (this.options.mode === 'single') || (this.options.mode === 'gallery')
     },
   },
 

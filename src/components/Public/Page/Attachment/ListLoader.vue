@@ -3,23 +3,28 @@
     <div v-if="mode === 'list'" class="list">
       <draggable :list.sync="attachments" :disabled="!enableOrder">
         <div v-for="(a, index) in attachments" :key="a.attachmentID" class="item">
-          <div class="row no-gutters">
-            <div v-if="enableOrder" class="col-sm-1 my-auto text-center">
-              <font-awesome-icon v-b-tooltip.hover
-                              :icon="['fas', 'bars']"
-                              :title="$t('general.tooltip.dragAndDrop')"
-                              class="handle text-light" />
-            </div>
-            <div :class="{'col-sm-9': enableOrder, 'col-sm-10': !enableOrder}">
+          <b-row no-gutters>
+            <b-col>
+              <div v-if="enableOrder" class="mr-2 d-inline">
+                <font-awesome-icon v-b-tooltip.hover
+                                :icon="['fas', 'bars']"
+                                :title="$t('general.tooltip.dragAndDrop')"
+                                class="handle text-light" />
+              </div>
               <attachment-link :attachment="a" />
               &nbsp;
               <i18next path="general.label.attachmentFileInfo" tag="label">
                 <span>{{ size(a) }}</span>
                 <span>{{ uploadedAt(a) }}</span>
               </i18next>
-            </div>
+
+            </b-col>
             <div class="col-sm-2 text-right my-auto">
-              <a :href="a.download"><font-awesome-icon :icon="['fas', 'download']"></font-awesome-icon></a>
+              <a :href="a.download"
+                 class="btn text-primary"
+              >
+                <font-awesome-icon :icon="['fas', 'download']" />
+              </a>
               <b-button variant="link"
                         class="delete right inline"
                         v-if="enableDelete"
@@ -27,7 +32,7 @@
                 <font-awesome-icon :icon="['far', 'trash-alt']" class="action"></font-awesome-icon>
               </b-button>
             </div>
-          </div>
+          </b-row>
         </div>
       </draggable>
     </div>
@@ -48,9 +53,10 @@
     <div v-else-if="mode === 'single' || 'gallery'" class="single gallery">
       <div
         v-for="(a) in attachments" :key="a.attachmentID"
-        class="m-2"
+        class="my-2"
       >
         <c-preview-inline
+          class="ml-0"
           v-if="canPreview(a)"
           @openPreview="openLightbox({ ...a, ...$event })"
           :src="inlineUrl(a)"
@@ -69,7 +75,8 @@
         </div>
 
         <div
-          class="text-center m-1"
+          v-if="!hideFileName"
+          class="m-1"
         >
           <attachment-link
             :attachment="a"
@@ -123,6 +130,11 @@ export default {
     set: {
       type: Array,
       required: true,
+    },
+
+    hideFileName: {
+      type: Boolean,
+      default: false,
     },
   },
 
