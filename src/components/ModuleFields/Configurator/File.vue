@@ -11,6 +11,12 @@
                           :options="modes">
       </b-form-radio-group>
     </b-form-group>
+    <b-form-checkbox
+      :disabled="!enableFileNameHiding"
+      v-model="f.options.hideFileName"
+    >
+      {{ $t('field.kind.file.view.showName') }}
+    </b-form-checkbox>
   </div>
 </template>
 
@@ -28,6 +34,10 @@ export default {
         { value: 'single', text: this.$t('field.kind.file.view.single') },
         { value: 'gallery', text: this.$t('field.kind.file.view.gallery') },
       ]
+    },
+
+    enableFileNameHiding () {
+      return (this.f.options.mode === 'single') || (this.f.options.mode === 'gallery')
     },
   },
 }
