@@ -1021,6 +1021,7 @@ export default {
           grid: 'Grid',
           single: 'Single image',
           gallery: 'Gallery of images',
+          showName: 'Hide file name',
         },
       },
     },
