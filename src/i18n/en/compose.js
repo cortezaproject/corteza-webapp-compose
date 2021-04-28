@@ -187,7 +187,7 @@ export default {
       editFields: 'Editable module fields',
 
       pagination: {
-        showing: 'Showing {{from}} to {{to}} of {{count}} records',
+        showing: '{{from}} - {{to}} of {{count}} records',
         single: 'One record',
         single_plural: '{{count}} records',
 

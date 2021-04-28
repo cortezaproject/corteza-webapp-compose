@@ -408,7 +408,7 @@
       >
         <b-row no-gutters>
           <b-col class="d-flex justify-content-between align-items-center">
-            <div>
+            <div class="text-truncate">
               <div v-if="options.showTotalCount"
                   class="ml-2 text-nowrap font-weight-bold"
               >
