@@ -5,16 +5,29 @@
     >
       <div
         v-for="(field, index) in fields"
-        class="mt-3 px-3"
-        :key="index">
+        class="d-flex flex-column mt-3 px-3"
+        :key="index"
+      >
         <label
-          class="text-primary"
+          class="text-primary mb-0"
+          :class="{ 'mb-0': !!(field.options.description || {}).view || false }"
         >
           {{ field.label || field.name }}
+        <hint
+          :text="(field.options.hint || {}).view || ''"
+          :id="field.fieldID"
+          class="d-inline-block"
+        />
         </label>
+
+        <small
+          class="text-muted"
+        >
+          {{ (field.options.description || {}).view }}
+        </small>
         <div
           v-if="field.canReadRecordValue"
-          class="value"
+          class="value mt-2"
         >
           <field-viewer
             v-bind="{ ...$props, field }"
@@ -40,11 +53,13 @@
 <script>
 import base from './base'
 import FieldViewer from 'corteza-webapp-compose/src/components/ModuleFields/Viewer'
+import Hint from 'corteza-webapp-compose/src/components/Common/Hint.vue'
 import users from 'corteza-webapp-compose/src/mixins/users'
 
 export default {
   components: {
     FieldViewer,
+    Hint,
   },
 
   extends: base,

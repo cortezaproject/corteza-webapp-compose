@@ -3,21 +3,28 @@
     <b-form-checkbox
       v-model="field.isRequired"
       :disabled="!field.cap.required || showvalueExpr"
-      :value="true"
-      :unchecked-value="false"
     >
       {{ $t('general.label.required') }}
     </b-form-checkbox>
     <b-form-checkbox
       v-model="showvalueExpr"
       :disabled="field.isRequired"
-      :value="true"
-      :unchecked-value="false"
     >
       {{ $t('field.valueExpr.label') }}
     </b-form-checkbox>
+
+    <b-form-checkbox
+      v-model="field.isMulti"
+      :disabled="!field.cap.multi"
+    >
+      {{ $t('general.label.multi') }}
+    </b-form-checkbox>
+
+    <hr>
+
     <b-form-group
-      v-show="showvalueExpr"
+      v-if="showvalueExpr"
+      :label="$t('field.valueExpr.label')"
       class="mt-2"
     >
       <b-input-group>
@@ -42,33 +49,77 @@
         {{ $t('field.valueExpr.description') }}
       </b-form-text>
     </b-form-group>
-    <b-form-checkbox
-      v-if="false"
-      v-model="field.isPrivate"
-      :disabled="!field.cap.private"
-      :value="true"
-      :unchecked-value="false"
-    >
-      {{ $t('general.label.private') }}
-    </b-form-checkbox>
-    <hr />
-    <b-form-checkbox
-      v-model="field.isMulti"
-      :disabled="!field.cap.multi"
-      :value="true"
-      :unchecked-value="false"
-    >
-      {{ $t('general.label.multi') }}
-    </b-form-checkbox>
+
     <b-form-group
-      v-if="mock.field && !showvalueExpr"
+      v-else-if="mock.field"
       :label="$t('field.defaultValue')"
       class="mt-3"
     >
       <field-editor
-        class="mb-0"
         valueOnly
         v-bind="mock"
+      />
+    </b-form-group>
+
+    <hr>
+
+    <b-form-checkbox
+      :checked="noDescriptionEdit"
+      @change="$set(field.options.description, 'edit', $event ? undefined : '')"
+      tabindex="-1"
+    >
+      {{ $t('field.options.description.same') }}
+    </b-form-checkbox>
+
+    <b-form-group
+      :label="$t(`field.options.description.label.${noDescriptionEdit ? 'default' : 'view'}`)"
+      class="mt-2"
+    >
+      <b-form-input
+        v-model="field.options.description.view"
+        :placeholder="$t(`field.options.description.placeholder.${noDescriptionEdit ? 'default' : 'view'}`)"
+      />
+    </b-form-group>
+
+    <b-form-group
+      v-if="!noDescriptionEdit"
+      :label="$t('field.options.description.label.edit')"
+      class="mt-2"
+    >
+      <b-form-input
+        v-model="field.options.description.edit"
+        :placeholder="$t('field.options.description.placeholder.edit')"
+      />
+    </b-form-group>
+
+    <hr>
+
+    <b-form-checkbox
+      :checked="noHintEdit"
+      @change="$set(field.options.hint, 'edit', $event ? undefined : '')"
+      tabindex="-1"
+    >
+      {{ $t('field.options.hint.same') }}
+    </b-form-checkbox>
+
+    <b-form-group
+      :label="$t(`field.options.hint.label.${noHintEdit ? 'default' : 'view'}`)"
+      class="mt-2"
+    >
+      <b-form-input
+        v-model="field.options.hint.view"
+        :placeholder="$t(`field.options.hint.placeholder.${noHintEdit ? 'default' : 'view'}`)"
+      />
+    </b-form-group>
+
+    <b-form-group
+      v-if="!noHintEdit"
+      :label="$t('field.options.hint.label.edit')"
+      class="mt-2"
+    >
+      <b-form-input
+        v-model="field.options.hint.edit"
+        :placeholder="$t('field.options.hint.placeholder.edit')"
       />
     </b-form-group>
   </div>
@@ -113,6 +164,14 @@ export default {
     ...mapGetters({
       getModuleByID: 'module/getByID',
     }),
+
+    noDescriptionEdit () {
+      return this.field.options.description.edit === undefined
+    },
+
+    noHintEdit () {
+      return this.field.options.hint.edit === undefined
+    },
   },
 
   watch: {

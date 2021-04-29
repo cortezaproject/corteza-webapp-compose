@@ -14,6 +14,7 @@
 import multi from './multi'
 import errors from '../errors'
 import { compose, validator } from '@cortezaproject/corteza-js'
+import Hint from 'corteza-webapp-compose/src/components/Common/Hint.vue'
 
 export default {
   components: {
@@ -24,6 +25,10 @@ export default {
     // errors is used in the components that extends base
     // eslint-disable-next-line vue/no-unused-components
     errors,
+
+    // Hint is used in the components that extends base
+    // eslint-disable-next-line vue/no-unused-components
+    Hint,
   },
 
   props: {
@@ -94,6 +99,25 @@ export default {
       }
 
       return this.field.label || this.field.name
+    },
+
+    description () {
+      if (this.valueOnly) {
+        return ''
+      }
+
+      const { view, edit } = this.field.options.description
+
+      return edit || view
+    },
+
+    hint () {
+      if (this.valueOnly) {
+        return ''
+      }
+      const { view, edit } = this.field.options.hint
+
+      return edit || view
     },
   },
 }

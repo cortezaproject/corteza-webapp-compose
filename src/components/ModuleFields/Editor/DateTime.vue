@@ -1,9 +1,31 @@
 <template>
   <b-form-group
-    :label="label"
     label-class="text-primary"
     :class="formGroupStyleClasses"
   >
+    <template #label>
+      <div
+        v-if="!valueOnly"
+        class="d-flex align-items-top"
+      >
+        <label
+          class="mb-0"
+        >
+          {{ label }}
+        </label>
+
+        <hint
+          :text="hint"
+          :id="field.fieldID"
+        />
+      </div>
+      <small
+        class="form-text font-weight-light text-muted"
+      >
+        {{ description }}
+      </small>
+    </template>
+
     <multi
       v-if="field.isMulti"
       v-slot="ctx"

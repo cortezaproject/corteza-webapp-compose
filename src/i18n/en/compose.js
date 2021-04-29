@@ -915,6 +915,32 @@ export default {
         comma: 'Separated by a comma',
         custom: 'A custom delimiter',
       },
+      description: {
+        label: {
+          default: 'Description',
+          view: 'Description view',
+          edit: 'Description edit',
+        },
+        placeholder: {
+          default: 'Description text...',
+          view: 'Description when viewing record field...',
+          edit: 'Description when editing record field...',
+        },
+        same: 'Show same description on view and edit',
+      },
+      hint: {
+        label: {
+          default: 'Hint',
+          view: 'Hint view',
+          edit: 'Hint edit',
+        },
+        placeholder: {
+          default: 'Hint text...',
+          view: 'Hint when viewing record field...',
+          edit: 'Hint when editing record field...',
+        },
+        same: 'Show same hint on view and edit',
+      },
     },
     system: {
       ownedBy: 'Owned by',
