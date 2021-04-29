@@ -2,7 +2,17 @@
   <b-form-group>
     <b-form-checkbox v-model="value">
       {{ field.label || field.name }}
+      <hint
+        :text="hint"
+        :id="field.fieldID"
+        class="d-inline-block text-primary"
+      />
     </b-form-checkbox>
+    <small
+      class="form-text font-weight-light text-muted"
+    >
+      {{ description }}
+    </small>
     <errors :errors="errors" />
   </b-form-group>
 </template>

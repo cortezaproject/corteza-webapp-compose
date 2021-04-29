@@ -19,10 +19,22 @@
           v-else
         >
           <label
-            class="text-primary"
+            class="text-primary mb-0"
+            :class="{ 'mb-0': !!(field.options.description || {}).view || false }"
           >
             {{ field.label || field.name }}
+          <hint
+            :text="(field.options.hint || {}).view || ''"
+            :id="field.fieldID"
+            class="d-inline-block"
+          />
           </label>
+
+          <small
+            class="text-muted"
+          >
+            {{ (field.options.description || {}).view }}
+          </small>
           <div
             v-if="field.canReadRecordValue"
             class="value"

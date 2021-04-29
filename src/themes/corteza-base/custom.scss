@@ -207,13 +207,12 @@ fieldset.required {
     }
   }
 
-  legend::after {
+  label::after {
     content: "*";
     display: inline-block;
     color: $danger;
     width: 10px;
     height: 18px;
-    margin-left: 5px;
     overflow: hidden;
   }
 }
