@@ -18,12 +18,14 @@
     <span slot="footer">
       <b-button v-if="namespace.enabled"
                 :to="{ name: 'pages', params: { slug: (namespace.slug || namespace.namespaceID) } }"
+                :aria-label="$t('namespace.visit') + ' ' + namespace.name"
                 variant="light"
                 size="lg">
         {{ $t('namespace.visit') }}
       </b-button>
       <b-button v-if="namespace.canUpdateNamespace"
                 :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }"
+                :aria-label="$t('namespace.edit') + ' ' + namespace.name"
                 variant="light"
                 class="float-right"
                 size="lg">
