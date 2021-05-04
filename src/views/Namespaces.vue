@@ -19,7 +19,7 @@
       <b-row no-gutters
              class="align-items-center justify-content-between">
         <div v-if="canCreateNamespace"
-             class="mt-2 text-nowrap flex-grow-1"
+             class="mt-2 flex-grow-1"
         >
           <b-btn :to="{ name: 'namespace.create' }"
                  variant="primary"

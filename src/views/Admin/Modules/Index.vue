@@ -16,12 +16,12 @@
                 class="align-items-center justify-content-between"
                 no-gutters
               >
-                <div class="text-nowrap flex-grow-1">
+                <div class="flex-grow-1">
                   <b-btn
                     v-if="namespace.canCreateModule"
                     variant="primary"
                     size="lg"
-                    class="mr-1 float-left"
+                    class="mr-1 mb-1 float-left"
                     :to="{ name: 'admin.modules.create' }"
                   >
                     {{ $t('module.createLabel') }}
@@ -31,23 +31,23 @@
                     v-if="namespace.canCreateModule"
                     :namespace="namespace"
                     type="module"
-                    class="mr-1 float-left"
+                    class="mr-1 mb-1 float-left"
                   />
 
                   <export
                     :list="modules"
                     type="module"
-                    class="mr-1 float-left"
+                    class="mr-1 mb-1 float-left"
                   />
                   <c-permissions-button
                     v-if="namespace.canGrant"
                     resource="compose:module:*"
                     :buttonLabel="$t('general.label.permissions')"
                     buttonVariant="light"
-                    class="btn-lg"
+                    class="btn-lg mb-1"
                   />
                 </div>
-                <div class="flex-grow-1 mt-1">
+                <div class="flex-grow-1 mb-1">
                   <b-input
                     v-model.trim="query"
                     class="mw-100"
