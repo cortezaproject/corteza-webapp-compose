@@ -36,11 +36,20 @@
           />
         </div>
         <div class="flex-grow-1 mt-1">
-          <b-input
-            v-model.trim="query"
-            class="float-right mw-100"
-            type="search"
-            :placeholder="$t('namespace.searchPlaceholder')" />
+          <b-input-group>
+            <b-form-input
+              v-model.trim="query"
+              class="float-right mw-100"
+              type="search"
+              :placeholder="$t('namespace.searchPlaceholder')" />
+            <b-input-group-append>
+              <b-input-group-text class="text-primary bg-white">
+                <font-awesome-icon
+                  :icon="['fas', 'search']"
+                />
+              </b-input-group-text>
+            </b-input-group-append>
+          </b-input-group>
         </div>
       </b-row>
 

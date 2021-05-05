@@ -21,7 +21,7 @@
       >
         <b-row
           no-gutters
-          class="align-items-baseline justify-content-between"
+          class="justify-content-between"
         >
          <div class="text-nowrap flex-grow-1">
             <template v-if="!options.hideAddButton && recordListModule.canCreateRecord">
@@ -66,13 +66,21 @@
             />
           </div>
           <div class="mt-1 flex-grow-1">
-            <b-input
-              v-if="!options.hideSearch && !inlineEditing"
-              v-model="query"
-              class="float-right mw-100"
-              type="search"
-              :placeholder="$t('general.label.search')" />
-
+            <b-input-group>
+              <b-form-input
+                v-if="!options.hideSearch && !inlineEditing"
+                v-model="query"
+                class="float-right mw-100"
+                type="search"
+                :placeholder="$t('general.label.search')" />
+              <b-input-group-append>
+                <b-input-group-text class="text-primary bg-white">
+                  <font-awesome-icon
+                    :icon="['fas', 'search']"
+                  />
+                </b-input-group-text>
+              </b-input-group-append>
+            </b-input-group>
           </div>
         </b-row>
         <b-row
