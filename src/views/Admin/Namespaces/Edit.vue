@@ -305,7 +305,7 @@ export default {
           assets = await this.uploadAssets()
           meta = { ...meta, ...assets }
         } catch (e) {
-          this.toastErrorHandler(this.$t('notification.namespace.assetUploadFailed'))
+          this.toastErrorHandler(this.$t('notification.namespace.assetUploadFailed'))(e)
           return
         }
       }
@@ -318,7 +318,7 @@ export default {
             this.toastSuccess(this.$t('notification.namespace.saved'))
           })
         } catch (e) {
-          this.toastErrorHandler(this.$t('notification.namespace.saveFailed'))
+          this.toastErrorHandler(this.$t('notification.namespace.saveFailed'))(e)
           return
         }
       } else {
@@ -329,7 +329,7 @@ export default {
             this.toastSuccess(this.$t('notification.namespace.saved'))
           })
         } catch (e) {
-          this.toastErrorHandler(this.$t('notification.namespace.createFailed'))
+          this.toastErrorHandler(this.$t('notification.namespace.createFailed'))(e)
           return
         }
       }
