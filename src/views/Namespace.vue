@@ -131,8 +131,6 @@ export default {
       immediate: true,
       handler (slug) {
         this.loaded = false
-        this.initReminders()
-
         this.$store.dispatch('namespace/load').then(() => {
           const ns = this.$store.getters['namespace/getByUrlPart'](slug)
           if (ns) {
@@ -195,7 +193,6 @@ export default {
   },
 
   beforeDestroy () {
-    this.$Reminder.stop()
     this.$root.$off('namespaces.listLoad', this.namespaceLoader)
     this.$root.$off('reminder.show', this.showReminder)
   },
@@ -204,19 +201,6 @@ export default {
     async namespaceLoader () {
       return this.$ComposeAPI.namespaceList().then(({ set }) => {
         this.namespaces = set.map(ns => new compose.Namespace(ns))
-      })
-    },
-
-    initReminders () {
-      this.$nextTick(() => {
-        this.$Reminder.init({
-          emitter: this.$root,
-          filter: {
-            assignedTo: this.$auth.user.userID,
-            scheduledOnly: true,
-            excludeDismissed: true,
-          },
-        })
       })
     },
 

@@ -21,6 +21,7 @@ export default new Vuex.Store({
       namespaced: true,
       ...cvStore.wfPrompts({
         api: Vue.prototype.$AutomationAPI,
+        ws: Vue.prototype.$socket,
       }),
     },
   },

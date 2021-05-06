@@ -4,9 +4,10 @@ import BootstrapVue from 'bootstrap-vue'
 import Router from 'vue-router'
 import Vuex from 'vuex'
 import VueProgressBar from 'vue-progressbar'
+import VueNativeSock from 'vue-native-websocket'
 import vars from '../themes/corteza-base/variables.scss'
 
-import { plugins } from '@cortezaproject/corteza-vue'
+import { plugins, websocket } from '@cortezaproject/corteza-vue'
 
 import pairs from './eventbus-pairs'
 
@@ -51,3 +52,5 @@ Vue.use(plugins.UIHooks(), {
 
 Vue.use(plugins.Settings, { api: Vue.prototype.$SystemAPI })
 Vue.use(plugins.Reminder, { api: Vue.prototype.$SystemAPI })
+
+Vue.use(VueNativeSock, websocket.endpoint(), websocket.config)
