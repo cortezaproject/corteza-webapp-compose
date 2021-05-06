@@ -13,7 +13,7 @@ import store from './store'
 import router from './router'
 
 import { compose } from '@cortezaproject/corteza-js'
-import { mixins, corredor } from '@cortezaproject/corteza-vue'
+import { mixins, corredor, websocket } from '@cortezaproject/corteza-vue'
 
 const notProduction = (process.env.NODE_ENV !== 'production')
 const verboseEventbus = window.location.search.includes('verboseEventbus')
@@ -35,7 +35,12 @@ export default (options = {}) => {
     },
 
     async created () {
-      return this.$auth.handle().then(({ accessTokenFn, user }) => {
+      // cross link auth & websocket so that ws can use the right access token
+      websocket.init(this)
+
+      this.websocketMessageRouter()
+
+      return this.$auth.vue(this).handle().then(({ accessTokenFn, user }) => {
         // Setup the progress bar
         this.$Progress.start()
         this.$router.beforeEach((to, from, next) => {
@@ -68,8 +73,11 @@ export default (options = {}) => {
           ),
         }
 
-        // start workflow prompt watcher
-        this.$store.dispatch('wfPrompts/watch')
+        // Load all pending prompts:
+        this.$store.dispatch('wfPrompts/update')
+
+        // Initializes reminders subsystems, do prefetch of all pending reminders
+        this.$Reminder.init(this, { assignedTo: user.userID })
 
         this.loadBundle(bundleLoaderOpt)
           .then(() => this.$ComposeAPI.automationList({ excludeInvalid: true }))
@@ -104,6 +112,36 @@ export default (options = {}) => {
 
         throw err
       })
+    },
+
+    methods: {
+      /**
+       * Registers event listener for websocket messages and
+       * routes them depending on their type
+       */
+      websocketMessageRouter () {
+        // All
+        this.$on('websocket-message', ({ data }) => {
+          const msg = JSON.parse(data)
+
+          switch (msg['@type']) {
+            case 'workflowSessionPrompt':
+              this.$store.dispatch('wfPrompts/new', msg['@value'])
+              break
+
+            case 'workflowSessionResumed':
+              this.$store.dispatch('wfPrompts/clear', msg['@value'])
+              break
+
+            case 'reminder':
+              this.$Reminder.enqueueRaw(msg['@value'])
+              break
+
+            case 'error':
+              console.error('websocket message with error', msg['@value'])
+          }
+        })
+      },
     },
 
     router,
