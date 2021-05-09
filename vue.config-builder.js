@@ -3,9 +3,8 @@ var exec = require('child_process').execSync
 var path = require('path')
 var Vue = require('vue')
 
-module.exports = ({ appFlavour, appName, appLabel, version = process.env.BUILD_VERSION, theme, packageAlias, root = path.resolve('.'), env = process.env.NODE_ENV }) => {
+module.exports = ({ appFlavour, appLabel, version = process.env.BUILD_VERSION, theme, packageAlias, root = path.resolve('.'), env = process.env.NODE_ENV }) => {
   const isDevelopment = (env === 'development')
-  const isProduction = (env === 'production')
   const isTest = (env === 'test')
 
   if (isTest) {
@@ -18,7 +17,6 @@ module.exports = ({ appFlavour, appName, appLabel, version = process.env.BUILD_V
     Vue.config.performance = false
   }
 
-  const publicPath = isProduction ? '/' + appName : '/'
   const optimization = isTest ? {} : {
     usedExports: true,
     runtimeChunk: 'single',
@@ -33,7 +31,7 @@ module.exports = ({ appFlavour, appName, appLabel, version = process.env.BUILD_V
   }
 
   return {
-    publicPath,
+    publicPath: './',
     lintOnSave: true,
     runtimeCompiler: true,
 

@@ -380,9 +380,9 @@ export default {
           unify: {
             name: this.namespace.name,
             listed: true,
-            url: `/compose/ns/${this.namespace.slug}/pages`,
-            icon: this.namespace.meta.icon || '/applications/default_icon.png',
-            logo: this.namespace.meta.logo || '/applications/default_logo.jpg',
+            url: `compose/ns/${this.namespace.slug}/pages`,
+            icon: this.namespace.meta.icon || 'applications/default_icon.png',
+            logo: this.namespace.meta.logo || 'applications/default_logo.jpg',
           },
         }
         return this.$SystemAPI.applicationCreate({ ...application })
