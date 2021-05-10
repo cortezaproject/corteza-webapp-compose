@@ -1,5 +1,5 @@
 <template>
-  <c-sidebar
+  <c-reminder-sidebar
     position="right"
     name="right-panel"
     class="bg-white overflow-auto pb-5 border-left"
@@ -10,18 +10,18 @@
     <reminder
       v-bind="$props"
     />
-  </c-sidebar>
+  </c-reminder-sidebar>
 </template>
 
 <script>
 import Reminder from './reminder'
 import { components } from '@cortezaproject/corteza-vue'
-const { CSidebar } = components
+const { CReminderSidebar } = components
 
 export default {
   components: {
     Reminder,
-    CSidebar,
+    CReminderSidebar,
   },
   inheritAttrs: false,
 

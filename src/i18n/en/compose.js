@@ -10,12 +10,14 @@ export default {
     configuration: 'Configuration',
     adminPanel: 'Admin panel',
     more: 'More',
+    noPageTitle: 'No page title',
     help: {
       forum: 'Help',
       documentation: 'Documentation',
       feedback: 'Send feedback',
     },
     userSettings: {
+      loggedInAs: 'Logged in as {{user}}',
       profile: 'Profile',
       changePassword: 'Change password',
       logout: 'Logout',

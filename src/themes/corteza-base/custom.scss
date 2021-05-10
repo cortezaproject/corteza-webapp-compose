@@ -85,10 +85,12 @@ th {
   }
 }
 
-.header-navigation {
-  .logo {
-    background-image: url($logo);
-  }
+.logo {
+  background-image: url($logo);
+}
+
+.icon-logo {
+  background-image: url($icon-logo);
 }
 
 .loader {

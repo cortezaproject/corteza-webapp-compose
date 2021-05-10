@@ -1,21 +1,22 @@
 <template>
   <div
-    class="overflow-auto"
     v-if="loaded"
+    class="d-flex w-100 overflow-auto"
   >
     <small
       class="p-1 text-secondary position-absolute version"
     >
       {{ frontendVersion }}
     </small>
-    <b-container class="pt-2 pb-5">
-      <b-row no-gutters>
-        <b-col>
-          <h1>
-            {{ $t('namespace.title') }}
-          </h1>
-        </b-col>
-      </b-row>
+
+    <portal to="topbar-title">
+      {{ $t('namespace.title') }}
+    </portal>
+
+    <b-container
+      fluid
+      class="pt-2 pb-5"
+    >
       <b-row no-gutters
              class="align-items-center justify-content-between">
         <div v-if="canCreateNamespace"
@@ -129,6 +130,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss" scoped>
 .version {
   bottom: 0;

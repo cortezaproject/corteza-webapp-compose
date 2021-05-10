@@ -2,7 +2,7 @@
   <div class="py-3">
     <b-container fluid>
       <b-row no-gutters>
-        <b-col xl="8" offset-xl="2">
+        <b-col>
           <b-card header-bg-variant="white"
                   header-class="border-bottom"
                   class="shadow-sm"

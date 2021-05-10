@@ -1,220 +1,81 @@
 <template>
   <div>
-    <div
-      class="header-navigation d-flex align-items-center justify-content-between position-absolute sticky-top"
-    >
-      <div class="header d-flex align-items-center"
-           :class="{
-        'bg-light shadow-sm': expanded,
-          }"
+    <portal to="topbar-title">
+      {{ selectedPageTitle }}
+    </portal>
+
+    <portal to="sidebar-header-expanded">
+      <vue-select
+        key="namespaceID"
+        label="name"
+        class="namespace-selector sticky-top bg-white my-2"
+        :clearable="false"
+        :options="namespaces"
+        :value="namespace"
+        @option:selected="$router.push({ name: 'namespace', params: { slug: $event.slug } })"
       >
-        <b-btn
-          variant="outline-light"
-          @click="expanded=!expanded"
-          size="lg"
-          class="text-dark border-0 mx-2"
-        >
-          <font-awesome-icon
-            :icon="['fas', 'bars']"
-          />
-        </b-btn>
-        <div class="logo ml-3"
-             :class="{
-            'd-none': !expanded,
-            }"
-        />
-        <h3 class="m-0"
-            :class="{
-            'd-none': expanded,
-            }"
-        >
-          Page title
-        </h3>
-<!--        <b-input-->
-<!--          v-model.trim="query"-->
-<!--          class="col-lg-7 col-xl-5"-->
-<!--          type="search"-->
-<!--          :placeholder="$t('sidebar.searchPlaceholder')"-->
-<!--        />-->
-      </div>
-      <div class="text-nowrap d-flex flex-grow-1 justify-content-end">
-        <b-form-input type="text"
-                      name="search"
-                      placeholder="Search..."
-                      class="ml-3" />
-        <b-dropdown size="lg"
-                    variant="outline-light"
-                    toggle-class="text-decoration-none text-dark border-0"
-                    menu-class="border-0 shadow-sm text-dark font-weight-bold mt-2"
-                    right
-                    no-caret>
-          <template #button-content>
-            <font-awesome-icon
-              class="m-0 h5"
-              :icon="['far', 'question-circle']"
-            />
-            <span class="sr-only">Help</span>
-          </template>
-          <b-dropdown-item href="https://forum.cortezaproject.org/"
-                           target="_blank">
-            {{ $t('navigation.help.forum') }}
-          </b-dropdown-item>
-          <b-dropdown-item href="http://docs.cortezaproject.org/"
-                           target="_blank">
-            {{ $t('navigation.help.documentation') }}
-          </b-dropdown-item>
-          <b-dropdown-item href="mailto:info@crust.tech"
-                           target="_blank">
-            {{ $t('navigation.help.feedback') }}
-          </b-dropdown-item>
-        </b-dropdown>
-        <b-dropdown size="lg"
-                    variant="outline-light"
-                    toggle-class="text-decoration-none text-dark border-0"
-                    menu-class="border-0 shadow-sm text-dark font-weight-bold mt-2"
-                    right
-                    no-caret>
-          <template #button-content>
-            <font-awesome-icon
-              class="m-0 h5"
-              :icon="['fas', 'user-cog']"
-            />
-            <span class="sr-only">
-              {{ $t('navigation.help.forum') }}
-            </span>
-          </template>
-          <b-dropdown-text class="text-muted mb-2">
-            Logged in as Denis Arh
-          </b-dropdown-text>
-          <b-dropdown-item href="">
-            {{ $t('navigation.userSettings.profile') }}
-          </b-dropdown-item>
-          <b-dropdown-item href="">
-            {{ $t('navigation.userSettings.changePassword') }}
-          </b-dropdown-item>
-          <b-dropdown-item href="">
-            {{ $t('navigation.userSettings.logout') }}
-          </b-dropdown-item>
-        </b-dropdown>
-        <b-btn
-          variant="outline-light"
-          to="#"
-          size="lg"
-          class="text-dark border-0 mr-2"
-        >
-          <font-awesome-icon
-            class="m-0 h5"
-            :icon="['fas', 'grip-horizontal']"
-          />
-        </b-btn>
-      </div>
-    </div>
-    <div
-      v-if="showBackdrop"
-      class="position-fixed backdrop vh-100"
-      @click="expanded=!expanded"
-    />
-
-    <!--
-      Content spacer
-      Large and xl screens should push in content when the nav is expanded
-    -->
-    <template>
-      <div
-        class="d-none d-lg-block spacer"
-        :class="{
-          expanded,
-        }"
-      />
-    </template>
-
-    <nav
-      class="bg-white shadow-sm"
-      :class="{
-        'collapsed': !expanded,
-      }"
-    >
-
-      <header class="position-sticky fixed-top bg-light">
-        <b-container
-          fluid
-        >
-          <b-row class="mt-2">
-            <b-col>
-              <vue-select
-                key="namespaceID"
-                label="name"
-                class="bg-white"
-                :clearable="false"
-                :options="namespaces"
-                :value="namespace"
-                @option:selected="$router.push({ name: 'namespace', params: { slug: $event.slug } })"
-              >
-                <template #list-footer>
-                  <router-link :to="{ name: 'namespace.create' }"
-                               class="mt-3 ml-3 mb-1 font-weight-bold d-block"
-                  >
-                    {{ $t('sidebar.createNS') }}
-                  </router-link>
-                </template>
-              </vue-select>
-            </b-col>
-          </b-row>
-
-          <b-row
-            class="mt-3 py-3 bg-white"
+        <template #list-footer>
+          <router-link
+            :to="{ name: 'namespace.create' }"
+            class="d-block mt-3 ml-3 mb-1 font-weight-bold"
           >
-            <b-col>
-              <b-input
-                v-model.trim="query"
-                class="mw-100"
-                type="search"
-                :placeholder="$t('sidebar.searchPlaceholder')"
-              />
-            </b-col>
-          </b-row>
-        </b-container>
-      </header>
+            {{ $t('sidebar.createNS') }}
+          </router-link>
+        </template>
+      </vue-select>
+    </portal>
 
-      <sidebar-nav-item
-        :items="navItems"
-        :start-expanded="!!query"
-        top-level
-        @page-selected="onPageSelected"
-        class="overflow-auto h-100"
-      />
-
-      <!-- Footer -->
-      <footer class="position-sticky fixed-bottom bg-white pb-2">
-        <b-container
-          fluid
+    <portal
+      to="sidebar-body-expanded"
+    >
+      <div
+        class="h-100"
+      >
+        <b-button
+          variant="light"
+          class="w-100 mb-2"
+          :to="{ name: 'admin.modules' }"
         >
-          <b-row>
-            <b-col>
-              <b-btn
-                variant="light"
-                block
-                :to="{ name: 'admin.modules' }"
-              >
-                {{ $t('navigation.adminPanel') }}
-              </b-btn>
-            </b-col>
-          </b-row>
-        </b-container>
-      </footer>
-    </nav>
+          {{ $t('navigation.adminPanel') }}
+        </b-button>
+
+        <b-input
+          v-model.trim="query"
+          class="namespace-selector mw-100"
+          type="search"
+          :placeholder="$t('sidebar.searchPlaceholder')"
+        />
+
+        <sidebar-nav-item
+          :items="navItems"
+          :start-expanded="!!query"
+          top-level
+          @page-selected="onPageSelected"
+          class="overflow-auto h-100"
+        />
+      </div>
+    </portal>
+
+    <portal
+      to="sidebar-footer-collapsed"
+      class="d-flex"
+    >
+    </portal>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { NoID } from '@cortezaproject/corteza-js'
-import SidebarNavItem from './SidebarNavItem'
+import { Portal } from 'portal-vue'
 import { VueSelect } from 'vue-select'
+import SidebarNavItem from './SidebarNavItem'
 
 export default {
   components: {
-    SidebarNavItem,
+    Portal,
     VueSelect,
+    SidebarNavItem,
   },
 
   props: {
@@ -252,7 +113,8 @@ export default {
   data () {
     return {
       query: '',
-      expanded: false,
+      selectedPage: undefined,
+      selectedPageTitle: '',
     }
   },
 
@@ -313,6 +175,19 @@ export default {
   },
 
   watch: {
+    '$route.params.pageID': {
+      immediate: true,
+      handler (pageID = '') {
+        const { namespaceID } = this.namespace
+
+        if (namespaceID && pageID) {
+          this.findPageByID({ namespaceID, pageID }).then(({ title = '', handle = '' }) => {
+            this.selectedPageTitle = title || handle || this.$t('navigation.noPageTitle')
+          })
+        }
+      },
+    },
+
     screenSize: {
       handler (ss) {
         if (ss === 'xl') {
@@ -325,10 +200,15 @@ export default {
   },
 
   methods: {
-    onPageSelected () {
+    ...mapActions({
+      findPageByID: 'page/findByID',
+    }),
+
+    onPageSelected (page) {
       if (this.screenSize === 's') {
         this.expanded = false
       }
+      this.selectedPage = page
     },
 
     checkPage (p, query) {
@@ -346,35 +226,14 @@ export default {
       return ix
     },
   },
-
 }
 </script>
 
 <style lang="scss" scoped>
-$header-height: 60px;
+$header-height: 64px;
 $sidebar-bg: #F4F7FA;
 $nav-width: 320px;
 $logo-width: 150px;
-
-input[type=text] {
-  width: 90px;
-  -webkit-transition: width 0.4s ease-in-out;
-  transition: width 0.4s ease-in-out;
-  background: transparent;
-  border: none;
-
-  /* When the input field gets focus, change its width to 100% */
-  &:focus {
-    width: 100%;
-    background: white;
-    border: 2px solid #4D7281;
-  }
-
-  &::placeholder {
-    color: black;
-    content: "test";
-  }
-}
 
 .right-inner-addon i {
   position: absolute;
@@ -383,48 +242,21 @@ input[type=text] {
   pointer-events: none;
 }
 
-.bg-light {
-  background-color: $sidebar-bg !important;
-}
-
 .backdrop {
   background-color: #1e1e1eA5;
   top: $header-height;
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 9000;
-}
-
-.header-navigation {
-  width: 100vw;
-  min-height: $header-height;
-
-  .logo {
-    height: calc(#{$header-height} / 2);
-    min-width: $logo-width;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-
-  .header {
-    width: $nav-width;
-    height: $header-height;
-  }
+  z-index: 2;
 }
 
 .sidebar-nav-trigger {
   height: $header-height;
 }
 
-.spacer {
-  width: 0;
-  transition: width 0.1s;
-
-  &.expanded {
-    width: $nav-width;
-  }
+.namespace-selector {
+  font-size: 1rem;
 }
 
 nav {
@@ -466,5 +298,4 @@ nav {
   height: 50px;
   background-color: orange;
 }
-
 </style>

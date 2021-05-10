@@ -1,6 +1,6 @@
 <template>
   <div
-    class="d-flex"
+    class="d-flex w-100"
   >
     <c-toaster
       :toasts="toasts"
@@ -31,7 +31,6 @@
 
     <router-view
       v-if="loaded && namespace"
-      class="namespace-content"
       :namespace="namespace"
     />
     <div
@@ -338,15 +337,5 @@ export default {
   height: 20vh;
   padding: 60px;
   top: 40vh;
-}
-
-.namespace-content {
-  padding-top: 55px;
-}
-</style>
-
-<style lang="scss">
-.alert-holder {
-  top: 55px;
 }
 </style>

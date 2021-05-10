@@ -2,7 +2,7 @@
   <div class="py-3">
     <b-container fluid>
       <b-row no-gutters>
-        <b-col xl="8" offset-xl="2">
+        <b-col>
           <b-card :title="$t('page.title')"
                   no-body
                   class="shadow-sm"
@@ -10,9 +10,6 @@
             <b-card-header header-bg-variant="white"
                            class="py-3"
             >
-              <h1 class="mb-3">
-                {{ $t('page.title') }}
-              </h1>
               <b-row
                 no-gutters
               >
