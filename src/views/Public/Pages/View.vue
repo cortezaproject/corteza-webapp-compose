@@ -1,6 +1,6 @@
 <template>
   <div v-if="!!page" class="d-flex w-100 overflow-hidden">
-    <main
+    <div
       class="flex-grow-1 overflow-auto d-flex p-2 w-100"
     >
       <router-view
@@ -17,7 +17,7 @@
         :module="module"
         :page="page"
       />
-    </main>
+    </div>
 
     <right-panel
       :namespaceID="namespace.namespaceID"

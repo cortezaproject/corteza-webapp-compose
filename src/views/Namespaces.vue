@@ -15,12 +15,14 @@
 
     <b-container
       fluid
-      class="pt-2 pb-5"
     >
-      <b-row no-gutters
-             class="align-items-center justify-content-between">
-        <div v-if="canCreateNamespace"
-             class="mt-2 flex-grow-1"
+      <b-row
+        no-gutters
+        class="align-items-center justify-content-between"
+      >
+        <div
+          v-if="canCreateNamespace"
+          class="flex-grow-1"
         >
           <b-btn :to="{ name: 'namespace.create' }"
                  variant="primary"
@@ -57,14 +59,23 @@
       <b-row
         v-if="namespacesFiltered && namespacesFiltered.length"
         align-v="stretch"
+        class="pb-4"
       >
-        <b-col cols="12" md="6" lg="4" class="mt-4" v-for="(n) in namespacesFiltered" :key="n.namespaceID">
+        <b-col
+          v-for="n in namespacesFiltered"
+          :key="n.namespaceID"
+          cols="12"
+          md="6"
+          lg="4"
+          xl="3"
+          class="my-2"
+        >
           <namespace-item :namespace="n" />
         </b-col>
       </b-row>
       <b-row
         v-else
-        class="mt-4"
+        class="py-4"
       >
         <b-col>
           <h3 class="text-left">

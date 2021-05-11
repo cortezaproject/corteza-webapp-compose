@@ -118,7 +118,7 @@ export default {
         }
         this.toastSuccess(this.$t('notification.import.successful'))
       } catch (e) {
-        this.toastWarning(this.$t('notification.import.failed'))
+        this.toastWarning(this.$t('notification.import.failed'))(e)
       }
       this.cancelImport()
     },
@@ -158,8 +158,8 @@ export default {
             this.importObj.list = this.importObj.list.map(i => {
               return { import: true, ...i }
             })
-          } catch (err) {
-            this.toastWarning(err.message)
+          } catch ({ message }) {
+            this.toastWarning(message)
           } finally {
             this.processing = false
           }

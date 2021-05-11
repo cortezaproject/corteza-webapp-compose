@@ -3,19 +3,21 @@
     <b-container fluid>
       <b-row no-gutters>
         <b-col>
-          <b-card :title="$t('page.title')"
-                  no-body
-                  class="shadow-sm"
+          <b-card
+            no-body
+            class="shadow-sm"
           >
-            <b-card-header header-bg-variant="white"
-                           class="py-3"
+            <b-card-header
+              header-bg-variant="white"
+              class="py-3"
             >
               <b-row
                 no-gutters
+                class="align-items-center"
               >
-                <b-col xl="4" lg="5" md="7">
+                <div class="flex-grow-1 text-nowrap">
                   <b-form @submit.prevent="handleAddPageFormSubmit" class="mr-1">
-                    <b-form-group v-if="namespace.canCreatePage" class="mb-1">
+                    <b-form-group v-if="namespace.canCreatePage" class="mb-0">
                       <b-input-group>
                         <b-input required type="text" v-model="page.title" class="page-name-input" id="name" :placeholder="$t('page.newPlaceholder')" />
                         <b-input-group-append>
@@ -24,8 +26,8 @@
                       </b-input-group>
                     </b-form-group>
                   </b-form>
-                </b-col>
-                <b-col xl="8" lg="7" md="5">
+                </div>
+                <div class="flex-grow-1 text-nowrap">
                   <c-permissions-button
                     v-if="namespace.canGrant"
                     resource="compose:page:*"
@@ -33,7 +35,7 @@
                     :buttonLabel="$t('general.label.permissions')"
                     buttonVariant="light"
                   />
-                </b-col>
+                </div>
               </b-row>
             </b-card-header>
             <b-row class="pages-list-header border-top align-content-center" no-gutters>
@@ -219,7 +221,6 @@ $dropping-color: $secondary;
 .pages-list-header {
   min-height: $content-height;
   background-color: $gray-200;
-  margin-top: 1rem;
   margin-bottom: -1.8rem !important;
   border-bottom: 2px solid $light;
   z-index: 1;

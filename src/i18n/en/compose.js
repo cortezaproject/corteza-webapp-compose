@@ -472,7 +472,8 @@ export default {
     },
 
     edit: {
-      title: 'Edit module',
+      edit: 'Edit module',
+      create: 'Create module',
       moduleInfo: 'Module info',
       manageRecordFields: 'Manage record fields',
       moduleFieldSettings: 'Module field settings',
@@ -532,7 +533,8 @@ export default {
     import: 'Import page(s):',
     createLabel: 'Create page',
     edit: {
-      title: 'Edit page',
+      edit: 'Edit page',
+      create: 'Create page',
       pageDescription: 'Page description',
       visible: 'Page visibility',
     },
@@ -728,6 +730,7 @@ export default {
       removeDefault: 'Remove default',
       none: 'None',
       handle: 'Handle',
+      noHandle: 'No handle',
       general: 'General',
       enabled: 'Enabled',
       active: 'Active',

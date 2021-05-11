@@ -1,19 +1,24 @@
 <template>
   <div class="py-3">
+    <portal to="topbar-title">
+      {{ title }}
+    </portal>
+
     <b-container @submit.prevent="handleSave" tag="form" v-if="module" fluid>
       <b-row no-gutters>
-        <b-col xl="8" offset-xl="2">
+        <b-col>
           <b-card
-            header-bg-variant="white"
             no-body
-            header-class="border-bottom"
+            class="shadow-sm"
           >
-            <div slot="header">
-              <h1 class="mb-3">
-                {{ $t('module.edit.title') }}
-              </h1>
-              <b-row no-gutters
-                     class="align-items-end">
+            <b-card-header
+              header-bg-variant="white border-bottom"
+              class="py-3"
+            >
+              <b-row
+                no-gutters
+                class="align-items-center"
+              >
                 <div class="flex-grow-1 text-nowrap">
                   <b-button
                     v-if="federationEnabled"
@@ -51,7 +56,10 @@
                     class="btn-lg ml-auto"
                   />
                 </div>
-                <div v-if="!creatingModule" class="flex-grow-1 text-nowrap d-flex justify-content-md-end mt-1">
+                <div
+                  v-if="!creatingModule"
+                  class="flex-grow-1 text-nowrap d-flex justify-content-md-end"
+                >
                   <b-button
                     v-if="recordPage"
                     :disabled="!namespace.canManageNamespace"
@@ -73,9 +81,9 @@
                   </b-button>
                 </div>
               </b-row>
-            </div>
-            <b-container fluid class="px-4">
-              <h5 class="my-3">{{ $t('module.edit.moduleInfo') }}</h5>
+            </b-card-header>
+            <b-container fluid class="px-4 pt-3">
+              <h5 class="mb-3">{{ $t('module.edit.moduleInfo') }}</h5>
               <b-row>
                 <b-col cols="12" md="6" xl="4">
                   <b-form-group>
@@ -98,7 +106,7 @@
             </b-container>
             <hr>
             <b-container fluid class="px-4">
-              <h5 class="mb-3 mt-1">{{ $t('module.edit.manageRecordFields') }}</h5>
+              <h5 class="mb-3">{{ $t('module.edit.manageRecordFields') }}</h5>
               <b-row no-gutters>
                 <b-form-group class="w-100">
                   <table class="table table-sm table-borderless table-responsive-lg">
@@ -247,6 +255,10 @@ export default {
     ...mapGetters({
       pages: 'page/set',
     }),
+
+    title () {
+      return this.creatingModule ? this.$t('module.edit.create') : this.$t('module.edit.edit')
+    },
 
     handleState () {
       return handleState(this.module.handle)

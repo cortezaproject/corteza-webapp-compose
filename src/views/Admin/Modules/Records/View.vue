@@ -9,8 +9,8 @@
       {{ $t('block.record.recordDeleted') }}
     </b-alert>
     <main
-      class="flex-grow-1 flex-wrap overflow-auto d-flex"
       v-if="module && record"
+      class="flex-grow-1 overflow-auto d-flex p-2 w-100"
     >
       <b-card
         v-for="(fieldSet, index) in fields"

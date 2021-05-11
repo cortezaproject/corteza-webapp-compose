@@ -7,38 +7,26 @@
     />
 
     <namespace-sidebar
+      v-if="loaded && namespace"
       :namespaces="enabledNamespaces"
       :pages="pagesClean"
       :namespace="namespace"
-      :screen-size="screenSize"
     />
-
-    <!-- These divs simplify the process of determining what nav variation should be used -->
-    <template>
-      <div
-        class="d-block d-lg-none"
-        v-b-visible="setScreenSizeS"
-      />
-      <div
-        class="d-none d-lg-block d-xl-none"
-        v-b-visible="setScreenSizeLG"
-      />
-      <div
-        class="d-none d-xl-block"
-        v-b-visible="setScreenSizeXL"
-      />
-    </template>
 
     <router-view
       v-if="loaded && namespace"
       :namespace="namespace"
     />
+
     <div
       v-else
-      class="loader"
+      class="loader flex-column w-100 h-100"
     >
       <div>
-        <h1 class="mt-5 text-center">{{ namespace ? (namespace.name || namespace.slug || namespace.ID) : '...' }}</h1>
+        <div class="logo w-100" />
+        <h1 class="text-center">
+          {{ namespace ? (namespace.name || namespace.slug || namespace.ID) : '...' }}
+        </h1>
         <div>
           <div
             v-for="(pending, part) in parts"
@@ -66,7 +54,7 @@
         </div>
       </div>
       <small
-        class="fixed-bottom text-secondary m-2"
+        class="fixed-bottom text-right text-secondary m-2"
       >
         {{ frontendVersion }}
       </small>
@@ -107,8 +95,6 @@ export default {
       namespace: null,
       namespaces: [],
       toasts: [],
-
-      screenSize: undefined,
     }
   },
 
@@ -220,22 +206,6 @@ export default {
   },
 
   methods: {
-    setScreenSizeS (yes) {
-      if (yes) {
-        this.screenSize = 's'
-      }
-    },
-    setScreenSizeLG (yes) {
-      if (yes) {
-        this.screenSize = 'lg'
-      }
-    },
-    setScreenSizeXL (yes) {
-      if (yes) {
-        this.screenSize = 'xl'
-      }
-    },
-
     async namespaceLoader () {
       return this.$ComposeAPI.namespaceList().then(({ set }) => {
         this.namespaces = set.map(ns => new compose.Namespace(ns))

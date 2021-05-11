@@ -1,5 +1,12 @@
 <template>
-  <div v-if="page">
+  <div
+    v-if="page"
+    class="flex-grow-1 overflow-auto d-flex p-2 w-100"
+  >
+    <portal to="topbar-title">
+      {{ title }}
+    </portal>
+
     <grid
       :blocks.sync="page.blocks"
       editable
@@ -159,6 +166,11 @@ export default {
   },
 
   computed: {
+    title () {
+      const title = this.page.title || this.page.handle
+      return this.$t('general.label.pageBuilder') + ' - ' + (title ? `"${title}"` : this.$t('general.label.noHandle'))
+    },
+
     showEditor () {
       return this.editor && this.editor.index !== undefined
     },

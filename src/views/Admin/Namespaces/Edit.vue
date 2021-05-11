@@ -1,179 +1,138 @@
 <template>
   <div
-    class="d-flex flex-column w-100 vh-100"
+    v-if="loaded"
+    class="d-flex flex-column w-100 h-100"
   >
-    <div
-      class="flex-grow-1 overflow-auto w-100"
+    <portal to="topbar-title">
+      {{ isEdit ? $t('namespace.edit') : $t('namespace.create') }}
+    </portal>
+
+    <b-container
+      fluid
+      class="flex-grow-1 overflow-auto"
     >
-      <b-container
-        v-if="loaded"
+      <div
+        v-if="isEdit"
+        class="d-flex align-items-center mb-2"
       >
-        <b-row>
-          <b-col
-            offset-xl="2"
-            xl="8"
+        <b-btn
+          :to="{ name: 'namespace.create' }"
+          variant="primary"
+          size="lg"
+        >
+          {{ $t('namespace.create') }}
+        </b-btn>
+        <c-permissions-button
+          v-if="namespace.canGrant"
+          :title="namespace.name"
+          :target="namespace.name"
+          :resource="'compose:namespace:'+namespace.namespaceID"
+          buttonVariant="light"
+          :buttonLabel="$t('general.label.permissions')"
+          class="ml-1 btn-lg"
+        />
+      </div>
+
+      <b-card>
+        <b-form>
+          <b-form-group :label="$t('namespace.name.label')">
+            <b-form-input
+              v-model="namespace.name"
+              type="text"
+              required
+              :state="nameState"
+              :placeholder="$t('namespace.name.placeholder')" />
+          </b-form-group>
+          <b-form-group
+            :label="$t('namespace.slug.label')"
+            :description="$t('namespace.slug.description')"
           >
-            <div
-             class="float-right mt-3"
+            <b-form-input
+              v-model="namespace.slug"
+              type="text"
+              :state="slugState"
+              :placeholder="$t('namespace.slug.placeholder')"
+            />
+          </b-form-group>
+          <b-form-group>
+            <b-form-checkbox
+              v-model="namespace.enabled"
+              class="mb-3"
             >
-            </div>
-            <b-card class="my-4"
-                    header-bg-variant="white"
+              {{ $t('namespace.enabled.label') }}
+            </b-form-checkbox>
+            <b-form-checkbox
+              v-model="isApplication"
+              :disabled="!canToggleApplication"
             >
-              <div slot="header"
-                   class="d-flex justify-content-between align-items-center">
-                <h2>
-                  {{ isEdit ? $t('namespace.edit') : $t('namespace.create') }}
-                </h2>
-                <c-permissions-button
-                  v-if="isEdit && namespace.canGrant"
-                  :title="namespace.name"
-                  :target="namespace.name"
-                  :resource="'compose:namespace:'+namespace.namespaceID"
-                  link
-                  class="btn p-0"
-                />
-              </div>
-              <b-form>
-                <b-form-group :label="$t('namespace.name.label')">
-                  <b-form-input
-                    v-model="namespace.name"
-                    type="text"
-                    required
-                    :state="nameState"
-                    :placeholder="$t('namespace.name.placeholder')" />
-                </b-form-group>
-                <b-form-group
-                  :label="$t('namespace.slug.label')"
-                  :description="$t('namespace.slug.description')"
+              {{ $t('namespace.application.label') }}
+            </b-form-checkbox>
+          </b-form-group>
+          <hr>
+          <b-form-group>
+            <template #label>
+              <div class="d-flex align-items-center">
+                {{ $t('namespace.logo.label') }}
+                <b-button
+                  variant="primary"
+                  size="sm"
+                  class="py-0 ml-2"
+                  v-b-modal.logo
                 >
-                  <b-form-input
-                    v-model="namespace.slug"
-                    type="text"
-                    :state="slugState"
-                    :placeholder="$t('namespace.slug.placeholder')"
-                  />
-                </b-form-group>
-                <b-form-group>
-                  <b-form-checkbox
-                    v-model="namespace.enabled"
-                    class="mb-3"
-                  >
-                    {{ $t('namespace.enabled.label') }}
-                  </b-form-checkbox>
-                  <b-form-checkbox
-                    v-model="isApplication"
-                    :disabled="!canToggleApplication"
-                  >
-                    {{ $t('namespace.application.label') }}
-                  </b-form-checkbox>
-                </b-form-group>
-                <hr>
-                <b-form-group>
-                  <template #label>
-                    <div class="d-flex align-items-center">
-                      {{ $t('namespace.logo.label') }}
-                      <b-button
-                        variant="primary"
-                        size="sm"
-                        class="py-0 ml-2"
-                        v-b-modal.logo
-                      >
-                        Preview
-                      </b-button>
-                    </div>
-                  </template>
+                  Preview
+                </b-button>
+              </div>
+            </template>
 
-                    <!-- v-model="namespace.logo" -->
-                  <b-form-file
-                    v-model="namespaceAssets.logo"
-                    accept="image/*"
-                    :placeholder="$t('namespace.logo.placeholder')"
-                  />
-                </b-form-group>
-
-                <b-form-group>
-                  <template #label>
-                    <div class="d-flex align-items-center">
-                      {{ $t('namespace.icon.label') }}
-                      <b-button
-                        v-if="namespace.meta.icon"
-                        variant="primary"
-                        class="py-0 ml-2"
-                        v-b-modal.icon
-                      >
-                        Preview
-                      </b-button>
-                    </div>
-                  </template>
-                  <b-form-file
-                    v-model="namespaceAssets.icon"
-                    accept="image/*"
-                    :placeholder="$t('namespace.icon.placeholder')"
-                  />
-                </b-form-group>
-
-                <b-form-group :label="$t('namespace.subtitle.label')">
-                  <b-form-input
-                    v-model="namespace.meta.subtitle"
-                    type="text"
-                    :placeholder="$t('namespace.subtitle.placeholder')" />
-
-                </b-form-group>
-
-                <b-form-group :label="$t('namespace.description.label')">
-                  <b-form-textarea
-                    v-model="namespace.meta.description"
-                    :placeholder="$t('namespace.description.placeholder')"
-                    rows="3"
-                    max-rows="5" />
-
-                </b-form-group>
-              </b-form>
-            </b-card>
-          </b-col>
-        </b-row>
-      </b-container>
-      <b-modal
-        id="logo"
-        hide-header
-        hide-footer
-        centered
-        body-class="p-1"
-      >
-        <div class="ns-wrap">
-          <div>
-            <b-img
-              v-if="logoPreview"
-              :src="logoPreview"
-              fluid-grow
+              <!-- v-model="namespace.logo" -->
+            <b-form-file
+              v-model="namespaceAssets.logo"
+              accept="image/*"
+              :placeholder="$t('namespace.logo.placeholder')"
             />
-            <div
-              v-else
-              class="ns-logo"
-            >
-              <i class="d-block m-auto" />
-            </div>
-          </div>
-        </div>
-      </b-modal>
-      <b-modal
-        id="icon"
-        hide-header
-        hide-footer
-        centered
-        body-class="p-1"
-      >
-        <div class="ns-wrap">
-          <div>
-            <b-img
-              :src="iconPreview"
-              fluid-grow
+          </b-form-group>
+
+          <b-form-group>
+            <template #label>
+              <div class="d-flex align-items-center">
+                {{ $t('namespace.icon.label') }}
+                <b-button
+                  v-if="namespace.meta.icon"
+                  variant="primary"
+                  class="py-0 ml-2"
+                  v-b-modal.icon
+                >
+                  Preview
+                </b-button>
+              </div>
+            </template>
+            <b-form-file
+              v-model="namespaceAssets.icon"
+              accept="image/*"
+              :placeholder="$t('namespace.icon.placeholder')"
             />
-          </div>
-        </div>
-      </b-modal>
-    </div>
+          </b-form-group>
+
+          <b-form-group :label="$t('namespace.subtitle.label')">
+            <b-form-input
+              v-model="namespace.meta.subtitle"
+              type="text"
+              :placeholder="$t('namespace.subtitle.placeholder')" />
+
+          </b-form-group>
+
+          <b-form-group :label="$t('namespace.description.label')">
+            <b-form-textarea
+              v-model="namespace.meta.description"
+              :placeholder="$t('namespace.description.placeholder')"
+              rows="3"
+              max-rows="5" />
+
+          </b-form-group>
+        </b-form>
+      </b-card>
+    </b-container>
+
     <editor-toolbar
       :back-link="{name: 'root'}"
       :hideDelete="!loaded"
@@ -184,6 +143,48 @@
       @save="handleSave()"
       @saveAndClose="handleSave({ closeOnSuccess: true })"
     />
+
+    <b-modal
+      id="logo"
+      hide-header
+      hide-footer
+      centered
+      body-class="p-1"
+    >
+      <div class="ns-wrap">
+        <div>
+          <b-img
+            v-if="logoPreview"
+            :src="logoPreview"
+            fluid-grow
+          />
+          <div
+            v-else
+            class="ns-logo"
+          >
+            <i class="d-block m-auto" />
+          </div>
+        </div>
+      </div>
+    </b-modal>
+
+    <b-modal
+      id="icon"
+      hide-header
+      hide-footer
+      centered
+      body-class="p-1"
+    >
+      <div class="ns-wrap">
+        <div>
+          <b-img
+            :src="iconPreview"
+            fluid-grow
+          />
+        </div>
+      </div>
+    </b-modal>
+
   </div>
 </template>
 
@@ -259,9 +260,14 @@ export default {
     },
   },
 
-  created () {
-    this.fetchEffective()
-    this.fetchNamespace(this.$route.params.namespaceID)
+  watch: {
+    '$route.params.namespaceID': {
+      immediate: true,
+      handler (namespaceID) {
+        this.fetchEffective()
+        this.fetchNamespace(namespaceID)
+      },
+    },
   },
 
   methods: {
@@ -272,6 +278,10 @@ export default {
             this.namespace = new compose.Namespace(ns)
             this.fetchApplication()
           })
+      } else {
+        this.namespace = new compose.Namespace({ enabled: true })
+        this.application = undefined
+        this.isApplication = false
       }
 
       this.loaded = true

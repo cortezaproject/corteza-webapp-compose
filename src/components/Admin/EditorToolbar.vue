@@ -1,6 +1,8 @@
 <template>
-  <b-container fluid
-               class="bg-white shadow border-top p-3">
+  <b-container
+    fluid
+    class="bg-white shadow border-top p-3"
+  >
     <b-row no-gutters
            class="align-items-center">
       <div class="flex-grow-1">

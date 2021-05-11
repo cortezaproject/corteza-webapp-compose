@@ -3,11 +3,13 @@
     <b-container fluid>
       <b-row no-gutters>
         <b-col>
-          <b-card no-body
-                  class="shadow-sm"
+          <b-card
+            no-body
+            class="shadow-sm"
           >
-            <b-card-header header-bg-variant="white"
-                           class="py-3"
+            <b-card-header
+              header-bg-variant="white"
+              class="py-3"
             >
               <b-row
                 class="align-items-center justify-content-between"
@@ -61,7 +63,7 @@
                     class="btn-lg"
                   />
                 </div>
-                <div class="flex-grow-1 mt-1">
+                <div class="flex-grow-1">
                   <b-input-group>
                     <b-form-input
                       v-model.trim="query"

@@ -4,7 +4,7 @@
     :data="{children:list}"
     tag="ul"
     mixinParentKey="parent"
-    class="list-group"
+    class="list-group pb-3"
     @changePosition="handleChangePosition">
     <template
       slot-scope="{item}"
@@ -65,14 +65,14 @@
               class="btn text-primary"
               :to="{ name: 'admin.modules.edit', params: { moduleID: item.moduleID }}"
             >
-              {{ $t('module.edit.title') }}
+              {{ $t('module.edit.edit') }}
             </router-link>
             <router-link
               v-if="item.canUpdatePage && item.moduleID === '0'"
               :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
               class="btn text-primary"
             >
-              {{ $t('page.edit.title') }}
+              {{ $t('page.edit.edit') }}
             </router-link>
 
           </span>

@@ -1,136 +1,141 @@
 <template>
   <div class="py-3">
+    <portal to="topbar-title">
+      {{ $t('chart.edit.title') }}
+    </portal>
+
     <b-container @submit.prevent="handleSave" tag="form" fluid>
       <b-row no-gutters>
         <b-col v-if="chart">
-          <b-card header-bg-variant="white"
-                  header-class="border-bottom"
-                  class="shadow-sm"
+          <b-card
+            no-body
+            class="shadow-sm"
           >
-            <div slot="header"
-                 class="d-flex justify-content-between align-items-center"
+            <b-card-header
+              header-bg-variant="white"
+              class="d-flex py-3 align-items-center border-bottom"
             >
-              <h1 class="mb-3">
-                {{ $t('chart.edit.title') }}
-              </h1>
               <export :list="[chart]" type="chart" class="float-right" slot="header"/>
-            </div>
-            <b-row>
-              <b-col lg="8">
-                <fieldset v-if="modules">
-                  <b-form-input v-model="chart.name" :placeholder="$t('chart.newPlaceholder')" class="mb-1"></b-form-input>
-                  <b-form-input v-model="chart.handle" :placeholder="$t('general.placeholder.handle')" :state="handleState" class="mb-1"></b-form-input>
+            </b-card-header>
+            <b-container fluid class="px-4 py-3">
+              <b-row>
+                <b-col xl="6" md="12">
+                  <fieldset v-if="modules">
+                    <b-form-input v-model="chart.name" :placeholder="$t('chart.newPlaceholder')" class="mb-1"></b-form-input>
+                    <b-form-input v-model="chart.handle" :placeholder="$t('general.placeholder.handle')" :state="handleState" class="mb-1"></b-form-input>
 
-                  <b-form-group>
-                    <b-form-select
-                      v-model="chart.config.colorScheme"
-                      :options="colorSchemes"
-                      class="mt-1"
-                    >
-                      <template slot="first">
-                        <option
-                          :value="undefined"
-                          disabled
-                        >
-                          {{ $t('chart.colorScheme') }}
-                        </option>
-                      </template>
-                    </b-form-select>
-                  </b-form-group>
-                </fieldset>
-
-                <!-- Some charts support multiple reports -->
-                <fieldset
-                  v-if="supportsMultipleReports"
-                  class="form-group mt-2"
-                >
-                  <b-form-group class="mb-2">
-                    <h4 class="d-inline-block">
-                      {{ $t('block.chart.configure.reportsLabel') }}
-                    </h4>
-                    <b-btn
-                      v-if="reportsValid"
-                      class="float-right p-0"
-                      variant="link"
-                      @click="onAddReport"
-                    >
-                      + {{ $t('general.label.add') }}
-                    </b-btn>
-                    <div class="ml-1">
-                      <draggable
-                        v-model="reports"
-                        :options="{ handle:'.handle' }"
-                        class="w-100 d-inline-block"
-                        tag="tbody"
+                    <b-form-group>
+                      <b-form-select
+                        v-model="chart.config.colorScheme"
+                        :options="colorSchemes"
+                        class="mt-1"
                       >
+                        <template slot="first">
+                          <option
+                            :value="undefined"
+                            disabled
+                          >
+                            {{ $t('chart.colorScheme') }}
+                          </option>
+                        </template>
+                      </b-form-select>
+                    </b-form-group>
+                  </fieldset>
 
-                        <report-item
-                          v-for="(r, i) in reports"
-                          :key="i"
-                          :report="r"
-                          :fixed="reports.length === 1"
-                          @edit="onEditReport(i)"
-                          @remove="onRemoveReport(i)"
+                  <!-- Some charts support multiple reports -->
+                  <fieldset
+                    v-if="supportsMultipleReports"
+                    class="form-group mt-2"
+                  >
+                    <b-form-group class="mb-2">
+                      <h4 class="d-inline-block">
+                        {{ $t('block.chart.configure.reportsLabel') }}
+                      </h4>
+                      <b-btn
+                        v-if="reportsValid"
+                        class="float-right p-0"
+                        variant="link"
+                        @click="onAddReport"
+                      >
+                        + {{ $t('general.label.add') }}
+                      </b-btn>
+                      <div class="ml-1">
+                        <draggable
+                          v-model="reports"
+                          :options="{ handle:'.handle' }"
+                          class="w-100 d-inline-block"
+                          tag="tbody"
                         >
-                          <template #report-label>
-                            <template v-if="r.moduleID">
-                              {{ moduleName(r.moduleID) }}
+
+                          <report-item
+                            v-for="(r, i) in reports"
+                            :key="i"
+                            :report="r"
+                            :fixed="reports.length === 1"
+                            @edit="onEditReport(i)"
+                            @remove="onRemoveReport(i)"
+                          >
+                            <template #report-label>
+                              <template v-if="r.moduleID">
+                                {{ moduleName(r.moduleID) }}
+                              </template>
+                              <template v-else>
+                                {{ $t('chart.edit.unconfiguredReport') }}
+                              </template>
                             </template>
-                            <template v-else>
-                              {{ $t('chart.edit.unconfiguredReport') }}
-                            </template>
-                          </template>
-                        </report-item>
-                      </draggable>
-                    </div>
-                  </b-form-group>
+                          </report-item>
+                        </draggable>
+                      </div>
+                    </b-form-group>
 
-                </fieldset>
+                  </fieldset>
 
-                <!-- Generic report editing component -->
-                <component
-                  :is="reportEditor"
-                  v-if="editReport"
-                  :report.sync="editReport"
-                  :modules="modules"
-                  :dimension-field-kind="['Select']"
-                  :supported-metrics="1"
-                />
-              </b-col>
-
-              <b-col lg="4">
-                <b-button v-if="!error"
-                          @click.prevent="update"
-                          :disabled="processing"
-                          class="float-right"
-                          variant="outline-primary">{{ $t('chart.edit.loadData') }}
-                </b-button>
-                <b-alert
-                  :show="error"
-                  variant="warning"
-                >
-                  {{ error }}
-                </b-alert>
-
-                <div class="chart-preview w-100 h-100">
-                  <chart-component
-                    v-if="chart"
-                    :chart="chart"
-                    :reporter="reporter"
-                    ref="chart"
-                    width="200"
-                    height="200"
-                    @error="error=$event"
-                    @updated="onUpdated"
+                  <!-- Generic report editing component -->
+                  <component
+                    :is="reportEditor"
+                    v-if="editReport"
+                    :report.sync="editReport"
+                    :modules="modules"
+                    :dimension-field-kind="['Select']"
+                    :supported-metrics="1"
                   />
-                </div>
-                <!-- not supporting multiple reports for now
-<b-button @click.prevent="reports.push(defaultReport)"
-        v-if="false"
-        class="float-right">+ Add report</b-button>
--->
-              </b-col>
-            </b-row>
+                </b-col>
+
+                <b-col xl="6" md="12">
+                  <b-button
+                    v-if="!error"
+                    @click.prevent="update"
+                    :disabled="processing"
+                    class="float-right"
+                    variant="outline-primary">{{ $t('chart.edit.loadData') }}
+                  </b-button>
+                  <b-alert
+                    :show="error"
+                    variant="warning"
+                  >
+                    {{ error }}
+                  </b-alert>
+
+                  <div class="chart-preview w-100 h-100">
+                    <chart-component
+                      v-if="chart"
+                      :chart="chart"
+                      :reporter="reporter"
+                      ref="chart"
+                      width="200"
+                      height="200"
+                      @error="error=$event"
+                      @updated="onUpdated"
+                    />
+                  </div>
+                  <!-- not supporting multiple reports for now
+  <b-button @click.prevent="reports.push(defaultReport)"
+          v-if="false"
+          class="float-right">+ Add report</b-button>
+  -->
+                </b-col>
+              </b-row>
+            </b-container>
           </b-card>
         </b-col>
       </b-row>

@@ -1,55 +1,60 @@
 <template>
   <div class="py-3">
+    <portal to="topbar-title">
+      {{ $t('page.edit.edit') }}
+    </portal>
+
     <b-container fluid>
       <b-row no-gutters>
         <b-col>
-          <b-card header-bg-variant="white"
-                  header-class="border-bottom"
-                  class="shadow-sm"
+          <b-card
+            no-body
+            class="shadow-sm"
           >
-            <div slot="header">
-              <div class="d-flex justify-content-between align-items-center">
-                <h1 class="mb-3">
-                  {{ $t('page.edit.title') }}
-                </h1>
-                <router-link :to="{name: 'admin.pages.builder'}"
-                             class="btn btn-light btn-lg pr-2">
-                             {{ $t('general.label.pageBuilder') }}
-                </router-link>
-              </div>
-            </div>
-            <b-form @submit.prevent="handleSave()">
-              <b-row>
-                <b-col cols="12" md="6" xl="4">
-                  <input required type="hidden" v-model="page.pageID" id="id" />
-                  <label class="text-primary">{{ $t('page.newPlaceholder') }}</label>
-                  <b-form-input required
-                                v-model="page.title"
+            <b-card-header
+              header-bg-variant="white"
+              class="d-flex py-3 align-items-center justify-content-end border-bottom"
+            >
+              <router-link
+                :to="{name: 'admin.pages.builder'}"
+                class="btn btn-light btn-lg">
+                {{ $t('general.label.pageBuilder') }}
+              </router-link>
+            </b-card-header>
+            <b-container fluid class="px-4 py-3">
+              <b-form @submit.prevent="handleSave()">
+                <b-row>
+                  <b-col cols="12" md="6" xl="4">
+                    <input required type="hidden" v-model="page.pageID" id="id" />
+                    <label class="text-primary">{{ $t('page.newPlaceholder') }}</label>
+                    <b-form-input required
+                                  v-model="page.title"
+                                  class="mb-2"
+                                  :placeholder="$t('page.newPlaceholder')" />
+                  </b-col>
+                  <b-col cols="12" md="6" xl="4">
+                    <label class="text-primary">{{ $t('general.label.handle') }}</label>
+                    <b-form-input v-model="page.handle"
+                                  :state="handleState"
+                                  class="mb-2"
+                                  :placeholder="$t('general.placeholder.handle')" />
+                  </b-col>
+                </b-row>
+                <label class="text-primary mt-3">{{ $t('general.label.description') }}</label>
+                <b-form-textarea v-model="page.description"
+                                :placeholder="$t('page.edit.pageDescription')"
                                 class="mb-2"
-                                :placeholder="$t('page.newPlaceholder')" />
-                </b-col>
-                <b-col cols="12" md="6" xl="4">
-                  <label class="text-primary">{{ $t('general.label.handle') }}</label>
-                  <b-form-input v-model="page.handle"
-                                :state="handleState"
-                                class="mb-2"
-                                :placeholder="$t('general.placeholder.handle')" />
-                </b-col>
-              </b-row>
-              <label class="text-primary mt-3">{{ $t('general.label.description') }}</label>
-              <b-form-textarea v-model="page.description"
-                               :placeholder="$t('page.edit.pageDescription')"
-                               class="mb-2"
-                               rows="8"></b-form-textarea>
-              <b-form-checkbox v-model="page.visible"
-                               switch
-                               size="lg"
-                               class="mt-3 d-inline"
-                               id="visible" />
-                <label class="m-1">
-                  {{ $t('page.edit.visible') }}
-                </label>
-            </b-form>
+                                rows="8"></b-form-textarea>
+                <b-form-checkbox v-model="page.visible"
+                                switch
+                                size="lg"
+                                class="mt-3 d-inline"
+                                id="visible" />
+                  <label class="m-1">
+                    {{ $t('page.edit.visible') }}
+                  </label>
+              </b-form>
+            </b-container>
           </b-card>
         </b-col>
       </b-row>
@@ -116,6 +121,7 @@ export default {
       this.page = new compose.Page(page)
     }).catch(this.toastErrorHandler(this.$t('notification.page.loadFailed')))
   },
+
   methods: {
     ...mapActions({
       findPageByID: 'page/findByID',

@@ -73,8 +73,8 @@ export default {
           this.renderer.destroy()
         }
         this.renderer = newRenderer()
-      } catch ({ message }) {
-        this.error(message)
+      } catch (e) {
+        this.toastErrorHandler(this.$t('notification.chart.optionsBuildFailed'))(e)
       }
       this.$emit('updated')
     },

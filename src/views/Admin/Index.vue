@@ -1,7 +1,10 @@
 <template>
-  <div class="d-flex flex-column w-100 vh-100" v-if="namespace.canManageNamespace">
+  <div
+    v-if="namespace.canManageNamespace"
+    class="d-flex flex-column w-100 h-100"
+  >
     <router-view
-      class="flex-grow-1 overflow-auto p-2"
+      class="flex-grow-1 overflow-auto"
       :namespace="namespace"
     />
     <portal-target

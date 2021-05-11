@@ -32,6 +32,7 @@
         class="h-100"
       >
         <b-button
+          v-if="namespace.canManageNamespace"
           variant="light"
           class="w-100 mb-2"
           :to="{ name: 'admin.modules' }"
@@ -102,12 +103,6 @@ export default {
       required: false,
       default: () => ({}),
     },
-
-    screenSize: {
-      type: String,
-      required: false,
-      default: 's',
-    },
   },
 
   data () {
@@ -119,10 +114,6 @@ export default {
   },
 
   computed: {
-    showBackdrop () {
-      return this.screenSize === 's' && this.expanded
-    },
-
     navItems () {
       const wrap = (p) => ({ page: p, children: [] })
 
@@ -187,16 +178,6 @@ export default {
         }
       },
     },
-
-    screenSize: {
-      handler (ss) {
-        if (ss === 'xl') {
-          this.expanded = true
-        } else {
-          this.expanded = false
-        }
-      },
-    },
   },
 
   methods: {
@@ -205,9 +186,6 @@ export default {
     }),
 
     onPageSelected (page) {
-      if (this.screenSize === 's') {
-        this.expanded = false
-      }
       this.selectedPage = page
     },
 
@@ -230,11 +208,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$header-height: 64px;
-$sidebar-bg: #F4F7FA;
-$nav-width: 320px;
-$logo-width: 150px;
-
 .right-inner-addon i {
   position: absolute;
   right: 0;
@@ -244,7 +217,7 @@ $logo-width: 150px;
 
 .backdrop {
   background-color: #1e1e1eA5;
-  top: $header-height;
+  top: $topbar-height;
   left: 0;
   width: 100vw;
   height: 100vh;
@@ -252,7 +225,7 @@ $logo-width: 150px;
 }
 
 .sidebar-nav-trigger {
-  height: $header-height;
+  height: $topbar-height;
 }
 
 .namespace-selector {
@@ -260,8 +233,8 @@ $logo-width: 150px;
 }
 
 nav {
-  width: $nav-width;
-  height: calc(100vh - #{$header-height});
+  width: $sidebar-width;
+  height: calc(100vh - #{$topbar-height});
   position: fixed;
   left: 0;
   bottom: 0;
@@ -276,7 +249,7 @@ nav {
   transition: transform 0.1s;
 
   &.collapsed {
-    transform: translateX(-($nav-width));
+    transform: translateX(-($sidebar-width));
   }
 
   header {

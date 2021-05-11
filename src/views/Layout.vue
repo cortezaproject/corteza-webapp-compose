@@ -14,6 +14,7 @@
       <c-sidebar
         :expanded.sync="expanded"
         :pinned.sync="pinned"
+        expand-on-hover
       >
         <template #header-collapsed>
           <portal-target name="sidebar-header-collapsed" />
@@ -41,7 +42,7 @@
       </c-sidebar>
     </aside>
 
-    <main class="d-inline-flex navigation-padding">
+    <main class="d-inline-flex h-100">
       <!--
         Content spacer
         Large and xl screens should push in content when the nav is expanded
@@ -84,11 +85,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$nav-width: 320px;
-$header-height: 64px;
+.topbar {
+  background-color: #F3F3F5;
+}
 
-.navigation-padding {
-  padding-top: $header-height;
+main {
+  padding-top: $topbar-height;
 }
 
 .spacer {
@@ -96,7 +98,7 @@ $header-height: 64px;
   transition: width 0.1s ease-in-out;
 
   &.expanded {
-    min-width: $nav-width;
+    min-width: $sidebar-width;
   }
 }
 </style>

@@ -1,4 +1,4 @@
-<template class="h-100">
+<template>
   <b-card class="h-100 shadow-sm ns-item"
           footer-bg-variant="white"
           body-class="pb-0"

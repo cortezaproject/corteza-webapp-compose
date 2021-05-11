@@ -94,18 +94,20 @@ th {
 }
 
 .loader {
+  height: calc(100vh - 2 * #{$topbar-height});
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 100vw;
-  background-image: url($logo);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 130px;
-  padding-top: 180px;
+  justify-content: space-around;
 
   .pending {
     width: 30px;
+  }
+
+  .logo {
+    height: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 130px;
   }
 }
 

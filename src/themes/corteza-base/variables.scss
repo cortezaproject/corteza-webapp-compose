@@ -67,6 +67,8 @@ $btn-active-box-shadow: none !default;
 $btn-font-size-lg:  16px !default;
 $btn-font-family:   $semibold !default;
 
+$topbar-height:         64px !default;
+
 // Navbar
 $navbar-bg:             $white !default;
 $navbar-color:          $black !default;
@@ -82,8 +84,8 @@ $navbar-padding-y:      0 !default;
 $navbar-padding-x:      0 !default;
 
 $navbar-toggler-font-size:  24px !default;
-$sidebar-width:         250px !default;
-$sidebar-height:        calc(100vh - #{$navbar-height}) !default;
+$sidebar-width:         320px !default;
+$sidebar-bg:            #F4F7FA;
 
 // Pagination
 $pagination-color:        $dark !default;
