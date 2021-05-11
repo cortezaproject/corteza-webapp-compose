@@ -1,4 +1,5 @@
 <template>
+<div>
   <div
     class="overflow-auto"
     v-if="loaded"
@@ -11,7 +12,7 @@
     <b-container class="pt-2 pb-5">
       <b-row no-gutters>
         <b-col>
-          <h1>
+          <h1 data-v-step="0">
             {{ $t('namespace.title') }}
           </h1>
         </b-col>
@@ -28,6 +29,7 @@
               {{ $t('namespace.create') }}
           </b-btn>
           <c-permissions-button
+            data-v-step="1"
             v-if="canGrant"
             resource="compose:namespace:*"
             buttonVariant="light"
@@ -35,7 +37,7 @@
             class="ml-1 btn-lg"
           />
         </div>
-        <div class="flex-grow-1 mt-1">
+        <div class="flex-grow-1 mt-1" data-v-step="2">
           <b-input-group>
             <b-form-input
               v-model.trim="query"
@@ -73,9 +75,12 @@
       </b-row>
     </b-container>
   </div>
+  <v-tour v-if="tour !== null" :name="tour.name" :steps="tour.steps"></v-tour>
+ </div>
 </template>
 <script>
 import NamespaceItem from 'corteza-webapp-compose/src/components/Namespaces/NamespaceItem'
+import Tour from 'corteza-webapp-compose/src/tour/Tour'
 
 export default {
   components: {
@@ -92,6 +97,7 @@ export default {
       namespaces: [],
       canCreateNamespace: false,
       canGrant: false,
+      tour: Tour.namespacesTour,
     }
   },
 
@@ -103,6 +109,13 @@ export default {
 
     namespacesFiltered () {
       return this.namespaces.filter(ns => ns.slug.indexOf(this.query) > -1 || ns.name.indexOf(this.query) > -1)
+    },
+  },
+  watch: {
+    loaded () {
+      if (this.tour) {
+        this.$tours[this.tour.name].start()
+      }
     },
   },
 

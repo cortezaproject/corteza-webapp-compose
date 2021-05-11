@@ -22,7 +22,7 @@
             >
               <div slot="header"
                    class="d-flex justify-content-between align-items-center">
-                <h2>
+                <h2 data-v-step="0">
                   {{ isEdit ? $t('namespace.edit') : $t('namespace.create') }}
                 </h2>
                 <c-permissions-button
@@ -35,7 +35,7 @@
                 />
               </div>
               <b-form>
-                <b-form-group :label="$t('namespace.name.label')">
+                <b-form-group data-v-step="1" :label="$t('namespace.name.label')">
                   <b-form-input
                     v-model="namespace.name"
                     type="text"
@@ -54,7 +54,7 @@
                     :placeholder="$t('namespace.slug.placeholder')"
                   />
                 </b-form-group>
-                <b-form-group>
+                <b-form-group data-v-step="2">
                   <b-form-checkbox
                     v-model="namespace.enabled"
                     class="mb-3"
@@ -184,6 +184,7 @@
       @save="handleSave()"
       @saveAndClose="handleSave({ closeOnSuccess: true })"
     />
+    <v-tour v-if="tour !== null" :name="tour.name" :steps="tour.steps"></v-tour>
   </div>
 </template>
 
@@ -191,6 +192,7 @@
 import { compose, NoID } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
+import Tour from 'corteza-webapp-compose/src/tour/Tour'
 
 export default {
   components: {
@@ -210,6 +212,7 @@ export default {
       application: undefined,
       isApplication: false,
       canCreateApplication: false,
+      tour: Tour.editNamespaceTour,
     }
   },
 
@@ -258,7 +261,13 @@ export default {
       return !!this.namespace.name
     },
   },
-
+  watch: {
+    loaded () {
+      if (this.tour) {
+        this.$tours[this.tour.name].start()
+      }
+    },
+  },
   created () {
     this.fetchEffective()
     this.fetchNamespace(this.$route.params.namespaceID)

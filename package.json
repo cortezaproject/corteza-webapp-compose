@@ -90,6 +90,7 @@
     "vue-select": "^3.1.0",
     "vue-sortable-tree": "^1.2.2",
     "vue-swatches": "^1.0.4",
+    "vue-tour": "^2.0.0",
     "vue-tweet-embed": "^2.3.0",
     "vue2-brace-editor": "^2.0.2",
     "vue2-dropzone": "^3.6.0",

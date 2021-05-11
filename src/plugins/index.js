@@ -8,6 +8,7 @@ import VueNativeSock from 'vue-native-websocket'
 import vars from '../themes/corteza-base/variables.scss'
 
 import { plugins, websocket } from '@cortezaproject/corteza-vue'
+import VueTour from 'vue-tour'
 
 import pairs from './eventbus-pairs'
 
@@ -30,7 +31,8 @@ Vue.use(VueProgressBar, {
   failedColor: vars.danger,
   thickness: '7px',
 })
-
+require('vue-tour/dist/vue-tour.css')
+Vue.use(VueTour)
 //
 Vue.use(plugins.Auth(), { app: 'compose' })
 
