@@ -56,7 +56,7 @@
             :button="currentButton"
             :script="currentScript"
             :trigger="currentTrigger"
-            @delete="deleteButton(currentButton);currentButton = undefined"
+            @delete="deleteButton(currentButton)"
           />
         </b-col>
       </b-row>
@@ -75,7 +75,7 @@
 
             <b-list-group
               v-for="(b) in filtered"
-              :key="b.triggerID || b.script"
+              :key="b.script || `${b.workflowID}-${b.stepID}`"
               class="mb-2 cursor-pointer"
               no-gutters
               @click.prevent="appendButton(b)"
@@ -204,12 +204,12 @@ export default {
 
     // Available buttons (compatible w/o ones already added)
     available () {
-      const existingScripts = this.buttons.map(s => s.script)
+      const existingScripts = this.buttons.map(b => b.script || `${b.workflowID}-${b.stepID}`)
+
       return [
-        ...this.scriptButtons
-          .filter(({ script }, i, aa) => !existingScripts.includes(script) && i === aa.findIndex(s => s.script === script)),
+        ...this.scriptButtons,
         ...this.triggerButtons,
-      ]
+      ].filter(b => !existingScripts.includes(b.script || `${b.workflowID}-${b.stepID}`))
     },
 
     filtered () {
@@ -229,14 +229,15 @@ export default {
 
   methods: {
     appendButton (newButton) {
-      this.currentButton = { ...newButton }
+      this.currentButton = { ...newButton, variant: newButton.variant || 'primary' }
       this.buttons.push(this.currentButton)
     },
 
-    deleteButton ({ script }) {
-      const i = this.buttons.findIndex(b => b.script === script)
+    deleteButton ({ script = '', stepID = '', workflowID = '' }) {
+      const i = this.buttons.findIndex(b => (b.script === script) || (`${b.workflowID}-${b.stepID}` === `${workflowID}-${stepID}`))
       if (i > -1) {
         this.buttons.splice(i, 1)
+        this.currentButton = undefined
       }
     },
 

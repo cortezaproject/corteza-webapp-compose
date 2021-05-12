@@ -144,7 +144,7 @@ export default {
       availableScriptsAndWorkflow: 'Available scripts and workflows ({{count}})',
       addPlaceholderLabel: 'Add placeholder (dummy button)',
       searchPlaceholder: 'Filter available scripts by label, script name and description',
-      noScript: 'There is no script or workflow configured with this button',
+      noScript: 'There is no script or workflow configured for this button',
       noScripts: 'There are no manual scripts compatible with this page block',
       noLabel: 'Unlabeled',
       noDescription: 'No description',
