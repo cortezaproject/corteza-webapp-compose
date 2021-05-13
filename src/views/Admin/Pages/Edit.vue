@@ -9,11 +9,12 @@
           >
             <div slot="header">
               <div class="d-flex justify-content-between align-items-center">
-                <h1 class="mb-3">
+                <h1 class="mb-3" data-v-onboarding="page-edit">
                   {{ $t('page.edit.title') }}
                 </h1>
                 <router-link :to="{name: 'admin.pages.builder'}"
-                             class="btn btn-light btn-lg pr-2">
+                             class="btn btn-light btn-lg pr-2"
+                             data-v-onboarding="builder">
                              {{ $t('general.label.pageBuilder') }}
                 </router-link>
               </div>
@@ -46,7 +47,7 @@
                                size="lg"
                                class="mt-3 d-inline"
                                id="visible" />
-                <label class="m-1">
+                <label class="m-1" data-v-onboarding="page-visibility">
                   {{ $t('page.edit.visible') }}
                 </label>
             </b-form>
@@ -64,6 +65,7 @@
         @saveAndClose="handleSave({ closeOnSuccess: true })"
       />
     </portal>
+    <tour name="PageEdit" ref="tour" />
   </div>
 </template>
 
@@ -72,12 +74,14 @@ import { mapActions } from 'vuex'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import { compose } from '@cortezaproject/corteza-js'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
+import Tour from 'corteza-webapp-compose/src/components/Tour/Tour'
 
 export default {
   name: 'PageEdit',
 
   components: {
     EditorToolbar,
+    Tour,
   },
 
   props: {
@@ -115,6 +119,9 @@ export default {
 
       this.page = new compose.Page(page)
     }).catch(this.toastErrorHandler(this.$t('notification.page.loadFailed')))
+  },
+  mounted: function () {
+    this.$refs.tour.start()
   },
   methods: {
     ...mapActions({

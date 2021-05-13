@@ -10,7 +10,7 @@
             <b-card-header header-bg-variant="white"
                            class="py-3"
             >
-              <h1 class="mb-3">
+              <h1 class="mb-3" data-v-onboarding="page-list">
                 {{ $t('page.title') }}
               </h1>
               <b-row
@@ -35,6 +35,7 @@
                     class="btn-lg"
                     :buttonLabel="$t('general.label.permissions')"
                     buttonVariant="light"
+                    data-v-onboarding="permissions"
                   />
                 </b-col>
               </b-row>
@@ -61,6 +62,7 @@
         </b-col>
       </b-row>
     </b-container>
+    <tour name="PageList" ref="tour" />
   </div>
 </template>
 
@@ -68,12 +70,14 @@
 import { mapActions } from 'vuex'
 import PageTree from 'corteza-webapp-compose/src/components/Admin/Page/Tree'
 import { compose } from '@cortezaproject/corteza-js'
+import Tour from 'corteza-webapp-compose/src/components/Tour/Tour'
 
 export default {
   name: 'PageList',
 
   components: {
     PageTree,
+    Tour,
   },
 
   props: {
@@ -93,7 +97,9 @@ export default {
   created () {
     this.loadTree()
   },
-
+  mounted: function () {
+    this.$refs.tour.start()
+  },
   methods: {
     ...mapActions({
       createPage: 'page/create',

@@ -9,7 +9,7 @@
             <b-card-header header-bg-variant="white"
                            class="py-3"
             >
-              <h1 class="mb-3">
+              <h1 class="mb-3" data-v-onboarding="module-list">
                 {{ $t('module.title') }}
               </h1>
               <b-row
@@ -32,6 +32,7 @@
                     :namespace="namespace"
                     type="module"
                     class="mr-1 mb-1 float-left"
+                    data-v-onboarding="import-export"
                   />
 
                   <export
@@ -127,6 +128,7 @@
         </b-col>
       </b-row>
     </b-container>
+    <tour name="ModuleList" ref="tour" />
   </div>
 </template>
 <script>
@@ -134,6 +136,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { compose } from '@cortezaproject/corteza-js'
 import Import from 'corteza-webapp-compose/src/components/Admin/Import'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
+import Tour from 'corteza-webapp-compose/src/components/Tour/Tour'
 
 export default {
   name: 'ModuleList',
@@ -141,6 +144,7 @@ export default {
   components: {
     Import,
     Export,
+    Tour,
   },
 
   props: {
@@ -200,7 +204,9 @@ export default {
       return (moduleID) => this.pages.find(p => p.moduleID === moduleID)
     },
   },
-
+  mounted: function () {
+    this.$refs.tour.start()
+  },
   methods: {
     ...mapActions({
       createModule: 'module/create',

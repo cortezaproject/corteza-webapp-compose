@@ -12,7 +12,7 @@
     <b-container class="pt-2 pb-5">
       <b-row no-gutters>
         <b-col>
-          <h1 data-v-step="0">
+          <h1 data-v-onboarding="welcome">
             {{ $t('namespace.title') }}
           </h1>
         </b-col>
@@ -29,7 +29,7 @@
               {{ $t('namespace.create') }}
           </b-btn>
           <c-permissions-button
-            data-v-step="1"
+            data-v-onboarding="permissions"
             v-if="canGrant"
             resource="compose:namespace:*"
             buttonVariant="light"
@@ -37,7 +37,7 @@
             class="ml-1 btn-lg"
           />
         </div>
-        <div class="flex-grow-1 mt-1" data-v-step="2">
+        <div class="flex-grow-1 mt-1" data-v-onboarding="search">
           <b-input-group>
             <b-form-input
               v-model.trim="query"
@@ -75,16 +75,17 @@
       </b-row>
     </b-container>
   </div>
-  <v-tour v-if="tour !== null" :name="tour.name" :steps="tour.steps"></v-tour>
+  <tour name="Namespaces" ref="tour" />
  </div>
 </template>
 <script>
 import NamespaceItem from 'corteza-webapp-compose/src/components/Namespaces/NamespaceItem'
-import Tour from 'corteza-webapp-compose/src/tour/Tour'
+import Tour from 'corteza-webapp-compose/src/components/Tour/Tour'
 
 export default {
   components: {
     NamespaceItem,
+    Tour,
   },
 
   data () {
@@ -97,7 +98,6 @@ export default {
       namespaces: [],
       canCreateNamespace: false,
       canGrant: false,
-      tour: Tour.namespacesTour,
     }
   },
 
@@ -109,13 +109,6 @@ export default {
 
     namespacesFiltered () {
       return this.namespaces.filter(ns => ns.slug.indexOf(this.query) > -1 || ns.name.indexOf(this.query) > -1)
-    },
-  },
-  watch: {
-    loaded () {
-      if (this.tour) {
-        this.$tours[this.tour.name].start()
-      }
     },
   },
 
@@ -136,6 +129,7 @@ export default {
       this.$ComposeAPI.permissionsEffective().then((p) => {
         this.canCreateNamespace = p.filter(per => per.operation === 'namespace.create')[0].allow
         this.canGrant = p.filter(per => per.operation === 'grant')[0].allow
+        this.$refs.tour.start()
         this.loaded = true
       })
     }).catch(errHandler)
