@@ -1,7 +1,7 @@
 {
   "name": "corteza-webapp-compose",
   "description": "Corteza Compose WebApp",
-  "version": "2021.3.3",
+  "version": "2021.3.4",
   "license": "Apache-2.0",
   "contributors": [
     "Denis Arh <denis.arh@gmail.com>"
@@ -84,6 +84,7 @@
     "vue-events": "^3.1.0",
     "vue-grid-layout": "^2.3.3",
     "vue-multiselect": "^2.1.6",
+    "vue-native-websocket": "^2.0.14",
     "vue-progressbar": "^0.7.5",
     "vue-router": "^3.0.7",
     "vue-select": "^3.1.0",
