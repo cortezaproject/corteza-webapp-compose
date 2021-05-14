@@ -1,19 +1,20 @@
 <template>
   <b-tab :title="$t('block.chart.label')">
-    <fieldset class="form-group">
-      <b-form-group>
-        <label>{{ $t('block.chart.display') }}</label>
-        <b-form-select v-model="options.chartID" :options="filterCharts()" text-field="name" value-field="chartID">
-          <template slot="first">
-            <option disabled>{{ $t('block.chart.pick') }}</option>
-          </template>
-        </b-form-select>
-      </b-form-group>
-    </fieldset>
+    <b-form-group
+      :label="$t('block.chart.display')"
+    >
+      <b-form-select
+        v-model="options.chartID"
+        :options="filterCharts()"
+        text-field="name"
+        value-field="chartID"
+      />
+    </b-form-group>
   </b-tab>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import { NoID } from '@cortezaproject/corteza-js'
 import base from './base'
 
 export default {
@@ -29,7 +30,10 @@ export default {
 
   methods: {
     filterCharts () {
-      const rr = []
+      const rr = [
+        { chartID: NoID, name: this.$t('block.chart.pick') },
+      ]
+
       for (const c of this.charts) {
         try {
           c.isValid()

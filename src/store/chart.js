@@ -43,7 +43,7 @@ export default function (ComposeAPI) {
         }
 
         commit(types.pending)
-        return ComposeAPI.chartList({ namespaceID }).then(({ set, filter }) => {
+        return ComposeAPI.chartList({ namespaceID, sort: 'name ASC' }).then(({ set, filter }) => {
           if (set && set.length > 0) {
             commit(types.updateSet, set.map(c => new compose.Chart(c)))
           }
