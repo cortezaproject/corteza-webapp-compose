@@ -72,6 +72,8 @@
                 :items="modules"
                 :filter="query"
                 :filter-included-fields="['handle', 'name']"
+                :sort-by.sync="sortBy"
+                :sort-desc="sortDesc"
                 @row-clicked="handleRowClicked"
                 head-variant="light"
                 tbody-tr-class="pointer"
@@ -151,6 +153,9 @@ export default {
   data () {
     return {
       query: '',
+
+      sortBy: 'name',
+      sortDesc: false,
 
       newModule: new compose.Module(
         { fields: [new compose.ModuleFieldString({ fieldID: '0', name: 'Sample' })] },
