@@ -187,7 +187,7 @@ export default {
     },
 
     canAddRecord () {
-      return this.roModule.canCreateRecord && this.roRecordPage
+      return this.roModule && this.roModule.canCreateRecord && this.roRecordPage
     },
 
     isConfigured () {
