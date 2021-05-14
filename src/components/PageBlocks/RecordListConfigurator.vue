@@ -5,18 +5,13 @@
         class="form-group"
         :label="$t('block.general.module')"
       >
-        <b-form-select v-model="options.moduleID" required>
-          <option value="0">
-            {{ $t('general.label.none') }}
-          </option>
-          <option
-            v-for="module in modules"
-            :key="module.moduleID"
-            :value="module.moduleID">
-
-            {{ module.name }}
-          </option>
-        </b-form-select>
+        <b-form-select
+          v-model="options.moduleID"
+          :options="moduleOptions"
+          text-field="name"
+          value-field="moduleID"
+          required
+        />
         <b-form-text class="text-secondary small">
           <i18next path="block.recordList.moduleFootnote" tag="label">
             <router-link :to="{ name: 'admin.pages'}">
@@ -239,6 +234,13 @@ export default {
       modules: 'module/set',
       pages: 'page/set',
     }),
+
+    moduleOptions () {
+      return [
+        { moduleID: NoID, name: this.$t('general.label.none') },
+        ...this.modules,
+      ]
+    },
 
     recordListModule () {
       if (this.options.moduleID !== NoID) {
