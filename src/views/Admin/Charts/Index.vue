@@ -89,6 +89,8 @@
                 :items="charts"
                 :filter="query"
                 :filter-included-fields="['handle', 'name']"
+                :sort-by.sync="sortBy"
+                :sort-desc="sortDesc"
                 @row-clicked="handleRowClicked"
                 head-variant="light"
                 tbody-tr-class="pointer"
@@ -140,6 +142,9 @@ export default {
   data () {
     return {
       query: '',
+
+      sortBy: 'name',
+      sortDesc: false,
 
       newChart: new compose.Chart({}),
     }

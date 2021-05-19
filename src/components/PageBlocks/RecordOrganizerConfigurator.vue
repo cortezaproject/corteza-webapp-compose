@@ -2,19 +2,17 @@
   <b-tab :title="$t('block.recordOrganizer.label')">
     <b-form-group>
       <label>{{ $t('block.general.module') }}</label>
-      <b-form-select v-model="options.moduleID" required>
-        <option :value="undefined">{{ $t('general.label.none') }}</option>
-        <option
-          v-for="module in modules"
-          :key="module.moduleID"
-          :value="module.moduleID">
+      <b-form-select
+        v-model="options.moduleID"
+        :options="moduleOptions"
+        text-field="name"
+        value-field="moduleID"
+        required
+      />
 
-          {{ module.name }}
-        </option>
-      </b-form-select>
     </b-form-group>
 
-    <div v-if="!!options.moduleID && selectedModule">
+    <div v-if="selectedModule">
       <b-form-group>
         <label>{{ $t('field.selector.available') }}</label>
         <div class="d-flex">
@@ -46,9 +44,9 @@
 
       <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordOrganizer.labelField.label')">
         <b-form-select v-model="options.labelField">
-          <option :value="undefined">{{ $t('general.label.none') }}</option>
+          <option value="">{{ $t('general.label.none') }}</option>
           <option
-            v-for="(field, index) in selectedModule.fields"
+            v-for="(field, index) in selectedModuleFields"
             :key="index"
             :value="field.name">
 
@@ -60,9 +58,9 @@
 
       <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordOrganizer.descriptionField.label')">
         <b-form-select v-model="options.descriptionField">
-          <option :value="undefined">{{ $t('general.label.none') }}</option>
+          <option value="">{{ $t('general.label.none') }}</option>
           <option
-            v-for="(field, index) in selectedModule.fields"
+            v-for="(field, index) in selectedModuleFields"
             :key="index"
             :value="field.name">
 
@@ -74,7 +72,7 @@
 
       <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordOrganizer.positionField.label')">
         <b-form-select v-model="options.positionField">
-          <option :value="undefined">{{ $t('general.label.none') }}</option>
+          <option value="">{{ $t('general.label.none') }}</option>
           <option
             v-for="(field, index) in positionFields"
             :key="index"
@@ -88,7 +86,7 @@
 
       <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordOrganizer.groupField.label')">
         <b-form-select v-model="options.groupField">
-          <option :value="undefined">{{ $t('general.label.none') }}</option>
+          <option value="">{{ $t('general.label.none') }}</option>
           <option
             v-for="(field, index) in groupFields"
             :key="index"
@@ -121,7 +119,7 @@
 <script>
 import FieldEditor from '../ModuleFields/Editor'
 import { mapGetters } from 'vuex'
-import { compose, validator } from '@cortezaproject/corteza-js'
+import { compose, validator, NoID } from '@cortezaproject/corteza-js'
 import base from './base'
 
 export default {
@@ -154,14 +152,28 @@ export default {
       modules: 'module/set',
     }),
 
+    moduleOptions () {
+      return [
+        { moduleID: NoID, name: this.$t('general.label.none') },
+        ...this.modules,
+      ]
+    },
+
     selectedModule () {
       return this.modules.find(m => m.moduleID === this.options.moduleID)
+    },
+
+    selectedModuleFields () {
+      if (this.selectedModule) {
+        return [...this.selectedModule.fields].sort((a, b) => a.label.localeCompare(b.label))
+      }
+      return []
     },
 
     allFields () {
       if (this.options.moduleID) {
         return [
-          ...this.selectedModule.fields,
+          ...this.selectedModuleFields,
           ...this.selectedModule.systemFields(),
         ]
       }
@@ -169,11 +181,11 @@ export default {
     },
 
     positionFields () {
-      return this.selectedModule.fields.filter(({ kind, isMulti }) => kind === 'Number' && !isMulti)
+      return this.selectedModuleFields.filter(({ kind, isMulti }) => kind === 'Number' && !isMulti)
     },
 
     groupFields () {
-      return this.selectedModule.fields.filter(({ isMulti }) => !isMulti)
+      return this.selectedModuleFields.filter(({ isMulti }) => !isMulti)
     },
 
     group () {
@@ -183,9 +195,11 @@ export default {
 
   watch: {
     'options.moduleID': {
-      handler (moduleID) {
-        // @todo fix this
-        // this.o = new RecordOrganizer({ moduleID })
+      handler () {
+        this.options.labelField = ''
+        this.options.descriptionField = ''
+        this.options.positionField = ''
+        this.options.groupField = ''
       },
     },
 
