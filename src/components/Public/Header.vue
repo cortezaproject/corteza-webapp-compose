@@ -33,6 +33,7 @@
            class="position-absolute d-flex align-items-center">
         <router-link v-if="namespace.canManageNamespace"
                     :to="{ name: 'admin.modules' }"
+                     data-v-onboarding="admin-panel"
                     class="nav-link mw-100 text-nowrap">{{ $t('navigation.adminPanel') }}</router-link>
 
         <c-hamburger-menu

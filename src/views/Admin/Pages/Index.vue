@@ -22,7 +22,7 @@
                       <b-input-group>
                         <b-input required type="text" v-model="page.title" class="page-name-input" id="name" :placeholder="$t('page.newPlaceholder')" />
                         <b-input-group-append>
-                          <b-button type="submit" variant="primary" size="lg">{{ $t('page.createLabel') }}</b-button>
+                          <b-button type="submit" variant="primary" size="lg" data-v-onboarding="create-page">{{ $t('page.createLabel') }}</b-button>
                         </b-input-group-append>
                       </b-input-group>
                     </b-form-group>
@@ -97,7 +97,7 @@ export default {
   created () {
     this.loadTree()
   },
-  mounted: function () {
+  mounted () {
     this.$refs.tour.start()
   },
   methods: {

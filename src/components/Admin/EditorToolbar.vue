@@ -7,7 +7,8 @@
         <b-button variant="link"
                   :to="backLink"
                   v-if="backLink"
-                  class="float-left text-dark back">
+                  class="float-left text-dark back"
+                  data-v-onboarding="back">
           <font-awesome-icon :icon="['fas', 'chevron-left']" class="back-icon"></font-awesome-icon>
           {{ $t('general.label.backWithoutSave') }}
         </b-button>
@@ -29,7 +30,8 @@
                   :disabled="disableSave"
                   variant="light" @click.prevent="$emit('saveAndClose')"
                   size="lg"
-                  class="mx-1">
+                  class="mx-1"
+                  data-v-onboarding="save-and-close">
           {{ $t('general.label.saveAndClose') }}
         </b-button>
         <b-button v-if="!hideSave"

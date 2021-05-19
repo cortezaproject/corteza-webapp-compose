@@ -1,4 +1,5 @@
 <template>
+<div>
   <div v-if="page">
     <grid
       :blocks.sync="page.blocks"
@@ -112,12 +113,15 @@
           v-if="page.canUpdatePage"
           variant="light"
           size="lg"
+          data-v-onboarding="page-builder"
           class="mr-1 float-right"
           v-b-modal.createBlockSelector>
           + {{ $t('page.build.addBlock') }}
         </b-button>
       </editor-toolbar>
     </portal>
+  </div>
+  <tour name="PageBuilder" ref="tour" />
   </div>
 </template>
 
@@ -129,6 +133,7 @@ import PageBlock from 'corteza-webapp-compose/src/components/PageBlocks'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import { compose } from '@cortezaproject/corteza-js'
 import Configurator from 'corteza-webapp-compose/src/components/PageBlocks/Configurator'
+import Tour from 'corteza-webapp-compose/src/components/Tour/Tour'
 
 export default {
   components: {
@@ -137,6 +142,7 @@ export default {
     NewBlockSelector,
     PageBlock,
     EditorToolbar,
+    Tour,
   },
 
   props: {
@@ -191,6 +197,7 @@ export default {
     const { namespaceID } = this.namespace
     this.findPageByID({ namespaceID, pageID: this.pageID, force: true }).then(page => {
       this.page = page.clone()
+      this.$refs.tour.start()
     })
   },
 

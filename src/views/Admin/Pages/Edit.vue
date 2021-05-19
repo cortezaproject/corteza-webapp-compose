@@ -120,7 +120,7 @@ export default {
       this.page = new compose.Page(page)
     }).catch(this.toastErrorHandler(this.$t('notification.page.loadFailed')))
   },
-  mounted: function () {
+  mounted () {
     this.$refs.tour.start()
   },
   methods: {

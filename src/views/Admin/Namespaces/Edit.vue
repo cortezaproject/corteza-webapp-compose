@@ -89,6 +89,7 @@
                     v-model="namespaceAssets.logo"
                     accept="image/*"
                     :placeholder="$t('namespace.logo.placeholder')"
+                    data-v-onboarding="logo"
                   />
                 </b-form-group>
 
@@ -265,6 +266,11 @@ export default {
     this.fetchEffective()
     this.fetchNamespace(this.$route.params.namespaceID)
   },
+  mounted () {
+    if (!this.isEdit) {
+      this.$refs.tour.start()
+    }
+  },
   methods: {
     async fetchNamespace (namespaceID) {
       if (namespaceID) {
@@ -272,12 +278,11 @@ export default {
           .then((ns) => {
             this.namespace = new compose.Namespace(ns)
             this.fetchApplication()
+            this.$refs.tour.start()
           })
       }
-      this.$refs.tour.start()
       this.loaded = true
     },
-
     fetchApplication () {
       this.$SystemAPI.applicationList({ query: this.namespace.name })
         .then(({ set = [] }) => {

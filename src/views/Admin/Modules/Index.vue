@@ -23,6 +23,7 @@
                     size="lg"
                     class="mr-1 mb-1 float-left"
                     :to="{ name: 'admin.modules.create' }"
+                    data-v-onboarding="new-module"
                   >
                     {{ $t('module.createLabel') }}
                   </b-btn>
@@ -46,10 +47,11 @@
                     :buttonLabel="$t('general.label.permissions')"
                     buttonVariant="light"
                     class="btn-lg mb-1"
+                    data-v-onboarding="permissions"
                   />
                 </div>
                 <div class="flex-grow-1 mb-1">
-                  <b-input-group>
+                  <b-input-group data-v-onboarding="search">
                     <b-input
                       v-model.trim="query"
                       class="mw-100"
@@ -100,7 +102,8 @@
                 <template v-slot:cell(updatedAt)="{ item: m }">
                   {{ (m.updatedAt || m.createdAt) | locDateOnly }}
                 </template>
-                <template v-slot:cell(actions)="{ item: m }">
+                <template v-slot:cell(actions)="{ item: m, index }">
+                  <div v-if="index===0"  data-v-onboarding="builder"></div>
                   <b-button
                     @click="openPageBuilder(m)"
                     variant="light"
@@ -204,7 +207,7 @@ export default {
       return (moduleID) => this.pages.find(p => p.moduleID === moduleID)
     },
   },
-  mounted: function () {
+  mounted () {
     this.$refs.tour.start()
   },
   methods: {

@@ -25,6 +25,7 @@
           <b-btn :to="{ name: 'namespace.create' }"
                  variant="primary"
                  size="lg"
+                 data-v-onboarding="new-namespace"
           >
               {{ $t('namespace.create') }}
           </b-btn>
@@ -53,6 +54,7 @@
             </b-input-group-append>
           </b-input-group>
         </div>
+         <tour-button class="ml-1" :name="$t('namespace.tour')" data-v-onboarding="tour"></tour-button>
       </b-row>
 
       <b-row
@@ -81,11 +83,13 @@
 <script>
 import NamespaceItem from 'corteza-webapp-compose/src/components/Namespaces/NamespaceItem'
 import Tour from 'corteza-webapp-compose/src/components/Tour/Tour'
+import TourButton from 'corteza-webapp-compose/src/components/Tour/TourButton'
 
 export default {
   components: {
     NamespaceItem,
     Tour,
+    TourButton,
   },
 
   data () {
@@ -129,10 +133,15 @@ export default {
       this.$ComposeAPI.permissionsEffective().then((p) => {
         this.canCreateNamespace = p.filter(per => per.operation === 'namespace.create')[0].allow
         this.canGrant = p.filter(per => per.operation === 'grant')[0].allow
-        this.$refs.tour.start()
+        this.startTour()
         this.loaded = true
       })
     }).catch(errHandler)
+  },
+  methods: {
+    startTour () {
+      this.$refs.tour.start()
+    },
   },
 }
 </script>

@@ -1093,6 +1093,7 @@ export default {
     visit: 'Visit namespace',
     disabled: 'Namespace is disabled',
     setPermissions: 'Set namespace permissions',
+    tour: 'Tour',
     name: {
       label: 'Full namespace name',
       placeholder: 'Enter namespace name',

@@ -6,7 +6,7 @@
     <template #y-axis="{ report }">
       <hr>
       <div>
-        <h4 class="mb-3">
+        <h4 class="mb-3" data-v-onboarding="axis">
           {{ $t('chart.edit.yAxis.label') }}
         </h4>
         <b-form-checkbox

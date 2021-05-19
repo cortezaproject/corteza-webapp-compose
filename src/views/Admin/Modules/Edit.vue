@@ -324,7 +324,7 @@ export default {
       immediate: true,
     },
   },
-  mounted: function () {
+  mounted () {
     this.$refs.tour.start()
   },
   methods: {

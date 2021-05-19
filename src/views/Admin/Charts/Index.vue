@@ -9,7 +9,7 @@
             <b-card-header header-bg-variant="white"
                            class="py-3"
             >
-              <h1 class="mb-3">
+              <h1 class="mb-3" data-v-onboarding="chart-list">
                 {{ $t('chart.title') }}
               </h1>
               <b-row
@@ -23,6 +23,7 @@
                     size="lg"
                     class="float-left mr-1"
                     :text="$t('block.chart.add')"
+                    data-v-onboarding="new-chart"
                     >
                       <b-dropdown-item-button
                         variant="dark"
@@ -49,6 +50,7 @@
                     :namespace="namespace"
                     type="chart"
                     class="float-left mr-1"
+                    data-v-onboarding="import-export"
                   />
 
                   <export
@@ -62,10 +64,11 @@
                     :buttonLabel="$t('general.label.permissions')"
                     buttonVariant="light"
                     class="btn-lg"
+                    data-v-onboarding="permissions"
                   />
                 </div>
                 <div class="flex-grow-1 mt-1">
-                  <b-input-group>
+                  <b-input-group data-v-onboarding="search">
                     <b-form-input
                       v-model.trim="query"
                       class="float-right mw-100"
@@ -116,6 +119,7 @@
         </b-col>
       </b-row>
     </b-container>
+    <tour name="ChartList" ref="tour" />
   </div>
 </template>
 <script>
@@ -123,6 +127,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { compose } from '@cortezaproject/corteza-js'
 import Import from 'corteza-webapp-compose/src/components/Admin/Import'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
+import Tour from 'corteza-webapp-compose/src/components/Tour/Tour'
 
 export default {
   name: 'ChartList',
@@ -130,6 +135,7 @@ export default {
   components: {
     Import,
     Export,
+    Tour,
   },
 
   props: {
@@ -181,7 +187,9 @@ export default {
       ]
     },
   },
-
+  mounted () {
+    this.$refs.tour.start()
+  },
   methods: {
     ...mapActions({
       createChart: 'chart/create',

@@ -10,7 +10,7 @@
             <div slot="header"
                  class="d-flex justify-content-between align-items-center"
             >
-              <h1 class="mb-3">
+              <h1 class="mb-3" data-v-onboarding="chart-edit">
                 {{ $t('chart.edit.title') }}
               </h1>
               <export :list="[chart]" type="chart" class="float-right" slot="header"/>
@@ -18,7 +18,7 @@
             <b-row>
               <b-col lg="8">
                 <fieldset v-if="modules">
-                  <b-form-input v-model="chart.name" :placeholder="$t('chart.newPlaceholder')" class="mb-1"></b-form-input>
+                  <b-form-input v-model="chart.name " :placeholder="$t('chart.newPlaceholder')" class="mb-1" data-v-onboarding="chart-name"></b-form-input>
                   <b-form-input v-model="chart.handle" :placeholder="$t('general.placeholder.handle')" :state="handleState" class="mb-1"></b-form-input>
 
                   <b-form-group>
@@ -89,6 +89,7 @@
 
                 <!-- Generic report editing component -->
                 <component
+                  data-v-onboarding="module"
                   :is="reportEditor"
                   v-if="editReport"
                   :report.sync="editReport"
@@ -146,6 +147,7 @@
         @saveAndClose="handleSave({ closeOnSuccess: true })">
       </editor-toolbar>
     </portal>
+    <tour name="ChartEdit" ref="tour" />
   </div>
 </template>
 <script>
@@ -161,6 +163,7 @@ import ReportItem from 'corteza-webapp-compose/src/components/Chart/ReportItem'
 import Reports from 'corteza-webapp-compose/src/components/Chart/Report'
 import { chartConstructor } from 'corteza-webapp-compose/src/lib/charts'
 import schemes from 'chartjs-plugin-colorschemes/src/colorschemes'
+import Tour from 'corteza-webapp-compose/src/components/Tour/Tour'
 
 const defaultReport = {
   moduleID: undefined,
@@ -176,6 +179,7 @@ export default {
     ChartComponent,
     draggable,
     ReportItem,
+    Tour,
   },
 
   props: {
@@ -333,6 +337,10 @@ export default {
       },
       immediate: true,
     },
+  },
+
+  mounted () {
+    this.$refs.tour.start()
   },
 
   methods: {

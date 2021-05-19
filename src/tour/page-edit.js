@@ -6,7 +6,7 @@ export default {
       header: {
         title: 'Edit page',
       },
-      content: 'You can edit/create page, change it\'s name, description and visibility. ',
+      content: 'You can edit / create a page, change it\'s name, description and visibility. ',
     },
     {
       target: '[data-v-onboarding="builder"]',
@@ -25,6 +25,19 @@ export default {
       },
       content: 'Change visibility of the page by sritching the toggle on or off ',
     },
-
+    {
+      target: '[data-v-onboarding="save-and-close"]',
+      header: {
+        title: 'Save changes',
+      },
+      content: 'Click on "Save" button or "Save and close" button to save and return to the previous page. ',
+    },
+    {
+      target: '[data-v-onboarding="back"]',
+      header: {
+        title: 'Go back',
+      },
+      content: 'Click on "Back" button to exit without saving the changes. ',
+    },
   ],
 }

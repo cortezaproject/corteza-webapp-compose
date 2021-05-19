@@ -72,6 +72,7 @@
     <portal-target
       name="toolbar"
     />
+    <tour name="RecordPublic" ref="tour" />
   </div>
 </template>
 
@@ -80,6 +81,7 @@ import { mapGetters, mapActions } from 'vuex'
 import PublicHeader from 'corteza-webapp-compose/src/components/Public/Header'
 import CircleStep from 'corteza-webapp-compose/src/components/Common/CircleStep'
 import { compose } from '@cortezaproject/corteza-js'
+import Tour from 'corteza-webapp-compose/src/components/Tour/Tour'
 
 const pushContentAbove = 610
 const demoPageHandle = 'demo_page'
@@ -90,6 +92,7 @@ export default {
   components: {
     PublicHeader,
     CircleStep,
+    Tour,
   },
 
   props: {
@@ -177,7 +180,9 @@ export default {
       this.documentWidth = document.body.offsetWidth
     }
   },
-
+  mounted () {
+    this.$refs.tour.start()
+  },
   methods: {
     ...mapActions({
       createModule: 'module/create',

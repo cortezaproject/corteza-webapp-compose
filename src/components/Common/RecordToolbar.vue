@@ -12,6 +12,7 @@
           class="text-dark back"
           :disabled="processing"
           @click.prevent="$emit('back')"
+          data-v-onboarding="back"
         >
           <font-awesome-icon :icon="['fas', 'chevron-left']" class="back-icon"></font-awesome-icon>
           {{ $t('general.label.back') }}
@@ -46,6 +47,7 @@
           size="lg"
           class="mx-1"
           @click.prevent="$emit('edit')"
+          data-v-onboarding="edit"
         >
           {{ $t('general.label.edit') }}
         </b-button>

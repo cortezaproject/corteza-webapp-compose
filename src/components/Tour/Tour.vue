@@ -17,8 +17,10 @@ export default {
   },
   methods: {
     start () {
-      if (this.tour) {
-        this.$tours[this.tour.name].start()
+      if (JSON.parse(localStorage.getItem('compose.tour'))) {
+        if (this.tour) {
+          this.$tours[this.tour.name].start()
+        }
       }
     },
   },

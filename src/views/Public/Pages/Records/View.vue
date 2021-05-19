@@ -32,6 +32,7 @@
         @submit="handleFormSubmit('page.record')"
       />
     </portal>
+    <tour name="RecordView" ref="tour" />
   </div>
 </template>
 <script>
@@ -39,6 +40,7 @@ import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
 import RecordToolbar from 'corteza-webapp-compose/src/components/Common/RecordToolbar'
 import record from 'corteza-webapp-compose/src/mixins/record'
 import { compose } from '@cortezaproject/corteza-js'
+import Tour from 'corteza-webapp-compose/src/components/Tour/Tour'
 
 export default {
   name: 'ViewRecord',
@@ -46,6 +48,7 @@ export default {
   components: {
     Grid,
     RecordToolbar,
+    Tour,
   },
 
   mixins: [
@@ -113,6 +116,7 @@ export default {
           .recordRead({ namespaceID, moduleID, recordID: this.recordID })
           .then(record => {
             this.record = new compose.Record(module, record)
+            this.$refs.tour.start()
           })
           .catch(this.toastErrorHandler(this.$t('notification.record.loadFailed')))
       }
