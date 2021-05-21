@@ -1197,6 +1197,16 @@ export default {
       createFailed: 'Could not create a module',
       saved: 'Module saved',
       deleted: 'Module deleted',
+      edit: {
+        federationSettings: {
+          nodesNotFound: 'Could not find any nodes',
+          loadSharedModulesFailed: 'Could not load shared modules',
+          loadExposedModulesFailed: 'Could not load exposed modules',
+          loadModuleMappingsFailed: 'Could not load exposed modules',
+          persistModuleMappingsFailed: 'Could not persist module mappings',
+          persistExposedModuleFailed: 'Could not persist exposed module',
+        },
+      },
     },
     import: {
       typeMissmatch: 'Import error: trying to import object of type "{{type1}}" into a list of objects of type "{{type2}}"',

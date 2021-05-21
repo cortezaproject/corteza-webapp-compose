@@ -373,12 +373,12 @@ export default {
         .then(({ set = [] }) => {
           this.servers = set.filter(({ canManageNode }) => canManageNode)
         })
-        .catch(this.toastErrorHandler())
+        .catch(this.toastErrorHandler(this.$t('notification.module.edit.federationSettings.nodesNotFound')))
 
       for (const node of this.servers) {
-        await this.loadSharedModules(node.nodeID).catch(this.toastErrorHandler())
-        await this.loadExposedModules(node.nodeID).catch(this.toastErrorHandler())
-        await this.loadModuleMappings(node.nodeID).catch(this.toastErrorHandler())
+        await this.loadSharedModules(node.nodeID).catch(this.toastErrorHandler(this.$t('notification.module.edit.federationSettings.loadSharedModulesFailed')))
+        await this.loadExposedModules(node.nodeID).catch(this.toastErrorHandler(this.$t('notification.module.edit.federationSettings.loadExposedModulesFailed')))
+        await this.loadModuleMappings(node.nodeID).catch(this.toastErrorHandler(this.$t('notification.module.edit.federationSettings.loadModuleMappingsFailed')))
       }
 
       this.sharedModulesMapped = this.getSharedModulesMapped()
@@ -457,7 +457,7 @@ export default {
               // Reset update flag
               crtModule.updated = false
             })
-            .catch(this.toastErrorHandler())
+            .catch(this.toastErrorHandler(this.$t('notification.module.edit.federationSettings.persistModuleMappingsFailed')))
         }
       }
 
@@ -487,7 +487,7 @@ export default {
             // Reset update flag
             (this.upstream[nodeID] || {}).updated = false
           })
-          .catch(this.toastErrorHandler())
+          .catch(this.toastErrorHandler(this.$t('notification.module.edit.federationSettings.persistExposedModuleFailed')))
 
         if (!response && !response.moduleID) {
           return
@@ -667,7 +667,9 @@ export default {
     },
 
     async persistModuleMappings (payload) {
-      return this.$FederationAPI.manageStructureCreateMappings(payload).catch(this.toastErrorHandler())
+      return this.$FederationAPI
+        .manageStructureCreateMappings(payload)
+        .catch(this.toastErrorHandler(this.$t('notification.module.edit.federationSettings.persistModuleMappingsFailed')))
     },
 
     //
@@ -682,7 +684,7 @@ export default {
         .then((data = []) => {
           this.sharedModules[nodeID] = data.map(d => ({ ...d, updated: false }))
         })
-        .catch(this.toastErrorHandler())
+        .catch(this.toastErrorHandler(this.$t('notification.module.edit.federationSettings.loadSharedModulesFailed')))
     },
 
     async loadExposedModules (nodeID) {
@@ -697,7 +699,7 @@ export default {
             this.exposedModules[nodeID] = exposedModule
           }
         })
-        .catch(this.toastErrorHandler())
+        .catch(this.toastErrorHandler(this.$t('notification.module.edit.federationSettings.loadSharedModulesFailed')))
     },
 
     async loadModuleMappings (nodeID) {
