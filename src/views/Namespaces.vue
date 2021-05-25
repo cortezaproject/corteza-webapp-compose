@@ -54,7 +54,7 @@
             </b-input-group-append>
           </b-input-group>
         </div>
-         <tour-button class="ml-1" :name="$t('namespace.tour')" data-v-onboarding="tour"></tour-button>
+         <tour-button class="ml-1" data-v-onboarding="tour"></tour-button>
       </b-row>
 
       <b-row

@@ -1093,7 +1093,6 @@ export default {
     visit: 'Visit namespace',
     disabled: 'Namespace is disabled',
     setPermissions: 'Set namespace permissions',
-    tour: 'Tour',
     name: {
       label: 'Full namespace name',
       placeholder: 'Enter namespace name',
@@ -1232,5 +1231,12 @@ export default {
       failed: 'Import failed',
       successful: 'Import successful',
     },
+  },
+  tour: {
+    buttonTour: 'Tour',
+    buttonPrevious: 'Back',
+    buttonNext: 'Next',
+    buttonSkip: 'Skip tour',
+    buttonStop: 'Finish',
   },
 }

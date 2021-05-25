@@ -31,7 +31,6 @@ Vue.use(VueProgressBar, {
   failedColor: vars.danger,
   thickness: '7px',
 })
-require('vue-tour/dist/vue-tour.css')
 Vue.use(VueTour)
 //
 Vue.use(plugins.Auth(), { app: 'compose' })

@@ -1,6 +1,6 @@
 <template>
     <b-form-checkbox @change="toggle()" v-model="tourOn" name="check-button" button variant="primary" size="lg">
-      {{name}}
+      {{$t('tour.buttonTour')}}
     </b-form-checkbox>
 </template>
 
@@ -8,12 +8,6 @@
 
 export default {
   name: 'TourButton',
-  props: {
-    name: {
-      type: String,
-      required: true,
-    },
-  },
   data () {
     return {
       tourOn: false,
