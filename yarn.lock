@@ -851,9 +851,9 @@
     yargs "6.6.0"
 
 "@cortezaproject/corteza-js@^2021.3.0":
-  version "2021.3.5"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.3.5.tgz#b1076d1b2ce8021bbec0f3b98c16f9a008159a2c"
-  integrity sha512-gdf+CPZs15KFtMw+4iT3zDQehqHuw4VEGbdrpzVjL+qvYyvUBpDyR7zCyYo0P7zzmtkbNjSi7brNvGhw22EaQQ==
+  version "2021.3.6"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.3.6.tgz#7fe55ae3f752209d8c6c82ab9be35a582dce5174"
+  integrity sha512-/tSW2OxTUPVyrxTZBZ89CNgrZ2lw9FwFYis3rEno/XtGC8b278FaOZVcFMp+I53JVPAcVlqTPAhg1M1bLwpEVA==
   dependencies:
     axios "^0.21.1"
     chart.js "2.9.3"
@@ -867,9 +867,9 @@
     ts-sinon "^1.0.25"
 
 "@cortezaproject/corteza-vue@^2021.3.0":
-  version "2021.3.5"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.3.5.tgz#f957d4b0958567bbecdb4b3f1b7f37ba7c5c3c19"
-  integrity sha512-UyNHjEyo5ITtfkZIF+ONEsY4m3/ZEjH4akJXnWTrbRBX5XSESfNaIJLtF18V/tXxA9GL93qwC0z7jvULZmsoQQ==
+  version "2021.3.6"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.3.6.tgz#5d8771383bbbb435a6ebecb38a7d03261c264df9"
+  integrity sha512-1xX6P3i2uP5efIFMNvJicdhgpcr9mGZ7NhjaecdTp4Gm0bP7vt4/EA1L8OWjVLSKV0OidU7VarstgPYMgYhCcg==
   dependencies:
     "@cortezaproject/corteza-js" "^2021.3.0"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
@@ -1268,9 +1268,9 @@
     "@sinonjs/commons" "^1.7.0"
 
 "@sinonjs/fake-timers@^7.0.4":
-  version "7.0.5"
-  resolved "https://registry.yarnpkg.com/@sinonjs/fake-timers/-/fake-timers-7.0.5.tgz#558a7f8145a01366c44b3dcbdd7172c05c461564"
-  integrity sha512-fUt6b15bjV/VW93UP5opNXJxdwZSbK1EdiwnhN7XrQrcpaOhMJpZ/CjwFpM3THpxwA+YviBUJKSuEqKlCK5alw==
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@sinonjs/fake-timers/-/fake-timers-7.1.0.tgz#8f13af27d842cbf51ad4502e05562fe9391d084e"
+  integrity sha512-hAEzXi6Wbvlb67NnGMGSNOeAflLVnMa4yliPU/ty1qjgW/vAletH15/v/esJwASSIA0YlIyjnloenFbEZc9q9A==
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
@@ -1714,9 +1714,9 @@
   integrity sha512-Onhn+z72D2O2Pb2ql2xukJ55rglumsVo1H6Fmyi8mlU9SvKdBk/pUSUAiBY/d9bAOF7VVWajX3sths/+g6ZiAQ==
 
 "@types/node@^11.15.20":
-  version "11.15.53"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.15.53.tgz#24b35ba006338dc60b133f9a637995e1c5a4e069"
-  integrity sha512-X4K0pwvbFZ7+x5wyJUSROj4TJvyXxL0MY4OaxyphfEfgw+0DdYDltyqTX14LiYTIQdY49sDA/MabdtYc973yFg==
+  version "11.15.54"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.15.54.tgz#59ed60e7b0d56905a654292e8d73275034eb6283"
+  integrity sha512-1RWYiq+5UfozGsU6MwJyFX6BtktcT10XRjvcAQmskCtMcW3tPske88lM/nHv7BQG1w9KBXI1zPGuu5PnNCX14g==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
