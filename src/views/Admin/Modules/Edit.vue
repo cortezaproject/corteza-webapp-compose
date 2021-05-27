@@ -280,7 +280,7 @@ export default {
     },
 
     federationEnabled () {
-      return !!this.$FederationAPI.baseURL && this.module.moduleID
+      return !!this.$FederationAPI.baseURL && this.module.moduleID && !this.creatingModule
     },
 
     hideDelete () {
