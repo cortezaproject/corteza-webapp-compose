@@ -1,60 +1,30 @@
 <template>
   <div>
-    <b-form-group>
-      <label
-        class="d-block"
-      >
-        {{ $t('field.kind.record.moduleLabel') }}
-      </label>
+    <b-form-group
+      :label="$t('field.kind.record.moduleLabel')"
+    >
       <b-form-select
         v-model="f.options.moduleID"
-        :options="modules"
+        :options="moduleOptions"
         text-field="name"
         value-field="moduleID"
-        class="form-control"
-      >
-        <template
-          slot="first">
-          <option
-            disabled
-            :value="undefined"
-          >
-            {{ $t('field.kind.record.modulePlaceholder') }}
-          </option>
-        </template>
-      </b-form-select>
+      />
     </b-form-group>
 
-    <b-form-group>
-      <label
-        class="d-block"
-      >
-        {{ $t('field.kind.record.recordFieldLabel') }}
-      </label>
+    <b-form-group
+      :label="$t('field.kind.record.recordFieldLabel')"
+    >
       <b-form-select
         v-model="f.options.labelField"
-        class="form-control"
-        :options="fields"
+        :options="fieldOptions"
         :disabled="!module"
-      >
-        <template
-          slot="first"
-        >
-          <option
-            disabled
-            :value="undefined"
-          >
-            {{ $t('field.kind.record.recordFieldPlaceholder') }}
-          </option>
-        </template>
-      </b-form-select>
+      />
+
     </b-form-group>
-    <b-form-group>
-      <label
-        class="d-block"
-      >
-        {{ $t('field.kind.record.queryFieldsLabel') }}
-      </label>
+
+    <b-form-group
+      :label="$t('field.kind.record.queryFieldsLabel')"
+    >
       <b-form-select
         v-model="f.options.queryFields"
         class="form-control"
@@ -63,12 +33,10 @@
         :disabled="!module"
       />
     </b-form-group>
-    <b-form-group>
-      <label
-        class="d-block"
-      >
-        {{ $t('field.kind.record.prefilterLabel') }}
-      </label>
+
+    <b-form-group
+      :label="$t('field.kind.record.prefilterLabel')"
+    >
       <b-form-textarea
         v-model="f.options.prefilter"
         class="form-control"
@@ -82,12 +50,11 @@
         </i18next>
       </b-form-text>
     </b-form-group>
-    <b-form-group v-if="field.isMulti">
-      <label
-        class="d-block"
-      >
-        {{ $t('field.kind.select.optionType.label') }}
-      </label>
+
+    <b-form-group
+      v-if="field.isMulti"
+      :label="$t('field.kind.select.optionType.label')"
+    >
       <b-form-radio-group
         v-model="f.options.selectType"
         :options="selectOptions"
@@ -99,6 +66,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { NoID } from '@cortezaproject/corteza-js'
 import base from './base'
 
 export default {
@@ -120,6 +88,13 @@ export default {
       modules: 'module/set',
     }),
 
+    moduleOptions () {
+      return [
+        { moduleID: NoID, name: this.$t('field.kind.record.modulePlaceholder'), disabled: true },
+        ...this.modules,
+      ]
+    },
+
     module () {
       if (this.field.options.moduleID !== '0') {
         return this.$store.getters['module/getByID'](this.field.options.moduleID)
@@ -128,9 +103,12 @@ export default {
       }
     },
 
-    fields () {
+    fieldOptions () {
       const fields = this.module ? this.module.fields.map(f => { return { value: f.name, text: f.label || f.name } }) : []
-      return fields.sort((a, b) => a.text.localeCompare(b.text))
+      return [
+        { value: undefined, text: this.$t('field.kind.record.recordFieldPlaceholder'), disabled: true },
+        ...fields.sort((a, b) => a.text.localeCompare(b.text)),
+      ]
     },
   },
 
