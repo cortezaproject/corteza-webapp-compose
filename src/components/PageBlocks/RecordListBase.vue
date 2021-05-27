@@ -498,7 +498,7 @@ import ImporterModal from 'corteza-webapp-compose/src/components/Public/Record/I
 import AutomationButtons from './Shared/AutomationButtons'
 import { compose, validator, NoID } from '@cortezaproject/corteza-js'
 import users from 'corteza-webapp-compose/src/mixins/users'
-import { queryToFilter } from 'corteza-webapp-compose/src/lib/record-filter'
+import { evaluatePrefilter, queryToFilter } from 'corteza-webapp-compose/src/lib/record-filter'
 import { url } from '@cortezaproject/corteza-vue'
 import draggable from 'vuedraggable'
 
@@ -862,11 +862,11 @@ export default {
 
       // Initial filter
       if (prefilter) {
-        const pf = this.evaluatePrefilter(prefilter, {
+        const pf = evaluatePrefilter(prefilter, {
           record: this.record,
-          recordID: (this.record || {}).recordID || 0,
-          ownerID: (this.record || {}).userID || 0,
-          userID: (this.$auth.user || {}).userID || 0,
+          recordID: (this.record || {}).recordID || NoID,
+          ownerID: (this.record || {}).userID || NoID,
+          userID: (this.$auth.user || {}).userID || NoID,
         })
         filter.push(`(${pf})`)
       }
@@ -888,15 +888,6 @@ export default {
         sort,
         filter: this.prefilter || '',
       }
-    },
-
-    // Evaluates the given prefilter. Allows JS template literal expressions
-    // such as id = ${recordID}
-    evaluatePrefilter (prefilter, { record, recordID, ownerID, userID }) {
-      return (function (prefilter) {
-        /* eslint-disable no-eval */
-        return eval('`' + prefilter + '`')
-      })(prefilter)
     },
 
     createReminder (record) {

@@ -128,6 +128,7 @@ import { compose, NoID } from '@cortezaproject/corteza-js'
 import { debounce } from 'lodash'
 import { createPopper } from '@popperjs/core'
 import { mapGetters } from 'vuex'
+import { evaluatePrefilter } from 'corteza-webapp-compose/src/lib/record-filter'
 
 export default {
   components: {
@@ -335,7 +336,12 @@ export default {
       // Support prefilters
       let baseF = q.filter
       if (this.field.options.prefilter) {
-        const pf = this.evaluatePrefilter(this.field.options.prefilter, { record: this.record, ...this.record })
+        const pf = evaluatePrefilter(this.field.options.prefilter, {
+          record: this.record,
+          recordID: (this.record || {}).recordID || NoID,
+          ownerID: (this.record || {}).userID || NoID,
+          userID: (this.$auth.user || {}).userID || NoID,
+        })
         if (baseF) {
           baseF = `(${pf}) AND (${baseF})`
         } else {
@@ -355,15 +361,6 @@ export default {
           this.filter.prevPage = filter.prevPage
           return { filter, set }
         })
-    },
-
-    // Evaluates the given prefilter. Allows JS template literal expressions
-    // such as id = ${recordID}
-    evaluatePrefilter (prefilter, { record, recordID, ownerID, userID }) {
-      return (function (prefilter) {
-        /* eslint-disable no-eval */
-        return eval('`' + prefilter + '`')
-      })(prefilter)
     },
 
     sortString () {

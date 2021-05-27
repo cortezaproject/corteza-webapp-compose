@@ -57,9 +57,10 @@ import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import { BootstrapTheme } from '@fullcalendar/bootstrap'
 import { createPlugin } from '@fullcalendar/core'
+import { evaluatePrefilter } from 'corteza-webapp-compose/src/lib/record-filter'
 
 /**
  * FullCalendar Corteza theme definition.
@@ -224,11 +225,11 @@ export default {
 
                 // Interpolate prefilter variables
                 if (ff.options.prefilter) {
-                  ff.options.prefilter = this.evaluatePrefilter(ff.options.prefilter, {
+                  ff.options.prefilter = evaluatePrefilter(ff.options.prefilter, {
                     record: this.record,
-                    recordID: (this.record || {}).recordID || 0,
-                    ownerID: (this.record || {}).userID || 0,
-                    userID: (this.$auth.user || {}).userID || 0,
+                    recordID: (this.record || {}).recordID || NoID,
+                    ownerID: (this.record || {}).userID || NoID,
+                    userID: (this.$auth.user || {}).userID || NoID,
                   })
                 }
 
@@ -246,15 +247,6 @@ export default {
             break
         }
       })
-    },
-
-    // Evaluates the given prefilter. Allows JS template literal expressions
-    // such as id = ${recordID}
-    evaluatePrefilter (prefilter, { record, recordID, ownerID, userID }) {
-      return (function (prefilter) {
-        /* eslint-disable no-eval */
-        return eval('`' + prefilter + '`')
-      })(prefilter)
     },
 
     /**
