@@ -28,8 +28,8 @@
 
     <uploader :endpoint="endpoint"
               @uploaded="appendAttachment"
-              :acceptedFiles="$s('compose.Page.Attachments.Mimetypes', ['*/*'])"
-              :maxFilesize="$s('compose.Page.Attachments.MaxSize', 100)"/>
+              :acceptedFiles="mimetypes"
+              :maxFilesize="maxSize"/>
 
     <list-loader kind="record"
                  :set.sync="set"
@@ -65,6 +65,19 @@ export default {
         recordID,
         fieldName: this.field.name,
       })
+    },
+
+    mimetypes () {
+      const a = (this.field.options.mimetypes || '').trim()
+      if (!a) {
+        return ['*/*']
+      }
+
+      return a.split(',').map(p => p.trim())
+    },
+
+    maxSize () {
+      return this.field.options.maxSize || 100
     },
 
     set: {

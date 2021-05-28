@@ -17,6 +17,26 @@
     >
       {{ $t('field.kind.file.view.showName') }}
     </b-form-checkbox>
+
+    <b-form-group
+      :label="$t('field.kind.file.view.mimetypesLabel')"
+      :description="$t('field.kind.file.view.mimetypesFootnote')"
+    >
+      <b-input-group class="m-0">
+        <b-form-input v-model="f.options.mimetypes" />
+      </b-input-group>
+    </b-form-group>
+
+    <b-form-group
+      :label="$t('field.kind.file.view.maxSizeLabel')"
+    >
+      <b-input-group>
+        <b-form-input
+          v-model="f.options.maxSize"
+          type="number"
+        />
+      </b-input-group>
+    </b-form-group>
   </div>
 </template>
 

@@ -1043,6 +1043,9 @@ export default {
         view: {
           modeLabel: 'View mode',
           modeFootnote: 'How files are represented in record page blocks',
+          mimetypesLabel: 'File type allow list',
+          mimetypesFootnote: 'MIME types, sepparated with ",". Example: "text/plain,text/csv"',
+          maxSizeLabel: 'Maximum file size',
           list: 'List',
           grid: 'Grid',
           single: 'Single image',
