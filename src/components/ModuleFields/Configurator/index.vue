@@ -15,6 +15,7 @@
       <component
         :is="fieldComponent"
         :namespace="namespace"
+        :module="module"
         :field="field"
       />
     </b-tab>

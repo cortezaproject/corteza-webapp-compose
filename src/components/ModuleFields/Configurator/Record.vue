@@ -17,7 +17,7 @@
       <b-form-select
         v-model="f.options.labelField"
         :options="fieldOptions"
-        :disabled="!module"
+        :disabled="!selectedModule"
       />
 
     </b-form-group>
@@ -28,9 +28,9 @@
       <b-form-select
         v-model="f.options.queryFields"
         class="form-control"
-        :options="fields"
+        :options="queryFieldOptions"
         multiple
-        :disabled="!module"
+        :disabled="!selectedModule"
       />
     </b-form-group>
 
@@ -89,14 +89,26 @@ export default {
     }),
 
     moduleOptions () {
+      let modules = this.modules
+
+      // If current module hasn't been created add it to modules
+      if (this.module.moduleID === NoID) {
+        modules = [
+          ({ moduleID: '-1', name: this.module.name || this.$t('field.kind.record.currentUnnamedModule') }),
+          ...modules,
+        ]
+      }
+
       return [
         { moduleID: NoID, name: this.$t('field.kind.record.modulePlaceholder'), disabled: true },
-        ...this.modules,
+        ...modules,
       ]
     },
 
-    module () {
-      if (this.field.options.moduleID !== '0') {
+    selectedModule () {
+      if (this.field.options.moduleID === '-1') {
+        return this.module
+      } else if (this.field.options.moduleID !== NoID) {
         return this.$store.getters['module/getByID'](this.field.options.moduleID)
       } else {
         return undefined
@@ -104,11 +116,15 @@ export default {
     },
 
     fieldOptions () {
-      const fields = this.module ? this.module.fields.map(f => { return { value: f.name, text: f.label || f.name } }) : []
+      const fields = this.selectedModule ? this.selectedModule.fields.filter(({ label, name }) => label && name).map(({ label, name }) => { return { value: name, text: label || name } }) : []
       return [
         { value: undefined, text: this.$t('field.kind.record.recordFieldPlaceholder'), disabled: true },
         ...fields.sort((a, b) => a.text.localeCompare(b.text)),
       ]
+    },
+
+    queryFieldOptions () {
+      return this.fieldOptions.slice(1)
     },
   },
 

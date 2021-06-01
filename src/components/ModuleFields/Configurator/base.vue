@@ -8,6 +8,11 @@ export default {
       required: true,
     },
 
+    module: {
+      type: compose.Module,
+      required: true,
+    },
+
     field: {
       type: compose.ModuleField,
       required: true,

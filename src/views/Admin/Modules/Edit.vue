@@ -3,9 +3,10 @@
     <b-container @submit.prevent="handleSave" tag="form" v-if="module" fluid>
       <b-row no-gutters>
         <b-col xl="8" offset-xl="2">
-          <b-card header-bg-variant="white"
-                  no-body
-                  header-class="border-bottom shadow-sm"
+          <b-card
+            header-bg-variant="white"
+            no-body
+            header-class="border-bottom"
           >
             <div slot="header">
               <h1 class="mb-3">
@@ -163,10 +164,12 @@
       @hide="updateField=null"
       :visible="!!updateField"
       body-class="p-0 border-top-0"
-      header-class="p-3 pb-0 border-bottom-0">
+      header-class="p-3 pb-0 border-bottom-0"
+    >
       <field-configurator
         :field.sync="updateField"
         :namespace="namespace"
+        :module="module"
       />
     </b-modal>
 
@@ -347,16 +350,38 @@ export default {
       }
     },
 
-    handleFederationSettingsSave () {
-      // @todo
-    },
-
     handleSave ({ closeOnSuccess = false } = {}) {
       this.processing = true
 
       if (this.module.moduleID === NoID) {
-        this.createModule(this.module).then((module) => {
+        // Filter out record fields that reference this not yet created module
+        let fields = []
+        const toBeUpdatedFields = []
+        this.module.fields.forEach(f => {
+          if (f.kind === 'Record' && f.options.moduleID === '-1') {
+            toBeUpdatedFields.push(f)
+          } else {
+            fields.push(f)
+          }
+        })
+
+        // If such fields exist , after module is created add fields, map moduleID and update module
+        // Unfortunately this ruins the initial field order, but we can improve this later
+        this.createModule({ ...this.module, fields: fields }).then(async module => {
+          if (toBeUpdatedFields.length) {
+            fields = [
+              ...module.fields,
+              ...toBeUpdatedFields.map(f => {
+                f.options.moduleID = module.moduleID
+                return f
+              }),
+            ]
+
+            module = await this.updateModule({ ...module, fields })
+          }
+
           this.module = new compose.Module({ ...module }, this.namespace)
+
           this.toastSuccess(this.$t('notification.module.saved'))
           if (closeOnSuccess) {
             this.redirect()
@@ -368,7 +393,7 @@ export default {
             this.processing = false
           })
       } else {
-        this.updateModule(this.module).then((module) => {
+        this.updateModule(this.module).then(module => {
           this.module = new compose.Module({ ...module }, this.namespace)
           this.toastSuccess(this.$t('notification.module.saved'))
           if (closeOnSuccess) {

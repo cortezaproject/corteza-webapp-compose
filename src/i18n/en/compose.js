@@ -1011,6 +1011,7 @@ export default {
         label: 'Record',
         moduleLabel: 'Module name',
         modulePlaceholder: 'Pick module',
+        currentUnnamedModule: '(Current unnamed module)',
         recordFieldLabel: 'Record label from field',
         recordFieldPlaceholder: 'Pick field',
         queryFieldsLabel: 'Query fields on search',
