@@ -220,6 +220,15 @@ export default {
         only: 'Only',
         byValue: 'Filter records based on field value',
         note: 'Note: If Field value is undefined, the filter will look for records where that field value is undefined.',
+        where: 'Where',
+        addFilter: '+ Add filter',
+        operators: {
+          equal: 'Equal',
+          notEqual: 'Not equal',
+          contains: 'Contains',
+          greaterThan: 'Greater than',
+          lessThan: 'Less than',
+        },
       },
       record: {
         inlineEditor: 'Inline editor',

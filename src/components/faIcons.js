@@ -45,6 +45,7 @@ import {
   faEllipsisH,
   faEyeSlash,
   faArrowRight,
+  faFilter,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -66,6 +67,7 @@ import {
   faPlusSquare,
   faEnvelope,
   faQuestionCircle,
+  faSave,
 } from '@fortawesome/free-regular-svg-icons'
 
 library.add(
@@ -132,4 +134,6 @@ library.add(
   faEyeSlash,
   faArrowRight,
   faQuestionCircle,
+  faFilter,
+  faSave,
 )

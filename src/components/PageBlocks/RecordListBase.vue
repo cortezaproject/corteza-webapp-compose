@@ -170,11 +170,7 @@
             v-for="field in fields"
             :key="field.key"
             sticky-column
-            @click="handleSort(field)"
             class="pr-0"
-            :style="{
-              cursor: field.sortable ? 'pointer' : 'default',
-            }"
           >
             <div
               class="d-flex justify-content-between align-self-center"
@@ -185,29 +181,43 @@
               >
                 {{ field.label }}
               </div>
-              <b-btn
-                v-if="field.sortable"
-                variant="link p-0 ml-1"
+              <div
+                class="d-flex"
               >
-                <font-awesome-layers>
-                  <font-awesome-icon
-                    :icon="['fas', 'angle-up']"
-                    class="mb-1"
-                    :style="{
-                      color: 'gray',
-                      ...sorterStyle(field, 'ASC'),
-                    }"
-                  />
-                  <font-awesome-icon
-                    :icon="['fas', 'angle-down']"
-                    class="mt-1"
-                    :style="{
-                      color: 'gray',
-                      ...sorterStyle(field, 'DESC'),
-                    }"
-                  />
-                </font-awesome-layers>
-              </b-btn>
+                <record-list-filter
+                  v-if="!['DateTime'].includes(field.moduleField.kind)"
+                  :selectedField="field.moduleField"
+                  :namespace="namespace"
+                  :module="recordListModule"
+                  :recordListFilter="recordListFilter"
+                  @filter="onFilter"
+                />
+                <b-button
+                  v-if="field.sortable"
+                  variant="link p-0 ml-1"
+                  class="d-flex align-items-center justify-content-center"
+                  @click="handleSort(field)"
+                >
+                  <font-awesome-layers>
+                    <font-awesome-icon
+                      :icon="['fas', 'angle-up']"
+                      class="mb-1"
+                      :style="{
+                        color: 'gray',
+                        ...sorterStyle(field, 'ASC'),
+                      }"
+                    />
+                    <font-awesome-icon
+                      :icon="['fas', 'angle-down']"
+                      class="mt-1"
+                      :style="{
+                        color: 'gray',
+                        ...sorterStyle(field, 'DESC'),
+                      }"
+                    />
+                  </font-awesome-layers>
+                </b-button>
+              </div>
             </div>
           </b-th>
 
@@ -501,6 +511,7 @@ import users from 'corteza-webapp-compose/src/mixins/users'
 import { evaluatePrefilter, queryToFilter } from 'corteza-webapp-compose/src/lib/record-filter'
 import { url } from '@cortezaproject/corteza-vue'
 import draggable from 'vuedraggable'
+import RecordListFilter from 'corteza-webapp-compose/src/components/Common/RecordListFilter'
 
 export default {
   components: {
@@ -510,6 +521,7 @@ export default {
     FieldViewer,
     FieldEditor,
     draggable,
+    RecordListFilter,
   },
 
   extends: base,
@@ -564,6 +576,7 @@ export default {
       ctr: 0,
       items: [],
       idPrefix: `rl:${this.blockIndex}`,
+      recordListFilter: [],
     }
   },
 
@@ -708,7 +721,7 @@ export default {
 
   watch: {
     query: throttle(function (e) {
-      this.filter.query = queryToFilter(this.query, this.prefilter, this.recordListModule.filterFields(this.options.fields))
+      this.filter.query = queryToFilter(this.query, this.prefilter, this.recordListModule.filterFields(this.options.fields), this.recordListFilter)
       this.refresh(true)
     }, 500),
   },
@@ -729,6 +742,12 @@ export default {
   },
 
   methods: {
+    onFilter (filter = []) {
+      this.recordListFilter = filter
+      this.filter.query = queryToFilter(this.query, this.prefilter, this.recordListModule.filterFields(this.options.fields), this.recordListFilter)
+      this.refresh(true)
+    },
+
     onSelectRow (selected, item) {
       if (selected) {
         if (this.selected.includes(item.id)) {
@@ -933,7 +952,7 @@ export default {
         e.filename += ` - ${timezone.label}`
       }
 
-      const queryF = queryToFilter(filterRaw.includeQuery ? filterRaw.query : undefined, this.prefilter, this.recordListModule.filterFields(this.options.fields))
+      const queryF = queryToFilter(filterRaw.includeQuery ? filterRaw.query : undefined, this.prefilter, this.recordListModule.filterFields(this.options.fields), this.recordListFilter)
       if (e.filters && queryF) {
         e.filters = `(${e.filters}) AND ${encodeURI(queryF)}`
       } else if (queryF) {
@@ -1064,9 +1083,10 @@ export default {
         throw Error('Module incompatible, module mismatch')
       }
 
-      const filter = queryToFilter(this.query, this.prefilter, this.recordListModule.filterFields(this.options.fields))
       this.processing = true
       this.selected = []
+
+      const filter = queryToFilter(this.query, this.prefilter, this.recordListModule.filterFields(this.options.fields), this.recordListFilter)
 
       const { moduleID, namespaceID } = this.recordListModule
       if (this.filter.pageCursor) {
@@ -1081,7 +1101,6 @@ export default {
           incTotal: showTotalCount,
         }
       }
-
       await this.$ComposeAPI.recordList({ moduleID, namespaceID, ...this.filter, filter, ...paginationOptions })
         .then(({ set, filter }) => {
           const records = set.map(r => new compose.Record(r, this.recordListModule))

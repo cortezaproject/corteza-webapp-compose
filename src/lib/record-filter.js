@@ -1,3 +1,74 @@
+// Generate record list sql query string based on filter object input
+
+export function getRecordListFilterSql (filter) {
+  let query = ''
+  let existPeviousElement = false
+  filter.forEach((f, index) => {
+    if (f.name && f.value && f.operator) {
+      if (existPeviousElement) {
+        query += ` ${f.condition} `
+      }
+      query += getFieldFilter(f.name, f.kind, f.value, f.operator)
+      existPeviousElement = true
+    }
+  })
+
+  return query ? `(${query})` : query
+}
+
+// Helper function that creates a query for a specific field kind
+export function getFieldFilter (name, kind, query, operator = '') {
+  const boolQuery = toBoolean(query)
+  const numQuery = Number.parseFloat(query)
+
+  // Boolean should search for literal values. Example `${name} = true` or just `${name}
+  // At the moment it doesn't seem to be working as intended
+
+  if (kind === 'Bool') {
+    if (operator) {
+      if (operator === '=') {
+        return `${name} is ${query}`
+      } else {
+        return `${name} is not ${query}`
+      }
+    } else if (boolQuery !== undefined) {
+      if (boolQuery) {
+        return `${name} is true`
+      } else {
+        return `${name} is false OR ${name} IS NULL`
+      }
+    }
+  }
+
+  // To SQLish LIKE param
+  const strQuery = query
+    // replace * with %
+    .replace(/[*%]+/g, '%')
+    // Remove all trailing * and %
+    .replace(/[%]+$/, '')
+    // Remove all leading * and %
+    .replace(/^[%]+/, '')
+
+  if (['Number'].includes(kind) && !isNaN(numQuery)) {
+    return `${name} ${operator || '='} ${numQuery}`
+  }
+
+  // Since userID and recordID must be numbers, we check if query is number to avoid wrong querys
+  if (['User', 'Record'].includes(kind) && !isNaN(numQuery) && operator) {
+    return `${name} ${operator} '${query}'`
+  }
+
+  if (['String', 'Url', 'Select', 'Email'].includes(kind)) {
+    if (operator === 'LIKE' || !operator) {
+      return `${name} LIKE '%${strQuery}%'`
+    } else if (operator === '!=') {
+      return `(${name} ${operator} '${strQuery}' OR ${name} is null)`
+    } else {
+      return `${name} ${operator} '${strQuery}'`
+    }
+  }
+}
+
 // Helper to determine if and value for given bool query
 // == is intentional
 const toBoolean = (v) => {
@@ -12,60 +83,29 @@ const toBoolean = (v) => {
   return undefined
 }
 
-// Helper function that creates a query for a specific field kind
-export function getFieldFilter (field, query) {
-  const boolQuery = toBoolean(query)
-  const numQuery = Number.parseFloat(query)
-
-  // To SQLish LIKE param
-  const strQuery = query
-    // replace * with %
-    .replace(/[*%]+/g, '%')
-    // Remove all trailing * and %
-    .replace(/[%]+$/, '')
-    // Remove all leading * and %
-    .replace(/^[%]+/, '')
-
-  if (field.kind === 'Number' && !isNaN(numQuery)) {
-    return `${field.name} = ${numQuery}`
-  }
-
-  // Boolean should search for literal values. Example `${field.name} = true` or just `${field.name}
-  // At the moment it doesn't seem to be working as intended
-  if (field.kind === 'Bool' && boolQuery !== undefined) {
-    if (boolQuery) {
-      return `${field.name} = true`
-    } else {
-      return `${field.name} = false OR ${field.name} IS NULL`
-    }
-  }
-
-  if (['String', 'Url', 'Select', 'Email'].includes(field.kind)) {
-    return `${field.name} LIKE '%${strQuery}%'`
-  }
-}
-
-// Takes fields and prefilter and merges it query expression over all columns we're showing
+// Takes fields and prefilter and record list filter and merges them into query string
 // ie: Return records that have strings in columns (fields) we're showing that start with <query> in case
 //     of text or are exactly the same in case of numbers
-export function queryToFilter (query = '', prefilter = '', fields = []) {
-  query = (query || '').trim()
+export function queryToFilter (searchQuery = '', prefilter = '', fields = [], recordListFilter = []) {
+  // prefilter = ''
+  searchQuery = (searchQuery || '').trim()
 
-  if (!query) {
-    return prefilter || ''
+  // Create query for search string
+  if (searchQuery) {
+    searchQuery = fields
+      .map(qf => getFieldFilter(qf.name, qf.kind, searchQuery))
+      .filter(q => !!q)
+      .join(' OR ')
+
+    searchQuery = `(${searchQuery})`
   }
 
-  // When searching, always reset filter with prefilter + query
-  query = fields
-    .map(qf => getFieldFilter(qf, query))
-    .filter(q => !!q)
-    .join(' OR ')
-
-  if (prefilter) {
-    return `(${prefilter}) AND (${query})`
+  let recordListFilterSql = ''
+  if (recordListFilter.length) {
+    // Create query for record list filter
+    recordListFilterSql = getRecordListFilterSql(recordListFilter)
   }
-
-  return query
+  return [prefilter, searchQuery, recordListFilterSql].filter(f => f).join(' AND ')
 }
 
 // Evaluates the given prefilter. Allows JS template literal expressions

@@ -680,7 +680,7 @@ export default {
 
       const fieldsFilter = this.filterFields.items.filter(f => f.name).map(f => {
         if (f.value) {
-          return `(${getFieldFilter(f, f.value)})`
+          return `(${getFieldFilter(f.name, f.kind, f.value)})`
         } else {
           return `(${f.name} IS NULL)`
         }
