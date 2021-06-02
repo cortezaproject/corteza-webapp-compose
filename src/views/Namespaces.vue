@@ -3,17 +3,12 @@
     v-if="loaded"
     class="d-flex w-100 overflow-auto"
   >
-    <small
-      class="p-1 text-secondary position-absolute version"
-    >
-      {{ frontendVersion }}
-    </small>
-
     <portal to="topbar-title">
       {{ $t('namespace.title') }}
     </portal>
 
     <b-container
+      class="ns-wrapper ml-0"
       fluid
     >
       <b-row
@@ -108,11 +103,6 @@ export default {
   },
 
   computed: {
-    frontendVersion () {
-      /* eslint-disable no-undef */
-      return VERSION
-    },
-
     namespacesFiltered () {
       return this.namespaces.filter(ns => ns.slug.indexOf(this.query) > -1 || ns.name.indexOf(this.query) > -1)
     },
@@ -143,8 +133,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.version {
-  bottom: 0;
-  right: 15px;
+.ns-wrapper {
+  max-width: 1800px;
 }
 </style>

@@ -53,11 +53,6 @@
           </div>
         </div>
       </div>
-      <small
-        class="fixed-bottom text-right text-secondary m-2"
-      >
-        {{ frontendVersion }}
-      </small>
     </div>
     <div class="error text-danger text-center position-absolute" v-if="error">{{ error }}</div>
   </div>
@@ -114,11 +109,6 @@ export default {
         page: this.pagePending,
         chart: this.chartPending,
       }
-    },
-
-    frontendVersion () {
-      /* eslint-disable no-undef */
-      return VERSION
     },
 
     enabledNamespaces () {
