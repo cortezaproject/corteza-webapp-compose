@@ -528,6 +528,8 @@ export default {
 
   data () {
     return {
+      uniqueID: undefined,
+
       processing: false,
       // prefilter from block config
       prefilter: null,
@@ -712,15 +714,18 @@ export default {
   },
 
   created () {
+    // Set uniqueID so that events dont mix
+    this.uniqueID = `${this.page.pageID}-${(this.record || {}).recordID || '0'}-${this.blockIndex}`
+
     this.prepRecordList()
-    this.$root.$on(`record-line:collect:${this.page.pageID}-${(this.record || {}).recordID || '0'}-${this.blockIndex}`, this.resolveRecords)
-    this.$root.$on(`page-block:validate:${this.page.pageID}-${(this.record || {}).recordID || '0'}-${this.blockIndex}`, this.validatePageBlock)
+    this.$root.$on(`record-line:collect:${this.uniqueID}`, this.resolveRecords)
+    this.$root.$on(`page-block:validate:${this.uniqueID}`, this.validatePageBlock)
     this.pullRecords(true)
   },
 
   beforeDestroy () {
-    this.$root.$off(`record-line:collect:${this.page.pageID}-${(this.record || {}).recordID || '0'}-${this.blockIndex}`)
-    this.$root.$off(`page-block:validate:${this.page.pageID}-${(this.record || {}).recordID || '0'}-${this.blockIndex}`)
+    this.$root.$off(`record-line:collect:${this.uniqueID}`)
+    this.$root.$off(`page-block:validate:${this.uniqueID}`)
   },
 
   methods: {
