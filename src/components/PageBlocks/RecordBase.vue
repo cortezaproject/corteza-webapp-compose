@@ -34,12 +34,12 @@
             value-only
           />
         </div>
-        <div
+        <i
           v-else
-          class="text-warning"
+          class="text-primary"
         >
           {{ $t('field.noPermission') }}
-        </div>
+        </i>
       </div>
     </div>
     <div

@@ -61,7 +61,7 @@
               />
               <i
                 v-else
-                class="text-secondary h6"
+                class="text-primary h6"
               >
                 {{ $t('field.noPermission') }}
               </i>
