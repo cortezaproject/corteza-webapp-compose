@@ -367,7 +367,7 @@ export default {
 
         // If such fields exist , after module is created add fields, map moduleID and update module
         // Unfortunately this ruins the initial field order, but we can improve this later
-        this.createModule({ ...this.module, fields: fields }).then(async module => {
+        this.createModule({ ...this.module, fields }).then(async module => {
           if (toBeUpdatedFields.length) {
             fields = [
               ...module.fields,

@@ -29,13 +29,44 @@
     <template v-if="field.isMulti">
       <multi :value.sync="value" :singleInput="field.options.selectType !== 'each'">
         <template v-slot:single>
-          <b-form-select v-if="field.options.selectType === 'default'" @change="selectChange" :options="selectOptions" ref="singleSelect" >
-            <template slot="first"><option disabled :value="undefined">{{ $t('field.kind.select.placeholder') }}</option></template>
+          <b-form-select
+            v-if="field.options.selectType === 'default'"
+            ref="singleSelect"
+            :options="selectOptions"
+            @change="selectChange"
+          >
+            <template slot="first">
+              <option
+                :value="undefined"
+                disabled
+              >
+                {{ $t('field.kind.select.placeholder') }}
+              </option>
+            </template>
           </b-form-select>
-          <b-form-select v-if="field.options.selectType === 'multiple'" :options="selectOptions" v-model="value" :select-size="6" multiple />
+          <b-form-select
+            v-if="field.options.selectType === 'multiple'"
+            v-model="value"
+            :options="selectOptions"
+            :select-size="6"
+            multiple
+          />
         </template>
         <template v-slot:default="ctx">
-          <b-form-select v-if="field.options.selectType === 'each'" :options="selectOptions" v-model="value[ctx.index]" />
+          <b-form-select
+            v-if="field.options.selectType === 'each'"
+            :options="selectOptions"
+            v-model="value[ctx.index]"
+          >
+            <template slot="first">
+              <option
+                :value="undefined"
+                disabled
+              >
+                {{ $t('field.kind.select.placeholder') }}
+              </option>
+            </template>
+          </b-form-select>
           <span v-else>{{ findLabel(value[ctx.index]) }}</span>
         </template>
       </multi>
@@ -46,8 +77,15 @@
       v-else
     >
       <b-form-select
+        v-model="value"
         :options="selectOptions"
-        v-model="value" />
+      >
+        <template slot="first">
+          <option :value="undefined">
+            {{ $t('field.kind.select.optionNotSelected') }}
+          </option>
+        </template>
+      </b-form-select>
       <errors :errors="errors" />
     </template>
   </b-form-group>
@@ -60,7 +98,7 @@ export default {
 
   computed: {
     selectOptions () {
-      return this.field.options.options
+      return this.field.options.options || []
     },
   },
 

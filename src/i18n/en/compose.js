@@ -980,6 +980,7 @@ export default {
       select: {
         label: 'Select',
         placeholder: 'Select an option by clicking here',
+        optionNotSelected: 'No option selected',
         optionsLabel: 'Options to select from',
         optionRemove: 'Remove',
         optionAdd: 'Add',

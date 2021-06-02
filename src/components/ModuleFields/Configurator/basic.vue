@@ -51,7 +51,7 @@
     </b-form-group>
 
     <b-form-group
-      v-else-if="mock.field"
+      v-else-if="mock.show && mock.field"
       :label="$t('field.defaultValue')"
       class="mt-3"
     >
@@ -151,6 +151,7 @@ export default {
     return {
       showvalueExpr: false,
       mock: {
+        show: true,
         namespace: undefined,
         module: undefined,
         field: undefined,
@@ -195,6 +196,12 @@ export default {
     'field.options': {
       handler (options) {
         this.mock.field.options = options
+
+        // This is necessary so that options changes are reflected and any possible resources are refetched with proper filters
+        this.mock.show = false
+        setTimeout(() => {
+          this.mock.show = true
+        }, 200)
       },
       deep: true,
     },
