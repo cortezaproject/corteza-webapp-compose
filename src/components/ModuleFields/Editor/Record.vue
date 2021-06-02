@@ -16,17 +16,22 @@
           option-text="label"
           :append-to-body="inlineEditor"
           :calculate-position="calculatePosition"
+          :clearable="false"
+          :filterable="false"
           class="bg-white"
           :placeholder="$t('field.kind.record.suggestionPlaceholder')"
-          :filterable="false"
           multiple
           @open="onOpen"
           @search="search"
         >
-          <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
-            <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
-            <b-button class="flex-grow-1 ml-1" @click="filter.pageCursor = filter.nextPage" :disabled="!hasNextPage" size="sm">Next</b-button>
-          </li>
+          <pagination
+            v-if="showPagination"
+            slot="list-footer"
+            :has-prev-page="hasPrevPage"
+            :has-next-page="hasNextPage"
+            @prev="goToNextPage(false)"
+            @next="goToNextPage(true)"
+          />
         </vue-select>
         <vue-select
           v-else
@@ -46,10 +51,14 @@
           @open="onOpen"
           @search="search"
         >
-          <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
-            <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
-            <b-button class="flex-grow-1 ml-1" @click="filter.pageCursor = filter.nextPage" :disabled="!hasNextPage" size="sm">Next</b-button>
-          </li>
+          <pagination
+            v-if="showPagination"
+            slot="list-footer"
+            :has-prev-page="hasPrevPage"
+            :has-next-page="hasNextPage"
+            @prev="goToNextPage(false)"
+            @next="goToNextPage(true)"
+          />
         </vue-select>
       </template>
       <template v-slot:default="ctx">
@@ -71,10 +80,14 @@
           @input="setRecord($event, ctx.index)"
           @search="search"
         >
-          <li v-if="showPagination" slot="list-footer" class="d-flex justify-conten mt-1 mx-1">
-            <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
-            <b-button class="flex-grow-1 ml-1" @click="filter.pageCursor = filter.nextPage" :disabled="!hasNextPage" size="sm">Next</b-button>
-          </li>
+          <pagination
+            v-if="showPagination"
+            slot="list-footer"
+            :has-prev-page="hasPrevPage"
+            :has-next-page="hasNextPage"
+            @prev="goToNextPage(false)"
+            @next="goToNextPage(true)"
+          />
         </vue-select>
         <span v-else>{{ (multipleSelected[ctx.index] || {}).label }}</span>
         <errors :errors="errors" />
@@ -84,7 +97,6 @@
       v-else
     >
       <vue-select
-        :filterable="false"
         :options="options"
         :disabled="!module"
         :loading="processing"
@@ -93,15 +105,20 @@
         :append-to-body="inlineEditor"
         :calculate-position="calculatePosition"
         :placeholder="$t('field.kind.record.suggestionPlaceholder')"
+        :filterable="false"
         class="bg-white"
         v-model="selected"
         @open="onOpen"
         @search="search"
       >
-        <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
-          <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
-          <b-button class="flex-grow-1 ml-1" @click="filter.pageCursor = filter.nextPage" :disabled="!hasNextPage" size="sm">Next</b-button>
-        </li>
+          <pagination
+            v-if="showPagination"
+            slot="list-footer"
+            :has-prev-page="hasPrevPage"
+            :has-next-page="hasNextPage"
+            @prev="goToNextPage(false)"
+            @next="goToNextPage(true)"
+          />
       </vue-select>
       <errors :errors="errors" />
     </template>
@@ -115,10 +132,12 @@ import { debounce } from 'lodash'
 import { createPopper } from '@popperjs/core'
 import { mapGetters } from 'vuex'
 import { evaluatePrefilter } from 'corteza-webapp-compose/src/lib/record-filter'
+import Pagination from '../Common/Pagination.vue'
 
 export default {
   components: {
     VueSelect,
+    Pagination,
   },
 
   extends: base,
@@ -191,15 +210,15 @@ export default {
     },
 
     showPagination () {
-      return this.filter.query && (this.hasPrevPage || this.hasNextPage)
+      return this.hasPrevPage || this.hasNextPage
     },
 
     hasPrevPage () {
-      return this.filter.prevPage
+      return !!this.filter.prevPage
     },
 
     hasNextPage () {
-      return this.filter.nextPage
+      return !!this.filter.nextPage
     },
   },
 
@@ -284,6 +303,7 @@ export default {
         this.query = query
         this.filter.pageCursor = undefined
       }
+
       const { limit, pageCursor } = this.filter
       const namespaceID = this.namespace.namespaceID
       const moduleID = this.field.options.moduleID
@@ -346,7 +366,6 @@ export default {
       return this.$ComposeAPI.recordList({ ...q, filter: baseF })
         .then(({ filter, set }) => {
           this.filter = { ...this.filter, ...filter }
-          this.filter.pageCursor = undefined
           this.filter.nextPage = filter.nextPage
           this.filter.prevPage = filter.prevPage
           return { filter, set }
@@ -427,6 +446,12 @@ export default {
        * If you return function, it will be called just before dropdown is removed from DOM.
        */
       return () => popper.destroy()
+    },
+
+    goToNextPage (next = true) {
+      this.filter.pageCursor = next ? this.filter.nextPage : this.filter.prevPage
+
+      this.search(this.query)
     },
   },
 }
