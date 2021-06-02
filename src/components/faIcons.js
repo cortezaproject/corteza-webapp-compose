@@ -49,6 +49,8 @@ import {
   faFilter,
   faUserCog,
   faGripHorizontal,
+  faCogs,
+  faPen,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -144,4 +146,6 @@ library.add(
   faSave,
   faGripHorizontal,
   faUser,
+  faCogs,
+  faPen,
 )

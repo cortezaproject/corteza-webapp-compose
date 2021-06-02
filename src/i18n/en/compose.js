@@ -23,6 +23,7 @@ export default {
       changePassword: 'Change password',
       logout: 'Logout',
     },
+    editPage: 'Edit Page',
   },
   sidebar: {
     searchPlaceholder: 'Search pages...',
