@@ -66,16 +66,18 @@
   </wrap>
 </template>
 <script>
+import { validator, NoID } from '@cortezaproject/corteza-js'
+import base from './base'
+import users from 'corteza-webapp-compose/src/mixins/users'
 import FieldEditor from 'corteza-webapp-compose/src/components/ModuleFields/Editor'
 import FieldViewer from 'corteza-webapp-compose/src/components/ModuleFields/Viewer'
-import users from 'corteza-webapp-compose/src/mixins/users'
-import base from './base'
-import { validator, NoID } from '@cortezaproject/corteza-js'
+import Hint from 'corteza-webapp-compose/src/components/Common/Hint.vue'
 
 export default {
   components: {
     FieldEditor,
     FieldViewer,
+    Hint,
   },
 
   extends: base,
