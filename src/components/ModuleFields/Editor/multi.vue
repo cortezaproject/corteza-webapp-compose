@@ -3,7 +3,10 @@
     <div v-if="singleInput" class="mb-2">
       <slot name="single"></slot>
     </div>
-    <draggable :list.sync="val" handle=".handle">
+    <draggable
+      :list.sync="val"
+      handle=".handle"
+    >
       <div
         v-for="(v, index) of val"
         :key="index"
@@ -33,7 +36,7 @@
       v-if="!singleInput"
       variant="primary"
       size="sm"
-      class="mt-2"
+      :class="{ 'mt-2': val.length }"
       @click="val.push(undefined)"
     >
       + {{ $t('general.label.addValue') }}
