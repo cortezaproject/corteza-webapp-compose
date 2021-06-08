@@ -101,13 +101,6 @@ export default {
         return acc
       }, [])
 
-      // Filter out read-only fields from values
-      this.module.fields.forEach(({ name, canUpdateRecordValue }) => {
-        if (!canUpdateRecordValue) {
-          delete this.record.values[name]
-        }
-      })
-
       const { recordID = NoID } = this.record || {}
       // Append after the payload construction, so it is not presented as a
       // sub record.
@@ -244,10 +237,17 @@ export default {
             if (r.deletedAt) {
               return
             }
-            const err = v.run(r)
-            if (!err.valid()) {
-              err.applyMeta({ id })
-              errs.push(...err.set)
+            const fields = p.module.fields
+              .filter(({ canUpdateRecordValue }) => canUpdateRecordValue)
+              .map(({ name }) => name)
+
+            // cover the edge case where all fields are not updatable
+            if (fields.length) {
+              const err = v.run(r, ...fields)
+              if (!err.valid()) {
+                err.applyMeta({ id })
+                errs.push(...err.set)
+              }
             }
           })
           this.errors.push(...errs.set)
