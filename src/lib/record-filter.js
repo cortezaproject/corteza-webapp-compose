@@ -54,6 +54,11 @@ export function getFieldFilter (name, kind, query, operator = '') {
   }
 
   // Since userID and recordID must be numbers, we check if query is number to avoid wrong querys
+  if (['DateTime'].includes(kind)) {
+    return `${name} ${operator} DATE('${query}')`
+  }
+
+  // Since userID and recordID must be numbers, we check if query is number to avoid wrong querys
   if (['User', 'Record'].includes(kind) && !isNaN(numQuery) && operator) {
     return `${name} ${operator} '${query}'`
   }

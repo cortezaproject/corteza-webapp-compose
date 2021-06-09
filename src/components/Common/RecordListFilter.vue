@@ -150,7 +150,7 @@ export default {
       return [
         ...[...this.module.fields].sort((a, b) => a.label.localeCompare(b.label)),
         ...this.module.systemFields(),
-      ].filter(({ kind, isMulti }) => !isMulti && !['DateTime'].includes(kind))
+      ].filter(({ isMulti }) => !isMulti)
     },
 
     inFilter () {
@@ -187,7 +187,7 @@ export default {
         { value: '!=', text: this.$t('block.recordList.filter.operators.notEqual') },
       ]
 
-      if (['Number'].includes(kind)) {
+      if (['Number', 'DateTime'].includes(kind)) {
         return [
           ...operators,
           { value: '>', text: this.$t('block.recordList.filter.operators.greaterThan') },

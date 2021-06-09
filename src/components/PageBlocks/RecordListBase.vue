@@ -185,7 +185,6 @@
                 class="d-flex"
               >
                 <record-list-filter
-                  v-if="!['DateTime'].includes(field.moduleField.kind)"
                   :selectedField="field.moduleField"
                   :namespace="namespace"
                   :module="recordListModule"
