@@ -181,7 +181,7 @@ export default {
     },
 
     handleLayoutUpdate (layout) {
-      this.$emit('update:blocks', layout.map(
+      this.$emit('change', layout.map(
         ({ x, y, w, h, i }) => new compose.PageBlockMaker({ ...this.blocks[i], xywh: [x, y, w, h] }),
       ))
     },

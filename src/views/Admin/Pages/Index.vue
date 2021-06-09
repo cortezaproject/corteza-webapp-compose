@@ -1,6 +1,10 @@
 <template>
   <div class="py-3">
-    <b-container fluid>
+    <portal to="topbar-title">
+      {{ $t('navigation.page') }}
+    </portal>
+
+    <b-container fluid="xl">
       <b-row no-gutters>
         <b-col>
           <b-card

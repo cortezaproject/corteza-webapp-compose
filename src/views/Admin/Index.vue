@@ -7,43 +7,10 @@
       class="flex-grow-1 overflow-auto"
       :namespace="namespace"
     />
+
     <portal-target
       name="admin-toolbar"
     />
-    <portal to="topbar-title">
-      {{ currentPageHandle }}
-    </portal>
-
-    <portal
-      to="sidebar-body-expanded"
-    >
-      <b-button
-        variant="light"
-        class="w-100"
-        :to="{ name: 'pages' }"
-      >
-        {{ $t('navigation.publicPages') }}
-      </b-button>
-
-      <b-button
-        v-for="route of adminRoutes"
-        :key="route.name"
-        variant="link"
-        class="w-100 text-left text-dark text-decoration-none pt-2 pb-0 nav-item"
-        exact-active-class="nav-active"
-        :to="{ name: route.name }"
-      >
-        <span class="d-inline-block w-75 text-nowrap text-truncate">
-          {{ route.title }}
-        </span>
-      </b-button>
-    </portal>
-
-    <portal
-      to="sidebar-footer-collapsed"
-      class="d-flex"
-    >
-    </portal>
   </div>
 </template>
 
@@ -55,30 +22,6 @@ export default {
     namespace: {
       type: Object,
       required: false,
-    },
-  },
-
-  computed: {
-    sidebarExpanded () {
-      return !!this.$root.sidebarExpanded
-    },
-
-    currentPageHandle () {
-      const nameToHandle = {
-        'admin.modules': this.$t('module.title'),
-        'admin.pages': this.$t('page.title'),
-        'admin.charts': this.$t('chart.title'),
-      }
-
-      return nameToHandle[this.$route.name] || 'Admin'
-    },
-
-    adminRoutes () {
-      return [
-        { name: 'admin.modules', title: this.$t('navigation.module') },
-        { name: 'admin.pages', title: this.$t('navigation.page') },
-        { name: 'admin.charts', title: this.$t('navigation.chart') },
-      ]
     },
   },
 

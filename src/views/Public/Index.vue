@@ -1,5 +1,9 @@
 <template>
   <div class="d-flex flex-column h-100 w-100">
+    <portal to="topbar-title">
+      {{ pageTitle }}
+    </portal>
+
     <div v-if="showSteps" class="d-flex flex-column m-5 vh-75">
       <h1 class="display-3">{{ $t('general.label.welcome') }}</h1>
       <p class="lead">
@@ -11,7 +15,11 @@
           {{ $t('onboarding.message.notifyAdministrator') }}
         </span>
       </p>
-      <b-container v-if="namespace.canManageNamespace" fluid class="align-items-center border-top steps">
+      <b-container
+        v-if="namespace.canManageNamespace"
+        fluid="xl"
+        class="align-items-center border-top steps"
+      >
         <b-row align-v="center" class="text-center justify-content-between">
           <b-col>
             <circle-step stepNumber="1" :done="hasModules">
@@ -73,7 +81,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import CircleStep from 'corteza-webapp-compose/src/components/Common/CircleStep'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 
 const pushContentAbove = 610
 const demoPageHandle = 'demo_page'
@@ -143,11 +151,21 @@ export default {
     hasPages () {
       return this.pages.filter(p => p.visible || p.handle === demoPageHandle).length > 0
     },
+
+    pageTitle () {
+      if (this.page.pageID !== NoID) {
+        const { title = '', handle = '' } = this.page
+        return title || handle || this.$t('navigation.noPageTitle')
+      }
+
+      return ''
+    },
   },
 
   watch: {
     pageID: {
-      handler: function () {
+      immediate: true,
+      handler (pageID) {
         // If we redirect to page index, try to find & redirect to a first
         // available public page.
         if (!this.pageID) {
@@ -160,7 +178,6 @@ export default {
           }
         }
       },
-      immediate: true,
     },
   },
 

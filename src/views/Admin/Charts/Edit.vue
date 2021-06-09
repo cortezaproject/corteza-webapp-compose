@@ -4,7 +4,11 @@
       {{ $t('chart.edit.title') }}
     </portal>
 
-    <b-container @submit.prevent="handleSave" tag="form" fluid>
+    <b-container
+      @submit.prevent="handleSave"
+      tag="form"
+      fluid="xl"
+    >
       <b-row no-gutters>
         <b-col v-if="chart">
           <b-card
@@ -17,7 +21,10 @@
             >
               <export :list="[chart]" type="chart" class="float-right" slot="header"/>
             </b-card-header>
-            <b-container fluid class="px-4 py-3">
+            <b-container
+              fluid
+              class="px-4 py-3"
+            >
               <b-row>
                 <b-col xl="6" md="12">
                   <fieldset v-if="modules">

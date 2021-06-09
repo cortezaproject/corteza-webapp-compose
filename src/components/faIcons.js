@@ -51,6 +51,7 @@ import {
   faGripHorizontal,
   faCogs,
   faPen,
+  faThumbtack,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -148,4 +149,5 @@ library.add(
   faUser,
   faCogs,
   faPen,
+  faThumbtack,
 )

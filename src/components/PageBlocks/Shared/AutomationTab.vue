@@ -1,5 +1,5 @@
 <template>
-  <b-tab>
+  <b-tab class="p-0">
     <template #title>
       {{ $t('label') }}
       <b-badge
@@ -11,7 +11,7 @@
       </b-badge>
     </template>
 
-    <b-container>
+    <b-container class="pt-3">
       <b-row>
         <b-col cols="6">
           <b-card

@@ -1,18 +1,15 @@
 <template>
   <div>
-    <portal to="topbar-title">
-      {{ selectedPageTitle }}
-    </portal>
-
     <portal to="sidebar-header-expanded">
       <vue-select
         key="namespaceID"
         label="name"
-        class="namespace-selector sticky-top bg-white my-2"
+        class="namespace-selector sticky-top bg-white mt-2"
         :clearable="false"
         :options="namespaces"
         :value="namespace"
-        @option:selected="$router.push({ name: 'namespace', params: { slug: $event.slug } })"
+        :placeholder="$t('sidebar.pickNamespace')"
+        @option:selected="namespaceSelected"
       >
         <template #list-footer>
           <router-link
@@ -26,57 +23,74 @@
     </portal>
 
     <portal
+      v-if="!pending && namespace"
       to="sidebar-body-expanded"
     >
       <div
+        v-if="navItems.length"
         class="h-100"
       >
-        <b-button
-          v-if="namespace.canManageNamespace"
-          variant="light"
-          class="w-100 mb-2"
-          :to="{ name: 'admin.modules' }"
-        >
-          {{ $t('navigation.adminPanel') }}
-        </b-button>
-
         <b-input
+          v-if="!isAdminPage"
           v-model.trim="query"
           class="namespace-selector mw-100"
           type="search"
           :placeholder="$t('sidebar.searchPlaceholder')"
         />
 
-        <sidebar-nav-item
+        <sidebar-nav-items
           :items="navItems"
           :start-expanded="!!query"
           top-level
-          @page-selected="onPageSelected"
           class="overflow-auto h-100"
         />
       </div>
+
+      <h5
+        v-else
+        class="d-flex justify-content-center mt-5"
+      >
+        {{ $t('sidebar.noPages') }}
+      </h5>
     </portal>
 
     <portal
-      to="sidebar-footer-collapsed"
+      to="sidebar-footer-expanded"
       class="d-flex"
     >
+      <b-button
+        v-if="!pending && isAdminPage"
+        variant="light"
+        class="w-100"
+        :to="{ name: 'pages', params: { slug: namespace.slug } }"
+      >
+        {{ $t('navigation.publicPages') }}
+      </b-button>
+
+      <b-button
+        v-else-if="!pending && namespace && namespace.canManageNamespace"
+        variant="light"
+        class="w-100"
+        :to="{ name: 'admin.modules', params: { slug: namespace.slug } }"
+      >
+        {{ $t('navigation.adminPanel') }}
+      </b-button>
     </portal>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { NoID } from '@cortezaproject/corteza-js'
 import { Portal } from 'portal-vue'
 import { VueSelect } from 'vue-select'
-import SidebarNavItem from './SidebarNavItem'
+import SidebarNavItems from './SidebarNavItems'
 
 export default {
   components: {
     Portal,
     VueSelect,
-    SidebarNavItem,
+    SidebarNavItems,
   },
 
   props: {
@@ -85,35 +99,41 @@ export default {
       required: true,
       default: () => [],
     },
-
-    namespace: {
-      type: Object,
-      required: false,
-      default: () => ({}),
-    },
-
-    pages: {
-      type: Array,
-      required: true,
-      default: () => [],
-    },
-
-    page: {
-      type: Object,
-      required: false,
-      default: () => ({}),
-    },
   },
 
   data () {
     return {
       query: '',
-      selectedPage: undefined,
-      selectedPageTitle: '',
+
+      namespace: undefined,
     }
   },
 
   computed: {
+    ...mapGetters({
+      namespacePending: 'namespace/pending',
+      modulePending: 'module/pending',
+      chartPending: 'chart/pending',
+      pagePending: 'page/pending',
+      pages: 'page/set',
+    }),
+
+    pending () {
+      return this.namespacePending || this.modulePending || this.chartPending || this.pagePending
+    },
+
+    isAdminPage () {
+      return this.$route.name.includes('admin.')
+    },
+
+    adminRoutes () {
+      return [
+        { name: 'admin.modules', title: this.$t('navigation.module') },
+        { name: 'admin.pages', title: this.$t('navigation.page') },
+        { name: 'admin.charts', title: this.$t('navigation.chart') },
+      ]
+    },
+
     navItems () {
       const wrap = (p) => ({ page: p, children: [] })
 
@@ -150,32 +170,33 @@ export default {
     },
 
     filteredPages () {
-      if (!this.query) {
-        return this.pages
-      }
+      if (this.namespace) {
+        // If on admin page, show admin pages. Otherwise show public pages
+        const pages = this.isAdminPage ? this.adminRoutes : this.pages.filter(({ moduleID, visible }) => visible && moduleID === NoID)
 
-      const rr = []
-      for (const p of this.pages) {
-        if (this.checkPage(p, this.query)) {
-          rr.push(p)
+        if (!this.query) {
+          return pages
         }
+
+        const rr = []
+        for (const p of pages) {
+          if (this.checkPage(p, this.query)) {
+            rr.push(p)
+          }
+        }
+
+        return rr
       }
 
-      return rr
+      return []
     },
   },
 
   watch: {
-    '$route.params.pageID': {
+    '$route.params.slug': {
       immediate: true,
-      handler (pageID = '') {
-        const { namespaceID } = this.namespace
-
-        if (namespaceID && pageID) {
-          this.findPageByID({ namespaceID, pageID }).then(({ title = '', handle = '' }) => {
-            this.selectedPageTitle = title || handle || this.$t('navigation.noPageTitle')
-          })
-        }
+      handler (slug = '') {
+        this.namespace = slug ? this.namespaces.find(n => n.slug === slug) : undefined
       },
     },
   },
@@ -185,8 +206,21 @@ export default {
       findPageByID: 'page/findByID',
     }),
 
-    onPageSelected (page) {
-      this.selectedPage = page
+    namespaceSelected ({ canManageNamespace, slug = '' }) {
+      let { name, params } = this.$route
+
+      // Try to match page, otherwise redirect to pages root
+      if (name.includes('admin.modules')) {
+        name = 'admin.modules'
+      } else if (name.includes('admin.pages')) {
+        name = 'admin.pages'
+      } else if (name.includes('admin.charts')) {
+        name = 'admin.charts'
+      }
+
+      name = !params.pageID && canManageNamespace && !name.includes('namespace.') ? name : 'pages'
+
+      this.$router.push({ name, params: { slug } })
     },
 
     checkPage (p, query) {
@@ -207,68 +241,24 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.right-inner-addon i {
-  position: absolute;
-  right: 0;
-  padding: 10px 12px;
-  pointer-events: none;
-}
-
-.backdrop {
-  background-color: #1e1e1eA5;
-  top: $topbar-height;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 2;
-}
-
-.sidebar-nav-trigger {
-  height: $topbar-height;
+<style lang="scss">
+.v-select {
+  min-width: 0 !important;
 }
 
 .namespace-selector {
   font-size: 1rem;
-}
 
-nav {
-  width: $sidebar-width;
-  height: calc(100vh - #{$topbar-height});
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  z-index: 10000;
-  display: flex;
-  flex-direction: column;
-  max-width: 100%;
-  max-height: 100%;
-  margin: 0;
-  outline: 0;
-  transform: translateX(0);
-  transition: transform 0.1s;
-
-  &.collapsed {
-    transform: translateX(-($sidebar-width));
+  .vs__selected-options {
+    flex-wrap: nowrap;
   }
 
-  header {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 0;
-    align-items: center;
+  .vs__selected {
+    max-width: 245px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-
-  .body {
-    flex-grow: 1;
-    height: 100%;
-    overflow-y: auto;
-  }
-}
-
-.logo-ph {
-  width: 50px;
-  height: 50px;
-  background-color: orange;
 }
 </style>

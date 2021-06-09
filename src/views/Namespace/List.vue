@@ -8,8 +8,8 @@
     </portal>
 
     <b-container
-      class="ns-wrapper ml-0"
-      fluid
+      class="ns-wrapper"
+      fluid="xl"
     >
       <b-row
         no-gutters
@@ -82,6 +82,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import NamespaceItem from 'corteza-webapp-compose/src/components/Namespaces/NamespaceItem'
 
 export default {
@@ -94,46 +95,29 @@ export default {
       query: '',
 
       loaded: false,
-      error: '',
-      alerts: [], // { variant: 'info', message: 'foo' },
-      namespaces: [],
       canCreateNamespace: false,
       canGrant: false,
     }
   },
 
   computed: {
+    ...mapGetters({
+      namespaces: 'namespace/set',
+    }),
+
     namespacesFiltered () {
       return this.namespaces.filter(ns => ns.slug.indexOf(this.query) > -1 || ns.name.indexOf(this.query) > -1)
     },
   },
 
   created () {
-    this.error = ''
+    this.loaded = false
 
-    const errHandler = (error) => {
-      switch ((error.response || {}).status) {
-        case 403:
-          this.error = this.$t('notification.general.composeAccessNotAllowed')
-      }
-
-      return Promise.reject(error)
-    }
-
-    this.$ComposeAPI.namespaceList().then(({ set }) => {
-      this.namespaces = set
-      this.$ComposeAPI.permissionsEffective().then((p) => {
-        this.canCreateNamespace = p.filter(per => per.operation === 'namespace.create')[0].allow
-        this.canGrant = p.filter(per => per.operation === 'grant')[0].allow
-        this.loaded = true
-      })
-    }).catch(errHandler)
+    this.$ComposeAPI.permissionsEffective().then((p) => {
+      this.canCreateNamespace = p.filter(per => per.operation === 'namespace.create')[0].allow
+      this.canGrant = p.filter(per => per.operation === 'grant')[0].allow
+      this.loaded = true
+    }).catch(this.toastErrorHandler(this.$t('notification.general.composeAccessNotAllowed')))
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.ns-wrapper {
-  max-width: 1800px;
-}
-</style>

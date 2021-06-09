@@ -1,6 +1,8 @@
 <template>
-  <div class="d-flex flex-column w-100 vh-100 overflow-auto">
-    <header>
+  <div class="d-flex flex-column w-100 vh-100">
+    <header
+      class="mw-100"
+    >
       <c-topbar
         :sidebar-pinned="pinned"
       >
@@ -38,24 +40,12 @@
         :pinned.sync="pinned"
         expand-on-hover
       >
-        <template #header-collapsed>
-          <portal-target name="sidebar-header-collapsed" />
-        </template>
-
         <template #header-expanded>
           <portal-target name="sidebar-header-expanded" />
         </template>
 
-        <template #body-collapsed>
-          <portal-target name="sidebar-body-collapsed" />
-        </template>
-
         <template #body-expanded>
           <portal-target name="sidebar-body-expanded" />
-        </template>
-
-        <template #footer-collapsed>
-          <portal-target name="sidebar-footer-collapsed" />
         </template>
 
         <template #footer-expanded>
@@ -64,8 +54,8 @@
       </c-sidebar>
     </aside>
 
-    <main class="d-inline-flex h-100">
-      <!--
+    <main class="d-inline-flex h-100 overflow-auto">
+            <!--
         Content spacer
         Large and xl screens should push in content when the nav is expanded
       -->
@@ -77,7 +67,6 @@
           }"
         />
       </template>
-
       <router-view />
     </main>
     <c-prompts />
@@ -107,16 +96,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.topbar {
-  background-color: #F3F3F5;
-}
-
 .spacer {
-  min-width: 77px;
-  transition: width 0.1s ease-in-out;
+  min-width: 0;
+  -webkit-transition: min-width 0.2s ease-in-out;
+  -moz-transition: min-width 0.2s ease-in-out;
+  -o-transition: min-width 0.2s ease-in-out;
+  transition: min-width 0.2s ease-in-out;
 
   &.expanded {
     min-width: $sidebar-width;
+    -webkit-transition: min-width 0.2s ease-in-out;
+    -moz-transition: min-width 0.2s ease-in-out;
+    -o-transition: min-width 0.2s ease-in-out;
+    transition: min-width 0.2s ease-in-out;
   }
 }
 </style>

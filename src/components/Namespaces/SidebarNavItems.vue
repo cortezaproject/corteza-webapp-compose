@@ -1,12 +1,13 @@
 <template>
   <div class="nav-sidebar">
-    <b-btn
-      v-for="(i) of items"
-      :key="i.page.pageID"
+    <b-button
+      v-for="i of items"
+      :key="i.page.name"
       variant="link"
-      class="w-100 text-left text-dark text-decoration-none pt-2 pb-0 nav-item"
+      class="w-100 text-left text-dark text-decoration-none pt-2 pr-0 pb-0 nav-item"
+      active-class="nav-active"
       exact-active-class="nav-active"
-      :to="{ name: 'page', params: { pageID: i.page.pageID }}"
+      :to="{ name: i.page.name, params: { pageID: i.page.pageID }}"
       @click="$emit('page-selected')"
     >
       <span class="d-inline-block w-75 text-nowrap text-truncate">
@@ -16,7 +17,7 @@
       <template
         v-if="i.children.length"
       >
-        <b-btn
+        <b-button
           variant="link"
           class="px-3 float-right mt-n1"
           @click.self.stop.prevent="toggle(i.page)"
@@ -27,12 +28,12 @@
           <font-awesome-icon v-else
                              class="pointer-none"
                              :icon="['fas', 'chevron-up']" />
-        </b-btn>
+        </b-button>
         <b-collapse
-          :visible="collapses[pageIndex(i.page)]"
+          :visible="collapses[pageIndex(i.page)] || childPageOpen(i.page, i.children)"
           @click.stop.prevent
         >
-          <sidebar-nav-item
+          <sidebar-nav-items
             class="ml-2"
             :items="i.children"
             :start-expanded="startExpanded"
@@ -40,13 +41,13 @@
           />
         </b-collapse>
       </template>
-    </b-btn>
+    </b-button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'sidebar-nav-item',
+  name: 'SidebarNavItems',
 
   props: {
     items: {
@@ -95,6 +96,15 @@ export default {
       const px = this.pageIndex(p)
       this.$set(this.collapses, px, state)
     },
+
+    // Recursively check for child pages that are open, so that parents can open aswell
+    childPageOpen (page = {}, children = []) {
+      if (children.length) {
+        return children.map(({ page, children }) => this.childPageOpen(page, children)).some(isOpen => isOpen)
+      }
+
+      return page.pageID === this.$route.params.pageID
+    },
   },
 }
 </script>
@@ -106,6 +116,7 @@ export default {
 
 // Using font-weight-bold moves the sidebar nav content; text-stroke keeps in nicely in place
 .nav-active > span {
-  -webkit-text-stroke: 1px black;
+  color: $primary;
+  -webkit-text-stroke: 0.4px $primary;
 }
 </style>

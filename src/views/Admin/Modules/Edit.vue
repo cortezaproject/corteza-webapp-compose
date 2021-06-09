@@ -4,7 +4,7 @@
       {{ title }}
     </portal>
 
-    <b-container @submit.prevent="handleSave" tag="form" v-if="module" fluid>
+    <b-container @submit.prevent="handleSave" tag="form" v-if="module" fluid="xl">
       <b-row no-gutters>
         <b-col>
           <b-card

@@ -1,94 +1,94 @@
 <template>
   <b-card header-bg-variant="white" footer-bg-variant="white">
-    <b-container fluid class="p-0">
-      <b-form-group>
-        <label>{{ $t('block.recordList.export.selectFields') }}</label>
-        <field-picker
-          v-if="module"
-          :module="module"
-          :system-fields="systemFields"
-          :disabled-types="disabledTypes"
-          :fields.sync="selectedFields"/>
+    <b-form-group>
+      <label>{{ $t('block.recordList.export.selectFields') }}</label>
+      <field-picker
+        v-if="module"
+        :module="module"
+        :system-fields="systemFields"
+        :disabled-types="disabledTypes"
+        :fields.sync="selectedFields"/>
 
-        <i>{{ $t('block.recordList.export.limitations') }}</i>
-      </b-form-group>
+      <i>{{ $t('block.recordList.export.limitations') }}</i>
+    </b-form-group>
 
-      <b-form-group>
-        <b-form-checkbox v-model="forTimezone">
-         {{ $t('block.recordList.export.specifyTimezone') }}
-        </b-form-checkbox>
+    <b-form-group>
+      <b-form-checkbox v-model="forTimezone">
+        {{ $t('block.recordList.export.specifyTimezone') }}
+      </b-form-checkbox>
 
-        <vue-select
-          v-if="forTimezone"
-          v-model="exportTimezone"
-          :options="timezones"
-          :placeholder="$t('block.recordList.export.timezonePlaceholder')"
-        />
-      </b-form-group>
+      <vue-select
+        v-if="forTimezone"
+        v-model="exportTimezone"
+        :options="timezones"
+        :placeholder="$t('block.recordList.export.timezonePlaceholder')"
+      />
+    </b-form-group>
 
-      <b-form-group>
-        <b-form-checkbox v-model="includeQuery">
-         {{ $t('block.recordList.export.includeQuery') }}
-        </b-form-checkbox>
+    <b-form-group>
+      <b-form-checkbox v-model="includeQuery">
+        {{ $t('block.recordList.export.includeQuery') }}
+      </b-form-checkbox>
 
-        <b-form-input
-          v-if="includeQuery"
-          v-model="exportQuery"
-          :placeholder="$t('block.recordList.export.query')" />
+      <b-form-input
+        v-if="includeQuery"
+        v-model="exportQuery"
+        :placeholder="$t('block.recordList.export.query')" />
 
-      </b-form-group>
+    </b-form-group>
 
-      <b-form-group>
-        <b-form-radio-group
-          v-model="rangeType"
-          :options="rangeTypeOptions"
-          stacked />
+    <b-form-group>
+      <b-form-radio-group
+        v-model="rangeType"
+        :options="rangeTypeOptions"
+        stacked
+      />
+    </b-form-group>
 
-      </b-form-group>
-      <b-row no-gutters>
-        <b-col cols="5">
-          <b-form-group
-            v-if="rangeType === 'range'"
-            label-cols="5"
-            :label="$t('block.recordList.export.rangeBy')">
+    <b-row no-gutters>
+      <b-col cols="5">
+        <b-form-group
+          v-if="rangeType === 'range'"
+          label-cols="5"
+          :label="$t('block.recordList.export.rangeBy')">
+          <b-form-select
+            v-model="rangeBy"
+            :options="rangeByOptions" />
+
+        </b-form-group>
+      </b-col>
+    </b-row>
+    <b-row v-if="rangeType === 'range'" no-gutters>
+      <b-col cols="5">
+        <b-form-group
+          label-cols="5"
+          :label="$t('block.recordList.export.dateRange')">
             <b-form-select
-              v-model="rangeBy"
-              :options="rangeByOptions" />
+              v-model="range"
+              :options="dateRangeOptions" />
 
-          </b-form-group>
-        </b-col>
-      </b-row>
-      <b-row v-if="rangeType === 'range'" no-gutters>
-        <b-col cols="5">
-          <b-form-group
-            label-cols="5"
-            :label="$t('block.recordList.export.dateRange')">
-              <b-form-select
-                v-model="range"
-                :options="dateRangeOptions" />
+        </b-form-group>
+      </b-col>
+      <b-col cols="3" class="ml-5">
+        <b-form-input
+          :state="dateRangeValid ? null : false"
+          type="date"
+          v-model="start"
+          :max="end"
+          @keydown.prevent/>
 
-          </b-form-group>
-        </b-col>
-        <b-col cols="3" class="ml-5">
-          <b-form-input
-            :state="dateRangeValid ? null : false"
-            type="date"
-            v-model="start"
-            :max="end"
-            @keydown.prevent/>
+      </b-col>
+      <b-col cols="3" class="ml-2">
+        <b-form-input
+          :state="dateRangeValid ? null : false"
+          type="date"
+          v-model="end"
+          :min="start"
+          @keydown.prevent />
 
-        </b-col>
-        <b-col cols="3" class="ml-2">
-          <b-form-input
-            :state="dateRangeValid ? null : false"
-            type="date"
-            v-model="end"
-            :min="start"
-            @keydown.prevent />
+      </b-col>
+    </b-row>
 
-        </b-col>
-      </b-row>
-    </b-container>
     <div slot="footer" class="d-flex">
       <span v-if="!!getExportableCount" class="my-auto">
         {{ $t('block.recordList.export.recordCount', { count: getExportableCount}) }}

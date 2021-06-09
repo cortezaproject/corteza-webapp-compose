@@ -4,7 +4,7 @@
       {{ $t('page.edit.edit') }}
     </portal>
 
-    <b-container fluid>
+    <b-container fluid="xl">
       <b-row no-gutters>
         <b-col>
           <b-card
@@ -21,40 +21,40 @@
                 {{ $t('general.label.pageBuilder') }}
               </router-link>
             </b-card-header>
-            <b-container fluid class="px-4 py-3">
-              <b-form @submit.prevent="handleSave()">
-                <b-row>
-                  <b-col cols="12" md="6" xl="4">
-                    <input required type="hidden" v-model="page.pageID" id="id" />
-                    <label class="text-primary">{{ $t('page.newPlaceholder') }}</label>
-                    <b-form-input required
-                                  v-model="page.title"
-                                  class="mb-2"
-                                  :placeholder="$t('page.newPlaceholder')" />
-                  </b-col>
-                  <b-col cols="12" md="6" xl="4">
-                    <label class="text-primary">{{ $t('general.label.handle') }}</label>
-                    <b-form-input v-model="page.handle"
-                                  :state="handleState"
-                                  class="mb-2"
-                                  :placeholder="$t('general.placeholder.handle')" />
-                  </b-col>
-                </b-row>
-                <label class="text-primary mt-3">{{ $t('general.label.description') }}</label>
-                <b-form-textarea v-model="page.description"
-                                :placeholder="$t('page.edit.pageDescription')"
+            <b-form
+              class="px-4 py-3"
+            >
+              <b-row>
+                <b-col cols="12" md="6" xl="4">
+                  <input required type="hidden" v-model="page.pageID" id="id" />
+                  <label class="text-primary">{{ $t('page.newPlaceholder') }}</label>
+                  <b-form-input required
+                                v-model="page.title"
                                 class="mb-2"
-                                rows="8"></b-form-textarea>
-                <b-form-checkbox v-model="page.visible"
-                                switch
-                                size="lg"
-                                class="mt-3 d-inline"
-                                id="visible" />
-                  <label class="m-1">
-                    {{ $t('page.edit.visible') }}
-                  </label>
-              </b-form>
-            </b-container>
+                                :placeholder="$t('page.newPlaceholder')" />
+                </b-col>
+                <b-col cols="12" md="6" xl="4">
+                  <label class="text-primary">{{ $t('general.label.handle') }}</label>
+                  <b-form-input v-model="page.handle"
+                                :state="handleState"
+                                class="mb-2"
+                                :placeholder="$t('general.placeholder.handle')" />
+                </b-col>
+              </b-row>
+              <label class="text-primary mt-3">{{ $t('general.label.description') }}</label>
+              <b-form-textarea v-model="page.description"
+                              :placeholder="$t('page.edit.pageDescription')"
+                              class="mb-2"
+                              rows="8"></b-form-textarea>
+              <b-form-checkbox v-model="page.visible"
+                              switch
+                              size="lg"
+                              class="mt-3 d-inline"
+                              id="visible" />
+                <label class="m-1">
+                  {{ $t('page.edit.visible') }}
+                </label>
+            </b-form>
           </b-card>
         </b-col>
       </b-row>

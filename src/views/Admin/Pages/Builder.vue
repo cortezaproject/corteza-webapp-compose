@@ -1,15 +1,16 @@
 <template>
   <div
     v-if="page"
-    class="flex-grow-1 overflow-auto d-flex p-2 w-100"
+    class="flex-grow-1 overflow-auto d-flex px-2 w-100"
   >
     <portal to="topbar-title">
       {{ title }}
     </portal>
 
     <grid
-      :blocks.sync="page.blocks"
+      :blocks="page.blocks"
       editable
+      @change="updatePageBlockGrid"
     >
       <template
         slot-scope="{ boundingRect, block, index }"
@@ -162,6 +163,8 @@ export default {
     return {
       editor: null,
       page: null,
+
+      blocks: [],
     }
   },
 
@@ -218,6 +221,10 @@ export default {
       this.editor = { index, block: compose.PageBlockMaker(block) }
     },
 
+    updatePageBlockGrid (blocks) {
+      this.blocks = blocks
+    },
+
     updateBlocks () {
       const block = compose.PageBlockMaker(this.editor.block)
       if (this.editor.index !== undefined) {
@@ -240,7 +247,7 @@ export default {
 
       // Cecord lines blocks
       const queue = []
-      this.page.blocks.forEach((b, index) => {
+      this.blocks.forEach((b, index) => {
         if (b.kind === 'RecordList' && b.options.editable) {
           const p = new Promise((resolve) => {
             this.$root.$emit(`page-block:validate:${this.page.pageID}-${(this.record || {}).recordID || '0'}-${index}`, resolve)
@@ -259,7 +266,7 @@ export default {
       this.findPageByID({ namespaceID, pageID: this.pageID, force: true })
         .then(page => {
           // Merge changes
-          this.page = new compose.Page({ namespaceID, ...page, blocks: this.page.blocks })
+          this.page = new compose.Page({ namespaceID, ...page, blocks: this.blocks })
 
           this.updatePage(this.page).then((page) => {
             this.toastSuccess(this.$t('notification.page.saved'))

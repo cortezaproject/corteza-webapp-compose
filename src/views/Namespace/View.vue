@@ -6,13 +6,6 @@
       :toasts="toasts"
     />
 
-    <namespace-sidebar
-      v-if="loaded && namespace"
-      :namespaces="enabledNamespaces"
-      :pages="pagesClean"
-      :namespace="namespace"
-    />
-
     <router-view
       v-if="loaded && namespace"
       :namespace="namespace"
@@ -54,15 +47,12 @@
         </div>
       </div>
     </div>
-    <div class="error text-danger text-center position-absolute" v-if="error">{{ error }}</div>
   </div>
 </template>
 
 <script>
 import moment from 'moment'
 import { mapGetters } from 'vuex'
-import NamespaceSidebar from '../components/Namespaces/NamespaceSidebar'
-import { compose, NoID } from '@cortezaproject/corteza-js'
 import { components } from '@cortezaproject/corteza-vue'
 const { CToaster } = components
 
@@ -71,7 +61,6 @@ export default {
 
   components: {
     CToaster,
-    NamespaceSidebar,
   },
 
   props: {
@@ -86,9 +75,7 @@ export default {
       loaded: false,
 
       error: '',
-      alerts: [], // { variant: 'info', message: 'foo' },
       namespace: null,
-      namespaces: [],
       toasts: [],
     }
   },
@@ -96,6 +83,7 @@ export default {
   computed: {
     ...mapGetters({
       namespacePending: 'namespace/pending',
+      namespaces: 'namespace/set',
       modulePending: 'module/pending',
       chartPending: 'chart/pending',
       pagePending: 'page/pending',
@@ -110,18 +98,6 @@ export default {
         chart: this.chartPending,
       }
     },
-
-    enabledNamespaces () {
-      return this.namespaces.filter(({ enabled }) => enabled)
-    },
-
-    showNamespaceSidebar () {
-      return this.$s('compose.UI.NamespaceSwitcher.Enabled', false) && this.enabledNamespaces.length > 1
-    },
-
-    pagesClean () {
-      return this.pages.filter(({ moduleID, visible }) => visible && moduleID === NoID)
-    },
   },
 
   watch: {
@@ -129,76 +105,62 @@ export default {
       immediate: true,
       handler (slug) {
         this.loaded = false
-        this.$store.dispatch('namespace/load').then(() => {
-          const ns = this.$store.getters['namespace/getByUrlPart'](slug)
-          if (ns) {
-            return ns
-          }
-          return this.$store.dispatch('namespace/load', { force: true }).then(() => {
-            return this.$store.getters['namespace/getByUrlPart'](slug)
-          })
-        }).then(namespace => {
-          this.namespace = namespace
-        }).catch(this.errHandler)
-      },
-    },
 
-    // When namespace changes, reload modules, charts & pages
-    namespace: {
-      handler (namespace) {
+        let namespace = this.$store.getters['namespace/getByUrlPart'](slug)
+
         if (!namespace) {
-          this.$router.push({ name: 'root' })
-          return
+          this.$store.dispatch('namespace/load', { force: true }).then(() => {
+            namespace = this.$store.getters['namespace/getByUrlPart'](slug)
+          }).catch(this.errHandler)
         }
 
-        if (!namespace.enabled) {
-          this.toastDanger(this.$t('notification.namespace.disabled'))
-          this.$router.push({ name: 'root' })
-          return
-        }
-
-        const p = { namespace, namespaceID: namespace.namespaceID, clear: true }
-
-        this.$store.dispatch('module/clearSet')
-        this.$store.dispatch('chart/clearSet')
-        this.$store.dispatch('page/clearSet')
-
-        // Preload all data we need.
-        Promise.all([
-          this.$store.dispatch('module/load', p)
-            .catch(this.errHandler),
-
-          this.$store.dispatch('chart/load', p)
-            .catch(this.errHandler),
-
-          this.$store.dispatch('page/load', p)
-            .catch(this.errHandler),
-
-        ]).catch(this.errHandler).then(() => {
-          this.loaded = true
-        })
+        this.namespace = namespace
+        this.prepareNamespace()
       },
     },
   },
 
   created () {
     this.error = ''
-    this.$root.$on('namespaces.listLoad', this.namespaceLoader)
     this.$root.$on('reminder.show', this.showReminder)
-
-    this.namespaceLoader()
-      .catch(this.errHandler)
   },
 
   beforeDestroy () {
-    this.$root.$off('namespaces.listLoad', this.namespaceLoader)
     this.$root.$off('reminder.show', this.showReminder)
   },
 
   methods: {
-    async namespaceLoader () {
-      return this.$ComposeAPI.namespaceList().then(({ set }) => {
-        this.namespaces = set.map(ns => new compose.Namespace(ns))
+    prepareNamespace () {
+      if (!this.namespace) {
+        this.$router.push({ name: 'root' })
+        return
+      }
+
+      if (!this.namespace.enabled) {
+        this.toastDanger(this.$t('notification.namespace.disabled'))
+        this.$router.push({ name: 'root' })
+        return
+      }
+
+      const p = { namespace: this.namespace, namespaceID: this.namespace.namespaceID, clear: true }
+
+      this.$store.dispatch('module/clearSet')
+      this.$store.dispatch('chart/clearSet')
+      this.$store.dispatch('page/clearSet')
+
+      // Preload all data we need.
+      Promise.all([
+        this.$store.dispatch('module/load', p)
+          .catch(this.errHandler),
+
+        this.$store.dispatch('chart/load', p)
+          .catch(this.errHandler),
+
+        this.$store.dispatch('page/load', p)
+          .catch(this.errHandler),
+
+      ]).catch(this.errHandler).then(() => {
+        this.loaded = true
       })
     },
 
