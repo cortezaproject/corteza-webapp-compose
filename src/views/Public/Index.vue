@@ -4,6 +4,34 @@
       {{ pageTitle }}
     </portal>
 
+    <portal to="topbar-tools">
+      <b-button-group
+        v-if="page && page.canUpdatePage"
+        size="sm"
+        class="mr-1"
+      >
+        <b-button
+          variant="primary"
+          style="margin-right:2px;"
+          :to="pageBuilder"
+        >
+          <font-awesome-icon
+            :icon="['fas', 'cogs']"
+          />
+          {{ $t('general.label.pageBuilder') }}
+        </b-button>
+        <b-button
+          variant="primary"
+          :disabled="pageEditorDisabled"
+          :to="pageEditor"
+        >
+          <font-awesome-icon
+            :icon="['fas', 'pen']"
+          />
+        </b-button>
+      </b-button-group>
+    </portal>
+
     <div v-if="showSteps" class="d-flex flex-column m-5 vh-75">
       <h1 class="display-3">{{ $t('general.label.welcome') }}</h1>
       <p class="lead">
@@ -159,6 +187,18 @@ export default {
       }
 
       return ''
+    },
+
+    pageEditorDisabled () {
+      return this.page.moduleID !== NoID
+    },
+
+    pageEditor () {
+      return this.page.moduleID === NoID ? { name: 'admin.pages.edit', params: { pageID: this.pageID } } : { name: 'admin.modules.edit', params: { moduleID: this.page.moduleID } }
+    },
+
+    pageBuilder () {
+      return { name: 'admin.pages.builder', params: { pageID: this.pageID } }
     },
   },
 

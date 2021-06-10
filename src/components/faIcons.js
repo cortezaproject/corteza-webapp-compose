@@ -78,7 +78,6 @@ import {
 } from '@fortawesome/free-regular-svg-icons'
 
 library.add(
-  faEye,
   faSort,
   faSortUp,
   faSortDown,
@@ -150,4 +149,5 @@ library.add(
   faCogs,
   faPen,
   faThumbtack,
+  faEye,
 )

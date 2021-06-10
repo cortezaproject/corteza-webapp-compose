@@ -24,6 +24,7 @@ export default {
       logout: 'Logout',
     },
     editPage: 'Edit Page',
+    viewPage: 'View Page',
   },
   sidebar: {
     searchPlaceholder: 'Search pages...',

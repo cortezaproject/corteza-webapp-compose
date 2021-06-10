@@ -7,6 +7,34 @@
       {{ title }}
     </portal>
 
+    <portal to="topbar-tools">
+      <b-button-group
+        v-if="page && page.canUpdatePage"
+        size="sm"
+        class="mr-1"
+      >
+        <b-button
+          variant="primary"
+          style="margin-right:2px;"
+          :to="pageViewer"
+        >
+          {{ $t('navigation.viewPage') }}
+          <font-awesome-icon
+            :icon="['far', 'eye']"
+          />
+        </b-button>
+        <b-button
+          variant="primary"
+          :disabled="pageEditorDisabled"
+          :to="pageEditor"
+        >
+          <font-awesome-icon
+            :icon="['fas', 'pen']"
+          />
+        </b-button>
+      </b-button-group>
+    </portal>
+
     <grid
       :blocks="page.blocks"
       editable
@@ -135,7 +163,7 @@ import NewBlockSelector from 'corteza-webapp-compose/src/components/Admin/Page/B
 import Grid from 'corteza-webapp-compose/src/components/Common/Grid'
 import PageBlock from 'corteza-webapp-compose/src/components/PageBlocks'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import Configurator from 'corteza-webapp-compose/src/components/PageBlocks/Configurator'
 
 export default {
@@ -199,6 +227,18 @@ export default {
         return new compose.Record({}, this.module)
       }
       return null
+    },
+
+    pageViewer () {
+      return { name: 'page', params: { pageID: this.pageID } }
+    },
+
+    pageEditorDisabled () {
+      return this.page.moduleID !== NoID
+    },
+
+    pageEditor () {
+      return this.page.moduleID === NoID ? { name: 'admin.pages.edit', params: { pageID: this.pageID } } : { name: 'admin.modules.edit', params: { moduleID: this.page.moduleID } }
     },
   },
 

@@ -9,28 +9,10 @@
         <template #title>
           <portal-target name="topbar-title" />
         </template>
-<!--Jože TODO -->
-        <b-button-group
-          class="mr-1"
-        >
-          <b-button
-            variant="primary"
-            style="margin-right:2px;"
-          >
-            {{ $t('navigation.editPage') }}
-            <font-awesome-icon
-              :icon="['fas', 'pen']"
-            />
-          </b-button>
-          <b-button
-            variant="primary"
-          >
-            <font-awesome-icon
-              :icon="['fas', 'cogs']"
-            />
-          </b-button>
-        </b-button-group>
-<!--  -------  -->
+
+        <template #tools>
+          <portal-target name="topbar-tools" />
+        </template>
       </c-topbar>
     </header>
 

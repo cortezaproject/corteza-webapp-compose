@@ -4,6 +4,33 @@
       {{ $t('page.edit.edit') }}
     </portal>
 
+    <portal to="topbar-tools">
+      <b-button-group
+        v-if="page && page.canUpdatePage"
+        size="sm"
+        class="mr-1"
+      >
+        <b-button
+          variant="primary"
+          style="margin-right:2px;"
+          :to="{ name: 'admin.pages.builder' }"
+        >
+          <font-awesome-icon
+            :icon="['fas', 'cogs']"
+          />
+          {{ $t('general.label.pageBuilder') }}
+        </b-button>
+        <b-button
+          variant="primary"
+          :to="pageViewer"
+        >
+          <font-awesome-icon
+            :icon="['far', 'eye']"
+          />
+        </b-button>
+      </b-button-group>
+    </portal>
+
     <b-container fluid="xl">
       <b-row no-gutters>
         <b-col>
@@ -11,16 +38,6 @@
             no-body
             class="shadow-sm"
           >
-            <b-card-header
-              header-bg-variant="white"
-              class="d-flex py-3 align-items-center justify-content-end border-bottom"
-            >
-              <router-link
-                :to="{name: 'admin.pages.builder'}"
-                class="btn btn-light btn-lg">
-                {{ $t('general.label.pageBuilder') }}
-              </router-link>
-            </b-card-header>
             <b-form
               class="px-4 py-3"
             >
@@ -107,6 +124,10 @@ export default {
   computed: {
     handleState () {
       return handleState(this.page.handle)
+    },
+
+    pageViewer () {
+      return { name: 'page', params: { pageID: this.pageID } }
     },
   },
 
