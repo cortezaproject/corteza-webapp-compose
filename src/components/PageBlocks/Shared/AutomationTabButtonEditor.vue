@@ -35,7 +35,7 @@
         {{ workflow.meta.name || $t('noLabel') }}
       </h5>
       <var>
-        stepID: {{ trigger.stepID }}
+        {{ $t('stepID', trigger.stepID) }}
       </var>
     </div>
     <code

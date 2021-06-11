@@ -17,7 +17,7 @@
             class="p-0 ml-1 mr-auto"
             @click="field.expressions.sanitizers.push('')"
           >
-            + Add
+            {{ $t('field.sanitizers.add') }}
           </b-button>
 
           <b-button
@@ -25,7 +25,7 @@
             class="p-0 ml-1"
             @click="openExpressionsHelp('sanitizer')"
           >
-            Examples
+            {{ $t('field.sanitizers.examples') }}
           </b-button>
         </div>
       </template>
@@ -56,7 +56,7 @@
             class="p-0 ml-1 mr-auto"
             @click="field.expressions.validators.push({ test: '', error: '' })"
           >
-            + Add
+            {{ $t('field.sanitizers.add') }}
           </b-button>
 
           <b-button
@@ -64,7 +64,7 @@
             class="p-0 ml-1"
             @click="openExpressionsHelp('validator')"
           >
-            Examples
+            {{ $t('field.sanitizers.examples') }}
           </b-button>
         </div>
       </template>

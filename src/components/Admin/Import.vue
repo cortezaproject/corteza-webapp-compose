@@ -20,6 +20,7 @@
           <b-form-file
             @change="loadFile"
             :placeholder="$t('general.label.importPlaceholder')"
+            :browse-text="$t('general.label.browse')"
             class="font-wight-normal pointer"
           />
 

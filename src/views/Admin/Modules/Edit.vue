@@ -316,7 +316,7 @@ export default {
       handler: function (moduleID) {
         if (moduleID === NoID) {
           this.module = new compose.Module(
-            { fields: [new compose.ModuleFieldString({ fieldID: NoID, name: 'Sample' })] },
+            { fields: [new compose.ModuleFieldString({ fieldID: NoID, name: this.$t('general.placeholder.sample') })] },
             this.namespace,
           )
         } else {

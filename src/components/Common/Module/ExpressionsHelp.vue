@@ -4,51 +4,58 @@
     class="scroll p-1"
   >
     <b-card
-      title="Field Expresions"
+      :title="$t('field')"
       class="h-100 mh-100"
       body-class="mh-100 overflow-auto"
     >
       <b-card-text
         class="px-2"
       >
-        Field expressions provide a way to calculate field values based on the defined expression.
+        {{ $t('calculate') }}
         <br>
-        Writing field expressions is like writing an equation. Instead of only using constants, you can pass in the field name, and it will be evaluated as the field value for that record.
+        {{ $t('write') }}
         <br><br>
-        To write the expression you can use the following operators:
+        {{ $t('instructions') }}
         <ul>
           <li>
-            Depending on where the field expression is used it has access to different variables:
+            {{ $t('operators.location')}}
             <ul>
               <li>
-                Value expressions: <code>old</code>(record), <code>new</code>(record), <code>field-name</code>
+                {{ $t('operators.value-expressions') }}
+                <code>{{ $t('operators.old') }}</code>{{ $t('operators.record') }}
+                <code>{{ $t('operators.new') }}</code>{{ $t('operators.record') }}
+                <code>{{ $t('operators.field-name') }}</code>
               </li>
               <li>
-                Sanitizers: <code>value</code>(new value)
+                {{ $t('operators.sanitizers') }}<code>{{ $t('operators.values') }}</code>
+                {{ $t('operators.new-value') }}
               </li>
               <li>
-                Validators: <code>value</code>(new value), <code>oldValue</code>(old value), <code>values</code>(all new values)
+                {{ $t('operators.validators') }}
+                <code>{{ $t('operators.value') }}</code>{{ $t('operators.new-value-with-comma') }}
+                <code>{{ $t('operators.old-value') }}</code>{{ $t('operators.old-value-brackets') }}
+                <code>{{ $t('operators.values') }}</code>{{ $t('operators.all-new-values') }}
               </li>
             </ul>
           </li>
           <li>
-            Modifiers: <kbd>+</kbd> <kbd>-</kbd> <kbd>*</kbd> <kbd>/</kbd> <kbd>%</kbd> <kbd>**</kbd>
+            {{ $t('operators.modifiers') }} <kbd>+</kbd> <kbd>-</kbd> <kbd>*</kbd> <kbd>/</kbd> <kbd>%</kbd> <kbd>**</kbd>
           </li>
           <li>
-            Comparators: <kbd>&gt;</kbd> <kbd>&gt;=</kbd> <kbd>&lt;</kbd> <kbd>&lt;=</kbd> <kbd>==</kbd> <kbd>!=</kbd>
+            {{ $t('operators.comparators') }} <kbd>&gt;</kbd> <kbd>&gt;=</kbd> <kbd>&lt;</kbd> <kbd>&lt;=</kbd> <kbd>==</kbd> <kbd>!=</kbd>
           </li>
           <li>
-            Logical: <kbd>&&</kbd> <kbd>||</kbd>
+            {{ $t('operators.logical') }}<kbd>&&</kbd> <kbd>||</kbd>
           </li>
           <li>
-            Control order of evaluation: <kbd>(</kbd> <kbd>)</kbd>
+            {{ $t('operators.control-order') }} <kbd>(</kbd> <kbd>)</kbd>
           </li>
           <li>
             <a
               href="https://github.com/PaesslerAG/gval#evaluate"
               target="_blank"
             >
-              More
+              {{ $t('operators.more') }}
             </a>
           </li>
         </ul>
@@ -57,12 +64,12 @@
       <hr>
 
       <h4>
-        Examples
+        {{ $t('examples') }}
       </h4>
       <b-card-text
         class="px-2"
       >
-        Below are a few examples of different use cases of field expressions.
+        {{ $t('example-description') }}
       </b-card-text>
 
       <b-card
@@ -122,16 +129,16 @@
       <hr>
 
       <h4>
-        Helper functions
+        {{ $t('helper-functions.label') }}
       </h4>
       <b-card-text
         class="px-2"
       >
-        We provide a set of helper functions that extend the capabilites of field expressions.<br>
+        {{ $t('helper-functions.description') }}<br>
         <small
           class="text-muted"
         >
-          NOTE: Only the "General" functions can be used on all types of fields. The other functions are limited to their respective field type.
+          {{ $t('helper-functions.note') }}
         </small>
       </b-card-text>
 
@@ -192,12 +199,12 @@
       <hr>
 
       <h4>
-        Formatting parameters
+        {{ $t('formatting-parameters.label') }}
       </h4>
       <b-card-text
         class="px-2"
       >
-        Here is a complete list of available formatting options.<br>
+        {{ $t('formatting-parameters.description') }}<br>
       </b-card-text>
 
       <b-card
@@ -258,7 +265,13 @@
 </template>
 
 <script>
+import i18n from '../../../i18n'
+
 export default {
+  i18nOptions: {
+    keyPrefix: 'expressions-help',
+  },
+
   data () {
     return {
       categoryFields: [
@@ -278,54 +291,54 @@ export default {
       categories: [
         {
           id: 'general',
-          name: 'General',
+          name: this.$t('categories.general.label'),
           collapse: false,
           chevron: false,
           items: [
-            { syntax: 'coalesce(v1, v2, ...)', description: 'Returns the first non null value', example: 'coalesce(null, 0, 1, 2)', result: '0' },
+            { syntax: 'coalesce(v1, v2, ...)', description: this.$t('categories.general.description'), example: 'coalesce(null, 0, 1, 2)', result: '0' },
           ],
         },
         {
           id: 'number',
-          name: 'Number',
+          name: this.$t('categories.number.label'),
           collapse: false,
           chevron: false,
           items: [
-            { syntax: 'min(n1, n2, ...)', description: 'Returns item with the lowest value', example: 'min(0, 1, 2)', result: '0' },
-            { syntax: 'max(n1, n2, ...)', description: 'Returns item with the highest value', example: 'max(0, 1, 2)', result: '2' },
-            { syntax: 'round(number, digits)', description: 'Rounds a floating point number to the specified number of digits', example: 'round(3.14, 1)', result: '3.1' },
-            { syntax: 'floor(number)', description: 'Rounds number down to the nearest integer', example: 'floor(3.14)', result: '3' },
-            { syntax: 'ceil(number)', description: 'Rounds number up to the nearest integer', example: 'ceil(3.14)', result: '4' },
+            { syntax: 'min(n1, n2, ...)', description: this.$t('categories.number.min'), example: 'min(0, 1, 2)', result: '0' },
+            { syntax: 'max(n1, n2, ...)', description: this.$t('categories.number.max'), example: 'max(0, 1, 2)', result: '2' },
+            { syntax: 'round(number, digits)', description: this.$t('categories.number.rounds'), example: 'round(3.14, 1)', result: '3.1' },
+            { syntax: 'floor(number)', description: this.$t('categories.number.floor'), example: 'floor(3.14)', result: '3' },
+            { syntax: 'ceil(number)', description: this.$t('categories.number.ceil'), example: 'ceil(3.14)', result: '4' },
           ],
         },
         {
           id: 'string',
-          name: 'String',
+          name: this.$t('categories.string.label'),
           collapse: false,
           chevron: false,
           items: [
-            { syntax: 'trim(string)', description: 'Removes spaces at the beginning and at the end of the string', example: 'trim(" foo ")', result: '"foo"' },
-            { syntax: 'trimLeft(string, character)', description: 'Removes character from the beginning of the string', example: 'trim(" foo ", " ")', result: '"foo "' },
-            { syntax: 'trimRight(string, character)', description: 'Removes character from the end of the string', example: 'trim(" foo ", " ")', result: '" foo"' },
-            { syntax: 'toLower(string)', description: 'Converts all characters to lowercase', example: 'toLower("FOO")', result: '"foo"' },
-            { syntax: 'toUpper(string)', description: 'Converts all characters to uppercase', example: 'toUpper("foo")', result: '"FOO"' },
-            { syntax: 'shortest(s1, s2, ...)', description: 'Returns the shortest string', example: 'shortest("foo", "foobar")', result: '"foo"' },
-            { syntax: 'longest(s1, s2, ...)', description: 'Returns the longest string', example: 'longest("foo", "foobar")', result: '"foobar"' },
-            { syntax: 'format(format, arg1, arg2, ...)', description: 'Returns the formatted string', example: 'format("test %d", 10)', result: '"test 10"' },
+            { syntax: 'trim(string)', description: this.$t('categories.string.trim'), example: 'trim(" foo ")', result: '"foo"' },
+            { syntax: 'trimLeft(string, character)', description: this.$t('categories.string.trimLeft'), example: 'trim(" foo ", " ")', result: '"foo "' },
+            { syntax: 'trimRight(string, character)', description: this.$t('categories.string.trimRight'), example: 'trim(" foo ", " ")', result: '" foo"' },
+            { syntax: 'toLower(string)', description: this.$t('categories.string.toLower'), example: 'toLower("FOO")', result: '"foo"' },
+            { syntax: 'toUpper(string)', description: this.$t('categories.string.toUpper'), example: 'toUpper("foo")', result: '"FOO"' },
+            { syntax: 'shortest(s1, s2, ...)', description: this.$t('categories.string.shortest'), example: 'shortest("foo", "foobar")', result: '"foo"' },
+            { syntax: 'longest(s1, s2, ...)', description: this.$t('categories.string.longest'), example: 'longest("foo", "foobar")', result: '"foobar"' },
+            { syntax: 'format(format, arg1, arg2, ...)', description: this.$t('categories.string.format'), example: 'format("test %d", 10)', result: '"test 10"' },
           ],
         },
         {
           id: 'dateTime',
-          name: 'Date and Time',
+          name: this.$t('categories.dateTime.label'),
           collapse: false,
           chevron: false,
           items: [
-            { syntax: 'strftime(datetime, format)', description: 'Returns DateTime string for the specified date and format', example: 'strftime(datefield, "%Y-%m-%d")', result: '"1970-01-01"' },
-            { syntax: 'modTime(datetime, duration)', description: 'Returns modified DateTime string', example: 'modTime(datefield, "+30m")', result: '"1970-01-01T00:30:00"' },
-            { syntax: 'parseISOTime(datetime)', description: 'Returns parsed ISO DateTime string', example: 'parseISOTime(datefield)', result: '"1970-01-01T00:00:00+00:00"' },
-            { syntax: 'parseDuration(duration)', description: 'Returns parsed duration', example: 'parseDuration("2h")', result: '"2h0m0s"' },
-            { syntax: 'earliest(d1, d2, ...)', description: 'Returns earliest DateTime', example: 'earliest(datefield1, datefield2)', result: '"1970-01-01T00:00:00"' },
-            { syntax: 'latest(d1, d2, ...)', description: 'Returns latest DateTime', example: 'latest(datefield1, datefield2)', result: '"1970-01-01T00:30:00"' },
+            { syntax: 'strftime(datetime, format)', description: this.$t('categories.dateTime.strftime'), example: 'strftime(datefield, "%Y-%m-%d")', result: '"1970-01-01"' },
+            { syntax: 'modTime(datetime, duration)', description: this.$t('categories.dateTime.modTime'), example: 'modTime(datefield, "+30m")', result: '"1970-01-01T00:30:00"' },
+            { syntax: 'parseISOTime(datetime)', description: this.$t('categories.dateTime.parseISOTime'), example: 'parseISOTime(datefield)', result: '"1970-01-01T00:00:00+00:00"' },
+            { syntax: 'parseDuration(duration)', description: this.$t('categories.dateTime.parseDuration'), example: 'parseDuration("2h")', result: '"2h0m0s"' },
+            { syntax: 'earliest(d1, d2, ...)', description: this.$t('categories.dateTime.earliest'), example: 'earliest(datefield1, datefield2)', result: '"1970-01-01T00:00:00"' },
+            { syntax: 'latest(d1, d2, ...)', description: this.$t('categories.dateTime.latest'), example: 'latest(datefield1, datefield2)', result: '"1970-01-01T00:30:00"' },
           ],
         },
       ],
@@ -333,79 +346,78 @@ export default {
       formatCategories: [
         {
           id: 'format',
-          name: 'String formatting',
+          name: this.$t('formatCategories.string.label'),
           collapse: false,
           chevron: false,
           items: [
-            { syntax: '%v', description: 'Returns the raw value', example: 'format("%v", "test")', result: '"test"' },
-            { syntax: '%t', description: 'Returns the boolean value as true/false', example: 'format("%t", true)', result: 'true' },
-            { syntax: '%t', description: 'Returns the boolean value as true/false', example: 'format("%t", true)', result: 'true' },
-            { syntax: '%b', description: 'Returns the number in base 2 (in the binary format)', example: 'format("%b", 10)', result: '1010' },
-            { syntax: '%d', description: 'Returns the number in base 10', example: 'format("%d", 10)', result: '10' },
-            { syntax: '%o', description: 'Returns the number in base 8', example: 'format("%o", 10)', result: '12' },
-            { syntax: '%O', description: 'Returns the number in base 8 with 0o prefix', example: 'format("%O", 10)', result: '0o12' },
-            { syntax: '%x', description: 'Returns the number in base 16; lower-case a-f', example: 'format("%x", 10)', result: 'a' },
-            { syntax: '%X', description: 'Returns the number in base 16; upper-case A-F', example: 'format("%X", 10)', result: 'A' },
-            { syntax: '%b', description: 'Returns the floating point number in scientific notation with binary exponent', example: 'format("%b", 10.11)', result: '5691424029089464p-49' },
-            { syntax: '%e', description: 'Returns the floating point number in scientific notation; lower-case e', example: 'format("%e", 10.11)', result: '1.011000e+01' },
-            { syntax: '%E', description: 'Returns the floating point number in scientific notation; upper-case E', example: 'format("%E", 10.11)', result: '1.011000E+01' },
-            { syntax: '%f', description: 'Returns the floating point number with a decimal point', example: 'format("%f", 10.11)', result: '10.110000' },
+            { syntax: '%v', description: this.$t('formatCategories.string.v'), example: 'format("%v", "test")', result: '"test"' },
+            { syntax: '%t', description: this.$t('formatCategories.string.t'), example: 'format("%t", true)', result: 'true' },
+            { syntax: '%b', description: this.$t('formatCategories.string.b'), example: 'format("%b", 10)', result: '1010' },
+            { syntax: '%d', description: this.$t('formatCategories.string.d'), example: 'format("%d", 10)', result: '10' },
+            { syntax: '%o', description: this.$t('formatCategories.string.o'), example: 'format("%o", 10)', result: '12' },
+            { syntax: '%O', description: this.$t('formatCategories.string.O'), example: 'format("%O", 10)', result: '0o12' },
+            { syntax: '%x', description: this.$t('formatCategories.string.x'), example: 'format("%x", 10)', result: 'a' },
+            { syntax: '%X', description: this.$t('formatCategories.string.X'), example: 'format("%X", 10)', result: 'A' },
+            { syntax: '%b', description: this.$t('formatCategories.string.binary'), example: 'format("%b", 10.11)', result: '5691424029089464p-49' },
+            { syntax: '%e', description: this.$t('formatCategories.string.e'), example: 'format("%e", 10.11)', result: '1.011000e+01' },
+            { syntax: '%E', description: this.$t('formatCategories.string.E'), example: 'format("%E", 10.11)', result: '1.011000E+01' },
+            { syntax: '%f', description: this.$t('formatCategories.string.f'), example: 'format("%f", 10.11)', result: '10.110000' },
           ],
         },
         {
           id: 'strftime',
-          name: 'Date and Time formatting',
+          name: this.$t('formatCategories.dateTime.label'),
           collapse: false,
           chevron: false,
           items: [
-            { syntax: '%Y', description: 'Returns the year with century as a decimal number', example: 'strftime(dateField, "%Y")', result: '"1993"' },
-            { syntax: '%y', description: 'Returns the year without century as a decimal number (00-99)', example: 'strftime(dateField, "%y")', result: '"93"' },
-            { syntax: '%C', description: 'Returns year / 100 as a decimal number; single digits are preceded by a zero', example: 'strftime(dateField, "%C")', result: '"19"' },
+            { syntax: '%Y', description: this.$t('formatCategories.dateTime.Y'), example: 'strftime(dateField, "%Y")', result: '"1993"' },
+            { syntax: '%y', description: this.$t('formatCategories.dateTime.y'), example: 'strftime(dateField, "%y")', result: '"93"' },
+            { syntax: '%C', description: this.$t('formatCategories.dateTime.C'), example: 'strftime(dateField, "%C")', result: '"19"' },
 
-            { syntax: '%m', description: 'Returns the month as a decimal number (01-12)', example: 'strftime(dateField, "%m")', result: '"02"' },
-            { syntax: '%B', description: 'Returns the full national month name', example: 'strftime(dateField, "%B")', result: '"February"' },
-            { syntax: '%b', description: 'Returns the abbreviated national month name', example: 'strftime(dateField, "%b")', result: '"Feb"' },
+            { syntax: '%m', description: this.$t('formatCategories.dateTime.m'), example: 'strftime(dateField, "%m")', result: '"02"' },
+            { syntax: '%B', description: this.$t('formatCategories.dateTime.B'), example: 'strftime(dateField, "%B")', result: '"February"' },
+            { syntax: '%b', description: this.$t('formatCategories.dateTime.b'), example: 'strftime(dateField, "%b")', result: '"Feb"' },
 
-            { syntax: '%U', description: 'Returns the week number of the year (Sunday as the first day of the week) as a decimal number (00-53)', example: 'strftime(dateField, "%U")', result: '"05"' },
-            { syntax: '%V', description: 'Returns the week number of the year (Monday as the first day of the week) as a decimal number (01-53)', example: 'strftime(dateField, "%V")', result: '"05"' },
-            { syntax: '%W', description: 'Returns the week number of the year (Monday as the first day of the week) as a decimal number (00-53)', example: 'strftime(dateField, "%W")', result: '"05"' },
+            { syntax: '%U', description: this.$t('formatCategories.dateTime.U'), example: 'strftime(dateField, "%U")', result: '"05"' },
+            { syntax: '%V', description: this.$t('formatCategories.dateTime.V'), example: 'strftime(dateField, "%V")', result: '"05"' },
+            { syntax: '%W', description: this.$t('formatCategories.dateTime.W'), example: 'strftime(dateField, "%W")', result: '"05"' },
 
-            { syntax: '%A', description: 'Returns the full national weekday name', example: 'strftime(dateField, "%A")', result: '"Tuesday"' },
-            { syntax: '%a', description: 'Returns the abbreviated national weekday name', example: 'strftime(dateField, "%a")', result: '"Tue"' },
-            { syntax: '%d', description: 'Returns the day of the month as a decimal number (01-31)', example: 'strftime(dateField, "%d")', result: '"02"' },
-            { syntax: '%e', description: 'Returns the day of the month as a decimal number (1-31)', example: 'strftime(dateField, "%e")', result: '" 2"' },
-            { syntax: '%j', description: 'Returns the day of the year as a decimal number (001-366)', example: 'strftime(dateField, "%j")', result: '"033"' },
-            { syntax: '%u', description: 'Returns the weekday (Monday as the first day of the week) as a decimal number (1-7)', example: 'strftime(dateField, "%u")', result: '"5"' },
-            { syntax: '%w', description: 'Returns the weekday (Sunday as the first day of the week) as a decimal number (0-6)', example: 'strftime(dateField, "%w")', result: '"2"' },
+            { syntax: '%A', description: this.$t('formatCategories.dateTime.A'), example: 'strftime(dateField, "%A")', result: '"Tuesday"' },
+            { syntax: '%a', description: this.$t('formatCategories.dateTime.a'), example: 'strftime(dateField, "%a")', result: '"Tue"' },
+            { syntax: '%d', description: this.$t('formatCategories.dateTime.d'), example: 'strftime(dateField, "%d")', result: '"02"' },
+            { syntax: '%e', description: this.$t('formatCategories.dateTime.e'), example: 'strftime(dateField, "%e")', result: '" 2"' },
+            { syntax: '%j', description: this.$t('formatCategories.dateTime.j'), example: 'strftime(dateField, "%j")', result: '"033"' },
+            { syntax: '%u', description: this.$t('formatCategories.dateTime.u'), example: 'strftime(dateField, "%u")', result: '"5"' },
+            { syntax: '%w', description: this.$t('formatCategories.dateTime.w'), example: 'strftime(dateField, "%w")', result: '"2"' },
 
-            { syntax: '%H', description: 'Returns the hour (24-hour clock) as a decimal number (00-23)', example: 'strftime(dateField, "%H")', result: '"06"' },
-            { syntax: '%k', description: 'Returns the hour (24-hour clock) as a decimal number (0-23)', example: 'strftime(dateField, "%k")', result: '" 6"' },
-            { syntax: '%I', description: 'Returns the hour (12-hour clock) as a decimal number (01-12)', example: 'strftime(dateField, "%I")', result: '"06"' },
-            { syntax: '%l', description: 'Returns the hour (12-hour clock) as a decimal number (1-12)', example: 'strftime(dateField, "%l")', result: '" 6"' },
+            { syntax: '%H', description: this.$t('formatCategories.dateTime.H'), example: 'strftime(dateField, "%H")', result: '"06"' },
+            { syntax: '%k', description: this.$t('formatCategories.dateTime.k'), example: 'strftime(dateField, "%k")', result: '" 6"' },
+            { syntax: '%I', description: this.$t('formatCategories.dateTime.I'), example: 'strftime(dateField, "%I")', result: '"06"' },
+            { syntax: '%l', description: this.$t('formatCategories.dateTime.l'), example: 'strftime(dateField, "%l")', result: '" 6"' },
 
-            { syntax: '%M', description: 'Returns the minute as a decimal number (00-59)', example: 'strftime(dateField, "%M")', result: '"00"' },
+            { syntax: '%M', description: this.$t('formatCategories.dateTime.M'), example: 'strftime(dateField, "%M")', result: '"00"' },
 
-            { syntax: '%S', description: 'Returns the second as a decimal number (00-60)', example: 'strftime(dateField, "%S")', result: '"00"' },
+            { syntax: '%S', description: this.$t('formatCategories.dateTime.S-second'), example: 'strftime(dateField, "%S")', result: '"00"' },
 
-            { syntax: '%S', description: 'Returns the millisecond as a decimal number (000-999)', example: 'strftime(dateField, "%S")', result: '"000"' },
+            { syntax: '%S', description: this.$t('formatCategories.dateTime.S-middle'), example: 'strftime(dateField, "%S")', result: '"000"' },
 
-            { syntax: '%p', description: 'Returns the national representation of either "ante meridiem" (a.m.)  or "post meridiem" (p.m.)', example: 'strftime(dateField, "%p")', result: '"AM"' },
-            { syntax: '%c', description: 'Returns the national representation of time and date', example: 'strftime(dateField, "%c")', result: '"Tue Feb  2 06:00:00 1993"' },
-            { syntax: '%X', description: 'Returns the national representation of the time', example: 'strftime(dateField, "%X")', result: '"06:00:00"' },
-            { syntax: '%x', description: 'Returns the national representation of the date', example: 'strftime(dateField, "%x")', result: '"02/02/93"' },
-            { syntax: '%Z', description: 'Returns the time zone name', example: 'strftime(dateField, "%Z")', result: '"-0500"' },
-            { syntax: '%z', description: 'Returns the time zone offset from UTC', example: 'strftime(dateField, "%z")', result: '"-0500"' },
+            { syntax: '%p', description: this.$t('formatCategories.dateTime.p'), example: 'strftime(dateField, "%p")', result: '"AM"' },
+            { syntax: '%c', description: this.$t('formatCategories.dateTime.c'), example: 'strftime(dateField, "%c")', result: '"Tue Feb  2 06:00:00 1993"' },
+            { syntax: '%X', description: this.$t('formatCategories.dateTime.X'), example: 'strftime(dateField, "%X")', result: '"06:00:00"' },
+            { syntax: '%x', description: this.$t('formatCategories.dateTime.x'), example: 'strftime(dateField, "%x")', result: '"02/02/93"' },
+            { syntax: '%Z', description: this.$t('formatCategories.dateTime.Z'), example: 'strftime(dateField, "%Z")', result: '"-0500"' },
+            { syntax: '%z', description: this.$t('formatCategories.dateTime.z'), example: 'strftime(dateField, "%z")', result: '"-0500"' },
 
-            { syntax: '%n', description: 'Returns a newline (\n)', example: 'strftime(dateField, "%n")', result: '"\n"' },
-            { syntax: '%t', description: 'Returns a tab', example: 'strftime(dateField, "%t")', result: '"\t"' },
-            { syntax: '%%', description: 'Returns a %', example: 'strftime(dateField, "%%")', result: '"%"' },
+            { syntax: '%n', description: this.$t('formatCategories.dateTime.n'), example: 'strftime(dateField, "%n")', result: '"\n"' },
+            { syntax: '%t', description: this.$t('formatCategories.dateTime.t'), example: 'strftime(dateField, "%t")', result: '"\t"' },
+            { syntax: '%%', description: this.$t('formatCategories.dateTime.percent'), example: 'strftime(dateField, "%%")', result: '"%"' },
 
-            { syntax: '%F', description: 'Equivalent to %Y-%m-%d', example: 'strftime(dateField, "%F")', result: '"1993-02-02"' },
-            { syntax: '%D', description: 'Equivalent to %m/%d/%y', example: 'strftime(dateField, "%D")', result: '"02/02/93"' },
-            { syntax: '%R', description: 'Equivalent to %H:%M', example: 'strftime(dateField, "%R")', result: '"06:00"' },
-            { syntax: '%r', description: 'Equivalent to %I:%M:%S %p', example: 'strftime(dateField, "%r")', result: '"06:00:00 AM"' },
-            { syntax: '%T', description: 'Equivalent to %H:%M:%S', example: 'strftime(dateField, "%T")', result: '"06:00:00"' },
-            { syntax: '%v', description: 'Equivalent to %e-%b-%Y', example: 'strftime(dateField, "%v")', result: '" 2-Feb-1993"' },
+            { syntax: '%F', description: this.$t('formatCategories.dateTime.F'), example: 'strftime(dateField, "%F")', result: '"1993-02-02"' },
+            { syntax: '%D', description: this.$t('formatCategories.dateTime.D'), example: 'strftime(dateField, "%D")', result: '"02/02/93"' },
+            { syntax: '%R', description: this.$t('formatCategories.dateTime.R'), example: 'strftime(dateField, "%R")', result: '"06:00"' },
+            { syntax: '%r', description: this.$t('formatCategories.dateTime.r'), example: 'strftime(dateField, "%r")', result: '"06:00:00 AM"' },
+            { syntax: '%T', description: this.$t('formatCategories.dateTime.T'), example: 'strftime(dateField, "%T")', result: '"06:00:00"' },
+            { syntax: '%v', description: this.$t('formatCategories.dateTime.v'), example: 'strftime(dateField, "%v")', result: '" 2-Feb-1993"' },
           ],
         },
       ],
@@ -413,7 +425,7 @@ export default {
       examples: [
         {
           id: 'valueExpressions',
-          name: 'Value expression',
+          name: this.$t('operators.value-expression'),
           collapse: false,
           chevron: false,
           fields: [
@@ -430,7 +442,7 @@ export default {
         },
         {
           id: 'sanitizer',
-          name: 'Sanitizer',
+          name: this.$t('operators.sanitizer'),
           collapse: false,
           chevron: false,
           fields: [
@@ -445,7 +457,7 @@ export default {
         },
         {
           id: 'validator',
-          name: 'Validator',
+          name: this.$t('operators.validator'),
           collapse: false,
           chevron: false,
           fields: [
@@ -469,6 +481,7 @@ export default {
       this.examples.find(({ id }) => id === exampleID).collapse = true
     }
   },
+  i18n: i18n(),
 }
 </script>
 
