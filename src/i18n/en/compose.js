@@ -250,6 +250,10 @@ export default {
           greaterThan: 'Greater than',
           lessThan: 'Less than',
         },
+        conditions: {
+          and: 'AND',
+          or: 'OR',
+        },
       },
       record: {
         inlineEditor: 'Inline editor',

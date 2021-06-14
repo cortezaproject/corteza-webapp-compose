@@ -52,6 +52,7 @@ import {
   faCogs,
   faPen,
   faThumbtack,
+  faPlus,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -150,4 +151,5 @@ library.add(
   faPen,
   faThumbtack,
   faEye,
+  faPlus,
 )

@@ -12,7 +12,6 @@ export function getRecordListFilterSql (filter) {
       existPeviousElement = true
     }
   })
-
   return query ? `(${query})` : query
 }
 
@@ -55,7 +54,7 @@ export function getFieldFilter (name, kind, query, operator = '') {
 
   // Since userID and recordID must be numbers, we check if query is number to avoid wrong querys
   if (['DateTime'].includes(kind)) {
-    return `${name} ${operator} DATE('${query}')`
+    return `${name} ${operator || '='} DATE('${query}')`
   }
 
   // Since userID and recordID must be numbers, we check if query is number to avoid wrong querys
@@ -92,7 +91,6 @@ const toBoolean = (v) => {
 // ie: Return records that have strings in columns (fields) we're showing that start with <query> in case
 //     of text or are exactly the same in case of numbers
 export function queryToFilter (searchQuery = '', prefilter = '', fields = [], recordListFilter = []) {
-  // prefilter = ''
   searchQuery = (searchQuery || '').trim()
 
   // Create query for search string
@@ -105,11 +103,32 @@ export function queryToFilter (searchQuery = '', prefilter = '', fields = [], re
     searchQuery = `(${searchQuery})`
   }
 
-  let recordListFilterSql = ''
-  if (recordListFilter.length) {
-    // Create query for record list filter
-    recordListFilterSql = getRecordListFilterSql(recordListFilter)
+  const recordListFilterSqlArray = recordListFilter.map(filter => {
+    if (filter.length) {
+      const { groupCondition } = filter[0] || {}
+      if (groupCondition) {
+        return ` ${filter[0].groupCondition} `
+      } else {
+        return getRecordListFilterSql(filter)
+      }
+    }
+  })
+
+  for (let index = 0; index <= recordListFilterSqlArray.length; index++) {
+    if (recordListFilterSqlArray[index] === '') {
+      if (index > 1) {
+        recordListFilterSqlArray.splice(index, 1)
+        recordListFilterSqlArray.splice(index - 1, 1)
+      } else if (index === 0 && recordListFilterSqlArray.length > 1) {
+        recordListFilterSqlArray.splice(index, 1)
+        recordListFilterSqlArray.splice(index, 1)
+      }
+    }
   }
+
+  let recordListFilterSql = recordListFilterSqlArray.join('')
+  recordListFilterSql = recordListFilterSql ? `(${recordListFilterSql})` : recordListFilterSql
+
   return [prefilter, searchQuery, recordListFilterSql].filter(f => f).join(' AND ')
 }
 

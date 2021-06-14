@@ -15,87 +15,107 @@
       :target="selectedFieldName"
       @show="onOpen()"
     >
-      <div>
-        <table
-          v-if="componentFilter.length"
-          class="mb-2"
-        >
-          <tr
-            v-for="(filter, index) in componentFilter"
-            :key="index"
+      <div class='table-container py-3'>
+        <table v-if="componentFilter.length">
+          <template
+            v-for="(filters, groupIndex) in componentFilter"
           >
-            <td
-              style="min-width: 84px;"
-            >
-              <h6
-                v-if="index === 0"
-                class="mb-0"
-              >
-                {{ $t('block.recordList.filter.where') }}
-              </h6>
-              <b-form-select
-                v-else
-                v-model="filter.condition"
-                :options="conditions"
-                size="md"
-              />
-            </td>
-            <td>
-              <b-form-select
-                v-model="filter.name"
-                :options="fields"
-                value-field="name"
-                text-field="label"
-                size="md"
-                @change="onChange($event, index)"
-              />
-            </td>
-            <td>
-              <b-form-select
-                v-model="filter.operator"
-                :options="getOperators(filter.kind)"
-                size="md"
-              />
-            </td>
-            <td class="d-inline-flex fill-available">
-              <field-editor
-                v-if="getField(filter.name)"
-                class="mb-0 filter-field-editor"
-                valueOnly
-                :field="getField(filter.name)"
-                :record="filter.record"
-                v-bind="mock"
-              />
-            </td>
-            <td>
-              <c-input-confirm
-                variant="link"
-                class="child-inline-flex"
-                @confirmed="deleteFilter(index)"
-                @canceled="$refs.addFilter.focus()"
-              />
-            </td>
-          </tr>
+            <template v-if="filters.length && !filters[0].groupCondition">
+              <tr v-for="(filter, index) in filters" :key="`${groupIndex}-${index}`">
+                <td style="min-width: 84px;">
+                  <h6 v-if="index === 0" class="mb-0">
+                    {{ $t("block.recordList.filter.where") }}
+                  </h6>
+                  <b-form-select
+                    v-else
+                    v-model="filter.condition"
+                    :options="conditions"
+                    size="md"
+                  />
+                </td>
+                <td>
+                  <b-form-select
+                    v-model="filter.name"
+                    :options="fieldOptions"
+                    value-field="name"
+                    text-field="label"
+                    size="md"
+                    @change="onChange($event,groupIndex, index)"
+                  />
+                </td>
+                <td>
+                  <b-form-select
+                    v-model="filter.operator"
+                    :options="getOperators(filter.kind)"
+                    size="md"
+                  />
+                </td>
+                <td class="d-inline-flex fill-available">
+                  <field-editor
+                    v-if="getField(filter.name)"
+                    class="mb-0 filter-field-editor"
+                    valueOnly
+                    :field="getField(filter.name)"
+                    :record="filter.record"
+                    v-bind="mock"
+                  />
+                </td>
+                <td>
+                  <c-input-confirm
+                    variant="link"
+                    class="child-inline-flex"
+                    @confirmed="deleteFilter(groupIndex, index)"
+                    @canceled="$refs.btnSave.focus()"
+                  />
+                </td>
+              </tr>
+
+              <tr :key="'addFilter'+groupIndex">
+                <td colspan="100%" class="text-left inline">
+                  <b-button
+                    ref="addFilter"
+                    variant="link"
+                    class="p-0 mr-auto inline"
+                    @click="addFilter(groupIndex)"
+                  >
+                    {{ $t("block.recordList.filter.addFilter") }}
+                  </b-button>
+                </td>
+              </tr>
+            </template>
+            <template v-else-if="filters.length">
+              <tr :key="'groupCondtion'+groupIndex">
+                <td colspan="100%" class="p-0 pb-1 filter-border justify-content-center">
+                  <b-form-select
+                    class="mr-1 w-auto mb-1"
+                    v-model="filters[0].groupCondition"
+                    :options="conditions"
+                  />
+                </td>
+              </tr>
+            </template>
+          </template>
+
+            <tr>
+              <td colspan="100%" class="p-0 filter-border justify-content-center">
+                <b-button
+                  class="bg-white text-primary py-2 px-3 mb-1 border border-secondary btn-add"
+                  variant="link"
+                  @click="addGroup()"
+                >
+                  <font-awesome-icon
+                  :icon="['fas', 'plus']"
+                  class="h6 mb-0 "
+                  />
+                </b-button>
+              </td>
+            </tr>
+
         </table>
 
-        <div
-          ref="filter-footer"
-          class="d-flex align-items-center justify-content-between"
-        >
-          <b-button
-            ref="addFilter"
-            variant="link"
-            class="p-0 mr-auto"
-            @click="addFilter"
-          >
-            {{ $t('block.recordList.filter.addFilter') }}
-          </b-button>
-          <b-button
-            variant="primary"
-            size="md"
-            @click="onSave"
-          >
-            {{ $t('general.label.save') }}
+        <div ref="filter-footer" class="d-flex justify-content-end">
+          <b-button ref="btnSave" class="mr-3" variant="primary" size="md" @click="onSave">
+            {{ $t("general.label.save") }}
           </b-button>
         </div>
       </div>
@@ -137,8 +157,8 @@ export default {
       componentFilter: [...this.recordListFilter],
 
       conditions: [
-        { value: 'AND', text: 'AND' },
-        { value: 'OR', text: 'OR' },
+        { value: 'AND', text: this.$t('block.recordList.filter.conditions.and') },
+        { value: 'OR', text: this.$t('block.recordList.filter.conditions.or') },
       ],
 
       mock: {},
@@ -148,19 +168,30 @@ export default {
   computed: {
     fields () {
       return [
-        ...[...this.module.fields].sort((a, b) => a.label.localeCompare(b.label)),
+        ...[...this.module.fields].sort((a, b) =>
+          a.label.localeCompare(b.label),
+        ),
         ...this.module.systemFields(),
       ].filter(({ isMulti }) => !isMulti)
     },
 
+    fieldOptions () {
+      return this.fields.map(({ name, label }) => ({ name, label }))
+    },
+
     inFilter () {
-      return this.recordListFilter.some(({ name }) => name === this.selectedField.name)
+      return this.recordListFilter.some(f => {
+        return f.some(
+          ({ name }) => name === this.selectedField.name,
+        )
+      })
     },
 
     selectedFieldName () {
       return this.selectedField.name
     },
   },
+
   created () {
     this.mock = {
       namespace: this.namespace,
@@ -170,33 +201,48 @@ export default {
   },
 
   methods: {
-    onChange (selected, index) {
+    onChange (selected, groupIndex, index) {
       const field = this.getField(selected)
       if (field) {
         const tempFilter = [...this.componentFilter]
-        tempFilter[index].kind = field.kind
-        tempFilter[index].name = field.name
-        tempFilter[index].value = undefined
+        tempFilter[groupIndex][index].kind = field.kind
+        tempFilter[groupIndex][index].name = field.name
+        tempFilter[groupIndex][index].value = undefined
         this.componentFilter = tempFilter
       }
     },
 
     getOperators (kind) {
       const operators = [
-        { value: '=', text: this.$t('block.recordList.filter.operators.equal') },
-        { value: '!=', text: this.$t('block.recordList.filter.operators.notEqual') },
+        {
+          value: '=',
+          text: this.$t('block.recordList.filter.operators.equal'),
+        },
+        {
+          value: '!=',
+          text: this.$t('block.recordList.filter.operators.notEqual'),
+        },
       ]
 
       if (['Number', 'DateTime'].includes(kind)) {
         return [
           ...operators,
-          { value: '>', text: this.$t('block.recordList.filter.operators.greaterThan') },
-          { value: '<', text: this.$t('block.recordList.filter.operators.lessThan') },
+          {
+            value: '>',
+            text: this.$t('block.recordList.filter.operators.greaterThan'),
+          },
+          {
+            value: '<',
+            text: this.$t('block.recordList.filter.operators.lessThan'),
+          },
         ]
       } else if (['String', 'Url', 'Select', 'Email'].includes(kind)) {
         return [
           ...operators,
-          { value: 'LIKE', text: this.$t('block.recordList.filter.operators.contains') },
+          {
+            value: 'LIKE',
+            text: this.$t('block.recordList.filter.operators.contains'),
+          },
         ]
       }
 
@@ -207,57 +253,82 @@ export default {
       return name ? this.fields.find(f => f.name === name) : undefined
     },
 
-    addFilter () {
-      this.componentFilter.push({
-        condition: 'AND',
-        name: this.selectedField.name,
+    createDefaultFilter (condition, field) {
+      return {
+        condition: condition,
+        name: field.name,
         operator: '=',
         value: undefined,
-        kind: this.selectedField.kind,
+        kind: field.kind,
         record: new compose.Record(this.module, {}),
-      })
+      }
     },
 
-    deleteFilter (index) {
-      this.$refs.addFilter.focus()
-      this.componentFilter.splice(index, 1)
+    addFilter (groupIndex) {
+      this.componentFilter[groupIndex].push(this.createDefaultFilter('AND', this.selectedField))
+    },
+
+    addGroup () {
+      this.componentFilter.push([{ groupCondition: 'AND' }])
+      this.componentFilter.push([this.createDefaultFilter('AND', this.selectedField)])
+    },
+
+    deleteFilter (groupIndex, index) {
+      this.$refs.btnSave.focus()
+      this.componentFilter[groupIndex].splice(index, 1)
+      if (!this.componentFilter[groupIndex].length) {
+        this.componentFilter.splice(groupIndex, 1)
+        if (this.componentFilter.length > 1) {
+          groupIndex !== 0 ? this.componentFilter.splice(groupIndex - 1, 1) : this.componentFilter.splice(groupIndex, 1)
+        }
+      }
+      if (!this.componentFilter.length) {
+        this.componentFilter.push([this.createDefaultFilter('AND', this.selectedField)])
+      }
     },
 
     onOpen () {
       if (this.recordListFilter.length) {
-        this.componentFilter = this.recordListFilter.map((f) => {
-          const record = new compose.Record(this.module, {})
-          record.values[f.name] = f.value
-          return { ...f, record: record }
+        this.componentFilter = this.recordListFilter.map(filter => {
+          return filter.map(f => {
+            // create record and fill its values property if value exists
+            if (f.value) {
+              const record = new compose.Record(this.module, {})
+              record.values[f.name] = f.value
+              return { ...f, record: record }
+            } else if (f.name) {
+              return this.createDefaultFilter('AND', this.getField(f.name))
+            } else {
+              return f
+            }
+          })
         })
-      } else if (this.componentFilter.length < 1) {
-        this.componentFilter.push({
-          condition: 'WHERE',
-          name: this.selectedField.name,
-          operator: '=',
-          value: undefined,
-          kind: this.selectedField.kind,
-          record: new compose.Record(this.module, {}),
-        })
+      }
+      if (!this.componentFilter.length) {
+        this.componentFilter.push([this.createDefaultFilter('Where', this.selectedField)])
       }
     },
 
     onSave () {
       this.$refs.tooltip.$emit('close')
-      this.$emit('filter', this.componentFilter.map(f => {
-        f.value = f.record.values[f.name]
-        const { record, ...r } = f
-        return { ...r }
-      }))
+      this.$emit('filter', this.componentFilter.map(filter => {
+        return filter.map(f => {
+          if (f.record) {
+            f.value = f.record.values[f.name]
+          }
+          const { record, ...r } = f
+          return { ...r }
+        })
+      }),
+      )
     },
   },
 }
 </script>
 <style lang="scss">
 .ctooltip .tooltip-inner {
-  width: 730px;
-  max-width: 85vw !important;
-  padding: 20px;
+  max-width: 760px;
+  padding: 0;
   color: #2d2d2d;
   text-align: center;
   background: white;
@@ -278,6 +349,7 @@ export default {
 .child-inline-flex > span {
   display: inline-flex !important;
   vertical-align: -webkit-baseline-middle;
+  padding: 0;
 }
 
 .filter-field-editor {
@@ -293,12 +365,39 @@ export default {
 }
 </style>
 <style lang="scss" scoped>
+.filter-border {
+  background-image: linear-gradient(to left, lightgray, lightgray);
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  background-position: center;
+}
+
 .fill-available {
   width: -webkit-fill-available;
 }
 
 table {
   border-collapse: separate;
-  border-spacing: 0.25rem;
+}
+
+td {
+  padding-bottom: 0.25rem;
+  padding-right: 0.25rem;
+}
+
+td:first-of-type {
+  padding-left: 1rem;
+}
+
+td:last-of-type {
+  padding-right: 0.5rem;
+}
+
+.btn-add {
+  font-size: 0.6rem;
+
+  &:hover, &:active, &:focus {
+    color: $secondary !important;
+  }
 }
 </style>
