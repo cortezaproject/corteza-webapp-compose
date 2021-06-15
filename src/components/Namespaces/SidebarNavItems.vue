@@ -20,7 +20,7 @@
         <b-button
           variant="link"
           class="px-3 float-right mt-n1"
-          :disabled="i.page.pageID === $route.params.pageID"
+          :disabled="showChildren(i.page, i.children)"
           @click.self.stop.prevent="toggle(i.page)"
         >
           <font-awesome-icon v-if="!collapses[pageIndex(i.page)]"
