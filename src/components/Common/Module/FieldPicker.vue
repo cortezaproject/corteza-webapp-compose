@@ -10,7 +10,7 @@
             :group="group"
           >
             <div v-for="field in availableFields"
-                 @dblclick="selectedFields = [field, ...selectedFields]"
+                 @dblclick="selectedFields = [...selectedFields, field]"
                  class="field"
                  :key="field.name">
               <span v-if="field.label">{{ field.label }} ({{field.name}})</span>
