@@ -18,12 +18,15 @@
       <div class='py-3'>
         <table v-if="componentFilter.length">
           <template
-            v-for="(filters, groupIndex) in componentFilter"
+            v-for="(filterGroup, groupIndex) in componentFilter"
           >
-            <template v-if="filters.length && !filters[0].groupCondition">
-              <tr v-for="(filter, index) in filters" :key="`${groupIndex}-${index}`">
+            <template v-if="filterGroup.filter.length">
+              <tr v-for="(filter, index) in filterGroup.filter" :key="`${groupIndex}-${index}`">
                 <td style="min-width: 84px;">
-                  <h6 v-if="index === 0" class="mb-0">
+                  <h6
+                    v-if="index === 0"
+                    class="mb-0"
+                  >
                     {{ $t("block.recordList.filter.where") }}
                   </h6>
                   <b-form-select
@@ -38,7 +41,7 @@
                     :options="fieldOptions"
                     value-field="name"
                     text-field="label"
-                    @change="onChange($event,groupIndex, index)"
+                    @change="onChange($event, groupIndex, index)"
                   />
                 </td>
                 <td>
@@ -57,7 +60,7 @@
                     v-bind="mock"
                   />
                 </td>
-                <td style="min-width: 85px;">
+                <td style="min-width: 65px;">
                   <c-input-confirm
                     variant="link"
                     size="lg"
@@ -68,13 +71,14 @@
                 </td>
               </tr>
 
-              <tr :key="'addFilter'+groupIndex">
-                <td style="min-width: 84px;">
+              <tr :key="`addFilter-${groupIndex}`">
+                <td class="pb-0">
                   <b-button
                     ref="addFilter"
                     variant="outline-primary"
+                    size="sm"
                     class="w-100"
-                    style="min-height: 38px;"
+                    style="min-height: 38px; min-width: 84px;"
                     @click="addFilter(groupIndex)"
                   >
                     <font-awesome-icon
@@ -85,35 +89,36 @@
                   </b-button>
                 </td>
               </tr>
-            </template>
-            <template v-else-if="filters.length">
-              <tr :key="'groupCondtion'+groupIndex">
-                <td colspan="100%" class="p-0 pb-1 filter-border justify-content-center">
+
+              <tr
+                :key="`groupCondtion-${groupIndex}`"
+              >
+                <td
+                  colspan="100%" class="p-0 filter-border justify-content-center"
+                  :class="{ 'pb-1': filterGroup.groupCondition }"
+                >
                   <b-form-select
-                    class="mr-1 w-auto mb-1"
-                    v-model="filters[0].groupCondition"
+                    v-if="filterGroup.groupCondition"
+                    class="w-auto"
+                    v-model="filterGroup.groupCondition"
                     :options="conditions"
                   />
+
+                  <b-button
+                    v-else
+                    variant="outline-primary"
+                    class="btn-add-group bg-white py-2 px-3"
+                    @click="addGroup()"
+                  >
+                    <font-awesome-icon
+                      :icon="['fas', 'plus']"
+                      class="h6 mb-0 "
+                    />
+                  </b-button>
                 </td>
               </tr>
             </template>
           </template>
-
-            <tr>
-              <td colspan="100%" class="p-0 filter-border justify-content-center">
-                <b-button
-                  class="btn-add-group bg-white py-2 px-3"
-                  variant="outline-primary"
-                  @click="addGroup()"
-                >
-                  <font-awesome-icon
-                    :icon="['fas', 'plus']"
-                    class="h6 mb-0 "
-                  />
-                </b-button>
-              </td>
-            </tr>
-
         </table>
 
         <div ref="filter-footer" class="d-flex justify-content-end">
@@ -157,7 +162,7 @@ export default {
 
   data () {
     return {
-      componentFilter: [...this.recordListFilter],
+      componentFilter: [],
 
       conditions: [
         { value: 'AND', text: this.$t('block.recordList.filter.conditions.and') },
@@ -183,10 +188,8 @@ export default {
     },
 
     inFilter () {
-      return this.recordListFilter.some(f => {
-        return f.some(
-          ({ name }) => name === this.selectedField.name,
-        )
+      return this.recordListFilter.some(({ filter }) => {
+        return filter.some(({ name }) => name === this.selectedField.name)
       })
     },
 
@@ -206,11 +209,12 @@ export default {
   methods: {
     onChange (selected, groupIndex, index) {
       const field = this.getField(selected)
-      if (field) {
+      const filterExists = !!(this.componentFilter[groupIndex] || { filter: [] }).filter[index]
+      if (field && filterExists) {
         const tempFilter = [...this.componentFilter]
-        tempFilter[groupIndex][index].kind = field.kind
-        tempFilter[groupIndex][index].name = field.name
-        tempFilter[groupIndex][index].value = undefined
+        tempFilter[groupIndex].filter[index].kind = field.kind
+        tempFilter[groupIndex].filter[index].name = field.name
+        tempFilter[groupIndex].filter[index].value = undefined
         this.componentFilter = tempFilter
       }
     },
@@ -239,7 +243,7 @@ export default {
             text: this.$t('block.recordList.filter.operators.lessThan'),
           },
         ]
-      } else if (['String', 'Url', 'Select', 'Email'].includes(kind)) {
+      } else if (['String', 'Url', 'Email'].includes(kind)) {
         return [
           ...operators,
           {
@@ -267,63 +271,86 @@ export default {
       }
     },
 
+    createDefaultFilterGroup (groupCondition = undefined) {
+      return {
+        groupCondition,
+        filter: [
+          this.createDefaultFilter('Where', this.selectedField),
+        ],
+      }
+    },
+
     addFilter (groupIndex) {
-      this.componentFilter[groupIndex].push(this.createDefaultFilter('AND', this.selectedField))
+      if ((this.componentFilter[groupIndex] || {}).filter) {
+        this.componentFilter[groupIndex].filter.push(this.createDefaultFilter('AND', this.selectedField))
+      }
     },
 
     addGroup () {
-      this.componentFilter.push([{ groupCondition: 'AND' }])
-      this.componentFilter.push([this.createDefaultFilter('AND', this.selectedField)])
+      this.$refs.btnSave.focus()
+
+      this.componentFilter[this.componentFilter.length - 1].groupCondition = 'AND'
+      this.componentFilter.push(this.createDefaultFilterGroup())
     },
 
     deleteFilter (groupIndex, index) {
       this.$refs.btnSave.focus()
-      this.componentFilter[groupIndex].splice(index, 1)
-      if (!this.componentFilter[groupIndex].length) {
-        this.componentFilter.splice(groupIndex, 1)
-        if (this.componentFilter.length > 1) {
-          groupIndex !== 0 ? this.componentFilter.splice(groupIndex - 1, 1) : this.componentFilter.splice(groupIndex, 1)
+
+      const filterExists = !!(this.componentFilter[groupIndex] || { filter: [] }).filter[index]
+
+      if (filterExists) {
+        // Delete filter from filterGroup
+        this.componentFilter[groupIndex].filter.splice(index, 1)
+
+        // If filter was last in filterGroup, delete filterGroup
+        if (!this.componentFilter[groupIndex].filter.length) {
+          this.componentFilter.splice(groupIndex, 1)
+
+          // If no more filterGroups, add default back
+          if (!this.componentFilter.length) {
+            this.componentFilter.push(this.createDefaultFilterGroup())
+          } else if (groupIndex === this.componentFilter.length) {
+            // Reset first filterGroup groupCondition if last filterGroup was deleted
+            this.componentFilter[groupIndex - 1].groupCondition = undefined
+          }
         }
-      }
-      if (!this.componentFilter.length) {
-        this.componentFilter.push([this.createDefaultFilter('AND', this.selectedField)])
       }
     },
 
     onOpen () {
       if (this.recordListFilter.length) {
-        this.componentFilter = this.recordListFilter.map(filter => {
-          return filter.map(f => {
-            // create record and fill its values property if value exists
-            if (f.value) {
-              const record = new compose.Record(this.module, {})
-              record.values[f.name] = f.value
-              return { ...f, record: record }
-            } else if (f.name) {
-              return this.createDefaultFilter('AND', this.getField(f.name))
-            } else {
-              return f
-            }
+        // Create record and fill its values property if value exists
+        this.componentFilter = this.recordListFilter.map(({ groupCondition, filter = [] }) => {
+          filter = filter.map(({ value, ...f }) => {
+            f.record = new compose.Record(this.module, {})
+            f.record.values[f.name] = value
+            return f
           })
+
+          return { groupCondition, filter }
         })
       }
+
+      // If no filterGroups, add default
       if (!this.componentFilter.length) {
-        this.componentFilter.push([this.createDefaultFilter('Where', this.selectedField)])
+        this.componentFilter.push(this.createDefaultFilterGroup())
       }
     },
 
     onSave () {
       this.$refs.tooltip.$emit('close')
-      this.$emit('filter', this.componentFilter.map(filter => {
-        return filter.map(f => {
-          if (f.record) {
-            f.value = f.record.values[f.name]
+
+      // Emit only value and not whole record with every filter
+      this.$emit('filter', this.componentFilter.map(({ groupCondition, filter = [] }) => {
+        filter = filter.map(({ record, ...f }) => {
+          if (record) {
+            f.value = record.values[f.name]
           }
-          const { record, ...r } = f
-          return { ...r }
+          return f
         })
-      }),
-      )
+
+        return { groupCondition, filter }
+      }))
     },
   },
 }

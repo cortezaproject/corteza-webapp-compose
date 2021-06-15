@@ -2,6 +2,7 @@
 
 export function getRecordListFilterSql (filter) {
   let query = ''
+
   let existPeviousElement = false
   filter.forEach((f, index) => {
     if (f.name && f.value && f.operator) {
@@ -12,6 +13,7 @@ export function getRecordListFilterSql (filter) {
       existPeviousElement = true
     }
   })
+
   return query ? `(${query})` : query
 }
 
@@ -103,31 +105,18 @@ export function queryToFilter (searchQuery = '', prefilter = '', fields = [], re
     searchQuery = `(${searchQuery})`
   }
 
-  const recordListFilterSqlArray = recordListFilter.map(filter => {
-    if (filter.length) {
-      const { groupCondition } = filter[0] || {}
-      if (groupCondition) {
-        return ` ${filter[0].groupCondition} `
-      } else {
-        return getRecordListFilterSql(filter)
-      }
-    }
-  })
+  const recordListFilterSqlArray = recordListFilter.map(({ groupCondition, filter = [] }) => {
+    groupCondition = groupCondition ? ` ${groupCondition} ` : ''
+    filter = getRecordListFilterSql(filter)
 
-  for (let index = 0; index <= recordListFilterSqlArray.length; index++) {
-    if (recordListFilterSqlArray[index] === '') {
-      if (index > 1) {
-        recordListFilterSqlArray.splice(index, 1)
-        recordListFilterSqlArray.splice(index - 1, 1)
-      } else if (index === 0 && recordListFilterSqlArray.length > 1) {
-        recordListFilterSqlArray.splice(index, 1)
-        recordListFilterSqlArray.splice(index, 1)
-      }
-    }
-  }
+    return filter ? `${filter}${groupCondition}` : ''
+  }).filter(filter => filter)
 
-  let recordListFilterSql = recordListFilterSqlArray.join('')
-  recordListFilterSql = recordListFilterSql ? `(${recordListFilterSql})` : recordListFilterSql
+  // Trim AND/OR from end of string
+  let recordListFilterSql = trimChar(trimChar(recordListFilterSqlArray.join(''), ' AND '), ' OR ')
+
+  // If filter exists, wrap with ()
+  recordListFilterSql = recordListFilterSqlArray.length > 1 ? `(${recordListFilterSql})` : recordListFilterSql
 
   return [prefilter, searchQuery, recordListFilterSql].filter(f => f).join(' AND ')
 }
@@ -139,4 +128,12 @@ export function evaluatePrefilter (prefilter, { record, recordID, ownerID, userI
     /* eslint-disable no-eval */
     return eval('`' + prefilter + '`')
   })(prefilter)
+}
+
+// Removes char from end of string
+function trimChar (text = '', char = '') {
+  if (text.substring(text.length - char.length, text.length) === char) {
+    text = text.substring(0, text.length - char.length)
+  }
+  return text
 }

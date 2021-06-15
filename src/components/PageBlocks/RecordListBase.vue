@@ -743,7 +743,6 @@ export default {
   methods: {
     onFilter (filter = []) {
       this.recordListFilter = filter
-      this.filter.query = queryToFilter(this.query, this.prefilter, this.recordListModule.filterFields(this.options.fields), this.recordListFilter)
       this.refresh(true)
     },
 
@@ -909,7 +908,6 @@ export default {
       this.filter = {
         limit,
         sort,
-        filter: this.prefilter || '',
       }
     },
 
@@ -1085,7 +1083,8 @@ export default {
       this.processing = true
       this.selected = []
 
-      const filter = queryToFilter(this.query, this.prefilter, this.recordListModule.filterFields(this.options.fields), this.recordListFilter)
+      // Compute query based on query, prefilter and recordListFilter
+      const query = queryToFilter(this.query, this.prefilter, this.recordListModule.filterFields(this.options.fields), this.recordListFilter)
 
       const { moduleID, namespaceID } = this.recordListModule
       if (this.filter.pageCursor) {
@@ -1100,7 +1099,8 @@ export default {
           incTotal: showTotalCount,
         }
       }
-      await this.$ComposeAPI.recordList({ moduleID, namespaceID, ...this.filter, filter, ...paginationOptions })
+
+      await this.$ComposeAPI.recordList({ moduleID, namespaceID, ...this.filter, query, ...paginationOptions })
         .then(({ set, filter }) => {
           const records = set.map(r => new compose.Record(r, this.recordListModule))
 
