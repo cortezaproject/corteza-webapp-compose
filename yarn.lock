@@ -974,10 +974,10 @@
     "@babel/helper-validator-identifier" "^7.14.0"
     to-fast-properties "^2.0.0"
 
-"@cortezaproject/corteza-js@2021.6.0-rc.1", "@cortezaproject/corteza-js@^2021.6.0-rc.1":
-  version "2021.6.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.6.0-rc.1.tgz#f2e3ddb31694a7139989e71e751d2e479692e428"
-  integrity sha512-qbuIHimHQCQaTBilWICCUY12IUJtQlwmySS1uF7Qm9Rp36pOOpUM4biBNj/ORvds0fNlbs4Z/bFd7RmssmBl2g==
+"@cortezaproject/corteza-js@^2021.6.0-rc.1":
+  version "2021.6.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.6.0-rc.2.tgz#c593fbf1f91bf16f1f6c1db8ea24a1748fd122ca"
+  integrity sha512-zKOXXdzJDuVbB4FuZPVK7llG1OzY1348EA/B4RC1i55CQQxXU4rT/Kr0vIhKRgSnvaavhQeXorxXgRgPtAD7BA==
   dependencies:
     axios "^0.21.1"
     chart.js "2.9.3"
@@ -990,10 +990,10 @@
     pino "^5.16.0"
     ts-sinon "^1.0.25"
 
-"@cortezaproject/corteza-vue@2021.6.0-rc.1":
-  version "2021.6.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.6.0-rc.1.tgz#373bce731dfacf771b9435e3d5f524c9663efdd2"
-  integrity sha512-EGrgCHyfcLdvj5Jzc01jO18lC4JqDVIjtdunWlSkjd2U1Xjl4WykEEiMrtuyVOU5vjdqP7RulCYwDT7QSeBnvw==
+"@cortezaproject/corteza-vue@^2021.6.0-rc.1":
+  version "2021.6.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.6.0-rc.2.tgz#8729b630a6e9167c5dd9e1f9aea4568221d17735"
+  integrity sha512-LkEgDgof+fvZLZeBqoU5mjdIkfRu+w+WypXQ+q1qdbrmt3GQ4ahrMZ8HQHBOVN+ogRBaJ/nr4A+SQSnVgKo+sA==
   dependencies:
     "@cortezaproject/corteza-js" "^2021.6.0-rc.1"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
@@ -1005,6 +1005,7 @@
     moment "2.25.3"
     pdfjs-dist "2.2.228"
     pino "^5.16.0"
+    portal-vue "^2.1.7"
     qs "^6.9.1"
     v-photoswipe "^1.0.3-1"
     vue "^2.6.11"
@@ -1942,9 +1943,9 @@
     "@types/sinon" "*"
 
 "@types/sinon@*":
-  version "10.0.1"
-  resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-10.0.1.tgz#97ccb0482b750f5140ffdc661240ebbbe6e28d75"
-  integrity sha512-tZulsvuJwif5ddTBtscflI7gJcd+RpENcNZ7QCp0jKEl0bZY3Pu6PbJs4GR3SfQkGgsUa+FrlKsKQ0XyGNvDuA==
+  version "10.0.2"
+  resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-10.0.2.tgz#f360d2f189c0fd433d14aeb97b9d705d7e4cc0e4"
+  integrity sha512-BHn8Bpkapj8Wdfxvh2jWIUoaYB/9/XhsL0oOvBfRagJtKlSl9NWPcFOz2lRukI9szwGxFtYZCTejJSqsGDbdmw==
   dependencies:
     "@sinonjs/fake-timers" "^7.1.0"
 
