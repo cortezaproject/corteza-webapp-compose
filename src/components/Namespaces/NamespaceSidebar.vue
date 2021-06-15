@@ -242,10 +242,6 @@ export default {
 </script>
 
 <style lang="scss">
-.v-select {
-  min-width: 0 !important;
-}
-
 .namespace-selector {
   font-size: 1rem;
 

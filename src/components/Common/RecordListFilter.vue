@@ -15,7 +15,7 @@
       :target="selectedFieldName"
       @show="onOpen()"
     >
-      <div class='table-container py-3'>
+      <div class='py-3'>
         <table v-if="componentFilter.length">
           <template
             v-for="(filters, groupIndex) in componentFilter"
@@ -30,16 +30,14 @@
                     v-else
                     v-model="filter.condition"
                     :options="conditions"
-                    size="md"
                   />
                 </td>
-                <td>
+                <td class="d-inline-flex fill-available">
                   <b-form-select
                     v-model="filter.name"
                     :options="fieldOptions"
                     value-field="name"
                     text-field="label"
-                    size="md"
                     @change="onChange($event,groupIndex, index)"
                   />
                 </td>
@@ -47,7 +45,6 @@
                   <b-form-select
                     v-model="filter.operator"
                     :options="getOperators(filter.kind)"
-                    size="md"
                   />
                 </td>
                 <td class="d-inline-flex fill-available">
@@ -60,9 +57,10 @@
                     v-bind="mock"
                   />
                 </td>
-                <td>
+                <td style="min-width: 85px;">
                   <c-input-confirm
                     variant="link"
+                    size="lg"
                     class="child-inline-flex"
                     @confirmed="deleteFilter(groupIndex, index)"
                     @canceled="$refs.btnSave.focus()"
@@ -71,14 +69,19 @@
               </tr>
 
               <tr :key="'addFilter'+groupIndex">
-                <td colspan="100%" class="text-left inline">
+                <td style="min-width: 84px;">
                   <b-button
                     ref="addFilter"
-                    variant="link"
-                    class="p-0 mr-auto inline"
+                    variant="outline-primary"
+                    class="w-100"
+                    style="min-height: 38px;"
                     @click="addFilter(groupIndex)"
                   >
-                    {{ $t("block.recordList.filter.addFilter") }}
+                    <font-awesome-icon
+                      size="sm"
+                      :icon="['fas', 'plus']"
+                    />
+                    {{ $t('general.label.add') }}
                   </b-button>
                 </td>
               </tr>
@@ -99,13 +102,13 @@
             <tr>
               <td colspan="100%" class="p-0 filter-border justify-content-center">
                 <b-button
-                  class="bg-white text-primary py-2 px-3 mb-1 border border-secondary btn-add"
-                  variant="link"
+                  class="btn-add-group bg-white py-2 px-3"
+                  variant="outline-primary"
                   @click="addGroup()"
                 >
                   <font-awesome-icon
-                  :icon="['fas', 'plus']"
-                  class="h6 mb-0 "
+                    :icon="['fas', 'plus']"
+                    class="h6 mb-0 "
                   />
                 </b-button>
               </td>
@@ -114,7 +117,7 @@
         </table>
 
         <div ref="filter-footer" class="d-flex justify-content-end">
-          <b-button ref="btnSave" class="mr-3" variant="primary" size="md" @click="onSave">
+          <b-button ref="btnSave" class="mr-3" variant="primary" @click="onSave">
             {{ $t("general.label.save") }}
           </b-button>
         </div>
@@ -327,7 +330,9 @@ export default {
 </script>
 <style lang="scss">
 .ctooltip .tooltip-inner {
-  max-width: 760px;
+  max-width: 800px;
+  max-height: 500px;
+  overflow-y: auto;
   padding: 0;
   color: #2d2d2d;
   text-align: center;
@@ -389,15 +394,10 @@ td:first-of-type {
   padding-left: 1rem;
 }
 
-td:last-of-type {
-  padding-right: 0.5rem;
-}
-
-.btn-add {
-  font-size: 0.6rem;
-
-  &:hover, &:active, &:focus {
-    color: $secondary !important;
+.btn-add-group {
+  &:hover, &:active {
+    background-color: $primary !important;
+    color: white !important;
   }
 }
 </style>
