@@ -20,6 +20,7 @@
         <b-button
           variant="link"
           class="px-3 float-right mt-n1"
+          :disabled="i.page.pageID === $route.params.pageID"
           @click.self.stop.prevent="toggle(i.page)"
         >
           <font-awesome-icon v-if="!collapses[pageIndex(i.page)]"
@@ -30,7 +31,7 @@
                              :icon="['fas', 'chevron-up']" />
         </b-button>
         <b-collapse
-          :visible="collapses[pageIndex(i.page)] || childPageOpen(i.page, i.children)"
+          :visible="collapses[pageIndex(i.page)] || showChildren(i.page, i.children)"
           @click.stop.prevent
         >
           <sidebar-nav-items
@@ -98,12 +99,12 @@ export default {
     },
 
     // Recursively check for child pages that are open, so that parents can open aswell
-    childPageOpen (page = {}, children = []) {
-      if (children.length) {
-        return children.map(({ page, children }) => this.childPageOpen(page, children)).some(isOpen => isOpen)
+    showChildren (page = {}, children = []) {
+      if (page.pageID === this.$route.params.pageID) {
+        return page.pageID === this.$route.params.pageID
       }
 
-      return page.pageID === this.$route.params.pageID
+      return children.map(({ page, children }) => this.showChildren(page, children)).some(isOpen => isOpen)
     },
   },
 }
