@@ -26,19 +26,19 @@
          <div class="text-nowrap flex-grow-1">
             <template v-if="!options.hideAddButton && recordListModule.canCreateRecord">
               <template v-if="inlineEditing">
-                  <b-btn
-                    variant="primary"
-                    size="lg"
-                    class="float-left"
-                    @click="addInline"
-                  >
-                    + {{ $t('block.recordList.addRecord') }}
-                  </b-btn>
+                <b-btn
+                  variant="primary"
+                  size="lg"
+                  class="float-left mr-1"
+                  @click="addInline"
+                >
+                  + {{ $t('block.recordList.addRecord') }}
+                </b-btn>
               </template>
 
               <template v-else-if="!inlineEditing && recordPageID">
                 <router-link
-                  class="btn btn-lg btn-primary float-left"
+                  class="btn btn-lg btn-primary float-left mr-1"
                   :to="{
                     name: 'page.record.create',
                     params: { pageID: recordPageID, refRecord: record },
@@ -50,7 +50,7 @@
                 <importer-modal
                   :module="recordListModule"
                   :namespace="namespace"
-                  class="ml-1 float-left"
+                  class="mr-1 float-left"
                 />
               </template>
             </template>
@@ -62,13 +62,15 @@
               :query="query"
               :selection="selected"
               @export="onExport"
-              class="ml-1 float-left"
+              class="mr-1 float-left"
             />
           </div>
-          <div class="mt-1 flex-grow-1">
+          <div
+            v-if="!options.hideSearch && !inlineEditing"
+            class="mt-1 flex-grow-1"
+          >
             <b-input-group>
               <b-form-input
-                v-if="!options.hideSearch && !inlineEditing"
                 v-model="query"
                 class="float-right mw-100"
                 type="search"
@@ -723,6 +725,13 @@ export default {
       this.filter.query = queryToFilter(this.query, this.prefilter, this.recordListModule.filterFields(this.options.fields), this.recordListFilter)
       this.refresh(true)
     }, 500),
+
+    options: {
+      deep: true,
+      handler () {
+        this.refresh(true)
+      },
+    },
   },
 
   created () {
@@ -1100,7 +1109,7 @@ export default {
         }
       }
 
-      await this.$ComposeAPI.recordList({ moduleID, namespaceID, ...this.filter, query, ...paginationOptions })
+      await this.$ComposeAPI.recordList({ ...this.filter, moduleID, namespaceID, query, ...paginationOptions })
         .then(({ set, filter }) => {
           const records = set.map(r => new compose.Record(r, this.recordListModule))
 
