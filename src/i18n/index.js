@@ -30,7 +30,7 @@ export default (lng = 'en', fallbackLng = lng) => {
 
   i18next
     .use(new Pseudo({
-      enabled: process.env.NODE_ENV !== 'production',
+      enabled: false && process.env.NODE_ENV !== 'production',
     }))
     .init({
       postProcess: ['pseudo'],
