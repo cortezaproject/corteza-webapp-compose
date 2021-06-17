@@ -1,11 +1,10 @@
 <template>
   <b-tabs active-nav-item-class="bg-grey"
           nav-wrapper-class="bg-white border-bottom"
-          active-tab-class="tab-content h-auto overflow-auto"
           card>
 
     <b-tab active :title="$t('general.label.general')">
-      <div>
+      <div class="mh-tab overflow-auto">
         <b-form-group for="title" :label="$t('block.general.titleLabel')">
           <b-form-input
             v-model="block.title"
@@ -35,6 +34,7 @@
       v-bind="{ ...$attrs, ...$props }"
       mode="configurator"
       v-on="$listeners"
+      class="mh-tab overflow-auto"
     />
   </b-tabs>
 </template>
@@ -74,3 +74,8 @@ export default {
   },
 }
 </script>
+<style scoped>
+.mh-tab {
+  max-height: calc(100vh - 16rem);
+}
+</style>

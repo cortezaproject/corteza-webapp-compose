@@ -95,7 +95,6 @@
       ok-variant="primary"
       cancel-variant="link"
       :cancel-title="$t('general.label.cancel')"
-      scrollable
       size="xl"
       @ok="updateBlocks"
       @hide="editor=null"
@@ -118,7 +117,6 @@
       ok-variant="primary"
       :cancel-title="$t('general.label.cancel')"
       cancel-variant="link"
-      scrollable
       size="xl"
       @ok="updateBlocks"
       @hide="editor=null"
