@@ -12,6 +12,12 @@ export default {
     }
   },
 
+  computed: {
+    title () {
+      return this.$t('module.allRecords.edit.title', { name: this.module.name || '' })
+    },
+  },
+
   methods: {
     handleBack () {
       this.$router.push({ name: 'admin.modules.record.view' })

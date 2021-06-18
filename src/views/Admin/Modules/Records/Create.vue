@@ -22,6 +22,12 @@ export default {
     }
   },
 
+  computed: {
+    title () {
+      return this.$t('module.allRecords.create.title', { name: this.module.name || '' })
+    },
+  },
+
   created () {
     this.record = new compose.Record(this.module, { values: this.values })
   },

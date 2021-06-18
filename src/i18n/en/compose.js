@@ -455,7 +455,24 @@ export default {
     searchPlaceholder: 'Type here to search all modules in this namespace',
     federated: 'Federated',
     import: 'Module import',
-    allRecords: 'All records',
+    allRecords: {
+      label: 'All records',
+      list: {
+        title: 'All records for module "{{name}}"',
+      },
+      edit: {
+        title: 'Edit record for module "{{name}}"',
+      },
+      create: {
+        title: 'Create record for module "{{name}}"',
+      },
+      view: {
+        title: 'View record for module "{{name}}"',
+      },
+      selectFields: {
+        title: 'Configure columns',
+      },
+    },
 
     recordPage: {
       create: 'Create record page',

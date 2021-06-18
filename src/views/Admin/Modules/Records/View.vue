@@ -1,5 +1,8 @@
 <template>
   <div class="d-flex flex-column w-100 overflow-hidden">
+    <portal to="topbar-title">
+      {{ title }}
+    </portal>
     <b-alert
       v-if="isDeleted"
       show
@@ -12,53 +15,19 @@
       v-if="module && record"
       class="flex-grow-1 overflow-auto d-flex p-2 w-100"
     >
-      <b-card
-        v-for="(fieldSet, index) in fields"
-        :key="index"
-        no-body
-        no-header
-        class="flex-grow-1 border-0 shadow-sm rounded-lg m-2"
-      >
-        <div
-          v-for="field in fieldSet"
-          :key="field.id"
-          class="p-2"
-        >
-          <div
-            v-if="field.canReadRecordValue"
-            class="value"
-          >
-            <field-editor
-              v-if="field.canUpdateRecordValue && inEditing"
-              :namespace="$attrs.namespace"
-              :record="record"
-              :field="field"
-              :errors="fieldErrors(field.name)"
-            />
-
-            <div
-              v-else
-              class="mt-3 px-3"
-            >
-              <label class="text-primary">
-                {{ field.label || field.name }}
-              </label>
-              <field-viewer
-                :namespace="$attrs.namespace"
-                :record="record"
-                :field="field"
-                value-only
-              />
-            </div>
-          </div>
-          <i
-            v-else
-            class="text-primary"
-          >
-            {{ $t('field.noPermission') }}
-          </i>
-        </div>
-      </b-card>
+      <template v-for="(block, index) in blocks">
+        <record-base
+          v-if="!inEditing"
+          :key="index"
+          class="flex-grow-1"
+          v-bind="{ ...bindParams, module, block, record }"
+        />
+        <record-editor
+          v-else
+          v-bind="{ ...bindParams, module, block, record }"
+          :key="index"
+        />
+      </template>
     </main>
     <record-toolbar
       :module="module"
@@ -77,18 +46,18 @@
 </template>
 
 <script>
-import FieldEditor from 'corteza-webapp-compose/src/components/ModuleFields/Editor'
-import FieldViewer from 'corteza-webapp-compose/src/components/ModuleFields/Viewer'
 import RecordToolbar from 'corteza-webapp-compose/src/components/Common/RecordToolbar'
 import users from 'corteza-webapp-compose/src/mixins/users'
 import record from 'corteza-webapp-compose/src/mixins/record'
 import { compose } from '@cortezaproject/corteza-js'
+import RecordBase from 'corteza-webapp-compose/src/components/PageBlocks/RecordBase'
+import RecordEditor from 'corteza-webapp-compose/src/components/PageBlocks/RecordEditor'
 
 export default {
   components: {
     RecordToolbar,
-    FieldViewer,
-    FieldEditor,
+    RecordBase,
+    RecordEditor,
   },
 
   mixins: [
@@ -96,8 +65,22 @@ export default {
     record,
     users,
   ],
-
+  data () {
+    return {
+      blocks: [],
+      bindParams: {
+        page: new compose.Page(),
+        boundingRect: {},
+        namespace: this.$attrs.namespace,
+      },
+    }
+  },
   computed: {
+
+    title () {
+      return this.$t('module.allRecords.view.title', { name: this.module.name || '' })
+    },
+
     module () {
       if (this.$attrs.moduleID) {
         return this.getModuleByID(this.$attrs.moduleID)
@@ -138,7 +121,23 @@ export default {
     },
   },
 
+  created () {
+    this.createBlocks()
+  },
+
   methods: {
+    createBlocks () {
+      this.fields.forEach(f => {
+        const block = new compose.PageBlockRecordList()
+        const options = {
+          moduleID: this.$attrs.moduleID,
+          fields: f,
+        }
+        block.options = options
+        this.blocks.push(block)
+      })
+    },
+
     loadRecord () {
       if (this.$attrs.recordID && this.$attrs.moduleID) {
         const { namespaceID } = this.$attrs.namespace

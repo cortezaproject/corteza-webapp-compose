@@ -40,7 +40,7 @@
                 <router-link
                   class="btn btn-lg btn-primary float-left mr-1"
                   :to="{
-                    name: 'page.record.create',
+                    name: options.rowEditUrl || 'page.record.create',
                     params: { pageID: recordPageID, refRecord: record },
                     query: null,
                   }"
@@ -63,6 +63,12 @@
               :selection="selected"
               @export="onExport"
               class="mr-1 float-left"
+            />
+            <select-record-list-fields
+              v-if="options.customFields"
+              :module="recordListModule"
+              :fields="fields"
+              @updateFields="onUpdateFields"
             />
           </div>
           <div
@@ -358,7 +364,7 @@
                 v-if="!inlineEditing"
                 variant="link"
                 class="p-0 m-0 pl-1 text-secondary"
-                :to="{ name: 'page.record.create', params: { pageID: recordPageID, values: item.r.values }, query: null }"
+                :to="{ name: options.rowEditUrl || 'page.record.create', params: { pageID: recordPageID, values: item.r.values }, query: null }"
               >
                 <font-awesome-icon
                   :icon="['far', 'clone']"
@@ -381,7 +387,7 @@
                 v-if="!options.hideRecordEditButton && recordListModule.canUpdateRecord && recordPageID"
                 variant="link"
                 class="p-0 m-0 pl-1 text-primary"
-                :to="{ name: 'page.record.edit', params: { pageID: recordPageID, recordID: item.r.recordID }, query: null }"
+                :to="{ name: options.rowEditUrl || 'page.record.edit', params: { pageID: recordPageID, recordID: item.r.recordID }, query: null }"
               >
                 <font-awesome-icon
                   :icon="['far', 'edit']"
@@ -391,7 +397,7 @@
                 v-if="!options.hideRecordViewButton && recordPageID"
                 variant="link"
                 class="p-0 m-0 pl-1 text-primary"
-                :to="{ name: 'page.record', params: { pageID: recordPageID, recordID: item.r.recordID }, query: null }"
+                :to="{ name: options.rowViewUrl || 'page.record', params: { pageID: recordPageID, recordID: item.r.recordID }, query: null }"
               >
                 <font-awesome-icon
                   :icon="['far', 'eye']"
@@ -513,6 +519,7 @@ import { evaluatePrefilter, queryToFilter } from 'corteza-webapp-compose/src/lib
 import { url } from '@cortezaproject/corteza-vue'
 import draggable from 'vuedraggable'
 import RecordListFilter from 'corteza-webapp-compose/src/components/Common/RecordListFilter'
+import SelectRecordListFields from 'corteza-webapp-compose/src/components/Common/SelectRecordListFields'
 
 export default {
   components: {
@@ -523,6 +530,7 @@ export default {
     FieldEditor,
     draggable,
     RecordListFilter,
+    SelectRecordListFields,
   },
 
   extends: base,
@@ -755,6 +763,10 @@ export default {
       this.refresh(true)
     },
 
+    onUpdateFields (fields = []) {
+      this.options.fields = [...fields]
+    },
+
     onSelectRow (selected, item) {
       if (selected) {
         if (this.selected.includes(item.id)) {
@@ -985,7 +997,7 @@ export default {
 
       const pageID = this.recordPageID
       this.$router.push({
-        name: 'page.record',
+        name: this.options.rowViewUrl || 'page.record',
         params: {
           pageID,
           recordID,
