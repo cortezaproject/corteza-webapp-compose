@@ -40,10 +40,6 @@ export default {
   },
 
   mounted () {
-    this.$nextTick(() => {
-      this.updateChart()
-    })
-
     this.$root.$on('chart.update', this.requestChartUpdate)
   },
 
