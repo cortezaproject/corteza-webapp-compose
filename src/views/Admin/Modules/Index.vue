@@ -189,7 +189,12 @@ export default {
         {
           key: 'updatedAt',
           sortable: true,
+          sortByFormatted: true,
           tdClass: 'align-middle',
+          class: 'text-right',
+          formatter: (updatedAt, key, item) => {
+            return new Date(updatedAt || item.createdAt).toLocaleDateString('en-US')
+          },
         },
         {
           key: 'actions',
