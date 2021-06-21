@@ -8,18 +8,20 @@
       <template v-slot:single>
         <vue-select
           v-if="field.options.selectType === 'multiple'"
-          :filterable="false"
+          v-model="multipleSelected"
           :options="options"
           :disabled="!module"
-          @search="search"
+          :loading="processing"
           option-value="recordID"
           option-text="label"
           :append-to-body="inlineEditor"
           :calculate-position="calculatePosition"
           class="bg-white"
           :placeholder="$t('field.kind.record.suggestionPlaceholder')"
+          :filterable="false"
           multiple
-          v-model="multipleSelected"
+          @open="onOpen"
+          @search="search"
         >
           <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
             <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
@@ -28,19 +30,21 @@
         </vue-select>
         <vue-select
           v-else
-          :filterable="false"
+          ref="singleSelect"
           :options="options"
           :disabled="!module"
-          :clearable="false"
-          @search="search"
+          :loading="processing"
           option-value="recordID"
           option-text="label"
           :append-to-body="inlineEditor"
           :calculate-position="calculatePosition"
+          :clearable="false"
+          :filterable="false"
           class="bg-white"
           :placeholder="$t('field.kind.record.suggestionPlaceholder')"
           @input="selectChange($event)"
-          ref="singleSelect"
+          @open="onOpen"
+          @search="search"
         >
           <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
             <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
@@ -51,19 +55,21 @@
       <template v-slot:default="ctx">
         <vue-select
           v-if="field.options.selectType === 'each'"
-          :filterable="false"
           :options="options"
           :disabled="!module"
-          :clearable="false"
-          @search="search"
+          :loading="processing"
           option-value="recordID"
           option-text="label"
           :append-to-body="inlineEditor"
           :calculate-position="calculatePosition"
+          :clearable="false"
+          :filterable="false"
           class="bg-white"
           :placeholder="$t('field.kind.record.suggestionPlaceholder')"
           :value="getRecord(ctx.index)"
+          @open="onOpen"
           @input="setRecord($event, ctx.index)"
+          @search="search"
         >
           <li v-if="showPagination" slot="list-footer" class="d-flex justify-conten mt-1 mx-1">
             <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
@@ -81,7 +87,7 @@
         :filterable="false"
         :options="options"
         :disabled="!module"
-        @search="search"
+        :loading="processing"
         option-value="recordID"
         option-text="label"
         :append-to-body="inlineEditor"
@@ -89,6 +95,8 @@
         :placeholder="$t('field.kind.record.suggestionPlaceholder')"
         class="bg-white"
         v-model="selected"
+        @open="onOpen"
+        @search="search"
       >
         <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
           <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
@@ -117,6 +125,8 @@ export default {
 
   data () {
     return {
+      processing: false,
+
       query: '',
 
       fetchedRecords: [],
@@ -311,6 +321,8 @@ export default {
     },
 
     async fetchPrefiltered (q) {
+      this.processing = true
+
       // Support prefilters
       let baseF = q.filter
       if (this.field.options.prefilter) {
@@ -339,6 +351,9 @@ export default {
           this.filter.prevPage = filter.prevPage
           return { filter, set }
         })
+        .finally(() => {
+          this.processing = false
+        })
     },
 
     sortString () {
@@ -365,6 +380,10 @@ export default {
         // Cant mutate props so we use magic(refs)
         this.$refs.singleSelect.mutableValue = null
       }
+    },
+
+    onOpen () {
+      this.loadLatest()
     },
 
     calculatePosition (dropdownList, component, { width }) {
