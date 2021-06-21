@@ -1,15 +1,23 @@
 <template>
   <div
+    v-if="loaded"
     class="d-flex flex-column w-100 h-100"
   >
-    <div
-      v-if="loaded"
-      class="overflow-auto mb-2"
-    >
-      <portal to="topbar-title">
-        {{ isEdit ? $t('namespace.edit') : $t('namespace.create') }}
-      </portal>
+    <portal to="topbar-title">
+      {{ pageTitle }}
+    </portal>
 
+    <portal to="topbar-tools">
+      <b-button
+        v-if="isEdit"
+        variant="primary"
+        :to="openNamespace"
+      >
+        {{ $t('namespace.visit') }}
+      </b-button>
+    </portal>
+
+    <div class="flex-grow-1 overflow-auto mb-2">
       <b-container
         fluid="xl"
         class="flex-grow-1"
@@ -224,6 +232,14 @@ export default {
   },
 
   computed: {
+    pageTitle () {
+      return this.isEdit ? this.$t('namespace.edit') : this.$t('namespace.create')
+    },
+
+    openNamespace () {
+      return { name: 'pages', params: { slug: (this.namespace.slug || this.namespace.namespaceID) } }
+    },
+
     isEdit () {
       return this.namespace && this.namespace.namespaceID !== NoID
     },
