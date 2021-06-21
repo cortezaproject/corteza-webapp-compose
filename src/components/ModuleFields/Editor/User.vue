@@ -30,6 +30,7 @@
       <template v-slot:single>
         <vue-select
           v-if="field.options.selectType === 'default'"
+          ref="singleSelect"
           :placeholder="$t('field.kind.user.suggestionPlaceholder')"
           :options="options"
           :get-option-label="getOptionLabel"
@@ -38,10 +39,10 @@
           :calculate-position="calculatePosition"
           :clearable="false"
           :filterable="false"
+          :loading="processing"
           class="bg-white"
           @search="search"
           @input="updateValue($event)"
-          ref="singleSelect"
         >
           <pagination
             v-if="showPagination"
@@ -54,6 +55,7 @@
         </vue-select>
         <vue-select
           v-else-if="field.options.selectType === 'multiple'"
+          v-model="multipleSelected"
           :placeholder="$t('field.kind.user.suggestionPlaceholder')"
           :options="options"
           :get-option-label="getOptionLabel"
@@ -61,10 +63,10 @@
           :append-to-body="inlineEditor"
           :calculate-position="calculatePosition"
           :filterable="false"
+          :loading="processing"
+          multiple
           class="bg-white"
           @search="search"
-          v-model="multipleSelected"
-          multiple
         >
           <pagination
             v-if="showPagination"
@@ -88,6 +90,7 @@
           :calculate-position="calculatePosition"
           :clearable="false"
           :filterable="false"
+          :loading="processing"
           class="bg-white"
           @search="search"
           @input="updateValue($event, ctx.index)"
@@ -117,6 +120,7 @@
         :append-to-body="inlineEditor"
         :calculate-position="calculatePosition"
         :filterable="false"
+        :loading="processing"
         class="bg-white"
         @input="updateValue($event)"
         @search="search"
@@ -152,6 +156,8 @@ export default {
 
   data () {
     return {
+      processing: false,
+
       // list of items, ready to be displayed in the vue-select
       options: [],
 
@@ -295,6 +301,8 @@ export default {
         this.filter.sort = ''
       }
 
+      this.processing = true
+
       return this.$SystemAPI.userList(this.filter)
         .then(({ filter, set }) => {
           this.filter = { ...this.filter, ...filter }
@@ -302,6 +310,9 @@ export default {
           this.filter.prevPage = filter.prevPage
           this.options = set.map(m => Object.freeze(m))
           return { filter, set }
+        })
+        .finally(() => {
+          this.processing = false
         })
     },
 
