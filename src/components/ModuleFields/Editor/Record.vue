@@ -30,9 +30,10 @@
       <template v-slot:single>
         <vue-select
           v-if="field.options.selectType === 'multiple'"
+          v-model="multipleSelected"
           :options="options"
           :disabled="!module"
-          @search="search"
+          :loading="processing"
           option-value="recordID"
           option-text="label"
           :append-to-body="inlineEditor"
@@ -42,7 +43,8 @@
           class="bg-white"
           :placeholder="$t('field.kind.record.suggestionPlaceholder')"
           multiple
-          v-model="multipleSelected"
+          @open="onOpen"
+          @search="search"
         >
           <pagination
             v-if="showPagination"
@@ -55,9 +57,10 @@
         </vue-select>
         <vue-select
           v-else
+          ref="singleSelect"
           :options="options"
           :disabled="!module"
-          @search="search"
+          :loading="processing"
           option-value="recordID"
           option-text="label"
           :append-to-body="inlineEditor"
@@ -67,7 +70,8 @@
           class="bg-white"
           :placeholder="$t('field.kind.record.suggestionPlaceholder')"
           @input="selectChange($event)"
-          ref="singleSelect"
+          @open="onOpen"
+          @search="search"
         >
           <pagination
             v-if="showPagination"
@@ -84,7 +88,7 @@
           v-if="field.options.selectType === 'each'"
           :options="options"
           :disabled="!module"
-          @search="search"
+          :loading="processing"
           option-value="recordID"
           option-text="label"
           :append-to-body="inlineEditor"
@@ -94,7 +98,9 @@
           class="bg-white"
           :placeholder="$t('field.kind.record.suggestionPlaceholder')"
           :value="getRecord(ctx.index)"
+          @open="onOpen"
           @input="setRecord($event, ctx.index)"
+          @search="search"
         >
           <pagination
             v-if="showPagination"
@@ -115,7 +121,7 @@
       <vue-select
         :options="options"
         :disabled="!module"
-        @search="search"
+        :loading="processing"
         option-value="recordID"
         option-text="label"
         :append-to-body="inlineEditor"
@@ -124,15 +130,17 @@
         :filterable="false"
         class="bg-white"
         v-model="selected"
+        @open="onOpen"
+        @search="search"
       >
-          <pagination
-            v-if="showPagination"
-            slot="list-footer"
-            :has-prev-page="hasPrevPage"
-            :has-next-page="hasNextPage"
-            @prev="goToNextPage(false)"
-            @next="goToNextPage(true)"
-          />
+        <pagination
+          v-if="showPagination"
+          slot="list-footer"
+          :has-prev-page="hasPrevPage"
+          :has-next-page="hasNextPage"
+          @prev="goToNextPage(false)"
+          @next="goToNextPage(true)"
+        />
       </vue-select>
       <errors :errors="errors" />
     </template>
@@ -158,6 +166,8 @@ export default {
 
   data () {
     return {
+      processing: false,
+
       query: '',
 
       fetchedRecords: [],
@@ -353,6 +363,8 @@ export default {
     },
 
     async fetchPrefiltered (q) {
+      this.processing = true
+
       // Support prefilters
       let baseF = q.filter
       if (this.field.options.prefilter) {
@@ -380,6 +392,9 @@ export default {
           this.filter.prevPage = filter.prevPage
           return { filter, set }
         })
+        .finally(() => {
+          this.processing = false
+        })
     },
 
     sortString () {
@@ -406,6 +421,10 @@ export default {
         // Cant mutate props so we use magic(refs)
         this.$refs.singleSelect.mutableValue = null
       }
+    },
+
+    onOpen () {
+      this.loadLatest()
     },
 
     calculatePosition (dropdownList, component, { width }) {
