@@ -26,18 +26,22 @@
       </small>
     </template>
 
-    <uploader :endpoint="endpoint"
-              @uploaded="appendAttachment"
-              :acceptedFiles="mimetypes"
-              :maxFilesize="maxSize"/>
+    <uploader
+      :endpoint="endpoint"
+      @uploaded="appendAttachment"
+      :acceptedFiles="mimetypes"
+      :maxFilesize="maxSize"
+    />
 
-    <list-loader kind="record"
-                 :set.sync="set"
-                 :namespace="namespace"
-                 :enable-order="field.isMulti"
-                 enable-delete
-                 mode="list"
-                 class="mt-2"></list-loader>
+    <list-loader
+      kind="record"
+      :set.sync="set"
+      :namespace="namespace"
+      :enable-order="field.isMulti"
+      enable-delete
+      mode="list"
+      class="mt-2"
+    />
     <errors :errors="errors" />
   </b-form-group>
 </template>

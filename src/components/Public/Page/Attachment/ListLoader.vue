@@ -20,16 +20,19 @@
 
             </b-col>
             <div class="col-sm-2 text-right my-auto">
-              <a :href="a.download"
-                 class="btn text-primary"
+              <a
+                :href="a.download"
+                class="px-0 btn text-primary mr-2"
               >
                 <font-awesome-icon :icon="['fas', 'download']" />
               </a>
-              <b-button variant="link"
-                        class="delete right inline"
-                        v-if="enableDelete"
-                        @click="deleteAttachment(index)">
-                <font-awesome-icon :icon="['far', 'trash-alt']" class="action"></font-awesome-icon>
+              <b-button
+                v-if="enableDelete"
+                variant="link"
+                class="px-0"
+                @click="deleteAttachment(index)"
+              >
+                <font-awesome-icon :icon="['far', 'trash-alt']" class="action text-danger"></font-awesome-icon>
               </b-button>
             </div>
           </b-row>
