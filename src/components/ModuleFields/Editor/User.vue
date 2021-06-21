@@ -8,17 +8,19 @@
       <template v-slot:single>
         <vue-select
           v-if="field.options.selectType === 'default'"
+          ref="singleSelect"
           :placeholder="$t('field.kind.user.suggestionPlaceholder')"
           :options="options"
           :get-option-label="getOptionLabel"
           :get-option-key="getOptionKey"
-          :clearable="false"
           :append-to-body="inlineEditor"
           :calculate-position="calculatePosition"
+          :clearable="false"
+          :filterable="false"
+          :loading="processing"
           class="bg-white"
           @search="search"
           @input="updateValue($event)"
-          ref="singleSelect"
         >
           <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
             <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
@@ -27,16 +29,18 @@
         </vue-select>
         <vue-select
           v-else-if="field.options.selectType === 'multiple'"
+          v-model="multipleSelected"
           :placeholder="$t('field.kind.user.suggestionPlaceholder')"
           :options="options"
           :get-option-label="getOptionLabel"
           :get-option-key="getOptionKey"
           :append-to-body="inlineEditor"
           :calculate-position="calculatePosition"
+          :filterable="false"
+          :loading="processing"
+          multiple
           class="bg-white"
           @search="search"
-          v-model="multipleSelected"
-          multiple
         >
           <li v-if="showPagination" slot="list-footer" class="d-flex mt-1 mx-1">
             <b-button class="flex-grow-1" @click="filter.pageCursor = filter.prevPage" :disabled="!hasPrevPage" size="sm">Prev</b-button>
@@ -52,9 +56,11 @@
           :get-option-label="getOptionLabel"
           :get-option-key="getOptionKey"
           :value="getUserByIndex(ctx.index)"
-          :clearable="false"
           :append-to-body="inlineEditor"
           :calculate-position="calculatePosition"
+          :clearable="false"
+          :filterable="false"
+          :loading="processing"
           class="bg-white"
           @search="search"
           @input="updateValue($event, ctx.index)"
@@ -79,6 +85,8 @@
         :value="getUserByIndex()"
         :append-to-body="inlineEditor"
         :calculate-position="calculatePosition"
+        :filterable="false"
+        :loading="processing"
         class="bg-white"
         @input="updateValue($event)"
         @search="search"
@@ -108,6 +116,8 @@ export default {
 
   data () {
     return {
+      processing: false,
+
       // list of items, ready to be displayed in the vue-select
       options: [],
 
@@ -261,6 +271,8 @@ export default {
         this.filter.sort = ''
       }
 
+      this.processing = true
+
       return this.$SystemAPI.userList(this.filter)
         .then(({ filter, set }) => {
           this.filter = { ...this.filter, ...filter }
@@ -268,6 +280,9 @@ export default {
           this.filter.nextPage = filter.nextPage
           this.filter.prevPage = filter.prevPage
           return { filter, set }
+        })
+        .finally(() => {
+          this.processing = false
         })
     },
 
