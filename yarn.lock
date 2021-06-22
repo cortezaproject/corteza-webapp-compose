@@ -851,9 +851,9 @@
     yargs "6.6.0"
 
 "@cortezaproject/corteza-js@^2021.3.0":
-  version "2021.3.7"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.3.7.tgz#130d70f5e7a29639044e8edb3395b949cfa01359"
-  integrity sha512-ga1NsIgRsbDPaTH0wr9S44iMYKvZIswwCgIf9ibqE/cRjPiRoiV6N6ATnk9/3EIGr99svEFrEylEWDE0fplYqA==
+  version "2021.3.8"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.3.8.tgz#b88654b23e48d90cf992a6a0f455dc4a4a1aeaa6"
+  integrity sha512-7d9q+I4QzlYRwVHyMYLPhOfzB26awEAROUOCnefqEt3yFL6Vn62TjPe5HDE82JflymQ8Pa/oovY9kPB4gdqj8A==
   dependencies:
     axios "^0.21.1"
     chart.js "2.9.3"
@@ -867,9 +867,9 @@
     ts-sinon "^1.0.25"
 
 "@cortezaproject/corteza-vue@^2021.3.0":
-  version "2021.3.7"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.3.7.tgz#b2972b04a8e70bb8fe97ccba71f7fde98d27f3b9"
-  integrity sha512-CeB4ChfUzg/icu0EpC0frxXwdYl/qrNTa+Do/2SpZUv8IPGNVC977GsMgNMeDZt6MDer2LWjCPrzlSGzS7RVVg==
+  version "2021.3.8"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.3.8.tgz#0d5d76f4b877b5d1029cf72802f155856e724f05"
+  integrity sha512-G1vLW1MGSH4KcipeDMzr8oh4Drf0Xhi0IlEgVphZo4Pdsp22FaHNVg3+/OHXT46eE8iAvaY3UUyBYYp2YK88Cw==
   dependencies:
     "@cortezaproject/corteza-js" "^2021.3.0"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
@@ -1665,9 +1665,9 @@
     webpack "^4.33.0"
 
 "@types/chai@*":
-  version "4.2.18"
-  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.2.18.tgz#0c8e298dbff8205e2266606c1ea5fbdba29b46e4"
-  integrity sha512-rS27+EkB/RE1Iz3u0XtVL5q36MGDWbgYe7zWiodyKNUnthxY0rukK5V36eiUCtCisB7NN8zKYH6DO2M37qxFEQ==
+  version "4.2.19"
+  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.2.19.tgz#80f286b515897413c7a35bdda069cc80f2344233"
+  integrity sha512-jRJgpRBuY+7izT7/WNXP/LsMO9YonsstuL+xuvycDyESpoDoIAsMd7suwpB4h9oEWB+ZlPTqJJ8EHomzNhwTPQ==
 
 "@types/color-name@^1.1.1":
   version "1.1.1"
