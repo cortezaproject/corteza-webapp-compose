@@ -51,33 +51,38 @@
         </div>
       </b-row>
 
-      <b-row
-        v-if="namespacesFiltered && namespacesFiltered.length"
-        align-v="stretch"
-        class="pb-4"
-      >
-        <b-col
-          v-for="n in namespacesFiltered"
-          :key="n.namespaceID"
-          cols="12"
-          md="6"
-          lg="4"
-          xl="3"
-          class="my-2"
+        <b-row
+          v-if="namespacesFiltered && namespacesFiltered.length"
+          align-v="stretch"
+          class="pb-4 mt-3"
         >
-          <namespace-item :namespace="n" />
-        </b-col>
-      </b-row>
-      <b-row
-        v-else
-        class="py-4"
-      >
-        <b-col>
-          <h3 class="text-left">
-            {{ $t('namespace.noResults') }}
-          </h3>
-        </b-col>
-      </b-row>
+          <b-col
+            v-for="n in namespacesFiltered"
+            :key="n.namespaceID"
+            cols="12"
+            md="6"
+            lg="4"
+            xl="3"
+            class="my-2"
+          >
+            <transition-group
+              name="namespace-list"
+              tag="div"
+              class="namespace d-flex flex-wrap flex-column h-100">
+              <namespace-item :namespace="n" key="ns" />
+            </transition-group>
+          </b-col>
+        </b-row>
+        <b-row
+          v-else
+          class="py-4"
+        >
+          <b-col>
+            <h3 class="text-left">
+              {{ $t('namespace.noResults') }}
+            </h3>
+          </b-col>
+        </b-row>
     </b-container>
   </div>
 </template>
@@ -121,3 +126,25 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+  .namespace {
+    transition: all 0.2s ease;
+    box-shadow: 0;
+    border-radius: 14px;
+
+    &:hover {
+      transition: all 0.2s ease;
+      box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
+      position: relative;
+      top: -2px;
+    }
+  }
+
+  .namespace-list-leave-active {
+    position: absolute;
+    transition: opacity 0.25 ease;
+  }
+  .namespace-list-enter, .namespace-list-leave {
+    transition: 0;
+  }
+</style>
