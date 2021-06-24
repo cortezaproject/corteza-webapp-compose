@@ -54,19 +54,28 @@
       <b-row
         v-if="namespacesFiltered && namespacesFiltered.length"
         align-v="stretch"
-        class="pb-4"
+        class="pb-4 mt-3"
       >
-        <b-col
-          v-for="n in namespacesFiltered"
-          :key="n.namespaceID"
-          cols="12"
-          md="6"
-          lg="4"
-          xl="3"
-          class="my-2"
+        <transition-group
+          name="namespace-list"
+          tag="div"
+          class="d-flex flex-wrap flex-row h-100 w-100"
         >
-          <namespace-item :namespace="n" />
-        </b-col>
+          <b-col
+            v-for="n in namespacesFiltered"
+            :key="n.namespaceID"
+            cols="12"
+            md="6"
+            lg="4"
+            xl="3"
+            class="namespace-col my-2 w-100"
+          >
+            <namespace-item
+              :namespace="n"
+              class="namespace-item"
+            />
+          </b-col>
+        </transition-group>
       </b-row>
       <b-row
         v-else
@@ -121,3 +130,28 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+  .namespace-col, .namespace-item {
+    transition: all 0.2s ease;
+  }
+
+  .namespace-item {
+    box-shadow: 0;
+    top: 0;
+
+    &:hover {
+      box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
+      transition: all .2s ease;
+      top: -1px;
+    }
+  }
+
+  .namespace-list-leave-active {
+    position: absolute;
+    transition: opacity 0.25 ease;
+  }
+
+  .namespace-list-enter, .namespace-list-leave-to {
+    opacity: 0;
+  }
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <b-card class="h-100 shadow-sm ns-item"
+  <b-card class="h-100 ns-item"
           footer-bg-variant="white"
           body-class="pb-0"
           footer-class="pb-3"
