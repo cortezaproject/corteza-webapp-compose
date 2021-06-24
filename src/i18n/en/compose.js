@@ -1158,7 +1158,7 @@ export default {
     disabled: 'Namespace is disabled',
     setPermissions: 'Set namespace permissions',
     name: {
-      label: 'Full namespace name',
+      label: 'Full namespace name *',
       placeholder: 'Enter namespace name',
     },
     description: {
@@ -1170,7 +1170,7 @@ export default {
       placeholder: 'Enter namespace subtitle',
     },
     slug: {
-      label: 'Short name',
+      label: 'Short name *',
       placeholder: 'Enter a short name for the namespace',
       description: 'The short name will be used in the URL',
     },
