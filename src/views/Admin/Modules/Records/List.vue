@@ -5,6 +5,30 @@
     <portal to="topbar-title">
       {{ title }}
     </portal>
+
+    <portal to="topbar-tools">
+      <b-button-group
+        v-if="modulePage"
+        size="sm"
+        class="mr-1"
+      >
+        <b-button
+          variant="primary"
+          :disabled="!modulePage"
+          :to="modulePage"
+          style="margin-right:2px;"
+          class="d-flex align-items-center"
+        >
+          {{ $t('module.edit.edit') }}
+          <font-awesome-icon
+            :icon="['fas', 'pen']"
+            size="sm"
+            class="ml-1"
+          />
+        </b-button>
+      </b-button-group>
+    </portal>
+
     <record-list-base
       :block="block"
       :page="page"
@@ -51,6 +75,13 @@ export default {
       }
     },
 
+    modulePage () {
+      if (this.module) {
+        return { name: 'admin.modules.edit', params: { moduleID: this.module.moduleID }, query: null }
+      }
+
+      return undefined
+    },
   },
 
   created () {

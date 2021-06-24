@@ -4,6 +4,28 @@
       {{ title }}
     </portal>
 
+    <portal to="topbar-tools">
+      <b-button-group
+        v-if="allRecords"
+        size="sm"
+        class="mr-1"
+      >
+        <b-button
+          v-if="allRecords"
+          variant="primary"
+          :disabled="!allRecords"
+          :to="allRecords"
+          class="d-flex align-items-center"
+        >
+          {{ $t('module.allRecords.label') }}
+          <font-awesome-icon
+            :icon="['fas', 'columns']"
+            class="ml-1"
+          />
+        </b-button>
+      </b-button-group>
+    </portal>
+
     <b-container @submit.prevent="handleSave" tag="form" v-if="module" fluid="xl">
       <b-row no-gutters>
         <b-col>
@@ -308,6 +330,14 @@ export default {
 
     creatingModule () {
       return this.module.moduleID === NoID
+    },
+
+    allRecords () {
+      if (this.moduleID) {
+        return { name: 'admin.modules.record.list', params: { moduleID: this.moduleID } }
+      }
+
+      return undefined
     },
   },
 

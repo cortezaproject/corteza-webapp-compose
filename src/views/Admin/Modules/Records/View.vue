@@ -3,6 +3,42 @@
     <portal to="topbar-title">
       {{ title }}
     </portal>
+
+    <portal to="topbar-tools">
+      <b-button-group
+        v-if="modulePage || allRecords"
+        size="sm"
+        class="mr-1"
+      >
+        <b-button
+          variant="primary"
+          :disabled="!modulePage"
+          :to="modulePage"
+          class="d-flex align-items-center"
+          style="margin-right:2px;"
+        >
+          {{ $t('module.edit.edit') }}
+          <font-awesome-icon
+            :icon="['fas', 'pen']"
+            size="sm"
+            class="ml-1"
+          />
+        </b-button>
+
+        <b-button
+          v-if="allRecords"
+          variant="primary"
+          :disabled="!allRecords"
+          :to="allRecords"
+          class="d-flex align-items-center"
+        >
+          <font-awesome-icon
+            :icon="['fas', 'columns']"
+          />
+        </b-button>
+      </b-button-group>
+    </portal>
+
     <b-alert
       v-if="isDeleted"
       show
@@ -11,37 +47,35 @@
     >
       {{ $t('block.record.recordDeleted') }}
     </b-alert>
-    <main
+
+    <div
       v-if="module && record"
       class="flex-grow-1 overflow-auto d-flex p-2 w-100"
     >
-      <template v-for="(block, index) in blocks">
-        <record-base
-          v-if="!inEditing"
-          :key="index"
-          class="flex-grow-1"
-          v-bind="{ ...bindParams, module, block, record }"
-        />
-        <record-editor
-          v-else
-          v-bind="{ ...bindParams, module, block, record }"
-          :key="index"
-        />
-      </template>
-    </main>
-    <record-toolbar
-      :module="module"
-      :record="record"
-      :processing="processing"
-      :isDeleted="isDeleted"
-      :inEditing="inEditing"
-      @add="handleAdd()"
-      @clone="handleClone()"
-      @edit="handleEdit()"
-      @delete="handleDelete()"
-      @back="handleBack()"
-      @submit="handleFormSubmitSimple('admin.modules.record.view')"
-    />
+      <component
+        v-for="(block, index) in blocks"
+        :key="index"
+        :is="getRecordComponent"
+        v-bind="{ ...bindParams, module, block, record }"
+        :class="{ 'flex-grow-1': !inEditing }"
+      />
+    </div>
+
+    <portal to="admin-toolbar">
+      <record-toolbar
+        :module="module"
+        :record="record"
+        :processing="processing"
+        :isDeleted="isDeleted"
+        :inEditing="inEditing"
+        @add="handleAdd()"
+        @clone="handleClone()"
+        @edit="handleEdit()"
+        @delete="handleDelete()"
+        @back="handleBack()"
+        @submit="handleFormSubmitSimple('admin.modules.record.view')"
+      />
+    </portal>
   </div>
 </template>
 
@@ -54,6 +88,8 @@ import RecordBase from 'corteza-webapp-compose/src/components/PageBlocks/RecordB
 import RecordEditor from 'corteza-webapp-compose/src/components/PageBlocks/RecordEditor'
 
 export default {
+  name: 'ViewRecord',
+
   components: {
     RecordToolbar,
     RecordBase,
@@ -76,7 +112,6 @@ export default {
     }
   },
   computed: {
-
     title () {
       return this.$t('module.allRecords.view.title', { name: this.module.name || '' })
     },
@@ -109,6 +144,26 @@ export default {
 
     getUiEventResourceType () {
       return 'admin-record-page'
+    },
+
+    getRecordComponent () {
+      return this.inEditing ? RecordEditor : RecordBase
+    },
+
+    modulePage () {
+      if (this.module) {
+        return { name: 'admin.modules.edit', params: { moduleID: this.module.moduleID }, query: null }
+      }
+
+      return undefined
+    },
+
+    allRecords () {
+      if (this.module.moduleID) {
+        return { name: 'admin.modules.record.list', params: { moduleID: this.module.moduleID } }
+      }
+
+      return undefined
     },
   },
 
