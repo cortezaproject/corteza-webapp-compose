@@ -281,7 +281,7 @@ export default {
         return false
       }
 
-      return !!this.namespace.name
+      return !!this.nameState && this.slugState
     },
   },
 
