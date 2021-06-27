@@ -15,3 +15,6 @@ dist
 
 .nyc_output
 coverage
+
+/.act*
+/workflow
