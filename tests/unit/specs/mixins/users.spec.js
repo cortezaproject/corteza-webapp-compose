@@ -34,7 +34,7 @@ describe('mixins/users.vue', () => {
 
     sinon.assert.calledOnce(dispatch)
     const uIDs = dispatch.args.pop().pop()
-    expect(uIDs).to.have.members(['0001', '0002', '0003', '0004', '0005'])
+    expect(uIDs).to.include.members(['0001', '0002', '0003', '0004', '0005'])
     expect(uIDs).to.not.have.members(['invalid', '0', undefined])
   })
 })
