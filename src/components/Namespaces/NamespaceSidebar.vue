@@ -26,6 +26,24 @@
       v-if="!pending && namespace"
       to="sidebar-body-expanded"
     >
+      <b-button
+        v-if="!pending && isAdminPage"
+        variant="light"
+        class="w-100 mb-2"
+        :to="{ name: 'pages', params: { slug: namespace.slug } }"
+      >
+        {{ $t('navigation.publicPages') }}
+      </b-button>
+
+      <b-button
+        v-else-if="!pending && namespace && namespace.canManageNamespace"
+        variant="light"
+        class="w-100 mb-2"
+        :to="{ name: 'admin.modules', params: { slug: namespace.slug } }"
+      >
+        {{ $t('navigation.adminPanel') }}
+      </b-button>
+
       <div
         v-if="navItems.length"
         class="h-100"
@@ -52,29 +70,6 @@
       >
         {{ $t('sidebar.noPages') }}
       </h5>
-    </portal>
-
-    <portal
-      to="sidebar-footer-expanded"
-      class="d-flex"
-    >
-      <b-button
-        v-if="!pending && isAdminPage"
-        variant="light"
-        class="w-100"
-        :to="{ name: 'pages', params: { slug: namespace.slug } }"
-      >
-        {{ $t('navigation.publicPages') }}
-      </b-button>
-
-      <b-button
-        v-else-if="!pending && namespace && namespace.canManageNamespace"
-        variant="light"
-        class="w-100"
-        :to="{ name: 'admin.modules', params: { slug: namespace.slug } }"
-      >
-        {{ $t('navigation.adminPanel') }}
-      </b-button>
     </portal>
   </div>
 </template>
