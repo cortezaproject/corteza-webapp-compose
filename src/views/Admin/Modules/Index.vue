@@ -84,10 +84,12 @@
                 hover
               >
                 <template v-slot:cell(name)="{ item: m }">
-                  <div>
+                  <div
+                    class="d-flex align-items-center"
+                  >
                     {{ m.name }}
                     <h5
-                      class="mb-0"
+                      class="ml-2 mb-0"
                     >
                       <b-badge
                         v-if="Object.keys(m.labels || {}).includes('federation')"
