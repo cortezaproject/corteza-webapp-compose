@@ -251,10 +251,14 @@ export default {
 
     createNewChart () {
       const { namespaceID } = this.namespace
+      const { moduleID = '' } = this.modules.find(m => m.moduleID) || {}
       const newChart = new compose.Chart({
         namespaceID,
         name: 'Demo Chart',
         handle: 'demo_chart',
+        config: {
+          reports: [{ moduleID }],
+        },
       })
 
       this.createChart(newChart).then((chart) => {
