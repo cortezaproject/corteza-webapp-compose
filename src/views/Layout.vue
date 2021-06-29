@@ -21,6 +21,7 @@
         :expanded.sync="expanded"
         :pinned.sync="pinned"
         expand-on-hover
+        :disabled-routes="['namespace.list']"
       >
         <template #header-expanded>
           <portal-target name="sidebar-header-expanded" />
