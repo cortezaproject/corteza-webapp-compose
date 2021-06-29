@@ -7,22 +7,28 @@
     >
       <font-awesome-icon :icon="['fas', 'filter']" />
     </b-button>
-    <b-tooltip
-      ref="tooltip"
-      custom-class="ctooltip"
+    <b-popover
+      ref="popover"
+      custom-class="cpopover shadow-sm"
       triggers="click blur"
+      placement="bottom"
       delay="0"
+      boundary="viewport"
+      boundary-padding="2"
       :target="selectedFieldName"
       @show="onOpen()"
     >
-      <div class='py-3'>
+      <div class='py-3 px-2'>
         <table v-if="componentFilter.length">
           <template
             v-for="(filterGroup, groupIndex) in componentFilter"
           >
             <template v-if="filterGroup.filter.length">
-              <tr v-for="(filter, index) in filterGroup.filter" :key="`${groupIndex}-${index}`">
-                <td style="min-width: 84px;">
+              <tr
+                v-for="(filter, index) in filterGroup.filter"
+                :key="`${groupIndex}-${index}`"
+              >
+                <td>
                   <h6
                     v-if="index === 0"
                     class="mb-0"
@@ -60,10 +66,11 @@
                     v-bind="mock"
                   />
                 </td>
-                <td style="min-width: 65px;">
+                <td class="pl-1">
                   <c-input-confirm
                     variant="link"
                     size="lg"
+                    button-class="text-dark px-0"
                     class="child-inline-flex"
                     @confirmed="deleteFilter(groupIndex, index)"
                     @canceled="$refs.btnSave.focus()"
@@ -75,15 +82,15 @@
                 <td class="pb-0">
                   <b-button
                     ref="addFilter"
-                    variant="outline-primary"
-                    size="sm"
-                    class="w-100"
+                    variant="link text-decoration-none"
+                    class="d-flex align-items-center"
                     style="min-height: 38px; min-width: 84px;"
                     @click="addFilter(groupIndex)"
                   >
                     <font-awesome-icon
-                      size="sm"
                       :icon="['fas', 'plus']"
+                      size="sm"
+                      class="mr-1"
                     />
                     {{ $t('general.label.add') }}
                   </b-button>
@@ -127,7 +134,7 @@
           </b-button>
         </div>
       </div>
-    </b-tooltip>
+    </b-popover>
   </div>
 </template>
 <script>
@@ -318,6 +325,7 @@ export default {
     },
 
     onOpen () {
+      console.log('here')
       if (this.recordListFilter.length) {
         // Create record and fill its values property if value exists
         this.componentFilter = this.recordListFilter.map(({ groupCondition, filter = [] }) => {
@@ -338,7 +346,7 @@ export default {
     },
 
     onSave () {
-      this.$refs.tooltip.$emit('close')
+      this.$refs.popover.$emit('close')
 
       // Emit only value and not whole record with every filter
       this.$emit('filter', this.componentFilter.map(({ groupCondition, filter = [] }) => {
@@ -356,7 +364,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.ctooltip .tooltip-inner {
+.cpopover .popover-body {
   max-width: 800px;
   max-height: 500px;
   overflow-y: auto;
@@ -370,12 +378,21 @@ export default {
   font-size: 1rem;
 }
 
-.ctooltip .arrow::before {
-  border-bottom-color: white;
+.cpopover .arrow {
+  &::before {
+    border-bottom-color: white;
+    border-top-color: white;
+  }
+
+  &::after {
+    border-top-color: white;
+  }
 }
 
-.ctooltip {
+.cpopover {
+  max-width: 800px;
   opacity: 1 !important;
+  border-color: transparent;
 }
 
 .child-inline-flex > span {
@@ -415,10 +432,6 @@ table {
 td {
   padding-bottom: 0.25rem;
   padding-right: 0.25rem;
-}
-
-td:first-of-type {
-  padding-left: 1rem;
 }
 
 .btn-add-group {
