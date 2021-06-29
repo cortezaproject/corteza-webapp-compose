@@ -140,8 +140,8 @@ export default {
     top: 0;
 
     &:hover {
-      box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
-      transition: all .2s ease;
+      box-shadow: 0 4px 8px rgba(38, 38, 38, 0.2);
+      transition: all 0.2s ease;
       top: -1px;
     }
   }
