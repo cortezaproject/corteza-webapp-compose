@@ -2,6 +2,7 @@
 
 import { compose, validator, NoID } from '@cortezaproject/corteza-js'
 import { mapGetters, mapActions } from 'vuex'
+import { throttle } from 'lodash'
 
 export default {
   data () {
@@ -60,8 +61,9 @@ export default {
      *
      * @returns {Promise<void>}
      */
-    async handleFormSubmit (route = 'page.record') {
+    handleFormSubmit: throttle(async function (route = 'page.record') {
       this.processing = true
+
       const isNew = this.record.recordID === NoID
       const queue = []
 
@@ -146,13 +148,15 @@ export default {
         .finally(() => {
           this.processing = false
         })
-    },
+    }, 500),
 
     /**
      * Handle form submit for record browser
      * @returns {Promise<void>}
      */
-    handleFormSubmitSimple (route = 'page.record') {
+    handleFormSubmitSimple: throttle(function (route = 'page.record') {
+      this.processing = true
+
       const isNew = this.record.recordID === NoID
 
       return this
@@ -188,13 +192,18 @@ export default {
             ? 'notification.record.createFailed'
             : 'notification.record.updateFailed',
         )))
-    },
+        .finally(() => {
+          this.processing = false
+        })
+    }, 500),
 
     /**
      * On delete, preserve user's view. Show a notification that the record
      * has been deleted.
      */
-    handleDelete () {
+    handleDelete: throttle(function () {
+      this.processing = true
+
       return this
         .dispatchUiEvent('beforeDelete')
         .then(() => this.$ComposeAPI.recordDelete(this.record))
@@ -204,7 +213,10 @@ export default {
         .then(() => this.dispatchUiEvent('afterDelete'))
         .then(() => this.updatePrompts())
         .catch(this.toastErrorHandler(this.$t('notification.record.deleteFailed')))
-    },
+        .finally(() => {
+          this.processing = false
+        })
+    }, 500),
 
     /**
      * Validates record and dispatches onFormSubmitError
