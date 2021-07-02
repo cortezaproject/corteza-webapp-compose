@@ -338,7 +338,6 @@ export default {
         fileColumns: 'File columns',
         moduleFields: 'Module fields',
         pickModuleField: 'Pick a module field',
-        progress: 'Progress:',
         progressRatio: '{{completed}} / {{entryCount}} rows',
         success: 'Import successful.',
         failed: 'Something went wrong during the import. Please try again: {{failReason}}',

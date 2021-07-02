@@ -13,13 +13,12 @@
                         class="progress-label"
                         variant="primary">
 
-          <span class="font-weight-bold">{{ $t('block.recordList.import.progress') }}</span>
           <span class="font-weight-bold">{{ $t('block.recordList.import.progressRatio', progress) }}</span>
         </b-progress-bar>
       </b-progress>
     </b-form-group>
 
-    <b-form-group class="pt-5 mx-4 mb-0">
+    <b-form-group class="mx-4 mb-0">
       <span v-if="progress.finishedAt && !progress.failed"
             class="text-success">
 
