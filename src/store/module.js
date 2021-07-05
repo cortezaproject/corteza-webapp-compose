@@ -70,20 +70,20 @@ export default function (ComposeAPI) {
         })
       },
 
-      async create ({ commit }, item) {
+      async create ({ commit }, { item, namespace }) {
         commit(types.pending)
         return ComposeAPI.moduleCreate(item).then(raw => {
-          const module = new compose.Module(raw, raw.namespace)
+          const module = new compose.Module(raw, namespace)
           commit(types.updateSet, [module])
           commit(types.completed)
           return module
         })
       },
 
-      async update ({ commit }, item) {
+      async update ({ commit }, { item, namespace }) {
         commit(types.pending)
         return ComposeAPI.moduleUpdate(item).then(raw => {
-          const module = new compose.Module(raw, raw.namespace)
+          const module = new compose.Module(raw, namespace)
           commit(types.updateSet, [module])
           commit(types.completed)
           return module

@@ -11,6 +11,7 @@
       <b-button
         v-if="isEdit"
         variant="primary"
+        class="d-flex align-items-center"
         :to="openNamespace"
       >
         {{ $t('namespace.visit') }}

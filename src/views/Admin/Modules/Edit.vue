@@ -20,7 +20,7 @@
           {{ $t('module.allRecords.label') }}
           <font-awesome-icon
             :icon="['fas', 'columns']"
-            class="ml-1"
+            class="ml-2"
           />
         </b-button>
       </b-button-group>
@@ -409,7 +409,7 @@ export default {
 
         // If such fields exist , after module is created add fields, map moduleID and update module
         // Unfortunately this ruins the initial field order, but we can improve this later
-        this.createModule({ ...this.module, fields }).then(async module => {
+        this.createModule({ item: { ...this.module, fields }, namespace: this.namespace }).then(async module => {
           if (toBeUpdatedFields.length) {
             fields = [
               ...module.fields,
@@ -419,7 +419,7 @@ export default {
               }),
             ]
 
-            module = await this.updateModule({ ...module, fields })
+            module = await this.updateModule({ item: { ...module, fields }, namespace: this.namespace })
           }
 
           this.module = new compose.Module({ ...module }, this.namespace)
@@ -435,7 +435,7 @@ export default {
             this.processing = false
           })
       } else {
-        this.updateModule(this.module).then(module => {
+        this.updateModule({ item: this.module, namespace: this.namespace }).then(module => {
           this.module = new compose.Module({ ...module }, this.namespace)
           this.toastSuccess(this.$t('notification.module.saved'))
           if (closeOnSuccess) {
