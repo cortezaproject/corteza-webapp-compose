@@ -13,15 +13,18 @@
         <b-button
           variant="primary"
           style="margin-right:2px;"
+          class="d-flex align-items-center"
           :to="pageBuilder"
         >
+          {{ $t('general.label.pageBuilder') }}
           <font-awesome-icon
             :icon="['fas', 'cogs']"
+            class="ml-2"
           />
-          {{ $t('general.label.pageBuilder') }}
         </b-button>
         <b-button
           variant="primary"
+          class="d-flex align-items-center"
           :disabled="pageEditorDisabled"
           :to="pageEditor"
         >

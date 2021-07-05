@@ -16,15 +16,18 @@
         <b-button
           variant="primary"
           style="margin-right:2px;"
+          class="d-flex align-items-center"
           :to="pageViewer"
         >
           {{ $t('navigation.viewPage') }}
           <font-awesome-icon
             :icon="['far', 'eye']"
+            class="ml-2"
           />
         </b-button>
         <b-button
           variant="primary"
+          class="d-flex align-items-center"
           :disabled="pageEditorDisabled"
           :to="pageEditor"
         >

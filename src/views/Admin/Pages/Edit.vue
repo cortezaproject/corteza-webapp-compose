@@ -13,15 +13,18 @@
         <b-button
           variant="primary"
           style="margin-right:2px;"
+          class="d-flex align-items-center"
           :to="{ name: 'admin.pages.builder' }"
         >
+          {{ $t('general.label.pageBuilder') }}
           <font-awesome-icon
             :icon="['fas', 'cogs']"
+            class="ml-2"
           />
-          {{ $t('general.label.pageBuilder') }}
         </b-button>
         <b-button
           variant="primary"
+          class="d-flex align-items-center"
           :to="pageViewer"
         >
           <font-awesome-icon

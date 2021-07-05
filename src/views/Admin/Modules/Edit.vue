@@ -20,7 +20,7 @@
           {{ $t('module.allRecords.label') }}
           <font-awesome-icon
             :icon="['fas', 'columns']"
-            class="ml-1"
+            class="ml-2"
           />
         </b-button>
       </b-button-group>

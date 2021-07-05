@@ -21,7 +21,7 @@
           <font-awesome-icon
             :icon="['fas', 'pen']"
             size="sm"
-            class="ml-1"
+            class="ml-2"
           />
         </b-button>
 
