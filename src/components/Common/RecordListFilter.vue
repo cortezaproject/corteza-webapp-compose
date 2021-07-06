@@ -325,7 +325,6 @@ export default {
     },
 
     onOpen () {
-      console.log('here')
       if (this.recordListFilter.length) {
         // Create record and fill its values property if value exists
         this.componentFilter = this.recordListFilter.map(({ groupCondition, filter = [] }) => {
