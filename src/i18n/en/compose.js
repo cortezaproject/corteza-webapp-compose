@@ -204,6 +204,7 @@ export default {
       hideRecordCloneButton: 'Hide clone record button',
       hideRecordEditButton: 'Hide edit record button',
       hideRecordViewButton: 'Hide view record button',
+      hideRecordPermissionsButton: 'Hide record permissions button',
       cancelSelection: 'Cancel',
       fields: 'Module fields',
       editFields: 'Editable module fields',
@@ -508,6 +509,7 @@ export default {
       systemFields: 'System fields:',
       reorderFields: 'Reorder fields',
       fieldPermissions: 'Field permissions',
+      recordPermissions: 'Record permissions',
       federationSettings: {
         title: 'Federation Settings',
         specificTitle: 'Federation Settings ({{handle}})',
@@ -780,185 +782,162 @@ export default {
     saveChanges: 'Save changes',
     resetBack: 'Reset back to "{{current}}"',
     setFor: 'Set permissions for {{target}}',
-    namespace: {
+
+    composeNamespace: {
       all: 'all namespaces',
       specific: 'namespace "{{target}}"',
+
+      operations: {
+        read: {
+          title: 'Read any namespace',
+          specific: 'Read namespace "{{target}}"',
+          description: '',
+        },
+        update: {
+          title: 'Update any namespace',
+          specific: 'Update namespace "{{target}}"',
+          description: '',
+        },
+        delete: {
+          title: 'Delete any namespace',
+          specific: 'Delete namespace "{{target}}"',
+          description: '',
+        },
+        manage: {
+          title: 'Manage any namespace',
+          specific: 'Manage namespace "{{target}}"',
+          description: 'Allow access to namespace\'s admin pages',
+        },
+        moduleCreate: {
+          title: 'Create modules under any namespace',
+          specific: 'Create modules under namespace "{{target}}"',
+          description: '',
+        },
+        chartCreate: {
+          title: 'Create charts under any namespace',
+          specific: 'Create charts under namespace "{{target}}"',
+          description: '',
+        },
+        pageCreate: {
+          title: 'Create pages under any namespace',
+          specific: 'Create pages under namespace "{{target}}"',
+          description: '',
+        },
+      },
     },
-    module: {
-      all: 'all modules',
-      specific: 'module "{{target}}"',
-    },
-    'module-field': {
-      all: 'all module fields',
-      specific: 'field "{{target}}"',
-    },
-    page: {
+    composePage: {
       all: 'all pages',
       specific: 'page "{{target}}"',
+
+      operations: {
+        read: {
+          title: 'Read any page',
+          specific: 'Read page "{{target}}"',
+          description: 'Default: deny',
+        },
+        update: {
+          title: 'Update any page',
+          specific: 'Update page "{{target}}"',
+          description: 'Default: deny',
+        },
+        delete: {
+          title: 'Delete any page',
+          specific: 'Delete page "{{target}}"',
+          description: 'Default: deny',
+        },
+      },
     },
-    'automation-script': {
-      all: 'all automation scripts',
-      specific: 'automation script "{{target}}"',
+    composeModule: {
+      all: 'all modules',
+      specific: 'module "{{target}}"',
+
+      operations: {
+        read: {
+          title: 'Read any module',
+          specific: 'Read module "{{target}}"',
+          description: 'Default: deny',
+        },
+        update: {
+          title: 'Update any module',
+          specific: 'Update module "{{target}}"',
+          description: 'Default: deny',
+        },
+        delete: {
+          title: 'Delete any module',
+          specific: 'Delete module "{{target}}"',
+          description: 'Default: deny',
+        },
+        recordCreate: {
+          title: 'Create record of any module',
+          specific: 'Create record of module "{{target}}"',
+          description: 'Default: deny',
+        },
+      },
     },
-    chart: {
+
+    composeRecord: {
+      all: 'all records',
+      specific: 'record',
+
+      operations: {
+        read: {
+          title: 'Read records of any module',
+          specific: 'Read record',
+          description: 'Default: deny',
+        },
+        update: {
+          title: 'Update records of any module',
+          specific: 'Update record',
+          description: 'Default: deny',
+        },
+        delete: {
+          title: 'Delete records of any module',
+          specific: 'Delete record',
+          description: 'Default: deny',
+        },
+      },
+    },
+    composeModuleField: {
+      all: 'all module fields',
+      specific: 'field "{{target}}"',
+
+      operations: {
+        recordValueRead: {
+          title: 'Read record fields of any module',
+          specific: 'Read "{{target}}" record fields ',
+          description: 'Default: deny',
+        },
+        recordValueUpdate: {
+          title: 'Update record fields of any module',
+          specific: 'Update "{{target}}" record fields ',
+          description: 'Default: deny',
+        },
+      },
+    },
+    composeChart: {
       all: 'all charts',
       specific: 'chart "{{target}}"',
-    },
-    'compose-namespace': {
-      read: {
-        title: 'Read any namespace',
-        specific: 'Read namespace "{{target}}"',
-        description: '',
-      },
-      update: {
-        title: 'Update any namespace',
-        specific: 'Update namespace "{{target}}"',
-        description: '',
-      },
-      delete: {
-        title: 'Delete any namespace',
-        specific: 'Delete namespace "{{target}}"',
-        description: '',
-      },
-      manage: {
-        title: 'Manage any namespace',
-        specific: 'Manage namespace "{{target}}"',
-        description: 'Allow access to namespace\'s admin pages',
-      },
-      'module-create': {
-        title: 'Create modules under any namespace',
-        specific: 'Create modules under namespace "{{target}}"',
-        description: '',
-      },
-      'chart-create': {
-        title: 'Create charts under any namespace',
-        specific: 'Create charts under namespace "{{target}}"',
-        description: '',
-      },
-      'page-create': {
-        title: 'Create pages under any namespace',
-        specific: 'Create pages under namespace "{{target}}"',
-        description: '',
-      },
-      'automation-script-create': {
-        title: 'Create automation scripts under any namespace',
-        specific: 'Create automation scripts under namespace "{{target}}"',
-        description: '',
-      },
-    },
-    'compose-page': {
-      read: {
-        title: 'Read any page',
-        specific: 'Read page "{{target}}"',
-        description: 'Default: deny',
-      },
-      update: {
-        title: 'Update any page',
-        specific: 'Update page "{{target}}"',
-        description: 'Default: deny',
-      },
-      delete: {
-        title: 'Delete any page',
-        specific: 'Delete page "{{target}}"',
-        description: 'Default: deny',
-      },
-    },
-    'compose-automation-script': {
-      read: {
-        title: 'Read any script',
-        specific: 'Read script "{{target}}"',
-        description: 'Default: deny',
-      },
-      update: {
-        title: 'Update any script',
-        specific: 'Update script "{{target}}"',
-        description: 'Default: deny',
-      },
-      delete: {
-        title: 'Delete any script',
-        specific: 'Delete script "{{target}}"',
-        description: 'Default: deny',
-      },
-    },
-    'compose-automation-trigger': {
-      run: {
-        title: 'Run any trigger (on any script)',
-        specific: 'Can run this trigger',
-        description: 'Controls ability to run scripts through manual (or user-invoked) triggers either explicitly or implicitly through browser (Scripts, runnable in User-Agent). Other kinds of automation scripts and triggers that run implicitly on the backend are always executed. Default: allow',
-      },
-    },
-    'compose-module': {
-      read: {
-        title: 'Read any module',
-        specific: 'Read module "{{target}}"',
-        description: 'Default: deny',
-      },
-      update: {
-        title: 'Update any module',
-        specific: 'Update module "{{target}}"',
-        description: 'Default: deny',
-      },
-      delete: {
-        title: 'Delete any module',
-        specific: 'Delete module "{{target}}"',
-        description: 'Default: deny',
-      },
-      'record-create': {
-        title: 'Create record of any module',
-        specific: 'Create record of module "{{target}}"',
-        description: 'Default: deny',
-      },
-      'record-read': {
-        title: 'Read records of any module',
-        specific: 'Read record of module "{{target}}"',
-        description: 'Default: deny',
-      },
-      'record-update': {
-        title: 'Update records of any module',
-        specific: 'Update record of module "{{target}}"',
-        description: 'Default: deny',
-      },
-      'record-delete': {
-        title: 'Delete records of any module',
-        specific: 'Delete record of module "{{target}}"',
-        description: 'Default: deny',
-      },
-      'automation-trigger-manage': {
-        title: 'Can manage automation triggers on any module',
-        specific: 'Can manage automation triggers on module "{{target}}"',
-        description: 'Default: deny',
-      },
-    },
-    'compose-module-field': {
-      'record-value-read': {
-        title: 'Read record fields of any module',
-        specific: 'Read "{{target}}" record fields ',
-        description: 'Default: deny',
-      },
-      'record-value-update': {
-        title: 'Update record fields of any module',
-        specific: 'Update "{{target}}" record fields ',
-        description: 'Default: deny',
-      },
-    },
-    'compose-chart': {
-      read: {
-        title: 'Read any chart',
-        specific: 'Read chart "{{target}}"',
-        description: 'Default: deny',
-      },
-      update: {
-        title: 'Update any chart',
-        specific: 'Update chart "{{target}}"',
-        description: 'Default: deny',
-      },
-      delete: {
-        title: 'Delete any chart',
-        specific: 'Delete chart "{{target}}"',
-        description: 'Default: deny',
+
+      operations: {
+        read: {
+          title: 'Read any chart',
+          specific: 'Read chart "{{target}}"',
+          description: 'Default: deny',
+        },
+        update: {
+          title: 'Update any chart',
+          specific: 'Update chart "{{target}}"',
+          description: 'Default: deny',
+        },
+        delete: {
+          title: 'Delete any chart',
+          specific: 'Delete chart "{{target}}"',
+          description: 'Default: deny',
+        },
       },
     },
   },
+
   field: {
     noPermission: 'No permission to read field value',
     defaultValue: 'Default field value',

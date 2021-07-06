@@ -80,7 +80,7 @@
             v-if="namespace.canGrant"
             :title="item.title"
             :target="item.title"
-            :resource="'compose:page:'+item.pageID"
+            :resource="'corteza::compose:page/'+item.pageID"
             link
             class="btn px-2"
           />

@@ -76,6 +76,9 @@ export default (options = {}) => {
         // Load all pending prompts:
         this.$store.dispatch('wfPrompts/update')
 
+        // Load effective permissions
+        this.$store.dispatch('rbac/load')
+
         // Initializes reminders subsystems, do prefetch of all pending reminders
         this.$Reminder.init(this, { assignedTo: user.userID })
 

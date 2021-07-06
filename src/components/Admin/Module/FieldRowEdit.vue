@@ -105,7 +105,7 @@
         buttonVariant="link"
         :title="value.name"
         :target="value.name"
-        :resource="'compose:module-field:'+value.fieldID"
+        :resource="`corteza::compose:module-field/${module.namespaceID}/${module.moduleID}/${value.fieldID}`"
       />
     </td>
   </tr>
@@ -118,6 +118,11 @@ export default {
   props: {
     value: {
       type: Object,
+      required: true,
+    },
+
+    module: {
+      type: compose.Module,
       required: true,
     },
 
@@ -136,7 +141,6 @@ export default {
   data () {
     return {
       updateField: null,
-      module: null,
     }
   },
 

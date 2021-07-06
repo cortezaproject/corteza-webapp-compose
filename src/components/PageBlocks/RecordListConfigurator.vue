@@ -202,6 +202,9 @@
         <b-form-checkbox v-model="options.hideRecordViewButton" :disabled="options.editable">
           {{ $t('block.recordList.hideRecordViewButton') }}
         </b-form-checkbox>
+        <b-form-checkbox v-model="options.hideRecordPermissionsButton" :disabled="options.editable">
+          {{ $t('block.recordList.hideRecordPermissionsButton') }}
+        </b-form-checkbox>
       </b-form-group>
     </b-tab>
     <automation-tab

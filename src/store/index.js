@@ -17,6 +17,12 @@ export default new Vuex.Store({
     page: page(Vue.prototype.$ComposeAPI),
     chart: chart(Vue.prototype.$ComposeAPI),
     user: user(Vue.prototype.$SystemAPI),
+    rbac: {
+      namespaced: true,
+      ...cvStore.RBAC(
+        Vue.prototype.$ComposeAPI,
+      ),
+    },
     wfPrompts: {
       namespaced: true,
       ...cvStore.wfPrompts({

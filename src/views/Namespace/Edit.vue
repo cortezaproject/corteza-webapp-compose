@@ -38,7 +38,7 @@
             v-if="namespace.canGrant"
             :title="namespace.name"
             :target="namespace.name"
-            :resource="'compose:namespace:'+namespace.namespaceID"
+            :resource="'corteza::compose:namespace/'+namespace.namespaceID"
             buttonVariant="light"
             :buttonLabel="$t('general.label.permissions')"
             class="ml-1 btn-lg"
@@ -210,6 +210,7 @@
 import { compose, NoID } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -228,11 +229,18 @@ export default {
 
       application: undefined,
       isApplication: false,
-      canCreateApplication: false,
     }
   },
 
   computed: {
+    ...mapGetters({
+      can: 'rbac/can',
+    }),
+
+    canCreateApplication () {
+      return this.can('automation/', 'application.create')
+    },
+
     pageTitle () {
       return this.isEdit ? this.$t('namespace.edit') : this.$t('namespace.create')
     },
@@ -290,7 +298,6 @@ export default {
     '$route.params.namespaceID': {
       immediate: true,
       handler (namespaceID) {
-        this.fetchEffective()
         this.fetchNamespace(namespaceID)
       },
     },
@@ -322,13 +329,6 @@ export default {
           }
         })
         .catch(this.toastErrorHandler(this.$t('notification.namespace.application.fetchFailed')))
-    },
-
-    fetchEffective () {
-      this.$SystemAPI.permissionsEffective({ resource: 'application' })
-        .then(p => {
-          this.canCreateApplication = p.find(per => per.operation === 'application.create').allow || false
-        })
     },
 
     async handleSave ({ closeOnSuccess = false } = {}) {

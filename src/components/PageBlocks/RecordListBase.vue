@@ -403,6 +403,14 @@
                   :icon="['far', 'eye']"
                 />
               </b-button>
+
+              <c-permissions-button
+                v-if="options.hideRecordPermissionsButton"
+                :resource="`corteza::compose:record/${item.r.namespaceID}/${item.r.moduleID}/${item.r.recordID}`"
+                :target="item.r.recordID"
+                button-variant="link"
+                class="m-0 p-0"
+              />
             </template>
           </b-td>
         </b-tr>

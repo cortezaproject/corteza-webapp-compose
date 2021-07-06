@@ -64,7 +64,7 @@
                     v-if="module.canGrant"
                     :title="module.name"
                     :target="module.name"
-                    :resource="`compose:module:${module.moduleID}`"
+                    :resource="`corteza::compose:module/${namespace.namespaceID}/${module.moduleID}`"
                     :buttonLabel="$t('general.label.permissions')"
                     buttonVariant="light"
                     class="btn-lg mr-1"
@@ -72,11 +72,20 @@
 
                   <c-permissions-button
                     v-if="module.canGrant"
-                    resource="compose:module-field:*"
+                    :resource="`corteza::compose:module-field/${namespace.namespaceID}/${module.moduleID}/*`"
                     :buttonLabel="$t('module.edit.fieldPermissions')"
                     buttonVariant="light"
-                    class="btn-lg ml-auto"
+                    class="btn-lg ml-auto mr-1"
                   />
+
+                  <c-permissions-button
+                    v-if="module.canGrant"
+                    :resource="`corteza::compose:record/${namespace.namespaceID}/${module.moduleID}/*`"
+                    :buttonLabel="$t('module.edit.recordPermissions')"
+                    buttonVariant="light"
+                    class="btn-lg ml-auto mr-1"
+                  />
+
                 </div>
                 <div
                   v-if="!creatingModule"
@@ -151,6 +160,7 @@
                                       v-model="module.fields[index]"
                                       :canGrant="namespace.canGrant"
                                       :hasRecords="hasRecords"
+                                      :module="module"
                                       :key="index"></field-row-edit>
                     </draggable>
                     <tr>

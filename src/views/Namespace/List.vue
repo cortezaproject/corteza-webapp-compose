@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="loaded"
     class="d-flex w-100 overflow-auto"
   >
     <portal to="topbar-title">
@@ -27,7 +26,7 @@
           </b-btn>
           <c-permissions-button
             v-if="canGrant"
-            resource="compose:namespace:*"
+            resource="corteza::compose:namespace/*"
             buttonVariant="light"
             :buttonLabel="$t('general.label.permissions')"
             class="ml-1 btn-lg"
@@ -102,31 +101,26 @@ export default {
   data () {
     return {
       query: '',
-
-      loaded: false,
-      canCreateNamespace: false,
-      canGrant: false,
     }
   },
 
   computed: {
     ...mapGetters({
       namespaces: 'namespace/set',
+      can: 'rbac/can',
     }),
+
+    canGrant () {
+      return this.can('compose/', 'grant')
+    },
+
+    canCreateNamespace () {
+      return this.can('compose/', 'namespace.create')
+    },
 
     namespacesFiltered () {
       return this.namespaces.filter(ns => ns.slug.indexOf(this.query) > -1 || ns.name.indexOf(this.query) > -1)
     },
-  },
-
-  created () {
-    this.loaded = false
-
-    this.$ComposeAPI.permissionsEffective().then((p) => {
-      this.canCreateNamespace = p.filter(per => per.operation === 'namespace.create')[0].allow
-      this.canGrant = p.filter(per => per.operation === 'grant')[0].allow
-      this.loaded = true
-    }).catch(this.toastErrorHandler(this.$t('notification.general.composeAccessNotAllowed')))
   },
 }
 </script>

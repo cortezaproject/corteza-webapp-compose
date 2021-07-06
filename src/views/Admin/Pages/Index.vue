@@ -34,7 +34,7 @@
                 <div class="flex-grow-1 text-nowrap">
                   <c-permissions-button
                     v-if="namespace.canGrant"
-                    resource="compose:page:*"
+                    resource="corteza::compose:page/*"
                     class="btn-lg"
                     :buttonLabel="$t('general.label.permissions')"
                     buttonVariant="light"

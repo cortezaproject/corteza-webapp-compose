@@ -6,7 +6,6 @@
       v-if="namespaces.length"
       :namespaces="namespaces"
     />
-
     <router-view
       v-if="loaded"
     />
