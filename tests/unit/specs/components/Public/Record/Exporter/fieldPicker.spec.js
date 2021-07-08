@@ -72,7 +72,7 @@ describe('components/Public/Record/Exporter/FieldPicker.vue', () => {
       expect(wrap.emitted().export).to.be.undefined
       wrap.vm.doExport('kind')
       const e = wrap.emitted().export.pop().pop()
-      expect(e).to.have.keys(['ext', 'fields', 'filters', 'filterRaw'])
+      expect(e).to.have.keys(['ext', 'fields', 'filters', 'filterRaw', 'timezone'])
     })
 
     it('filter', () => {
@@ -89,7 +89,7 @@ describe('components/Public/Record/Exporter/FieldPicker.vue', () => {
             rangeBy: 'created_at',
             date: { start: 'start', end: null }
           },
-          'created_at>=\'start\'',
+          'DATE(created_at)>=\'start\'',
         ],
         [
           {
@@ -97,14 +97,14 @@ describe('components/Public/Record/Exporter/FieldPicker.vue', () => {
             rangeBy: 'updated_at',
             date: { start: null, end: 'end' }
           },
-          'updated_at<=\'end\'',
+          'DATE(updated_at)<=\'end\'',
         ],
         [
           {
             rangeBy: 'updated_at',
             date: { start: 'start', end: 'end' }
           },
-          'updated_at>=\'start\' AND updated_at<=\'end\'',
+          '(DATE(updated_at)>=\'start\') AND (DATE(updated_at)<=\'end\')',
         ],
       ]
 
