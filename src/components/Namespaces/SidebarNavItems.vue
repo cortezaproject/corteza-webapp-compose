@@ -10,7 +10,9 @@
       :to="{ name: i.page.name, params: { pageID: i.page.pageID }}"
       @click="$emit('page-selected')"
     >
-      <span class="d-inline-block w-75 text-nowrap text-truncate">
+      <span
+        class="d-inline-block w-75 text-nowrap text-truncate"
+        @click="closeSidebar()">
         {{ i.page.title }}
       </span>
 
@@ -84,6 +86,10 @@ export default {
   },
 
   methods: {
+    closeSidebar () {
+      this.$root.$emit('close-sidebar')
+    },
+
     pageIndex (p) {
       return p.pageID || p.pageHandle || p.pageTitle
     },
