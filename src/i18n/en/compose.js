@@ -813,14 +813,29 @@ export default {
           specific: 'Create modules under namespace "{{target}}"',
           description: '',
         },
+        modulesSearch: {
+          title: 'List and search modules under any namespace',
+          specific: 'List and search modules under namespace "{{target}}"',
+          description: '',
+        },
         chartCreate: {
           title: 'Create charts under any namespace',
           specific: 'Create charts under namespace "{{target}}"',
           description: '',
         },
+        chartsSearch: {
+          title: 'List and search charts under any namespace',
+          specific: 'List and search charts under namespace "{{target}}"',
+          description: '',
+        },
         pageCreate: {
           title: 'Create pages under any namespace',
           specific: 'Create pages under namespace "{{target}}"',
+          description: '',
+        },
+        pagesSearch: {
+          title: 'List and search pages under any namespace',
+          specific: 'List and search pages under namespace "{{target}}"',
           description: '',
         },
       },
@@ -870,6 +885,11 @@ export default {
         recordCreate: {
           title: 'Create record of any module',
           specific: 'Create record of module "{{target}}"',
+          description: 'Default: deny',
+        },
+        recordsSearch: {
+          title: 'List and search records of any module',
+          specific: 'List and search records of module "{{target}}"',
           description: 'Default: deny',
         },
       },
