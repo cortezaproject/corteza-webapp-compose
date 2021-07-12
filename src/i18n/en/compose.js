@@ -380,6 +380,7 @@ export default {
         dimensionFieldPlaceholder: 'Dimension field',
         dateFormat: 'Date format',
         filterLabel: 'Filter',
+        filterFootnote: 'Simplified SQL condition (WHERE ...) syntax is supported. Variables like {{0}}, {{1}} and {{2}} are evaluated (when available)',
         bucketLabel: 'Bucket size',
         bucketPlaceholder: 'Select a bucket size',
         metricFieldLabel: 'Field',
