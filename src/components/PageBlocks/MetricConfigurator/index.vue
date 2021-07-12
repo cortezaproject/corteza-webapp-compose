@@ -143,13 +143,19 @@
                 </b-form-group>
               </template> -->
 
-              <b-form-group>
-                <label>{{ $t('block.metric.edit.filterLabel') }}</label>
+              <b-form-group :label="$t('block.metric.edit.filterLabel')">
                 <b-form-textarea
                   v-model="edit.filter"
                   placeholder="(A > B) OR (A < C)"
                   class="mb-1"
                 />
+                <b-form-text>
+                  <i18next path="block.metric.edit.filterFootnote" tag="label">
+                    <code>${recordID}</code>
+                    <code>${ownerID}</code>
+                    <code>${userID}</code>
+                  </i18next>
+                </b-form-text>
               </b-form-group>
             </fieldset>
 

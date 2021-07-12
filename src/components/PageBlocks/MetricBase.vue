@@ -24,6 +24,8 @@ import base from './base'
 import numeral from 'numeral'
 import moment from 'moment'
 import MetricItem from './Metric/Item'
+import { NoID } from '@cortezaproject/corteza-js'
+import { evaluatePrefilter } from 'corteza-webapp-compose/src/lib/record-filter'
 
 export default {
   components: {
@@ -93,7 +95,18 @@ export default {
 
       for (const m of this.options.metrics) {
         if (m.moduleID) {
-          const vals = await this.block.fetch({ m }, reporter)
+          // prepare a fresh metric with an evaluated prefilter
+          const auxM = { ...m }
+          if (auxM.filter) {
+            auxM.filter = evaluatePrefilter(auxM.filter, {
+              record: this.record,
+              recordID: (this.record || {}).recordID || NoID,
+              ownerID: (this.record || {}).userID || NoID,
+              userID: (this.$auth.user || {}).userID || NoID,
+            })
+          }
+
+          const vals = await this.block.fetch({ m: auxM }, reporter)
           rtr.push(vals)
         }
       }
