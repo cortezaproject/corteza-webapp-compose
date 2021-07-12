@@ -1048,7 +1048,7 @@ export default {
       }
 
       if (this.recordListModule.moduleID !== this.options.moduleID) {
-        throw Error('Module incompatible, module mismatch')
+        throw Error(this.$t('notification.record.moduleMismatch'))
       }
 
       const filter = queryToFilter(this.query, this.prefilter, this.recordListModule.filterFields(this.options.fields))
