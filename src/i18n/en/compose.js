@@ -1271,6 +1271,7 @@ export default {
       deleteFailed: 'Could not delete record',
       loadFailed: 'Could not load record',
       moduleOrPageNotSet: 'RecordList block error: module or page option not set',
+      moduleMismatch: 'Module incompatible, module mismatch',
       invalidRecordVar: 'Can not use ${record...} variable in non-record pages',
       invalidOwnerVar: 'Can not use ${ownerID} variable in non-record pages',
       moduleNotDefined: 'Record module not defined',
