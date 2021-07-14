@@ -35,13 +35,10 @@ export default (options = {}) => {
     },
 
     async created () {
-      // cross link auth & websocket so that ws can use the right access token
-      websocket.init(this)
-
-      this.websocketMessageRouter()
+      this.websocket()
 
       return this.$auth.vue(this).handle().then(({ accessTokenFn, user }) => {
-        // Setup the progress bar
+        // Set up the progress bar
         this.$Progress.start()
         this.$router.beforeEach((to, from, next) => {
           this.$Progress.start()
@@ -122,11 +119,14 @@ export default (options = {}) => {
        * Registers event listener for websocket messages and
        * routes them depending on their type
        */
-      websocketMessageRouter () {
-        // All
+      websocket () {
+        // cross-link auth & websocket so that ws can use the right access token
+
+        websocket.init(this)
+
+        // register event listener for workflow messages
         this.$on('websocket-message', ({ data }) => {
           const msg = JSON.parse(data)
-
           switch (msg['@type']) {
             case 'workflowSessionPrompt':
               this.$store.dispatch('wfPrompts/new', msg['@value'])
