@@ -850,10 +850,10 @@
     openurl "1.1.1"
     yargs "6.6.0"
 
-"@cortezaproject/corteza-js@^2021.3.0":
-  version "2021.3.8"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.3.8.tgz#b88654b23e48d90cf992a6a0f455dc4a4a1aeaa6"
-  integrity sha512-7d9q+I4QzlYRwVHyMYLPhOfzB26awEAROUOCnefqEt3yFL6Vn62TjPe5HDE82JflymQ8Pa/oovY9kPB4gdqj8A==
+"@cortezaproject/corteza-js@^2021.3.0", "@cortezaproject/corteza-js@^2021.3.9":
+  version "2021.3.9"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.3.9.tgz#57843d9484c3e03b385914019d5111c773668c11"
+  integrity sha512-bvp/DdPL+epVXGPnFkzMulXc76q9xo0Gd/WF6V9TIlZFgNyDuSC2ApB671AvgMZTuhVDH7Sp0L3xezTcRoi6vA==
   dependencies:
     axios "^0.21.1"
     chart.js "2.9.3"
@@ -867,11 +867,11 @@
     ts-sinon "^1.0.25"
 
 "@cortezaproject/corteza-vue@^2021.3.0":
-  version "2021.3.8"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.3.8.tgz#0d5d76f4b877b5d1029cf72802f155856e724f05"
-  integrity sha512-G1vLW1MGSH4KcipeDMzr8oh4Drf0Xhi0IlEgVphZo4Pdsp22FaHNVg3+/OHXT46eE8iAvaY3UUyBYYp2YK88Cw==
+  version "2021.3.9"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.3.9.tgz#9d23892a8867d0ce567c51b783078f1ebe219063"
+  integrity sha512-scw27aDSzban5QflhAzDfu5PGqS3Z+Mfy8X45vdebSk+V+bWTJRS002zYFEe7dfuDCVnDXGLZUIVyrGobozbuA==
   dependencies:
-    "@cortezaproject/corteza-js" "^2021.3.0"
+    "@cortezaproject/corteza-js" "^2021.3.9"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
     "@fortawesome/free-solid-svg-icons" "^5.12.0"
     "@fortawesome/vue-fontawesome" "^0.1.9"
@@ -1665,9 +1665,9 @@
     webpack "^4.33.0"
 
 "@types/chai@*":
-  version "4.2.19"
-  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.2.19.tgz#80f286b515897413c7a35bdda069cc80f2344233"
-  integrity sha512-jRJgpRBuY+7izT7/WNXP/LsMO9YonsstuL+xuvycDyESpoDoIAsMd7suwpB4h9oEWB+ZlPTqJJ8EHomzNhwTPQ==
+  version "4.2.21"
+  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.2.21.tgz#9f35a5643129df132cf3b5c1ec64046ea1af0650"
+  integrity sha512-yd+9qKmJxm496BOV9CMNaey8TWsikaZOwMRwPHQIjcOJM9oV+fi9ZMNw3JsVnbEEbo2gRTDnGEBv8pjyn67hNg==
 
 "@types/color-name@^1.1.1":
   version "1.1.1"
@@ -1803,9 +1803,9 @@
     "@types/sinonjs__fake-timers" "*"
 
 "@types/sinonjs__fake-timers@*":
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/@types/sinonjs__fake-timers/-/sinonjs__fake-timers-6.0.2.tgz#3a84cf5ec3249439015e14049bd3161419bf9eae"
-  integrity sha512-dIPoZ3g5gcx9zZEszaxLSVTvMReD3xxyyDnQUjA6IYDG9Ba2AV0otMPs+77sG9ojB4Qr2N2Vk5RnKeuA0X/0bg==
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/@types/sinonjs__fake-timers/-/sinonjs__fake-timers-6.0.3.tgz#79df6f358ae8f79e628fe35a63608a0ea8e7cf08"
+  integrity sha512-E1dU4fzC9wN2QK2Cr1MLCfyHM8BoNnRFvuf45LYMPNDA+WqbNzC45S4UzPxvp1fFJ1rvSGU0bPvdd35VLmXG8g==
 
 "@types/webpack-env@^1.15.0":
   version "1.15.0"
@@ -6248,9 +6248,9 @@ fast-safe-stringify@^1.0.8, fast-safe-stringify@^1.2.1:
   integrity sha512-QJYT/i0QYoiZBQ71ivxdyTqkwKkQ0oxACXHYxH2zYHJEgzi2LsbjgvtzTbLi1SZcF190Db2YP7I7eTsU2egOlw==
 
 fast-safe-stringify@^2.0.7:
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/fast-safe-stringify/-/fast-safe-stringify-2.0.7.tgz#124aa885899261f68aedb42a7c080de9da608743"
-  integrity sha512-Utm6CdzT+6xsDk2m8S6uL8VHxNwI6Jub+e9NYTcAms28T84pTa25GJQV9j0CY0N1rM8hK4x6grpF2BQf+2qwVA==
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/fast-safe-stringify/-/fast-safe-stringify-2.0.8.tgz#dc2af48c46cf712b683e849b2bbd446b32de936f"
+  integrity sha512-lXatBjf3WPjmWD6DpIZxkeSsCOwqI0maYMpgDlx8g4U2qi4lbjA9oH/HD2a87G+KfsUmo5WbJFmqBZlPxtptag==
 
 fastparse@^1.1.1:
   version "1.1.2"
@@ -9832,9 +9832,9 @@ object-inspect@^1.7.0:
   integrity sha512-a7pEHdh1xKIAgTySUGgLMx/xwDZskN1Ud6egYYN3EdRW4ZMPNEDUTF+hwy2LUC+Bl+SyLXANnwz/jyh/qutKUw==
 
 object-inspect@^1.9.0:
-  version "1.10.3"
-  resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-1.10.3.tgz#c2aa7d2d09f50c99375704f7a0adf24c5782d369"
-  integrity sha512-e5mCJlSH7poANfC8z8S9s9S2IN5/4Zb3aZ33f5s8YqoazCFzNLloLU8r5VCG+G7WoqLvAAZoVMcy3tp/3X0Plw==
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-1.11.0.tgz#9dceb146cedd4148a0d9e51ab88d34cf509922b1"
+  integrity sha512-jp7ikS6Sd3GxQfZJPyH3cjcbJF6GZPClgdV+EFygjFLQ5FmW/dRUnTd9PQ9k0JhoNDabWFbpF1yCdSWCC6gexg==
 
 object-is@^1.0.1:
   version "1.0.2"
