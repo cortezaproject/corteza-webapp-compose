@@ -28,28 +28,4 @@
 //     propsData,
 //     ...opt,
 //   })
-//
-//   it('Properly filters namespaces for ns switcher', () => {
-//     sinon.stub(Namespace, 'watch').get(() => ({}))
-//     sinon.stub(Namespace, 'mounted')
-//     sinon.stub(Namespace.methods, 'namespaceLoader').resolves({ set: [] })
-//
-//     const wrap = mountNamespace()
-//     wrap.setData({
-//       showNSSideBar: true,
-//       namespaces: [
-//         { namespaceID: '111', enabled: true },
-//         { namespaceID: '112', enabled: false },
-//         { namespaceID: '113', enabled: true },
-//         { namespaceID: '114', enabled: false },
-//       ]
-//     })
-//
-//     const nss = wrap.find(NamespaceSidebar)
-//     expect(nss.exists()).to.be.true
-//     expect(nss.props().namespaces).to.have.length(2)
-//     for (const { enabled } of nss.props().namespaces) {
-//       expect(enabled).to.be.true
-//     }
-//   })
 // })
