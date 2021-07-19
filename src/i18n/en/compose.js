@@ -1099,6 +1099,7 @@ export default {
         label: 'File',
         view: {
           modeLabel: 'View mode',
+          fileExtensions: '* Please add a word, pdf, powerpoint, video, an archive, excel, or image file',
           modeFootnote: 'How files are represented in record page blocks',
           mimetypesLabel: 'File type allow list',
           mimetypesFootnote: 'MIME types, sepparated with ",". Example: "text/plain,text/csv"',

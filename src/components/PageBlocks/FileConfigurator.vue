@@ -1,6 +1,7 @@
 <template>
   <b-tab :title="$t('block.file.label')">
     <b-form-group horizontal
+                  class="mb-0"
                   :description="$t('field.kind.file.view.modeFootnote')"
                   :label="$t('field.kind.file.view.modeLabel')">
       <b-form-radio-group v-model="options.mode"
@@ -11,10 +12,11 @@
                           :options="modes">
       </b-form-radio-group>
     </b-form-group>
+    <small>{{ $t('field.kind.file.view.fileExtensions') }}</small>
     <b-form-checkbox
       :disabled="!enableFileNameHiding"
       v-model="options.hideFileName"
-      class="mb-3"
+      class="mt-1 mb-3"
     >
       {{ $t('field.kind.file.view.showName') }}
     </b-form-checkbox>
