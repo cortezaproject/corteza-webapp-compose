@@ -7,6 +7,8 @@ import Pseudo from 'i18next-pseudo'
 
 import en from './en'
 
+const pseudoEnabled = false
+
 // Initializes i18n options, registers
 // plugin on a given Vue instance and returns the options (to be used in new Vue({ i18n: ... })
 export default (lng = 'en', fallbackLng = lng) => {
@@ -30,7 +32,7 @@ export default (lng = 'en', fallbackLng = lng) => {
 
   i18next
     .use(new Pseudo({
-      enabled: false && process.env.NODE_ENV !== 'production',
+      enabled: pseudoEnabled && process.env.NODE_ENV !== 'production',
     }))
     .init({
       postProcess: ['pseudo'],
