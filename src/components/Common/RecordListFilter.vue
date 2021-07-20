@@ -41,7 +41,7 @@
                     :options="conditions"
                   />
                 </td>
-                <td class="d-inline-flex fill-available">
+                <td class="d-inline-flex">
                   <b-form-select
                     v-model="filter.name"
                     :options="fieldOptions"
@@ -56,7 +56,7 @@
                     :options="getOperators(filter.kind)"
                   />
                 </td>
-                <td class="d-inline-flex fill-available">
+                <td class="d-inline-flex">
                   <field-editor
                     v-if="getField(filter.name)"
                     class="mb-0 filter-field-editor"
@@ -401,7 +401,7 @@ export default {
 }
 
 .filter-field-editor {
-  width: -webkit-fill-available;
+  width: auto;
 
   legend {
     display: none;
@@ -418,10 +418,6 @@ export default {
   background-repeat: no-repeat;
   background-size: 100% 1px;
   background-position: center;
-}
-
-.fill-available {
-  width: -webkit-fill-available;
 }
 
 table {
