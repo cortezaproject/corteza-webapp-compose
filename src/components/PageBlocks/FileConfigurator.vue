@@ -12,7 +12,16 @@
                           :options="modes">
       </b-form-radio-group>
     </b-form-group>
-    <small>{{ $t('field.kind.file.view.fileExtensions') }}</small>
+    <small
+      v-if="options.mode === 'list' || options.mode === 'grid'"
+    >
+      {{ $t('field.kind.file.view.fileExtensions.listAndGrid') }}
+    </small>
+    <small
+      v-else
+    >
+      {{ $t('field.kind.file.view.fileExtensions.singleAndGallery') }}
+    </small>
     <b-form-checkbox
       :disabled="!enableFileNameHiding"
       v-model="options.hideFileName"

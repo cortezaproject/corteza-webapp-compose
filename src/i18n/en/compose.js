@@ -1099,10 +1099,13 @@ export default {
         label: 'File',
         view: {
           modeLabel: 'View mode',
-          fileExtensions: '* Please add a word, pdf, powerpoint, video, an archive, excel, or image file',
+          fileExtensions: {
+            listAndGrid: '* Please add a word, powerpoint, video, an archive, or excel file',
+            singleAndGallery: '* Please add a pdf or an image file',
+          },
           modeFootnote: 'How files are represented in record page blocks',
           mimetypesLabel: 'File type allow list',
-          mimetypesFootnote: 'MIME types, sepparated with ",". Example: "text/plain,text/csv"',
+          mimetypesFootnote: 'MIME types, separated with ",". Example: "text/plain,text/csv"',
           maxSizeLabel: 'Maximum file size',
           list: 'List',
           grid: 'Grid',
@@ -1330,7 +1333,7 @@ export default {
     'example-description': 'Below are a few examples of different use cases of field expressions.',
     'helper-functions': {
       label: 'Helper functions',
-      description: 'We provide a set of helper functions that extend the capabilites of field expressions.',
+      description: 'We provide a set of helper functions that extend the capabilities of field expressions.',
       note: 'NOTE: Only the "General" functions can be used on all types of fields. The other functions are limited to their respective field type.',
     },
     'formatting-parameters': {
