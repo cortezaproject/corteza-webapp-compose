@@ -1100,7 +1100,7 @@ export default {
         view: {
           modeLabel: 'View mode',
           fileExtensions: {
-            listAndGrid: '* Please add a word, powerpoint, video, an archive, or excel file',
+            listAndGrid: '* Please add a Word, Powerpoint, video, an archive, or Excel file',
             singleAndGallery: '* Please add a pdf or an image file',
           },
           modeFootnote: 'How files are represented in record page blocks',
