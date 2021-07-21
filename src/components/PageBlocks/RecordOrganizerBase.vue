@@ -8,12 +8,6 @@
         {{ $t('block.recordOrganizer.notConfigured') }}
       </div>
       <div
-        v-else-if="!roModule.canReadRecord"
-        class="p-3 text-secondary"
-      >
-        {{ $t('block.recordList.record.noPermission') }}
-      </div>
-      <div
         v-else
         class="h-100"
       >
@@ -37,7 +31,7 @@
             tag="b-card"
             v-for="record in records"
             :key="record.recordID"
-            :class="{ 'mb-2': true, 'grab': canReposition }"
+            :class="{ 'mb-2': true, 'grab': canReposition && record.canUpdateRecord }"
             :to="{ name: 'page.record', params: { pageID: roRecordPage.pageID, recordID: record.recordID }, query: null }"
             border-variant="primary"
           >
@@ -179,11 +173,11 @@ export default {
     },
 
     canReposition () {
-      if (this.positionField.fieldID) {
-        return this.roModule.canUpdateRecord && this.positionField.canUpdateRecordValue
-      } else {
-        return !!this.roModule.canUpdateRecord
+      if (!this.positionField.fieldID) {
+        return false
       }
+
+      return this.positionField.canUpdateRecordValue
     },
 
     canAddRecord () {

@@ -19,7 +19,7 @@
       </div>
       <div class="d-flex flex-grow-1 justify-content-end text-nowrap">
         <c-input-confirm
-          :disabled="disableDelete"
+          :disabled="!canDeleteRecord"
           @confirmed="$emit('delete')"
           class="mx-1"
           size="lg"
@@ -30,7 +30,7 @@
           {{ $t('general.label.delete') }}
         </c-input-confirm>
         <b-button
-          v-if="module.canCreateRecord && !hideClone && record"
+          v-if="module && module.canCreateRecord && !hideClone && record"
           variant="light"
           size="lg"
           :disabled="processing"
@@ -41,7 +41,7 @@
         </b-button>
         <b-button
           v-if="!inEditing"
-          :disabled="!module.canUpdateRecord"
+          :disabled="!record || !record.canUpdateRecord"
           variant="light"
           size="lg"
           class="mx-1"
@@ -50,7 +50,7 @@
           {{ $t('general.label.edit') }}
         </b-button>
         <b-button
-          v-if="module.canCreateRecord && !hideAdd && !inEditing"
+          v-if="module && module.canCreateRecord && !hideAdd && !inEditing"
           variant="primary"
           size="lg"
           :disabled="processing"
@@ -117,15 +117,21 @@ export default {
 
   computed: {
     canSave () {
-      if (this.record) {
-        return this.record.recordID === '0' ? this.module.canCreateRecord : this.module.canUpdateRecord
+      if (!this.module || !this.record) {
+        return false
       }
 
-      return false
+      return this.record.recordID === NoID
+        ? this.module.canCreateRecord
+        : this.record.canUpdateRecord
     },
 
-    disableDelete () {
-      return this.isDeleted || !this.module.canDeleteRecord || this.processing || this.record.recordID === NoID
+    canDeleteRecord () {
+      if (!this.module || !this.record) {
+        return true
+      }
+
+      return this.isDeleted || !this.record.canDeleteRecord || this.processing || this.record.recordID === NoID
     },
   },
 }

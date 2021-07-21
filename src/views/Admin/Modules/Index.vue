@@ -112,7 +112,7 @@
                   >
                     {{ pages.find(p => p.moduleID === m.moduleID) ?  $t('module.recordPage.edit') : $t('module.recordPage.create') }}
                   </b-button>
-                  <span v-if="m.canReadRecord">
+                  <span>
                     <router-link :to="{name: 'admin.modules.record.list', params: { moduleID: m.moduleID }}" class="btn px-2 text-dark">
                       {{ $t('module.allRecords.label') }}
                     </router-link>

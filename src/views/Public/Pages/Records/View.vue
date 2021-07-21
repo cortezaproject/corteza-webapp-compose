@@ -38,7 +38,7 @@
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
 import RecordToolbar from 'corteza-webapp-compose/src/components/Common/RecordToolbar'
 import record from 'corteza-webapp-compose/src/mixins/record'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 
 export default {
   name: 'ViewRecord',
@@ -106,7 +106,7 @@ export default {
 
   methods: {
     async loadRecord () {
-      if (this.page && this.recordID && this.page.moduleID) {
+      if (this.page && this.recordID && this.recordID !== NoID && this.page.moduleID !== NoID) {
         const { namespaceID, moduleID } = this.page
         const module = Object.freeze(this.getModuleByID(moduleID).clone())
         await this.$ComposeAPI

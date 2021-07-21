@@ -123,14 +123,12 @@
             <c-input-confirm
               v-if="!inlineEditing"
               variant="link-light"
-              :disabled="!recordListModule.canDeleteRecord"
               @confirmed="handleDeleteSelectedRecords()"
             />
             <b-button
               v-else-if="!areAllRowsDeleted"
               variant="link"
               size="md"
-              :disabled="!recordListModule.canDeleteRecord"
               @click.prevent="handleDeleteSelectedRecords()"
             >
               <font-awesome-icon
@@ -337,7 +335,7 @@
               </b-button>
               <!-- The user should be able to delete the record if it's not yet saved -->
               <b-button
-                v-else-if="recordListModule.canDeleteRecord || !item.r.deletedAt"
+                v-else-if="item.r.canDeleteRecord || !item.r.deletedAt"
                 variant="link"
                 size="md"
                 class="border-0 show-when-hovered text-danger mt-1"
@@ -384,7 +382,7 @@
 
             <template v-if="!inlineEditing">
               <b-button
-                v-if="!options.hideRecordEditButton && recordListModule.canUpdateRecord && recordPageID"
+                v-if="!options.hideRecordEditButton && item.r.canUpdateRecord && recordPageID"
                 variant="link"
                 class="p-0 m-0 pl-1 text-primary"
                 :to="{ name: options.rowEditUrl || 'page.record.edit', params: { pageID: recordPageID, recordID: item.r.recordID }, query: null }"
@@ -1080,11 +1078,19 @@ export default {
           }
         }
       } else {
-        const r = this.items[0].r
-        const { moduleID, namespaceID } = r
+        // Pick module and namespace ID from the first record
+        //
+        // We are always showing list of records from the
+        // same module so this should be safe to do.
+        const { moduleID, namespaceID } = this.items[0].r
+
+        // filter deletable records from the selected list
+        const recordIDs = this.items
+          .filter(({ r }) => r.canDeleteRecord)
+          .map(({ id }) => id)
 
         this.$ComposeAPI
-          .recordBulkDelete({ moduleID, namespaceID, recordIDs: this.selected })
+          .recordBulkDelete({ moduleID, namespaceID, recordIDs })
           .then(() => { this.refresh(true) })
           .catch(this.toastErrorHandler(this.$t('notification.record.deleteFailed')))
       }
