@@ -127,8 +127,6 @@
     "i18next-pseudo": "^2.2.1",
     "node-sass": "^4.12.0",
     "nyc": "^14.1.1",
-    "react": "^15.6.2",
-    "react-dom": "^15.3.0",
     "sass-loader": "^7.0.1",
     "sinon": "^7.3.2",
     "stylelint": "^8.0.0",
