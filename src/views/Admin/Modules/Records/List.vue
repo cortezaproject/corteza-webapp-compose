@@ -91,6 +91,7 @@ export default {
       customFields: true,
       rowViewUrl: 'admin.modules.record.view',
       rowEditUrl: 'admin.modules.record.edit',
+      rowCreateUrl: 'admin.modules.record.create',
       hideRecordReminderButton: true,
       hideRecordViewButton: true,
       hideRecordCloneButton: true,

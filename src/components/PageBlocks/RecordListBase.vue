@@ -40,7 +40,7 @@
                 <router-link
                   class="btn btn-lg btn-primary float-left mr-1"
                   :to="{
-                    name: options.rowEditUrl || 'page.record.create',
+                    name: options.rowCreateUrl || 'page.record.create',
                     params: { pageID: recordPageID, refRecord: record },
                     query: null,
                   }"
@@ -362,7 +362,7 @@
                 v-if="!inlineEditing"
                 variant="link"
                 class="p-0 m-0 pl-1 text-secondary"
-                :to="{ name: options.rowEditUrl || 'page.record.create', params: { pageID: recordPageID, values: item.r.values }, query: null }"
+                :to="{ name: options.rowCreateUrl || 'page.record.create', params: { pageID: recordPageID, values: item.r.values }, query: null }"
               >
                 <font-awesome-icon
                   :icon="['far', 'clone']"
