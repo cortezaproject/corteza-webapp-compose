@@ -355,7 +355,7 @@ export default {
       this.processing = true
 
       if (this.module.moduleID === NoID) {
-        this.createModule(this.module).then((module) => {
+        this.createModule({ item: this.module, namespace: this.namespace }).then((module) => {
           this.module = new compose.Module({ ...module }, this.namespace)
           this.toastSuccess(this.$t('notification.module.saved'))
           if (closeOnSuccess) {
@@ -368,7 +368,7 @@ export default {
             this.processing = false
           })
       } else {
-        this.updateModule(this.module).then((module) => {
+        this.updateModule({ item: this.module, namespace: this.namespace }).then(module => {
           this.module = new compose.Module({ ...module }, this.namespace)
           this.toastSuccess(this.$t('notification.module.saved'))
           if (closeOnSuccess) {
