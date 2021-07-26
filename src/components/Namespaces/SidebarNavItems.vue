@@ -7,7 +7,7 @@
       class="w-100 text-left text-dark text-decoration-none pt-2 pr-0 pb-0 nav-item"
       active-class="nav-active"
       exact-active-class="nav-active"
-      :to="{ name: i.page.name, params: { pageID: i.page.pageID }}"
+      :to="{ name: 'page', params: { pageID: i.page.pageID }}"
       @click="$emit('page-selected')"
     >
       <span
