@@ -29,8 +29,8 @@ export default {
   sidebar: {
     searchPlaceholder: 'Search pages...',
     noPages: 'No pages',
-    pickNamespace: 'Pick a namespace',
-    createNS: '+ Add new',
+    pickNamespace: 'Select a namespace',
+    namespaceList: 'Namespace list',
   },
   onboarding: {
     message: {

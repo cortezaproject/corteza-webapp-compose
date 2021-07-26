@@ -13,10 +13,10 @@
       >
         <template #list-footer>
           <router-link
-            :to="{ name: 'namespace.create' }"
+            :to="{ name: 'namespace.list' }"
             class="d-block mt-3 ml-3 mb-1 font-weight-bold"
           >
-            {{ $t('sidebar.createNS') }}
+            {{ $t('sidebar.namespaceList') }}
           </router-link>
         </template>
       </vue-select>
@@ -250,6 +250,10 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .vs__open-indicator {
+    fill: $primary;
   }
 }
 </style>
