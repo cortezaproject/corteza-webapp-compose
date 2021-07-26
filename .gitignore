@@ -15,3 +15,7 @@ dist
 
 .nyc_output
 coverage
+
+# https://github.com/nektos/act
+/.act*
+/workflow
