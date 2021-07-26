@@ -66,6 +66,8 @@
         :module="module"
         :record="record"
         :processing="processing"
+        :processing-submit="processingSubmit"
+        :processing-delete="processingDelete"
         :isDeleted="isDeleted"
         :inEditing="inEditing"
         @add="handleAdd()"

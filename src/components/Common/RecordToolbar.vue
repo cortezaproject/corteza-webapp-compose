@@ -27,7 +27,15 @@
           variant="danger"
           :borderless="false"
         >
-          {{ $t('general.label.delete') }}
+          <b-spinner
+            v-if="processingDelete"
+            small
+            type="grow"
+          />
+
+          <span v-else>
+            {{ $t('general.label.delete') }}
+          </span>
         </c-input-confirm>
         <b-button
           v-if="module && module.canCreateRecord && !hideClone && record"
@@ -67,7 +75,15 @@
           size="lg"
           @click.prevent="$emit('submit')"
         >
-          {{ $t('general.label.save') }}
+          <b-spinner
+            v-if="processingSubmit"
+            small
+            type="grow"
+          />
+
+          <span v-else>
+            {{ $t('general.label.save') }}
+          </span>
         </b-button>
       </div>
     </b-row>
@@ -90,6 +106,16 @@ export default {
     },
 
     processing: {
+      type: Boolean,
+      default: false,
+    },
+
+    processingDelete: {
+      type: Boolean,
+      default: false,
+    },
+
+    processingSubmit: {
       type: Boolean,
       default: false,
     },
@@ -128,10 +154,10 @@ export default {
 
     canDeleteRecord () {
       if (!this.module || !this.record) {
-        return true
+        return false
       }
 
-      return this.isDeleted || !this.record.canDeleteRecord || this.processing || this.record.recordID === NoID
+      return !this.isDeleted && this.record.canDeleteRecord && !this.processing && this.record.recordID !== NoID
     },
   },
 }

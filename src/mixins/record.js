@@ -9,6 +9,8 @@ export default {
     return {
       inEditing: false,
       processing: false,
+      processingDelete: false,
+      processingSubmit: false,
       record: undefined,
       errors: new validator.Validated(),
     }
@@ -62,6 +64,7 @@ export default {
      * @returns {Promise<void>}
      */
     handleFormSubmit: throttle(async function (route = 'page.record') {
+      this.processingSubmit = true
       this.processing = true
 
       const isNew = this.record.recordID === NoID
@@ -146,6 +149,7 @@ export default {
             : 'notification.record.updateFailed',
         )))
         .finally(() => {
+          this.processingSubmit = false
           this.processing = false
         })
     }, 500),
@@ -155,6 +159,7 @@ export default {
      * @returns {Promise<void>}
      */
     handleFormSubmitSimple: throttle(function (route = 'page.record') {
+      this.processingSubmit = true
       this.processing = true
 
       const isNew = this.record.recordID === NoID
@@ -193,6 +198,7 @@ export default {
             : 'notification.record.updateFailed',
         )))
         .finally(() => {
+          this.processingSubmit = false
           this.processing = false
         })
     }, 500),
@@ -202,6 +208,7 @@ export default {
      * has been deleted.
      */
     handleDelete: throttle(function () {
+      this.processingDelete = true
       this.processing = true
 
       return this
@@ -214,6 +221,7 @@ export default {
         .then(() => this.updatePrompts())
         .catch(this.toastErrorHandler(this.$t('notification.record.deleteFailed')))
         .finally(() => {
+          this.processingDelete = false
           this.processing = false
         })
     }, 500),
