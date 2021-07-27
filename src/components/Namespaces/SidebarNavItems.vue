@@ -88,7 +88,7 @@ export default {
   methods: {
 
     closeSidebar () {
-      if (window.innerWidth < 576) { this.$root.$emit('close-sidebar') }
+      if (window.innerWidth < 500) { this.$root.$emit('close-sidebar') }
     },
 
     pageIndex (p) {

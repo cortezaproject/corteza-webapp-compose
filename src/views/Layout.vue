@@ -75,18 +75,6 @@ export default {
       pinned: false,
     }
   },
-
-  created () {
-    this.$root.$on('close-sidebar', () => {
-      this.expanded = false
-      this.pinned = false
-    })
-  },
-
-  beforeDestroy () {
-    this.$root.$off('close-sidebar')
-  },
-
 }
 </script>
 
