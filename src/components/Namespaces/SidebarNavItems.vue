@@ -4,15 +4,16 @@
       v-for="i of items"
       :key="i.page.name"
       variant="link"
-      class="w-100 text-left text-dark text-decoration-none pt-2 pr-0 pb-0 nav-item"
+      class="w-100 text-left text-dark text-decoration-none p-0 pt-2 nav-item"
       active-class="nav-active"
       exact-active-class="nav-active"
-      :to="{ name: 'page', params: { pageID: i.page.pageID }}"
+      :to="{ name: i.page.name || 'page', params: { pageID: i.page.pageID }}"
       @click="$emit('page-selected')"
     >
       <span
         class="d-inline-block w-75 text-nowrap text-truncate"
-        @click="closeSidebar()">
+        @click="closeSidebar()"
+      >
         {{ i.page.title }}
       </span>
 
@@ -21,7 +22,7 @@
       >
         <b-button
           variant="link"
-          class="px-3 float-right mt-n1"
+          class="p-0 float-right"
           :disabled="showChildren(i.page, i.children)"
           @click.self.stop.prevent="toggle(i.page)"
         >
@@ -122,9 +123,7 @@ export default {
   pointer-events: none;
 }
 
-// Using font-weight-bold moves the sidebar nav content; text-stroke keeps in nicely in place
 .nav-active > span {
-  color: $primary;
   font-family: $bold;
 }
 </style>
