@@ -6,18 +6,27 @@
     >
       {{ $t('general.label.required') }}
     </b-form-checkbox>
-    <b-form-checkbox
-      v-model="showvalueExpr"
-      :disabled="field.isRequired"
-    >
-      {{ $t('field.valueExpr.label') }}
-    </b-form-checkbox>
 
     <b-form-checkbox
       v-model="field.isMulti"
       :disabled="!field.cap.multi"
     >
       {{ $t('general.label.multi') }}
+    </b-form-checkbox>
+
+    <b-form-checkbox
+      v-model="showvalueExpr"
+      :disabled="field.isRequired || defaultValueEnabled"
+    >
+      {{ $t('field.valueExpr.label') }}
+    </b-form-checkbox>
+
+    <b-form-checkbox
+      :checked="defaultValueEnabled"
+      :disabled="!!showvalueExpr || field.isMulti"
+      @change="toggleDefaultValue()"
+    >
+      {{ $t('field.defaultValue') }}
     </b-form-checkbox>
 
     <hr>
@@ -51,9 +60,9 @@
     </b-form-group>
 
     <b-form-group
-      v-else-if="mock.show && mock.field"
-      :label="$t('field.defaultValue')"
-      class="mt-3"
+      v-else-if="showDefaultField"
+      :label="$t('field.defaultFieldValue')"
+      class="mt-3 mb-0"
     >
       <field-editor
         valueOnly
@@ -61,7 +70,7 @@
       />
     </b-form-group>
 
-    <hr>
+    <hr v-if="showvalueExpr || showDefaultField">
 
     <b-form-checkbox
       :checked="noDescriptionEdit"
@@ -173,6 +182,14 @@ export default {
     noHintEdit () {
       return this.field.options.hint.edit === undefined
     },
+
+    defaultValueEnabled () {
+      return this.field.isMulti || !!this.field.defaultValue.length
+    },
+
+    showDefaultField () {
+      return this.defaultValueEnabled && this.mock.show && this.mock.field
+    },
   },
 
   watch: {
@@ -187,7 +204,16 @@ export default {
           if (v !== undefined && v.toString) {
             v = v.toString()
           }
-          return { value: v }
+
+          const defaultValue = {
+            name: this.field.name,
+          }
+
+          if (v) {
+            defaultValue.value = v
+          }
+
+          return defaultValue
         })
       },
       deep: true,
@@ -195,33 +221,32 @@ export default {
 
     'field.options': {
       handler (options) {
-        this.mock.field.options = options
-
-        // This is necessary so that options changes are reflected and any possible resources are refetched with proper filters
-        this.mock.show = false
-        setTimeout(() => {
-          this.mock.show = true
-        }, 200)
+        if (this.mock.field) {
+          this.mock.field.options = options
+        }
       },
       deep: true,
     },
 
     'field.isMulti': {
       handler (isMulti) {
+        if (!this.field.defaultValue.length) {
+          this.initMocks()
+        }
+
         const { defValField } = this.mock.record.values
+
         if (isMulti) {
           if (defValField) {
-            this.mock.record.values.defValField = [defValField]
-          } else {
-            this.mock.record.values.defValField = []
+            this.mock.record.values.defValField = Array.isArray(defValField) ? defValField : [defValField]
           }
-        } else {
+        } else if (defValField) {
           this.mock.record.values.defValField = defValField[0]
         }
+
         this.mock.field.isMulti = isMulti
       },
     },
-
   },
 
   /**
@@ -229,21 +254,14 @@ export default {
    */
   created () {
     let { defaultValue, isMulti, expressions } = this.field
+
     if (!defaultValue) {
       defaultValue = []
     }
-    if (isMulti) {
-      defaultValue = defaultValue.map(v => v.value)
-    } else {
-      defaultValue = (defaultValue[0] || {}).value
-    }
 
-    this.mock.namespace = this.namespace
-    this.mock.field = compose.ModuleFieldMaker(this.field)
-    this.mock.field.apply({ label: this.mock.field.label || 'Default value' })
-    this.mock.field.apply({ name: 'defValField' })
-    this.mock.module = new compose.Module({ fields: [this.mock.field] }, this.namespace)
-    this.mock.record = new compose.Record(this.mock.module, { defValField: defaultValue })
+    if (defaultValue.length || isMulti) {
+      this.initMocks(defaultValue)
+    }
 
     this.showvalueExpr = expressions.value && expressions.value.length > 0
     if (!this.field.expressions.value) {
@@ -262,6 +280,29 @@ export default {
   },
 
   methods: {
+    initMocks (defaultValue = []) {
+      if (this.field.isMulti) {
+        defaultValue = defaultValue.map(v => v.value)
+      } else {
+        defaultValue = (defaultValue[0] || {}).value
+      }
+
+      this.mock.namespace = this.namespace
+      this.mock.field = compose.ModuleFieldMaker(this.field)
+      this.mock.field.apply({ label: this.mock.field.label || 'Default value' })
+      this.mock.field.apply({ name: 'defValField' })
+      this.mock.module = new compose.Module({ fields: [this.mock.field] }, this.namespace)
+      this.mock.record = new compose.Record(this.mock.module, { defValField: defaultValue })
+    },
+
+    toggleDefaultValue () {
+      if (this.defaultValueEnabled) {
+        this.field.defaultValue = []
+      } else {
+        this.initMocks()
+      }
+    },
+
     openExpressionsHelp () {
       const helpRoute = this.$router.resolve({ name: 'field.expressions.help' })
       window.open(`${helpRoute.href}#valueExpressions`, '_blank',

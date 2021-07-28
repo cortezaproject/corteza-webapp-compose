@@ -961,7 +961,8 @@ export default {
 
   field: {
     noPermission: 'No permission to read field value',
-    defaultValue: 'Default field value',
+    defaultValue: 'Default value',
+    defaultFieldValue: 'Default field value',
     options: {
       multiDelimiter: {
         label: 'Multiple value delimiter',
