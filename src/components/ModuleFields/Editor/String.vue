@@ -28,7 +28,7 @@
     </template>
 
     <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
-      <rich-text-input
+      <c-rich-text-input
         v-if="field.options.useRichTextEditor"
         v-model="value[ctx.index]"
         class="mr-2"
@@ -49,7 +49,7 @@
     </multi>
 
     <template v-else>
-      <rich-text-input
+      <c-rich-text-input
         v-if="field.options.useRichTextEditor"
         v-model="value"
         class="mr-2"
@@ -72,12 +72,13 @@
 </template>
 
 <script>
-import RichTextInput from 'corteza-webapp-compose/src/components/RichTextInput'
 import base from './base'
+import { components } from '@cortezaproject/corteza-vue'
+const { CRichTextInput } = components
 
 export default {
   components: {
-    RichTextInput,
+    CRichTextInput,
   },
 
   extends: base,
