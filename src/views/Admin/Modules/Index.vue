@@ -44,7 +44,7 @@
                   />
                   <c-permissions-button
                     v-if="namespace.canGrant"
-                    resource="corteza::compose:module/*"
+                    :resource="`corteza::compose:module/${namespace.namespaceID}/*`"
                     :buttonLabel="$t('general.label.permissions')"
                     buttonVariant="light"
                     class="btn-lg"
@@ -121,7 +121,7 @@
                     v-if="m.canGrant"
                     :title="m.name"
                     :target="m.name"
-                    :resource="'corteza::compose:module/'+m.moduleID"
+                    :resource="`corteza::compose:module/${m.namespaceID}/${m.moduleID}`"
                     class="btn px-2"
                     link
                   />

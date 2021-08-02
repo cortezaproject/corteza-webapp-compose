@@ -18,7 +18,7 @@
       <div>
         <div class="logo w-100" />
         <h1 class="text-center">
-          {{ namespace ? (namespace.name || namespace.slug || namespace.ID) : '...' }}
+          {{ namespace ? (namespace.name || namespace.slug || namespace.namespaceID) : '...' }}
         </h1>
         <div>
           <div
