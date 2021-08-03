@@ -73,6 +73,30 @@ export default {
         danger: 'Danger variant',
       },
     },
+    comment: {
+      label: 'Comments',
+      titleField: {
+        label: 'Title field',
+        footnote: 'Field value will be used as record title',
+      },
+      contentField: {
+        label: 'Content field',
+        footnote: 'Field value will be used as record content',
+      },
+      titleInput: 'Enter comment title',
+      contentInput: 'Enter comment content',
+      submit: 'Submit',
+      sortDirection: {
+        label: 'Sort direction',
+        footnote: 'Field value will be used as sorting direction reference',
+        asc: 'ASC',
+        desc: 'DESC',
+      },
+      referenceField: {
+        label: 'Reference field',
+        footnote: 'Field value will be used as reference',
+      },
+    },
     recordOrganizer: {
       label: 'Record organizer',
       noRecords: 'No records in module linked with record organizer. Drag and drop records here.',

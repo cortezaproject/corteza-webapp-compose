@@ -119,6 +119,12 @@ export default {
           block: new compose.PageBlockIFrame(),
           image: images.IFrame,
         },
+        {
+          label: this.$t('block.comment.label'),
+          recordPageOnly: false,
+          block: new compose.PageBlockComment(),
+          image: images.Comment,
+        },
       ],
     }
   },
