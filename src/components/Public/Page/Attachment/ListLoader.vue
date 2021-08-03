@@ -53,9 +53,9 @@
       </div>
     </div>
 
-    <div v-else-if="mode === 'single' || 'gallery'" class="single gallery">
+    <div v-else class="single gallery">
       <div
-        v-for="(a) in attachments" :key="a.attachmentID"
+        v-for="(a) in files" :key="a.attachmentID"
         class="my-2"
       >
         <c-preview-inline
@@ -172,6 +172,14 @@ export default {
 
     baseURL () {
       return url.Make({ url: window.CortezaAPI + '/compose' })
+    },
+
+    files () {
+      if (this.mode === 'single') {
+        return this.attachments.slice(this.attachments.length - 1)
+      } else {
+        return this.attachments
+      }
     },
   },
 
