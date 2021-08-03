@@ -99,7 +99,7 @@ export default {
       get () {
         // Needs to be done this way so it retains order of fields
         return this.fields.reduce((fields, field) => {
-          field = this.allFields.find(({ name }) => name === field.name)
+          field = this.allFields.find(({ name }) => name === (field.name || field))
           if (field) {
             fields.push(field)
           }
@@ -142,7 +142,7 @@ export default {
 
     availableFields () {
       // Remove selected fields
-      return this.allFields.filter(a => !this.fields.some(f => a.name === f.name))
+      return this.allFields.filter(a => !this.fields.some(f => a.name === (f.name || f)))
     },
   },
 
