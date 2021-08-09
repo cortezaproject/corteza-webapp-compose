@@ -10,6 +10,7 @@ import ChartJS from 'chart.js'
 import Funnel from 'chartjs-plugin-funnel'
 import Gauge from 'chartjs-gauge'
 import csc from 'chartjs-plugin-colorschemes'
+import { NoID } from '@cortezaproject/corteza-js'
 
 export default {
   props: {
@@ -31,10 +32,13 @@ export default {
 
   watch: {
     'chart.chartID': {
-      handler () {
-        this.$nextTick(() => {
-          this.updateChart()
-        })
+      immediate: true,
+      handler (chartID = NoID) {
+        if (chartID !== NoID) {
+          this.$nextTick(() => {
+            this.updateChart()
+          })
+        }
       },
     },
   },
