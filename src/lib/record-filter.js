@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 // Generate record list sql query string based on filter object input
 
 export function getRecordListFilterSql (filter) {
@@ -54,12 +56,15 @@ export function getFieldFilter (name, kind, query, operator = '') {
     return `${name} ${operator || '='} ${numQuery}`
   }
 
-  // Since userID and recordID must be numbers, we check if query is number to avoid wrong querys
+  // Since userID and recordID must be numbers, we check if query is number to avoid wrong queries
   if (['DateTime'].includes(kind)) {
-    return `${name} ${operator || '='} DATE('${query}')`
+    const date = moment(query)
+    if (date.isValid()) {
+      return `DATE(${name}) ${operator || '='} DATE('${date.format('YYYY-MM-DD')}')`
+    }
   }
 
-  // Since userID and recordID must be numbers, we check if query is number to avoid wrong querys
+  // Since userID and recordID must be numbers, we check if query is number to avoid wrong queries
   if (['User', 'Record'].includes(kind) && !isNaN(numQuery) && operator) {
     return `${name} ${operator} '${query}'`
   }
