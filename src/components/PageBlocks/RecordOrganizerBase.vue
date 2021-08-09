@@ -99,7 +99,8 @@ import base from './base'
 import draggable from 'vuedraggable'
 import FieldViewer from 'corteza-webapp-compose/src/components/ModuleFields/Viewer'
 import users from 'corteza-webapp-compose/src/mixins/users'
-import { compose } from '@cortezaproject/corteza-js'
+import { evaluatePrefilter } from 'corteza-webapp-compose/src/lib/record-filter'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
@@ -117,7 +118,7 @@ export default {
     return {
       filter: {
         sort: '',
-        filter: '',
+        query: '',
       },
 
       records: [],
@@ -291,14 +292,11 @@ export default {
         // Little magic here: filter is wraped with backticks and evaluated
         // this allows us to us ${record.values....}, ${recordID}, ${ownerID}, ${userID} in filter string;
         // hence the /hanging/ record, recordID, ownerID and userID variables
-        return (function (filter, { record, recordID, ownerID, userID }) {
-          /* eslint-disable no-eval */
-          return eval('`' + filter + '`')
-        })(this.options.filter, {
+        return evaluatePrefilter(this.options.filter, {
           record: this.record,
-          recordID: (this.record || {}).recordID || 0,
-          ownerID: (this.record || {}).userID || 0,
-          userID: (this.$auth.user || {}).userID || 0,
+          recordID: (this.record || {}).recordID || NoID,
+          ownerID: (this.record || {}).userID || NoID,
+          userID: (this.$auth.user || {}).userID || NoID,
         })
       }
 
@@ -352,12 +350,11 @@ export default {
     /**
      * Fetches group of records using configured options & module
      *
-     * @param {Compose}           api Compose API client
      * @param {Module}            module Module to use for assembling API request & casting results
-     * @param {String}            filter Filter records
+     * @param {String}            query Filter records
      * @returns {Promise<Record[]>}
      */
-    async fetchRecords (module, filter) {
+    async fetchRecords (module, query) {
       if (module.moduleID !== this.options.moduleID) {
         throw Error('Module incompatible, module mismatch')
       }
@@ -365,15 +362,7 @@ export default {
       const { positionField: sort } = this.options
       const { moduleID, namespaceID } = module
 
-      const params = {
-        namespaceID,
-        moduleID,
-        filter,
-        sort,
-      }
-
-      return this.$ComposeAPI
-        .recordList(params)
+      return this.$ComposeAPI.recordList({ namespaceID, moduleID, query, sort })
         .then(({ set }) => set.map(r => Object.freeze(new compose.Record(module, r))))
     },
   },
