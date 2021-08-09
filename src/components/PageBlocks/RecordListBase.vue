@@ -567,7 +567,7 @@ export default {
       // used to construct request parameters
       // AND to store response params
       filter: {
-        filter: '',
+        query: '',
         sort: '',
         limit: 10,
         pageCursor: '',
