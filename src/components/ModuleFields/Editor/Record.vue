@@ -339,11 +339,11 @@ export default {
         }
 
         // Construct query
-        const filter = qf.map(qf => {
+        query = qf.map(qf => {
           return `${qf} LIKE '%${query}%'`
         }).join(' OR ')
 
-        this.fetchPrefiltered({ namespaceID, moduleID, filter, sort: this.sortString(), limit, pageCursor })
+        this.fetchPrefiltered({ namespaceID, moduleID, query, sort: this.sortString(), limit, pageCursor })
           .then(({ filter, set }) => {
             this.records = set.map(r => new compose.Record(this.module, r))
           })
@@ -366,7 +366,7 @@ export default {
       this.processing = true
 
       // Support prefilters
-      let baseF = q.filter
+      let { query = '' } = q
       if (this.field.options.prefilter) {
         const pf = evaluatePrefilter(this.field.options.prefilter, {
           record: this.record,
@@ -374,10 +374,10 @@ export default {
           ownerID: (this.record || {}).userID || NoID,
           userID: (this.$auth.user || {}).userID || NoID,
         })
-        if (baseF) {
-          baseF = `(${pf}) AND (${baseF})`
+        if (query) {
+          query = `(${pf}) AND (${query})`
         } else {
-          baseF = pf
+          query = pf
         }
       }
 
@@ -385,7 +385,7 @@ export default {
         q.sort = ''
       }
 
-      return this.$ComposeAPI.recordList({ ...q, filter: baseF })
+      return this.$ComposeAPI.recordList({ ...q, query })
         .then(({ filter, set }) => {
           this.filter = { ...this.filter, ...filter }
           this.filter.nextPage = filter.nextPage
