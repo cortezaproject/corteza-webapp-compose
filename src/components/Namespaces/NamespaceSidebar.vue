@@ -56,10 +56,10 @@
           :placeholder="$t('sidebar.searchPlaceholder')"
         />
 
-        <sidebar-nav-items
+        <c-sidebar-nav-items
           :items="navItems"
           :start-expanded="!!query"
-          top-level
+          default-route-name="page"
           class="overflow-auto h-100"
         />
       </div>
@@ -77,15 +77,16 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { NoID } from '@cortezaproject/corteza-js'
+import { components } from '@cortezaproject/corteza-vue'
 import { Portal } from 'portal-vue'
 import { VueSelect } from 'vue-select'
-import SidebarNavItems from './SidebarNavItems'
+const { CSidebarNavItems } = components
 
 export default {
   components: {
     Portal,
     VueSelect,
-    SidebarNavItems,
+    CSidebarNavItems,
   },
 
   props: {
@@ -130,7 +131,11 @@ export default {
     },
 
     navItems () {
-      const wrap = (p) => ({ page: p, children: [] })
+      let wrap = (page) => ({ page, children: [], params: { pageID: page.pageID } })
+
+      if (this.isAdminPage) {
+        wrap = (page) => ({ page, children: [], params: {} })
+      }
 
       const current = this.filteredPages.map(wrap)
       const cx = this.pageIndex(current)
