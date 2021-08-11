@@ -4,7 +4,7 @@
 
     <b-form-group>
       <slot name="uploadLabel">
-        <label>{{ $t('block.recordList.import.uploadFile') }}</label>
+        <label>{{ $t('recordList.import.uploadFile') }}</label>
       </slot>
 
       <uploader class="uploader"
@@ -17,16 +17,16 @@
     </b-form-group>
 
     <b-form-group>
-      <label class="mr-3">{{ $t('block.recordList.import.onError') }}</label>
+      <label class="mr-3">{{ $t('recordList.import.onError') }}</label>
       <b-form-select v-model="onError"
                      class="w-auto">
 
           <option value="FAIL">
-            {{ $t('block.recordList.import.onErrorFail') }}
+            {{ $t('recordList.import.onErrorFail') }}
           </option>
 
           <option value="SKIP">
-            {{ $t('block.recordList.import.onErrorSkip') }}
+            {{ $t('recordList.import.onErrorSkip') }}
           </option>
       </b-form-select>
     </b-form-group>
@@ -48,6 +48,10 @@
 import Uploader from 'corteza-webapp-compose/src/components/Public/Page/Attachment/Uploader'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   components: {
     Uploader,
   },
@@ -87,10 +91,10 @@ export default {
 
     dzLabel () {
       if (this.sessionFile) {
-        return this.$t('block.recordList.import.dropzoneFileAdded', { name: this.sessionFile.name, count: this.session.progress.entryCount })
+        return this.$t('recordList.import.dropzoneFileAdded', { name: this.sessionFile.name, count: this.session.progress.entryCount })
       }
 
-      return this.$t('block.recordList.import.dropzoneLabel')
+      return this.$t('recordList.import.dropzoneLabel')
     },
   },
 

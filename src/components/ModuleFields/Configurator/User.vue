@@ -2,13 +2,13 @@
   <div>
     <b-form-group>
       <b-form-checkbox v-model="f.options.presetWithAuthenticated">
-        {{ $t('field.kind.user.presetWithCurrentUser') }}
+        {{ $t('kind.user.presetWithCurrentUser') }}
       </b-form-checkbox>
     </b-form-group>
 
     <b-form-group
       v-if="f.options.roles"
-      :label="$t('field.kind.user.roles.label')"
+      :label="$t('kind.user.roles.label')"
     >
       <vue-select
         v-model="f.options.roles"
@@ -17,14 +17,14 @@
         option-value="roleID"
         option-text="name"
         :close-on-select="false"
-        :placeholder="$t('field.kind.user.roles.placeholder')"
+        :placeholder="$t('kind.user.roles.placeholder')"
         multiple
         label="name"
       />
     </b-form-group>
 
     <b-form-group>
-      <label class="d-block">{{ $t('field.kind.select.optionType.label') }}</label>
+      <label class="d-block">{{ $t('kind.select.optionType.label') }}</label>
       <b-form-radio-group
         v-model="f.options.selectType"
         :options="selectOptions"
@@ -39,6 +39,10 @@ import base from './base'
 import { VueSelect } from 'vue-select'
 
 export default {
+  i18nOptions: {
+    namespaces: 'field',
+  },
+
   components: {
     VueSelect,
   },
@@ -48,9 +52,9 @@ export default {
   data () {
     return {
       selectOptions: [
-        { text: this.$t('field.kind.select.optionType.default'), value: 'default' },
-        { text: this.$t('field.kind.select.optionType.multiple'), value: 'multiple' },
-        { text: this.$t('field.kind.select.optionType.each'), value: 'each' },
+        { text: this.$t('kind.select.optionType.default'), value: 'default' },
+        { text: this.$t('kind.select.optionType.multiple'), value: 'multiple' },
+        { text: this.$t('kind.select.optionType.each'), value: 'each' },
       ],
       roleOptions: [],
     }

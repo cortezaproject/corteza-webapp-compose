@@ -61,7 +61,7 @@
       v-else
       class="d-flex align-items-center justify-content-center p-3 text-dark h-100 h5"
     >
-      {{ $t('block.record.preview.blockNoRecord') }}
+      {{ $t('record.preview.blockNoRecord') }}
     </div>
   </wrap>
 </template>
@@ -74,6 +74,10 @@ import FieldViewer from 'corteza-webapp-compose/src/components/ModuleFields/View
 import Hint from 'corteza-webapp-compose/src/components/Common/Hint.vue'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   components: {
     FieldEditor,
     FieldViewer,

@@ -65,7 +65,7 @@
     v-else
     class="no-builder-grid h-100 pt-5 container text-center">
     <h4>
-      {{ $t('page.noBlock') }}
+      {{ $t('noBlock') }}
     </h4>
   </div>
 </template>
@@ -76,6 +76,10 @@ import { compose } from '@cortezaproject/corteza-js'
 import { throttle } from 'lodash'
 
 export default {
+  i18nOptions: {
+    namespaces: 'page',
+  },
+
   components: {
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,

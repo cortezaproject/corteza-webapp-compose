@@ -5,7 +5,7 @@
           <font-awesome-icon :icon="['fas', 'download']"></font-awesome-icon>
           {{attachment.name}}
         </a>
-        <i18next path="general.label.attachmentFileInfo" tag="label">
+        <i18next path="label.attachmentFileInfo" tag="label">
           <span>{{attachment.size}}</span>
           <span>{{attachment.changedAt}}</span>
         </i18next>
@@ -15,11 +15,11 @@
         <a :href="aattachment.download">
           <font-awesome-icon
             :icon="['far', 'file-'+ext(a)]"
-            :title="$t('general.label.openBookmarks')"
+            :title="$t('label.openBookmarks')"
           ></font-awesome-icon>
           {{aattachment.name}}
         </a>
-        <i18next path="general.label.attachmentFileInfo" tag="label">
+        <i18next path="label.attachmentFileInfo" tag="label">
           <span>{{attachment.size}}</span>
           <span>{{attachment.changedAt}}</span>
         </i18next>
@@ -32,10 +32,10 @@
         <div v-else>
           <font-awesome-icon
             :icon="['far', 'file-'+ext(a)]"
-            :title="$t('general.label.openBookmarks')"
+            :title="$t('label.openBookmarks')"
           ></font-awesome-icon>
           <a :href="attachment.download">
-            {{ $t('general.label.download') }}
+            {{ $t('label.download') }}
           </a>
         </div>
         {{a.name}}
@@ -45,6 +45,10 @@
 <script>
 
 export default {
+  i18nOptions: {
+    namespaces: 'general',
+  },
+
   props: {
     kind: {
       type: String,

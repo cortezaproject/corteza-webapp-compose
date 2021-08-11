@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-form-group
-      :label="$t('field.kind.record.moduleLabel')"
+      :label="$t('kind.record.moduleLabel')"
     >
       <b-form-select
         v-model="f.options.moduleID"
@@ -12,7 +12,7 @@
     </b-form-group>
 
     <b-form-group
-      :label="$t('field.kind.record.recordFieldLabel')"
+      :label="$t('kind.record.recordFieldLabel')"
     >
       <b-form-select
         v-model="f.options.labelField"
@@ -23,7 +23,7 @@
     </b-form-group>
 
     <b-form-group
-      :label="$t('field.kind.record.queryFieldsLabel')"
+      :label="$t('kind.record.queryFieldsLabel')"
     >
       <b-form-select
         v-model="f.options.queryFields"
@@ -35,15 +35,15 @@
     </b-form-group>
 
     <b-form-group
-      :label="$t('field.kind.record.prefilterLabel')"
+      :label="$t('kind.record.prefilterLabel')"
     >
       <b-form-textarea
         v-model="f.options.prefilter"
         class="form-control"
-        :placeholder="$t('field.kind.record.prefilterPlaceholder')"
+        :placeholder="$t('kind.record.prefilterPlaceholder')"
       />
       <b-form-text>
-        <i18next path="field.kind.record.prefilterFootnote" tag="label">
+        <i18next path="kind.record.prefilterFootnote" tag="label">
           <code>${recordID}</code>
           <code>${ownerID}</code>
           <code>${userID}</code>
@@ -53,7 +53,7 @@
 
     <b-form-group
       v-if="field.isMulti"
-      :label="$t('field.kind.select.optionType.label')"
+      :label="$t('kind.select.optionType.label')"
     >
       <b-form-radio-group
         v-model="f.options.selectType"
@@ -70,15 +70,19 @@ import { NoID } from '@cortezaproject/corteza-js'
 import base from './base'
 
 export default {
+  i18nOptions: {
+    namespaces: 'field',
+  },
+
   extends: base,
 
   data () {
     return {
       selected: null,
       selectOptions: [
-        { text: this.$t('field.kind.select.optionType.default'), value: 'default' },
-        { text: this.$t('field.kind.select.optionType.multiple'), value: 'multiple' },
-        { text: this.$t('field.kind.select.optionType.each'), value: 'each' },
+        { text: this.$t('kind.select.optionType.default'), value: 'default' },
+        { text: this.$t('kind.select.optionType.multiple'), value: 'multiple' },
+        { text: this.$t('kind.select.optionType.each'), value: 'each' },
       ],
     }
   },
@@ -94,13 +98,13 @@ export default {
       // If current module hasn't been created add it to modules
       if (this.module.moduleID === NoID) {
         modules = [
-          ({ moduleID: '-1', name: this.module.name || this.$t('field.kind.record.currentUnnamedModule') }),
+          ({ moduleID: '-1', name: this.module.name || this.$t('kind.record.currentUnnamedModule') }),
           ...modules,
         ]
       }
 
       return [
-        { moduleID: NoID, name: this.$t('field.kind.record.modulePlaceholder'), disabled: true },
+        { moduleID: NoID, name: this.$t('kind.record.modulePlaceholder'), disabled: true },
         ...modules,
       ]
     },
@@ -123,7 +127,7 @@ export default {
       return [
         {
           value: undefined,
-          text: this.$t('field.kind.record.recordFieldPlaceholder'),
+          text: this.$t('kind.record.recordFieldPlaceholder'),
           disabled: true,
         },
         ...fields.sort((a, b) => a.text.localeCompare(b.text)),

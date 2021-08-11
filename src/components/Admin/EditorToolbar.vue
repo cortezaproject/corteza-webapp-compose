@@ -11,7 +11,7 @@
                   v-if="backLink"
                   class="float-left text-dark back">
           <font-awesome-icon :icon="['fas', 'chevron-left']" class="back-icon"></font-awesome-icon>
-          {{ $t('general.label.backWithoutSave') }}
+          {{ $t('label.backWithoutSave') }}
         </b-button>
         <slot />
       </div>
@@ -25,14 +25,14 @@
           :borderless="false"
           class="mx-1"
         >
-          {{ $t('general.label.delete') }}
+          {{ $t('label.delete') }}
         </c-input-confirm>
         <b-button v-if="!hideSave"
                   :disabled="disableSave"
                   variant="light" @click.prevent="$emit('saveAndClose')"
                   size="lg"
                   class="mx-1">
-          {{ $t('general.label.saveAndClose') }}
+          {{ $t('label.saveAndClose') }}
         </b-button>
         <b-button v-if="!hideSave"
                   :disabled="disableSave"
@@ -40,7 +40,7 @@
                   size="lg"
                   @click.prevent="$emit('save')"
                   class="mx-1">
-          {{ $t('general.label.save') }}
+          {{ $t('label.save') }}
         </b-button>
       </div>
     </b-row>
@@ -49,6 +49,10 @@
 <script>
 
 export default {
+  i18nOptions: {
+    namespaces: 'general',
+  },
+
   inheritAttrs: true,
 
   props: {

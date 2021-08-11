@@ -1,33 +1,33 @@
 <template>
   <div>
     <b-form-group>
-      <label class="d-block">{{ $t('field.kind.number.prefixLabel') }}</label>
-      <b-form-input v-model="f.options.prefix" :placeholder="$t('field.kind.number.prefixPlaceholder')"></b-form-input>
+      <label class="d-block">{{ $t('kind.number.prefixLabel') }}</label>
+      <b-form-input v-model="f.options.prefix" :placeholder="$t('kind.number.prefixPlaceholder')"></b-form-input>
     </b-form-group>
     <b-form-group>
-      <label class="d-block">{{ $t('field.kind.number.suffixLabel') }}</label>
-      <b-form-input v-model="f.options.suffix" :placeholder="$t('field.kind.number.suffixPlaceholder')"></b-form-input>
+      <label class="d-block">{{ $t('kind.number.suffixLabel') }}</label>
+      <b-form-input v-model="f.options.suffix" :placeholder="$t('kind.number.suffixPlaceholder')"></b-form-input>
     </b-form-group>
     <b-form-group>
-      <label class="d-block">{{ $t('field.kind.number.precisionLabel') }}</label>
-      <b-form-input v-model="f.options.precision" :placeholder="$t('field.kind.number.precisionPlaceholder')" type="number" min="0" max="6"></b-form-input>
+      <label class="d-block">{{ $t('kind.number.precisionLabel') }}</label>
+      <b-form-input v-model="f.options.precision" :placeholder="$t('kind.number.precisionPlaceholder')" type="number" min="0" max="6"></b-form-input>
     </b-form-group>
     <b-form-group>
-      <label class="d-block">{{ $t('field.kind.number.formatLabel') }}</label>
-      <b-form-input v-model="f.options.format" :placeholder="$t('field.kind.number.formatPlaceholder')"></b-form-input>
+      <label class="d-block">{{ $t('kind.number.formatLabel') }}</label>
+      <b-form-input v-model="f.options.format" :placeholder="$t('kind.number.formatPlaceholder')"></b-form-input>
     </b-form-group>
     <div>
-      <p>{{ $t('field.kind.number.liveExample') }}</p>
+      <p>{{ $t('kind.number.liveExample') }}</p>
       <div class="d-flex align-items-center">
         <b-form-input class="w-25" v-model="liveExample"></b-form-input>
         <span class="ml-3">{{mockField}}</span>
       </div>
-      <p class="mt-3">{{ $t('field.kind.number.examplesLabel') }}</p>
+      <p class="mt-3">{{ $t('kind.number.examplesLabel') }}</p>
       <table style="width: 100%;">
         <tr>
-          <th>{{ $t('field.kind.number.exampleInput') }}</th>
-          <th>{{ $t('field.kind.number.exampleFormat') }}</th>
-          <th>{{ $t('field.kind.number.exampleResult') }}</th>
+          <th>{{ $t('kind.number.exampleInput') }}</th>
+          <th>{{ $t('kind.number.exampleFormat') }}</th>
+          <th>{{ $t('kind.number.exampleResult') }}</th>
         </tr>
         <tr>
           <td>10000.234</td>
@@ -59,6 +59,10 @@ import base from './base'
 import { compose } from '@cortezaproject/corteza-js'
 
 export default {
+  i18nOptions: {
+    namespaces: 'field',
+  },
+
   extends: base,
   data () {
     return {

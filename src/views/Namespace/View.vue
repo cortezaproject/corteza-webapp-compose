@@ -57,6 +57,10 @@ import { components } from '@cortezaproject/corteza-vue'
 const { CToaster } = components
 
 export default {
+  i18nOptions: {
+    namespaces: 'general',
+  },
+
   name: 'Namespace',
 
   components: {
@@ -168,7 +172,7 @@ export default {
     errHandler (error) {
       switch ((error.response || {}).status) {
         case 403:
-          this.error = this.$t('notification.general.composeAccessNotAllowed')
+          this.error = this.$t('notification.composeAccessNotAllowed')
       }
 
       return Promise.reject(error)
@@ -217,7 +221,7 @@ export default {
       r.actions.dismiss = {
         cb: this.onReminderHide,
         kind: 'Button',
-        label: `<b>${this.$t('general.reminder.dismiss')}</b>`,
+        label: `<b>${this.$t('reminder.dismiss')}</b>`,
         options: {
           variant: 'warning',
           class: ['float-right'],
@@ -226,18 +230,18 @@ export default {
 
       r.actions.snooze = {
         cb: this.onReminderSnooze,
-        label: `<b>${this.$t('general.reminder.snooze')}</b>`,
+        label: `<b>${this.$t('reminder.snooze')}</b>`,
         kind: 'Select',
         options: {
           variant: 'outline-warning',
           class: ['float-left'],
           items: [
-            { kind: 'item-button', label: this.$t('general.label.timeMinute', { t: 5 }), value: { duration: 1000 * 60 * 5 } },
-            { kind: 'item-button', label: this.$t('general.label.timeMinute', { t: 15 }), value: { duration: 1000 * 60 * 15 } },
-            { kind: 'item-button', label: this.$t('general.label.timeMinute', { t: 30 }), value: { duration: 1000 * 60 * 30 } },
-            { kind: 'item-button', label: this.$t('general.label.timeHour', { t: 1 }), value: { duration: 1000 * 60 * 60 * 1 } },
-            { kind: 'item-button', label: this.$t('general.label.timeHour', { t: 2 }), value: { duration: 1000 * 60 * 60 * 2 } },
-            { kind: 'item-button', label: this.$t('general.label.timeHour', { t: 24 }), value: { duration: 1000 * 60 * 60 * 24 } },
+            { kind: 'item-button', label: this.$t('label.timeMinute', { t: 5 }), value: { duration: 1000 * 60 * 5 } },
+            { kind: 'item-button', label: this.$t('label.timeMinute', { t: 15 }), value: { duration: 1000 * 60 * 15 } },
+            { kind: 'item-button', label: this.$t('label.timeMinute', { t: 30 }), value: { duration: 1000 * 60 * 30 } },
+            { kind: 'item-button', label: this.$t('label.timeHour', { t: 1 }), value: { duration: 1000 * 60 * 60 * 1 } },
+            { kind: 'item-button', label: this.$t('label.timeHour', { t: 2 }), value: { duration: 1000 * 60 * 60 * 2 } },
+            { kind: 'item-button', label: this.$t('label.timeHour', { t: 24 }), value: { duration: 1000 * 60 * 60 * 24 } },
           ],
         },
       }

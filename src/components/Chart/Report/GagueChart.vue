@@ -8,7 +8,7 @@
   >
     <template #dimension-options="{ dimension }">
       <b-form-group
-        :label="$t('chart.edit.dimension.gaugeSteps')"
+        :label="$t('edit.dimension.gaugeSteps')"
         :label-cols="2"
       >
         <b-input-group
@@ -21,14 +21,14 @@
             plain
             v-model="step.label"
             size="sm"
-            :placeholder="$t('general.label.label')"
+            :placeholder="$t('general.label.title')"
           />
 
           <b-form-input
             type="number"
             v-model="step.value"
             size="sm"
-            :placeholder="$t('general.label.value')"
+            :placeholder="$t('general.value')"
           />
 
           <b-input-group-append>
@@ -54,8 +54,8 @@
 
     <template #metric-options="{ metric }">
       <b-form-group
-        :label="$t('chart.edit.metric.fx.label')"
-        :description="$t('chart.edit.metric.fx.description')"
+        :label="$t('edit.metric.fx.label')"
+        :description="$t('edit.metric.fx.description')"
       >
         <b-form-textarea
           v-model="metric.fx"
@@ -65,7 +65,7 @@
 
       <b-form-group
         horizontal
-        :label="$t('chart.edit.metric.gaugeColor')"
+        :label="$t('edit.metric.gaugeColor')"
         :label-cols="2"
       >
         <b-form-input
@@ -80,7 +80,7 @@
         :value="true"
         :unchecked-value="false"
       >
-        {{ $t('chart.edit.metric.fixTooltips') }}
+        {{ $t('edit.metric.fixTooltips') }}
       </b-form-checkbox>
     </template>
   </report-edit>
@@ -91,6 +91,10 @@ import ReportEdit from './ReportEdit'
 import base from './base'
 
 export default {
+  i18nOptions: {
+    namespaces: 'chart',
+  },
+
   components: {
     ReportEdit,
   },

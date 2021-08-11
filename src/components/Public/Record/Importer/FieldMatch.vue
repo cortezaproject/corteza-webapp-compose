@@ -5,14 +5,14 @@
     <b-form-group>
       <div class="mb-4">
         <label>
-          {{ $t('block.recordList.import.matchFields') }}
+          {{ $t('recordList.import.matchFields') }}
         </label>
         <br />
         <small
           v-if="hasRequiredFileField"
           class="text-danger"
         >
-          {{ $t('block.recordList.import.hasRequiredFileFields') }}
+          {{ $t('recordList.import.hasRequiredFileFields') }}
         </small>
       </div>
 
@@ -43,7 +43,7 @@
               <option :value="undefined"
                       disabled>
 
-                {{ $t('block.recordList.import.pickModuleField') }}
+                {{ $t('recordList.import.pickModuleField') }}
               </option>
             </template>
           </b-form-select>
@@ -72,6 +72,10 @@
 
 <script>
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   props: {
     session: {
       type: Object,
@@ -119,8 +123,8 @@ export default {
     tableFields () {
       return [
         { key: 'selected', label: '', tdClass: 'picker' },
-        { key: 'fileColumn', label: this.$t('block.recordList.import.fileColumns') },
-        { key: 'moduleField', label: this.$t('block.recordList.import.moduleFields') },
+        { key: 'fileColumn', label: this.$t('recordList.import.fileColumns') },
+        { key: 'moduleField', label: this.$t('recordList.import.moduleFields') },
       ]
     },
 

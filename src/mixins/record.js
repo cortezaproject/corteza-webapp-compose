@@ -132,7 +132,7 @@ export default {
 
             console.debug(this.errors)
 
-            throw new Error(this.$t('notification.record.validationErrors'))
+            throw new Error(this.$t('notification:record.validationErrors'))
           }
 
           throw err
@@ -145,8 +145,8 @@ export default {
         })
         .catch(this.toastErrorHandler(this.$t(
           isNew
-            ? 'notification.record.createFailed'
-            : 'notification.record.updateFailed',
+            ? 'notification:record.createFailed'
+            : 'notification:record.updateFailed',
         )))
         .finally(() => {
           this.processingSubmit = false
@@ -181,7 +181,7 @@ export default {
 
             console.debug(this.errors)
 
-            throw new Error(this.$t('notification.record.validationErrors'))
+            throw new Error(this.$t('notification:record.validationErrors'))
           }
 
           throw err
@@ -194,8 +194,8 @@ export default {
         })
         .catch(this.toastErrorHandler(this.$t(
           isNew
-            ? 'notification.record.createFailed'
-            : 'notification.record.updateFailed',
+            ? 'notification:record.createFailed'
+            : 'notification:record.updateFailed',
         )))
         .finally(() => {
           this.processingSubmit = false
@@ -219,7 +219,7 @@ export default {
         })
         .then(() => this.dispatchUiEvent('afterDelete'))
         .then(() => this.updatePrompts())
-        .catch(this.toastErrorHandler(this.$t('notification.record.deleteFailed')))
+        .catch(this.toastErrorHandler(this.$t('notification:record.deleteFailed')))
         .finally(() => {
           this.processingDelete = false
           this.processing = false
@@ -283,7 +283,7 @@ export default {
       vRunner()
       if (!this.errors.valid()) {
         console.debug(this.errors)
-        throw new Error(this.$t('notification.record.validationErrors'))
+        throw new Error(this.$t('notification:record.validationErrors'))
       }
     },
 
@@ -303,7 +303,7 @@ export default {
       this.errors = this.validator.run(this.record)
       if (!this.errors.valid()) {
         console.debug(this.errors)
-        throw new Error(this.$t('notification.record.validationErrors'))
+        throw new Error(this.$t('notification:record.validationErrors'))
       }
     },
 

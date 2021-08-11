@@ -3,7 +3,7 @@
     class="d-flex w-100 overflow-auto"
   >
     <portal to="topbar-title">
-      {{ $t('namespace.title') }}
+      {{ $t('title') }}
     </portal>
 
     <b-container
@@ -22,13 +22,13 @@
                  variant="primary"
                  size="lg"
           >
-              {{ $t('namespace.create') }}
+              {{ $t('create') }}
           </b-btn>
           <c-permissions-button
             v-if="canGrant"
             resource="corteza::compose:namespace/*"
             buttonVariant="light"
-            :buttonLabel="$t('general.label.permissions')"
+            :buttonLabel="$t('label.permissions')"
             class="ml-1 btn-lg"
           />
         </div>
@@ -38,7 +38,7 @@
               v-model.trim="query"
               class="float-right mw-100"
               type="search"
-              :placeholder="$t('namespace.searchPlaceholder')" />
+              :placeholder="$t('searchPlaceholder')" />
             <b-input-group-append>
               <b-input-group-text class="text-primary bg-white">
                 <font-awesome-icon
@@ -82,7 +82,7 @@
       >
         <b-col>
           <h3 class="text-left">
-            {{ $t('namespace.noResults') }}
+            {{ $t('noResults') }}
           </h3>
         </b-col>
       </b-row>
@@ -94,6 +94,10 @@ import { mapGetters } from 'vuex'
 import NamespaceItem from 'corteza-webapp-compose/src/components/Namespaces/NamespaceItem'
 
 export default {
+  i18nOptions: {
+    namespaces: 'namespace',
+  },
+
   components: {
     NamespaceItem,
   },

@@ -1,10 +1,10 @@
 <template>
-  <b-tab :title="$t('block.iframe.label')">
+  <b-tab :title="$t('iframe.label')">
     <b-form-group
       v-if="enableFromRecordURL"
       class="form-group"
-      :label="$t('block.iframe.srcFieldLabel')"
-      :description="$t('block.iframe.srcFieldDesc')"
+      :label="$t('iframe.srcFieldLabel')"
+      :description="$t('iframe.srcFieldDesc')"
       :disabled="!fields.length"
     >
       <b-select
@@ -16,8 +16,8 @@
     </b-form-group>
     <b-form-group
       class="form-group"
-      :label="$t('block.iframe.srcLabel')"
-      :description="enableFromRecordURL ? $t('block.iframe.srcDesc') : ''"
+      :label="$t('iframe.srcLabel')"
+      :description="enableFromRecordURL ? $t('iframe.srcDesc') : ''"
     >
       <b-form-input
         class="form-control"
@@ -31,6 +31,10 @@
 import base from './base'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   name: 'IFrame',
 
   extends: base,
@@ -49,7 +53,7 @@ export default {
 
     fieldOptions () {
       return [
-        { value: '', text: this.$t('block.iframe.pickURLField') },
+        { value: '', text: this.$t('iframe.pickURLField') },
         ...this.fields,
       ]
     },

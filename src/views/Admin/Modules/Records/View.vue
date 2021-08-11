@@ -17,7 +17,7 @@
           class="d-flex align-items-center"
           style="margin-right:2px;"
         >
-          {{ $t('module.edit.edit') }}
+          {{ $t('edit.edit') }}
           <font-awesome-icon
             :icon="['fas', 'pen']"
             size="sm"
@@ -91,6 +91,10 @@ import RecordBase from 'corteza-webapp-compose/src/components/PageBlocks/RecordB
 import RecordEditor from 'corteza-webapp-compose/src/components/PageBlocks/RecordEditor'
 
 export default {
+  i18nOptions: {
+    namespaces: 'module',
+  },
+
   name: 'ViewRecord',
 
   components: {
@@ -116,7 +120,7 @@ export default {
   },
   computed: {
     title () {
-      return this.$t('module.allRecords.view.title', { name: this.module.name || '' })
+      return this.$t('allRecords.view.title', { name: this.module.name || '' })
     },
 
     module () {
@@ -207,7 +211,7 @@ export default {
             this.record = new compose.Record(module, record)
             this.fetchUsers(this.module.fields, [this.record])
           })
-          .catch(this.toastErrorHandler(this.$t('notification.record.loadFailed')))
+          .catch(this.toastErrorHandler(this.$t('record.loadFailed')))
       }
     },
 

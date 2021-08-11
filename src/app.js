@@ -8,12 +8,11 @@ import './plugins'
 import './mixins'
 import './components'
 
-import i18n from './i18n'
 import store from './store'
 import router from './router'
 
 import { compose } from '@cortezaproject/corteza-js'
-import { mixins, corredor, websocket } from '@cortezaproject/corteza-vue'
+import { mixins, corredor, websocket, i18n } from '@cortezaproject/corteza-vue'
 
 const notProduction = (process.env.NODE_ENV !== 'production')
 const verboseEventbus = window.location.search.includes('verboseEventbus')
@@ -22,24 +21,32 @@ export default (options = {}) => {
   options = {
     el: '#app',
     name: 'compose',
-    template: '<div v-if="loaded"><router-view/><vue-progress-bar /></div>',
+    template: '<div><router-view v-if="loaded && i18nLoaded" /><vue-progress-bar /></div>',
 
     mixins: [
       mixins.corredor,
     ],
 
-    data: () => ({ loaded: false }),
+    data: () => ({
+      loaded: false,
+      i18nLoaded: false,
+    }),
 
     mounted () {
       this.$Progress.finish()
     },
 
     async created () {
+      this.$Progress.start()
+
+      this.$i18n.i18next.on('loaded', () => {
+        this.i18nLoaded = true
+      })
+
       this.websocket()
 
       return this.$auth.vue(this).handle().then(({ accessTokenFn, user }) => {
         // Set up the progress bar
-        this.$Progress.start()
         this.$router.beforeEach((to, from, next) => {
           this.$Progress.start()
           next()
@@ -149,7 +156,28 @@ export default (options = {}) => {
 
     router,
     store,
-    i18n: i18n(),
+    i18n: i18n(Vue,
+      {
+        app: 'corteza-webapp-compose',
+        // @todo remove when we properly detect language
+        //       and compare it to the list of available languages
+        lng: 'en',
+      },
+      'block',
+      'chart',
+      'expressions-help',
+      'field',
+      'general',
+      'module',
+      'namespace',
+      'navigation',
+      'notification',
+      'onboarding',
+      'page',
+      'permissions',
+      'preview',
+      'sidebar',
+    ),
 
     // Any additional options we want to merge
     ...options,

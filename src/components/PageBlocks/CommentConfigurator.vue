@@ -1,7 +1,7 @@
 <template>
-  <b-tab :title="$t('block.comment.label')">
+  <b-tab :title="$t('comment.label')">
     <b-form-group>
-      <label>{{ $t('block.general.module') }}</label>
+      <label>{{ $t('general.module') }}</label>
       <b-form-select
         v-model="options.moduleID"
         :options="moduleOptions"
@@ -35,12 +35,12 @@
         horizontal
         :label-cols="3"
         breakpoint="md"
-        :label="$t('block.recordList.record.prefilterLabel')"
+        :label="$t('recordList.record.prefilterLabel')"
       >
         <b-form-textarea
           v-model.trim="options.filter"
           :value="true"
-          :placeholder="$t('block.recordList.record.prefilterPlaceholder')"
+          :placeholder="$t('recordList.record.prefilterPlaceholder')"
         />
         <b-form-text>
           <i18next
@@ -58,7 +58,7 @@
         horizontal
         :label-cols="3"
         breakpoint="md"
-        :label="$t('block.comment.titleField.label')"
+        :label="$t('comment.titleField.label')"
       >
         <b-form-select v-model="options.titleField">
           <option value="">
@@ -72,14 +72,14 @@
             {{ field.label || field.name }} ({{ field.kind }})
           </option>
         </b-form-select>
-        <b-form-text>{{ $t('block.comment.titleField.footnote') }}</b-form-text>
+        <b-form-text>{{ $t('comment.titleField.footnote') }}</b-form-text>
       </b-form-group>
 
       <b-form-group
         horizontal
         :label-cols="3"
         breakpoint="md"
-        :label="$t('block.comment.contentField.label')"
+        :label="$t('comment.contentField.label')"
       >
         <b-form-select v-model="options.contentField">
           <option value="">
@@ -94,14 +94,14 @@
           </option>
         </b-form-select>
         <b-form-text class="text-secondary small">
-          {{ $t('block.comment.contentField.footnote') }}
+          {{ $t('comment.contentField.footnote') }}
         </b-form-text>
       </b-form-group>
       <b-form-group
         horizontal
         :label-cols="3"
         breakpoint="md"
-        :label="$t('block.comment.referenceField.label')"
+        :label="$t('comment.referenceField.label')"
       >
         <b-form-select v-model="options.referenceField">
           <option value="">
@@ -116,7 +116,7 @@
           </option>
         </b-form-select>
         <b-form-text class="text-secondary small">
-          {{ $t('block.comment.referenceField.footnote') }}
+          {{ $t('comment.referenceField.footnote') }}
         </b-form-text>
       </b-form-group>
     </div>
@@ -124,7 +124,7 @@
       horizontal
       :label-cols="3"
       breakpoint="md"
-      :label="$t('block.comment.sortDirection.label')"
+      :label="$t('comment.sortDirection.label')"
     >
       <b-form-select v-model="options.sortDirection">
         <option
@@ -136,7 +136,7 @@
         </option>
       </b-form-select>
       <b-form-text class="text-secondary small">
-        {{ $t('block.comment.sortDirection.footnote') }}
+        {{ $t('comment.sortDirection.footnote') }}
       </b-form-text>
     </b-form-group>
   </b-tab>
@@ -147,13 +147,17 @@ import { NoID } from '@cortezaproject/corteza-js'
 import base from './base'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   name: 'CommentConfigurator',
 
   extends: base,
   data () {
     return {
       referenceList: [{ label: 'Record ID (recordID)', value: 'recordID' }, { label: 'Page ID (pageID)', value: 'pageID' }],
-      sortDirections: [{ label: this.$t('block.comment.sortDirection.asc'), value: 'asc' }, { label: this.$t('block.comment.sortDirection.desc'), value: 'desc' }],
+      sortDirections: [{ label: this.$t('comment.sortDirection.asc'), value: 'asc' }, { label: this.$t('comment.sortDirection.desc'), value: 'desc' }],
     }
   },
   computed: {

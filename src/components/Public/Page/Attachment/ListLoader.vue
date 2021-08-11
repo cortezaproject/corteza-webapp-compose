@@ -99,6 +99,10 @@ import { url, components } from '@cortezaproject/corteza-vue'
 const { CPreviewInline, canPreview } = components
 
 export default {
+  i18nOptions: {
+    namespaces: 'preview',
+  },
+
   components: {
     CPreviewInline,
     AttachmentLink,
@@ -154,10 +158,10 @@ export default {
 
     previewLabels () {
       return {
-        loading: this.$t('preview.pdf.loading'),
-        firstPagePreview: this.$t('preview.pdf.firstPagePreview'),
-        pageLoadFailed: this.$t('preview.pdf.pageLoadFailed'),
-        pageLoading: this.$t('preview.pdf.pageLoading'),
+        loading: this.$t('pdf.loading'),
+        firstPagePreview: this.$t('pdf.firstPagePreview'),
+        pageLoadFailed: this.$t('pdf.pageLoadFailed'),
+        pageLoading: this.$t('pdf.pageLoading'),
       }
     },
 

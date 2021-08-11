@@ -3,7 +3,7 @@
     <b-form-group horizontal
                   :label-cols="3"
                   breakpoint="md"
-                  :label="$t('block.calendar.reminderFeed.colorLabel')">
+                  :label="$t('calendar.reminderFeed.colorLabel')">
 
       <b-input-group>
         <b-form-input style="max-width: 50px;"
@@ -19,6 +19,10 @@
 import base from './base'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   extends: base,
 }
 </script>

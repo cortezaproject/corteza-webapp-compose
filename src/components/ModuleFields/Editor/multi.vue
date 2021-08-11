@@ -15,7 +15,7 @@
         <font-awesome-icon
           v-b-tooltip.hover
           :icon="['fas', 'bars']"
-          :title="$t('general.tooltip.dragAndDrop')"
+          :title="$t('tooltip.dragAndDrop')"
           class="handle text-light ml-1 mr-2"
         />
 
@@ -39,7 +39,7 @@
       :class="{ 'mt-2': val.length }"
       @click="val.push(undefined)"
     >
-      + {{ $t('general.label.addValue') }}
+      + {{ $t('label.addValue') }}
     </b-button>
   </div>
 </template>
@@ -47,6 +47,10 @@
 import draggable from 'vuedraggable'
 
 export default {
+  i18nOptions: {
+    namespaces: 'general',
+  },
+
   components: {
     draggable,
   },

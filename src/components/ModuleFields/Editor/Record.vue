@@ -41,7 +41,7 @@
           :clearable="false"
           :filterable="false"
           class="bg-white"
-          :placeholder="$t('field.kind.record.suggestionPlaceholder')"
+          :placeholder="$t('kind.record.suggestionPlaceholder')"
           multiple
           @open="onOpen"
           @search="search"
@@ -68,7 +68,7 @@
           :clearable="false"
           :filterable="false"
           class="bg-white"
-          :placeholder="$t('field.kind.record.suggestionPlaceholder')"
+          :placeholder="$t('kind.record.suggestionPlaceholder')"
           @input="selectChange($event)"
           @open="onOpen"
           @search="search"
@@ -96,7 +96,7 @@
           :clearable="false"
           :filterable="false"
           class="bg-white"
-          :placeholder="$t('field.kind.record.suggestionPlaceholder')"
+          :placeholder="$t('kind.record.suggestionPlaceholder')"
           :value="getRecord(ctx.index)"
           @open="onOpen"
           @input="setRecord($event, ctx.index)"
@@ -126,7 +126,7 @@
         option-text="label"
         :append-to-body="true"
         :calculate-position="calculatePosition"
-        :placeholder="$t('field.kind.record.suggestionPlaceholder')"
+        :placeholder="$t('kind.record.suggestionPlaceholder')"
         :filterable="false"
         class="bg-white"
         v-model="selected"
@@ -157,6 +157,10 @@ import { evaluatePrefilter } from 'corteza-webapp-compose/src/lib/record-filter'
 import Pagination from '../Common/Pagination.vue'
 
 export default {
+  i18nOptions: {
+    namespaces: 'field',
+  },
+
   components: {
     VueSelect,
     Pagination,

@@ -1,6 +1,6 @@
 <template>
   <b-button v-if="list.length > 0" variant="light" size="lg" @click="jsonExport(list, type)">
-    {{ $t('general.label.export') }}
+    {{ $t('label.export') }}
   </b-button>
 </template>
 
@@ -9,6 +9,10 @@ import { saveAs } from 'file-saver'
 import { mapActions } from 'vuex'
 
 export default {
+  i18nOptions: {
+    namespaces: 'general',
+  },
+
   props: {
     list: {
       type: Array,

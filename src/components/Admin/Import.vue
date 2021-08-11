@@ -6,26 +6,26 @@
       class="float-left"
       @click="showModal=true"
     >
-      {{ $t('general.label.import') }}
+      {{ $t('label.import') }}
     </b-btn>
 
     <b-modal
       v-model="showModal"
       size="lg"
-      :title="$t('general.label.import')"
+      :title="$t('label.import')"
     >
       <b-input-group>
         <!-- To handle file upload -->
         <template v-if="!importObj">
           <b-form-file
             @change="loadFile"
-            :placeholder="$t('general.label.importPlaceholder')"
-            :browse-text="$t('general.label.browse')"
+            :placeholder="$t('label.importPlaceholder')"
+            :browse-text="$t('label.browse')"
             class="font-wight-normal pointer"
           />
 
           <h6 v-if="processing" class="my-auto ml-3 ">
-            {{ $t('general.label.processing') }}
+            {{ $t('label.processing') }}
           </h6>
         </template>
 
@@ -34,10 +34,10 @@
           <b-container class="p-0">
           <b-row no-gutters class="mb-3">
             <b-button variant="light" @click="selectAll(true)">
-              {{ $t('field.selector.selectAll') }}
+              {{ $t('selectAll') }}
             </b-button>
             <b-button class="ml-2" variant="light" @click="selectAll(false)">
-              {{ $t('field.selector.unselectAll') }}
+              {{ $t('unselectAll') }}
             </b-button>
           </b-row>
           <b-row no-gutters>
@@ -60,7 +60,7 @@
             variant="primary"
             size="lg"
             @click="jsonImport(importObj)">
-            {{ $t('general.label.import') }}
+            {{ $t('label.import') }}
         </b-button>
       </div>
     </b-modal>
@@ -73,6 +73,10 @@ import Chart from '../Chart'
 import { compose } from '@cortezaproject/corteza-js'
 
 export default {
+  i18nOptions: {
+    namespaces: 'general',
+  },
+
   props: {
     namespace: {
       type: Object,

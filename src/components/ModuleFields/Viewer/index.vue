@@ -4,6 +4,10 @@ import * as Viewers from './loader'
 
 // Renders one of the field kind components
 export default {
+  i18nOptions: {
+    namespaces: 'notification',
+  },
+
   extends: base,
 
   computed: {
@@ -27,7 +31,7 @@ export default {
         props: this.$props,
       })
     } else {
-      return createElement('code', this.$t('notification.field.unknownFieldKind', { kind: this.field.kind }))
+      return createElement('code', this.$t('field.unknownFieldKind', { kind: this.field.kind }))
     }
   },
 }

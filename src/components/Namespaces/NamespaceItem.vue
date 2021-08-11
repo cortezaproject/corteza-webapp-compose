@@ -18,14 +18,14 @@
     <span slot="footer">
       <b-button v-if="namespace.enabled"
                 :to="{ name: 'pages', params: { slug: (namespace.slug || namespace.namespaceID) } }"
-                :aria-label="$t('namespace.visit') + ' ' + namespace.name"
+                :aria-label="$t('visit') + ' ' + namespace.name"
                 variant="light"
                 size="lg">
-        {{ $t('namespace.visit') }}
+        {{ $t('visit') }}
       </b-button>
       <b-button v-if="namespace.canUpdateNamespace"
                 :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }"
-                :aria-label="$t('namespace.edit') + ' ' + namespace.name"
+                :aria-label="$t('edit') + ' ' + namespace.name"
                 variant="light"
                 class="float-right"
                 size="lg">
@@ -37,6 +37,10 @@
 </template>
 <script>
 export default {
+  i18nOptions: {
+    namespaces: 'namespace',
+  },
+
   props: {
     namespace: {
       type: Object,

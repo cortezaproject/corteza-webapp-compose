@@ -12,6 +12,10 @@
 
 <script>
 export default {
+  i18nOptions: {
+    namespaces: 'onboarding',
+  },
+
   props: {
     done: {
       type: Boolean,
@@ -43,7 +47,7 @@ export default {
   computed: {
     popoverContent () {
       if (this.optional) {
-        return this.$t('onboarding.step.optional')
+        return this.$t('step.optional')
       } else {
         // If popover content is an empty string it doesnt show
         return ''

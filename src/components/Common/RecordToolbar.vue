@@ -14,7 +14,7 @@
           @click.prevent="$emit('back')"
         >
           <font-awesome-icon :icon="['fas', 'chevron-left']" class="back-icon"></font-awesome-icon>
-          {{ $t('general.label.back') }}
+          {{ $t('label.back') }}
         </b-button>
       </div>
       <div
@@ -38,7 +38,7 @@
           />
 
           <span v-else>
-            {{ $t('general.label.delete') }}
+            {{ $t('label.delete') }}
           </span>
         </c-input-confirm>
 
@@ -50,7 +50,7 @@
           class="mx-1"
           @click.prevent="$emit('clone')"
         >
-          {{ $t('general.label.clone') }}
+          {{ $t('label.clone') }}
         </b-button>
 
         <b-button
@@ -61,7 +61,7 @@
           class="mx-1"
           @click.prevent="$emit('edit')"
         >
-          {{ $t('general.label.edit') }}
+          {{ $t('label.edit') }}
         </b-button>
 
         <b-button
@@ -72,7 +72,7 @@
           class="mx-1"
           @click.prevent="$emit('add')"
         >
-          {{ $t('general.label.addNew') }}
+          {{ $t('label.addNew') }}
         </b-button>
 
         <b-button
@@ -90,7 +90,7 @@
           />
 
           <span v-else>
-            {{ $t('general.label.save') }}
+            {{ $t('label.save') }}
           </span>
         </b-button>
       </div>
@@ -102,6 +102,10 @@
 import { compose, NoID } from '@cortezaproject/corteza-js'
 
 export default {
+  i18nOptions: {
+    namespaces: 'general',
+  },
+
   props: {
     module: {
       type: compose.Module,

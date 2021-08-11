@@ -1,8 +1,8 @@
 <template>
-  <b-tab :title="$t('block.file.label')">
+  <b-tab :title="$t('kind.file.label')">
     <b-form-group horizontal
-                  :description="$t('field.kind.file.view.modeFootnote')"
-                  :label="$t('field.kind.file.view.modeLabel')">
+                  :description="$t('kind.file.view.modeFootnote')"
+                  :label="$t('kind.file.view.modeLabel')">
       <b-form-radio-group v-model="options.mode"
                           buttons
                           button-variant="outline-secondary"
@@ -16,7 +16,7 @@
       v-model="options.hideFileName"
       class="mb-3"
     >
-      {{ $t('field.kind.file.view.showName') }}
+      {{ $t('kind.file.view.showName') }}
     </b-form-checkbox>
     <uploader
       :endpoint="endpoint"
@@ -36,6 +36,10 @@ import Uploader from 'corteza-webapp-compose/src/components/Public/Page/Attachme
 import ListLoader from 'corteza-webapp-compose/src/components/Public/Page/Attachment/ListLoader'
 
 export default {
+  i18nOptions: {
+    namespaces: 'field',
+  },
+
   name: 'File',
 
   components: {
@@ -57,10 +61,10 @@ export default {
 
     modes () {
       return [
-        { value: 'list', text: this.$t('field.kind.file.view.list') },
-        { value: 'grid', text: this.$t('field.kind.file.view.grid') },
-        { value: 'single', text: this.$t('field.kind.file.view.single') },
-        { value: 'gallery', text: this.$t('field.kind.file.view.gallery') },
+        { value: 'list', text: this.$t('kind.file.view.list') },
+        { value: 'grid', text: this.$t('kind.file.view.grid') },
+        { value: 'single', text: this.$t('kind.file.view.single') },
+        { value: 'gallery', text: this.$t('kind.file.view.gallery') },
       ]
     },
 

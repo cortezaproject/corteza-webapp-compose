@@ -13,7 +13,7 @@
                         class="progress-label"
                         variant="primary">
 
-          <span class="font-weight-bold">{{ $t('block.recordList.import.progressRatio', progress) }}</span>
+          <span class="font-weight-bold">{{ $t('recordList.import.progressRatio', progress) }}</span>
         </b-progress-bar>
       </b-progress>
     </b-form-group>
@@ -22,7 +22,7 @@
       <span v-if="progress.finishedAt && !progress.failed"
             class="text-success">
 
-        {{ $t('block.recordList.import.success') }}
+        {{ $t('recordList.import.success') }}
       </span>
     </b-form-group>
   </b-card>
@@ -32,6 +32,10 @@
 let toHandle = null
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   props: {
     session: {
       type: Object,

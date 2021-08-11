@@ -34,7 +34,7 @@
                     v-if="index === 0"
                     class="mb-0"
                   >
-                    {{ $t("block.recordList.filter.where") }}
+                    {{ $t('recordList.filter.where') }}
                   </h6>
                   <b-form-select
                     v-else
@@ -131,7 +131,7 @@
 
         <div ref="filter-footer" class="d-flex justify-content-end">
           <b-button ref="btnSave" class="mr-3" variant="primary" @click="onSave">
-            {{ $t("general.label.save") }}
+            {{ $t('general.label.save') }}
           </b-button>
         </div>
       </div>
@@ -142,6 +142,10 @@
 import FieldEditor from '../ModuleFields/Editor'
 import { compose, validator } from '@cortezaproject/corteza-js'
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   components: {
     FieldEditor,
   },
@@ -173,8 +177,8 @@ export default {
       componentFilter: [],
 
       conditions: [
-        { value: 'AND', text: this.$t('block.recordList.filter.conditions.and') },
-        { value: 'OR', text: this.$t('block.recordList.filter.conditions.or') },
+        { value: 'AND', text: this.$t('recordList.filter.conditions.and') },
+        { value: 'OR', text: this.$t('recordList.filter.conditions.or') },
       ],
 
       mock: {},
@@ -231,11 +235,11 @@ export default {
       const operators = [
         {
           value: '=',
-          text: this.$t('block.recordList.filter.operators.equal'),
+          text: this.$t('recordList.filter.operators.equal'),
         },
         {
           value: '!=',
-          text: this.$t('block.recordList.filter.operators.notEqual'),
+          text: this.$t('recordList.filter.operators.notEqual'),
         },
       ]
 
@@ -244,11 +248,11 @@ export default {
           ...operators,
           {
             value: '>',
-            text: this.$t('block.recordList.filter.operators.greaterThan'),
+            text: this.$t('recordList.filter.operators.greaterThan'),
           },
           {
             value: '<',
-            text: this.$t('block.recordList.filter.operators.lessThan'),
+            text: this.$t('recordList.filter.operators.lessThan'),
           },
         ]
       } else if (['String', 'Url', 'Email'].includes(kind)) {
@@ -256,7 +260,7 @@ export default {
           ...operators,
           {
             value: 'LIKE',
-            text: this.$t('block.recordList.filter.operators.contains'),
+            text: this.$t('recordList.filter.operators.contains'),
           },
         ]
       }

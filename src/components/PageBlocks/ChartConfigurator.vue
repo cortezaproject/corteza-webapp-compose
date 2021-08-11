@@ -1,7 +1,7 @@
 <template>
-  <b-tab :title="$t('block.chart.label')">
+  <b-tab :title="$t('chart.label')">
     <b-form-group
-      :label="$t('block.chart.display')"
+      :label="$t('chart.display')"
     >
       <b-form-select
         v-model="options.chartID"
@@ -18,6 +18,10 @@ import { NoID } from '@cortezaproject/corteza-js'
 import base from './base'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   name: 'Chart',
 
   extends: base,
@@ -31,7 +35,7 @@ export default {
   methods: {
     filterCharts () {
       const rr = [
-        { chartID: NoID, name: this.$t('block.chart.pick') },
+        { chartID: NoID, name: this.$t('chart.pick') },
       ]
 
       for (const c of this.charts) {

@@ -25,25 +25,25 @@
                     variant="primary"
                     size="lg"
                     class="float-left mr-1"
-                    :text="$t('block.chart.add')"
+                    :text="$t('chart.add')"
                     >
                       <b-dropdown-item-button
                         variant="dark"
                         @click="$router.push({ name: 'admin.charts.create', params: { category: 'generic' } })"
                       >
-                        {{ $t('block.chart.addGeneric') }}
+                        {{ $t('chart.addGeneric') }}
                       </b-dropdown-item-button>
                       <b-dropdown-item-button
                         variant="dark"
                         @click="$router.push({ name: 'admin.charts.create', params: { category: 'funnel' } })"
                       >
-                        {{ $t('block.chart.addFunnel') }}
+                        {{ $t('chart.addFunnel') }}
                       </b-dropdown-item-button>
                       <b-dropdown-item-button
                         variant="dark"
                         @click="$router.push({ name: 'admin.charts.create', params: { category: 'gauge' } })"
                       >
-                        {{ $t('block.chart.addGauge') }}
+                        {{ $t('chart.addGauge') }}
                       </b-dropdown-item-button>
                     </b-dropdown>
 
@@ -97,7 +97,7 @@
                 @row-clicked="handleRowClicked"
                 head-variant="light"
                 tbody-tr-class="pointer"
-                :empty-text="$t('chart.noCharts')"
+                :empty-text="$t('chart.noChart')"
                 show-empty
                 responsive
                 hover
@@ -130,6 +130,10 @@ import Import from 'corteza-webapp-compose/src/components/Admin/Import'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   name: 'ChartList',
 
   components: {
@@ -211,7 +215,7 @@ export default {
 
       this.createChart(c).then((chart) => {
         this.$router.push({ name: 'admin.charts.edit', params: { chartID: chart.chartID } })
-      }).catch(this.toastErrorHandler(this.$t('notification.chart.createFailed')))
+      }).catch(this.toastErrorHandler(this.$t('chart.createFailed')))
     },
     handleRowClicked ({ chartID, canUpdateChart, canDeleteChart }) {
       if (!(canUpdateChart || canDeleteChart)) {

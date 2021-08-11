@@ -1,13 +1,13 @@
 <template>
   <div>
     <b-form-group v-if="field.isMulti"
-                  :label="$t('field.options.multiDelimiter.label')">
+                  :label="$t('options.multiDelimiter.label')">
       <b-form-radio-group v-model="field.options.multiDelimiter"
                           :options="selectOptions"
                           stacked>
       </b-form-radio-group>
-      <b-form-group class="mt-2" :label="$t('field.options.multiDelimiter.customLabel')">
-        <b-form-input v-model="field.options.multiDelimiter" :placeholder="$t('field.options.multiDelimiter.customPlaceholder')"/>
+      <b-form-group class="mt-2" :label="$t('options.multiDelimiter.customLabel')">
+        <b-form-input v-model="field.options.multiDelimiter" :placeholder="$t('options.multiDelimiter.customPlaceholder')"/>
       </b-form-group>
     </b-form-group>
   </div>
@@ -15,6 +15,10 @@
 
 <script>
 export default {
+  i18nOptions: {
+    namespaces: 'field',
+  },
+
   props: {
     field: {
       type: Object,
@@ -25,8 +29,8 @@ export default {
   data () {
     return {
       selectOptions: [
-        { text: this.$t('field.options.multiDelimiter.newline'), value: '\n' },
-        { text: this.$t('field.options.multiDelimiter.comma'), value: ', ' },
+        { text: this.$t('options.multiDelimiter.newline'), value: '\n' },
+        { text: this.$t('options.multiDelimiter.comma'), value: ', ' },
       ],
     }
   },

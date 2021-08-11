@@ -3,21 +3,21 @@
     v-if="loaded"
   >
     <b-form-group
-      :label="$t('field.sanitizers.label')"
+      :label="$t('sanitizers.label')"
       label-size="lg"
     >
       <template #label>
         <div
           class="d-flex"
         >
-          {{ $t('field.sanitizers.label') }}
+          {{ $t('sanitizers.label') }}
 
           <b-button
             variant="link"
             class="p-0 ml-1 mr-auto"
             @click="field.expressions.sanitizers.push('')"
           >
-            {{ $t('field.sanitizers.add') }}
+            {{ $t('sanitizers.add') }}
           </b-button>
 
           <b-button
@@ -25,17 +25,17 @@
             class="p-0 ml-1"
             @click="openExpressionsHelp('sanitizer')"
           >
-            {{ $t('field.sanitizers.examples') }}
+            {{ $t('sanitizers.examples') }}
           </b-button>
         </div>
       </template>
       <field-expressions
         v-model="field.expressions.sanitizers"
-        :placeholder="$t('field.sanitizers.expression.placeholder')"
+        :placeholder="$t('sanitizers.expression.placeholder')"
         @remove="field.expressions.sanitizers.splice($event,1)"
       />
       <b-form-text>
-        {{ $t('field.sanitizers.description') }}
+        {{ $t('sanitizers.description') }}
       </b-form-text>
     </b-form-group>
 
@@ -49,14 +49,14 @@
         <div
           class="d-flex"
         >
-          {{ $t('field.validators.label') }}
+          {{ $t('validators.label') }}
 
           <b-button
             variant="link"
             class="p-0 ml-1 mr-auto"
             @click="field.expressions.validators.push({ test: '', error: '' })"
           >
-            {{ $t('field.sanitizers.add') }}
+            {{ $t('sanitizers.add') }}
           </b-button>
 
           <b-button
@@ -64,7 +64,7 @@
             class="p-0 ml-1"
             @click="openExpressionsHelp('validator')"
           >
-            {{ $t('field.sanitizers.examples') }}
+            {{ $t('sanitizers.examples') }}
           </b-button>
         </div>
       </template>
@@ -76,14 +76,14 @@
       >
         <b-form-input
           v-model="value.test"
-          :placeholder="$t('field.validators.expression.placeholder')"
+          :placeholder="$t('validators.expression.placeholder')"
         />
         <b-input-group-prepend>
           <b-button variant="warning">!</b-button>
         </b-input-group-prepend>
         <b-form-input
           v-model="value.error"
-          :placeholder="$t('field.validators.error.placeholder')"
+          :placeholder="$t('validators.error.placeholder')"
         />
       </field-expressions>
       <b-checkbox
@@ -93,11 +93,11 @@
         :unchecked-value="false"
         class="mt-2"
       >
-        {{ $t('field.validators.disableBuiltIn') }}
+        {{ $t('validators.disableBuiltIn') }}
       </b-checkbox>
 
       <b-form-text>
-        {{ $t('field.validators.description') }}
+        {{ $t('validators.description') }}
       </b-form-text>
     </b-form-group>
   </div>
@@ -108,6 +108,10 @@ import FieldExpressions from 'corteza-webapp-compose/src/components/Common/Modul
 import { compose } from '@cortezaproject/corteza-js'
 
 export default {
+  i18nOptions: {
+    namespaces: 'field',
+  },
+
   components: {
     FieldExpressions,
   },

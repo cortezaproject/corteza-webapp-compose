@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-tab
-      :title="$t('block.metric.edit.tabTitle')"
+      :title="$t('metric.edit.tabTitle')"
     >
       <b-row no-gutters>
         <b-col cols="12">
@@ -26,7 +26,7 @@
             </b-btn>
 
             <span class="btn">
-              {{ m.label || $t('block.metric.defaultMetricLabel') }}
+              {{ m.label || $t('metric.defaultMetricLabel') }}
             </span>
           </div>
 
@@ -53,11 +53,11 @@
           >
             <fieldset>
               <b-form-group
-                :label="$t('block.metric.edit.labelLabel')"
+                :label="$t('metric.edit.labelLabel')"
               >
                 <b-form-input
                   v-model="edit.label"
-                  :placeholder="$t('block.metric.edit.labelPlaceholder')"
+                  :placeholder="$t('metric.edit.labelPlaceholder')"
                   class="mb-1"
                 />
               </b-form-group>
@@ -65,10 +65,10 @@
 
             <fieldset>
               <h5>
-                {{ $t('block.metric.edit.dimensionLabel') }}
+                {{ $t('metric.edit.dimensionLabel') }}
               </h5>
               <b-form-group>
-                <label>{{ $t('block.metric.edit.moduleLabel') }}</label>
+                <label>{{ $t('metric.edit.moduleLabel') }}</label>
                 <b-form-select
                   v-model="edit.moduleID"
                   :options="modules"
@@ -81,14 +81,14 @@
                       :value="undefined"
                       disabled
                     >
-                      {{ $t('block.metric.edit.modulePlaceholder') }}
+                      {{ $t('metric.edit.modulePlaceholder') }}
                     </option>
                   </template>
                 </b-form-select>
               </b-form-group>
 
               <!-- <b-form-group
-                :label="$t('block.metric.edit.dimensionFieldLabel')"
+                :label="$t('metric.edit.dimensionFieldLabel')"
                 label-cols="2"
               >
                 <b-form-select
@@ -103,7 +103,7 @@
                       :value="undefined"
                       disabled
                     >
-                      {{ $t('block.metric.edit.dimensionFieldPlaceholder') }}
+                      {{ $t('metric.edit.dimensionFieldPlaceholder') }}
                     </option>
                   </template>
                 </b-form-select>
@@ -111,7 +111,7 @@
 
               <template>
                 <b-form-group
-                  :label="$t('block.metric.edit.dateFormat')"
+                  :label="$t('metric.edit.dateFormat')"
                   label-cols="2"
                 >
                   <b-form-input
@@ -123,7 +123,7 @@
                 </b-form-group>
 
                 <b-form-group
-                  :label="$t('block.metric.edit.bucketLabel')"
+                  :label="$t('metric.edit.bucketLabel')"
                   label-cols="2"
                 >
                   <b-form-select
@@ -136,21 +136,21 @@
                         disabled
                         :value="undefined"
                       >
-                        {{ $t('block.metric.edit.bucketPlaceholder') }}
+                        {{ $t('metric.edit.bucketPlaceholder') }}
                       </option>
                     </template>
                   </b-form-select>
                 </b-form-group>
               </template> -->
 
-              <b-form-group :label="$t('block.metric.edit.filterLabel')">
+              <b-form-group :label="$t('metric.edit.filterLabel')">
                 <b-form-textarea
                   v-model="edit.filter"
                   placeholder="(A > B) OR (A < C)"
                   class="mb-1"
                 />
                 <b-form-text>
-                  <i18next path="block.metric.edit.filterFootnote" tag="label">
+                  <i18next path="metric.edit.filterFootnote" tag="label">
                     <code>${recordID}</code>
                     <code>${ownerID}</code>
                     <code>${userID}</code>
@@ -161,11 +161,11 @@
 
             <fieldset>
               <h5>
-                {{ $t('block.metric.edit.metricLabel') }}
+                {{ $t('metric.edit.metricLabel') }}
               </h5>
 
               <b-form-group>
-                <label>{{ $t('block.metric.edit.metricFieldLabel') }}</label>
+                <label>{{ $t('metric.edit.metricFieldLabel') }}</label>
                 <b-form-select
                   v-model="edit.metricField"
                   :options="metricFields"
@@ -177,14 +177,14 @@
                       disabled
                       :value="undefined"
                     >
-                      {{ $t('block.metric.edit.metricFieldPlaceholder') }}
+                      {{ $t('metric.edit.metricFieldPlaceholder') }}
                     </option>
                   </template>
                 </b-form-select>
               </b-form-group>
 
               <b-form-group>
-                <label>{{ $t('block.metric.edit.operationLabel') }}</label>
+                <label>{{ $t('metric.edit.operationLabel') }}</label>
                 <b-form-select
                   v-model="edit.operation"
                   :disabled="edit.metricField === 'count'"
@@ -196,24 +196,24 @@
                       :value="undefined"
                       disabled
                     >
-                      {{ $t('block.metric.edit.operationPlaceholder') }}
+                      {{ $t('metric.edit.operationPlaceholder') }}
                     </option>
                   </template>
                 </b-form-select>
               </b-form-group>
 
               <b-form-group>
-                <label>{{ $t('block.metric.edit.transformFunctionLabel') }}</label>
+                <label>{{ $t('metric.edit.transformFunctionLabel') }}</label>
                 <b-form-textarea
                   v-model="edit.transformFx"
                   placeholder="v"
                   class="mb-1"
                 />
-                <small>{{ $t('block.metric.edit.transformFunctionDescription') }}</small>
+                <small>{{ $t('metric.edit.transformFunctionDescription') }}</small>
               </b-form-group>
 
               <b-form-group>
-                <label>{{ $t('block.metric.edit.numberFormat')}}</label>
+                <label>{{ $t('metric.edit.numberFormat')}}</label>
                 <b-form-input
                   v-model="edit.numberFormat"
                   placeholder="0.00"
@@ -222,7 +222,7 @@
               </b-form-group>
 
               <b-form-group>
-                <label>{{ $t('block.metric.edit.prefixLabel')}}</label>
+                <label>{{ $t('metric.edit.prefixLabel')}}</label>
                 <b-form-input
                   v-model="edit.prefix"
                   placeholder="$"
@@ -231,7 +231,7 @@
               </b-form-group>
 
               <b-form-group>
-                <label>{{ $t('block.metric.edit.suffixLabel')}}</label>
+                <label>{{ $t('metric.edit.suffixLabel')}}</label>
                 <b-form-input
                   v-model="edit.suffix"
                   placeholder="USD/mo"
@@ -243,7 +243,7 @@
 
           <!-- <m-style :options="edit.labelStyle">
             <h5 slot="title">
-              {{ $t('block.metric.editStyle.labelLabel') }}
+              {{ $t('metric.editStyle.labelLabel') }}
             </h5>
           </m-style> -->
           <m-style
@@ -251,7 +251,7 @@
             :options="edit.valueStyle"
           >
             <h5 slot="title">
-              {{ $t('block.metric.editStyle.valueLabel') }}
+              {{ $t('metric.editStyle.valueLabel') }}
             </h5>
           </m-style>
         </b-col>
@@ -263,7 +263,7 @@
                 variant="outline-primary"
                 @click="$root.$emit('metric.update')"
               >
-                {{ $t('block.metric.edit.refreshData') }}
+                {{ $t('metric.edit.refreshData') }}
               </b-btn>
             </div>
 
@@ -286,6 +286,10 @@ import MetricBase from '../MetricBase'
 import { compose } from '@cortezaproject/corteza-js'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   name: 'Metric',
   components: {
     MStyle,
@@ -300,23 +304,23 @@ export default {
       operations: [
         {
           value: 'countd',
-          text: this.$t('block.metric.edit.operationCountd'),
+          text: this.$t('metric.edit.operationCountd'),
         },
         {
           value: 'sum',
-          text: this.$t('block.metric.edit.operationSum'),
+          text: this.$t('metric.edit.operationSum'),
         },
         {
           value: 'max',
-          text: this.$t('block.metric.edit.operationMax'),
+          text: this.$t('metric.edit.operationMax'),
         },
         {
           value: 'min',
-          text: this.$t('block.metric.edit.operationMin'),
+          text: this.$t('metric.edit.operationMin'),
         },
         {
           value: 'avg',
-          text: this.$t('block.metric.edit.operationAvg'),
+          text: this.$t('metric.edit.operationAvg'),
         },
       ],
     }

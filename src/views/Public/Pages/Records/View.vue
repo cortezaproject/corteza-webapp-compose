@@ -4,7 +4,7 @@
              show
              variant="info">
 
-      {{ $t('block.record.recordDeleted') }}
+      {{ $t('record.recordDeleted') }}
     </b-alert>
     <grid
       v-if="record"
@@ -43,6 +43,10 @@ import record from 'corteza-webapp-compose/src/mixins/record'
 import { compose, NoID } from '@cortezaproject/corteza-js'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   name: 'ViewRecord',
 
   components: {

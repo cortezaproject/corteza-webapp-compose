@@ -2,8 +2,8 @@
     <fieldset class="form-group">
       <div class="fields d-flex">
         <div class="available">
-          <label>{{ $t('field.selector.available') }}</label>
-          <b-button @click.prevent="selectedFields = [...allFields]" variant="link" class="float-right">{{ $t('field.selector.selectAll') }}</b-button>
+          <label>{{ $t('selector.available') }}</label>
+          <b-button @click.prevent="selectedFields = [...allFields]" variant="link" class="float-right">{{ $t('selector.selectAll') }}</b-button>
           <draggable
             class="drag-area border"
             :list.sync="availableFields"
@@ -16,13 +16,13 @@
               <span v-if="field.label">{{ field.label }} ({{field.name}})</span>
               <span v-else>{{field.name}}</span>
               <span v-if="field.isRequired">*</span>
-              <span class="system float-right" v-if="field.isSystem">{{ $t('field.selector.systemField') }}</span>
+              <span class="system float-right" v-if="field.isSystem">{{ $t('selector.systemField') }}</span>
             </div>
           </draggable>
         </div>
         <div class="selected">
-          <label>{{ $t('field.selector.selected') }}</label>
-          <b-button @click.prevent="selectedFields = []" variant="link" class="float-right">{{ $t('field.selector.unselectAll') }}</b-button>
+          <label>{{ $t('selector.selected') }}</label>
+          <b-button @click.prevent="selectedFields = []" variant="link" class="float-right">{{ $t('selector.unselectAll') }}</b-button>
           <draggable
             class="drag-area border"
             v-model="selectedFields"
@@ -35,18 +35,21 @@
               <span v-if="field.label">{{ field.label }} ({{field.name}})</span>
               <span v-else>{{field.name}}</span>
               <span v-if="field.isRequired">*</span>
-              <span class="system float-right" v-if="field.isSystem">{{ $t('field.selector.systemField') }}</span>
+              <span class="system float-right" v-if="field.isSystem">{{ $t('selector.systemField') }}</span>
             </div>
           </draggable>
         </div>
       </div>
-      <i>{{ $t('field.selector.footnote') }}</i>
     </fieldset>
 </template>
 <script>
 import draggable from 'vuedraggable'
 
 export default {
+  i18nOptions: {
+    namespaces: 'field',
+  },
+
   components: {
     draggable,
   },

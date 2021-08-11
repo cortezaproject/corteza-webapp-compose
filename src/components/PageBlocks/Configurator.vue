@@ -5,25 +5,25 @@
 
     <b-tab active :title="$t('general.label.general')">
       <div class="mh-tab overflow-auto">
-        <b-form-group for="title" :label="$t('block.general.titleLabel')">
+        <b-form-group for="title" :label="$t('general.titleLabel')">
           <b-form-input
             v-model="block.title"
             type="text"
             class="form-control"
             id="title"
-            :placeholder="$t('block.general.titlePlaceholder')">
+            :placeholder="$t('general.titlePlaceholder')">
           </b-form-input>
         </b-form-group>
-        <b-form-group for="description" :label="$t('block.general.descriptionLabel')">
+        <b-form-group for="description" :label="$t('general.descriptionLabel')">
           <b-form-input
             v-model="block.description"
             type="text"
             class="form-control"
             id="description"
-            :placeholder="$t('block.general.descriptionPlaceholder')">
+            :placeholder="$t('general.descriptionPlaceholder')">
           </b-form-input>
         </b-form-group>
-        <b-form-group for="color" :label="$t('block.general.headerStyle')">
+        <b-form-group for="color" :label="$t('general.headerStyle')">
           <b-form-select id="color"
                           v-model="block.style.variants.headerText"
                           :options="textVariants"/>
@@ -43,6 +43,10 @@ import { compose } from '@cortezaproject/corteza-js'
 import PageBlock from './index'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   components: {
     PageBlock,
   },
@@ -57,12 +61,12 @@ export default {
   computed: {
     textVariants () {
       return [
-        { value: 'dark', text: this.$t('block.general.style.default') },
-        { value: 'primary', text: this.$t('block.general.style.primary') },
-        { value: 'secondary', text: this.$t('block.general.style.secondary') },
-        { value: 'success', text: this.$t('block.general.style.success') },
-        { value: 'warning', text: this.$t('block.general.style.warning') },
-        { value: 'danger', text: this.$t('block.general.style.danger') },
+        { value: 'dark', text: this.$t('general.style.default') },
+        { value: 'primary', text: this.$t('general.style.primary') },
+        { value: 'secondary', text: this.$t('general.style.secondary') },
+        { value: 'success', text: this.$t('general.style.success') },
+        { value: 'warning', text: this.$t('general.style.warning') },
+        { value: 'danger', text: this.$t('general.style.danger') },
       ]
     },
 

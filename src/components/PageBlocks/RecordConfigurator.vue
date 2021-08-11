@@ -1,7 +1,7 @@
 <template>
-  <b-tab :title="$t('block.record.label')">
+  <b-tab :title="$t('record.label')">
     <fieldset class="form-group">
-      <label>{{ $t('block.general.module') }}</label>
+      <label>{{ $t('general.module') }}</label>
       <input v-if="module" class="form-control" type="text" v-model="module.name" readonly>
     </fieldset>
     <field-picker v-if="module" :module="module" :fields.sync="options.fields" />
@@ -12,6 +12,10 @@ import base from './base'
 import FieldPicker from 'corteza-webapp-compose/src/components/Common/Module/FieldPicker'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   name: 'Record',
 
   components: {

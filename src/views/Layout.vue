@@ -5,6 +5,16 @@
     >
       <c-topbar
         :sidebar-pinned="pinned"
+        :labels="{
+          helpForum: $t('help.forum'),
+          helpDocumentation: $t('help.documentation'),
+          helpFeedback: $t('help.feedback'),
+          helpVersion: $t('help.version'),
+          userSettingsLoggedInAs: $t('userSettings.loggedInAs', { user }),
+          userSettingsProfile: $t('userSettings.profile'),
+          userSettingsChangePassword: $t('userSettings.changePassword'),
+          userSettingsLogout: $t('userSettings.logout'),
+        }"
       >
         <template #title>
           <portal-target name="topbar-title" />
@@ -63,6 +73,10 @@ import { components } from '@cortezaproject/corteza-vue'
 const { CPrompts, CPermissionsModal, CTopbar, CSidebar } = components
 
 export default {
+  i18nOptions: {
+    namespaces: 'navigation',
+  },
+
   components: {
     CPrompts,
     CPermissionsModal,
@@ -79,6 +93,11 @@ export default {
   },
 
   computed: {
+    user () {
+      const { user } = this.$auth
+      return user.name || user.handle || user.email || ''
+    },
+
     icon () {
       return this.$Settings.attachment('ui.iconLogo', icon)
     },

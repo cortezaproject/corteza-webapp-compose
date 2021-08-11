@@ -62,7 +62,7 @@
         :value="true"
         :unchecked-value="false"
       >
-        {{ $t('general.label.multi') }}
+        {{ $t('label.multi') }}
       </b-form-checkbox>
     </td>
     <td
@@ -74,7 +74,7 @@
         :value="true"
         :unchecked-value="false"
       >
-        {{ $t('general.label.required') }}
+        {{ $t('label.required') }}
       </b-form-checkbox>
     </td>
     <td
@@ -87,7 +87,7 @@
         :value="true"
         :unchecked-value="false"
       >
-        {{ $t('general.label.private') }}
+        {{ $t('label.private') }}
       </b-form-checkbox>
     </td>
     <td
@@ -115,6 +115,10 @@
 import { compose } from '@cortezaproject/corteza-js'
 
 export default {
+  i18nOptions: {
+    namespaces: 'general',
+  },
+
   props: {
     value: {
       type: Object,
@@ -157,7 +161,7 @@ export default {
       return [...compose.ModuleFieldRegistry.keys()]
         // for now this field is hidden, since it's implementation is mia.
         .map(kind => {
-          return { kind, label: this.$t('module.fieldKinds.' + kind + '.label') }
+          return { kind, label: this.$t('fieldKinds.' + kind + '.label') }
         })
     },
   },

@@ -18,7 +18,7 @@
         />
 
         <span class="d-flex align-items-center h-100 w-100 uploading justify-content-center position-relative py-2">
-          {{ $t('general.label.uploading') }} {{ active.file.name }} ({{ size(active.file) }})
+          {{ $t('label.uploading') }} {{ active.file.name }} ({{ size(active.file) }})
         </span>
       </template>
       <div
@@ -34,7 +34,7 @@
         class="d-flex align-items-center h-100 w-100 p-2 droparea justify-content-center"
         :class="{ 'bg-danger': error }">
 
-        {{ error || label || $t('general.label.dropFiles') }}
+        {{ error || label || $t('label.dropFiles') }}
       </div>
     </div>
   </vue-dropzone>
@@ -46,6 +46,10 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import { mixins } from '@cortezaproject/corteza-vue'
 
 export default {
+  i18nOptions: {
+    namespaces: 'general',
+  },
+
   components: {
     vueDropzone,
   },
@@ -144,13 +148,13 @@ export default {
         types = ['*/*']
       }
       if (!this.validateFileType(file.name, types)) {
-        this.error = this.$t('general.label.fileTypeNotAllowed')
+        this.error = this.$t('label.fileTypeNotAllowed')
         this.$refs.dropzone.removeFile(file)
       }
     },
 
     onError (e, message) {
-      this.error = this.$t('general.label.uploadError', { message })
+      this.error = this.$t('label.uploadError', { message })
       this.processing = false
       this.active = null
     },

@@ -1,7 +1,7 @@
 <template>
   <b-card header-bg-variant="white" footer-bg-variant="white">
     <b-form-group>
-      <label>{{ $t('block.recordList.export.selectFields') }}</label>
+      <label>{{ $t('recordList.export.selectFields') }}</label>
       <field-picker
         v-if="module"
         :module="module"
@@ -9,31 +9,31 @@
         :disabled-types="disabledTypes"
         :fields.sync="selectedFields"/>
 
-      <i>{{ $t('block.recordList.export.limitations') }}</i>
+      <i>{{ $t('recordList.export.limitations') }}</i>
     </b-form-group>
 
     <b-form-group>
       <b-form-checkbox v-model="forTimezone">
-        {{ $t('block.recordList.export.specifyTimezone') }}
+        {{ $t('recordList.export.specifyTimezone') }}
       </b-form-checkbox>
 
       <vue-select
         v-if="forTimezone"
         v-model="exportTimezone"
         :options="timezones"
-        :placeholder="$t('block.recordList.export.timezonePlaceholder')"
+        :placeholder="$t('recordList.export.timezonePlaceholder')"
       />
     </b-form-group>
 
     <b-form-group>
       <b-form-checkbox v-model="includeQuery">
-        {{ $t('block.recordList.export.includeQuery') }}
+        {{ $t('recordList.export.includeQuery') }}
       </b-form-checkbox>
 
       <b-form-input
         v-if="includeQuery"
         v-model="exportQuery"
-        :placeholder="$t('block.recordList.export.query')" />
+        :placeholder="$t('recordList.export.query')" />
 
     </b-form-group>
 
@@ -50,7 +50,7 @@
         <b-form-group
           v-if="rangeType === 'range'"
           label-cols="5"
-          :label="$t('block.recordList.export.rangeBy')">
+          :label="$t('recordList.export.rangeBy')">
           <b-form-select
             v-model="rangeBy"
             :options="rangeByOptions" />
@@ -62,7 +62,7 @@
       <b-col cols="5">
         <b-form-group
           label-cols="5"
-          :label="$t('block.recordList.export.dateRange')">
+          :label="$t('recordList.export.dateRange')">
             <b-form-select
               v-model="range"
               :options="dateRangeOptions" />
@@ -91,7 +91,7 @@
 
     <div slot="footer" class="d-flex">
       <span v-if="!!getExportableCount" class="my-auto">
-        {{ $t('block.recordList.export.recordCount', { count: getExportableCount}) }}
+        {{ $t('recordList.export.recordCount', { count: getExportableCount}) }}
       </span>
       <span class="ml-auto">
         <b-button
@@ -101,7 +101,7 @@
           variant="dark"
           class="mr-2">
 
-          {{ $t('block.recordList.export.json') }}
+          {{ $t('recordList.export.json') }}
         </b-button>
         <b-button
           v-if="allowCSV"
@@ -109,7 +109,7 @@
           @click="doExport('csv')"
           variant="dark">
 
-          {{ $t('block.recordList.export.csv') }}
+          {{ $t('recordList.export.csv') }}
         </b-button>
       </span>
     </div>
@@ -125,6 +125,10 @@ import { VueSelect } from 'vue-select'
 const fmtDate = (d) => d.format('YYYY-MM-DD')
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   components: {
     FieldPicker,
     VueSelect,
@@ -220,15 +224,15 @@ export default {
       return [
         {
           value: 'all',
-          text: this.$t('block.recordList.export.all'),
+          text: this.$t('recordList.export.all'),
         },
         {
           value: 'range',
-          text: this.$t('block.recordList.export.inRange'),
+          text: this.$t('recordList.export.inRange'),
         },
         {
           value: 'selection',
-          text: this.$t('block.recordList.export.selection'),
+          text: this.$t('recordList.export.selection'),
           disabled: !this.hasSelection,
         },
       ]
@@ -249,11 +253,11 @@ export default {
       return [
         {
           value: 'created_at',
-          text: this.$t('block.recordList.export.filter.createdAt'),
+          text: this.$t('recordList.export.filter.createdAt'),
         },
         {
           value: 'updated_at',
-          text: this.$t('block.recordList.export.filter.updatedAt'),
+          text: this.$t('recordList.export.filter.updatedAt'),
         },
       ]
     },
@@ -262,27 +266,27 @@ export default {
       return [
         {
           value: 'lastMonth',
-          text: this.$t('block.recordList.export.filter.lastMonth'),
+          text: this.$t('recordList.export.filter.lastMonth'),
         },
         {
           value: 'thisMonth',
-          text: this.$t('block.recordList.export.filter.thisMonth'),
+          text: this.$t('recordList.export.filter.thisMonth'),
         },
         {
           value: 'lastWeek',
-          text: this.$t('block.recordList.export.filter.lastWeek'),
+          text: this.$t('recordList.export.filter.lastWeek'),
         },
         {
           value: 'thisWeek',
-          text: this.$t('block.recordList.export.filter.thisWeek'),
+          text: this.$t('recordList.export.filter.thisWeek'),
         },
         {
           value: 'today',
-          text: this.$t('block.recordList.export.filter.today'),
+          text: this.$t('recordList.export.filter.today'),
         },
         {
           value: 'custom',
-          text: this.$t('block.recordList.export.filter.custom'),
+          text: this.$t('recordList.export.filter.custom'),
         },
       ]
     },

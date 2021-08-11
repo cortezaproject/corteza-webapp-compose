@@ -263,13 +263,11 @@
     </b-card>
   </b-container>
 </template>
-
 <script>
-import i18n from '../../../i18n'
 
 export default {
   i18nOptions: {
-    keyPrefix: 'expressions-help',
+    namespaces: 'expressions-help',
   },
 
   data () {
@@ -288,7 +286,31 @@ export default {
         { key: 'result' },
       ],
 
-      categories: [
+      categories: [],
+      formatCategories: [],
+      examples: [],
+    }
+  },
+
+  mounted () {
+    // Translations could not be loaded at the time
+    // when we're rendering the component, so let's delay
+    // content init as long as possible.
+    this.$nextTick(() => {
+      setTimeout(() => {
+        this.setContent()
+
+        if (this.$route.hash) {
+          const exampleID = this.$route.hash.substring(1)
+          this.examples.find(({ id }) => id === exampleID).collapse = true
+        }
+      }, 1000)
+    })
+  },
+
+  methods: {
+    setContent () {
+      this.categories = [
         {
           id: 'general',
           name: this.$t('categories.general.label'),
@@ -341,9 +363,9 @@ export default {
             { syntax: 'latest(d1, d2, ...)', description: this.$t('categories.dateTime.latest'), example: 'latest(datefield1, datefield2)', result: '"1970-01-01T00:30:00"' },
           ],
         },
-      ],
+      ]
 
-      formatCategories: [
+      this.formatCategories = [
         {
           id: 'format',
           name: this.$t('formatCategories.string.label'),
@@ -420,9 +442,9 @@ export default {
             { syntax: '%v', description: this.$t('formatCategories.dateTime.v'), example: 'strftime(dateField, "%v")', result: '" 2-Feb-1993"' },
           ],
         },
-      ],
+      ]
 
-      examples: [
+      this.examples = [
         {
           id: 'valueExpressions',
           name: this.$t('operators.value-expression'),
@@ -471,17 +493,9 @@ export default {
             { expression: 'oldValue > value', value: '41', oldValue: '42', result: 'false' },
           ],
         },
-      ],
-    }
+      ]
+    },
   },
-
-  mounted () {
-    if (this.$route.hash) {
-      const exampleID = this.$route.hash.substring(1)
-      this.examples.find(({ id }) => id === exampleID).collapse = true
-    }
-  },
-  i18n: i18n(),
 }
 </script>
 

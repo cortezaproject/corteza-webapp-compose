@@ -14,6 +14,10 @@ import ChartComponent from '../Chart'
 import { NoID } from '@cortezaproject/corteza-js'
 
 export default {
+  i18nOptions: {
+    namespaces: 'notification',
+  },
+
   components: {
     ChartComponent,
   },
@@ -35,7 +39,7 @@ export default {
     const { namespaceID } = this.namespace
     this.findChartByID({ chartID, namespaceID }).then((chart) => {
       this.chart = chart
-    }).catch(this.toastErrorHandler(this.$t('notification.chart.loadFailed')))
+    }).catch(this.toastErrorHandler(this.$t('chart.loadFailed')))
   },
 
   methods: {

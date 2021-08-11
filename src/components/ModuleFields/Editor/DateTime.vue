@@ -90,14 +90,18 @@ import base from './base'
 import moment from 'moment'
 
 export default {
+  i18nOptions: {
+    namespaces: 'field',
+  },
+
   extends: base,
 
   computed: {
     dateRule () {
       if (this.field.options.onlyFutureValues) {
-        return 'field.kind.dateTime.warning.futureValuesOnly'
+        return 'kind.dateTime.warning.futureValuesOnly'
       } else if (this.field.options.onlyPastValues) {
-        return 'field.kind.dateTime.warning.pastValuesOnly'
+        return 'kind.dateTime.warning.pastValuesOnly'
       } else {
         return ''
       }

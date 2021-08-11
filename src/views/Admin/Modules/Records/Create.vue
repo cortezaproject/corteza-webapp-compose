@@ -3,6 +3,10 @@ import ViewRecord from './View'
 import { compose } from '@cortezaproject/corteza-js'
 
 export default {
+  i18nOptions: {
+    namespaces: 'module',
+  },
+
   name: 'CreateRecord',
 
   extends: ViewRecord,
@@ -24,7 +28,7 @@ export default {
 
   computed: {
     title () {
-      return this.$t('module.allRecords.create.title', { name: this.module.name || '' })
+      return this.$t('allRecords.create.title', { name: this.module.name || '' })
     },
   },
 

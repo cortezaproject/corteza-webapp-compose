@@ -8,7 +8,7 @@
         :clearable="false"
         :options="namespaces"
         :value="namespace"
-        :placeholder="$t('sidebar.pickNamespace')"
+        :placeholder="$t('pickNamespace')"
         @option:selected="namespaceSelected"
       >
         <template #list-footer>
@@ -16,7 +16,7 @@
             :to="{ name: 'namespace.list' }"
             class="d-block mt-3 ml-3 mb-1 font-weight-bold"
           >
-            {{ $t('sidebar.namespaceList') }}
+            {{ $t('namespaceList') }}
           </router-link>
         </template>
       </vue-select>
@@ -32,7 +32,7 @@
         class="w-100 mb-2"
         :to="{ name: 'pages', params: { slug: namespace.slug } }"
       >
-        {{ $t('navigation.publicPages') }}
+        {{ $t('publicPages') }}
       </b-button>
 
       <b-button
@@ -41,7 +41,7 @@
         class="w-100 mb-2"
         :to="{ name: 'admin.modules', params: { slug: namespace.slug } }"
       >
-        {{ $t('navigation.adminPanel') }}
+        {{ $t('adminPanel') }}
       </b-button>
 
       <div
@@ -53,7 +53,7 @@
           v-model.trim="query"
           class="namespace-selector mw-100"
           type="search"
-          :placeholder="$t('sidebar.searchPlaceholder')"
+          :placeholder="$t('searchPlaceholder')"
         />
 
         <c-sidebar-nav-items
@@ -68,7 +68,7 @@
         v-else
         class="d-flex justify-content-center mt-5"
       >
-        {{ $t('sidebar.noPages') }}
+        {{ $t('noPages') }}
       </h5>
     </portal>
   </div>
@@ -83,6 +83,10 @@ import { VueSelect } from 'vue-select'
 const { CSidebarNavItems } = components
 
 export default {
+  i18nOptions: {
+    namespaces: 'sidebar',
+  },
+
   components: {
     Portal,
     VueSelect,
@@ -124,9 +128,9 @@ export default {
 
     adminRoutes () {
       return [
-        { name: 'admin.modules', title: this.$t('navigation.module') },
-        { name: 'admin.pages', title: this.$t('navigation.page') },
-        { name: 'admin.charts', title: this.$t('navigation.chart') },
+        { name: 'admin.modules', title: this.$t('module') },
+        { name: 'admin.pages', title: this.$t('page') },
+        { name: 'admin.charts', title: this.$t('chart') },
       ]
     },
 

@@ -13,7 +13,7 @@
           variant="primary"
           class="d-inline-block mb-0 ml-2"
         >
-          {{ $t('block.recordList.federated') }}
+          {{ $t('recordList.federated') }}
         </b-badge>
       </h5>
 
@@ -44,7 +44,7 @@
                   class="float-left mr-1"
                   @click="addInline"
                 >
-                  + {{ $t('block.recordList.addRecord') }}
+                  + {{ $t('recordList.addRecord') }}
                 </b-btn>
               </template>
 
@@ -57,7 +57,7 @@
                     query: null,
                   }"
                 >
-                  + {{ $t('block.recordList.addRecord') }}
+                  + {{ $t('recordList.addRecord') }}
                 </router-link>
                 <importer-modal
                   :module="recordListModule"
@@ -113,12 +113,12 @@
             cols="4"
             class="pt-1 text-nowrap font-weight-bold"
           >
-            {{ $t('block.recordList.selected', { count: selected.length, total: items.length }) }}
+            {{ $t('recordList.selected', { count: selected.length, total: items.length }) }}
             <a
               href="#"
               @click.prevent="handleSelectAllOnPage({ isChecked: false })"
             >
-              ({{ $t('block.recordList.cancelSelection') }})
+              ({{ $t('recordList.cancelSelection') }})
             </a>
           </b-col>
           <b-col
@@ -444,7 +444,7 @@
               <h6
                 v-else
               >
-                {{ $t('block.recordList.noRecords') }}
+                {{ $t('recordList.noRecords') }}
               </h6>
             </b-td>
           </b-tr>
@@ -468,12 +468,12 @@
                   class="ml-2 text-nowrap font-weight-bold"
               >
                 <span v-if="pagination.count > options.perPage">
-                  {{ $t('block.recordList.pagination.showing', getPagination) }}
+                  {{ $t('recordList.pagination.showing', getPagination) }}
                 </span>
                 <span
                   v-else
                 >
-                  {{ $t('block.recordList.pagination.single', getPagination) }}
+                  {{ $t('recordList.pagination.single', getPagination) }}
                 </span>
               </div>
             </div>
@@ -515,7 +515,7 @@
                   @click="goToPage('prevPage')"
                 >
                   <font-awesome-icon :icon="['fas', 'angle-left']" />
-                  {{ $t('block.recordList.pagination.prev') }}
+                  {{ $t('recordList.pagination.prev') }}
                 </b-button>
                 <b-button
                   :disabled="!hasNextPage"
@@ -523,7 +523,7 @@
                   class="text-dark"
                   @click="goToPage('nextPage')"
                 >
-                  {{ $t('block.recordList.pagination.next') }}
+                  {{ $t('recordList.pagination.next') }}
                   <font-awesome-icon :icon="['fas', 'angle-right']" />
                 </b-button>
               </b-button-group>
@@ -552,6 +552,10 @@ import RecordListFilter from 'corteza-webapp-compose/src/components/Common/Recor
 import ColumnPicker from 'corteza-webapp-compose/src/components/Admin/Module/Records/ColumnPicker'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   components: {
     ExporterModal,
     ImporterModal,
@@ -910,7 +914,7 @@ export default {
 
       // Validate props
       if (!moduleID) {
-        throw Error(this.$t('notification.record.moduleOrPageNotSet'))
+        throw Error(this.$t('record.moduleOrPageNotSet'))
       }
 
       // If there is no current record and we are using recordID/ownerID variable in (pre)filter
@@ -918,11 +922,11 @@ export default {
       /* eslint-disable no-template-curly-in-string */
       if (!this.record) {
         if ((prefilter || '').includes('${record')) {
-          throw Error(this.$t('notification.record.invalidRecordVar'))
+          throw Error(this.$t('record.invalidRecordVar'))
         }
 
         if ((prefilter || '').includes('${ownerID}')) {
-          throw Error(this.$t('notification.record.invalidOwnerVar'))
+          throw Error(this.$t('record.invalidOwnerVar'))
         }
       }
 
@@ -1116,7 +1120,7 @@ export default {
         this.$ComposeAPI
           .recordBulkDelete({ moduleID, namespaceID, recordIDs })
           .then(() => { this.refresh(true) })
-          .catch(this.toastErrorHandler(this.$t('notification.record.deleteFailed')))
+          .catch(this.toastErrorHandler(this.$t('record.deleteFailed')))
       }
     },
 
@@ -1136,7 +1140,7 @@ export default {
       }
 
       if (this.recordListModule.moduleID !== this.options.moduleID) {
-        throw Error(this.$t('notification.record.moduleMismatch'))
+        throw Error(this.$t('record.moduleMismatch'))
       }
 
       this.processing = true
@@ -1202,7 +1206,7 @@ export default {
 
           this.items = records.map(r => this.wrapRecord(r))
         })
-        .catch(this.toastErrorHandler(this.$t('notification.record.listLoadFailed')))
+        .catch(this.toastErrorHandler(this.$t('record.listLoadFailed')))
         .finally(() => {
           this.processing = false
         })

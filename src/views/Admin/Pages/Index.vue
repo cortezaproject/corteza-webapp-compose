@@ -23,9 +23,9 @@
                   <b-form @submit.prevent="handleAddPageFormSubmit" class="mr-1">
                     <b-form-group v-if="namespace.canCreatePage" class="mb-0">
                       <b-input-group>
-                        <b-input required type="text" v-model="page.title" class="page-name-input" id="name" :placeholder="$t('page.newPlaceholder')" />
+                        <b-input required type="text" v-model="page.title" class="page-name-input" id="name" :placeholder="$t('newPlaceholder')" />
                         <b-input-group-append>
-                          <b-button type="submit" variant="primary" size="lg">{{ $t('page.createLabel') }}</b-button>
+                          <b-button type="submit" variant="primary" size="lg">{{ $t('createLabel') }}</b-button>
                         </b-input-group-append>
                       </b-input-group>
                     </b-form-group>
@@ -36,7 +36,7 @@
                     v-if="namespace.canGrant"
                     :resource="`corteza::compose:page/${namespace.namespaceID}/*`"
                     class="btn-lg"
-                    :buttonLabel="$t('general.label.permissions')"
+                    :buttonLabel="$t('label.permissions')"
                     buttonVariant="light"
                   />
                 </div>
@@ -48,10 +48,10 @@
                 class="pl-4"
               >
                 <span class="font-weight-bold">
-                  {{ $t('page.newPlaceholder') }}
+                  {{ $t('newPlaceholder') }}
                 </span>
                 <span class="text-muted font-italic ml-3">
-                  {{ $t('page.instructions') }}
+                  {{ $t('instructions') }}
                 </span>
               </b-col>
             </b-row>
@@ -74,6 +74,10 @@ import PageTree from 'corteza-webapp-compose/src/components/Admin/Page/Tree'
 import { compose } from '@cortezaproject/corteza-js'
 
 export default {
+  i18nOptions: {
+    namespaces: 'page',
+  },
+
   name: 'PageList',
 
   components: {
@@ -107,7 +111,7 @@ export default {
       const { namespaceID } = this.namespace
       this.$ComposeAPI.pageTree({ namespaceID }).then((tree) => {
         this.tree = tree.map(p => new compose.Page(p))
-      }).catch(this.toastErrorHandler(this.$t('notification.page.loadFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification.loadFailed')))
     },
 
     handleAddPageFormSubmit () {
@@ -115,7 +119,7 @@ export default {
       this.page.weight = this.tree.length
       this.createPage({ ...this.page, namespaceID }).then(({ pageID }) => {
         this.$router.push({ name: 'admin.pages.edit', params: { pageID } })
-      }).catch(this.toastErrorHandler(this.$t('notification.page.saveFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification.saveFailed')))
     },
 
     handleReorder () {

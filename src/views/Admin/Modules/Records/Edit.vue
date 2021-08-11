@@ -2,6 +2,10 @@
 import ViewRecord from './View'
 
 export default {
+  i18nOptions: {
+    namespaces: 'module',
+  },
+
   name: 'EditRecord',
 
   extends: ViewRecord,
@@ -14,7 +18,7 @@ export default {
 
   computed: {
     title () {
-      return this.$t('module.allRecords.edit.title', { name: this.module.name || '' })
+      return this.$t('allRecords.edit.title', { name: this.module.name || '' })
     },
   },
 

@@ -9,7 +9,7 @@
     <b-modal :visible="showModal"
              @hide="onModalHide"
              size="lg"
-             :title="$t('block.recordList.import.to', { modulename: module.name })"
+             :title="$t('recordList.import.to', { modulename: module.name })"
              hide-footer
              body-class="p-0">
 
@@ -29,7 +29,7 @@
                 class="text-danger"
                 slot="uploadLabel">
 
-            {{ $t('block.recordList.import.failed', progress) }}
+            {{ $t('recordList.import.failed', progress) }}
           </label>
         </component>
       </keep-alive>
@@ -44,6 +44,10 @@ import Progress from './Progress'
 import ErrorReport from './ErrorReport'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   name: 'Importer',
   props: {
     namespace: {

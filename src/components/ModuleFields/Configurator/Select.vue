@@ -2,19 +2,19 @@
   <b-row no-gutters>
     <b-col>
       <b-form-group>
-        <div>{{ $t('field.kind.select.optionsLabel') }}</div>
+        <div>{{ $t('kind.select.optionsLabel') }}</div>
         <b-input-group v-for="(option, index) in f.options.options"
                        class="mb-1"
                        :key="index">
           <b-form-input plain
                         v-model="f.options.options[index].value"
                         size="sm"
-                        :placeholder="$t('field.kind.select.optionValuePlaceholder')" />
+                        :placeholder="$t('kind.select.optionValuePlaceholder')" />
 
           <b-form-input plain
                         v-model="f.options.options[index].text"
                         size="sm"
-                        :placeholder="$t('field.kind.select.optionLabelPlaceholder')" />
+                        :placeholder="$t('kind.select.optionLabelPlaceholder')" />
 
           <b-input-group-append>
             <b-button @click.prevent="f.options.options.splice(index, 1)"
@@ -30,14 +30,14 @@
                         v-model="newOption.value"
                         @keypress.enter.prevent="handleAddOption"
                         size="sm"
-                        :placeholder="$t('field.kind.select.optionValuePlaceholder')"
+                        :placeholder="$t('kind.select.optionValuePlaceholder')"
                         :state="newOptState" />
 
           <b-form-input plain
                         v-model="newOption.text"
                         @keypress.enter.prevent="handleAddOption"
                         size="sm"
-                        :placeholder="$t('field.kind.select.optionLabelPlaceholder')"
+                        :placeholder="$t('kind.select.optionLabelPlaceholder')"
                         :state="newOptState" />
 
           <b-input-group-append>
@@ -45,14 +45,14 @@
                       variant="primary"
                       size="sm"
                       :disabled="newOptState === false || newEmpty">
-              + {{ $t('field.kind.select.optionAdd') }}
+              + {{ $t('kind.select.optionAdd') }}
             </b-button>
           </b-input-group-append>
         </b-input-group>
       </b-form-group>
 
       <b-form-group>
-        <label class="d-block">{{ $t('field.kind.select.optionType.label') }}</label>
+        <label class="d-block">{{ $t('kind.select.optionType.label') }}</label>
         <b-form-radio-group
           v-model="f.options.selectType"
           :options="selectOptions"
@@ -67,15 +67,19 @@
 import base from './base'
 
 export default {
+  i18nOptions: {
+    namespaces: 'field',
+  },
+
   extends: base,
 
   data () {
     return {
       newOption: { value: undefined, text: undefined },
       selectOptions: [
-        { text: this.$t('field.kind.select.optionType.default'), value: 'default' },
-        { text: this.$t('field.kind.select.optionType.multiple'), value: 'multiple' },
-        { text: this.$t('field.kind.select.optionType.each'), value: 'each' },
+        { text: this.$t('kind.select.optionType.default'), value: 'default' },
+        { text: this.$t('kind.select.optionType.multiple'), value: 'multiple' },
+        { text: this.$t('kind.select.optionType.each'), value: 'each' },
       ],
     }
   },

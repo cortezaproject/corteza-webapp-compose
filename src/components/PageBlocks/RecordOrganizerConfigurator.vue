@@ -1,7 +1,7 @@
 <template>
-  <b-tab :title="$t('block.recordOrganizer.label')">
+  <b-tab :title="$t('recordOrganizer.label')">
     <b-form-group>
-      <label>{{ $t('block.general.module') }}</label>
+      <label>{{ $t('general.module') }}</label>
       <b-form-select
         v-model="options.moduleID"
         :options="moduleOptions"
@@ -29,12 +29,12 @@
         </div>
       </b-form-group>
 
-      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.prefilterLabel')">
+      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('recordList.record.prefilterLabel')">
         <b-form-textarea :value="true"
-                         :placeholder="$t('block.recordList.record.prefilterPlaceholder')"
+                         :placeholder="$t('recordList.record.prefilterPlaceholder')"
                          v-model.trim="options.filter" />
           <b-form-text>
-            <i18next path="block.recordList.record.prefilterFootnote" tag="label">
+            <i18next path="recordList.record.prefilterFootnote" tag="label">
               <code>${recordID}</code>
               <code>${ownerID}</code>
               <code>${userID}</code>
@@ -42,7 +42,7 @@
           </b-form-text>
       </b-form-group>
 
-      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordOrganizer.labelField.label')">
+      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('recordOrganizer.labelField.label')">
         <b-form-select v-model="options.labelField">
           <option value="">{{ $t('general.label.none') }}</option>
           <option
@@ -53,10 +53,10 @@
             {{ field.label || field.name }} ({{ field.kind }})
           </option>
         </b-form-select>
-        <b-form-text>{{ $t('block.recordOrganizer.labelField.footnote') }}</b-form-text>
+        <b-form-text>{{ $t('recordOrganizer.labelField.footnote') }}</b-form-text>
       </b-form-group>
 
-      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordOrganizer.descriptionField.label')">
+      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('recordOrganizer.descriptionField.label')">
         <b-form-select v-model="options.descriptionField">
           <option value="">{{ $t('general.label.none') }}</option>
           <option
@@ -67,10 +67,10 @@
             {{ field.label || field.name }} ({{ field.kind }})
           </option>
         </b-form-select>
-        <b-form-text class="text-secondary small">{{ $t('block.recordOrganizer.descriptionField.footnote') }}</b-form-text>
+        <b-form-text class="text-secondary small">{{ $t('recordOrganizer.descriptionField.footnote') }}</b-form-text>
       </b-form-group>
 
-      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordOrganizer.positionField.label')">
+      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('recordOrganizer.positionField.label')">
         <b-form-select v-model="options.positionField">
           <option value="">{{ $t('general.label.none') }}</option>
           <option
@@ -81,10 +81,10 @@
             {{ field.label || field.name }}
           </option>
         </b-form-select>
-        <b-form-text class="text-secondary small">{{ $t('block.recordOrganizer.positionField.footnote') }}</b-form-text>
+        <b-form-text class="text-secondary small">{{ $t('recordOrganizer.positionField.footnote') }}</b-form-text>
       </b-form-group>
 
-      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordOrganizer.groupField.label')">
+      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('recordOrganizer.groupField.label')">
         <b-form-select v-model="options.groupField">
           <option value="">{{ $t('general.label.none') }}</option>
           <option
@@ -95,12 +95,12 @@
             {{ field.label || field.name }}
           </option>
         </b-form-select>
-        <b-form-text class="text-secondary small">{{ $t('block.recordOrganizer.groupField.footnote') }}</b-form-text>
+        <b-form-text class="text-secondary small">{{ $t('recordOrganizer.groupField.footnote') }}</b-form-text>
       </b-form-group>
 
       <b-form-group
         v-if="options.groupField"
-        :label="$t('block.recordOrganizer.group.label')"
+        :label="$t('recordOrganizer.group.label')"
         :label-cols="3"
         breakpoint="md"
         horizontal
@@ -111,7 +111,7 @@
           valueOnly
           v-bind="mock"
         />
-        <b-form-text class="text-secondary small">{{ $t('block.recordOrganizer.group.footnote') }}</b-form-text>
+        <b-form-text class="text-secondary small">{{ $t('recordOrganizer.group.footnote') }}</b-form-text>
       </b-form-group>
     </div>
   </b-tab>
@@ -123,6 +123,10 @@ import { compose, validator, NoID } from '@cortezaproject/corteza-js'
 import base from './base'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   name: 'RecordOrganizer',
 
   components: {

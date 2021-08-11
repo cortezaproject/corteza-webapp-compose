@@ -3,7 +3,7 @@
     <b-button @click="toggleModal"
               size="lg"
               variant="light">
-      {{ $t('general.label.export') }}
+      {{ $t('label.export') }}
     </b-button>
     <b-modal
       :visible="showExportModal"
@@ -25,6 +25,10 @@
 import FieldPicker from './FieldPicker'
 
 export default {
+  i18nOptions: {
+    namespaces: 'general',
+  },
+
   components: {
     FieldPicker,
   },

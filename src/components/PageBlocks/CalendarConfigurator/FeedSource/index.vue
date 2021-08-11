@@ -6,7 +6,7 @@
 
       <!-- define feed resource; eg. module, reminders, google calendar, ... -->
       <b-form-group horizontal
-                    :label="$t('block.calendar.feedLabel')">
+                    :label="$t('calendar.feedLabel')">
 
         <b-input-group>
           <b-form-select v-model="feed.resource"
@@ -16,7 +16,7 @@
               <option :value="null"
                       :disabled="true">
 
-                {{ $t('block.calendar.feedPlaceholder') }}
+                {{ $t('calendar.feedPlaceholder') }}
               </option>
             </template>
           </b-form-select>
@@ -50,7 +50,7 @@
     <b-button @click.prevent="handleAddButton"
               class="btn btn-url test-feed-add">
 
-      {{ $t('block.calendar.addEventsSource') }}
+      {{ $t('calendar.addEventsSource') }}
     </b-button>
   </fieldset>
 </template>
@@ -61,6 +61,10 @@ import * as configs from './configs'
 import { compose } from '@cortezaproject/corteza-js'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   components: {
   },
 
@@ -78,7 +82,7 @@ export default {
     feedSources () {
       return Object.entries(compose.PageBlockCalendar.feedResources).map(([key, value]) => ({
         value,
-        text: this.$t(`block.calendar.${key}Feed.optionLabel`),
+        text: this.$t(`calendar.${key}Feed.optionLabel`),
       }))
     },
   },

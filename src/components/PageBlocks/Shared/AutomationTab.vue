@@ -1,7 +1,7 @@
 <template>
   <b-tab class="p-0">
     <template #title>
-      {{ $t('label') }}
+      {{ $t('automation.label') }}
       <b-badge
         v-if="buttons.length > 0"
         pill
@@ -15,7 +15,7 @@
       <b-row>
         <b-col cols="6">
           <b-card
-            :header="$t('configuredButtons')"
+            :header="$t('automation.configuredButtons')"
             footer-class="text-right"
           >
             <draggable
@@ -36,16 +36,16 @@
             <template #footer>
               <b-button
                 variant="link"
-                @click="appendButton({ label: $t('dummyButtonLabel'), variant: 'danger' })"
+                @click="appendButton({ label: $t('automation.dummyButtonLabel'), variant: 'danger' })"
               >
-                {{ $t('addPlaceholderLabel') }}
+                {{ $t('automation.addPlaceholderLabel') }}
               </b-button>
               <c-input-confirm
                 @confirmed="buttons.splice(0)"
                 variant="link"
                 size="md"
               >
-                {{ $t('removeAll') }}
+                {{ $t('automation.removeAll') }}
               </c-input-confirm>
             </template>
           </b-card>
@@ -63,12 +63,12 @@
       <b-row class="mt-4">
         <b-col cols="12">
           <b-card
-            :header="$t('availableScriptsAndWorkflow', { count: available.length })"
+            :header="$t('automation.availableScriptsAndWorkflow', { count: available.length })"
             v-if="available.length > 0"
           >
             <b-input
               type="search"
-              :placeholder="$t('searchPlaceholder')"
+              :placeholder="$t('automation.searchPlaceholder')"
               class="mb-1"
               v-model="queryAvailable"
             />
@@ -84,8 +84,8 @@
                 <div class="d-flex w-100 justify-content-between">
                   <h5>
                     {{ b.label || b.script }}
-                    <b-badge v-if="b.workflowID" variant="light">{{ $t('badge.workflow') }}</b-badge>
-                    <b-badge v-else-if="b.script" variant="light">{{ $t('badge.script') }}</b-badge>
+                    <b-badge v-if="b.workflowID" variant="light">{{ $t('automation.badge.workflow') }}</b-badge>
+                    <b-badge v-else-if="b.script" variant="light">{{ $t('automation.badge.script') }}</b-badge>
                   </h5>
                   <code v-if="b.label && b.script">{{ b.script }}</code>
                 </div>
@@ -99,7 +99,7 @@
                   v-else
                   class="mb-0 mt-2"
                 >
-                  <i>{{ $t('noDescription') }}</i>
+                  <i>{{ $t('automation.noDescription') }}</i>
                 </p>
               </b-list-group-item>
             </b-list-group>
@@ -107,7 +107,7 @@
           <p
             v-else-if="buttons.length === 0"
           >
-            {{ $t('noScripts') }}
+            {{ $t('automation.noScripts') }}
           </p>
         </b-col>
       </b-row>
@@ -122,7 +122,7 @@ import ButtonEditor from './AutomationTabButtonEditor'
 
 export default {
   i18nOptions: {
-    keyPrefix: 'block.automation',
+    namespaces: 'block',
   },
 
   components: {

@@ -27,7 +27,7 @@
                     class="mr-1 float-left"
                     :to="{ name: 'admin.modules.create' }"
                   >
-                    {{ $t('module.createLabel') }}
+                    {{ $t('createLabel') }}
                   </b-btn>
 
                   <import
@@ -56,7 +56,7 @@
                       v-model.trim="query"
                       class="mw-100"
                       type="search"
-                      :placeholder="$t('module.searchPlaceholder')" />
+                      :placeholder="$t('searchPlaceholder')" />
                     <b-input-group-append>
                       <b-input-group-text class="text-primary bg-white">
                         <font-awesome-icon
@@ -80,7 +80,7 @@
                 @row-clicked="handleRowClicked"
                 head-variant="light"
                 tbody-tr-class="pointer"
-                :empty-text="$t('module.noModules')"
+                :empty-text="$t('noModule')"
                 responsive
                 show-empty
                 hover
@@ -98,7 +98,7 @@
                         pill
                         variant="primary"
                       >
-                        {{ $t('module.federated') }}
+                        {{ $t('federated') }}
                       </b-badge>
                     </h5>
                   </div>
@@ -112,11 +112,11 @@
                     variant="light"
                     class="mr-2"
                   >
-                    {{ pages.find(p => p.moduleID === m.moduleID) ?  $t('module.recordPage.edit') : $t('module.recordPage.create') }}
+                    {{ pages.find(p => p.moduleID === m.moduleID) ?  $t('recordPage.edit') : $t('recordPage.create') }}
                   </b-button>
                   <span>
                     <router-link :to="{name: 'admin.modules.record.list', params: { moduleID: m.moduleID }}" class="btn px-2 text-dark">
-                      {{ $t('module.allRecords.label') }}
+                      {{ $t('allRecords.label') }}
                     </router-link>
                   </span>
                   <c-permissions-button
@@ -143,6 +143,10 @@ import Import from 'corteza-webapp-compose/src/components/Admin/Import'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 
 export default {
+  i18nOptions: {
+    namespaces: 'module',
+  },
+
   name: 'ModuleList',
 
   components: {
@@ -251,7 +255,7 @@ export default {
 
       const payload = {
         namespaceID,
-        title: `${this.$t('module.forModule.recordPage')} "${module.name || moduleID}"`,
+        title: `${this.$t('forModule.recordPage')} "${module.name || moduleID}"`,
         moduleID,
         blocks,
         selfID,

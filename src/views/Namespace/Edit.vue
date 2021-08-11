@@ -14,7 +14,7 @@
         class="d-flex align-items-center"
         :to="openNamespace"
       >
-        {{ $t('namespace.visit') }}
+        {{ $t('visit') }}
       </b-button>
     </portal>
 
@@ -32,7 +32,7 @@
             variant="primary"
             size="lg"
           >
-            {{ $t('namespace.create') }}
+            {{ $t('create') }}
           </b-btn>
           <c-permissions-button
             v-if="namespace.canGrant"
@@ -40,7 +40,7 @@
             :target="namespace.name"
             :resource="'corteza::compose:namespace/'+namespace.namespaceID"
             buttonVariant="light"
-            :buttonLabel="$t('general.label.permissions')"
+            :buttonLabel="$t('label.permissions')"
             class="ml-1 btn-lg"
           />
         </div>
@@ -49,23 +49,23 @@
           body-class="p-3"
         >
           <b-form>
-            <b-form-group :label="$t('namespace.name.label')">
+            <b-form-group :label="$t('name.label')">
               <b-form-input
                 v-model="namespace.name"
                 type="text"
                 required
                 :state="nameState"
-                :placeholder="$t('namespace.name.placeholder')" />
+                :placeholder="$t('name.placeholder')" />
             </b-form-group>
             <b-form-group
-              :label="$t('namespace.slug.label')"
-              :description="$t('namespace.slug.description')"
+              :label="$t('slug.label')"
+              :description="$t('slug.description')"
             >
               <b-form-input
                 v-model="namespace.slug"
                 type="text"
                 :state="slugState"
-                :placeholder="$t('namespace.slug.placeholder')"
+                :placeholder="$t('slug.placeholder')"
               />
             </b-form-group>
             <b-form-group>
@@ -73,20 +73,20 @@
                 v-model="namespace.enabled"
                 class="mb-3"
               >
-                {{ $t('namespace.enabled.label') }}
+                {{ $t('enabled.label') }}
               </b-form-checkbox>
               <b-form-checkbox
                 v-model="isApplication"
                 :disabled="!canToggleApplication"
               >
-                {{ $t('namespace.application.label') }}
+                {{ $t('application.label') }}
               </b-form-checkbox>
             </b-form-group>
             <hr>
             <b-form-group>
               <template #label>
                 <div class="d-flex align-items-center">
-                  {{ $t('namespace.logo.label') }}
+                  {{ $t('logo.label') }}
                   <b-button
                     variant="primary"
                     size="sm"
@@ -102,14 +102,14 @@
               <b-form-file
                 v-model="namespaceAssets.logo"
                 accept="image/*"
-                :placeholder="$t('namespace.logo.placeholder')"
+                :placeholder="$t('logo.placeholder')"
               />
             </b-form-group>
 
             <b-form-group>
               <template #label>
                 <div class="d-flex align-items-center">
-                  {{ $t('namespace.icon.label') }}
+                  {{ $t('icon.label') }}
                   <b-button
                     v-if="namespace.meta.icon"
                     variant="primary"
@@ -123,25 +123,25 @@
               <b-form-file
                 v-model="namespaceAssets.icon"
                 accept="image/*"
-                :placeholder="$t('namespace.icon.placeholder')"
+                :placeholder="$t('icon.placeholder')"
               />
             </b-form-group>
 
-            <b-form-group :label="$t('namespace.subtitle.label')">
+            <b-form-group :label="$t('subtitle.label')">
               <b-form-input
                 v-model="namespace.meta.subtitle"
                 type="text"
-                :placeholder="$t('namespace.subtitle.placeholder')" />
+                :placeholder="$t('subtitle.placeholder')" />
 
             </b-form-group>
 
             <b-form-group
-              :label="$t('namespace.description.label')"
+              :label="$t('description.label')"
               class="mb-0"
             >
               <b-form-textarea
                 v-model="namespace.meta.description"
-                :placeholder="$t('namespace.description.placeholder')"
+                :placeholder="$t('description.placeholder')"
                 rows="1"
               />
 
@@ -213,6 +213,10 @@ import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 import { mapGetters } from 'vuex'
 
 export default {
+  i18nOptions: {
+    namespaces: 'namespace',
+  },
+
   components: {
     EditorToolbar,
   },
@@ -242,7 +246,7 @@ export default {
     },
 
     pageTitle () {
-      return this.isEdit ? this.$t('namespace.edit') : this.$t('namespace.create')
+      return this.isEdit ? this.$t('edit') : this.$t('create')
     },
 
     openNamespace () {
@@ -328,7 +332,7 @@ export default {
             this.isApplication = this.application.enabled
           }
         })
-        .catch(this.toastErrorHandler(this.$t('notification.namespace.application.fetchFailed')))
+        .catch(this.toastErrorHandler(this.$t('notification.application.fetchFailed')))
     },
 
     async handleSave ({ closeOnSuccess = false } = {}) {
@@ -341,7 +345,7 @@ export default {
           assets = await this.uploadAssets()
           meta = { ...meta, ...assets }
         } catch (e) {
-          this.toastErrorHandler(this.$t('notification.namespace.assetUploadFailed'))(e)
+          this.toastErrorHandler(this.$t('notification.assetUploadFailed'))(e)
           return
         }
       }
@@ -351,10 +355,10 @@ export default {
           await this.$store.dispatch('namespace/update', { namespaceID, name, slug, enabled, meta }).then((ns) => {
             this.namespace = new compose.Namespace(ns)
 
-            this.toastSuccess(this.$t('notification.namespace.saved'))
+            this.toastSuccess(this.$t('notification.saved'))
           })
         } catch (e) {
-          this.toastErrorHandler(this.$t('notification.namespace.saveFailed'))(e)
+          this.toastErrorHandler(this.$t('notification.saveFailed'))(e)
           return
         }
       } else {
@@ -362,16 +366,16 @@ export default {
           await this.$store.dispatch('namespace/create', { name, slug, enabled, meta }).then((ns) => {
             this.namespace = new compose.Namespace(ns)
 
-            this.toastSuccess(this.$t('notification.namespace.saved'))
+            this.toastSuccess(this.$t('notification.saved'))
           })
         } catch (e) {
-          this.toastErrorHandler(this.$t('notification.namespace.createFailed'))(e)
+          this.toastErrorHandler(this.$t('notification.createFailed'))(e)
           return
         }
       }
 
       await this.handleApplicationSave()
-        .catch(() => this.toastErrorHandler(this.$t('notification.namespace.createAppFailed')))
+        .catch(() => this.toastErrorHandler(this.$t('notification.createAppFailed')))
 
       if (closeOnSuccess) {
         this.$router.push({ name: 'root' })
@@ -382,7 +386,7 @@ export default {
       const { namespaceID } = this.namespace
       this.$store.dispatch('namespace/delete', { namespaceID }).then(() => {
         this.$router.push({ name: 'root' })
-      }).catch(this.toastErrorHandler(this.$t('notification.namespace.deleteFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification.deleteFailed')))
     },
 
     async handleApplicationSave () {
@@ -407,7 +411,7 @@ export default {
 
         return this.$SystemAPI.applicationUpdate({ ...this.application, enabled })
           .then(app => { this.application = app })
-          .catch(this.toastErrorHandler(this.$t('notification.namespace.application.saveFailed')))
+          .catch(this.toastErrorHandler(this.$t('notification.application.saveFailed')))
       } else if (this.isApplication) {
         // If namespace not an application - create one and enable
         const application = {
@@ -423,7 +427,7 @@ export default {
         }
         return this.$SystemAPI.applicationCreate({ ...application })
           .then(app => { this.application = app })
-          .catch(this.toastErrorHandler(this.$t('notification.namespace.application.createFailed')))
+          .catch(this.toastErrorHandler(this.$t('notification.application.createFailed')))
       }
     },
 

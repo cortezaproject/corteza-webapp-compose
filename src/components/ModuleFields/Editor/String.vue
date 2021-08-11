@@ -53,6 +53,10 @@
         v-if="field.options.useRichTextEditor"
         v-model="value"
         class="mr-2"
+        :labels="{
+          urlPlaceholder: $t('content.urlPlaceholder'),
+          ok: $t('content.ok'),
+        }"
       />
 
       <b-form-textarea
@@ -77,6 +81,10 @@ import { components } from '@cortezaproject/corteza-vue'
 const { CRichTextInput } = components
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   components: {
     CRichTextInput,
   },

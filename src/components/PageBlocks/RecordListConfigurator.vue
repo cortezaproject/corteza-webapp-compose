@@ -1,9 +1,9 @@
 <template>
   <div>
-    <b-tab :title="$t('block.recordList.label')">
+    <b-tab :title="$t('recordList.label')">
       <b-form-group
         class="form-group"
-        :label="$t('block.general.module')"
+        :label="$t('general.module')"
       >
         <b-form-select
           v-model="options.moduleID"
@@ -13,9 +13,9 @@
           required
         />
         <b-form-text class="text-secondary small">
-          <i18next path="block.recordList.moduleFootnote" tag="label">
+          <i18next path="recordList.moduleFootnote" tag="label">
             <router-link :to="{ name: 'admin.pages'}">
-              {{ $t('block.recordList.recordPage') }}
+              {{ $t('recordList.recordPage') }}
             </router-link>
           </i18next>
         </b-form-text>
@@ -23,7 +23,7 @@
 
       <b-form-group
         v-if="recordListModule"
-        :label="$t('block.recordList.fields')"
+        :label="$t('recordList.fields')"
         label-size="lg"
       >
         <field-picker
@@ -42,7 +42,7 @@
           v-model="options.editable"
           :disabled="disableInlineEditor"
         >
-          {{ $t('block.recordList.record.inlineEditorAllow') }}
+          {{ $t('recordList.record.inlineEditorAllow') }}
         </b-form-checkbox>
       </b-form-group>
 
@@ -51,7 +51,7 @@
       >
         <b-form-group
           v-if="recordListModule && options.editable"
-          :label="$t('block.recordList.editFields')"
+          :label="$t('recordList.editFields')"
           label-size="lg"
           class="mb-0"
         >
@@ -68,7 +68,7 @@
           horizontal
           :label-cols="3"
           breakpoint="md"
-          :label="$t('block.recordList.refField.label')"
+          :label="$t('recordList.refField.label')"
         >
           <b-form-select
             v-model="options.refField"
@@ -86,7 +86,7 @@
             </option>
           </b-form-select>
           <b-form-text class="text-secondary small">
-            {{ $t('block.recordList.refField.footnote') }}
+            {{ $t('recordList.refField.footnote') }}
           </b-form-text>
         </b-form-group>
 
@@ -94,7 +94,7 @@
           horizontal
           :label-cols="3"
           breakpoint="md"
-          :label="$t('block.recordList.positionField.label')"
+          :label="$t('recordList.positionField.label')"
         >
           <b-form-select v-model="options.positionField">
             <option :value="undefined">
@@ -109,7 +109,7 @@
             </option>
           </b-form-select>
           <b-form-text class="text-secondary small">
-            {{ $t('block.recordList.positionField.footnote') }}
+            {{ $t('recordList.positionField.footnote') }}
           </b-form-text>
         </b-form-group>
 
@@ -120,28 +120,28 @@
           breakpoint="md"
         >
           <b-form-checkbox v-model="options.draggable">
-            {{ $t('block.recordList.record.draggable') }}
+            {{ $t('recordList.record.draggable') }}
           </b-form-checkbox>
         </b-form-group>
       </div>
-      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.newLabel')">
+      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('recordList.record.newLabel')">
         <b-form-checkbox v-model="options.hideAddButton">
-          {{ $t('block.recordList.record.hideAddButton') }}
+          {{ $t('recordList.record.hideAddButton') }}
         </b-form-checkbox>
       </b-form-group>
-      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('block.recordList.record.prefilterLabel')">
+      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('recordList.record.prefilterLabel')">
         <b-form-textarea :value="true"
-                        :placeholder="$t('block.recordList.record.prefilterPlaceholder')"
+                        :placeholder="$t('recordList.record.prefilterPlaceholder')"
                         v-model="options.prefilter"></b-form-textarea>
           <b-form-text>
-            <i18next path="block.recordList.record.prefilterFootnote" tag="label">
+            <i18next path="recordList.record.prefilterFootnote" tag="label">
               <code>${recordID}</code>
               <code>${ownerID}</code>
               <code>${userID}</code>
             </i18next>
           </b-form-text>
         <b-form-checkbox v-model="options.hideSearch">
-          {{ $t('block.recordList.record.prefilterHideSearch') }}
+          {{ $t('recordList.record.prefilterHideSearch') }}
         </b-form-checkbox>
       </b-form-group>
       <b-form-group
@@ -149,16 +149,16 @@
         horizontal
         :label-cols="3"
         breakpoint="md"
-        :label="$t('block.recordList.record.presortLabel')"
+        :label="$t('recordList.record.presortLabel')"
       >
         <b-form-textarea :value="true"
-                        :placeholder="$t('block.recordList.record.presortPlaceholder')"
+                        :placeholder="$t('recordList.record.presortPlaceholder')"
                         v-model="options.presort"></b-form-textarea>
         <b-form-text>
-          {{ $t('block.recordList.record.presortFootnote') }}
+          {{ $t('recordList.record.presortFootnote') }}
         </b-form-text>
         <b-form-checkbox v-model="options.hideSorting">
-          {{ $t('block.recordList.record.presortHideSort') }}
+          {{ $t('recordList.record.presortHideSort') }}
         </b-form-checkbox>
       </b-form-group>
       <b-form-group
@@ -166,44 +166,44 @@
         horizontal
         :label-cols="3"
         breakpoint="md"
-        :label="$t('block.recordList.record.perPage')"
+        :label="$t('recordList.record.perPage')"
       >
         <b-form-input type="number" v-model.number="options.perPage" class="mb-2"></b-form-input>
         <b-form-checkbox v-model="options.hidePaging">
-          {{ $t('block.recordList.record.hidePaging') }}
+          {{ $t('recordList.record.hidePaging') }}
         </b-form-checkbox>
         <b-form-checkbox v-if="!options.hidePaging" v-model="options.fullPageNavigation">
-          {{ $t('block.recordList.record.fullPageNavigation') }}
+          {{ $t('recordList.record.fullPageNavigation') }}
         </b-form-checkbox>
         <b-form-checkbox v-if="!options.hidePaging" v-model="options.showTotalCount">
-          {{ $t('block.recordList.record.showTotalCount') }}
+          {{ $t('recordList.record.showTotalCount') }}
         </b-form-checkbox>
       </b-form-group>
       <b-form-group horizontal :label-cols="3" breakpoint="md" class="mt-4">
         <b-form-checkbox v-model="options.allowExport">
-          {{ $t('block.recordList.export.allow') }}
+          {{ $t('recordList.export.allow') }}
         </b-form-checkbox>
       </b-form-group>
       <b-form-group horizontal :label-cols="3" breakpoint="md" class="mt-4">
         <b-form-checkbox v-model="options.selectable">
-          {{ $t('block.recordList.selectable') }}
+          {{ $t('recordList.selectable') }}
         </b-form-checkbox>
       </b-form-group>
       <b-form-group horizontal :label-cols="3" breakpoint="md" class="mt-4">
         <b-form-checkbox v-model="options.hideRecordReminderButton">
-          {{ $t('block.recordList.hideRecordReminderButton') }}
+          {{ $t('recordList.hideRecordReminderButton') }}
         </b-form-checkbox>
         <b-form-checkbox v-model="options.hideRecordCloneButton">
-          {{ $t('block.recordList.hideRecordCloneButton') }}
+          {{ $t('recordList.hideRecordCloneButton') }}
         </b-form-checkbox>
         <b-form-checkbox v-model="options.hideRecordEditButton" :disabled="options.editable">
-          {{ $t('block.recordList.hideRecordEditButton') }}
+          {{ $t('recordList.hideRecordEditButton') }}
         </b-form-checkbox>
         <b-form-checkbox v-model="options.hideRecordViewButton" :disabled="options.editable">
-          {{ $t('block.recordList.hideRecordViewButton') }}
+          {{ $t('recordList.hideRecordViewButton') }}
         </b-form-checkbox>
         <b-form-checkbox v-model="options.hideRecordPermissionsButton" :disabled="options.editable">
-          {{ $t('block.recordList.hideRecordPermissionsButton') }}
+          {{ $t('recordList.hideRecordPermissionsButton') }}
         </b-form-checkbox>
       </b-form-group>
     </b-tab>
@@ -222,6 +222,10 @@ import FieldPicker from 'corteza-webapp-compose/src/components/Common/Module/Fie
 import AutomationTab from './Shared/AutomationTab'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   name: 'RecordList',
 
   components: {

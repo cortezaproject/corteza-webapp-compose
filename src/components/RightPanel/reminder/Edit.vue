@@ -7,7 +7,7 @@
                 class="px-2"
                 @click="$emit('cancel')">
         <font-awesome-icon :icon="['fas', 'chevron-left']"></font-awesome-icon>
-        {{ $t('general.label.backWithoutSave') }}
+        {{ $t('label.backWithoutSave') }}
       </b-button>
     </b-list-group-item>
 
@@ -15,29 +15,29 @@
       <b-form @submit.prevent
               class="import-form">
 
-        <b-form-group :label="$t('general.reminder.edit.titleLabel')">
+        <b-form-group :label="$t('reminder.edit.titleLabel')">
           <b-form-input v-model="title"
                         required
                         type="text"
-                        :placeholder="$t('general.reminder.edit.titlePlaceholder')" />
+                        :placeholder="$t('reminder.edit.titlePlaceholder')" />
 
         </b-form-group>
 
-        <b-form-group :label="$t('general.reminder.edit.notesLabel')">
+        <b-form-group :label="$t('reminder.edit.notesLabel')">
           <b-form-textarea v-model="notes"
-                           :placeholder="$t('general.reminder.edit.notesPlaceholder')"
+                           :placeholder="$t('reminder.edit.notesPlaceholder')"
                            rows="6"
                            max-rows="10" />
 
         </b-form-group>
 
-        <b-form-group :label="$t('general.reminder.edit.remindAtLabel')">
+        <b-form-group :label="$t('reminder.edit.remindAtLabel')">
           <b-form-select v-model="remindAt"
                          :options="remindAtPresets" />
 
         </b-form-group>
 
-        <b-form-group :label="$t('general.reminder.edit.assigneeLabel')">
+        <b-form-group :label="$t('reminder.edit.assigneeLabel')">
           <vue-select :options="assignees"
                       @search="searchAssignees"
                       option-value="userID"
@@ -48,7 +48,7 @@
         </b-form-group>
 
         <b-form-group v-if="reminder.payload.link"
-                      :label="$t('general.reminder.routesTo')">
+                      :label="$t('reminder.routesTo')">
 
           <c-toaster-link
             :toast="reminder"
@@ -61,7 +61,7 @@
                 size="sm"
                 class="px-2"
                 @click="saveAndClose">
-        {{ $t('general.label.saveAndClose') }}
+        {{ $t('label.saveAndClose') }}
       </b-button>
     </div>
   </div>
@@ -76,6 +76,9 @@ import { components } from '@cortezaproject/corteza-vue'
 const { CToasterLink } = components
 
 export default {
+  i18nOptions: {
+    namespaces: 'general',
+  },
 
   components: {
     VueSelect,
@@ -104,7 +107,7 @@ export default {
     return {
       // Do this, so we don't edit the original object
       reminder: {},
-      assignees: [{ userID: this.myID, label: this.$t('general.reminder.edit.assigneePlaceholder') }],
+      assignees: [{ userID: this.myID, label: this.$t('reminder.edit.assigneePlaceholder') }],
     }
   },
 
@@ -151,12 +154,12 @@ export default {
 
     remindAtPresets () {
       return [
-        { value: null, text: this.$t('general.reminder.edit.remindAtNone') },
-        { value: 1000 * 60 * 15, text: this.$t('general.label.timeMinute', { t: 15 }) },
-        { value: 1000 * 60 * 30, text: this.$t('general.label.timeMinute', { t: 30 }) },
-        { value: 1000 * 60 * 60 * 1, text: this.$t('general.label.timeHour', { t: 1 }) },
-        { value: 1000 * 60 * 60 * 2, text: this.$t('general.label.timeHour', { t: 2 }) },
-        { value: 1000 * 60 * 60 * 24, text: this.$t('general.label.timeHour', { t: 24 }) },
+        { value: null, text: this.$t('reminder.edit.remindAtNone') },
+        { value: 1000 * 60 * 15, text: this.$t('label.timeMinute', { t: 15 }) },
+        { value: 1000 * 60 * 30, text: this.$t('label.timeMinute', { t: 30 }) },
+        { value: 1000 * 60 * 60 * 1, text: this.$t('label.timeHour', { t: 1 }) },
+        { value: 1000 * 60 * 60 * 2, text: this.$t('label.timeHour', { t: 2 }) },
+        { value: 1000 * 60 * 60 * 24, text: this.$t('label.timeHour', { t: 24 }) },
       ]
     },
   },
@@ -205,7 +208,7 @@ export default {
       vm.$SystemAPI.userList({ query }).then(({ set }) => {
         vm.assignees = set.map(({ userID, name: label }) => {
           if (userID === vm.myID) {
-            return { userID, label: vm.$t('general.reminder.edit.assigneePlaceholder') }
+            return { userID, label: vm.$t('reminder.edit.assigneePlaceholder') }
           }
           return { userID, label }
         })

@@ -4,41 +4,41 @@
     footer-bg-variant="white"
   >
     <b-form-group
-      :label="$t('block.recordList.import.report.title')"
+      :label="$t('recordList.import.report.title')"
     >
       <div
         class="small pl-2"
       >
-        <b>{{ $t('block.recordList.import.report.startedAt') }}</b>: {{ datify(progress.startedAt) }}
+        <b>{{ $t('recordList.import.report.startedAt') }}</b>: {{ datify(progress.startedAt) }}
       </div>
 
       <div
         class="small pl-2"
       >
-        <b>{{ $t('block.recordList.import.report.finishedAt') }}</b>: {{ datify(progress.finishedAt) }}
+        <b>{{ $t('recordList.import.report.finishedAt') }}</b>: {{ datify(progress.finishedAt) }}
       </div>
 
       <div
         class="small pl-2"
       >
-        <b>{{ $t('block.recordList.import.report.totalRecords') }}</b>: {{ progress.entryCount }}
+        <b>{{ $t('recordList.import.report.totalRecords') }}</b>: {{ progress.entryCount }}
       </div>
 
       <div
         class="small pl-2"
       >
-        <b>{{ $t('block.recordList.import.report.importedRecords') }}</b>: <span class="text-success">{{ progress.completed }}</span>
+        <b>{{ $t('recordList.import.report.importedRecords') }}</b>: <span class="text-success">{{ progress.completed }}</span>
       </div>
 
       <div
         class="small pl-2"
       >
-        <b>{{ $t('block.recordList.import.report.failedRecords') }}</b>: <span class="text-danger">{{ progress.failed }}</span>
+        <b>{{ $t('recordList.import.report.failedRecords') }}</b>: <span class="text-danger">{{ progress.failed }}</span>
       </div>
     </b-form-group>
 
     <b-form-group
-      :label="$t('block.recordList.import.report.detectedErrors')"
+      :label="$t('recordList.import.report.detectedErrors')"
     >
       <b-table
         id="error-list"
@@ -53,7 +53,7 @@
     </b-form-group>
 
     <b-form-group
-      :label="$t('block.recordList.import.report.failedEntries')"
+      :label="$t('recordList.import.report.failedEntries')"
     >
       <div
         v-for="(ee, ix) in progress.failLog.records"
@@ -61,11 +61,11 @@
         class="small pl-2"
       >
         <template v-if="ee.length == 1 || ee[0] === ee[1]">
-          <b>{{ $t('block.recordList.import.report.failedEntriesLine') }}</b>: {{ ee[0] }}
+          <b>{{ $t('recordList.import.report.failedEntriesLine') }}</b>: {{ ee[0] }}
         </template>
         <template v-else>
           <span>
-            <b>{{ $t('block.recordList.import.report.failedEntriesLines') }}</b>:
+            <b>{{ $t('recordList.import.report.failedEntriesLines') }}</b>:
             {{ ee[0] }}
             <font-awesome-icon
               :icon="['fas', 'arrow-right']"
@@ -94,6 +94,10 @@
 import { fmt } from '@cortezaproject/corteza-js'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   props: {
     session: {
       type: Object,
@@ -128,12 +132,12 @@ export default {
       return [
         {
           key: 'k',
-          label: this.$t('block.recordList.import.report.error'),
+          label: this.$t('recordList.import.report.error'),
           tdClass: 'border-top text-truncate pointer',
         },
         {
           key: 'v',
-          label: this.$t('block.recordList.import.report.count'),
+          label: this.$t('recordList.import.report.count'),
           tdClass: 'border-top text-truncate pointer',
         },
       ]

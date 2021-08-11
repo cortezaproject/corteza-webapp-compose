@@ -4,7 +4,7 @@
 
     <fieldset>
       <b-form-group
-        :label="$t('block.metric.editStyle.color')"
+        :label="$t('metric.editStyle.color')"
         label-cols="4"
       >
         <b-form-input
@@ -15,7 +15,7 @@
       </b-form-group>
 
       <b-form-group
-        :label="$t('block.metric.editStyle.backgroundColor')"
+        :label="$t('metric.editStyle.backgroundColor')"
         label-cols="4"
       >
         <b-form-input
@@ -26,7 +26,7 @@
       </b-form-group>
 
       <b-form-group
-        :label="$t('block.metric.editStyle.fontSize')"
+        :label="$t('metric.editStyle.fontSize')"
         label-cols="4"
       >
         <b-form-input
@@ -42,6 +42,10 @@
 
 <script>
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   props: {
     options: {
       type: Object,

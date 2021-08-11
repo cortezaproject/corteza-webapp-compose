@@ -13,6 +13,10 @@ import csc from 'chartjs-plugin-colorschemes'
 import { NoID } from '@cortezaproject/corteza-js'
 
 export default {
+  i18nOptions: {
+    namespaces: 'notification',
+  },
+
   props: {
     chart: {
       type: Object,
@@ -64,7 +68,7 @@ export default {
         const options = chart.makeOptions(data)
         const plugins = chart.plugins()
         if (!options) {
-          this.toastWarning(this.$t('notification.chart.optionsBuildFailed'))
+          this.toastWarning(this.$t('chart.optionsBuildFailed'))
         }
         const type = chart.baseChartType(data.datasets)
 
@@ -74,7 +78,7 @@ export default {
         }
         this.renderer = newRenderer()
       } catch (e) {
-        this.toastErrorHandler(this.$t('notification.chart.optionsBuildFailed'))(e)
+        this.toastErrorHandler(this.$t('chart.optionsBuildFailed'))(e)
       }
       this.$emit('updated')
     },

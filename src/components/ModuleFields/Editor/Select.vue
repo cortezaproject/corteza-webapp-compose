@@ -40,7 +40,7 @@
                 :value="undefined"
                 disabled
               >
-                {{ $t('field.kind.select.placeholder') }}
+                {{ $t('kind.select.placeholder') }}
               </option>
             </template>
           </b-form-select>
@@ -63,7 +63,7 @@
                 :value="undefined"
                 disabled
               >
-                {{ $t('field.kind.select.placeholder') }}
+                {{ $t('kind.select.placeholder') }}
               </option>
             </template>
           </b-form-select>
@@ -82,7 +82,7 @@
       >
         <template slot="first">
           <option :value="undefined">
-            {{ $t('field.kind.select.optionNotSelected') }}
+            {{ $t('kind.select.optionNotSelected') }}
           </option>
         </template>
       </b-form-select>
@@ -94,6 +94,10 @@
 import base from './base'
 
 export default {
+  i18nOptions: {
+    namespaces: 'field',
+  },
+
   extends: base,
 
   computed: {

@@ -31,11 +31,11 @@
             >
                   <font-awesome-icon
                     :icon="['fas', 'eye-slash']"
-                    :title="$t('page.notVisible')"
+                    :title="$t('notVisible')"
                   />
                 </span>
             <b-badge variant="danger" v-if="!isValid(item)">
-              {{ $t('page.invalid') }}
+              {{ $t('invalid') }}
             </b-badge>
           </b-col>
           <b-col
@@ -48,14 +48,14 @@
               v-if="item.canUpdatePage"
               :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
               class="btn btn-light mr-2"
-            >{{ $t('general.label.pageBuilder') }}
+            >{{ $t('block.general.label.pageBuilder') }}
             </router-link>
             <span class="view d-inline-block">
               <router-link
                 v-if="item.blocks && item.blocks.length >= 1"
                 :to="{name: 'page', params: { pageID: item.pageID }}"
                 class="btn">
-                {{ $t('page.view') }}
+                {{ $t('view') }}
               </router-link>
             </span>
             <span
@@ -68,14 +68,14 @@
                 class="btn text-primary"
                 :to="{ name: 'admin.modules.edit', params: { moduleID: item.moduleID }}"
               >
-                {{ $t('module.edit.edit') }}
+                {{ $t('moduleEdit') }}
               </router-link>
               <router-link
                 v-if="item.canUpdatePage && item.moduleID === '0'"
                 :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
                 class="btn text-primary"
               >
-                {{ $t('page.edit.edit') }}
+                {{ $t('edit.edit') }}
               </router-link>
 
             </span>
@@ -96,7 +96,7 @@
       v-else
       class="text-center mt-5 mb-4 p-2"
     >
-      {{ $t('page.noPages') }}
+      {{ $t('noPages') }}
     </h6>
   </div>
 </template>
@@ -107,6 +107,10 @@ import SortableTree from 'vue-sortable-tree'
 import { compose, NoID } from '@cortezaproject/corteza-js'
 
 export default {
+  i18nOptions: {
+    namespaces: 'page',
+  },
+
   name: 'page-tree',
 
   components: {
@@ -174,9 +178,9 @@ export default {
         if (pageIDs.length > 1) {
           this.$ComposeAPI.pageReorder({ namespaceID, selfID: afterID, pageIDs: pageIDs }).then(() => {
             this.$store.dispatch('page/load', { namespaceID, clear: true, force: true })
-            this.toastSuccess(this.$t('notification.page.reordered'))
+            this.toastSuccess(this.$t('reordered'))
             this.$emit('reorder')
-          }).catch(this.toastErrorHandler(this.$t('notification.page.pageMoveFailed')))
+          }).catch(this.toastErrorHandler(this.$t('pageMoveFailed')))
         }
       }
 
@@ -188,7 +192,7 @@ export default {
 
         this.updatePage(data).then(() => {
           reorder()
-        }).catch(this.toastErrorHandler(this.$t('notification.page.pageMoveFailed')))
+        }).catch(this.toastErrorHandler(this.$t('pageMoveFailed')))
       } else {
         reorder()
       }

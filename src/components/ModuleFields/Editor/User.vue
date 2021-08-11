@@ -31,7 +31,7 @@
         <vue-select
           v-if="field.options.selectType === 'default'"
           ref="singleSelect"
-          :placeholder="$t('field.kind.user.suggestionPlaceholder')"
+          :placeholder="$t('kind.user.suggestionPlaceholder')"
           :options="options"
           :get-option-label="getOptionLabel"
           :get-option-key="getOptionKey"
@@ -56,7 +56,7 @@
         <vue-select
           v-else-if="field.options.selectType === 'multiple'"
           v-model="multipleSelected"
-          :placeholder="$t('field.kind.user.suggestionPlaceholder')"
+          :placeholder="$t('kind.user.suggestionPlaceholder')"
           :options="options"
           :get-option-label="getOptionLabel"
           :get-option-key="getOptionKey"
@@ -81,7 +81,7 @@
       <template v-slot:default="ctx">
         <vue-select
           v-if="field.options.selectType === 'each'"
-          :placeholder="$t('field.kind.user.suggestionPlaceholder')"
+          :placeholder="$t('kind.user.suggestionPlaceholder')"
           :options="options"
           :get-option-label="getOptionLabel"
           :get-option-key="getOptionKey"
@@ -112,7 +112,7 @@
       v-else
     >
       <vue-select
-        :placeholder="$t('field.kind.user.suggestionPlaceholder')"
+        :placeholder="$t('kind.user.suggestionPlaceholder')"
         :options="options"
         :get-option-label="getOptionLabel"
         :get-option-key="getOptionKey"
@@ -147,6 +147,10 @@ import { createPopper } from '@popperjs/core'
 import Pagination from '../Common/Pagination.vue'
 
 export default {
+  i18nOptions: {
+    namespaces: 'field',
+  },
+
   components: {
     VueSelect,
     Pagination,

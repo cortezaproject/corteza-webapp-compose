@@ -4,21 +4,21 @@
       v-model="field.isRequired"
       :disabled="!field.cap.required || showvalueExpr"
     >
-      {{ $t('general.label.required') }}
+      {{ $t('label.required') }}
     </b-form-checkbox>
 
     <b-form-checkbox
       v-model="field.isMulti"
       :disabled="!field.cap.multi"
     >
-      {{ $t('general.label.multi') }}
+      {{ $t('label.multi') }}
     </b-form-checkbox>
 
     <b-form-checkbox
       v-model="showvalueExpr"
       :disabled="field.isRequired || defaultValueEnabled"
     >
-      {{ $t('field.valueExpr.label') }}
+      {{ $t('valueExpr.label') }}
     </b-form-checkbox>
 
     <b-form-checkbox
@@ -26,14 +26,14 @@
       :disabled="!!showvalueExpr || field.isMulti"
       @change="toggleDefaultValue()"
     >
-      {{ $t('field.defaultValue') }}
+      {{ $t('defaultValue') }}
     </b-form-checkbox>
 
     <hr>
 
     <b-form-group
       v-if="showvalueExpr"
-      :label="$t('field.valueExpr.label')"
+      :label="$t('valueExpr.label')"
       class="mt-2"
     >
       <b-input-group>
@@ -41,7 +41,7 @@
           <b-button variant="dark">ƒ</b-button>
         </b-input-group-append>
         <b-form-input
-          :placeholder="$t('field.valueExpr.placeholder')"
+          :placeholder="$t('valueExpr.placeholder')"
           v-model="field.expressions.value"
         >
         </b-form-input>
@@ -55,13 +55,13 @@
         </b-input-group-append>
       </b-input-group>
       <b-form-text>
-        {{ $t('field.valueExpr.description') }}
+        {{ $t('valueExpr.description') }}
       </b-form-text>
     </b-form-group>
 
     <b-form-group
       v-else-if="showDefaultField"
-      :label="$t('field.defaultFieldValue')"
+      :label="$t('defaultFieldValue')"
       class="mt-3 mb-0"
     >
       <field-editor
@@ -77,27 +77,27 @@
       @change="$set(field.options.description, 'edit', $event ? undefined : '')"
       tabindex="-1"
     >
-      {{ $t('field.options.description.same') }}
+      {{ $t('options.description.same') }}
     </b-form-checkbox>
 
     <b-form-group
-      :label="$t(`field.options.description.label.${noDescriptionEdit ? 'default' : 'view'}`)"
+      :label="$t(`options.description.label.${noDescriptionEdit ? 'default' : 'view'}`)"
       class="mt-2"
     >
       <b-form-input
         v-model="field.options.description.view"
-        :placeholder="$t(`field.options.description.placeholder.${noDescriptionEdit ? 'default' : 'view'}`)"
+        :placeholder="$t(`options.description.placeholder.${noDescriptionEdit ? 'default' : 'view'}`)"
       />
     </b-form-group>
 
     <b-form-group
       v-if="!noDescriptionEdit"
-      :label="$t('field.options.description.label.edit')"
+      :label="$t('options.description.label.edit')"
       class="mt-2"
     >
       <b-form-input
         v-model="field.options.description.edit"
-        :placeholder="$t('field.options.description.placeholder.edit')"
+        :placeholder="$t('options.description.placeholder.edit')"
       />
     </b-form-group>
 
@@ -108,27 +108,27 @@
       @change="$set(field.options.hint, 'edit', $event ? undefined : '')"
       tabindex="-1"
     >
-      {{ $t('field.options.hint.same') }}
+      {{ $t('options.hint.same') }}
     </b-form-checkbox>
 
     <b-form-group
-      :label="$t(`field.options.hint.label.${noHintEdit ? 'default' : 'view'}`)"
+      :label="$t(`options.hint.label.${noHintEdit ? 'default' : 'view'}`)"
       class="mt-2"
     >
       <b-form-input
         v-model="field.options.hint.view"
-        :placeholder="$t(`field.options.hint.placeholder.${noHintEdit ? 'default' : 'view'}`)"
+        :placeholder="$t(`options.hint.placeholder.${noHintEdit ? 'default' : 'view'}`)"
       />
     </b-form-group>
 
     <b-form-group
       v-if="!noHintEdit"
-      :label="$t('field.options.hint.label.edit')"
+      :label="$t('options.hint.label.edit')"
       class="mt-2"
     >
       <b-form-input
         v-model="field.options.hint.edit"
-        :placeholder="$t('field.options.hint.placeholder.edit')"
+        :placeholder="$t('options.hint.placeholder.edit')"
       />
     </b-form-group>
   </div>
@@ -140,6 +140,10 @@ import { compose, validator } from '@cortezaproject/corteza-js'
 import { mapGetters } from 'vuex'
 
 export default {
+  i18nOptions: {
+    namespaces: 'field',
+  },
+
   components: {
     FieldEditor,
   },

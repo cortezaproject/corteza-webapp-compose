@@ -19,7 +19,7 @@
           style="margin-right:2px;"
           class="d-flex align-items-center"
         >
-          {{ $t('module.edit.edit') }}
+          {{ $t('edit.edit') }}
           <font-awesome-icon
             :icon="['fas', 'pen']"
             size="sm"
@@ -46,6 +46,10 @@ import { compose } from '@cortezaproject/corteza-js'
 import RecordListBase from 'corteza-webapp-compose/src/components/PageBlocks/RecordListBase'
 
 export default {
+  i18nOptions: {
+    namespaces: 'module',
+  },
+
   components: {
     RecordListBase,
   },
@@ -65,7 +69,7 @@ export default {
     }),
 
     title () {
-      return this.$t('module.allRecords.list.title', { name: this.module.name || '' })
+      return this.$t('allRecords.list.title', { name: this.module.name || '' })
     },
 
     module () {

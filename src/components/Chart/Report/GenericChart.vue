@@ -7,14 +7,14 @@
       <hr>
       <div>
         <h4 class="mb-3">
-          {{ $t('chart.edit.yAxis.label') }}
+          {{ $t('edit.yAxis.label') }}
         </h4>
         <b-form-checkbox
           v-model="report.yAxis.axisType"
           value="logarithmic"
           unchecked-value="linear"
         >
-          {{ $t('chart.edit.yAxis.logarithmicScale') }}
+          {{ $t('edit.yAxis.logarithmicScale') }}
         </b-form-checkbox>
 
         <b-form-checkbox
@@ -22,7 +22,7 @@
           value="right"
           unchecked-value="left"
         >
-          {{ $t('chart.edit.yAxis.axisOnRight') }}
+          {{ $t('edit.yAxis.axisOnRight') }}
         </b-form-checkbox>
 
         <b-form-checkbox
@@ -31,7 +31,7 @@
           :unchecked-value="false"
           checked
         >
-          {{ $t('chart.edit.yAxis.axisScaleFromZero') }}
+          {{ $t('edit.yAxis.axisScaleFromZero') }}
         </b-form-checkbox>
 
         <b-form-group
@@ -39,11 +39,11 @@
           :label-cols="2"
           class="mt-2"
           breakpoint="md"
-          :label="$t('chart.edit.yAxis.labelLabel')"
+          :label="$t('edit.yAxis.labelLabel')"
         >
           <b-form-input
             v-model="report.yAxis.label"
-            :placeholder="$t('chart.edit.yAxis.labelPlaceholder')"
+            :placeholder="$t('edit.yAxis.labelPlaceholder')"
           />
         </b-form-group>
 
@@ -52,11 +52,11 @@
           :label-cols="2"
           class="mt-1"
           breakpoint="md"
-          :label="$t('chart.edit.yAxis.minLabel')"
+          :label="$t('edit.yAxis.minLabel')"
         >
           <b-form-input
             v-model="report.yAxis.min"
-            :placeholder="$t('chart.edit.yAxis.minPlaceholder')"
+            :placeholder="$t('edit.yAxis.minPlaceholder')"
           />
         </b-form-group>
         <b-form-group
@@ -64,11 +64,11 @@
           :label-cols="2"
           class="mt-1"
           breakpoint="md"
-          :label="$t('chart.edit.yAxis.maxLabel')"
+          :label="$t('edit.yAxis.maxLabel')"
         >
           <b-form-input
             v-model="report.yAxis.max"
-            :placeholder="$t('chart.edit.yAxis.maxPlaceholder')"
+            :placeholder="$t('edit.yAxis.maxPlaceholder')"
           />
         </b-form-group>
       </div>
@@ -79,7 +79,7 @@
         horizontal
         :label-cols="2"
         breakpoint="md"
-        :label="$t('chart.edit.metric.labelColor')"
+        :label="$t('edit.metric.labelColor')"
       >
         <b-form-input
           v-model="metric.backgroundColor"
@@ -93,11 +93,11 @@
         :label-cols="2"
         class="mt-1"
         breakpoint="md"
-        :label="$t('chart.edit.metric.labelLabel')"
+        :label="$t('edit.metric.labelLabel')"
       >
         <b-form-input
           v-model="metric.label"
-          :placeholder="$t('chart.edit.metric.labelPlaceholder')"
+          :placeholder="$t('edit.metric.labelPlaceholder')"
         />
       </b-form-group>
 
@@ -105,8 +105,8 @@
         horizontal
         :label-cols="2"
         breakpoint="md"
-        :label="$t('chart.edit.metric.fx.label')"
-        :description="$t('chart.edit.metric.fx.description')"
+        :label="$t('edit.metric.fx.label')"
+        :description="$t('edit.metric.fx.description')"
       >
         <b-form-textarea
           v-model="metric.fx"
@@ -118,7 +118,7 @@
         horizontal
         :label-cols="2"
         breakpoint="md"
-        :label="$t('chart.edit.metric.output.label')"
+        :label="$t('edit.metric.output.label')"
       >
         <b-form-select
           v-model="metric.type"
@@ -130,7 +130,7 @@
               disabled
               :value="undefined"
             >
-              {{ $t('chart.edit.metric.output.placeholder') }}
+              {{ $t('edit.metric.output.placeholder') }}
             </option>
           </template>
         </b-form-select>
@@ -153,7 +153,7 @@
                   disabled
                   :value="undefined"
                 >
-                  {{ $t('chart.edit.metric.legend.positionPlaceholder') }}
+                  {{ $t('edit.metric.legend.positionPlaceholder') }}
                 </option>
               </template>
             </b-form-select>
@@ -164,14 +164,14 @@
             :value="true"
             :unchecked-value="false"
           >
-            {{ $t('chart.edit.metric.relative') }}
+            {{ $t('edit.metric.relative') }}
           </b-form-checkbox>
 
           <template v-if="metric.relativeValue">
             <b-form-group
               horizontal
               breakpoint="md"
-              :label="$t('chart.edit.metric.relativePrecision')"
+              :label="$t('edit.metric.relativePrecision')"
             >
 
               <b-form-input
@@ -188,13 +188,13 @@
             v-model="metric.fill"
             :value="true" :unchecked-value="false"
           >
-            {{ $t('chart.edit.metric.fillArea') }}
+            {{ $t('edit.metric.fillArea') }}
           </b-form-checkbox>
 
           <b-form-group
             horizontal
             breakpoint="md"
-            :label="$t('chart.edit.metric.lineTension.label')"
+            :label="$t('edit.metric.lineTension.label')"
           >
             <b-form-select
               v-model="metric.lineTension"
@@ -205,7 +205,7 @@
                   disabled
                   :value="undefined"
                 >
-                  {{ $t('chart.edit.metric.lineTension.placeholder') }}
+                  {{ $t('edit.metric.lineTension.placeholder') }}
                 </option>
               </template>
             </b-form-select>
@@ -217,7 +217,7 @@
           :value="true"
           :unchecked-value="false"
         >
-          {{ $t('chart.edit.metric.fixTooltips') }}
+          {{ $t('edit.metric.fixTooltips') }}
         </b-form-checkbox>
       </b-form-group>
     </template>
@@ -235,6 +235,10 @@ const ignoredCharts = [
 ]
 
 export default {
+  i18nOptions: {
+    namespaces: 'chart',
+  },
+
   components: {
     ReportEdit,
   },
@@ -245,13 +249,13 @@ export default {
     return {
       chartTypes: Object.values(compose.chartUtil.ChartType)
         .filter(v => !ignoredCharts.includes(v))
-        .map(value => ({ value, text: this.$t(`chart.edit.metric.output.${value}`) })),
+        .map(value => ({ value, text: this.$t(`edit.metric.output.${value}`) })),
 
       legendPositions: [
-        { value: 'top', text: this.$t('chart.edit.metric.legend.top') },
-        { value: 'left', text: this.$t('chart.edit.metric.legend.left') },
-        { value: 'bottom', text: this.$t('chart.edit.metric.legend.bottom') },
-        { value: 'right', text: this.$t('chart.edit.metric.legend.right') },
+        { value: 'top', text: this.$t('edit.metric.legend.top') },
+        { value: 'left', text: this.$t('edit.metric.legend.left') },
+        { value: 'bottom', text: this.$t('edit.metric.legend.bottom') },
+        { value: 'right', text: this.$t('edit.metric.legend.right') },
       ],
     }
   },
@@ -259,10 +263,10 @@ export default {
   computed: {
     tensionSteps () {
       return [
-        { text: this.$t('chart.edit.metric.lineTension.straight'), value: 0.0 },
-        { text: this.$t('chart.edit.metric.lineTension.slight'), value: 0.2 },
-        { text: this.$t('chart.edit.metric.lineTension.medium'), value: 0.4 },
-        { text: this.$t('chart.edit.metric.lineTension.curvy'), value: 0.6 },
+        { text: this.$t('edit.metric.lineTension.straight'), value: 0.0 },
+        { text: this.$t('edit.metric.lineTension.slight'), value: 0.2 },
+        { text: this.$t('edit.metric.lineTension.medium'), value: 0.4 },
+        { text: this.$t('edit.metric.lineTension.curvy'), value: 0.6 },
       ]
     },
   },

@@ -6,7 +6,7 @@
       </timeline>
     </div>
     <div v-else>
-      <p>{{ $t('block.socialFeed.noInput') }}</p>
+      <p>{{ $t('socialFeed.noInput') }}</p>
     </div>
   </wrap>
 </template>
@@ -15,6 +15,10 @@ import base from './base'
 import { Timeline } from 'vue-tweet-embed'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   components: {
     Timeline,
   },

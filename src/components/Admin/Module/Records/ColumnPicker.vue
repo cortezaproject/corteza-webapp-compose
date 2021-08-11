@@ -5,13 +5,13 @@
       variant="light"
       v-b-modal.columns
     >
-      {{ $t('module.allRecords.columns.title') }}
+      {{ $t('allRecords.selectFields.title') }}
     </b-button>
 
     <b-modal
       id="columns"
       size="lg"
-      :title="$t('module.allRecords.columns.title')"
+      :title="$t('allRecords.selectFields.title')"
       :ok-title="$t('general.label.saveAndClose')"
       body-class="p-0"
       @ok="onSave"
@@ -23,7 +23,6 @@
           :module="module"
           :fields.sync="filteredFields"
         />
-        {{ $t('module.allRecords.columns.description') }}
       </div>
     </b-modal>
   </div>
@@ -33,6 +32,10 @@
 import FieldPicker from 'corteza-webapp-compose/src/components/Common/Module/FieldPicker'
 
 export default {
+  i18nOptions: {
+    namespaces: 'module',
+  },
+
   components: {
     FieldPicker,
   },

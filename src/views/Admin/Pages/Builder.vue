@@ -84,7 +84,7 @@
       id="createBlockSelector"
       scrollable
       hide-footer
-      :title="$t('page.build.selectBlockTitle')"
+      :title="$t('build.selectBlockTitle')"
     >
       <new-block-selector
         :record-page="!!module"
@@ -94,10 +94,10 @@
 
     <b-modal
       :title="$t('block.general.title')"
-      :ok-title="$t('page.build.addBlock')"
+      :ok-title="$t('build.addBlock')"
       ok-variant="primary"
       cancel-variant="link"
-      :cancel-title="$t('general.label.cancel')"
+      :cancel-title="$t('block.general.label.cancel')"
       size="xl"
       @ok="updateBlocks"
       @hide="editor=null"
@@ -115,10 +115,10 @@
     </b-modal>
 
     <b-modal
-      :title="$t('block.general.changeBlock')"
-      :ok-title="$t('general.label.saveAndClose')"
+      :title="$t('changeBlock')"
+      :ok-title="$t('label.saveAndClose')"
       ok-variant="primary"
-      :cancel-title="$t('general.label.cancel')"
+      :cancel-title="$t('label.cancel')"
       cancel-variant="link"
       size="xl"
       @ok="updateBlocks"
@@ -153,7 +153,7 @@
           size="lg"
           class="mr-1 float-right"
           v-b-modal.createBlockSelector>
-          + {{ $t('page.build.addBlock') }}
+          + {{ $t('build.addBlock') }}
         </b-button>
       </editor-toolbar>
     </portal>
@@ -170,6 +170,10 @@ import { compose, NoID } from '@cortezaproject/corteza-js'
 import Configurator from 'corteza-webapp-compose/src/components/PageBlocks/Configurator'
 
 export default {
+  i18nOptions: {
+    namespaces: 'page',
+  },
+
   components: {
     Configurator,
     Grid,
@@ -202,7 +206,7 @@ export default {
   computed: {
     title () {
       const title = this.page.title || this.page.handle
-      return this.$t('general.label.pageBuilder') + ' - ' + (title ? `"${title}"` : this.$t('general.label.noHandle'))
+      return this.$t('label.pageBuilder') + ' - ' + (title ? `"${title}"` : this.$t('label.noHandle'))
     },
 
     showEditor () {
@@ -284,7 +288,7 @@ export default {
 
       // Record blocks
       if (this.module && !this.validateModuleFieldSelection(this.module, this.page)) {
-        this.toastErrorHandler(this.$t('notification.page.saveFailedRequired'))()
+        this.toastErrorHandler(this.$t('notification.saveFailedRequired'))()
         return
       }
 
@@ -302,7 +306,7 @@ export default {
 
       const validated = await Promise.all(queue)
       if (validated.find(({ valid }) => !valid)) {
-        this.toastErrorHandler(this.$t('notification.page.saveFailedRequired'))()
+        this.toastErrorHandler(this.$t('notification.saveFailedRequired'))()
         return
       }
 
@@ -312,14 +316,14 @@ export default {
           this.page = new compose.Page({ namespaceID, ...page, blocks: this.blocks })
 
           this.updatePage(this.page).then((page) => {
-            this.toastSuccess(this.$t('notification.page.saved'))
+            this.toastSuccess(this.$t('notification.saved'))
             if (closeOnSuccess) {
               this.$router.push({ name: 'admin.pages' })
             } else if (previewOnSuccess) {
               this.$router.push({ name: 'page', params: { pageID: this.pageID } })
             }
             this.page = new compose.Page(page)
-          }).catch(this.toastErrorHandler(this.$t('notification.page.saveFailed')))
+          }).catch(this.toastErrorHandler(this.$t('notification.saveFailed')))
         })
     },
 
@@ -350,7 +354,7 @@ export default {
     handleDeletePage () {
       this.deletePage(this.page).then(() => {
         this.$router.push({ name: 'admin.pages' })
-      }).catch(this.toastErrorHandler(this.$t('notification.page.deleteFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification.deleteFailed')))
     },
 
     /**

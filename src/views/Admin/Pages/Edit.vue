@@ -1,7 +1,7 @@
 <template>
   <div class="py-3">
     <portal to="topbar-title">
-      {{ $t('page.edit.edit') }}
+      {{ $t('edit.edit') }}
     </portal>
 
     <portal to="topbar-tools">
@@ -16,7 +16,7 @@
           class="d-flex align-items-center"
           :to="{ name: 'admin.pages.builder' }"
         >
-          {{ $t('general.label.pageBuilder') }}
+          {{ $t('label.pageBuilder') }}
           <font-awesome-icon
             :icon="['fas', 'cogs']"
             class="ml-2"
@@ -47,23 +47,23 @@
               <b-row>
                 <b-col cols="12" md="6" xl="4">
                   <input required type="hidden" v-model="page.pageID" id="id" />
-                  <label class="text-primary">{{ $t('page.newPlaceholder') }}</label>
+                  <label class="text-primary">{{ $t('newPlaceholder') }}</label>
                   <b-form-input required
                                 v-model="page.title"
                                 class="mb-2"
-                                :placeholder="$t('page.newPlaceholder')" />
+                                :placeholder="$t('newPlaceholder')" />
                 </b-col>
                 <b-col cols="12" md="6" xl="4">
-                  <label class="text-primary">{{ $t('general.label.handle') }}</label>
+                  <label class="text-primary">{{ $t('label.handle') }}</label>
                   <b-form-input v-model="page.handle"
                                 :state="handleState"
                                 class="mb-2"
-                                :placeholder="$t('general.placeholder.handle')" />
+                                :placeholder="$t('block.general.placeholder.handle')" />
                 </b-col>
               </b-row>
-              <label class="text-primary mt-3">{{ $t('general.label.description') }}</label>
+              <label class="text-primary mt-3">{{ $t('label.description') }}</label>
               <b-form-textarea v-model="page.description"
-                              :placeholder="$t('page.edit.pageDescription')"
+                              :placeholder="$t('edit.pageDescription')"
                               class="mb-2"
                               rows="8"></b-form-textarea>
               <b-form-checkbox v-model="page.visible"
@@ -72,7 +72,7 @@
                               class="mt-3 d-inline"
                               id="visible" />
                 <label class="m-1">
-                  {{ $t('page.edit.visible') }}
+                  {{ $t('edit.visible') }}
                 </label>
             </b-form>
           </b-card>
@@ -99,6 +99,10 @@ import { compose } from '@cortezaproject/corteza-js'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 
 export default {
+  i18nOptions: {
+    namespaces: 'page',
+  },
+
   name: 'PageEdit',
 
   components: {
@@ -143,7 +147,7 @@ export default {
       }
 
       this.page = new compose.Page(page)
-    }).catch(this.toastErrorHandler(this.$t('notification.page.loadFailed')))
+    }).catch(this.toastErrorHandler(this.$t('notification.loadFailed')))
   },
 
   methods: {
@@ -156,17 +160,17 @@ export default {
       const { namespaceID } = this.namespace
       this.updatePage({ namespaceID, ...this.page }).then((page) => {
         this.page = page.clone()
-        this.toastSuccess(this.$t('notification.page.saved'))
+        this.toastSuccess(this.$t('notification.saved'))
         if (closeOnSuccess) {
           this.$router.push({ name: 'admin.pages' })
         }
-      }).catch(this.toastErrorHandler(this.$t('notification.page.saveFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification.saveFailed')))
     },
 
     handleDeletePage () {
       this.deletePage(this.page).then(() => {
         this.$router.push({ name: 'admin.pages' })
-      }).catch(this.toastErrorHandler(this.$t('notification.page.deleteFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification.deleteFailed')))
     },
   },
 }

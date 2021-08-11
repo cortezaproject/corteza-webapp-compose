@@ -16,7 +16,7 @@
                 :value="null"
                 disabled
               >
-                {{ $t('chart.edit.modulePick') }}
+                {{ $t('edit.modulePick') }}
               </option>
             </template>
           </b-form-select>
@@ -30,7 +30,7 @@
       class="mt-1"
     >
       <h4 class="mb-3">
-        {{ $t('chart.edit.filter.label') }}
+        {{ $t('edit.filter.label') }}
       </h4>
       <b-form-group>
         <b-form-select
@@ -40,7 +40,7 @@
         >
           <template slot="first">
             <option :value="''">
-              {{ $t('chart.edit.filter.noFilter') }}
+              {{ $t('edit.filter.noFilter') }}
             </option>
           </template>
         </b-form-select>
@@ -49,7 +49,7 @@
           v-model="customFilter"
           class="mt-1"
         >
-          {{ $t('chart.edit.filter.customize') }}
+          {{ $t('edit.filter.customize') }}
         </b-form-checkbox>
 
         <b-form-textarea
@@ -72,14 +72,14 @@
           :key="i"
         >
           <h4 class="mb-3">
-            {{ $t('chart.edit.dimension.label') }}
+            {{ $t('edit.dimension.label') }}
           </h4>
 
           <b-form-group
             horizontal
             :label-cols="2"
             breakpoint="md"
-            :label="$t('chart.edit.dimension.fieldLabel')"
+            :label="$t('edit.dimension.fieldLabel')"
           >
             <b-form-select
               v-model="d.field"
@@ -93,7 +93,7 @@
                   disabled
                   :value="undefined"
                 >
-                  {{ $t('chart.edit.dimension.fieldPlaceholder') }}
+                  {{ $t('edit.dimension.fieldPlaceholder') }}
                 </option>
               </template>
             </b-form-select>
@@ -103,7 +103,7 @@
             horizontal
             :label-cols="2"
             breakpoint="md"
-            :label="$t('chart.edit.dimension.function.label')"
+            :label="$t('edit.dimension.function.label')"
           >
             <b-form-select
               v-model="d.modifier"
@@ -115,7 +115,7 @@
                   disabled
                   :value="undefined"
                 >
-                  {{ $t('chart.edit.dimension.function.placeholder') }}
+                  {{ $t('edit.dimension.function.placeholder') }}
                 </option>
               </template>
             </b-form-select>
@@ -130,7 +130,7 @@
               <b-form-checkbox
                 v-model="d.skipMissing"
               >
-                {{ $t('chart.edit.dimension.skipMissingValues') }}
+                {{ $t('edit.dimension.skipMissingValues') }}
               </b-form-checkbox>
             </b-form-group>
 
@@ -139,8 +139,8 @@
               horizontal
               :label-cols="2"
               breakpoint="md"
-              :label="$t('chart.edit.dimension.defaultValueLabel')"
-              :description="$t('chart.edit.dimension.defaultValueFootnote')"
+              :label="$t('edit.dimension.defaultValueLabel')"
+              :description="$t('edit.dimension.defaultValueFootnote')"
             >
               <b-form-input
                 v-model="d.default"
@@ -165,7 +165,7 @@
       >
         <hr>
         <h4 class="mb-3">
-          {{ $t('chart.edit.metric.title') }}
+          {{ $t('edit.metric.title') }}
         </h4>
         <fieldset
           v-for="(m,i) in metrics"
@@ -178,7 +178,7 @@
             :icon="['fas', 'grip-vertical']"
           />
           <h5 class="mb-3 d-inline-block">
-            {{ $t('chart.edit.metric.label') }}
+            {{ $t('edit.metric.label') }}
           </h5>
           <b-button
             v-if="metrics.length > 1"
@@ -193,7 +193,7 @@
             horizontal
             :label-cols="2"
             breakpoint="md"
-            :label="$t('chart.edit.metric.fieldLabel')"
+            :label="$t('edit.metric.fieldLabel')"
           >
             <b-form-select
               v-model="m.field"
@@ -206,7 +206,7 @@
                   disabled
                   :value="undefined"
                 >
-                  {{ $t('chart.edit.metric.fieldPlaceholder') }}
+                  {{ $t('edit.metric.fieldPlaceholder') }}
                 </option>
               </template>
             </b-form-select>
@@ -216,7 +216,7 @@
             horizontal
             :label-cols="2"
             breakpoint="md"
-            :label="$t('chart.edit.metric.function.label')"
+            :label="$t('edit.metric.function.label')"
           >
             <b-form-select
               v-model="m.aggregate"
@@ -228,7 +228,7 @@
                   disabled
                   :value="undefined"
                 >
-                  {{ $t('chart.edit.metric.function.placeholder') }}
+                  {{ $t('edit.metric.function.placeholder') }}
                 </option>
               </template>
             </b-form-select>
@@ -248,7 +248,7 @@
       @click.prevent="addMetric"
       variant="primary"
     >
-      + {{ $t('chart.edit.metric.add') }}
+      + {{ $t('edit.metric.add') }}
     </b-button>
   </div>
 </template>
@@ -286,6 +286,10 @@ const aggregateFunctions = [
 ]
 
 export default {
+  i18nOptions: {
+    namespaces: 'chart',
+  },
+
   name: 'ReportEdit',
 
   components: {
@@ -298,9 +302,9 @@ export default {
     return {
       customFilter: false,
 
-      metricAggregates: aggregateFunctions.map(af => ({ ...af, text: this.$t(`chart.edit.metric.function.${af.text}`) })),
-      dimensionModifiers: compose.chartUtil.dimensionFunctions.map(df => ({ ...df, text: this.$t(`chart.edit.dimension.function.${df.text}`) })),
-      predefinedFilters: compose.chartUtil.predefinedFilters.map(pf => ({ ...pf, text: this.$t(`chart.edit.filter.${pf.text}`) })),
+      metricAggregates: aggregateFunctions.map(af => ({ ...af, text: this.$t(`edit.metric.function.${af.text}`) })),
+      dimensionModifiers: compose.chartUtil.dimensionFunctions.map(df => ({ ...df, text: this.$t(`edit.dimension.function.${df.text}`) })),
+      predefinedFilters: compose.chartUtil.predefinedFilters.map(pf => ({ ...pf, text: this.$t(`edit.filter.${pf.text}`) })),
     }
   },
 

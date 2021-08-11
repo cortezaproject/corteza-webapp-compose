@@ -3,7 +3,7 @@
           active-tab-class="tab-content h-auto overflow-auto"
           card>
 
-    <b-tab active :title="$t('general.label.general')">
+    <b-tab active :title="$t('label.general')">
       <basic
         :namespace="namespace"
         :field="field"
@@ -22,7 +22,7 @@
     <b-tab
       v-if="field.cap.multi"
       :disabled="!field.isMulti"
-      :title="$t('general.label.multi')"
+      :title="$t('label.multi')"
     >
       <multi
         :namespace="namespace"
@@ -30,7 +30,7 @@
       />
     </b-tab>
     <b-tab
-      :title="$t('general.label.validation')"
+      :title="$t('label.validation')"
     >
       <validation
         :field="field"
@@ -46,6 +46,10 @@ import basic from './basic'
 import validation from './validation'
 
 export default {
+  i18nOptions: {
+    namespaces: 'general',
+  },
+
   components: {
     ...Configurators,
     multi,

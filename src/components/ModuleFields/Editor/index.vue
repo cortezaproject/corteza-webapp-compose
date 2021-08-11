@@ -3,6 +3,10 @@ import base from './base'
 import * as Editors from './loader'
 
 export default {
+  i18nOptions: {
+    namespaces: 'notification',
+  },
+
   components: {
     ...Editors,
   },
@@ -31,7 +35,7 @@ export default {
         props: this.$props,
       })
     } else {
-      return createElement('code', this.$t('notification.field.unknownFieldKind', { kind: this.field.kind }))
+      return createElement('code', this.$t('field.unknownFieldKind', { kind: this.field.kind }))
     }
   },
 }

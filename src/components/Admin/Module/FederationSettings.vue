@@ -18,7 +18,7 @@
       card
     >
       <!-- <b-tab
-        :title="$t('module.edit.federationSettings.general.title')"
+        :title="$t('edit.federationSettings.general.title')"
         active
       >
         <b-form-group
@@ -27,18 +27,18 @@
           <b-form-checkbox
             v-model="upstream.enabled"
           >
-            {{ $t('module.edit.federationSettings.general.send') }}
+            {{ $t('edit.federationSettings.general.send') }}
           </b-form-checkbox>
 
           <b-form-checkbox
             v-model="downstream.enabled"
           >
-            {{ $t('module.edit.federationSettings.general.receive') }}
+            {{ $t('edit.federationSettings.general.receive') }}
           </b-form-checkbox>
         </b-form-group>
       </b-tab> -->
       <b-tab
-        :title="$t('module.edit.federationSettings.upstream.title')"
+        :title="$t('edit.federationSettings.upstream.title')"
         active
       >
         <b-list-group
@@ -75,7 +75,7 @@
           <div
             v-if="upstream[upstream.active].canManageModule"
           >
-            {{ $t('module.edit.federationSettings.upstream.description') }}
+            {{ $t('edit.federationSettings.upstream.description') }}
             <b-form-group
               label-cols-sm="4"
               label-cols-lg="5"
@@ -96,7 +96,7 @@
               class="mb-2"
               @change="selectAllFields($event, 'upstream')"
             >
-              <strong>{{ $t('module.edit.federationSettings.upstream.allFields') }}</strong>
+              <strong>{{ $t('edit.federationSettings.upstream.allFields') }}</strong>
             </b-form-checkbox>
 
             <div
@@ -118,7 +118,7 @@
             v-else
             class="d-flex flex-grow-1 align-items-center justify-content-center"
           >
-            {{ $t('module.edit.federationSettings.noPermission') }}
+            {{ $t('edit.federationSettings.noPermission') }}
           </div>
         </div>
 
@@ -126,13 +126,13 @@
           v-else
           class="d-flex flex-grow-1 align-items-center justify-content-center"
         >
-          {{ $t('module.edit.federationSettings.noNodes') }}
+          {{ $t('edit.federationSettings.noNodes') }}
         </div>
       </b-tab>
 
       <!-- downstream tab -->
       <b-tab
-        :title="$t('module.edit.federationSettings.downstream.title')"
+        :title="$t('edit.federationSettings.downstream.title')"
       >
         <b-list-group
           vertical
@@ -180,12 +180,12 @@
             v-if="downstream[downstream.active].module"
             class="mb-2"
           >
-            {{ $t('module.edit.federationSettings.downstream.description') }}
+            {{ $t('edit.federationSettings.downstream.description') }}
             <b-form-checkbox
               :checked="downstream[downstream.active].allFields[downstream[downstream.active].module]"
               @change="selectAllFields($event, 'downstream')"
             >
-              <strong>{{ $t('module.edit.federationSettings.downstream.allFields') }}</strong>
+              <strong>{{ $t('edit.federationSettings.downstream.allFields') }}</strong>
             </b-form-checkbox>
           </div>
           <div
@@ -225,7 +225,7 @@
           v-else
           class="d-flex flex-grow-1 align-items-center justify-content-center"
         >
-          {{ $t('module.edit.federationSettings.noNodes') }}
+          {{ $t('edit.federationSettings.noNodes') }}
         </div>
       </b-tab>
     </b-tabs>
@@ -235,6 +235,10 @@
 import { compose } from '@cortezaproject/corteza-js'
 
 export default {
+  i18nOptions: {
+    namespaces: 'module',
+  },
+
   props: {
     modal: {
       type: Boolean,
@@ -307,7 +311,7 @@ export default {
     // used on module field dropdown on field mapping screen
     transformedModuleFields () {
       return [
-        { name: null, label: this.$t('module.edit.federationSettings.pickModuleField') },
+        { name: null, label: this.$t('edit.federationSettings.pickModuleField') },
         ...this.transformedModuleMappings.map((el) => ({
           name: el.origin.name,
           label: el.origin.label,
@@ -317,7 +321,7 @@ export default {
 
     federationModalTitle () {
       const { handle } = this.module
-      return handle ? this.$t('module.edit.federationSettings.specificTitle', { handle }) : this.$t('module.edit.federationSettings.title')
+      return handle ? this.$t('edit.federationSettings.specificTitle', { handle }) : this.$t('edit.federationSettings.title')
     },
   },
 
@@ -556,7 +560,7 @@ export default {
 
       const upstream = {
         options: [
-          { moduleID: null, name: this.$t('module.edit.federationSettings.pickServer') },
+          { moduleID: null, name: this.$t('edit.federationSettings.pickServer') },
           ...this.servers.filter(s => s.nodeID !== nodeID),
         ],
         copy: null,
@@ -582,7 +586,7 @@ export default {
       const fields = (this.moduleFields || []).map(f => ({ ...f, value: false }))
       const downstream = {
         options: [
-          { moduleID: null, name: this.$t('module.edit.federationSettings.pickModule') },
+          { moduleID: null, name: this.$t('edit.federationSettings.pickModule') },
           ...Object.values(this.sharedModules[nodeID] || {})
             .filter(({ canMapModule }) => canMapModule)
             .map(m => ({ moduleID: m.moduleID, name: m.name })),

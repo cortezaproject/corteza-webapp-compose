@@ -5,7 +5,7 @@
         v-if="!isConfigured"
         class="p-3 text-danger"
       >
-        {{ $t('block.recordOrganizer.notConfigured') }}
+        {{ $t('recordOrganizer.notConfigured') }}
       </div>
       <div
         v-else
@@ -24,7 +24,7 @@
             <div
               class="p-2 text-secondary"
             >
-              {{ $t('block.recordOrganizer.noRecords') }}
+              {{ $t('recordOrganizer.noRecords') }}
             </div>
           </template>
           <router-link
@@ -84,7 +84,7 @@
               variant="outline-primary"
               class="float-left"
             >
-              + {{ $t('block.recordList.addRecord') }}
+              + {{ $t('recordList.addRecord') }}
             </b-button>
           </b-col>
         </b-row>
@@ -103,6 +103,10 @@ import { evaluatePrefilter } from 'corteza-webapp-compose/src/lib/record-filter'
 import { compose, NoID } from '@cortezaproject/corteza-js'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   components: {
     FieldViewer,
     draggable,

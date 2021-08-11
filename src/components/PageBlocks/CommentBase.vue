@@ -11,12 +11,12 @@
         v-if="options.titleField"
         v-model="newRecord.title"
         class="mb-2"
-        :placeholder="$t('block.comment.titleInput')"
+        :placeholder="$t('comment.titleInput')"
       />
       <b-form-textarea
         v-model.trim="newRecord.content"
         :value="true"
-        :placeholder="$t('block.comment.contentInput')"
+        :placeholder="$t('comment.contentInput')"
       />
       <b-button
         variant="primary"
@@ -24,7 +24,7 @@
         :disabled="!isValid"
         @click="createNewRecord()"
       >
-        {{ $t('block.comment.submit') }}
+        {{ $t('comment.submit') }}
       </b-button>
     </section>
     <div
@@ -86,6 +86,10 @@ import { compose, NoID, fmt } from '@cortezaproject/corteza-js'
 import { evaluatePrefilter } from 'corteza-webapp-compose/src/lib/record-filter'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   components: {
     FieldViewer,
   },
@@ -212,7 +216,7 @@ export default {
     reloadRecords () {
       if (!this.options.moduleID) {
       // Make sure block is properly configured
-        throw Error(this.$t('notification.record.moduleOrPageNotSet'))
+        throw Error(this.$t('record.moduleOrPageNotSet'))
       }
       if (this.roModule) {
         this.fetchRecords(this.roModule, this.expandFilter())
@@ -257,7 +261,7 @@ export default {
           this.newRecord.content = ''
           this.reloadRecords()
         })
-          .catch(this.toastErrorHandler(this.$t('notification.record.createFailed')))
+          .catch(this.toastErrorHandler(this.$t('record.createFailed')))
       }
     },
 
@@ -267,11 +271,11 @@ export default {
         // If there is no current record and we are using recordID/ownerID variable in (pre)filter
         // we should disable the block
         if ((this.options.filter || '').includes('${record')) {
-          throw Error(this.$t('notification.record.invalidRecordVar'))
+          throw Error(this.$t('record.invalidRecordVar'))
         }
 
         if ((this.options.filter || '').includes('${ownerID}')) {
-          throw Error(this.$t('notification.record.invalidOwnerVar'))
+          throw Error(this.$t('record.invalidOwnerVar'))
         }
       }
 

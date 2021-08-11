@@ -33,7 +33,7 @@
     <b-row
       class="border-top mt-2"
     >
-      <b-col>{{ $t('page.build.selectBlockFootnote') }}.</b-col>
+      <b-col>{{ $t('selectBlockFootnote') }}.</b-col>
     </b-row>
   </b-container>
 </template>
@@ -42,6 +42,10 @@ import { compose } from '@cortezaproject/corteza-js'
 import * as images from '../../../../assets/PageBlocks'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   props: {
     recordPage: {
       type: Boolean,
@@ -54,73 +58,73 @@ export default {
       current: undefined,
       types: [
         {
-          label: this.$t('block.content.label'),
+          label: this.$t('content.label'),
           recordPageOnly: false,
           block: new compose.PageBlockContent(),
           image: images.Content,
         },
         {
-          label: this.$t('block.metric.label'),
+          label: this.$t('metric.label'),
           recordPageOnly: false,
           block: new compose.PageBlockMetric(),
           image: images.Metric,
         },
         {
-          label: this.$t('block.chart.label'),
+          label: this.$t('chart.label'),
           recordPageOnly: false,
           block: new compose.PageBlockChart(),
           image: images.Chart,
         },
         {
-          label: this.$t('block.socialFeed.label'),
+          label: this.$t('socialFeed.label'),
           recordPageOnly: false,
           block: new compose.PageBlockSocialFeed(),
           image: images.SocialFeed,
         },
         {
-          label: this.$t('block.record.label'),
+          label: this.$t('record.label'),
           recordPageOnly: true,
           block: new compose.PageBlockRecord(),
           image: images.Record,
         },
         {
-          label: this.$t('block.recordList.label'),
+          label: this.$t('recordList.label'),
           recordPageOnly: false,
           block: new compose.PageBlockRecordList(),
           image: images.RecordList,
         },
         {
-          label: this.$t('block.automation.label'),
+          label: this.$t('automation.label'),
           recordPageOnly: false,
           block: new compose.PageBlockAutomation(),
           image: images.Automation,
         },
         {
-          label: this.$t('block.calendar.label'),
+          label: this.$t('calendar.label'),
           recordPageOnly: false,
           block: new compose.PageBlockCalendar(),
           image: images.Calendar,
         },
         {
-          label: this.$t('block.file.label'),
+          label: this.$t('file.label'),
           recordPageOnly: false,
           block: new compose.PageBlockFile(),
           image: images.File,
         },
         {
-          label: this.$t('block.recordOrganizer.label'),
+          label: this.$t('recordOrganizer.label'),
           recordPageOnly: false,
           block: new compose.PageBlockRecordOrganizer(),
           image: images.RecordOrganizer,
         },
         {
-          label: this.$t('block.iframe.label'),
+          label: this.$t('iframe.label'),
           recordPageOnly: false,
           block: new compose.PageBlockIFrame(),
           image: images.IFrame,
         },
         {
-          label: this.$t('block.comment.label'),
+          label: this.$t('comment.label'),
           recordPageOnly: false,
           block: new compose.PageBlockComment(),
           image: images.Comment,

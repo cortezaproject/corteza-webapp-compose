@@ -28,14 +28,14 @@
           class="mr-1 mb-1"
           @click="api().changeView(view)"
         >
-          {{ $t(`block.calendar.view.${view}`) }}
+          {{ $t(`calendar.view.${view}`) }}
         </b-btn>
         <b-btn
           variant="light"
           class="float-right mb-1"
           @click="api().today()"
         >
-          {{ $t(`block.calendar.today`) }}
+          {{ $t(`calendar.today`) }}
         </b-btn>
       </div>
       <full-calendar
@@ -83,6 +83,10 @@ CortezaTheme.prototype.iconOverrideCustomButtonOption = 'icon'
 CortezaTheme.prototype.iconOverridePrefix = 'fc-icon-'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   components: {
     FullCalendar,
   },

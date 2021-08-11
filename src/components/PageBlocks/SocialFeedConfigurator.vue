@@ -1,13 +1,13 @@
 <template>
-  <b-tab :title="$t('block.socialFeed.label')">
+  <b-tab :title="$t('socialFeed.label')">
     <fieldset class="form-group" v-if="page.moduleID && page.moduleID !== '0'">
-        <label>{{ $t('block.socialFeed.twitterProfileField') }}</label>
+        <label>{{ $t('socialFeed.twitterProfileField') }}</label>
         <b-form-select
             :options="selectOptions"
             v-model="options.profileSourceField" />
     </fieldset>
     <fieldset class="form-group">
-        <label>{{ $t('block.socialFeed.twitterProfileLabel') }}</label>
+        <label>{{ $t('socialFeed.twitterProfileLabel') }}</label>
         <input class="form-control" type="text" v-model="options.profileUrl">
     </fieldset>
   </b-tab>
@@ -16,6 +16,10 @@
 import base from './base'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   name: 'SocialFeed',
 
   extends: base,

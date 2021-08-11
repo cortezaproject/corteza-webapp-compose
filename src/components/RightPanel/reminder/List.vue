@@ -1,7 +1,7 @@
 <template>
   <div>
     <h5 class="sticky-top bg-white p-2 mb-0">
-      {{ $t('general.reminder.listLabel') }}
+      {{ $t('reminder.listLabel') }}
     </h5>
 
     <!-- Active reminders -->
@@ -59,7 +59,7 @@
       <b-button @click="$emit('edit')"
                 variant="outline-primary"
                 size="sm">
-        + {{ $t('general.reminder.add') }}
+        + {{ $t('reminder.add') }}
       </b-button>
     </div>
   </div>
@@ -69,6 +69,10 @@
 import { fmt } from '@cortezaproject/corteza-js'
 
 export default {
+  i18nOptions: {
+    namespaces: 'general',
+  },
+
   props: {
     reminders: {
       type: Array,

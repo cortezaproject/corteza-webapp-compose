@@ -1,7 +1,7 @@
 <template>
   <div class="py-3">
     <portal to="topbar-title">
-      {{ $t('chart.edit.title') }}
+      {{ $t('edit.title') }}
     </portal>
 
     <b-container
@@ -28,7 +28,7 @@
               <b-row>
                 <b-col xl="6" md="12">
                   <fieldset v-if="modules">
-                    <b-form-input v-model="chart.name" :placeholder="$t('chart.newPlaceholder')" class="mb-1"></b-form-input>
+                    <b-form-input v-model="chart.name" :placeholder="$t('newPlaceholder')" class="mb-1"></b-form-input>
                     <b-form-input v-model="chart.handle" :placeholder="$t('general.placeholder.handle')" :state="handleState" class="mb-1"></b-form-input>
 
                     <b-form-group>
@@ -42,7 +42,7 @@
                             :value="undefined"
                             disabled
                           >
-                            {{ $t('chart.colorScheme') }}
+                            {{ $t('colorScheme') }}
                           </option>
                         </template>
                       </b-form-select>
@@ -56,7 +56,7 @@
                   >
                     <b-form-group class="mb-2">
                       <h4 class="d-inline-block">
-                        {{ $t('block.chart.configure.reportsLabel') }}
+                        {{ $t('configure.reportsLabel') }}
                       </h4>
                       <b-btn
                         v-if="reportsValid"
@@ -87,7 +87,7 @@
                                 {{ moduleName(r.moduleID) }}
                               </template>
                               <template v-else>
-                                {{ $t('chart.edit.unconfiguredReport') }}
+                                {{ $t('edit.unconfiguredReport') }}
                               </template>
                             </template>
                           </report-item>
@@ -114,7 +114,7 @@
                     @click.prevent="update"
                     :disabled="processing"
                     class="float-right"
-                    variant="outline-primary">{{ $t('chart.edit.loadData') }}
+                    variant="outline-primary">{{ $t('edit.loadData') }}
                   </b-button>
                   <b-alert
                     :show="error"
@@ -181,6 +181,10 @@ const defaultReport = {
 }
 
 export default {
+  i18nOptions: {
+    namespaces: 'chart',
+  },
+
   components: {
     Report,
     EditorToolbar,
@@ -238,7 +242,7 @@ export default {
         for (const sc in schemes[g]) {
           const gn = splicer(sc)
           rr.push({
-            text: `${capitalize(g)}: ${capitalize(gn.label)} (${this.$t('chart.colorLabel', gn)})`,
+            text: `${capitalize(g)}: ${capitalize(gn.label)} (${this.$t('colorLabel', gn)})`,
             value: `${g}.${sc}`,
             count: gn.count,
           })
@@ -340,7 +344,7 @@ export default {
             // Make a copy so that we do not change store item by ref
             this.chart = chartConstructor(chart)
             this.onEditReport(0)
-          }).catch(this.toastErrorHandler(this.$t('notification.chart.loadFailed')))
+          }).catch(this.toastErrorHandler(this.$t('notification.loadFailed')))
         }
       },
       immediate: true,
@@ -379,29 +383,29 @@ export default {
       if (this.chart.chartID === NoID) {
         this.createChart(c).then((chart) => {
           this.chart = chartConstructor(chart)
-          this.toastSuccess(this.$t('notification.chart.saved'))
+          this.toastSuccess(this.$t('notification.saved'))
           if (closeOnSuccess) {
             this.redirect()
           } else {
             this.$router.push({ name: 'admin.charts.edit', params: { chartID: this.chart.chartID } })
           }
-        }).catch(this.toastErrorHandler(this.$t('notification.chart.saveFailed')))
+        }).catch(this.toastErrorHandler(this.$t('notification.saveFailed')))
       } else {
         this.updateChart(c).then((chart) => {
           this.chart = chartConstructor(chart)
-          this.toastSuccess(this.$t('notification.chart.saved'))
+          this.toastSuccess(this.$t('notification.saved'))
           if (closeOnSuccess) {
             this.redirect()
           }
-        }).catch(this.toastErrorHandler(this.$t('notification.chart.saveFailed')))
+        }).catch(this.toastErrorHandler(this.$t('notification.saveFailed')))
       }
     },
 
     handleDelete () {
       this.deleteChart(this.chart).then(() => {
-        this.toastSuccess(this.$t('notification.chart.deleted'))
+        this.toastSuccess(this.$t('notification.deleted'))
         this.$router.push({ name: 'admin.charts' })
-      }).catch(this.toastErrorHandler(this.$t('notification.chart.deleteFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification.deleteFailed')))
     },
 
     redirect () {

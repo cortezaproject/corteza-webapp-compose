@@ -17,7 +17,7 @@
           :to="allRecords"
           class="d-flex align-items-center"
         >
-          {{ $t('module.allRecords.label') }}
+          {{ $t('allRecords.label') }}
           <font-awesome-icon
             :icon="['fas', 'columns']"
             class="ml-2"
@@ -53,7 +53,7 @@
                       :icon="['fas', 'share-alt']"
                     />
 
-                    {{ $t('module.edit.federationSettings.title') }}
+                    {{ $t('edit.federationSettings.title') }}
                   </b-button>
                   <export :list="[this.module]"
                           type="module"
@@ -73,7 +73,7 @@
                   <c-permissions-button
                     v-if="module.canGrant"
                     :resource="`corteza::compose:module-field/${namespace.namespaceID}/${module.moduleID}/*`"
-                    :buttonLabel="$t('module.edit.fieldPermissions')"
+                    :buttonLabel="$t('edit.fieldPermissions')"
                     buttonVariant="light"
                     class="btn-lg ml-auto mr-1"
                   />
@@ -81,7 +81,7 @@
                   <c-permissions-button
                     v-if="module.canGrant"
                     :resource="`corteza::compose:record/${namespace.namespaceID}/${module.moduleID}/*`"
-                    :buttonLabel="$t('module.edit.recordPermissions')"
+                    :buttonLabel="$t('edit.recordPermissions')"
                     buttonVariant="light"
                     class="btn-lg ml-auto mr-1"
                   />
@@ -99,7 +99,7 @@
                     class="mr-1"
                     size="lg"
                   >
-                    {{ $t('module.recordPage.edit') }}
+                    {{ $t('recordPage.edit') }}
                   </b-button>
                   <b-button
                     v-else
@@ -108,20 +108,20 @@
                     size="lg"
                     class="mr-1"
                   >
-                    {{ $t('module.recordPage.create') }}
+                    {{ $t('recordPage.create') }}
                   </b-button>
                 </div>
               </b-row>
             </b-card-header>
             <b-container fluid class="px-4 pt-3">
-              <h5 class="mb-3">{{ $t('module.edit.moduleInfo') }}</h5>
+              <h5 class="mb-3">{{ $t('edit.moduleInfo') }}</h5>
               <b-row>
                 <b-col cols="12" md="6" xl="4">
                   <b-form-group>
-                    <label class="text-primary">{{ $t('module.newLabel') }}</label>
+                    <label class="text-primary">{{ $t('newLabel') }}</label>
                     <b-form-input required
                                   v-model="module.name"
-                                  :placeholder="$t('module.newPlaceholder')"></b-form-input>
+                                  :placeholder="$t('newPlaceholder')"></b-form-input>
                   </b-form-group>
                 </b-col>
                 <b-col cols="12" md="6" xl="4">
@@ -137,17 +137,17 @@
             </b-container>
             <hr>
             <b-container fluid class="px-4">
-              <h5 class="mb-3">{{ $t('module.edit.manageRecordFields') }}</h5>
+              <h5 class="mb-3">{{ $t('edit.manageRecordFields') }}</h5>
               <b-row no-gutters>
                 <b-form-group class="w-100">
                   <table class="table table-sm table-borderless table-responsive-lg">
                     <thead>
                     <tr>
                       <th></th>
-                      <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.name')" class="text-primary">{{ $t('general.label.name') }}</th>
-                      <th v-b-tooltip.hover.topright :title="$t('module.edit.tooltip.title')" class="text-primary">{{ $t('general.label.title') }}</th>
+                      <th v-b-tooltip.hover.topright :title="$t('edit.tooltip.name')" class="text-primary">{{ $t('general.label.name') }}</th>
+                      <th v-b-tooltip.hover.topright :title="$t('edit.tooltip.title')" class="text-primary">{{ $t('general.label.title') }}</th>
                       <th class="text-primary">{{ $t('general.label.type') }}</th>
-                      <th v-b-tooltip.hover :title="$t('module.edit.tooltip.attributes')" class="text-primary">{{ $t('general.label.attributes') }}</th>
+                      <th v-b-tooltip.hover :title="$t('edit.tooltip.attributes')" class="text-primary">{{ $t('general.label.attributes') }}</th>
                       <th></th>
                       <th v-if="false"></th>
                       <th></th>
@@ -169,7 +169,7 @@
                         <b-button @click="handleNewField"
                                   class="mb-5"
                                   variant="primary">
-                          + {{ $t('module.edit.newField') }}
+                          + {{ $t('edit.newField') }}
                         </b-button>
                       </td>
                     </tr>
@@ -177,7 +177,7 @@
                       <td colspan="7"
                           class="font-weight-bold"
                       >
-                        {{ $t('module.edit.systemFields') }}
+                        {{ $t('edit.systemFields') }}
                       </td>
                     </tr>
                     <field-row-view v-for="(field, index) in module.systemFields()"
@@ -247,6 +247,10 @@ import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 
 export default {
+  i18nOptions: {
+    namespaces: 'module',
+  },
+
   components: {
     draggable,
     FieldConfigurator,
@@ -289,7 +293,7 @@ export default {
     }),
 
     title () {
-      return this.creatingModule ? this.$t('module.edit.create') : this.$t('module.edit.edit')
+      return this.creatingModule ? this.$t('edit.create') : this.$t('edit.edit')
     },
 
     handleState () {
@@ -313,7 +317,7 @@ export default {
       }
 
       const { name } = this.updateField
-      return name ? this.$t('module.edit.specificFieldSettings', { name: this.updateField.name }) : this.$t('module.edit.moduleFieldSettings')
+      return name ? this.$t('edit.specificFieldSettings', { name: this.updateField.name }) : this.$t('edit.moduleFieldSettings')
     },
 
     recordPage () {
@@ -439,24 +443,24 @@ export default {
 
           this.module = new compose.Module({ ...module }, this.namespace)
 
-          this.toastSuccess(this.$t('notification.module.saved'))
+          this.toastSuccess(this.$t('notification.saved'))
           if (closeOnSuccess) {
             this.redirect()
           } else {
             this.$router.push({ name: 'admin.modules.edit', params: { moduleID: this.module.moduleID } })
           }
-        }).catch(this.toastErrorHandler(this.$t('notification.module.saveFailed')))
+        }).catch(this.toastErrorHandler(this.$t('notification.saveFailed')))
           .finally(() => {
             this.processing = false
           })
       } else {
         this.updateModule(this.module).then(module => {
           this.module = new compose.Module({ ...module }, this.namespace)
-          this.toastSuccess(this.$t('notification.module.saved'))
+          this.toastSuccess(this.$t('notification.saved'))
           if (closeOnSuccess) {
             this.redirect()
           }
-        }).catch(this.toastErrorHandler(this.$t('notification.module.saveFailed')))
+        }).catch(this.toastErrorHandler(this.$t('notification.saveFailed')))
           .finally(() => {
             this.processing = false
           })
@@ -465,9 +469,9 @@ export default {
 
     handleDelete () {
       this.deleteModule(this.module).then(() => {
-        this.toastSuccess(this.$t('notification.module.deleted'))
+        this.toastSuccess(this.$t('notification.deleted'))
         this.$router.push({ name: 'admin.modules' })
-      }).catch(this.toastErrorHandler(this.$t('notification.module.deleteFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification.deleteFailed')))
     },
 
     async createDefaultPage (page = {}) {
@@ -482,7 +486,7 @@ export default {
         namespaceID,
         moduleID,
 
-        title: `${this.$t('module.forModule.recordPage')} "${name || moduleID}"`,
+        title: `${this.$t('forModule.recordPage')} "${name || moduleID}"`,
         blocks: [],
 
         ...page,
@@ -514,7 +518,7 @@ export default {
         })
 
         const page = new compose.Page({
-          title: `${this.$t('module.forModule.recordList')} "${name || moduleID}"`,
+          title: `${this.$t('forModule.recordList')} "${name || moduleID}"`,
           namespaceID,
           blocks: [
             recListBlock,

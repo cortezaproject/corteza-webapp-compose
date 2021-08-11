@@ -26,6 +26,10 @@ import { components } from '@cortezaproject/corteza-vue'
 const { CPreviewLightbox } = components
 
 export default {
+  i18nOptions: {
+    namespaces: 'preview',
+  },
+
   components: {
     CPreviewLightbox,
   },
@@ -51,12 +55,12 @@ export default {
 
     previewLabels () {
       return {
-        loading: this.$t('preview.pdf.loading'),
-        downloadForAll: this.$t('preview.pdf.downloadForAll'),
-        pageLoadFailed: this.$t('preview.pdf.pageLoadFailed'),
-        pageLoading: this.$t('preview.pdf.pageLoading'),
-        noPages: this.$t('preview.pdf.noPages'),
-        clickToRetry: this.$t('preview.pdf.clickToRetry'),
+        loading: this.$t('pdf.loading'),
+        downloadForAll: this.$t('pdf.downloadForAll'),
+        pageLoadFailed: this.$t('pdf.pageLoadFailed'),
+        pageLoading: this.$t('pdf.pageLoading'),
+        noPages: this.$t('pdf.noPages'),
+        clickToRetry: this.$t('pdf.clickToRetry'),
       }
     },
   },

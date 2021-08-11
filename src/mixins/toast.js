@@ -2,7 +2,7 @@ export default {
   methods: {
     toastSuccess (message, title = undefined) {
       if (title === undefined) {
-        title = this.$t('notification.general.success')
+        title = this.$t('notification:general.success')
       }
 
       this.toast(message, { title, variant: 'success' })
@@ -10,7 +10,7 @@ export default {
 
     toastWarning (message, title = undefined) {
       if (title === undefined) {
-        title = this.$t('notification.general.warning')
+        title = this.$t('notification:general.warning')
       }
 
       this.toast(message, { title, variant: 'warning' })
@@ -18,7 +18,7 @@ export default {
 
     toastDanger (message, title = undefined) {
       if (title === undefined) {
-        title = this.$t('notification.general.error')
+        title = this.$t('notification:general.error')
       }
 
       this.toast(message, { title, variant: 'danger' })
