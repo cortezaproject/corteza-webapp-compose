@@ -208,6 +208,7 @@ export default {
       cancelSelection: 'Cancel',
       fields: 'Module fields',
       editFields: 'Editable module fields',
+      noRecords: 'There are no records matching your request',
 
       pagination: {
         showing: '{{from}} - {{to}} of {{count}} records',
@@ -456,6 +457,7 @@ export default {
     searchPlaceholder: 'Type here to search all modules in this namespace',
     federated: 'Federated',
     import: 'Module import',
+    noModules: 'No modules in namespace',
     allRecords: {
       label: 'All records',
       list: {
@@ -561,6 +563,7 @@ export default {
     noBlock: 'No block added yet',
     import: 'Import page(s):',
     createLabel: 'Create page',
+    noPages: 'No pages in namespace',
     edit: {
       edit: 'Edit page',
       create: 'Create page',
@@ -581,6 +584,7 @@ export default {
     import: 'Import chart(s):',
     colorScheme: 'Color scheme',
     colorLabel: '{{count}} colors',
+    noCharts: 'No charts in namespace',
     edit: {
       title: 'Chart builder',
       modulePick: 'Pick a module',

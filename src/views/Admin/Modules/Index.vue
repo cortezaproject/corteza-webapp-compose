@@ -80,7 +80,9 @@
                 @row-clicked="handleRowClicked"
                 head-variant="light"
                 tbody-tr-class="pointer"
+                :empty-text="$t('module.noModules')"
                 responsive
+                show-empty
                 hover
               >
                 <template v-slot:cell(name)="{ item: m }">

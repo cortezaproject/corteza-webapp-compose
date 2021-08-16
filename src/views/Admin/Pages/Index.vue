@@ -56,10 +56,11 @@
               </b-col>
             </b-row>
             <page-tree
+              v-model="tree"
               :namespace="namespace"
               class="pb-2"
               @reorder="handleReorder"
-              v-model="tree"/>
+            />
           </b-card>
         </b-col>
       </b-row>

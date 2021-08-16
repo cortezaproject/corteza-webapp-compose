@@ -97,6 +97,8 @@
                 @row-clicked="handleRowClicked"
                 head-variant="light"
                 tbody-tr-class="pointer"
+                :empty-text="$t('chart.noCharts')"
+                show-empty
                 responsive
                 hover
               >
