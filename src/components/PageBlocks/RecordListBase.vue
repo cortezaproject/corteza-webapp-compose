@@ -1086,7 +1086,7 @@ export default {
 
         // filter deletable records from the selected list
         const recordIDs = this.items
-          .filter(({ r }) => r.canDeleteRecord)
+          .filter(({ id, r }) => r.canDeleteRecord && this.selected.includes(id))
           .map(({ id }) => id)
 
         this.$ComposeAPI
