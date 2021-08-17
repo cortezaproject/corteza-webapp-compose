@@ -20,8 +20,9 @@
       <c-sidebar
         :expanded.sync="expanded"
         :pinned.sync="pinned"
-        expand-on-hover
+        :icon="icon"
         :disabled-routes="['namespace.list']"
+        expand-on-hover
       >
         <template #header-expanded>
           <portal-target name="sidebar-header-expanded" />
@@ -57,6 +58,7 @@
   </div>
 </template>
 <script>
+import icon from '../themes/corteza-base/img/icon.png'
 import { components } from '@cortezaproject/corteza-vue'
 const { CPrompts, CPermissionsModal, CTopbar, CSidebar } = components
 
@@ -74,6 +76,12 @@ export default {
       expanded: false,
       pinned: false,
     }
+  },
+
+  computed: {
+    icon () {
+      return this.$Settings.attachment('ui.iconLogo', icon)
+    },
   },
 }
 </script>
