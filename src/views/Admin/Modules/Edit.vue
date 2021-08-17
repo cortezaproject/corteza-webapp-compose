@@ -419,7 +419,7 @@ export default {
 
         // If such fields exist , after module is created add fields, map moduleID and update module
         // Unfortunately this ruins the initial field order, but we can improve this later
-        this.createModule({ item: { ...this.module, fields }, namespace: this.namespace }).then(async module => {
+        this.createModule({ ...this.module, fields }).then(async module => {
           if (toBeUpdatedFields.length) {
             fields = [
               ...module.fields,
@@ -429,7 +429,7 @@ export default {
               }),
             ]
 
-            module = await this.updateModule({ item: { ...module, fields }, namespace: this.namespace })
+            module = await this.updateModule({ ...module, fields })
           }
 
           this.module = new compose.Module({ ...module }, this.namespace)
@@ -445,7 +445,7 @@ export default {
             this.processing = false
           })
       } else {
-        this.updateModule({ item: this.module, namespace: this.namespace }).then(module => {
+        this.updateModule(this.module).then(module => {
           this.module = new compose.Module({ ...module }, this.namespace)
           this.toastSuccess(this.$t('notification.module.saved'))
           if (closeOnSuccess) {

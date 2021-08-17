@@ -215,15 +215,8 @@ export default {
 
   methods: {
     ...mapActions({
-      createModule: 'module/create',
       createPage: 'page/create',
     }),
-
-    create () {
-      this.createModule(this.newModule)
-        .then((module) => this.openEditor(module))
-        .catch(this.toastErrorHandler(this.$t('notification.module.createFailed')))
-    },
 
     openEditor (module) {
       const { moduleID } = module
