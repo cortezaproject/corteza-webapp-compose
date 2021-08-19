@@ -176,6 +176,10 @@
               :key="field.key"
               sticky-column
               class="pr-0"
+              @click="handleSort(field)"
+              :style="{
+                cursor: field.sortable ? 'pointer' : 'default',
+              }"
             >
               <div
                 class="d-flex justify-content-between align-self-center"
@@ -200,7 +204,6 @@
                     v-if="field.sortable"
                     variant="link p-0 ml-1"
                     class="d-flex align-items-center justify-content-center"
-                    @click="handleSort(field)"
                   >
                     <font-awesome-layers>
                       <font-awesome-icon

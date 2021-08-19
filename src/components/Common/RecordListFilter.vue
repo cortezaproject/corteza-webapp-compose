@@ -4,6 +4,7 @@
       :id="selectedFieldName"
       variant="link p-0 ml-1"
       :class="[inFilter ? 'text-primary' : 'text-secondary']"
+      @click.stop
     >
       <font-awesome-icon :icon="['fas', 'filter']" />
     </b-button>
