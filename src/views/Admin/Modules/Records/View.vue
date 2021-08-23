@@ -56,6 +56,7 @@
         v-for="(block, index) in blocks"
         :key="index"
         :is="getRecordComponent"
+        :errors="errors"
         v-bind="{ ...bindParams, module, block, record }"
         :class="{ 'flex-grow-1': !inEditing }"
       />
