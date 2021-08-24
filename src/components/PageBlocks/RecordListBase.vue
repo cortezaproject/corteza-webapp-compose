@@ -4,15 +4,27 @@
       v-if="showHeader"
       #header
     >
-      {{ block.title }}
-      <b-badge
-        v-if="Object.keys(recordListModule.labels || {}).includes('federation')"
-        variant="primary"
-        class="d-inline-block mb-0"
+      <h5
+        class="d-flex align-items-center text-truncate mb-0"
       >
-        {{ $t('block.recordList.federated') }}
-      </b-badge>
+        {{ block.title }}
+        <b-badge
+          v-if="Object.keys(recordListModule.labels || {}).includes('federation')"
+          variant="primary"
+          class="d-inline-block mb-0 ml-2"
+        >
+          {{ $t('block.recordList.federated') }}
+        </b-badge>
+      </h5>
+
+      <b-card-text
+        v-if="block.description"
+        class="text-dark text-truncate mt-1"
+      >
+        {{ block.description }}
+      </b-card-text>
     </template>
+
     <template #toolbar>
       <b-container
         ref="toolbar"
@@ -137,6 +149,7 @@
         </b-row>
       </b-container>
     </template>
+
     <template #default>
       <b-table-simple
         hover
@@ -571,7 +584,7 @@ export default {
     },
 
     showHeader () {
-      return !!(this.block.title || Object.keys(this.recordListModule.labels || {}).includes('federation'))
+      return !!(this.block.title || this.block.description || Object.keys(this.recordListModule.labels || {}).includes('federation'))
     },
 
     showFooter () {
