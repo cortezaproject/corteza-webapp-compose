@@ -409,7 +409,7 @@
                   :resource="`corteza::compose:record/${item.r.namespaceID}/${item.r.moduleID}/${item.r.recordID}`"
                   :target="item.r.recordID"
                   button-variant="link"
-                  class="m-0 p-0"
+                  class="text-dark m-0 p-0"
                 />
               </template>
             </b-td>
