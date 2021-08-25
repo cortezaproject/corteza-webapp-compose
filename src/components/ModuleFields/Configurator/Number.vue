@@ -17,7 +17,12 @@
       <b-form-input v-model="f.options.format" :placeholder="$t('field.kind.number.formatPlaceholder')"></b-form-input>
     </b-form-group>
     <div>
-      <p>{{ $t('field.kind.number.examplesLabel') }}</p>
+      <p>{{ $t('field.kind.number.liveExample') }}</p>
+      <div class="d-flex align-items-center">
+        <b-form-input class="w-25" v-model="liveExample"></b-form-input>
+        <span class="ml-3">{{mockField}}</span>
+      </div>
+      <p class="mt-3">{{ $t('field.kind.number.examplesLabel') }}</p>
       <table style="width: 100%;">
         <tr>
           <th>{{ $t('field.kind.number.exampleInput') }}</th>
@@ -51,8 +56,29 @@
 
 <script>
 import base from './base'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   extends: base,
+  data () {
+    return {
+      liveExample: 101070,
+    }
+  },
+  computed: {
+
+    mockField () {
+      const mockField = new compose.ModuleFieldNumber({
+        options: {
+          format: this.f.options.format,
+          prefix: this.f.options.prefix,
+          suffix: this.f.options.suffix,
+          precision: this.f.options.precision,
+          multiDelimiter: '\n',
+        },
+      })
+      return mockField.formatValue(this.liveExample)
+    },
+  },
 }
 </script>

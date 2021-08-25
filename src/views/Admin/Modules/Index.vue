@@ -138,7 +138,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, fmt } from '@cortezaproject/corteza-js'
 import Import from 'corteza-webapp-compose/src/components/Admin/Import'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 
@@ -197,7 +197,7 @@ export default {
           tdClass: 'align-middle',
           class: 'text-right',
           formatter: (updatedAt, key, item) => {
-            return new Date(updatedAt || item.createdAt).toLocaleDateString('en-US')
+            return fmt.date(updatedAt || item.createdAt)
           },
         },
         {

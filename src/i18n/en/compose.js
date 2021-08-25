@@ -1090,6 +1090,7 @@ export default {
         formatLabel: 'Format',
         formatPlaceholder: 'Format',
         examplesLabel: 'Format examples:',
+        liveExample: 'Live example:',
         exampleInput: 'Input',
         exampleFormat: 'Format',
         exampleResult: 'Result',
