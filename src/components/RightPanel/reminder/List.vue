@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import moment from 'moment'
+import { fmt } from '@cortezaproject/corteza-js'
 
 export default {
   props: {
@@ -118,7 +118,7 @@ export default {
     },
 
     makeTooltip ({ remindAt }) {
-      return moment(remindAt).format('DD. MM. YYYY hh:mm')
+      return fmt.dateTime(remindAt)
     },
   },
 }

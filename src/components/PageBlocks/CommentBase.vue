@@ -78,12 +78,11 @@
   </wrap>
 </template>
 <script>
-import moment from 'moment'
 import { mapGetters } from 'vuex'
 import base from './base'
 import FieldViewer from 'corteza-webapp-compose/src/components/ModuleFields/Viewer'
 import users from 'corteza-webapp-compose/src/mixins/users'
-import { compose, NoID } from '@cortezaproject/corteza-js'
+import { compose, NoID, fmt } from '@cortezaproject/corteza-js'
 import { evaluatePrefilter } from 'corteza-webapp-compose/src/lib/record-filter'
 
 export default {
@@ -195,7 +194,7 @@ export default {
   methods: {
 
     getFormatedDate (date) {
-      return moment(date).format('DD. MM. YYYY hh:mm')
+      return fmt.dateTime(date)
     },
 
     getAuthor (userID) {

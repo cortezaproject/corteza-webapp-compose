@@ -91,6 +91,7 @@
 </template>
 
 <script>
+import { fmt } from '@cortezaproject/corteza-js'
 
 export default {
   props: {
@@ -141,7 +142,7 @@ export default {
 
   methods: {
     datify (dt) {
-      return new Date(dt).toLocaleString()
+      return fmt.dateTime(dt)
     },
 
     stringify (r) {
