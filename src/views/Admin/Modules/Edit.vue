@@ -11,7 +11,7 @@
         class="mr-1"
       >
         <b-button
-          v-if="allRecords"
+          v-if="allRecords && !creatingModule"
           variant="primary"
           :disabled="!allRecords"
           :to="allRecords"
