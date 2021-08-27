@@ -1077,6 +1077,7 @@ export default {
           each: 'Input for each value',
           multiple: 'Multiple select',
         },
+        userRoleLabel: 'User roles',
       },
       number: {
         label: 'Number',

@@ -167,6 +167,7 @@ export default {
         pageCursor: '',
         prevPage: '',
         nextPage: '',
+        roles: [],
       },
     }
   },
@@ -303,7 +304,9 @@ export default {
 
       this.processing = true
 
-      return this.$SystemAPI.userList(this.filter)
+      const roleID = this.field.options.roles.map(r => r.roleID)
+
+      return this.$SystemAPI.userList({ roleID })
         .then(({ filter, set }) => {
           this.filter = { ...this.filter, ...filter }
           this.filter.nextPage = filter.nextPage

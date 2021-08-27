@@ -13,13 +13,34 @@
         stacked
       ></b-form-radio-group>
     </b-form-group>
+    <b-form-group
+      v-if="f.options.roles"
+    >
+      <label>
+        {{ $t('field.kind.select.userRoleLabel') }}
+      </label>
+      <vue-select
+        v-model="f.options.roles"
+        :options="roleOptions"
+        option-value="roleID"
+        option-text="name"
+        :close-on-select="false"
+        multiple
+        label="name"
+      />
+    </b-form-group>
   </div>
 </template>
 
 <script>
 import base from './base'
+import { VueSelect } from 'vue-select'
 
 export default {
+  components: {
+    VueSelect,
+  },
+
   extends: base,
 
   data () {
@@ -29,7 +50,14 @@ export default {
         { text: this.$t('field.kind.select.optionType.multiple'), value: 'multiple' },
         { text: this.$t('field.kind.select.optionType.each'), value: 'each' },
       ],
+      roleOptions: [],
     }
+  },
+
+  mounted () {
+    this.$SystemAPI.roleList().then(({ set: roles = [] }) => {
+      this.roleOptions = roles
+    })
   },
 }
 </script>
