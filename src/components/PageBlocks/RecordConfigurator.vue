@@ -1,10 +1,27 @@
 <template>
-  <b-tab :title="$t('record.label')">
-    <fieldset class="form-group">
-      <label>{{ $t('general.module') }}</label>
-      <input v-if="module" class="form-control" type="text" v-model="module.name" readonly>
+  <b-tab
+    :title="$t('record.label')"
+  >
+    <fieldset
+      class="form-group"
+    >
+      <label>
+        {{ $t('general.module') }}
+      </label>
+      <input
+        v-if="module"
+        class="form-control"
+        type="text"
+        v-model="module.name"
+        readonly
+      >
     </fieldset>
-    <field-picker v-if="module" :module="module" :fields.sync="options.fields" />
+    <field-picker
+      v-if="module"
+      :module="module"
+      :fields.sync="options.fields"
+      :search-label="$t('recordList.fields')"
+    />
   </b-tab>
 </template>
 <script>

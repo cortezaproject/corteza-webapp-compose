@@ -23,12 +23,12 @@
 
       <b-form-group
         v-if="recordListModule"
-        :label="$t('recordList.fields')"
         label-size="lg"
       >
         <field-picker
           :module="recordListModule"
           :fields.sync="options.fields"
+          :search-label="$t('recordList.fields')"
         />
       </b-form-group>
 
