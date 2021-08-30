@@ -22,6 +22,7 @@
         <field-picker
           :module="module"
           :fields.sync="filteredFields"
+          :search-label="$t('block:recordList.fields')"
         />
         <small
           class="pl-1"

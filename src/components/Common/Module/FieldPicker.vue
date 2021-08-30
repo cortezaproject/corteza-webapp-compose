@@ -1,49 +1,137 @@
 <template>
-    <fieldset class="form-group">
-      <div class="fields d-flex">
-        <div class="available">
-          <label>{{ $t('selector.available') }}</label>
-          <b-button @click.prevent="selectedFields = [...allFields]" variant="link" class="float-right">{{ $t('selector.selectAll') }}</b-button>
-          <draggable
-            class="drag-area border"
-            :list.sync="availableFields"
-            :group="group"
+    <fieldset
+      :disabled="disabled"
+      class="form-group"
+    >
+      <b-form-group
+        :label="searchLabel"
+        class="mt-3 h5"
+        label-cols="3"
+      >
+        <b-input-group
+          class="search-input-width"
+        >
+          <b-input
+            v-model.trim="query"
+            type="search"
+            :placeholder="$t('module:searchPlaceholder')"
+            class="border-right-0 text-truncate"
+          />
+          <b-input-group-append>
+            <b-input-group-text class="text-primary bg-white border-left-0">
+              <font-awesome-icon
+                :icon="['fas', 'search']"
+              />
+            </b-input-group-text>
+          </b-input-group-append>
+        </b-input-group>
+      </b-form-group>
+      <b-container
+        class="px-0"
+      >
+        <b-row>
+          <b-col
+            cols="12"
+            sm="6"
+            class="pr-0"
           >
-            <div v-for="field in availableFields"
-                 @dblclick="selectedFields = [...selectedFields, field]"
-                 class="field"
-                 :key="field.name">
-              <span v-if="field.label">{{ field.label }} ({{field.name}})</span>
-              <span v-else>{{field.name}}</span>
-              <span v-if="field.isRequired">*</span>
-              <span class="system float-right" v-if="field.isSystem">{{ $t('selector.systemField') }}</span>
+            <div class="d-flex">
+              <label
+                class="mt-1 mb-1 ml-1 text-primary"
+              >
+                {{ $t('selector.available') }}
+              </label>
+              <b-button
+                variant="link"
+                :class="[allSelected ? 'visible' : 'invisible']"
+                class="ml-auto px-0 text-muted"
+                @click.prevent="selectedFields = [...allFields]"
+              >
+                {{ $t('selector.selectAll') }}
+              </b-button>
             </div>
-          </draggable>
-        </div>
-        <div class="selected">
-          <label>{{ $t('selector.selected') }}</label>
-          <b-button @click.prevent="selectedFields = []" variant="link" class="float-right">{{ $t('selector.unselectAll') }}</b-button>
-          <draggable
-            class="drag-area border"
-            v-model="selectedFields"
-            :group="group"
+            <b-list-group
+              vertical
+              class="overflow-auto"
+            >
+              <draggable
+                handle=".handle"
+                :disabled="disabled"
+                :group="group"
+                :value="filteredAvailableFields"
+                :key="filteredAvailableFields.length"
+                class="drag-area px-1"
+              >
+                <b-list-group-item
+                  v-for="field in filteredAvailableFields"
+                  :key="field.name"
+                  @dblclick="selectField(field)"
+                  class="mb-3 border rounded"
+                >
+                  <field-item
+                    :field="field"
+                    :selected-fields="selectedFields"
+                    :is-selected="false"
+                    @select-field="selectField"
+                  />
+                </b-list-group-item>
+              </draggable>
+            </b-list-group>
+          </b-col>
+          <b-col
+            cols="12"
+            sm="6"
+            class="pl-0"
           >
-            <div v-for="(field) in selectedFields"
-                 @dblclick="selectedFields = selectedFields.filter(({ name }) => field.name !== name)"
-                 class="field"
-                 :key="field.name">
-              <span v-if="field.label">{{ field.label }} ({{field.name}})</span>
-              <span v-else>{{field.name}}</span>
-              <span v-if="field.isRequired">*</span>
-              <span class="system float-right" v-if="field.isSystem">{{ $t('selector.systemField') }}</span>
+            <div class="d-flex">
+              <label
+                class="mt-1 ml-1 mb-0 text-primary"
+              >
+                {{ $t('selector.selected') }}
+              </label>
+              <b-button
+                variant="link"
+                :class="[allUnselected ? 'visible' : 'invisible']"
+                class="ml-auto px-0 text-muted"
+                @click.prevent="selectedFields = []"
+              >
+                {{ $t('selector.unselectAll') }}
+              </b-button>
             </div>
-          </draggable>
-        </div>
-      </div>
+            <b-list-group
+              vertical
+              class="overflow-auto"
+            >
+              <draggable
+                v-model="selectedFields"
+                handle=".handle"
+                :disabled="disabled"
+                :group="group"
+                class="drag-area px-1"
+              >
+                <b-list-group-item
+                  v-for="field in filteredSelectedFields"
+                  :key="field.name"
+                  class="mb-3 border rounded"
+                  @dblclick="unselectField(field)"
+                >
+                  <field-item
+                    :field="field"
+                    :selected-fields="selectedFields"
+                    :is-selected="true"
+                    @unselect-field="unselectField"
+                  />
+                </b-list-group-item>
+              </draggable>
+            </b-list-group>
+          </b-col>
+        </b-row>
+      </b-container>
     </fieldset>
 </template>
 <script>
 import draggable from 'vuedraggable'
+import FieldItem from './FieldItem.vue'
 
 export default {
   i18nOptions: {
@@ -52,6 +140,7 @@ export default {
 
   components: {
     draggable,
+    FieldItem,
   },
 
   props: {
@@ -65,6 +154,11 @@ export default {
       required: true,
     },
 
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+
     disabledTypes: {
       type: Array,
       default: () => [],
@@ -73,6 +167,11 @@ export default {
     disableSystemFields: {
       type: Boolean,
       default: false,
+    },
+
+    searchLabel: {
+      type: String,
+      required: true,
     },
 
     systemFields: {
@@ -94,6 +193,7 @@ export default {
   data () {
     return {
       modules: [],
+      query: '',
     }
   },
 
@@ -143,9 +243,25 @@ export default {
       ]
     },
 
+    allSelected () {
+      return this.availableFields.length > 0
+    },
+
+    allUnselected () {
+      return this.selectedFields.length > 0
+    },
+
     availableFields () {
       // Remove selected fields
       return this.allFields.filter(a => !this.fields.some(f => a.name === f.name))
+    },
+
+    filteredAvailableFields () {
+      return this.filterFields(this.availableFields)
+    },
+
+    filteredSelectedFields () {
+      return this.filterFields(this.selectedFields)
     },
   },
 
@@ -156,39 +272,31 @@ export default {
       }
     },
   },
+
+  methods: {
+    filterFields (fields) {
+      return fields
+        .filter(f => f.name.toLowerCase().indexOf(this.query) > -1 || f.label.toLowerCase().indexOf(this.query) > -1)
+    },
+    selectField (field) {
+      this.selectedFields = [...this.selectedFields, field]
+    },
+    unselectField (field) {
+      this.selectedFields = this.selectedFields.filter(({ name }) => field.name !== name)
+    },
+  },
 }
 </script>
 <style lang="scss" scoped>
-div.fields {
-  flex-flow: row nowrap;
+.drag-area {
+  height: 390px;
+}
 
-  .selected .field {
-    cursor: pointer;
-  }
+.handle {
+  cursor: grab;
+}
 
-  .available .field {
-    cursor: e-resize;
-  }
-
-  & > div {
-    flex: 1;
-    margin: 5px;
-    clear: both;
-
-    button.btn-link {
-      font-size: 90%;
-    }
-
-    .drag-area {
-      height: 150px;
-      overflow-x: auto;
-      padding: 2px;
-      width: 100%;
-    }
-
-    span.system {
-      font-size: 80%;
-    }
-  }
+.search-input-width {
+  width: 33%;
 }
 </style>
