@@ -304,7 +304,7 @@ export default {
 
       this.processing = true
 
-      const roleID = (this.field.options.foo || []).map(r => r.roleID)
+      const roleID = this.field.options.roles || []
 
       return this.$SystemAPI.userList({ roleID })
         .then(({ filter, set }) => {

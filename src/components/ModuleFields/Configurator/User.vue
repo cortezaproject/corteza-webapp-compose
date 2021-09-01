@@ -13,6 +13,7 @@
       <vue-select
         v-model="f.options.roles"
         :options="roleOptions"
+        :reduce="role => role.roleID"
         option-value="roleID"
         option-text="name"
         :close-on-select="false"
