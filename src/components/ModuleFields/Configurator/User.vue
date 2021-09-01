@@ -5,6 +5,23 @@
         {{ $t('field.kind.user.presetWithCurrentUser') }}
       </b-form-checkbox>
     </b-form-group>
+
+    <b-form-group
+      v-if="f.options.roles"
+      :label="$t('field.kind.user.roles.label')"
+    >
+      <vue-select
+        v-model="f.options.roles"
+        :options="roleOptions"
+        option-value="roleID"
+        option-text="name"
+        :close-on-select="false"
+        :placeholder="$t('field.kind.user.roles.placeholder')"
+        multiple
+        label="name"
+      />
+    </b-form-group>
+
     <b-form-group>
       <label class="d-block">{{ $t('field.kind.select.optionType.label') }}</label>
       <b-form-radio-group
@@ -12,22 +29,6 @@
         :options="selectOptions"
         stacked
       ></b-form-radio-group>
-    </b-form-group>
-    <b-form-group
-      v-if="f.options.roles"
-    >
-      <label>
-        {{ $t('field.kind.user.rolesLabel') }}
-      </label>
-      <vue-select
-        v-model="f.options.roles"
-        :options="roleOptions"
-        option-value="roleID"
-        option-text="name"
-        :close-on-select="false"
-        multiple
-        label="name"
-      />
     </b-form-group>
   </div>
 </template>

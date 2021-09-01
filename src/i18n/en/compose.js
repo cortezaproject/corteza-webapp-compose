@@ -1125,7 +1125,10 @@ export default {
         presetWithCurrentUser: 'Preset with current user',
         suggestionPlaceholder: 'Start typing to search for users by email or name',
         na: 'N/A',
-        rolesLabel: 'User roles',
+        roles: {
+          label: 'User roles',
+          placeholder: 'Filter by user roles',
+        },
       },
       file: {
         label: 'File',
