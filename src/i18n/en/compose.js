@@ -1078,7 +1078,6 @@ export default {
           each: 'Input for each value',
           multiple: 'Multiple select',
         },
-        userRoleLabel: 'User roles',
       },
       number: {
         label: 'Number',
@@ -1126,6 +1125,7 @@ export default {
         presetWithCurrentUser: 'Preset with current user',
         suggestionPlaceholder: 'Start typing to search for users by email or name',
         na: 'N/A',
+        rolesLabel: 'User roles',
       },
       file: {
         label: 'File',

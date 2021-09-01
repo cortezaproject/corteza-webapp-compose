@@ -17,7 +17,7 @@
       v-if="f.options.roles"
     >
       <label>
-        {{ $t('field.kind.select.userRoleLabel') }}
+        {{ $t('field.kind.user.rolesLabel') }}
       </label>
       <vue-select
         v-model="f.options.roles"
