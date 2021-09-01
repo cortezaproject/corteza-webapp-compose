@@ -305,7 +305,6 @@
                 :module="module"
                 :namespace="namespace"
                 :errors="recordErrors(item, field)"
-                inline-editor
                 class="mb-0"
                 @click.stop
               />
