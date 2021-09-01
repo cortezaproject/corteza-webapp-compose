@@ -769,6 +769,7 @@ export default {
       backWithoutSave: 'Back (without saving changes)',
       dropFiles: 'Click or drop files here to upload',
       fileTypeNotAllowed: 'File type not allowed',
+      uploadError: 'Issue with file upload: "{{message}}"',
       loading: 'Loading',
       uploading: 'Uploading',
       download: 'Download',
@@ -1128,6 +1129,7 @@ export default {
       },
       file: {
         label: 'File',
+        error: 'There was a problem uploading your file',
         view: {
           modeLabel: 'View mode',
           modeFootnote: 'How files are represented in record page blocks',

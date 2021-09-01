@@ -2,8 +2,8 @@
   <vue-dropzone
     ref="dropzone"
     id="dropzone"
-    :use-custom-slot=true
-    :include-styling=false
+    :use-custom-slot="true"
+    :include-styling="false"
     @vdropzone-file-added="onFileAdded"
     @vdropzone-file-added-manually="onFileAdded"
     @vdropzone-success="onSuccess"
@@ -12,16 +12,27 @@
     :options="dzOptions">
     <div class="w-100 h-100 position-relative bg-light">
       <template v-if="active">
-        <div class="bg-primary h-100 progress-bar position-absolute"
-             :style="progresBarStyle"></div>
+        <div
+          class="bg-primary h-100 progress-bar position-absolute"
+          :style="progresBarStyle"
+        />
 
         <span class="d-flex align-items-center h-100 w-100 uploading justify-content-center position-relative py-2">
           {{ $t('general.label.uploading') }} {{ active.file.name }} ({{ size(active.file) }})
         </span>
       </template>
-      <div v-else
-           class="d-flex align-items-center h-100 w-100 p-2 droparea justify-content-center"
-           :class="{ 'bg-danger': error }">
+      <div
+        v-else-if="processing"
+        class="d-flex justify-content-center py-1"
+      >
+        <b-spinner
+          variant="primary"
+        />
+      </div>
+      <div
+        v-else
+        class="d-flex align-items-center h-100 w-100 p-2 droparea justify-content-center"
+        :class="{ 'bg-danger': error }">
 
         {{ error || label || $t('general.label.dropFiles') }}
       </div>
@@ -64,6 +75,7 @@ export default {
 
   data () {
     return {
+      processing: false,
       active: null,
       error: null,
     }
@@ -116,6 +128,7 @@ export default {
     },
 
     onSuccess (file, { response }) {
+      this.processing = false
       this.active = null
       this.error = null
       this.$emit('uploaded', response, file)
@@ -123,6 +136,7 @@ export default {
 
     onFileAdded (file) {
       this.error = null
+      this.processing = true
 
       // Check if file type is allowed
       let types = this.acceptedFiles
@@ -136,7 +150,9 @@ export default {
     },
 
     onError (e, message) {
-      this.error = message
+      this.error = this.$t('general.label.uploadError', { message })
+      this.processing = false
+      this.active = null
     },
 
     onUploadProgress (file, progress, bytesSent) {
