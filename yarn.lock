@@ -702,9 +702,9 @@
     to-fast-properties "^2.0.0"
 
 "@cortezaproject/corteza-js@^2021.9.0-dev.1":
-  version "2021.9.0-dev.3"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.9.0-dev.3.tgz#40d0028aab61cd0aa7c089490c835f42e54e5010"
-  integrity sha512-2Pv7j8Zmgo68OLxeJEKzfhn8wa/FznV+OUsoSDGYOwqd9xS4LHdJAgVJxUGdmNGjtx4/HJLsA40RGOsSLV1hJQ==
+  version "2021.9.0-dev.4"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.9.0-dev.4.tgz#30efb182115e7eb585b46a4f8de65a5740222745"
+  integrity sha512-xtqV4qhjFGb6P7VATh7i37H/4ug51GWRdeQi7hBR+xATiSxy56289wtYVZlUAmHwffgwENvo93KQupIpLifmKA==
   dependencies:
     axios "^0.21.1"
     chart.js "2.9.3"
@@ -718,17 +718,22 @@
     ts-sinon "^1.0.25"
 
 "@cortezaproject/corteza-vue@^2021.9.0-dev.1":
-  version "2021.9.0-dev.3"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.9.0-dev.3.tgz#0220c36a5634e49a0d402d684e05c708ce4aa970"
-  integrity sha512-Nbj6QTKF/T7rT0ksn+CI32ws8dvBqBD/5BtUVVtT0OCYHOCUMR9TPzewIK8zihVBcfnnO1lvfFKfBo2cpLmneQ==
+  version "2021.9.0-dev.4"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.9.0-dev.4.tgz#ff7287ae028151bb421249d27622b9b2eb7415fd"
+  integrity sha512-lVYDKJ4g5qMshj7FiE2xNblCe5qWpmDQ95OqCfjLoJttl9PlenptYFLURStAhzWGIcHcLQbK9UaRSME23i38oA==
   dependencies:
     "@cortezaproject/corteza-js" "^2021.9.0-dev.1"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
     "@fortawesome/free-solid-svg-icons" "^5.12.0"
     "@fortawesome/vue-fontawesome" "^0.1.9"
+    "@panter/vue-i18next" "^0.15.0"
     acorn "^7.3.1"
     bootstrap-vue "2.2.2"
     html-parse-stringify "^3.0.1"
+    i18next "^20.0.0"
+    i18next-browser-languagedetector "^3.0.2"
+    i18next-http-backend "^1.3.0"
+    i18next-multiload-backend-adapter "^1.0.0"
     kind-of "^6.0.3"
     moment "2.25.3"
     pdfjs-dist "2.2.228"
@@ -738,7 +743,7 @@
     tiptap "^1.26.0"
     tiptap-extensions "^1.28.4"
     v-photoswipe "^1.0.3-1"
-    vue "^2.6.11"
+    vue "^2.6.14"
     vue-swatches "^1.0.4"
     vuex "^3.6.2"
     websocket-extensions "^0.1.4"
@@ -3499,6 +3504,13 @@ create-hmac@^1.1.0, create-hmac@^1.1.4, create-hmac@^1.1.7:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+cross-fetch@3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.4.tgz#9723f3a3a247bf8b89039f3a380a9244e8fa2f39"
+  integrity sha512-1eAtFWdIubi6T4XPy6ei9iUFoKpUkIF971QLN8lIvvvwueI65+Nw5haMNKUwfJxabqlIIDODJKGrQ66gxC0PbQ==
+  dependencies:
+    node-fetch "2.6.1"
+
 cross-spawn@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-3.0.1.tgz#1256037ecb9f0c5f79e3d6ef135e30770184b982"
@@ -6080,6 +6092,18 @@ i18next-browser-languagedetector@^3.0.2:
   resolved "https://registry.yarnpkg.com/i18next-browser-languagedetector/-/i18next-browser-languagedetector-3.1.1.tgz#1a0c236d4339476cc3632da60ff947bbc2e3ba3c"
   integrity sha512-JBgFWijjI1t6as4WgGvDdX4GLJPZwC/SMHzLQQ3ef7XaJsEkomlXFqXifKvOVJg09Hj2BVWe6strDdIF4J/0ng==
 
+i18next-http-backend@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/i18next-http-backend/-/i18next-http-backend-1.3.0.tgz#fcafb9583cf2942a9c669bd1868ec84a11410536"
+  integrity sha512-49Sf7Dt6GHeFYlCcCTwD39bkaiw7ld8RlGCXw6ZERabN7SXaLM6qRGnd+XbFdPhJHNMHvt/38XiRtJcEgu5Arg==
+  dependencies:
+    cross-fetch "3.1.4"
+
+i18next-multiload-backend-adapter@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/i18next-multiload-backend-adapter/-/i18next-multiload-backend-adapter-1.0.0.tgz#3cc3ea102814273bb9059a317d04a3b6e4316121"
+  integrity sha512-rZd/Qmr7KkGktVgJa78GPLXEnd51OyB2I9qmbI/mXKPm3MWbXwplIApqmZgxkPC9ce+b8Jnk227qX62W9SaLPQ==
+
 i18next-pseudo@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/i18next-pseudo/-/i18next-pseudo-2.2.1.tgz#f926587a10e37b0ab525fc3330133dbf134ead76"
@@ -6105,6 +6129,13 @@ i18next@^19.1.0:
   version "19.9.2"
   resolved "https://registry.yarnpkg.com/i18next/-/i18next-19.9.2.tgz#ea5a124416e3c5ab85fddca2c8e3c3669a8da397"
   integrity sha512-0i6cuo6ER6usEOtKajUUDj92zlG+KArFia0857xxiEHAQcUwh/RtOQocui1LPJwunSYT574Pk64aNva1kwtxZg==
+  dependencies:
+    "@babel/runtime" "^7.12.0"
+
+i18next@^20.0.0:
+  version "20.6.0"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-20.6.0.tgz#1021e267c8760b03b1b9fbcc5ef734b28d83ea3c"
+  integrity sha512-sgt7AkvxUQbW5dsA7p5AYq7tBOIdm9K7c4wAppsbt5l0Hynqs7FTsa0bA0Exy+PUR17+IOcg3KVCaILc1OAOxQ==
   dependencies:
     "@babel/runtime" "^7.12.0"
 
@@ -7923,7 +7954,7 @@ node-ensure@^0.0.0:
   resolved "https://registry.yarnpkg.com/node-ensure/-/node-ensure-0.0.0.tgz#ecae764150de99861ec5c810fd5d096b183932a7"
   integrity sha1-7K52QVDemYYexcgQ/V0Jaxg5Mqc=
 
-node-fetch@^2.6.1:
+node-fetch@2.6.1, node-fetch@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
   integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
@@ -9456,9 +9487,9 @@ prosemirror-transform@^1.0.0, prosemirror-transform@^1.1.0, prosemirror-transfor
     prosemirror-model "^1.0.0"
 
 prosemirror-view@^1.0.0, prosemirror-view@^1.1.0, prosemirror-view@^1.13.3, prosemirror-view@^1.16.5:
-  version "1.19.2"
-  resolved "https://registry.yarnpkg.com/prosemirror-view/-/prosemirror-view-1.19.2.tgz#d71daf432db8f58f2eae2ab1a7845ba2b8e32dd7"
-  integrity sha512-A3Dl4OY4hORAY4OVOFJaMhZ+5Rzj/IC+A0PsktPojXEuB7ZyqVGwMbruKjsadAgfIwytQK4kgbvYnAI/F9gDfQ==
+  version "1.20.0"
+  resolved "https://registry.yarnpkg.com/prosemirror-view/-/prosemirror-view-1.20.0.tgz#64198845f0d112c14a5594732c46a96ac3d9d828"
+  integrity sha512-OqU/bHUIiJhpyb2ytX4fLalYAJJOyZ0k5H0AibP/WPsdHq9CqmJFU676gO+N8WWhR5tVz1NxsqMZgEBy5Lc6GQ==
   dependencies:
     prosemirror-model "^1.14.3"
     prosemirror-state "^1.0.0"
@@ -11966,10 +11997,10 @@ vue-swatches@^1.0.4:
   resolved "https://registry.yarnpkg.com/vue-swatches/-/vue-swatches-1.0.4.tgz#0ea933e2594102321e5a561fca2502f595a796aa"
   integrity sha512-bVzLpmwQU1sYgvQ0sD8jDzhFhAortJyc8KDogr0uC3SxzsPw/osfT0A28rhAQWsKYU1mpPXn6qk4khpbkgpbFw==
 
-vue-template-compiler@^2.6.11:
-  version "2.6.12"
-  resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.6.12.tgz#947ed7196744c8a5285ebe1233fe960437fcc57e"
-  integrity sha512-OzzZ52zS41YUbkCBfdXShQTe69j1gQDZ9HIX8miuC9C3rBCk9wIRjLiZZLrmX9V+Ftq/YEyv1JaVr5Y/hNtByg==
+vue-template-compiler@2.6.14:
+  version "2.6.14"
+  resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.6.14.tgz#a2f0e7d985670d42c9c9ee0d044fed7690f4f763"
+  integrity sha512-ODQS1SyMbjKoO1JBJZojSw6FE4qnh9rIpUZn2EUT86FKizx9uH5z6uXiIrm4/Nb/gwxTi/o17ZDEGWAXHvtC7g==
   dependencies:
     de-indent "^1.0.2"
     he "^1.1.0"
@@ -11998,10 +12029,10 @@ vue2-dropzone@^3.6.0:
   dependencies:
     dropzone "^5.5.1"
 
-vue@^2.6.11:
-  version "2.6.12"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
-  integrity sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg==
+vue@2.6.14, vue@^2.6.14:
+  version "2.6.14"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.14.tgz#e51aa5250250d569a3fbad3a8a5a687d6036e235"
+  integrity sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ==
 
 vuedraggable@^2.23.0:
   version "2.24.3"
