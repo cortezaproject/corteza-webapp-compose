@@ -48,7 +48,7 @@
     "axios": "^0.21.1",
     "bootstrap-vue": "^2.21.2",
     "c3": "^0.7.12",
-    "chart.js": "2.9.3",
+    "chart.js": "2.9.4",
     "chartjs-gauge": "^0.1.2",
     "chartjs-plugin-colorschemes": "^0.4.0",
     "chartjs-plugin-datalabels": "^0.7.0",
