@@ -65,16 +65,19 @@
     </main>
     <c-prompts />
     <c-permissions-modal />
+    <c-translation-modal />
   </div>
 </template>
 <script>
 import icon from '../themes/corteza-base/img/icon.png'
+import CTranslationModal from '../components/Translator/CTranslatorModal'
 import { components } from '@cortezaproject/corteza-vue'
 const { CPrompts, CPermissionsModal, CTopbar, CSidebar } = components
 
 export default {
   components: {
     CPrompts,
+    CTranslationModal,
     CPermissionsModal,
     CTopbar,
     CSidebar,

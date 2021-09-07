@@ -41,7 +41,7 @@
                 no-gutters
                 class="align-items-center"
               >
-                <div class="flex-grow-1 text-nowrap">
+                <div class="flex-grow-1 text-nowrap mb-1">
                   <b-button
                     v-if="federationEnabled"
                     variant="light"
@@ -84,6 +84,13 @@
                     :buttonLabel="$t('module.edit.recordPermissions')"
                     buttonVariant="light"
                     class="btn-lg ml-auto mr-1"
+                  />
+
+                  <c-translation-button
+                    button-variant="light"
+                    class="btn-lg ml-auto mr-1"
+                    :resource="`compose:module/${module.moduleID}`"
+                    :titles="resourceTranslationTitles"
                   />
 
                 </div>
@@ -348,6 +355,25 @@ export default {
       }
 
       return undefined
+    },
+
+    resourceTranslationTitles () {
+      const titles = {}
+
+      titles[`compose:module/${this.moduleID}`] = this.$t('translator.module.title', { handle: this.module.handle })
+
+      // @todo remove when translations are properly fetched
+      titles['compose:module/34082935092'] = this.$t('translator.module.title', { handle: this.module.handle })
+
+      this.module.fields.forEach(f => {
+        titles[`compose:module-field/${f.fieldID}`] = this.$t('translator.module-field.title', { name: f.name })
+      })
+
+      // @todo remove when translations are properly fetched
+      titles['compose:module-field/582375902375'] = this.$t('translator.module-field.title', { name: 'field-name' })
+      titles['compose:module-field/582375902373'] = this.$t('translator.module-field.title', { name: 'field-name' })
+
+      return titles
     },
   },
 
