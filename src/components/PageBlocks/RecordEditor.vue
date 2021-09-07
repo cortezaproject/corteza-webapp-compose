@@ -59,7 +59,7 @@
     </div>
     <div
       v-else
-      class="p-3 text-light bg-danger h-100"
+      class="d-flex align-items-center justify-content-center p-3 text-dark h-100 h5"
     >
       {{ $t('block.record.preview.blockNoRecord') }}
     </div>
