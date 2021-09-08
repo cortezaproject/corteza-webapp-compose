@@ -119,7 +119,7 @@ export default {
     },
 
     namespacesFiltered () {
-      return this.namespaces.filter(ns => ns.slug.indexOf(this.query) > -1 || ns.name.indexOf(this.query) > -1)
+      return this.namespaces.filter(ns => (ns.slug || ns.name).toLowerCase().indexOf(this.query.toLowerCase()) > -1)
     },
   },
 }
