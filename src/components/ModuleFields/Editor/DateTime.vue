@@ -34,7 +34,7 @@
       <b-form-input
         v-if="!field.options.onlyTime"
         v-b-tooltip.hover
-        :title="$t(dateRule)"
+        :title="dateRule ? $t(dateRule) : ''"
         type="date"
         class="mr-2"
         :value="getDate(ctx.index)"
@@ -63,7 +63,7 @@
         v-if="!field.options.onlyTime"
         v-model="date"
         v-b-tooltip.hover
-        :title="$t(dateRule)"
+        :title="dateRule ? $t(dateRule) : ''"
         type="date"
         :value="getDate()"
         :required="field.isRequired"
