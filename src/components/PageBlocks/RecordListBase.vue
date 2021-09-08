@@ -48,7 +48,7 @@
                 </b-btn>
               </template>
 
-              <template v-else-if="!inlineEditing && recordPageID">
+              <template v-else-if="!inlineEditing && (recordPageID || options.adminView)">
                 <router-link
                   class="btn btn-lg btn-primary float-left mr-1"
                   :to="{

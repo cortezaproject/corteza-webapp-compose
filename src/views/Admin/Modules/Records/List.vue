@@ -96,6 +96,7 @@ export default {
       hideRecordViewButton: true,
       hideRecordCloneButton: true,
       allowExport: true,
+      adminView: true,
     }
     this.block.options = options
   },
