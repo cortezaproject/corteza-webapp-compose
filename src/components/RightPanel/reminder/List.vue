@@ -118,7 +118,7 @@ export default {
     },
 
     makeTooltip ({ remindAt }) {
-      return fmt.dateTime(remindAt)
+      return fmt.longDdateTime(remindAt)
     },
   },
 }

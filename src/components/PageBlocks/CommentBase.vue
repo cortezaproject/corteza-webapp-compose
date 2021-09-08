@@ -43,7 +43,7 @@
               {{ getAuthor(record.ownedBy) }}
             </div>
             <span class="ml-auto text-muted">
-              {{ getFormatedDate((record || {}).updatedAt || (record || {}).createdAt) }}
+              {{ getFormattedDate((record || {}).updatedAt || (record || {}).createdAt) }}
             </span>
           </div>
           <div class="border p-3 d-flex flex-column">
@@ -193,8 +193,8 @@ export default {
 
   methods: {
 
-    getFormatedDate (date) {
-      return fmt.dateTime(date)
+    getFormattedDate (date) {
+      return fmt.fullDateTime(date)
     },
 
     getAuthor (userID) {

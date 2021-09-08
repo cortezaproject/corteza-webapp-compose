@@ -142,7 +142,7 @@ export default {
 
   methods: {
     datify (dt) {
-      return fmt.dateTime(dt)
+      return fmt.fullDateTime(dt)
     },
 
     stringify (r) {

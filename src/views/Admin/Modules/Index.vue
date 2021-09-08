@@ -104,7 +104,7 @@
                   </div>
                 </template>
                 <template v-slot:cell(updatedAt)="{ item: m }">
-                  {{ (m.updatedAt || m.createdAt) | locDateOnly }}
+                  {{ (m.updatedAt || m.createdAt) | locDate }}
                 </template>
                 <template v-slot:cell(actions)="{ item: m }">
                   <b-button

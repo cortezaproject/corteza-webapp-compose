@@ -103,7 +103,7 @@
                 hover
               >
                 <template v-slot:cell(updatedAt)="{ item: c }">
-                  {{ (c.updatedAt || c.createdAt) | locDateOnly }}
+                  {{ (c.updatedAt || c.createdAt) | locDate }}
                 </template>
                 <template v-slot:cell(actions)="{ item: c }">
                   <c-permissions-button
