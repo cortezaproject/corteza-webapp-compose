@@ -91,6 +91,8 @@
                     class="btn-lg ml-auto mr-1"
                     :resource="`compose:module/${module.moduleID}`"
                     :titles="resourceTranslationTitles"
+                    :fetcher="resourceTranslationFetcher"
+                    :updater="resourceTranslationUpdater"
                   />
 
                 </div>
@@ -360,20 +362,31 @@ export default {
     resourceTranslationTitles () {
       const titles = {}
 
-      titles[`compose:module/${this.moduleID}`] = this.$t('translator.module.title', { handle: this.module.handle })
-
-      // @todo remove when translations are properly fetched
-      titles['compose:module/34082935092'] = this.$t('translator.module.title', { handle: this.module.handle })
+      titles[`compose:module/${this.namespace.namespaceID}/${this.moduleID}`] = this.$t('translator.module.title', { handle: this.module.handle })
 
       this.module.fields.forEach(f => {
-        titles[`compose:module-field/${f.fieldID}`] = this.$t('translator.module-field.title', { name: f.name })
+        titles[`compose:module-field/${this.moduleID}/${f.fieldID}`] = this.$t('translator.module-field.title', { name: f.name })
       })
 
-      // @todo remove when translations are properly fetched
-      titles['compose:module-field/582375902375'] = this.$t('translator.module-field.title', { name: 'field-name' })
-      titles['compose:module-field/582375902373'] = this.$t('translator.module-field.title', { name: 'field-name' })
-
       return titles
+    },
+
+    resourceTranslationFetcher () {
+      const namespaceID = this.namespace.namespaceID
+      const moduleID = this.moduleID
+
+      return () => {
+        return this.$ComposeAPI.moduleListLocale({ namespaceID, moduleID })
+      }
+    },
+
+    resourceTranslationUpdater () {
+      const namespaceID = this.namespace.namespaceID
+      const moduleID = this.moduleID
+
+      return locale => {
+        return this.$ComposeAPI.moduleUpdateLocale({ namespaceID, moduleID, locale })
+      }
     },
   },
 

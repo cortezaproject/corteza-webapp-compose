@@ -43,6 +43,15 @@
             :buttonLabel="$t('general.label.permissions')"
             class="ml-1 btn-lg"
           />
+
+          <c-translation-button
+            button-variant="light"
+            class="btn-lg ml-auto mr-1"
+            :resource="`compose:namespace/${namespace.namespaceID}`"
+            :titles="resourceTranslationTitles"
+            :fetcher="resourceTranslationFetcher"
+            :updater="resourceTranslationUpdater"
+          />
         </div>
 
         <b-card
@@ -291,6 +300,30 @@ export default {
       }
 
       return this.nameState && this.slugState
+    },
+
+    resourceTranslationTitles () {
+      const titles = {}
+
+      titles[`compose:namespace/${this.namespace.namespaceID}`] = this.$t('translator.namespace.title', { handle: this.namespace.slug })
+
+      return titles
+    },
+
+    resourceTranslationFetcher () {
+      const namespaceID = this.namespace.namespaceID
+
+      return () => {
+        return this.$ComposeAPI.namespaceListLocale({ namespaceID })
+      }
+    },
+
+    resourceTranslationUpdater () {
+      const namespaceID = this.namespace.namespaceID
+
+      return locale => {
+        return this.$ComposeAPI.namespaceUpdateLocale({ namespaceID, locale })
+      }
     },
   },
 

@@ -41,6 +41,25 @@
             no-body
             class="shadow-sm"
           >
+          <b-card-header
+              header-bg-variant="white border-bottom"
+              class="py-3"
+            >
+              <b-row
+                no-gutters
+                class="align-items-center"
+              >
+                  <c-translation-button
+                    button-variant="light"
+                    class="btn-lg ml-auto mr-1"
+                    :resource="`compose:page/${namespace.namespaceID}/${pageID}`"
+                    :titles="resourceTranslationTitles"
+                    :fetcher="resourceTranslationFetcher"
+                    :updater="resourceTranslationUpdater"
+                  />
+              </b-row>
+            </b-card-header>
+
             <b-form
               class="px-4 py-3"
             >
@@ -131,6 +150,32 @@ export default {
 
     pageViewer () {
       return { name: 'page', params: { pageID: this.pageID } }
+    },
+
+    resourceTranslationTitles () {
+      const titles = {}
+
+      titles[`compose:page/${this.namespace.namespaceID}/${this.pageID}`] = this.$t('translator.page.title', { handle: this.page.handle })
+
+      return titles
+    },
+
+    resourceTranslationFetcher () {
+      const namespaceID = this.namespace.namespaceID
+      const pageID = this.pageID
+
+      return () => {
+        return this.$ComposeAPI.pageListLocale({ namespaceID, pageID })
+      }
+    },
+
+    resourceTranslationUpdater () {
+      const namespaceID = this.namespace.namespaceID
+      const pageID = this.pageID
+
+      return locale => {
+        return this.$ComposeAPI.pageUpdateLocale({ namespaceID, pageID, locale })
+      }
     },
   },
 

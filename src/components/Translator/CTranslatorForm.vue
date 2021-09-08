@@ -180,8 +180,3 @@ export default {
 }
 
 </script>
-<style scoped lang="scss">
-//.pointer {
-//  cursor: pointer;
-//}
-</style>

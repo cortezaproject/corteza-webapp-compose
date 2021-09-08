@@ -36,6 +36,16 @@ export default {
       type: Object,
       default: () => ({}),
     },
+
+    fetcher: {
+      type: Function,
+      default: undefined,
+    },
+
+    updater: {
+      type: Function,
+      default: undefined,
+    },
   },
 
   methods: {
@@ -43,6 +53,8 @@ export default {
       this.$root.$emit('c-translator', {
         resource: this.resource,
         titles: this.titles,
+        fetcher: this.fetcher,
+        updater: this.updater,
       })
     },
   },

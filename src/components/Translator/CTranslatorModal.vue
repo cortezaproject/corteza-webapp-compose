@@ -9,10 +9,11 @@
       @hide="onHide"
     >
       <c-translator-form
-        v-if="resource"
+        v-if="loaded"
         :translations="translations"
         :languages="languages"
         :titles="titles"
+        @submit="onSubmit"
       />
     </b-modal>
   </div>
@@ -27,28 +28,11 @@ export default {
 
   data () {
     return {
-      resource: undefined,
+      fetcher: undefined,
+      updater: undefined,
+      loaded: false,
 
-      translations: [
-        // @todo replace with the actual data
-        { resource: 'compose:module/34082935092', lang: 'sl', key: 'name', msg: 'slovensko ime' },
-        { resource: 'compose:module/34082935092', lang: 'en', key: 'name', msg: 'english name' },
-        { resource: 'compose:module/34082935092', lang: 'en', key: 'name', msg: 'de name' },
-        { resource: 'compose:module/34082935092', lang: 'sl', key: 'description', msg: 'Kontakt' },
-        { resource: 'compose:module/34082935092', lang: 'en', key: 'description', msg: 'Kontakt' },
-        { resource: 'compose:module-field/582375902375', lang: 'en', key: 'name', msg: 'Contact' },
-        { resource: 'compose:module-field/582375902375', lang: 'sl', key: 'name', msg: 'Contact' },
-        { resource: 'compose:module-field/582375902375', lang: 'en', key: 'description', msg: 'Contact' },
-        { resource: 'compose:module-field/582375902375', lang: 'sl', key: 'description', msg: 'Contact' },
-        { resource: 'compose:module-field/582375902373', lang: 'en', key: 'description', msg: 'Contact' },
-        { resource: 'compose:module-field/582375902373', lang: 'sl', key: 'description', msg: 'Contact' },
-      ],
-      languages: [
-        // @todo replace with the actual data
-        { tag: 'sl' },
-        { tag: 'en' },
-        { tag: 'de' },
-      ],
+      translations: [],
       titles: {},
     }
   },
@@ -56,7 +40,7 @@ export default {
   computed: {
     showModal: {
       get () {
-        return !!this.resource
+        return !!this.fetcher
       },
 
       set (open) {
@@ -65,16 +49,26 @@ export default {
         }
       },
     },
+
+    languages () {
+      const ll = new Set()
+      for (const t of this.translations) {
+        ll.add(t.lang)
+      }
+
+      return Array.from(ll).map(tag => ({ tag }))
+    },
   },
 
   mounted () {
-    this.$root.$on('c-translator', ({ resource, titles }) => {
-      this.resource = resource
+    this.$root.$on('c-translator', async ({ titles, fetcher, updater }) => {
       this.titles = titles
 
-      // @todo load resource translations from backend
-      // const [component] = resource.split(':', 1)
-      // const API = this[`$${component}API`]
+      this.fetcher = fetcher
+      this.updater = updater
+
+      this.translations = await fetcher()
+      this.loaded = true
     })
   },
 
@@ -83,14 +77,20 @@ export default {
   },
 
   methods: {
+    onSubmit (translations) {
+      this.updater(translations)
+    },
+
     onHide () {
       this.clear()
     },
 
     clear () {
-      this.resource = undefined
       this.title = undefined
       this.target = undefined
+      this.fetcher = undefined
+      this.updater = undefined
+      this.loaded = false
     },
   },
 }
