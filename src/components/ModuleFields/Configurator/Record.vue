@@ -116,9 +116,16 @@ export default {
     },
 
     fieldOptions () {
-      const fields = this.selectedModule ? this.selectedModule.fields.filter(({ label, name }) => label && name).map(({ label, name }) => { return { value: name, text: label || name } }) : []
+      const fields = this.selectedModule
+        ? this.selectedModule.fields
+          .map(({ label, name }) => { return { value: name, text: label || name } })
+        : []
       return [
-        { value: undefined, text: this.$t('field.kind.record.recordFieldPlaceholder'), disabled: true },
+        {
+          value: undefined,
+          text: this.$t('field.kind.record.recordFieldPlaceholder'),
+          disabled: true,
+        },
         ...fields.sort((a, b) => a.text.localeCompare(b.text)),
       ]
     },
