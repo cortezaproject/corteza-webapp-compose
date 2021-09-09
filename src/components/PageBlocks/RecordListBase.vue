@@ -427,11 +427,11 @@
                 </b-button>
 
                 <c-permissions-button
-                  v-if="options.hideRecordPermissionsButton"
+                  v-if="!options.hideRecordPermissionsButton"
                   :resource="`corteza::compose:record/${item.r.namespaceID}/${item.r.moduleID}/${item.r.recordID}`"
                   :target="item.r.recordID"
                   button-variant="link"
-                  class="text-dark m-0 p-0"
+                  class="text-dark m-0 p-0 pl-1"
                 />
               </template>
             </b-td>
