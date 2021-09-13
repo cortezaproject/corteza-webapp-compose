@@ -1,11 +1,12 @@
 <template>
-    <fieldset class="form-group">
+    <fieldset class="form-group" :disabled="disabled">
       <div class="fields d-flex">
         <div class="available">
           <label>{{ $t('field.selector.available') }}</label>
           <b-button @click.prevent="selectedFields = [...allFields]" variant="link" class="float-right">{{ $t('field.selector.selectAll') }}</b-button>
           <draggable
             class="drag-area border"
+            :disabled="disabled"
             :list.sync="availableFields"
             :group="group"
           >
@@ -25,6 +26,7 @@
           <b-button @click.prevent="selectedFields = []" variant="link" class="float-right">{{ $t('field.selector.unselectAll') }}</b-button>
           <draggable
             class="drag-area border"
+            :disabled="disabled"
             v-model="selectedFields"
             :group="group"
           >
@@ -60,6 +62,11 @@ export default {
     fields: {
       type: Array,
       required: true,
+    },
+
+    disabled: {
+      type: Boolean,
+      default: false,
     },
 
     disabledTypes: {
