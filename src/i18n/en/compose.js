@@ -496,8 +496,9 @@ export default {
       view: {
         title: 'View record for module "{{name}}"',
       },
-      selectFields: {
+      columns: {
         title: 'Configure columns',
+        description: 'The columns picked won\'t be saved after you refresh the page',
       },
     },
 

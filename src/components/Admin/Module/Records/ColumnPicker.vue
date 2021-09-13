@@ -3,15 +3,15 @@
     <b-button
       size="lg"
       variant="light"
-      v-b-modal.selectFields
+      v-b-modal.columns
     >
-      {{ $t('module.allRecords.selectFields.title') }}
+      {{ $t('module.allRecords.columns.title') }}
     </b-button>
 
     <b-modal
-      id="selectFields"
+      id="columns"
       size="lg"
-      :title="$t('module.allRecords.selectFields.title')"
+      :title="$t('module.allRecords.columns.title')"
       :ok-title="$t('general.label.saveAndClose')"
       body-class="p-0"
       @ok="onSave"
@@ -23,6 +23,7 @@
           :module="module"
           :fields.sync="filteredFields"
         />
+        {{ $t('module.allRecords.columns.description') }}
       </div>
     </b-modal>
   </div>
