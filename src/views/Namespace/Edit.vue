@@ -44,13 +44,9 @@
             class="ml-1 btn-lg"
           />
 
-          <c-translation-button
-            button-variant="light"
-            class="btn-lg ml-auto mr-1"
-            :resource="`compose:namespace/${namespace.namespaceID}`"
-            :titles="resourceTranslationTitles"
-            :fetcher="resourceTranslationFetcher"
-            :updater="resourceTranslationUpdater"
+          <namespace-translator
+            v-if="namespace"
+            :namespace="namespace"
           />
         </div>
 
@@ -218,12 +214,14 @@
 <script>
 import { compose, NoID } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
+import NamespaceTranslator from 'corteza-webapp-compose/src/components/Namespaces/NamespaceTranslator'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
     EditorToolbar,
+    NamespaceTranslator,
   },
 
   data () {
@@ -247,7 +245,7 @@ export default {
     }),
 
     canCreateApplication () {
-      return this.can('automation/', 'application.create')
+      return this.can('system/', 'application.create')
     },
 
     pageTitle () {
@@ -300,30 +298,6 @@ export default {
       }
 
       return this.nameState && this.slugState
-    },
-
-    resourceTranslationTitles () {
-      const titles = {}
-
-      titles[`compose:namespace/${this.namespace.namespaceID}`] = this.$t('translator.namespace.title', { handle: this.namespace.slug })
-
-      return titles
-    },
-
-    resourceTranslationFetcher () {
-      const namespaceID = this.namespace.namespaceID
-
-      return () => {
-        return this.$ComposeAPI.namespaceListLocale({ namespaceID })
-      }
-    },
-
-    resourceTranslationUpdater () {
-      const namespaceID = this.namespace.namespaceID
-
-      return locale => {
-        return this.$ComposeAPI.namespaceUpdateLocale({ namespaceID, locale })
-      }
     },
   },
 

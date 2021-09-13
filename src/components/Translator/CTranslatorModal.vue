@@ -13,6 +13,7 @@
         :translations="translations"
         :languages="languages"
         :titles="titles"
+        :highlight-key="highlightKey"
         @submit="onSubmit"
       />
     </b-modal>
@@ -28,7 +29,6 @@ export default {
 
   data () {
     return {
-      fetcher: undefined,
       updater: undefined,
       loaded: false,
 
@@ -40,7 +40,7 @@ export default {
   computed: {
     showModal: {
       get () {
-        return !!this.fetcher
+        return this.loaded
       },
 
       set (open) {
@@ -61,14 +61,18 @@ export default {
   },
 
   mounted () {
-    this.$root.$on('c-translator', async ({ titles, fetcher, updater }) => {
+    this.loaded = false
+    this.$root.$on('c-translator', ({ titles, fetcher, updater, highlightKey }) => {
       this.titles = titles
 
-      this.fetcher = fetcher
+      this.highlightKey = highlightKey
+
       this.updater = updater
 
-      this.translations = await fetcher()
-      this.loaded = true
+      fetcher().then(tt => {
+        this.translations = tt
+        this.loaded = true
+      })
     })
   },
 

@@ -86,15 +86,10 @@
                     class="btn-lg ml-auto mr-1"
                   />
 
-                  <c-translation-button
-                    button-variant="light"
-                    class="btn-lg ml-auto mr-1"
-                    :resource="`compose:module/${module.moduleID}`"
-                    :titles="resourceTranslationTitles"
-                    :fetcher="resourceTranslationFetcher"
-                    :updater="resourceTranslationUpdater"
+                  <module-translator
+                    v-if="module"
+                    :module="module"
                   />
-
                 </div>
                 <div
                   v-if="!creatingModule"
@@ -250,6 +245,7 @@ import FieldConfigurator from 'corteza-webapp-compose/src/components/ModuleField
 import FieldRowEdit from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowEdit'
 import FieldRowView from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowView'
 import FederationSettings from 'corteza-webapp-compose/src/components/Admin/Module/FederationSettings'
+import ModuleTranslator from 'corteza-webapp-compose/src/components/Admin/Module/ModuleTranslator'
 import { compose, NoID } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
@@ -262,6 +258,7 @@ export default {
     FieldRowEdit,
     FieldRowView,
     FederationSettings,
+    ModuleTranslator,
     EditorToolbar,
     Export,
   },
@@ -357,36 +354,6 @@ export default {
       }
 
       return undefined
-    },
-
-    resourceTranslationTitles () {
-      const titles = {}
-
-      titles[`compose:module/${this.namespace.namespaceID}/${this.moduleID}`] = this.$t('translator.module.title', { handle: this.module.handle })
-
-      this.module.fields.forEach(f => {
-        titles[`compose:module-field/${this.moduleID}/${f.fieldID}`] = this.$t('translator.module-field.title', { name: f.name })
-      })
-
-      return titles
-    },
-
-    resourceTranslationFetcher () {
-      const namespaceID = this.namespace.namespaceID
-      const moduleID = this.moduleID
-
-      return () => {
-        return this.$ComposeAPI.moduleListLocale({ namespaceID, moduleID })
-      }
-    },
-
-    resourceTranslationUpdater () {
-      const namespaceID = this.namespace.namespaceID
-      const moduleID = this.moduleID
-
-      return locale => {
-        return this.$ComposeAPI.moduleUpdateLocale({ namespaceID, moduleID, locale })
-      }
     },
   },
 

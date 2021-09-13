@@ -22,13 +22,27 @@
       :header="r.title"
       header-bg-variant="light"
     >
+      <b-row>
+        <b-col
+          cols="2"
+        >
+        </b-col>
+        <b-col
+          v-for="lang in visibleLanguages"
+          :key="lang.tag"
+          class="text-truncate"
+        >
+            {{ lang.tag }}
+        </b-col>
+      </b-row>
       <b-row
         v-for="(key, k) in keys(r.resource)"
         :key="k"
-        class="mt-1"
+        :class="{'my-1 py-1': true, 'bg-light': key === highlightKey }"
       >
         <b-col
           cols="2"
+          class="text-truncate"
         >
           {{ key }}
         </b-col>
@@ -36,15 +50,12 @@
           v-for="lang in visibleLanguages"
           :key="lang.tag"
         >
-          <b-input-group
-            :prepend="lang.tag"
+          <div
+            :contenteditable="!disabled"
+            @blur="onUpdate(r.resource, key, lang.tag, $event.target.innerText)"
           >
-            <b-input
-              :disabled="disabled"
-              :value="msg(r.resource, key, lang.tag)"
-              @update="onUpdate(r.resource, key, lang.tag, $event)"
-            />
-          </b-input-group>
+            {{ msg(r.resource, key, lang.tag) }}
+          </div>
         </b-col>
       </b-row>
     </b-card>
@@ -104,6 +115,13 @@ export default {
     titles: {
       type: Object,
       default: () => ({}),
+    },
+
+    /**
+     * When set, the row in translator is is highlighted
+     */
+    highlightKey: {
+      type: String,
     },
 
     disabled: {
@@ -180,3 +198,8 @@ export default {
 }
 
 </script>
+<style lang="scss" scoped>
+[contenteditable=true] {
+  cursor: text;
+}
+</style>

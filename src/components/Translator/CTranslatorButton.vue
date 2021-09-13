@@ -2,6 +2,7 @@
   <b-button
     :variant="buttonVariant"
     :class="buttonClass"
+    :disabled="disabled"
     @click="onClick"
   >
     <slot>
@@ -19,7 +20,7 @@ export default {
   props: {
     buttonVariant: {
       type: String,
-      default: () => { return 'primary' },
+      default: () => { return 'light' },
     },
 
     buttonClass: {
@@ -27,9 +28,21 @@ export default {
       default: () => { return '' },
     },
 
+    disabled: {
+      type: Boolean,
+      default: () => false,
+    },
+
     resource: {
       type: String,
       required: true,
+    },
+
+    /**
+     * See CTranslatorForm for description
+     */
+    highlightKey: {
+      type: String,
     },
 
     titles: {
@@ -53,6 +66,7 @@ export default {
       this.$root.$emit('c-translator', {
         resource: this.resource,
         titles: this.titles,
+        highlightKey: this.highlightKey,
         fetcher: this.fetcher,
         updater: this.updater,
       })
