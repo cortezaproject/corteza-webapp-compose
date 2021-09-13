@@ -17,8 +17,12 @@
           {{ $t('general.label.back') }}
         </b-button>
       </div>
-      <div class="d-flex flex-grow-1 justify-content-end text-nowrap">
+      <div
+        v-if="module"
+        class="d-flex flex-grow-1 justify-content-end text-nowrap"
+      >
         <c-input-confirm
+          v-if="isCreated"
           :disabled="!canDeleteRecord"
           @confirmed="$emit('delete')"
           class="mx-1"
@@ -37,19 +41,21 @@
             {{ $t('general.label.delete') }}
           </span>
         </c-input-confirm>
+
         <b-button
-          v-if="module && module.canCreateRecord && !hideClone && record"
+          v-if="module.canCreateRecord && !hideClone && isCreated"
           variant="light"
           size="lg"
-          :disabled="processing"
+          :disabled="!record || processing"
           class="mx-1"
           @click.prevent="$emit('clone')"
         >
           {{ $t('general.label.clone') }}
         </b-button>
+
         <b-button
           v-if="!inEditing"
-          :disabled="!record || !record.canUpdateRecord"
+          :disabled="!record || !record.canUpdateRecord || processing"
           variant="light"
           size="lg"
           class="mx-1"
@@ -57,8 +63,9 @@
         >
           {{ $t('general.label.edit') }}
         </b-button>
+
         <b-button
-          v-if="module && module.canCreateRecord && !hideAdd && !inEditing"
+          v-if="module.canCreateRecord && !hideAdd && !inEditing"
           variant="primary"
           size="lg"
           :disabled="processing"
@@ -67,9 +74,10 @@
         >
           {{ $t('general.label.addNew') }}
         </b-button>
+
         <b-button
           v-if="inEditing"
-          :disabled="!canSave || processing"
+          :disabled="!canSaveRecord || processing"
           class="mx-1"
           variant="primary"
           size="lg"
@@ -142,7 +150,11 @@ export default {
   },
 
   computed: {
-    canSave () {
+    isCreated () {
+      return this.record && this.record.recordID !== NoID
+    },
+
+    canSaveRecord () {
       if (!this.module || !this.record) {
         return false
       }

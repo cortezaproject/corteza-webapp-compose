@@ -48,7 +48,7 @@
                 </b-btn>
               </template>
 
-              <template v-else-if="!inlineEditing && (recordPageID || options.adminView)">
+              <template v-else-if="!inlineEditing && (recordPageID || options.allRecords)">
                 <router-link
                   class="btn btn-lg btn-primary float-left mr-1"
                   :to="{
@@ -76,8 +76,9 @@
               @export="onExport"
               class="mr-1 float-left"
             />
-            <select-record-list-fields
-              v-if="options.customFields"
+
+            <column-picker
+              v-if="options.allRecords"
               :module="recordListModule"
               :fields="fields"
               @updateFields="onUpdateFields"
@@ -548,7 +549,7 @@ import { evaluatePrefilter, queryToFilter } from 'corteza-webapp-compose/src/lib
 import { url } from '@cortezaproject/corteza-vue'
 import draggable from 'vuedraggable'
 import RecordListFilter from 'corteza-webapp-compose/src/components/Common/RecordListFilter'
-import SelectRecordListFields from 'corteza-webapp-compose/src/components/Common/SelectRecordListFields'
+import ColumnPicker from 'corteza-webapp-compose/src/components/Admin/Module/Records/ColumnPicker'
 
 export default {
   components: {
@@ -559,7 +560,7 @@ export default {
     FieldEditor,
     draggable,
     RecordListFilter,
-    SelectRecordListFields,
+    ColumnPicker,
   },
 
   extends: base,

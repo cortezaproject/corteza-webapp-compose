@@ -30,6 +30,7 @@
     </portal>
 
     <record-list-base
+      v-if="block"
       :block="block"
       :page="page"
       :namespace="namespace"
@@ -51,7 +52,7 @@ export default {
 
   data () {
     return {
-      block: new compose.PageBlockRecordList(),
+      block: undefined,
       page: new compose.Page(),
       boundingRect: {},
       namespace: this.$attrs.namespace,
@@ -85,21 +86,27 @@ export default {
   },
 
   created () {
-    const options = {
-      moduleID: this.$attrs.moduleID,
-      fields: this.module.fields ? [...this.module.fields.sort((a, b) => a.label.localeCompare(b.label)).slice(0, 5)] : [],
-      customFields: true,
+    // Init block
+    this.block = new compose.PageBlockRecordList({
+      options: {
+        moduleID: this.$attrs.moduleID,
+        fields: this.module.fields ? [...this.module.fields.sort((a, b) => a.label.localeCompare(b.label)).slice(0, 5)] : [],
+        hideRecordReminderButton: true,
+        hideRecordViewButton: true,
+        hideRecordCloneButton: true,
+        allowExport: true,
+        presort: 'createdAt DESC',
+      },
+    })
+
+    // Set allrecords configuration
+    this.block.options = {
+      ...this.block.options,
+      allRecords: true,
       rowViewUrl: 'admin.modules.record.view',
       rowEditUrl: 'admin.modules.record.edit',
       rowCreateUrl: 'admin.modules.record.create',
-      hideRecordReminderButton: true,
-      hideRecordViewButton: true,
-      hideRecordCloneButton: true,
-      allowExport: true,
-      adminView: true,
     }
-    this.block.options = options
   },
-
 }
 </script>
