@@ -9,10 +9,10 @@
         </label>
         <br />
         <small
-          v-if="hasRequiredFileField"
+          v-if="hasRequiredFileFields"
           class="text-danger"
         >
-          {{ $t('recordList.import.hasRequiredFileFields') }}
+          {{ $t('recordList.import.hasRequiredFileFields') + `: ${showRequiredFields}` }}
         </small>
       </div>
 
@@ -117,7 +117,7 @@ export default {
       // has anything selected && all selected rows have mapped module fields
       const selected = this.rows.filter(({ selected }) => selected)
       const named = selected.filter(({ moduleField }) => !!moduleField)
-      return !!selected.length && selected.length === named.length
+      return !!selected.length && selected.length === named.length && !this.hasRequiredFileFields
     },
 
     tableFields () {
@@ -135,8 +135,25 @@ export default {
         .sort((a, b) => a.text.localeCompare(b.text))
     },
 
-    hasRequiredFileField () {
-      return !!this.module.fields.find(({ kind, isRequired }) => kind === 'File' && isRequired)
+    requiredFields () {
+      return this.module.fields.filter(field => field.isRequired === true)
+    },
+
+    hasRequiredFileFields () {
+      const filteredRows = this.rows.filter(row => {
+        return this.requiredFields.some(field => {
+          return row.moduleField === field.name
+        })
+      })
+      return !(this.requiredFields.length === filteredRows.length)
+    },
+
+    showRequiredFields () {
+      const array = []
+      this.requiredFields.map(field => {
+        return array.push(field.name)
+      })
+      return array.join(', ').toString()
     },
   },
 
@@ -158,7 +175,7 @@ export default {
 
   methods: {
     moduleChanged (data) {
-      const result = this.rows.find(obj => obj.fileColumn === data.item.fileColumn)
+      const result = this.rows.find(row => row.fileColumn === data.item.fileColumn)
       result.selected = true
     },
     nextStep () {
