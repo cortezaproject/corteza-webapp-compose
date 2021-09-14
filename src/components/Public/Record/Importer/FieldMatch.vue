@@ -36,6 +36,7 @@
         <template v-slot:cell(moduleField)="data">
 
           <b-form-select v-model="data.item.moduleField"
+                          @change="moduleChanged(data)"
                          :options="moduleFields">
 
             <template slot="first">
@@ -152,6 +153,10 @@ export default {
   },
 
   methods: {
+    moduleChanged (data) {
+      const result = this.rows.find(obj => obj.fileColumn === data.item.fileColumn)
+      result.selected = true
+    },
     nextStep () {
       if (!this.canContinue) {
         return
