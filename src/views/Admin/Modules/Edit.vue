@@ -327,7 +327,12 @@ export default {
     },
 
     federationEnabled () {
-      return !!this.$FederationAPI.baseURL && this.module.moduleID && !this.creatingModule
+      if (this.$Settings && this.$Settings.federation) {
+        const { enabled = false } = this.$Settings.federation
+        return enabled && this.module.moduleID && !this.creatingModule
+      }
+
+      return false
     },
 
     hideDelete () {
