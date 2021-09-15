@@ -140,20 +140,14 @@ export default {
     },
 
     filteredRows () {
-      // if required module field is selected
+      // if required field is selected
       const result = this.rows.filter(row => {
         return this.requiredFields.some(field => {
           return row.moduleField === field.name
         })
       })
-      // to reduce dubplicated selected module fields - user selectes same one multiple times
-      const filteredRows = result.reduce((unique, o) => {
-        if (!unique.some(row => row.moduleField === o.moduleField)) {
-          unique.push(o)
-        }
-        return unique
-      }, [])
-      return filteredRows
+      // filter duplicated selected required fields, if user clicks one multiple times
+      return result.filter((value, index, self) => self.findIndex(v => v.moduleField === value.moduleField) === index)
     },
 
     hasRequiredFileFields () {
