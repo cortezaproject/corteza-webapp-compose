@@ -278,6 +278,8 @@ export default {
 @import '~@fullcalendar/timegrid/main.css';
 @import '~@fullcalendar/list/main.css';
 
+</style>
+<style lang="scss">
 .calendar-container {
   // We need a special style to handle
   // parent height of the calendar
@@ -285,5 +287,8 @@ export default {
   // Make sure used margin (m-2) is
   // synced with the height difference (20px)
   height: calc(100% - 20px);
+  .fc-day-header{
+    white-space: pre-wrap;
+  }
 }
 </style>
