@@ -218,8 +218,12 @@ export default {
   width: 30px;
 }
 
+/deep/ tr td {
+  vertical-align: middle;
+}
+
 .field-table /deep/ th {
-  padding-bottom: 10px;
+  padding: 10px 0;
 }
 
 </style>
