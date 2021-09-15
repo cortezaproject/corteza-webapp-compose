@@ -10,9 +10,8 @@
         <br />
         <small
           v-if="hasRequiredFileFields"
-          class="text-danger"
         >
-          {{ $t('recordList.import.hasRequiredFileFields') + `: ${showRequiredFields}` }}
+          {{ $t('recordList.import.hasRequiredFileFields') }}: {{ showRequiredFields }}
         </small>
       </div>
 
@@ -131,6 +130,7 @@ export default {
     moduleFields () {
       return this.module.fields
         .filter(({ kind }) => !['User', 'Record', 'File'].includes(kind))
+        .map(field => field.isRequired === true ? { ...field, label: field.label + '*' } : field)
         .map(({ name: value, label: text }) => ({ value, text }))
         .sort((a, b) => a.text.localeCompare(b.text))
     },
@@ -139,20 +139,37 @@ export default {
       return this.module.fields.filter(field => field.isRequired === true)
     },
 
-    hasRequiredFileFields () {
-      const filteredRows = this.rows.filter(row => {
+    filteredRows () {
+      // if required module field is selected
+      const result = this.rows.filter(row => {
         return this.requiredFields.some(field => {
           return row.moduleField === field.name
         })
       })
-      return !(this.requiredFields.length === filteredRows.length)
+      // to reduce dubplicated selected module fields - user selectes same one multiple times
+      const filteredRows = result.reduce((unique, o) => {
+        if (!unique.some(row => row.moduleField === o.moduleField)) {
+          unique.push(o)
+        }
+        return unique
+      }, [])
+      return filteredRows
+    },
+
+    hasRequiredFileFields () {
+      return !(this.requiredFields.length === this.filteredRows.length)
     },
 
     showRequiredFields () {
       const array = []
-      this.requiredFields.map(field => {
-        return array.push(field.name)
+      // do not show required fields that have been already selected
+      let result = this.requiredFields.filter(field => {
+        return this.filteredRows.some(row => {
+          return field.name !== row.moduleField
+        })
       })
+      if (result.length === 0) result = this.requiredFields
+      result.map(field => array.push(field.label))
       return array.join(', ').toString()
     },
   },
