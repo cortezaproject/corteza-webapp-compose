@@ -85,14 +85,6 @@ th {
   }
 }
 
-.logo {
-  background-image: url($logo);
-}
-
-.icon-logo {
-  background-image: url($icon-logo);
-}
-
 .loader {
   height: calc(100vh - 2 * #{$topbar-height});
   display: flex;

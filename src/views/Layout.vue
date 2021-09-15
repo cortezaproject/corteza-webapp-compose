@@ -31,6 +31,7 @@
         :expanded.sync="expanded"
         :pinned.sync="pinned"
         :icon="icon"
+        :logo="logo"
         :disabled-routes="['namespace.list']"
         expand-on-hover
       >
@@ -69,6 +70,7 @@
 </template>
 <script>
 import icon from '../themes/corteza-base/img/icon.png'
+import logo from '../themes/corteza-base/img/logo.png'
 import { components } from '@cortezaproject/corteza-vue'
 const { CPrompts, CPermissionsModal, CTopbar, CSidebar } = components
 
@@ -100,6 +102,22 @@ export default {
 
     icon () {
       return this.$Settings.attachment('ui.iconLogo', icon)
+    },
+
+    logo () {
+      return this.$Settings.attachment('ui.mainLogo', logo)
+    },
+  },
+
+  watch: {
+    icon: {
+      immediate: true,
+      handler (icon) {
+        if (icon) {
+          const favicon = document.getElementById('favicon')
+          favicon.href = icon
+        }
+      },
     },
   },
 }
