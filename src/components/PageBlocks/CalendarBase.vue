@@ -287,7 +287,7 @@ export default {
   // Make sure used margin (m-2) is
   // synced with the height difference (20px)
   height: calc(100% - 20px);
-  .fc-day-header{
+  .fc-day-header {
     white-space: pre-wrap;
   }
 }
