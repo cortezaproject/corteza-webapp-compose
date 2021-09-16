@@ -77,6 +77,7 @@
         <b-form-input
           v-model="value.test"
           :placeholder="$t('validators.expression.placeholder')"
+          disabled
         />
         <b-input-group-prepend>
           <b-button variant="warning">!</b-button>
@@ -85,6 +86,15 @@
           v-model="value.error"
           :placeholder="$t('validators.error.placeholder')"
         />
+        <b-input-group-append>
+          <field-translator
+            v-if="field"
+            :field="field"
+            :module="module"
+            :highlight-key="`expression.validator.${value.validatorID}.error`"
+            button-variant="light"
+          />
+        </b-input-group-append>
       </field-expressions>
       <b-checkbox
         v-model="field.expressions.disableDefaultValidators"
@@ -105,6 +115,7 @@
 
 <script>
 import FieldExpressions from 'corteza-webapp-compose/src/components/Common/Module/FieldExpressions'
+import FieldTranslator from 'corteza-webapp-compose/src/components/Admin/Module/FieldTranslator'
 import { compose } from '@cortezaproject/corteza-js'
 
 export default {
@@ -114,11 +125,17 @@ export default {
 
   components: {
     FieldExpressions,
+    FieldTranslator,
   },
 
   props: {
     field: {
       type: compose.ModuleField,
+      required: true,
+    },
+
+    module: {
+      type: compose.Module,
       required: true,
     },
   },

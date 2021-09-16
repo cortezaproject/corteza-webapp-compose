@@ -22,6 +22,10 @@
             class="ml-2"
           />
         </b-button>
+        <page-translator
+          v-if="page"
+          :page="page"
+        />
         <b-button
           variant="primary"
           class="d-flex align-items-center"
@@ -112,6 +116,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import CircleStep from 'corteza-webapp-compose/src/components/Common/CircleStep'
+import PageTranslator from 'corteza-webapp-compose/src/components/Admin/Page/PageTranslator'
 import { compose, NoID } from '@cortezaproject/corteza-js'
 
 const pushContentAbove = 610
@@ -126,6 +131,7 @@ export default {
 
   components: {
     CircleStep,
+    PageTranslator,
   },
 
   props: {

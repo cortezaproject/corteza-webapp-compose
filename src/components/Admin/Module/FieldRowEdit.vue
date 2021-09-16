@@ -20,11 +20,21 @@
       />
     </td>
     <td>
-      <b-input
-        v-model="value.label"
-        type="text"
-        class="form-control"
-      />
+      <b-input-group>
+        <b-form-input
+          v-model="value.label"
+          type="text"
+          class="form-control"
+        />
+        <b-input-group-append>
+          <field-translator
+            :field.sync="value"
+            :module="module"
+            highlight-key="label"
+            button-variant="light"
+          />
+        </b-input-group-append>
+      </b-input-group>
     </td>
     <td>
       <b-input-group class="field-type">
@@ -52,18 +62,6 @@
           </b-button>
         </b-input-group-append>
       </b-input-group>
-    </td>
-    <td
-      class="align-middle pl-2 text-nowrap"
-    >
-      <b-form-checkbox
-        v-model="value.isMulti"
-        :disabled="!value.cap.multi"
-        :value="true"
-        :unchecked-value="false"
-      >
-        {{ $t('label.multi') }}
-      </b-form-checkbox>
     </td>
     <td
       class="align-middle"
@@ -112,9 +110,14 @@
 </template>
 
 <script>
+import FieldTranslator from 'corteza-webapp-compose/src/components/Admin/Module/FieldTranslator'
 import { compose } from '@cortezaproject/corteza-js'
 
 export default {
+  components: {
+    FieldTranslator,
+  },
+
   i18nOptions: {
     namespaces: 'general',
   },
