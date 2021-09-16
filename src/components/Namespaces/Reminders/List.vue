@@ -1,75 +1,62 @@
 <template>
-  <div
-    class="h-100 pl-1"
-  >
-    <div
-      class="text-center bg-white py-2 sticky-top"
-    >
-      <b-button
-        size="sm"
-        variant="outline-primary"
-        @click="$emit('edit')"
-      >
+  <div>
+    <!-- Active reminders -->
+    <b-form-group class="p-2 mb-0">
+      <b-form v-for="r in remindersActive"
+              :key="r.reminderID"
+              class="checkbox d-flex align-items-baseline py-1 border-bottom">
+        <div class="flex-grow-1 text-dark d-flex reminder">
+          <b-form-checkbox size="sm"
+                           class="checkbox"
+                           @change="dismiss($event, r)">
+            <font-awesome-icon :icon="['fas', 'check']" class="text-primary mr-1"></font-awesome-icon>
+
+            <span class="text-break">
+              {{ r.payload.title || r.link || rlLabel(r) || r.linkLabel }}
+            </span>
+          </b-form-checkbox>
+        </div>
+        <font-awesome-icon v-if="r.snoozeCount"
+                           :icon="['far', 'clock']"
+                           class="ml-2 small" />
+
+        <font-awesome-icon v-else-if="r.remindAt"
+                           :icon="['far', 'bell']"
+                           class="ml-2 small"
+                           v-b-tooltip.hover
+                           :title="makeTooltip(r)" />
+        <span v-else class="pr-3"> </span>
+
+        <!-- @note currently, edit is disabled -->
+        <!-- <b-button variant="link"
+                  class="p-0"
+                  @click="$emit('edit', r)">
+
+          <font-awesome-icon :icon="['far', 'edit']" class="text-primary" />
+        </b-button> -->
+      </b-form>
+    </b-form-group>
+
+    <!-- Dismissed reminders -->
+    <b-list-group class="p-2 pb-5">
+      <div v-for="r in remindersDismissed"
+              :key="r.reminderID"
+              class="d-flex align-items-baseline">
+        <font-awesome-icon :icon="['fas', 'check']" class="text-primary mr-1 mt-1"></font-awesome-icon>
+        <s class="text-secondary small flex-grow-1 py-1 pr-3 border-bottom">
+          <span class="text-break">
+            {{ r.payload.title || r.link || rlLabel(r) || r.linkLabel }}
+          </span>
+        </s>
+      </div>
+    </b-list-group>
+
+    <div class="position-sticky text-center bg-white py-1 fixed-bottom">
+      <b-button @click="$emit('edit')"
+                variant="outline-primary"
+                size="sm">
         + {{ $t('reminder.add') }}
       </b-button>
-    </div>
-
-    <div
-      v-for="r in sortedReminders"
-      :key="r.reminderID"
-      class="d-flex align-items-center mb-1 overflow-auto"
-    >
-      <b-form-checkbox
-        :checked="!!r.dismissedAt"
-        :disabled="!!r.dismissedAt"
-        @change="$emit('dismiss', r)"
-      >
-        <span
-          class="text-break"
-          :style="`${!!r.dismissedAt ? 'text-decoration: line-through;' : ''}`"
-        >
-          {{ r.payload.title || r.link || rlLabel(r) || r.linkLabel }}
-        </span>
-      </b-form-checkbox>
-
-      <div
-        class="ml-auto"
-      >
-        <font-awesome-icon
-          v-if="r.snoozeCount"
-          :icon="['far', 'clock']"
-          class="ml-1"
-        />
-
-        <font-awesome-icon
-          v-else-if="r.remindAt"
-          v-b-tooltip.hover
-          :title="makeTooltip(r)"
-          :icon="['far', 'bell']"
-          class="ml-1"
-        />
-
-        <b-button
-          variant="link"
-          class="p-1 ml-2"
-          @click="$emit('edit', r)"
-        >
-          <font-awesome-icon
-            :icon="['far', 'edit']"
-            class="text-primary"
-          />
-        </b-button>
-
-        <b-button
-          variant="link"
-          class="text-dark p-1"
-          @click.prevent="$emit('delete', r)"
-        >
-          <font-awesome-icon
-            :icon="['far', 'trash-alt']"
-          />
-        </b-button>
-      </div>
     </div>
   </div>
 </template>
@@ -91,8 +78,15 @@ export default {
   },
 
   computed: {
-    sortedReminders () {
-      return [...this.reminders].sort(this.stdSort)
+    remindersActive () {
+      return this.reminders
+        .filter(({ dismissedAt }) => !dismissedAt)
+        .sort(this.stdSort)
+    },
+    remindersDismissed () {
+      return this.reminders
+        .filter(({ dismissedAt }) => dismissedAt)
+        .sort(this.stdSort)
     },
   },
 
@@ -104,6 +98,12 @@ export default {
         return
       }
       return `${document.location.origin}${this.$router.resolve(rl).href}`
+    },
+
+    dismiss (checked, r) {
+      if (checked) {
+        this.$emit('dismiss', r)
+      }
     },
 
     stdSort (a, b) {
@@ -118,8 +118,41 @@ export default {
     },
 
     makeTooltip ({ remindAt }) {
-      return fmt.fullDateTime(remindAt)
+      return fmt.longDdateTime(remindAt)
     },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.fixed-bottom {
+  z-index: 1;
+}
+
+.checkbox {
+  .fa-check {
+    opacity: 0;
+    margin-left: -20px;
+  }
+
+  &:hover {
+    .fa-check {
+      opacity: 1;
+      transition: opacity 0.1s;
+    }
+
+    .fa-square {
+      opacity: 0;
+      transition: opacity 0.1s;
+    }
+
+    /deep/ .custom-control-label {
+      &::before,
+      &::after {
+        display: none;
+        background: none;
+      }
+    }
+  }
+}
+</style>

@@ -48,6 +48,7 @@
     <div class="position-sticky text-center bg-white py-1 fixed-bottom">
       <b-button
         variant="outline-primary"
+        size="sm"
         class="px-2"
         @click="save"
       >
