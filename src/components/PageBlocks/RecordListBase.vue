@@ -16,13 +16,6 @@
           {{ $t('recordList.federated') }}
         </b-badge>
       </h5>
-
-      <b-card-text
-        v-if="block.description"
-        class="text-dark text-truncate mt-1"
-      >
-        {{ block.description }}
-      </b-card-text>
     </template>
 
     <template #toolbar>
