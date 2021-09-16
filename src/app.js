@@ -178,6 +178,7 @@ export default (options = {}) => {
       'permissions',
       'preview',
       'sidebar',
+      'resource-translator',
     ),
 
     // Any additional options we want to merge
