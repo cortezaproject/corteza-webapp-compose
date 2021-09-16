@@ -31,7 +31,6 @@
           <b-form-checkbox class="pr-0"
                            v-model="data.item.selected" />
         </template>
-
         <template v-slot:cell(moduleField)="data">
 
           <b-form-select v-model="data.item.moduleField"
@@ -121,9 +120,24 @@ export default {
 
     tableFields () {
       return [
-        { key: 'selected', label: '', tdClass: 'picker' },
-        { key: 'fileColumn', label: this.$t('recordList.import.fileColumns') },
-        { key: 'moduleField', label: this.$t('recordList.import.moduleFields') },
+        {
+          key: 'selected',
+          label: '',
+          tdClass: 'picker align-middle',
+          thStyle: 'width: 30px',
+          thClass: 'pb-1',
+        },
+        {
+          key: 'fileColumn',
+          label: this.$t('recordList.import.fileColumns'),
+          tdClass: 'align-middle',
+          thClass: 'pb-1',
+        },
+        {
+          key: 'moduleField',
+          label: this.$t('recordList.import.moduleFields'),
+          thClass: 'pb-1',
+        },
       ]
     },
 
@@ -212,18 +226,3 @@ export default {
 
 }
 </script>
-
-<style lang="scss" scoped>
-/deep/.picker {
-  width: 30px;
-}
-
-/deep/ tr td {
-  vertical-align: middle;
-}
-
-.field-table /deep/ th {
-  padding: 10px 0;
-}
-
-</style>
