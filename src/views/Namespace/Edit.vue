@@ -379,6 +379,8 @@ export default {
 
       if (closeOnSuccess) {
         this.$router.push({ name: 'root' })
+      } else {
+        this.$router.push({ name: 'namespace.edit', params: { namespaceID: this.namespace.namespaceID } })
       }
     },
 
