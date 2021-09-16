@@ -331,12 +331,7 @@ export default {
     },
 
     federationEnabled () {
-      if (this.$Settings && this.$Settings.federation) {
-        const { enabled = false } = this.$Settings.federation
-        return enabled && this.module.moduleID && !this.creatingModule
-      }
-
-      return false
+      return this.$Settings.get('federation.enabled', false) && this.module.moduleID && !this.creatingModule
     },
 
     hideDelete () {
