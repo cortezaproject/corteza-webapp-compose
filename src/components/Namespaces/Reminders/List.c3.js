@@ -2,7 +2,6 @@
 import { default as component } from './List.vue'
 
 const props = {
-  namespaceID: '242313184189546499',
   reminders: [
     {
       payload: {

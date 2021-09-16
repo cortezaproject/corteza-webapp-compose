@@ -1,17 +1,20 @@
 <template>
   <div>
-    <list v-if="!edit"
-          :reminders="reminders"
-          @edit="onEdit"
-          @dismiss="onDismiss" />
+    <list
+      v-if="!edit"
+      :reminders="reminders"
+      @edit="onEdit"
+      @dismiss="onDismiss"
+      @delete="onDelete"
+    />
 
-    <edit v-else
-          :edit="edit"
-          :myID="$auth.user.userID"
-          :users="users"
-          @save="onSave"
-          @cancel="onCancel" />
-
+    <edit
+      v-else
+      :edit="edit"
+      :myID="$auth.user.userID"
+      :users="users"
+      @save="onSave"
+    />
   </div>
 </template>
 
@@ -25,13 +28,6 @@ export default {
   components: {
     List,
     Edit,
-  },
-
-  props: {
-    namespaceID: {
-      type: String,
-      required: true,
-    },
   },
 
   data () {
@@ -80,9 +76,7 @@ export default {
         h = 'reminderUpdate'
       }
       this.$SystemAPI[h](r).then(r => {
-        if (this.$auth.user.userID === r.assignedTo) {
-          this.reminders.push(new system.Reminder(r))
-        }
+        this.fetchReminders()
       })
 
       this.onCancel()
@@ -94,6 +88,12 @@ export default {
 
     onDismiss (r) {
       this.$SystemAPI.reminderDismiss(r).then(() => {
+        this.fetchReminders()
+      })
+    },
+
+    onDelete (r) {
+      this.$SystemAPI.reminderDelete(r).then(() => {
         this.fetchReminders()
       })
     },

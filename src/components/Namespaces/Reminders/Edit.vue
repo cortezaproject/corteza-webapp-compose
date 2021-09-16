@@ -1,17 +1,6 @@
 <template>
   <div>
     <b-list-group-item class="flex-column align-items-start px-2 py-2 border-0">
-
-      <b-button variant="link"
-                size="sm"
-                class="px-2"
-                @click="$emit('cancel')">
-        <font-awesome-icon :icon="['fas', 'chevron-left']"></font-awesome-icon>
-        {{ $t('label.backWithoutSave') }}
-      </b-button>
-    </b-list-group-item>
-
-    <b-list-group-item class="flex-column align-items-start px-2 py-2 border-0">
       <b-form @submit.prevent
               class="import-form">
 
@@ -57,11 +46,12 @@
       </b-form>
     </b-list-group-item>
     <div class="position-sticky text-center bg-white py-1 fixed-bottom">
-      <b-button variant="outline-primary"
-                size="sm"
-                class="px-2"
-                @click="saveAndClose">
-        {{ $t('label.saveAndClose') }}
+      <b-button
+        variant="outline-primary"
+        class="px-2"
+        @click="save"
+      >
+        {{ $t('label.save') }}
       </b-button>
     </div>
   </div>
@@ -175,7 +165,7 @@ export default {
   },
 
   methods: {
-    saveAndClose () {
+    save () {
       // @todo support for updating times
       let r = {}
       if (this.remindAt) {

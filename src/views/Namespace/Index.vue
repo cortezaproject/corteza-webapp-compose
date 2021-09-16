@@ -6,6 +6,24 @@
       v-if="namespaces.length"
       :namespaces="namespaces"
     />
+
+    <portal
+      to="topbar-dropdown"
+    >
+      <b-dropdown-item
+        @click="remindersVisible = true"
+      >
+        Reminders
+      </b-dropdown-item>
+    </portal>
+
+    <c-reminder-sidebar
+      :title="$t('reminder.listLabel')"
+      :visible.sync="remindersVisible"
+    >
+      <reminders />
+    </c-reminder-sidebar>
+
     <router-view
       v-if="loaded"
     />
@@ -14,22 +32,29 @@
 
 <script>
 import NamespaceSidebar from 'corteza-webapp-compose/src/components/Namespaces/NamespaceSidebar'
+import Reminders from 'corteza-webapp-compose/src/components/Namespaces/Reminders'
+import { components } from '@cortezaproject/corteza-vue'
+const { CReminderSidebar } = components
 
 export default {
   i18nOptions: {
-    namespaces: 'notification',
+    namespaces: 'general',
   },
 
   components: {
     NamespaceSidebar,
+    CReminderSidebar,
+    Reminders,
   },
 
   data () {
     return {
-      query: '',
-
       loaded: false,
+
+      query: '',
       namespaces: [],
+
+      remindersVisible: false,
     }
   },
 

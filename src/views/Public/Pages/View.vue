@@ -19,9 +19,6 @@
       />
     </div>
 
-    <right-panel
-      :namespaceID="namespace.namespaceID"
-    />
     <attachment-modal />
   </div>
 </template>
@@ -29,13 +26,11 @@
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
 import AttachmentModal from 'corteza-webapp-compose/src/components/Public/Page/Attachment/Modal'
 import { compose } from '@cortezaproject/corteza-js'
-import RightPanel from 'corteza-webapp-compose/src/components/RightPanel'
 
 export default {
   components: {
     Grid,
     AttachmentModal,
-    RightPanel,
   },
 
   props: {

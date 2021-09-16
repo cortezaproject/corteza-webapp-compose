@@ -23,6 +23,10 @@
         <template #tools>
           <portal-target name="topbar-tools" />
         </template>
+
+        <template #avatar-dropdown>
+          <portal-target name="topbar-dropdown" />
+        </template>
       </c-topbar>
     </header>
 
