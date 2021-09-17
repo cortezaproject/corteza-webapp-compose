@@ -13,7 +13,7 @@
       <b-dropdown-item
         @click="remindersVisible = true"
       >
-        Reminders
+        {{ $t('reminder.listLabel') }}
       </b-dropdown-item>
     </portal>
 
