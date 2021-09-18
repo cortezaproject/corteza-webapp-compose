@@ -1,7 +1,7 @@
 export default {
   computed: {
     /**
-     * Keep this inside methods otherwise it (no-value) gets catched by Vue
+     * Keep this inside methods otherwise it (no-value) gets caught by Vue
      * since settings are actually fetched a tad later...
      *
      * @returns {string[]}

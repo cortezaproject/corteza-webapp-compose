@@ -2,42 +2,71 @@
   <div>
     <b-modal
       v-model="showModal"
-      hide-footer
       size="xl"
       lazy
       scrollable
+      :title="title"
       @hide="onHide"
     >
       <c-translator-form
         v-if="loaded"
+        :primary-resource="resource"
         :translations="translations"
         :languages="languages"
         :titles="titles"
         highlight-key="highlightKey"
-        @submit="onSubmit"
+        @change="changes=$event"
       />
+      <template #modal-footer>
+        <b-button
+          type="submit"
+          variant="primary"
+          :tabindex="languages.length + 1"
+          :disabled="disabled || changes.length === 0"
+          @click="onSubmit()"
+        >
+          {{ $t('save-changes') }}
+        </b-button>
+      </template>
     </b-modal>
   </div>
 </template>
 <script lang="js">
 import CTranslatorForm from './CTranslatorForm.vue'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  i18nOptions: {
+    namespaces: 'resource-translator',
+    keyPrefix: 'translator',
+  },
+
   components: {
     CTranslatorForm,
   },
 
   data () {
     return {
+      resource: undefined,
       updater: undefined,
       loaded: false,
 
       translations: [],
+      changes: [],
+
       titles: {},
     }
   },
 
   computed: {
+    ...mapGetters({
+      languages: 'languages/set',
+    }),
+
+    title () {
+      return this.titles[this.resource] || ''
+    },
+
     showModal: {
       get () {
         return this.loaded
@@ -50,14 +79,13 @@ export default {
       },
     },
 
-    languages () {
-      const ll = new Set()
-      for (const t of this.translations) {
-        ll.add(t.lang)
-      }
-
-      return Array.from(ll).map(tag => ({ tag }))
+    disabled () {
+      return false
     },
+  },
+
+  created () {
+    this.loadLanguages()
   },
 
   mounted () {
@@ -70,11 +98,13 @@ export default {
         return
       }
 
-      const { titles, fetcher, updater, highlightKey } = payload
+      const { resource, titles, fetcher, updater, highlightKey } = payload
 
+      this.resource = resource
       this.titles = titles
       this.highlightKey = highlightKey
       this.updater = updater
+      this.changes = []
 
       fetcher().then(tt => {
         this.translations = tt
@@ -88,15 +118,19 @@ export default {
   },
 
   methods: {
-    onSubmit (translations) {
-      if (translations.length === 0) {
+    ...mapActions({
+      loadLanguages: 'languages/load',
+    }),
+
+    onSubmit () {
+      if (this.changes.length === 0) {
         // no translations were changed or added
         // we can close the modal w/o saving
         this.clear()
         return
       }
 
-      this.updater(translations)
+      this.updater(this.changes)
         .then(() => this.clear())
     },
 
@@ -105,8 +139,10 @@ export default {
     },
 
     clear () {
-      this.title = undefined
-      this.target = undefined
+      this.titles = {}
+      this.changes = []
+      this.resource = undefined
+      this.highlightKey = undefined
       this.fetcher = undefined
       this.updater = undefined
       this.loaded = false

@@ -3,82 +3,101 @@
     <div
       class="text-right mb-2"
     >
-      {{ $t('show-languages') }}
-      <b-checkbox
-        class="d-inline-block my-1 mx-2"
-        v-for="lang in languages"
-        v-model="lang.visible"
-        :disabled="lang.visible && visibleLanguages.length < 2"
-        :key="lang.tag"
+      <b-dropdown
+        :text="$t('add-language')"
+        variant="light"
       >
-        {{ lang.tag }}
-      </b-checkbox>
-    </div>
+        <b-dropdown-item-button
+          v-for="lang in intLanguages"
+          :key="lang.tag"
+          :disabled="lang.default || lang.visible "
+          @click="lang.visible = true"
 
-    <b-card
-      class="mb-2"
-      v-for="(r, i) in resources()"
-      :key="i"
-      :header="r.title"
-      header-bg-variant="light"
-    >
-      <b-row>
-        <b-col
-          cols="2"
         >
-        </b-col>
-        <b-col
-          v-for="lang in visibleLanguages"
-          :key="lang.tag"
-          class="text-truncate"
-        >
-            {{ lang.tag }}
-        </b-col>
-      </b-row>
-      <b-row
-        v-for="(key, k) in keys(r.resource)"
-        :key="k"
-        :class="{'my-1 py-1': true, 'bg-light': key === highlightKey }"
-      >
-        <b-col
-          cols="2"
-          class="text-truncate"
-        >
-          {{ key }}
-        </b-col>
-        <b-col
-          v-for="lang in visibleLanguages"
-          :key="lang.tag"
-        >
-          <div
-            :contenteditable="!disabled"
-            @blur="onUpdate(r.resource, key, lang.tag, $event.target.innerText)"
+          {{ lang.localizedName }}
+        </b-dropdown-item-button>
+      </b-dropdown>
+    </div>
+    <b-table-simple>
+      <b-thead>
+        <b-tr>
+          <b-th class="key p-1">
+          </b-th>
+          <b-th
+            v-for="lang in visibleLanguages"
+            :key="lang.tag"
+            class="text-truncate"
+            :style="{ 'width': `${100 / visibleLanguages.length}%` }"
           >
-            {{ msg(r.resource, key, lang.tag) }}
-          </div>
-        </b-col>
-      </b-row>
-    </b-card>
-    <b-row class="footer mt-3"
-    >
-      <b-col
-        class="rule-list text-right"
-        cols="9"
-        offset="3"
+            {{ lang.localizedName }}
+
+            <b-button
+              v-if="!lang.default"
+              variant="link"
+              class="float-right p-0 m-0"
+              @click="lang.visible=false"
+            >
+              <font-awesome-icon
+                :icon="['fas', 'times']"
+              />
+            </b-button>
+          </b-th>
+        </b-tr>
+      </b-thead>
+      <b-tbody
+        v-for="(r, i) in resources()"
+        :key="i"
       >
-        <b-button
-          type="submit"
-          variant="primary"
-          :disabled="disabled"
-          @submit="onSubmit()"
+        <b-tr
+          v-if="!r.isPrimary"
         >
-          {{ $t('save-changes') }}
-        </b-button>
-      </b-col>
-    </b-row>
+          <b-th
+            class="font-weight-bold border-top-0"
+            :colspan="visibleLanguages.length + 1"
+          >
+              {{ r.title }}
+          </b-th>
+        </b-tr>
+        <b-tr
+          v-for="(key, k) in keys(r.resource)"
+          :key="k"
+          :class="{'bg-light': key === highlightKey }"
+        >
+          <b-td
+            cols="2"
+            class="text-break small"
+          >
+            <samp>{{ key }}</samp>
+          </b-td>
+          <b-td
+            v-for="lang, langIndex in visibleLanguages"
+            :key="lang.tag"
+            :class="{'m-0 p-0': true, 'bg-warning': isDirty(r.resource, key, lang.tag) }"
+          >
+            <b-button
+              v-if="isDirty(r.resource, key, lang.tag)"
+              variant="link"
+              class="float-right p-1 mt-2 mr-2"
+              @click="reset(r.resource, key, lang.tag)"
+            >
+              <font-awesome-icon
+                :icon="['fas', 'times']"
+              />
+            </b-button>
+            <editable
+              :value="msg(r.resource, key, lang.tag)"
+              :placeholder="$t('missing-translation')"
+              @input="onUpdate(r.resource, key, lang.tag, $event)"
+              :tabindex="langIndex + 1"
+            />
+          </b-td>
+        </b-tr>
+      </b-tbody>
+    </b-table-simple>
   </b-form>
 </template>
 <script lang="js">
+import Editable from './Editable'
 
 export default {
   i18nOptions: {
@@ -86,7 +105,21 @@ export default {
     keyPrefix: 'translator',
   },
 
+  components: {
+    Editable,
+  },
+
   props: {
+    languages: {
+      type: Array,
+      required: true,
+    },
+
+    primaryResource: {
+      type: String,
+      required: true,
+    },
+
     /**
      * Array of objects containing all relevant translations
      *
@@ -126,19 +159,21 @@ export default {
 
   data () {
     return {
-      languages: [],
+      intLanguages: this.languages.map((lang, i) => ({
+        ...lang,
+        // first 4 are visible by default
+        visible: i <= 1,
+        // 1st one is default
+        default: i === 0,
+      })),
       intTranslations: this.translations.map(t => ({ ...t, org: t.message, dirty: false })),
     }
   },
 
   computed: {
     visibleLanguages () {
-      return this.languages.filter(({ visible }) => visible)
+      return this.intLanguages.filter(({ visible }) => visible)
     },
-  },
-
-  created () {
-    this.languages = this.resourceTranslationLanguages.map(tag => ({ tag, visible: true }))
   },
 
   methods: {
@@ -153,7 +188,8 @@ export default {
         .filter((r, i, rr) => rr.indexOf(r) === i)
         .map(resource => ({
           resource,
-          title: this.titles[resource] || resource,
+          title: this.titles[resource],
+          isPrimary: resource === this.primaryResource,
         }))
     },
 
@@ -169,8 +205,26 @@ export default {
         .filter((r, i, rr) => rr.indexOf(r) === i)
     },
 
+    find (resource, key, lang) {
+      return this.intTranslations.find(r => r.resource === resource && r.key === key && r.lang === lang) ||
+          { dirty: false, message: '' }
+    },
+
+    isDirty (resource, key, lang) {
+      return this.find(resource, key, lang).dirty
+    },
+
     msg (resource, key, lang) {
-      return (this.intTranslations.find(r => r.resource === resource && r.key === key && r.lang === lang) || { message: '' }).message
+      return this.find(resource, key, lang).message
+    },
+
+    reset (resource, key, lang) {
+      const t = this.find(resource, key, lang)
+
+      if (t.dirty) {
+        t.message = t.org
+        t.dirty = false
+      }
     },
 
     onUpdate (resource, key, lang, message) {
@@ -182,25 +236,19 @@ export default {
         v.dirty = v.org !== message
         v.message = message
       }
-    },
 
-    onSubmit () {
-      if (!this.disabled) {
-        // collect all unsaved translations
-        const dirty = this.intTranslations
-          .filter(({ dirty }) => dirty)
-          .map(({ resource, key, lang, message }) => ({ resource, key, lang, message }))
+      const dirty = this.intTranslations
+        .filter(({ dirty }) => dirty)
+        .map(({ resource, key, lang, message }) => ({ resource, key, lang, message }))
 
-        // and pass them to parent component
-        this.$emit('submit', dirty)
-      }
+      this.$emit('change', dirty)
     },
   },
 }
 
 </script>
 <style lang="scss" scoped>
-[contenteditable=true] {
-  cursor: text;
+.key {
+  min-width: 200px;
 }
 </style>
