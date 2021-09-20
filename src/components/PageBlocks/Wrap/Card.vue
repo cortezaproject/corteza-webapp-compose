@@ -35,12 +35,7 @@
           name="header"
         />
       </b-card-header>
-      <b-card-text
-        v-if="block.description"
-        class="px-3 text-truncate m-0"
-      >
-        {{ block.description }}
-      </b-card-text>
+
       <div
         v-if="toolbarSet"
       >
