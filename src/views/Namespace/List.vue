@@ -123,7 +123,10 @@ export default {
     },
 
     namespacesFiltered () {
-      return this.namespaces.filter(ns => (ns.slug || ns.name).toLowerCase().indexOf(this.query.toLowerCase()) > -1)
+      return this.namespaces.filter(ns => {
+        const query = this.query.toLowerCase()
+        return (ns.slug).toLowerCase().indexOf(query) > -1 || (ns.name).toLowerCase().indexOf(query) > -1
+      })
     },
   },
 }
