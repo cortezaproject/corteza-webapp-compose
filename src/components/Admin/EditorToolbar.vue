@@ -27,6 +27,15 @@
         >
           {{ $t('label.delete') }}
         </c-input-confirm>
+        <b-button
+          v-if="!hideClone"
+          variant="light"
+          size="lg"
+          class="mx-1"
+          @click="$emit('clone')"
+        >
+          {{ $t('label.clone') }}
+        </b-button>
         <b-button v-if="!hideSave"
                   :disabled="disableSave"
                   variant="light" @click.prevent="$emit('saveAndClose')"
@@ -65,6 +74,10 @@ export default {
       required: false,
     },
     hideSave: {
+      type: Boolean,
+      required: false,
+    },
+    hideClone: {
       type: Boolean,
       required: false,
     },

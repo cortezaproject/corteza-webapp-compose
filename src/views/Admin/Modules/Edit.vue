@@ -226,6 +226,7 @@
         :hideDelete="hideDelete"
         :hideSave="hideSave"
         :disable-save="!fieldsValid || processing"
+        hide-clone
         @delete="handleDelete"
         @save="handleSave()"
         @saveAndClose="handleSave({ closeOnSuccess: true })"

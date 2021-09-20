@@ -153,6 +153,7 @@
         :back-link="{name: 'admin.charts'}"
         :hideDelete="hideDelete"
         :hideSave="hideSave"
+        hide-clone
         @delete="handleDelete"
         @save="handleSave()"
         @saveAndClose="handleSave({ closeOnSuccess: true })">

@@ -143,6 +143,7 @@
         :back-link="{name: 'admin.pages'}"
         :hideDelete="!page.canDeletePage"
         :hideSave="!page.canUpdatePage"
+        hide-clone
         @save="handleSave()"
         @delete="handleDeletePage"
         @saveAndClose="handleSave({ closeOnSuccess: true })"

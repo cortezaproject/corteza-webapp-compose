@@ -81,6 +81,16 @@ export default function (ComposeAPI) {
         })
       },
 
+      async clone ({ commit }, item) {
+        commit(types.pending)
+        return ComposeAPI.namespaceClone(item).then(raw => {
+          const namespace = new compose.Namespace(raw)
+          commit(types.updateSet, [namespace])
+          commit(types.completed)
+          return namespace
+        })
+      },
+
       async update ({ commit }, item) {
         commit(types.pending)
         return ComposeAPI.namespaceUpdate(item).then(raw => {

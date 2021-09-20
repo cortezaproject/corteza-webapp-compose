@@ -34,6 +34,16 @@
           >
             {{ $t('create') }}
           </b-btn>
+
+          <b-btn
+            @click="exportNamespace"
+            variant="light"
+            size="lg"
+            class="ml-1"
+          >
+            {{ $t('export') }}
+          </b-btn>
+
           <c-permissions-button
             v-if="namespace.canGrant"
             :title="namespace.name"
@@ -47,6 +57,7 @@
 
         <b-card
           body-class="p-3"
+          footer-bg-variant="warning"
         >
           <b-form>
             <b-form-group :label="$t('name.label')">
@@ -167,18 +178,24 @@
 
             </b-form-group>
           </b-form>
+
+          <template v-if="isClone" #footer>
+            {{ $t('cloneWarning.wfInclusion') }}
+          </template>
         </b-card>
       </b-container>
     </div>
 
     <editor-toolbar
       :back-link="{name: 'root'}"
-      :hideDelete="!loaded"
+      :hideDelete="!loaded || !isEdit"
+      :hideClone="!loaded || !isEdit"
       :hideSave="!loaded"
       :disableDelete="!canDelete"
       :disableSave="!canSave"
       @delete="handleDelete"
       @save="handleSave()"
+      @clone="$router.push({ name: 'namespace.clone', params: { namespaceID: namespace.namespaceID }})"
       @saveAndClose="handleSave({ closeOnSuccess: true })"
     />
 
@@ -229,7 +246,8 @@
 <script>
 import logo from 'corteza-webapp-compose/src/themes/corteza-base/img/logo.png'
 import icon from 'corteza-webapp-compose/src/themes/corteza-base/img/icon.png'
-import { compose, NoID } from '@cortezaproject/corteza-js'
+import { compose } from '@cortezaproject/corteza-js'
+import { url } from '@cortezaproject/corteza-vue'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 import { mapGetters } from 'vuex'
@@ -268,7 +286,19 @@ export default {
     },
 
     pageTitle () {
-      return this.isEdit ? this.$t('edit') : this.$t('create')
+      switch (true) {
+        case this.isEdit:
+          return this.$t('edit')
+        case this.isClone:
+          return this.$t('clone')
+
+        default:
+          return this.$t('create')
+      }
+    },
+
+    watchKey () {
+      return `${this.$route.params.namespaceID}|${this.$route.name}`
     },
 
     openNamespace () {
@@ -276,7 +306,11 @@ export default {
     },
 
     isEdit () {
-      return this.namespace && this.namespace.namespaceID !== NoID
+      return this.$route.name === 'namespace.edit'
+    },
+
+    isClone () {
+      return this.$route.name === 'namespace.clone'
     },
 
     slugState () {
@@ -321,7 +355,7 @@ export default {
   },
 
   watch: {
-    '$route.params.namespaceID': {
+    watchKey: {
       immediate: true,
       handler (namespaceID) {
         this.fetchNamespace(namespaceID)
@@ -330,11 +364,21 @@ export default {
   },
 
   methods: {
-    async fetchNamespace (namespaceID) {
+    async fetchNamespace () {
+      const namespaceID = this.$route.params.namespaceID
       if (namespaceID) {
         await this.$store.dispatch('namespace/findByID', { namespaceID })
           .then((ns) => {
-            this.namespace = new compose.Namespace(ns)
+            if (this.isClone) {
+              this.namespace = new compose.Namespace({
+                ...ns,
+                name: `${ns.name} (${this.$t('cloneSuffix')})`,
+                slug: `${ns.slug}_${this.$t('cloneSuffix')}`,
+              })
+            } else {
+              this.namespace = new compose.Namespace(ns)
+            }
+
             this.fetchApplication()
           })
       } else {
@@ -344,6 +388,22 @@ export default {
       }
 
       this.loaded = true
+    },
+
+    exportNamespace () {
+      const params = {
+        namespaceID: this.namespace.namespaceID,
+        filename: this.namespace.name,
+      }
+
+      const exportUrl = url.Make({
+        url: `${this.$ComposeAPI.baseURL}${this.$ComposeAPI.namespaceExportEndpoint(params)}`,
+        query: {
+          jwt: this.$auth.accessToken,
+        },
+      })
+
+      window.open(exportUrl)
     },
 
     fetchApplication () {
@@ -381,6 +441,17 @@ export default {
           })
         } catch (e) {
           this.toastErrorHandler(this.$t('notification.saveFailed'))(e)
+          return
+        }
+      } else if (this.isClone) {
+        try {
+          await this.$store.dispatch('namespace/clone', { namespaceID, name, slug, enabled, meta }).then((ns) => {
+            this.namespace = new compose.Namespace(ns)
+
+            this.toastSuccess(this.$t('notification.saved'))
+          })
+        } catch (e) {
+          this.toastErrorHandler(this.$t('notification.cloneFailed'))(e)
           return
         }
       } else {
