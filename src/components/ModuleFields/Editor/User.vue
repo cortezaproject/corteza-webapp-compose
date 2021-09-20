@@ -49,8 +49,8 @@
             slot="list-footer"
             :has-prev-page="hasPrevPage"
             :has-next-page="hasNextPage"
-            @prev="goToNextPage(false)"
-            @next="goToNextPage(true)"
+            @prev="goToPage(false)"
+            @next="goToPage(true)"
           />
         </vue-select>
         <vue-select
@@ -73,8 +73,8 @@
             slot="list-footer"
             :has-prev-page="hasPrevPage"
             :has-next-page="hasNextPage"
-            @prev="goToNextPage(false)"
-            @next="goToNextPage(true)"
+            @prev="goToPage(false)"
+            @next="goToPage(true)"
           />
         </vue-select>
       </template>
@@ -100,8 +100,8 @@
             slot="list-footer"
             :has-prev-page="hasPrevPage"
             :has-next-page="hasNextPage"
-            @prev="goToNextPage(false)"
-            @next="goToNextPage(true)"
+            @prev="goToPage(false)"
+            @next="goToPage(true)"
           />
         </vue-select>
         <span v-else>{{ getOptionLabel(getUserByIndex(ctx.index)) }}</span>
@@ -130,8 +130,8 @@
           slot="list-footer"
           :has-prev-page="hasPrevPage"
           :has-next-page="hasNextPage"
-          @prev="goToNextPage(false)"
-          @next="goToNextPage(true)"
+          @prev="goToPage(false)"
+          @next="goToPage(true)"
         />
       </vue-select>
       <errors :errors="errors" />
@@ -162,8 +162,7 @@ export default {
     return {
       processing: false,
 
-      // list of items, ready to be displayed in the vue-select
-      options: [],
+      users: [],
 
       filter: {
         query: null,
@@ -181,6 +180,10 @@ export default {
       resolved: 'user/set',
       findByID: 'user/findByID',
     }),
+
+    options () {
+      return this.users.filter(u => u)
+    },
 
     // This is used in the case of using the multiple select option
     multipleSelected: {
@@ -225,9 +228,17 @@ export default {
         }
       },
     },
+
+    'filter.pageCursor': {
+      handler (pageCursor) {
+        if (pageCursor) {
+          this.fetchUsers()
+        }
+      },
+    },
   },
 
-  async created () {
+  created () {
     // Prefill value with current user
     if ((!this.value || this.value.length === 0) && this.field.options.presetWithAuthenticated) {
       this.updateValue(this.$auth.user)
@@ -292,7 +303,7 @@ export default {
       }
     },
 
-    search: debounce(function (query) {
+    search: debounce(function (query = '') {
       if (query !== this.filter.query) {
         this.filter.query = query
         this.filter.pageCursor = undefined
@@ -301,21 +312,17 @@ export default {
       this.fetchUsers()
     }, 300),
 
-    async fetchUsers () {
-      if (this.filter.pageCursor) {
-        this.filter.sort = ''
-      }
-
+    fetchUsers () {
       this.processing = true
 
       const roleID = this.field.options.roles || []
 
-      return this.$SystemAPI.userList({ roleID })
+      this.$SystemAPI.userList({ ...this.filter, roleID })
         .then(({ filter, set }) => {
           this.filter = { ...this.filter, ...filter }
           this.filter.nextPage = filter.nextPage
           this.filter.prevPage = filter.prevPage
-          this.options = set.map(m => Object.freeze(m))
+          this.users = set.map(m => Object.freeze(m))
           return { filter, set }
         })
         .finally(() => {
@@ -366,9 +373,8 @@ export default {
       return () => popper.destroy()
     },
 
-    goToNextPage (next = true) {
+    goToPage (next = true) {
       this.filter.pageCursor = next ? this.filter.nextPage : this.filter.prevPage
-      this.fetchUsers()
     },
   },
 }
