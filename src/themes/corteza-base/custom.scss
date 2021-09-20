@@ -33,12 +33,16 @@ button:disabled {
 }
 
 thead th,
-label,
 legend,
+label,
+.btn {
+  font-family: $font-medium;
+}
+
 strong,
 b,
 .font-weight-bold {
-  font-family: $semibold;
+  font-family: $font-semibold;
 }
 
 th {

@@ -8,21 +8,23 @@ $icon-logo: 'img/icon.png' !default;
 $fonts_dir : './fonts/' !default;
 
 // Typography
-$regular: 'Poppins-Regular' !default;
-$bold: 'Poppins-Bold' !default;
-$semibold: 'Poppins-SemiBold' !default;
+$font-light: 'Poppins-Light' !default;
+$font-regular: 'Poppins-Regular' !default;
+$font-medium: 'Poppins-Medium' !default;
+$font-semibold: 'Poppins-Semibold' !default;
+$font-bold: 'Poppins-Bold' !default;
 $font-size-base: 0.9rem !default;
 
-$font-family-base:      $regular !default;
-$headings-font-family:  $semibold !default;
+$font-family-base:      $font-regular !default;
+$headings-font-family:  $font-bold !default;
 
 // Color system
 $white:         #FFF !default;
 $black:         #000 !default;
 $primary:       #0B344E !default;
-$secondary:     #90A3B1 !default;
-$success:       #719430 !default;
-$warning:       #F5D380 !default;
+$secondary:     #758D9B !default;
+$success:       #43AA8B !default;
+$warning:       #E27646 !default;
 $danger:        #E24646 !default;
 $light:         #E4E9EF !default;
 $dark:          #162425 !default;
@@ -65,7 +67,7 @@ $btn-focus-box-shadow:  none !default;
 $btn-active-box-shadow: none !default;
 
 $btn-font-size-lg:  16px !default;
-$btn-font-family:   $semibold !default;
+$btn-font-family:   $font-semibold !default;
 
 $topbar-height:         64px !default;
 

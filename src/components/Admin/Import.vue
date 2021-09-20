@@ -188,7 +188,7 @@ $line-height: 30px;
 
 .custom-file-label {
   height: $input-height;
-  font-family: $regular;
+  font-family: $font-regular;
 
   &::after {
     height: 100%;
