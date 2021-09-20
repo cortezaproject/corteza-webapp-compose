@@ -51,8 +51,8 @@
             slot="list-footer"
             :has-prev-page="hasPrevPage"
             :has-next-page="hasNextPage"
-            @prev="goToNextPage(false)"
-            @next="goToNextPage(true)"
+            @prev="goToPage(false)"
+            @next="goToPage(true)"
           />
         </vue-select>
         <vue-select
@@ -78,8 +78,8 @@
             slot="list-footer"
             :has-prev-page="hasPrevPage"
             :has-next-page="hasNextPage"
-            @prev="goToNextPage(false)"
-            @next="goToNextPage(true)"
+            @prev="goToPage(false)"
+            @next="goToPage(true)"
           />
         </vue-select>
       </template>
@@ -107,8 +107,8 @@
             slot="list-footer"
             :has-prev-page="hasPrevPage"
             :has-next-page="hasNextPage"
-            @prev="goToNextPage(false)"
-            @next="goToNextPage(true)"
+            @prev="goToPage(false)"
+            @next="goToPage(true)"
           />
         </vue-select>
         <span v-else>{{ (multipleSelected[ctx.index] || {}).label }}</span>
@@ -138,8 +138,8 @@
           slot="list-footer"
           :has-prev-page="hasPrevPage"
           :has-next-page="hasNextPage"
-          @prev="goToNextPage(false)"
-          @next="goToNextPage(true)"
+          @prev="goToPage(false)"
+          @next="goToPage(true)"
         />
       </vue-select>
       <errors :errors="errors" />
@@ -195,7 +195,7 @@ export default {
     }),
 
     options () {
-      return (this.query ? this.records : this.latest).map(this.convert).filter(v => v)
+      return this.records.map(this.convert).filter(v => v)
     },
 
     module () {
@@ -251,11 +251,8 @@ export default {
   watch: {
     'filter.pageCursor': {
       handler (pageCursor) {
-        if (pageCursor && this.filter.query) {
+        if (pageCursor) {
           this.fetchPrefiltered(this.filter)
-            .then(({ filter, set }) => {
-              this.records = set.map(r => new compose.Record(this.module, r))
-            })
         }
       },
     },
@@ -324,7 +321,7 @@ export default {
       }
     },
 
-    search: debounce(function (query) {
+    search: debounce(function (query = '') {
       if (query !== this.query) {
         this.query = query
         this.filter.pageCursor = undefined
@@ -334,7 +331,7 @@ export default {
       const namespaceID = this.namespace.namespaceID
       const moduleID = this.field.options.moduleID
 
-      if (moduleID && moduleID !== NoID && query.length > 0) {
+      if (moduleID && moduleID !== NoID) {
         // Determine what fields to use for searching
         // Default to label field
         let qf = this.field.options.queryFields
@@ -342,15 +339,14 @@ export default {
           qf = [this.field.options.labelField]
         }
 
-        // Construct query
-        query = qf.map(qf => {
-          return `${qf} LIKE '%${query}%'`
-        }).join(' OR ')
+        if (query.length > 0) {
+          // Construct query
+          query = qf.map(qf => {
+            return `${qf} LIKE '%${query}%'`
+          }).join(' OR ')
+        }
 
         this.fetchPrefiltered({ namespaceID, moduleID, query, sort: this.sortString(), limit, pageCursor })
-          .then(({ filter, set }) => {
-            this.records = set.map(r => new compose.Record(this.module, r))
-          })
       }
     }, 300),
 
@@ -360,13 +356,10 @@ export default {
       const { limit } = this.filter
       if (moduleID && moduleID !== NoID) {
         this.fetchPrefiltered({ namespaceID, moduleID, limit })
-          .then(({ filter, set }) => {
-            this.latest = set.map(r => new compose.Record(this.module, r))
-          })
       }
     },
 
-    async fetchPrefiltered (q) {
+    fetchPrefiltered (q) {
       this.processing = true
 
       // Support prefilters
@@ -389,11 +382,12 @@ export default {
         q.sort = ''
       }
 
-      return this.$ComposeAPI.recordList({ ...q, query })
+      this.$ComposeAPI.recordList({ ...q, query })
         .then(({ filter, set }) => {
           this.filter = { ...this.filter, ...filter }
           this.filter.nextPage = filter.nextPage
           this.filter.prevPage = filter.prevPage
+          this.records = set.map(r => new compose.Record(this.module, r))
           return { filter, set }
         })
         .finally(() => {
@@ -474,10 +468,8 @@ export default {
       return () => popper.destroy()
     },
 
-    goToNextPage (next = true) {
+    goToPage (next = true) {
       this.filter.pageCursor = next ? this.filter.nextPage : this.filter.prevPage
-
-      this.search(this.query)
     },
   },
 }
