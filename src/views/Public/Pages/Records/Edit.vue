@@ -15,7 +15,7 @@ export default {
 
   methods: {
     handleBack () {
-      this.$router.push({ name: 'page.record' })
+      this.$router.back()
     },
   },
 }
