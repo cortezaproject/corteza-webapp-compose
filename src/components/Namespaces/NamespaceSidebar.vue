@@ -6,7 +6,7 @@
         label="name"
         class="namespace-selector sticky-top bg-white mt-2"
         :clearable="false"
-        :options="namespaces"
+        :options="truncatedNamaspaces"
         :value="namespace"
         :placeholder="$t('pickNamespace')"
         @option:selected="namespaceSelected"
@@ -193,6 +193,10 @@ export default {
       }
 
       return []
+    },
+
+    truncatedNamaspaces () {
+      return this.namespaces.map(ns => ns.name.length > 21 ? { ...ns, name: ns.name.substring(0, 21) + '...' } : ns)
     },
   },
 
