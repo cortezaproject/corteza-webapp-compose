@@ -254,7 +254,7 @@ export default {
   }
 
   .vs__selected {
-    max-width: 245px;
+    max-width: 230px;
     display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
