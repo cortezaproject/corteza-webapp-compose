@@ -1,41 +1,69 @@
 <template>
-  <b-card class="h-100 ns-item"
-          footer-bg-variant="white"
-          body-class="pb-0"
-          footer-class="pb-3"
+  <b-card
+    no-body
+    footer-class="pb-3"
+    class="h-100 shadow-sm mb-4"
+    :class="{ 'pointer': namespace.enabled, 'shadow': hovered }"
+    @mouseover="hovered = true"
+    @mouseleave="hovered = false"
+    @click="visitNamespace()"
   >
-    <h2 class="h5 overflow-hidden ns-title">{{ namespace.name }}</h2>
-    <p v-if="namespace.meta.subtitle"
-       class="font-weight-bold overflow-hidden ns-subtitle"
+    <b-card-img
+      v-if="namespace.meta.logoEnabled"
+      :src="logo"
+      :alt="namespace.name"
+      class="p-2"
+    />
+
+    <b-card-body
+      class="mw-100"
     >
-          {{ namespace.meta.subtitle }}
-    </p>
-    <p v-if="namespace.meta.description"
-       class="m-0 overflow-hidden ns-description"
-    >
-      {{ namespace.meta.description }}
-    </p>
-    <span slot="footer">
-      <b-button v-if="namespace.enabled"
-                :to="{ name: 'pages', params: { slug: (namespace.slug || namespace.namespaceID) } }"
-                :aria-label="$t('visit') + ' ' + namespace.name"
-                variant="light"
-                size="lg">
-        {{ $t('visit') }}
-      </b-button>
-      <b-button v-if="namespace.canUpdateNamespace"
-                :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }"
-                :aria-label="$t('edit') + ' ' + namespace.name"
-                variant="light"
-                class="float-right"
-                size="lg">
-        <font-awesome-icon :icon="['far', 'edit']"/>
-      </b-button>
-      <slot />
-    </span>
+      <div
+        class="d-flex align-items-center"
+        :class="{ 'h-100': !namespace.meta.description }"
+      >
+        <div
+          class="d-flex flex-column justify-content-center w-100"
+          :class="{ 'align-items-start': showEdit, 'align-items-center': !showEdit }"
+          :style="`min-height: 60px; ${showEdit ? 'max-width: 85%' : ''}`"
+        >
+          <h4
+            class="d-inline-block text-truncate mb-0 mw-100"
+          >
+            {{ namespace.name }}
+          </h4>
+          <p
+            v-if="namespace.meta.subtitle"
+            class="d-inline-block mb-0 mt-1"
+          >
+            {{ namespace.meta.subtitle }}
+          </p>
+        </div>
+        <b-button
+          v-if="showEdit"
+          :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }"
+          :aria-label="$t('edit') + ' ' + namespace.name"
+          variant="light"
+          size="lg"
+          class="ml-auto"
+          @click.stop
+        >
+          <font-awesome-icon :icon="['far', 'edit']"/>
+        </b-button>
+      </div>
+
+      <p
+        v-if="namespace.meta.description"
+        class="text-justify overflow-auto ns-description mb-0 mt-2"
+      >
+        {{ namespace.meta.description }}
+      </p>
+    </b-card-body>
   </b-card>
 </template>
 <script>
+import logo from 'corteza-webapp-compose/src/themes/corteza-base/img/logo.png'
+
 export default {
   i18nOptions: {
     namespaces: 'namespace',
@@ -48,33 +76,34 @@ export default {
     },
   },
 
+  data () {
+    return {
+      processing: false,
+      hovered: undefined,
+      logoAttachment: undefined,
+    }
+  },
+
   computed: {
     isEnabled () {
       return !!this.namespace.enabled
     },
+
+    showEdit () {
+      return this.hovered && this.namespace.canUpdateNamespace
+    },
+
+    logo () {
+      return this.namespace.meta.logo || this.$Settings.attachment('ui.mainLogo', logo)
+    },
+  },
+
+  methods: {
+    visitNamespace () {
+      if (this.namespace.enabled) {
+        this.$router.push({ name: 'pages', params: { slug: (this.namespace.slug || this.namespace.namespaceID) } })
+      }
+    },
   },
 }
 </script>
-<style lang="scss" scoped>
-$ns-min-height: 150px;
-
-.ns-item {
-  min-height: $ns-min-height;
-}
-
-.ns-title,
-.ns-subtitle,
-.ns-description {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-}
-
-.ns-title,
-.ns-subtitle {
-  -webkit-line-clamp: 2;
-}
-
-.ns-description {
-  -webkit-line-clamp: 4;
-}
-</style>

@@ -10,17 +10,17 @@
       class="ns-wrapper"
       fluid="xl"
     >
-      <b-row
-        no-gutters
-        class="align-items-center justify-content-between"
+      <div
+        class="d-flex align-items-center justify-content-between mb-4"
       >
         <div
           v-if="canCreateNamespace"
           class="flex-grow-1"
         >
-          <b-btn :to="{ name: 'namespace.create' }"
-                 variant="primary"
-                 size="lg"
+          <b-btn
+            :to="{ name: 'namespace.create' }"
+            variant="primary"
+            size="lg"
           >
               {{ $t('create') }}
           </b-btn>
@@ -48,44 +48,32 @@
             </b-input-group-append>
           </b-input-group>
         </div>
-      </b-row>
+      </div>
 
-      <b-row
+      <transition-group
         v-if="namespacesFiltered && namespacesFiltered.length"
-        align-v="stretch"
-        class="pb-4 mt-3"
+        name="namespace-list"
+        tag="div"
+        class="card-columns my-2"
       >
-        <transition-group
-          name="namespace-list"
-          tag="div"
-          class="d-flex flex-wrap flex-row h-100 w-100"
-        >
-          <b-col
-            v-for="n in namespacesFiltered"
-            :key="n.namespaceID"
-            cols="12"
-            md="6"
-            lg="4"
-            xl="3"
-            class="namespace-col my-2 w-100"
-          >
-            <namespace-item
-              :namespace="n"
-              class="namespace-item"
-            />
-          </b-col>
-        </transition-group>
-      </b-row>
-      <b-row
+        <namespace-item
+          v-for="n in namespacesFiltered"
+          :key="n.namespaceID"
+          :namespace="n"
+          class="namespace-item"
+        />
+      </transition-group>
+
+      <div
         v-else
-        class="py-4"
+        class="d-flex justify-content-center align-items-center h-50 w-100"
       >
-        <b-col>
-          <h3 class="text-left">
-            {{ $t('noResults') }}
-          </h3>
-        </b-col>
-      </b-row>
+        <h3
+          class="text-left"
+        >
+          {{ $t('noResults') }}
+        </h3>
+      </div>
     </b-container>
   </div>
 </template>
@@ -137,11 +125,9 @@ export default {
   }
 
   .namespace-item {
-    box-shadow: 0;
     top: 0;
 
     &:hover {
-      box-shadow: 0 4px 8px rgba(38, 38, 38, 0.2);
       transition: all 0.2s ease;
       top: -1px;
     }
@@ -149,7 +135,7 @@ export default {
 
   .namespace-list-leave-active {
     position: absolute;
-    transition: opacity 0.25 ease;
+    transition: opacity 0 0s ease;
   }
 
   .namespace-list-enter, .namespace-list-leave-to {

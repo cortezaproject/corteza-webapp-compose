@@ -83,7 +83,18 @@
               </b-form-checkbox>
             </b-form-group>
             <hr>
+
             <b-form-group>
+              <b-form-checkbox
+                v-model="namespace.meta.logoEnabled"
+              >
+                {{ $t('logo.show') }}
+              </b-form-checkbox>
+            </b-form-group>
+
+            <b-form-group
+              v-if="namespace.meta.logoEnabled"
+            >
               <template #label>
                 <div class="d-flex align-items-center">
                   {{ $t('logo.label') }}
@@ -93,12 +104,21 @@
                     class="py-0 ml-2"
                     v-b-modal.logo
                   >
-                    Preview
+                    {{ $t('logo.preview') }}
+                  </b-button>
+
+                  <b-button
+                    v-if="logoPreview"
+                    variant="light"
+                    size="sm"
+                    class="py-0 ml-2"
+                    @click="namespace.meta.logo = undefined"
+                  >
+                    {{ $t('logo.reset') }}
                   </b-button>
                 </div>
               </template>
 
-                <!-- v-model="namespace.logo" -->
               <b-form-file
                 v-model="namespaceAssets.logo"
                 accept="image/*"
@@ -106,7 +126,7 @@
               />
             </b-form-group>
 
-            <b-form-group>
+            <!-- <b-form-group>
               <template #label>
                 <div class="d-flex align-items-center">
                   {{ $t('icon.label') }}
@@ -125,7 +145,7 @@
                 accept="image/*"
                 :placeholder="$t('icon.placeholder')"
               />
-            </b-form-group>
+            </b-form-group> -->
 
             <b-form-group :label="$t('subtitle.label')">
               <b-form-input
@@ -207,6 +227,8 @@
 </template>
 
 <script>
+import logo from 'corteza-webapp-compose/src/themes/corteza-base/img/logo.png'
+import icon from 'corteza-webapp-compose/src/themes/corteza-base/img/icon.png'
 import { compose, NoID } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
@@ -242,7 +264,7 @@ export default {
     }),
 
     canCreateApplication () {
-      return this.can('automation/', 'application.create')
+      return this.can('system/', 'application.create')
     },
 
     pageTitle () {
@@ -423,8 +445,8 @@ export default {
             name: this.namespace.name,
             listed: true,
             url: `compose/ns/${this.namespace.slug}/pages`,
-            icon: this.namespace.meta.icon || 'applications/default_icon.png',
-            logo: this.namespace.meta.logo || 'applications/default_logo.jpg',
+            icon: this.namespace.meta.icon || this.$Settings.attachment('ui.iconLogo', icon),
+            logo: this.namespace.meta.logo || this.$Settings.attachment('ui.mainLogo', logo),
           },
         }
         return this.$SystemAPI.applicationCreate({ ...application })

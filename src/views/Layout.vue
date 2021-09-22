@@ -36,7 +36,7 @@
         :pinned.sync="pinned"
         :icon="icon"
         :logo="logo"
-        :disabled-routes="['namespace.list']"
+        :disabled-routes="['namespace.list', 'namespace.edit', 'namespace.create']"
         expand-on-hover
       >
         <template #header-expanded>

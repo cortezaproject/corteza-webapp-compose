@@ -21,6 +21,7 @@ export default new Vuex.Store({
       namespaced: true,
       ...cvStore.RBAC(
         Vue.prototype.$ComposeAPI,
+        Vue.prototype.$SystemAPI,
       ),
     },
     wfPrompts: {
