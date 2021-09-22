@@ -16,5 +16,17 @@ export default {
     CPrompts,
     CPermissionsModal,
   },
+
+  created () {
+    /**
+     * Listen for incoming warnings, alerts and other messages
+     * from the (mostly) Corredor scripts and display them using toasts
+     */
+    this.$root.$on('alert', ({ message, ...params }) => this.toast(message, params))
+  },
+
+  beforeDestroy () {
+    this.$root.$off('alert')
+  },
 }
 </script>
