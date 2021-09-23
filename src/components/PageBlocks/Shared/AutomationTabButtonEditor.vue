@@ -6,9 +6,21 @@
     <b-form-group
       :label="$t('automation.buttonLabel')"
     >
-      <b-input
-        v-model="button.label"
-      />
+      <b-input-group>
+        <b-form-input
+          disabled
+          v-model="button.label"
+        />
+        <b-input-group-append>
+          <page-translator
+            v-if="page"
+            :page="page"
+            :block="block"
+            :highlight-key="`pageBlock.${this.block.blockID}.automation`"
+            button-variant="light"
+          />
+        </b-input-group-append>
+      </b-input-group>
     </b-form-group>
     <b-form-group
       :label="$t('automation.buttonVariant')"
@@ -71,7 +83,14 @@
   </b-card>
 </template>
 <script>
+import { compose } from '@cortezaproject/corteza-js'
+import PageTranslator from 'corteza-webapp-compose/src/components/Admin/Page/PageTranslator'
+
 export default {
+  components: {
+    PageTranslator,
+  },
+
   i18nOptions: {
     namespaces: 'block',
   },
@@ -90,6 +109,16 @@ export default {
     trigger: {
       type: Object,
       required: false,
+    },
+
+    page: {
+      type: compose.Page,
+      required: true,
+    },
+
+    block: {
+      type: compose.PageBlock,
+      required: true,
     },
   },
 

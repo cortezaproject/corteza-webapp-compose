@@ -53,6 +53,12 @@
             :buttonLabel="$t('label.permissions')"
             class="ml-1 btn-lg"
           />
+
+          <namespace-translator
+            v-if="namespace"
+            class="btn-lg"
+            :namespace.sync="namespace"
+          />
         </div>
 
         <b-card
@@ -61,12 +67,22 @@
         >
           <b-form>
             <b-form-group :label="$t('name.label')">
-              <b-form-input
-                v-model="namespace.name"
-                type="text"
-                required
-                :state="nameState"
-                :placeholder="$t('name.placeholder')" />
+              <b-input-group>
+                <b-form-input
+                  v-model="namespace.name"
+                  type="text"
+                  id="ns-nm"
+                  required
+                  :state="nameState"
+                  :placeholder="$t('name.placeholder')" />
+                <b-input-group-append>
+                  <namespace-translator
+                    :namespace="namespace"
+                    highlight-key="name"
+                    button-variant="light"
+                  />
+                </b-input-group-append>
+              </b-input-group>
             </b-form-group>
             <b-form-group
               :label="$t('slug.label')"
@@ -159,23 +175,39 @@
             </b-form-group> -->
 
             <b-form-group :label="$t('subtitle.label')">
-              <b-form-input
-                v-model="namespace.meta.subtitle"
-                type="text"
-                :placeholder="$t('subtitle.placeholder')" />
-
+              <b-input-group>
+                <b-form-input
+                  v-model="namespace.meta.subtitle"
+                  type="text"
+                  :placeholder="$t('subtitle.placeholder')" />
+                <b-input-group-append>
+                  <namespace-translator
+                    :namespace="namespace"
+                    highlight-key="subtitle"
+                    button-variant="light"
+                  />
+                </b-input-group-append>
+              </b-input-group>
             </b-form-group>
 
             <b-form-group
               :label="$t('description.label')"
               class="mb-0"
             >
-              <b-form-textarea
-                v-model="namespace.meta.description"
-                :placeholder="$t('description.placeholder')"
-                rows="1"
-              />
-
+              <b-input-group>
+                <b-form-textarea
+                  v-model="namespace.meta.description"
+                  rows="1"
+                  :placeholder="$t('description.placeholder')"
+                />
+                <b-input-group-append>
+                  <namespace-translator
+                    :namespace="namespace"
+                    highlight-key="description"
+                    button-variant="light"
+                  />
+                </b-input-group-append>
+              </b-input-group>
             </b-form-group>
           </b-form>
 
@@ -249,6 +281,7 @@ import icon from 'corteza-webapp-compose/src/themes/corteza-base/img/icon.png'
 import { compose } from '@cortezaproject/corteza-js'
 import { url } from '@cortezaproject/corteza-vue'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
+import NamespaceTranslator from 'corteza-webapp-compose/src/components/Namespaces/NamespaceTranslator'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 import { mapGetters } from 'vuex'
 
@@ -259,6 +292,7 @@ export default {
 
   components: {
     EditorToolbar,
+    NamespaceTranslator,
   },
 
   data () {
@@ -350,7 +384,7 @@ export default {
         return false
       }
 
-      return this.nameState && this.slugState
+      return this.slugState
     },
   },
 
@@ -418,6 +452,11 @@ export default {
     },
 
     async handleSave ({ closeOnSuccess = false } = {}) {
+      /**
+       * Pass a special tag alongside payload that
+       * instructs store layer to add content-language header to the API request
+       */
+      const resourceTranslationLanguage = this.defaultTranslationLanguage
       let { namespaceID, name, slug, enabled, meta } = this.namespace
       let assets
 
@@ -432,9 +471,17 @@ export default {
         }
       }
 
+      const payload = {
+        name,
+        slug,
+        enabled,
+        meta,
+        resourceTranslationLanguage,
+      }
+
       if (this.isEdit) {
         try {
-          await this.$store.dispatch('namespace/update', { namespaceID, name, slug, enabled, meta }).then((ns) => {
+          await this.$store.dispatch('namespace/update', { ...payload, namespaceID }).then((ns) => {
             this.namespace = new compose.Namespace(ns)
 
             this.toastSuccess(this.$t('notification.saved'))
@@ -456,7 +503,7 @@ export default {
         }
       } else {
         try {
-          await this.$store.dispatch('namespace/create', { name, slug, enabled, meta }).then((ns) => {
+          await this.$store.dispatch('namespace/create', payload).then((ns) => {
             this.namespace = new compose.Namespace(ns)
 
             this.toastSuccess(this.$t('notification.saved'))

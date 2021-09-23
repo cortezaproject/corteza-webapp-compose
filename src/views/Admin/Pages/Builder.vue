@@ -25,6 +25,10 @@
             class="ml-2"
           />
         </b-button>
+        <page-translator
+          v-if="page"
+          :page.sync="page"
+        />
         <b-button
           variant="primary"
           class="d-flex align-items-center"
@@ -164,6 +168,7 @@
 <script>
 import { mapActions } from 'vuex'
 import NewBlockSelector from 'corteza-webapp-compose/src/components/Admin/Page/Builder/Selector'
+import PageTranslator from 'corteza-webapp-compose/src/components/Admin/Page/PageTranslator'
 import Grid from 'corteza-webapp-compose/src/components/Common/Grid'
 import PageBlock from 'corteza-webapp-compose/src/components/PageBlocks'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
@@ -181,6 +186,7 @@ export default {
     NewBlockSelector,
     PageBlock,
     EditorToolbar,
+    PageTranslator,
   },
 
   props: {

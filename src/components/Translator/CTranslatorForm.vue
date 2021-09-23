@@ -1,0 +1,254 @@
+<template>
+  <b-form @submit.prevent="onSubmit">
+    <div
+      class="text-right mb-2"
+    >
+      <b-dropdown
+        :text="$t('add-language')"
+        variant="light"
+      >
+        <b-dropdown-item-button
+          v-for="lang in intLanguages"
+          :key="lang.tag"
+          :disabled="lang.default || lang.visible "
+          @click="lang.visible = true"
+
+        >
+          {{ lang.localizedName }}
+        </b-dropdown-item-button>
+      </b-dropdown>
+    </div>
+    <b-table-simple>
+      <b-thead>
+        <b-tr>
+          <b-th class="key p-1">
+          </b-th>
+          <b-th
+            v-for="lang in visibleLanguages"
+            :key="lang.tag"
+            class="text-truncate"
+            :style="{ 'width': `${100 / visibleLanguages.length}%` }"
+          >
+            {{ lang.localizedName }}
+
+            <b-button
+              v-if="!lang.default"
+              variant="link"
+              class="float-right p-0 m-0"
+              @click="lang.visible=false"
+            >
+              <font-awesome-icon
+                :icon="['fas', 'times']"
+              />
+            </b-button>
+          </b-th>
+        </b-tr>
+      </b-thead>
+      <b-tbody
+        v-for="(r, i) in resources()"
+        :key="i"
+      >
+        <b-tr
+          v-if="!r.isPrimary"
+        >
+          <b-th
+            class="font-weight-bold border-top-0"
+            :colspan="visibleLanguages.length + 1"
+          >
+              {{ r.title }}
+          </b-th>
+        </b-tr>
+        <b-tr
+          v-for="(key, k) in keys(r.resource)"
+          :key="k"
+          :class="{'bg-light': key === highlightKey }"
+        >
+          <b-td
+            cols="2"
+            class="text-break small"
+          >
+            <samp>{{ key }}</samp>
+          </b-td>
+          <b-td
+            v-for="lang, langIndex in visibleLanguages"
+            :key="lang.tag"
+            :class="{'m-0 p-0': true, 'bg-warning': isDirty(r.resource, key, lang.tag) }"
+          >
+            <b-button
+              v-if="isDirty(r.resource, key, lang.tag)"
+              variant="link"
+              class="float-right p-1 mt-2 mr-2"
+              @click="reset(r.resource, key, lang.tag)"
+            >
+              <font-awesome-icon
+                :icon="['fas', 'times']"
+              />
+            </b-button>
+            <editable
+              :value="msg(r.resource, key, lang.tag)"
+              :placeholder="$t('missing-translation')"
+              @input="onUpdate(r.resource, key, lang.tag, $event)"
+              :tabindex="langIndex + 1"
+            />
+          </b-td>
+        </b-tr>
+      </b-tbody>
+    </b-table-simple>
+  </b-form>
+</template>
+<script lang="js">
+import Editable from './Editable'
+
+export default {
+  i18nOptions: {
+    namespaces: 'resource-translator',
+    keyPrefix: 'translator',
+  },
+
+  components: {
+    Editable,
+  },
+
+  props: {
+    languages: {
+      type: Array,
+      required: true,
+    },
+
+    primaryResource: {
+      type: String,
+      required: true,
+    },
+
+    /**
+     * Array of objects containing all relevant translations
+     *
+     * It is backend's responsibility to serve all relevant translations
+     * for a certain resource
+     */
+    translations: {
+      type: Array,
+      required: true,
+    },
+
+    /**
+     * Translation of resource types
+     *
+     * What we usually get for each translation is resource type like
+     * compose:module/42 and this key/value allows us to map it to 'Module'
+     * This is especially useful in case of fields when it's important that
+     * translator can differentiate between them
+     */
+    titles: {
+      type: Object,
+      default: () => ({}),
+    },
+
+    /**
+     * When set, the row in translator is is highlighted
+     */
+    highlightKey: {
+      type: String,
+    },
+
+    disabled: {
+      type: Boolean,
+      default: () => false,
+    },
+  },
+
+  data () {
+    return {
+      intLanguages: this.languages.map((lang, i) => ({
+        ...lang,
+        // first 4 are visible by default
+        visible: i <= 1,
+        // 1st one is default
+        default: i === 0,
+      })),
+      intTranslations: this.translations.map(t => ({ ...t, org: t.message, dirty: false })),
+    }
+  },
+
+  computed: {
+    visibleLanguages () {
+      return this.intLanguages.filter(({ visible }) => visible)
+    },
+  },
+
+  methods: {
+    /**
+     * Returns unique set of resources from the given values
+     *
+     * @returns object[]
+     */
+    resources () {
+      return this.intTranslations
+        .map(r => r.resource)
+        .filter((r, i, rr) => rr.indexOf(r) === i)
+        .map(resource => ({
+          resource,
+          title: this.titles[resource],
+          isPrimary: resource === this.primaryResource,
+        }))
+    },
+
+    /**
+     * Returns unique set of keys from from the given values for a specific resource
+     *
+     * @returns string[]
+     */
+    keys (resource) {
+      return this.intTranslations
+        .filter(r => r.resource === resource)
+        .map(r => r.key)
+        .filter((r, i, rr) => rr.indexOf(r) === i)
+    },
+
+    find (resource, key, lang) {
+      return this.intTranslations.find(r => r.resource === resource && r.key === key && r.lang === lang) ||
+          { dirty: false, message: '' }
+    },
+
+    isDirty (resource, key, lang) {
+      return this.find(resource, key, lang).dirty
+    },
+
+    msg (resource, key, lang) {
+      return this.find(resource, key, lang).message
+    },
+
+    reset (resource, key, lang) {
+      const t = this.find(resource, key, lang)
+
+      if (t.dirty) {
+        t.message = t.org
+        t.dirty = false
+      }
+    },
+
+    onUpdate (resource, key, lang, message) {
+      const v = this.intTranslations.find(r => r.resource === resource && r.key === key && r.lang === lang)
+      if (v === undefined) {
+        this.intTranslations.push({ resource, key, lang, message, org: message, dirty: true })
+      } else {
+        // if new message is different then original, mark translation as dirty
+        v.dirty = v.org !== message
+        v.message = message
+      }
+
+      const dirty = this.intTranslations
+        .filter(({ dirty }) => dirty)
+        .map(({ resource, key, lang, message }) => ({ resource, key, lang, message }))
+
+      this.$emit('change', dirty)
+    },
+  },
+}
+
+</script>
+<style lang="scss" scoped>
+.key {
+  min-width: 200px;
+}
+</style>

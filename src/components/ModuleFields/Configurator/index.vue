@@ -34,6 +34,8 @@
     >
       <validation
         :field="field"
+        :module="module"
+        :namespace="namespace"
       />
     </b-tab>
   </b-tabs>

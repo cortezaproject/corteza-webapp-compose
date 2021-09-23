@@ -53,6 +53,8 @@
         <b-col cols="6">
           <button-editor
             v-if="currentButton"
+            :page="page"
+            :block="block"
             :button="currentButton"
             :script="currentScript"
             :trigger="currentTrigger"
@@ -115,6 +117,7 @@
   </b-tab>
 </template>
 <script>
+import { compose } from '@cortezaproject/corteza-js'
 import draggable from 'vuedraggable'
 import base from '../base'
 import { words } from 'lodash'
@@ -135,6 +138,16 @@ export default {
   props: {
     buttons: {
       type: Array,
+      required: true,
+    },
+
+    page: {
+      type: compose.Page,
+      required: true,
+    },
+
+    block: {
+      type: compose.PageBlock,
       required: true,
     },
   },

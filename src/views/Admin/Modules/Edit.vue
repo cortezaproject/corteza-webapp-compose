@@ -41,7 +41,7 @@
                 no-gutters
                 class="align-items-center"
               >
-                <div class="flex-grow-1 text-nowrap">
+                <div class="flex-grow-1 text-nowrap mb-1">
                   <b-button
                     v-if="federationEnabled"
                     variant="light"
@@ -86,6 +86,10 @@
                     class="btn-lg ml-auto mr-1"
                   />
 
+                  <module-translator
+                    v-if="module"
+                    :module.sync="module"
+                  />
                 </div>
                 <div
                   v-if="!creatingModule"
@@ -148,8 +152,6 @@
                       <th v-b-tooltip.hover.topright :title="$t('edit.tooltip.title')" class="text-primary">{{ $t('general.label.title') }}</th>
                       <th class="text-primary">{{ $t('general.label.type') }}</th>
                       <th v-b-tooltip.hover :title="$t('edit.tooltip.attributes')" class="text-primary">{{ $t('general.label.attributes') }}</th>
-                      <th></th>
-                      <th v-if="false"></th>
                       <th></th>
                     </tr>
                     </thead>
@@ -242,6 +244,7 @@ import FieldConfigurator from 'corteza-webapp-compose/src/components/ModuleField
 import FieldRowEdit from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowEdit'
 import FieldRowView from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowView'
 import FederationSettings from 'corteza-webapp-compose/src/components/Admin/Module/FederationSettings'
+import ModuleTranslator from 'corteza-webapp-compose/src/components/Admin/Module/ModuleTranslator'
 import { compose, NoID } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
@@ -258,6 +261,7 @@ export default {
     FieldRowEdit,
     FieldRowView,
     FederationSettings,
+    ModuleTranslator,
     EditorToolbar,
     Export,
   },
@@ -408,6 +412,11 @@ export default {
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {
+      /**
+       * Pass a special tag alongside payload that
+       * instructs store layer to add content-language header to the API request
+       */
+      const resourceTranslationLanguage = this.defaultTranslationLanguage
       this.processing = true
 
       if (this.module.moduleID === NoID) {
@@ -424,7 +433,7 @@ export default {
 
         // If such fields exist , after module is created add fields, map moduleID and update module
         // Unfortunately this ruins the initial field order, but we can improve this later
-        this.createModule({ ...this.module, fields }).then(async module => {
+        this.createModule({ ...this.module, fields, resourceTranslationLanguage }).then(async module => {
           if (toBeUpdatedFields.length) {
             fields = [
               ...module.fields,
@@ -450,7 +459,7 @@ export default {
             this.processing = false
           })
       } else {
-        this.updateModule(this.module).then(module => {
+        this.updateModule({ ...this.module, resourceTranslationLanguage }).then(module => {
           this.module = new compose.Module({ ...module }, this.namespace)
           this.toastSuccess(this.$t('notification.saved'))
           if (closeOnSuccess) {

@@ -1,4 +1,5 @@
 import { compose } from '@cortezaproject/corteza-js'
+import * as request from '../lib/request'
 
 const types = {
   pending: 'pending',
@@ -72,7 +73,7 @@ export default function (ComposeAPI) {
 
       async create ({ commit }, item) {
         commit(types.pending)
-        return ComposeAPI.moduleCreate(item).then(raw => {
+        return ComposeAPI.moduleCreate(item, request.config(item)).then(raw => {
           const module = new compose.Module(raw, raw.namespace)
           commit(types.updateSet, [module])
           commit(types.completed)
@@ -82,7 +83,7 @@ export default function (ComposeAPI) {
 
       async update ({ commit }, item) {
         commit(types.pending)
-        return ComposeAPI.moduleUpdate(item).then(raw => {
+        return ComposeAPI.moduleUpdate(item, request.config(item)).then(raw => {
           const module = new compose.Module(raw, raw.namespace)
           commit(types.updateSet, [module])
           commit(types.completed)

@@ -22,6 +22,10 @@
             class="ml-2"
           />
         </b-button>
+        <page-translator
+          v-if="page"
+          :page="page"
+        />
         <b-button
           variant="primary"
           class="d-flex align-items-center"
@@ -96,6 +100,7 @@
 <script>
 import { mapActions } from 'vuex'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
+import PageTranslator from 'corteza-webapp-compose/src/components/Admin/Page/PageTranslator'
 import { compose } from '@cortezaproject/corteza-js'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 
@@ -108,6 +113,7 @@ export default {
 
   components: {
     EditorToolbar,
+    PageTranslator,
   },
 
   props: {
@@ -158,8 +164,13 @@ export default {
       deletePage: 'page/delete',
     }),
     handleSave ({ closeOnSuccess = false } = {}) {
+      /**
+       * Pass a special tag alongside payload that
+       * instructs store layer to add content-language header to the API request
+       */
+      const resourceTranslationLanguage = this.defaultTranslationLanguage
       const { namespaceID } = this.namespace
-      this.updatePage({ namespaceID, ...this.page }).then((page) => {
+      this.updatePage({ namespaceID, ...this.page, resourceTranslationLanguage }).then((page) => {
         this.page = page.clone()
         this.toastSuccess(this.$t('notification.saved'))
         if (closeOnSuccess) {
