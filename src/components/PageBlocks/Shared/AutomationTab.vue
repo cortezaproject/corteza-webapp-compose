@@ -233,10 +233,11 @@ export default {
       this.buttons.push(this.currentButton)
     },
 
-    deleteButton ({ script }) {
-      const i = this.buttons.findIndex(b => b.script === script)
+    deleteButton ({ script = '', stepID = '', workflowID = '' }) {
+      const i = this.buttons.findIndex(b => (b.script === script) || (`${b.workflowID}-${b.stepID}` === `${workflowID}-${stepID}`))
       if (i > -1) {
         this.buttons.splice(i, 1)
+        this.currentButton = undefined
       }
     },
 
