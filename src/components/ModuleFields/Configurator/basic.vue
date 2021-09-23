@@ -66,6 +66,7 @@
     >
       <field-editor
         valueOnly
+        :append-to-body="false"
         v-bind="mock"
       />
     </b-form-group>

@@ -56,6 +56,11 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    appendToBody: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   computed: {

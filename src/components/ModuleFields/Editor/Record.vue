@@ -36,7 +36,7 @@
           :loading="processing"
           option-value="recordID"
           option-text="label"
-          :append-to-body="true"
+          :append-to-body="appendToBody"
           :calculate-position="calculatePosition"
           :clearable="false"
           :filterable="false"
@@ -63,7 +63,7 @@
           :loading="processing"
           option-value="recordID"
           option-text="label"
-          :append-to-body="true"
+          :append-to-body="appendToBody"
           :calculate-position="calculatePosition"
           :clearable="false"
           :filterable="false"
@@ -91,7 +91,7 @@
           :loading="processing"
           option-value="recordID"
           option-text="label"
-          :append-to-body="true"
+          :append-to-body="appendToBody"
           :calculate-position="calculatePosition"
           :clearable="false"
           :filterable="false"
@@ -124,7 +124,7 @@
         :loading="processing"
         option-value="recordID"
         option-text="label"
-        :append-to-body="true"
+        :append-to-body="appendToBody"
         :calculate-position="calculatePosition"
         :placeholder="$t('kind.record.suggestionPlaceholder')"
         :filterable="false"
@@ -195,7 +195,7 @@ export default {
     }),
 
     options () {
-      return this.records.map(this.convert).filter(v => v)
+      return this.records.map(this.convert).filter(v => v && !(this.value || []).includes(v.value))
     },
 
     module () {

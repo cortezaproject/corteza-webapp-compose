@@ -35,7 +35,7 @@
           :options="options"
           :get-option-label="getOptionLabel"
           :get-option-key="getOptionKey"
-          :append-to-body="true"
+          :append-to-body="appendToBody"
           :calculate-position="calculatePosition"
           :clearable="false"
           :filterable="false"
@@ -60,7 +60,7 @@
           :options="options"
           :get-option-label="getOptionLabel"
           :get-option-key="getOptionKey"
-          :append-to-body="true"
+          :append-to-body="appendToBody"
           :calculate-position="calculatePosition"
           :filterable="false"
           :loading="processing"
@@ -86,7 +86,7 @@
           :get-option-label="getOptionLabel"
           :get-option-key="getOptionKey"
           :value="getUserByIndex(ctx.index)"
-          :append-to-body="true"
+          :append-to-body="appendToBody"
           :calculate-position="calculatePosition"
           :clearable="false"
           :filterable="false"
@@ -117,7 +117,7 @@
         :get-option-label="getOptionLabel"
         :get-option-key="getOptionKey"
         :value="getUserByIndex()"
-        :append-to-body="true"
+        :append-to-body="appendToBody"
         :calculate-position="calculatePosition"
         :filterable="false"
         :loading="processing"
@@ -182,7 +182,7 @@ export default {
     }),
 
     options () {
-      return this.users.filter(u => u)
+      return this.users.filter(u => u && !(this.value || []).includes(u.userID))
     },
 
     // This is used in the case of using the multiple select option
