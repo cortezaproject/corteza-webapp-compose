@@ -110,7 +110,7 @@ export default {
     namespace: {
       type: compose.Namespace,
       required: false,
-      default: () => ({}),
+      default: undefined,
     },
   },
 

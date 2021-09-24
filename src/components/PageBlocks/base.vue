@@ -11,12 +11,12 @@ export default {
     boundingRect: {
       type: Object,
       required: false,
-      default: () => ({}),
+      default: undefined,
     },
 
     blockIndex: {
       type: Number,
-      default: () => -1,
+      default: -1,
     },
 
     namespace: {
@@ -37,13 +37,13 @@ export default {
     module: {
       type: compose.Module,
       required: false,
-      default: () => ({}),
+      default: undefined,
     },
 
     record: {
       type: compose.Record,
       required: false,
-      default: () => ({}),
+      default: undefined,
     },
 
     mode: {

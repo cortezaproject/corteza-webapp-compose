@@ -29,7 +29,7 @@ export default {
     block: {
       type: compose.PageBlock,
       required: false,
-      default: () => ({}),
+      default: undefined,
     },
 
     buttonVariant: {

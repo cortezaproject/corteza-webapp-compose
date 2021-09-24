@@ -104,13 +104,13 @@ export default {
     script: {
       type: Object,
       required: false,
-      default: () => ({}),
+      default: undefined,
     },
 
     trigger: {
       type: Object,
       required: false,
-      default: () => ({}),
+      default: undefined,
     },
 
     page: {

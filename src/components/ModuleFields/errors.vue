@@ -17,7 +17,7 @@ export default {
     errors: {
       type: validator.Validated,
       required: true,
-      default: () => ({}),
+      default: undefined,
     },
 
     index: {
@@ -29,14 +29,7 @@ export default {
 
   computed: {
     set () {
-      if (this.index >= 0) {
-        return this.errors
-          .filterByMeta('index', this.index)
-          .get()
-      } else {
-        return this.errors
-          .get()
-      }
+      return this.index >= 0 ? this.errors.filterByMeta('index', this.index).get() : this.errors.get()
     },
   },
 }

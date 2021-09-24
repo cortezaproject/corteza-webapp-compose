@@ -97,7 +97,7 @@ export default {
     errors: {
       type: validator.Validated,
       required: false,
-      default: () => ({}),
+      default: undefined,
     },
   },
 

@@ -3,11 +3,19 @@
     v-if="canPreview"
     :href="attachment.download"
     @click.exact.prevent="openLightbox({ ...attachment, ...$event })"
-  ><slot>{{ attachment.name }}</slot></a>
+  >
+    <slot>
+      {{ attachment.name }}
+    </slot>
+  </a>
   <a
     v-else
     :href="attachment.download"
-  ><slot>{{ attachment.name }}</slot></a>
+  >
+    <slot>
+      {{ attachment.name }}
+    </slot>
+  </a>
 </template>
 <script>
 import { components } from '@cortezaproject/corteza-vue'

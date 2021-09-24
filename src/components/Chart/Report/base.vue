@@ -2,9 +2,9 @@
 export default {
   props: {
     report: {
-      type: [Object, undefined],
+      type: Object,
       required: false,
-      default: () => ({}),
+      default: undefined,
     },
 
     modules: {

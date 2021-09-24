@@ -18,7 +18,7 @@ export default {
     boundingRect: {
       type: Object,
       required: false,
-      default: () => ({}),
+      default: undefined,
     },
   },
 

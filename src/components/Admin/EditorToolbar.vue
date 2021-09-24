@@ -80,7 +80,7 @@ export default {
     backLink: {
       type: Object,
       required: false,
-      default: () => ({}),
+      default: undefined,
     },
     hideDelete: {
       type: Boolean,

@@ -114,13 +114,13 @@ export default {
     module: {
       type: compose.Module,
       required: false,
-      default: () => ({}),
+      default: undefined,
     },
 
     record: {
       type: compose.Record,
       required: false,
-      default: () => ({}),
+      default: undefined,
     },
 
     processing: {

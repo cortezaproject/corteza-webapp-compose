@@ -22,7 +22,7 @@ export default {
     namespace: {
       type: Object,
       required: false,
-      default: () => ({}),
+      default: undefined,
     },
   },
 
