@@ -26,26 +26,26 @@
                     size="lg"
                     class="float-left mr-1"
                     :text="$t('chart.add')"
+                  >
+                    <b-dropdown-item-button
+                      variant="dark"
+                      @click="$router.push({ name: 'admin.charts.create', params: { category: 'generic' } })"
                     >
-                      <b-dropdown-item-button
-                        variant="dark"
-                        @click="$router.push({ name: 'admin.charts.create', params: { category: 'generic' } })"
-                      >
-                        {{ $t('chart.addGeneric') }}
-                      </b-dropdown-item-button>
-                      <b-dropdown-item-button
-                        variant="dark"
-                        @click="$router.push({ name: 'admin.charts.create', params: { category: 'funnel' } })"
-                      >
-                        {{ $t('chart.addFunnel') }}
-                      </b-dropdown-item-button>
-                      <b-dropdown-item-button
-                        variant="dark"
-                        @click="$router.push({ name: 'admin.charts.create', params: { category: 'gauge' } })"
-                      >
-                        {{ $t('chart.addGauge') }}
-                      </b-dropdown-item-button>
-                    </b-dropdown>
+                      {{ $t('chart.addGeneric') }}
+                    </b-dropdown-item-button>
+                    <b-dropdown-item-button
+                      variant="dark"
+                      @click="$router.push({ name: 'admin.charts.create', params: { category: 'funnel' } })"
+                    >
+                      {{ $t('chart.addFunnel') }}
+                    </b-dropdown-item-button>
+                    <b-dropdown-item-button
+                      variant="dark"
+                      @click="$router.push({ name: 'admin.charts.create', params: { category: 'gauge' } })"
+                    >
+                      {{ $t('chart.addGauge') }}
+                    </b-dropdown-item-button>
+                  </b-dropdown>
 
                   <import
                     v-if="namespace.canCreateChart"
@@ -62,8 +62,8 @@
                   <c-permissions-button
                     v-if="namespace.canGrant"
                     :resource="`corteza::compose:chart/${namespace.namespaceID}/*`"
-                    :buttonLabel="$t('general.label.permissions')"
-                    buttonVariant="light"
+                    :button-label="$t('general.label.permissions')"
+                    button-variant="light"
                     class="btn-lg"
                   />
                 </div>
@@ -73,7 +73,8 @@
                       v-model.trim="query"
                       class="float-right mw-100"
                       type="search"
-                      :placeholder="$t('chart.searchPlaceholder')" />
+                      :placeholder="$t('chart.searchPlaceholder')"
+                    />
                     <b-input-group-append>
                       <b-input-group-text class="text-primary bg-white">
                         <font-awesome-icon
@@ -94,13 +95,13 @@
                 :filter-included-fields="['handle', 'name']"
                 :sort-by.sync="sortBy"
                 :sort-desc="sortDesc"
-                @row-clicked="handleRowClicked"
                 head-variant="light"
                 tbody-tr-class="pointer"
                 :empty-text="$t('chart.noChart')"
                 show-empty
                 responsive
                 hover
+                @row-clicked="handleRowClicked"
               >
                 <template v-slot:cell(updatedAt)="{ item: c }">
                   {{ (c.updatedAt || c.createdAt) | locDate }}
@@ -145,6 +146,7 @@ export default {
     namespace: {
       type: Object,
       required: false,
+      default: () => ({}),
     },
   },
 

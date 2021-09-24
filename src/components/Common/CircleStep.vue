@@ -1,12 +1,17 @@
 <template>
   <div>
-    <div :class="{ 'disabled': disabled, 'small': small }"
-         class="h3 mx-auto rounded-circle circle border-primary text-primary text-center mb-5"
-         v-b-popover.hover.top="popoverContent">
-      <font-awesome-icon v-if="done" :icon="['fas', 'check']" />
+    <div
+      v-b-popover.hover.top="popoverContent"
+      :class="{ 'disabled': disabled, 'small': small }"
+      class="h3 mx-auto rounded-circle circle border-primary text-primary text-center mb-5"
+    >
+      <font-awesome-icon
+        v-if="done"
+        :icon="['fas', 'check']"
+      />
       <span v-else>{{ stepNumber }}</span>
     </div>
-    <slot></slot>
+    <slot />
   </div>
 </template>
 

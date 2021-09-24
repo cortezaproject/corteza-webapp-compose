@@ -1,13 +1,14 @@
 <template>
-  <b-card header-bg-variant="white"
-          footer-bg-variant="white">
-
+  <b-card
+    header-bg-variant="white"
+    footer-bg-variant="white"
+  >
     <b-form-group>
       <div class="mb-4">
         <label>
           {{ $t('recordList.import.matchFields') }}
         </label>
-        <br />
+        <br>
         <small
           v-if="hasRequiredFileFields"
         >
@@ -15,32 +16,37 @@
         </small>
       </div>
 
-      <b-table small
-               :fields="tableFields"
-               :items="rows"
-               class="field-table">
-
+      <b-table
+        small
+        :fields="tableFields"
+        :items="rows"
+        class="field-table"
+      >
         <template v-slot:head(selected)>
-          <b-form-checkbox class="pr-0"
-                           :checked="selectAll"
-                           @change="onSelectAll" />
+          <b-form-checkbox
+            class="pr-0"
+            :checked="selectAll"
+            @change="onSelectAll"
+          />
         </template>
 
         <template v-slot:cell(selected)="data">
-
-          <b-form-checkbox class="pr-0"
-                           v-model="data.item.selected" />
+          <b-form-checkbox
+            v-model="data.item.selected"
+            class="pr-0"
+          />
         </template>
         <template v-slot:cell(moduleField)="data">
-
-          <b-form-select v-model="data.item.moduleField"
-                          @change="moduleChanged(data)"
-                         :options="moduleFields">
-
+          <b-form-select
+            v-model="data.item.moduleField"
+            :options="moduleFields"
+            @change="moduleChanged(data)"
+          >
             <template slot="first">
-              <option :value="undefined"
-                      disabled>
-
+              <option
+                :value="undefined"
+                disabled
+              >
                 {{ $t('recordList.import.pickModuleField') }}
               </option>
             </template>
@@ -50,18 +56,20 @@
     </b-form-group>
 
     <div slot="footer">
-      <b-button variant="outline-dark"
-                @click="$emit('back')"
-                class="float-left">
-
+      <b-button
+        variant="outline-dark"
+        class="float-left"
+        @click="$emit('back')"
+      >
         {{ $t('general.label.back') }}
       </b-button>
 
-      <b-button variant="dark"
-                :disabled="!canContinue"
-                @click="nextStep"
-                class="float-right">
-
+      <b-button
+        variant="dark"
+        :disabled="!canContinue"
+        class="float-right"
+        @click="nextStep"
+      >
         {{ $t('general.label.import') }}
       </b-button>
     </div>

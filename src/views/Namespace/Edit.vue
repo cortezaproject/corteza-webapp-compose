@@ -36,10 +36,10 @@
           </b-btn>
 
           <b-btn
-            @click="exportNamespace"
             variant="light"
             size="lg"
             class="ml-1"
+            @click="exportNamespace"
           >
             {{ $t('export') }}
           </b-btn>
@@ -49,8 +49,8 @@
             :title="namespace.name"
             :target="namespace.name"
             :resource="'corteza::compose:namespace/'+namespace.namespaceID"
-            buttonVariant="light"
-            :buttonLabel="$t('label.permissions')"
+            button-variant="light"
+            :button-label="$t('label.permissions')"
             class="ml-1 btn-lg"
           />
 
@@ -69,12 +69,13 @@
             <b-form-group :label="$t('name.label')">
               <b-input-group>
                 <b-form-input
+                  id="ns-nm"
                   v-model="namespace.name"
                   type="text"
-                  id="ns-nm"
                   required
                   :state="nameState"
-                  :placeholder="$t('name.placeholder')" />
+                  :placeholder="$t('name.placeholder')"
+                />
                 <b-input-group-append>
                   <namespace-translator
                     :namespace="namespace"
@@ -126,10 +127,10 @@
                 <div class="d-flex align-items-center">
                   {{ $t('logo.label') }}
                   <b-button
+                    v-b-modal.logo
                     variant="primary"
                     size="sm"
                     class="py-0 ml-2"
-                    v-b-modal.logo
                   >
                     {{ $t('logo.preview') }}
                   </b-button>
@@ -179,7 +180,8 @@
                 <b-form-input
                   v-model="namespace.meta.subtitle"
                   type="text"
-                  :placeholder="$t('subtitle.placeholder')" />
+                  :placeholder="$t('subtitle.placeholder')"
+                />
                 <b-input-group-append>
                   <namespace-translator
                     :namespace="namespace"
@@ -211,7 +213,10 @@
             </b-form-group>
           </b-form>
 
-          <template v-if="isClone" #footer>
+          <template
+            v-if="isClone"
+            #footer
+          >
             {{ $t('cloneWarning.wfInclusion') }}
           </template>
         </b-card>
@@ -220,11 +225,11 @@
 
     <editor-toolbar
       :back-link="{name: 'root'}"
-      :hideDelete="!loaded || !isEdit"
-      :hideClone="!loaded || !isEdit"
-      :hideSave="!loaded"
-      :disableDelete="!canDelete"
-      :disableSave="!canSave"
+      :hide-delete="!loaded || !isEdit"
+      :hide-clone="!loaded || !isEdit"
+      :hide-save="!loaded"
+      :disable-delete="!canDelete"
+      :disable-save="!canSave"
       @delete="handleDelete"
       @save="handleSave()"
       @clone="$router.push({ name: 'namespace.clone', params: { namespaceID: namespace.namespaceID }})"
@@ -271,7 +276,6 @@
         </div>
       </div>
     </b-modal>
-
   </div>
 </template>
 

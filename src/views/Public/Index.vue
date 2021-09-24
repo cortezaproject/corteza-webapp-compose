@@ -39,8 +39,13 @@
       </b-button-group>
     </portal>
 
-    <div v-if="showSteps" class="d-flex flex-column m-5 vh-75">
-      <h1 class="display-3">{{ $t('label.welcome') }}</h1>
+    <div
+      v-if="showSteps"
+      class="d-flex flex-column m-5 vh-75"
+    >
+      <h1 class="display-3">
+        {{ $t('label.welcome') }}
+      </h1>
       <p class="lead">
         {{ $t('message.noPages') }}
         <span v-if="namespace.canManageNamespace">
@@ -55,45 +60,98 @@
         fluid="xl"
         class="align-items-center border-top steps"
       >
-        <b-row align-v="center" class="text-center justify-content-between">
+        <b-row
+          align-v="center"
+          class="text-center justify-content-between"
+        >
           <b-col>
-            <circle-step stepNumber="1" :done="hasModules">
-              <b-button v-if="!hasModules" @click="createNewModule" :disabled="!namespace.canCreateModule" variant="outline-primary" size="lg">
+            <circle-step
+              step-number="1"
+              :done="hasModules"
+            >
+              <b-button
+                v-if="!hasModules"
+                :disabled="!namespace.canCreateModule"
+                variant="outline-primary"
+                size="lg"
+                @click="createNewModule"
+              >
                 {{ $t('step.module.create') }}
               </b-button>
-              <router-link v-else :to="{ name: 'admin.modules' }">
-                <b-button :disabled="!namespace.canManageNamespace" variant="primary" size="lg">
-                {{ $t('step.module.view') }}
+              <router-link
+                v-else
+                :to="{ name: 'admin.modules' }"
+              >
+                <b-button
+                  :disabled="!namespace.canManageNamespace"
+                  variant="primary"
+                  size="lg"
+                >
+                  {{ $t('step.module.view') }}
                 </b-button>
               </router-link>
             </circle-step>
           </b-col>
           <b-col>
-            <hr />
+            <hr>
           </b-col>
           <b-col>
-            <circle-step :done="hasCharts" :disabled="!hasModules" optional>
-              <b-button v-if="!hasCharts" @click="createNewChart" :disabled="!hasModules || !namespace.canCreateChart" variant="outline-primary" size="lg">
+            <circle-step
+              :done="hasCharts"
+              :disabled="!hasModules"
+              optional
+            >
+              <b-button
+                v-if="!hasCharts"
+                :disabled="!hasModules || !namespace.canCreateChart"
+                variant="outline-primary"
+                size="lg"
+                @click="createNewChart"
+              >
                 {{ $t('step.chart.create') }}
               </b-button>
-              <router-link v-else :to="{ name: 'admin.charts' }">
-                <b-button :disabled="!namespace.canManageNamespace" variant="primary" size="lg">
-                {{ $t('step.chart.view') }}
+              <router-link
+                v-else
+                :to="{ name: 'admin.charts' }"
+              >
+                <b-button
+                  :disabled="!namespace.canManageNamespace"
+                  variant="primary"
+                  size="lg"
+                >
+                  {{ $t('step.chart.view') }}
                 </b-button>
               </router-link>
             </circle-step>
           </b-col>
           <b-col>
-            <hr />
+            <hr>
           </b-col>
           <b-col>
-            <circle-step stepNumber="2" :done="hasPages" :disabled="!hasModules">
-              <b-button v-if="!hasPages" @click="createNewPage" :disabled="!hasModules || !namespace.canCreatePage" variant="outline-primary" size="lg">
+            <circle-step
+              step-number="2"
+              :done="hasPages"
+              :disabled="!hasModules"
+            >
+              <b-button
+                v-if="!hasPages"
+                :disabled="!hasModules || !namespace.canCreatePage"
+                variant="outline-primary"
+                size="lg"
+                @click="createNewPage"
+              >
                 {{ $t('step.page.create') }}
               </b-button>
-              <router-link v-else :to="{ name: 'admin.pages' }">
-                <b-button :disabled="!namespace.canManageNamespace" variant="primary" size="lg">
-                {{ $t('step.page.view') }}
+              <router-link
+                v-else
+                :to="{ name: 'admin.pages' }"
+              >
+                <b-button
+                  :disabled="!namespace.canManageNamespace"
+                  variant="primary"
+                  size="lg"
+                >
+                  {{ $t('step.page.view') }}
                 </b-button>
               </router-link>
             </circle-step>
@@ -127,7 +185,7 @@ export default {
     namespaces: 'onboarding',
   },
 
-  name: 'public-root',
+  name: 'PublicRoot',
 
   components: {
     CircleStep,

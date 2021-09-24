@@ -1,44 +1,50 @@
 <template>
   <div>
     <b-list-group-item class="flex-column align-items-start px-2 py-2 border-0">
-      <b-form @submit.prevent
-              class="import-form">
-
+      <b-form
+        class="import-form"
+        @submit.prevent
+      >
         <b-form-group :label="$t('reminder.edit.titleLabel')">
-          <b-form-input v-model="title"
-                        required
-                        type="text"
-                        :placeholder="$t('reminder.edit.titlePlaceholder')" />
-
+          <b-form-input
+            v-model="title"
+            required
+            type="text"
+            :placeholder="$t('reminder.edit.titlePlaceholder')"
+          />
         </b-form-group>
 
         <b-form-group :label="$t('reminder.edit.notesLabel')">
-          <b-form-textarea v-model="notes"
-                           :placeholder="$t('reminder.edit.notesPlaceholder')"
-                           rows="6"
-                           max-rows="10" />
-
+          <b-form-textarea
+            v-model="notes"
+            :placeholder="$t('reminder.edit.notesPlaceholder')"
+            rows="6"
+            max-rows="10"
+          />
         </b-form-group>
 
         <b-form-group :label="$t('reminder.edit.remindAtLabel')">
-          <b-form-select v-model="remindAt"
-                         :options="remindAtPresets" />
-
+          <b-form-select
+            v-model="remindAt"
+            :options="remindAtPresets"
+          />
         </b-form-group>
 
         <b-form-group :label="$t('reminder.edit.assigneeLabel')">
-          <vue-select :options="assignees"
-                      @search="searchAssignees"
-                      option-value="userID"
-                      option-text="label"
-                      :placeholder="$t('field.kind.user.suggestionPlaceholder')"
-                      v-model="assignedTo" />
-
+          <vue-select
+            v-model="assignedTo"
+            :options="assignees"
+            option-value="userID"
+            option-text="label"
+            :placeholder="$t('field.kind.user.suggestionPlaceholder')"
+            @search="searchAssignees"
+          />
         </b-form-group>
 
-        <b-form-group v-if="reminder.payload.link"
-                      :label="$t('reminder.routesTo')">
-
+        <b-form-group
+          v-if="reminder.payload.link"
+          :label="$t('reminder.routesTo')"
+        >
           <c-toaster-link
             :toast="reminder"
           />

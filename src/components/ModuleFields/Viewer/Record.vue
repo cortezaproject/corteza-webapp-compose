@@ -3,9 +3,18 @@
     <label v-if="!valueOnly">{{ field.label || field.name }}</label>
     <div v-if="valid">
       <div v-if="field.isMulti">
-        <span v-for="(r, index) of value" :key="index">
-          <span v-if="index && index !== value.length" v-html="getDelimiter" />
-          <span v-if="linkToRecord(index)" @click.stop>
+        <span
+          v-for="(r, index) of value"
+          :key="index"
+        >
+          <span
+            v-if="index && index !== value.length"
+            v-html="getDelimiter"
+          />
+          <span
+            v-if="linkToRecord(index)"
+            @click.stop
+          >
             <router-link :to="linkToRecord(index)">{{ format(index) }}</router-link>
           </span>
           <span v-else>
@@ -13,9 +22,21 @@
           </span>
         </span>
       </div>
-      <div v-else class="text-nowrap">
-        <div v-if="linkToRecord()" @click.stop><router-link :to="linkToRecord()">{{ format() }}</router-link></div>
-        <div v-else>{{ format() }}</div>
+      <div
+        v-else
+        class="text-nowrap"
+      >
+        <div
+          v-if="linkToRecord()"
+          @click.stop
+        >
+          <router-link :to="linkToRecord()">
+            {{ format() }}
+          </router-link>
+        </div>
+        <div v-else>
+          {{ format() }}
+        </div>
       </div>
     </div>
   </div>

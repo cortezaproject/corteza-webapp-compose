@@ -34,7 +34,7 @@
       :block="block"
       :page="page"
       :namespace="namespace"
-      :boundingRect="boundingRect"
+      :bounding-rect="boundingRect"
     />
   </div>
 </template>

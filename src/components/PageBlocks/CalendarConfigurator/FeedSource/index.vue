@@ -1,34 +1,40 @@
 <template>
   <fieldset class="form-group">
     <!-- Feed list -->
-    <div v-for="(feed, i) in options.feeds"
-         :key="i">
-
+    <div
+      v-for="(feed, i) in options.feeds"
+      :key="i"
+    >
       <!-- define feed resource; eg. module, reminders, google calendar, ... -->
-      <b-form-group horizontal
-                    :label="$t('calendar.feedLabel')">
-
+      <b-form-group
+        horizontal
+        :label="$t('calendar.feedLabel')"
+      >
         <b-input-group>
-          <b-form-select v-model="feed.resource"
-                         :options="feedSources">
-
+          <b-form-select
+            v-model="feed.resource"
+            :options="feedSources"
+          >
             <template slot="first">
-              <option :value="null"
-                      :disabled="true">
-
+              <option
+                :value="null"
+                :disabled="true"
+              >
                 {{ $t('calendar.feedPlaceholder') }}
               </option>
             </template>
           </b-form-select>
 
           <!-- allow feed removal -->
-          <template v-if="feed.resource"
-                    v-slot:append>
-
-            <b-button @click="onRemoveFeed(i)"
-                      variant="outline-danger"
-                      class="border-0">
-
+          <template
+            v-if="feed.resource"
+            v-slot:append
+          >
+            <b-button
+              variant="outline-danger"
+              class="border-0"
+              @click="onRemoveFeed(i)"
+            >
               <font-awesome-icon :icon="['far', 'trash-alt']" />
             </b-button>
           </template>
@@ -37,19 +43,21 @@
 
       <b-form-group horizontal>
         <!-- source configurator -->
-        <component v-if="feed.resource && configurator(feed)"
-                  :is="configurator(feed)"
-                  :feed="feed"
-                  :modules="modules" />
-
+        <component
+          :is="configurator(feed)"
+          v-if="feed.resource && configurator(feed)"
+          :feed="feed"
+          :modules="modules"
+        />
       </b-form-group>
 
-      <hr />
+      <hr>
     </div>
 
-    <b-button @click.prevent="handleAddButton"
-              class="btn btn-url test-feed-add">
-
+    <b-button
+      class="btn btn-url test-feed-add"
+      @click.prevent="handleAddButton"
+    >
       {{ $t('calendar.addEventsSource') }}
     </b-button>
   </fieldset>

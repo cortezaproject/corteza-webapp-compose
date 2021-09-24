@@ -31,8 +31,8 @@
           </div>
 
           <b-btn
-            variant="link"
             v-if="canAdd"
+            variant="link"
             @click="addMetric"
           >
             + {{ $t('general.label.add') }}
@@ -150,7 +150,10 @@
                   class="mb-1"
                 />
                 <b-form-text>
-                  <i18next path="metric.edit.filterFootnote" tag="label">
+                  <i18next
+                    path="metric.edit.filterFootnote"
+                    tag="label"
+                  >
                     <code>${recordID}</code>
                     <code>${ownerID}</code>
                     <code>${userID}</code>
@@ -213,7 +216,7 @@
               </b-form-group>
 
               <b-form-group>
-                <label>{{ $t('metric.edit.numberFormat')}}</label>
+                <label>{{ $t('metric.edit.numberFormat') }}</label>
                 <b-form-input
                   v-model="edit.numberFormat"
                   placeholder="0.00"
@@ -222,7 +225,7 @@
               </b-form-group>
 
               <b-form-group>
-                <label>{{ $t('metric.edit.prefixLabel')}}</label>
+                <label>{{ $t('metric.edit.prefixLabel') }}</label>
                 <b-form-input
                   v-model="edit.prefix"
                   placeholder="$"
@@ -231,7 +234,7 @@
               </b-form-group>
 
               <b-form-group>
-                <label>{{ $t('metric.edit.suffixLabel')}}</label>
+                <label>{{ $t('metric.edit.suffixLabel') }}</label>
                 <b-form-input
                   v-model="edit.suffix"
                   placeholder="USD/mo"
@@ -256,7 +259,10 @@
           </m-style>
         </b-col>
 
-        <b-col cols="12" lg="5">
+        <b-col
+          cols="12"
+          lg="5"
+        >
           <b-card>
             <div class="text-right">
               <b-btn

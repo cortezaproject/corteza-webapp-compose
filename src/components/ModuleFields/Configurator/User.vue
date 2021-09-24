@@ -29,7 +29,7 @@
         v-model="f.options.selectType"
         :options="selectOptions"
         stacked
-      ></b-form-radio-group>
+      />
     </b-form-group>
   </div>
 </template>

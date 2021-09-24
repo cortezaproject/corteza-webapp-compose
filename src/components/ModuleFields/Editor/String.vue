@@ -16,8 +16,8 @@
         </label>
 
         <hint
-          :text="hint"
           :id="field.fieldID"
+          :text="hint"
         />
       </div>
       <small
@@ -27,7 +27,11 @@
       </small>
     </template>
 
-    <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
+    <multi
+      v-if="field.isMulti"
+      v-slot="ctx"
+      :value.sync="value"
+    >
       <c-rich-text-input
         v-if="field.options.useRichTextEditor"
         v-model="value[ctx.index]"

@@ -6,16 +6,20 @@
     :alt="(attachment || {}).name"
     :labels="previewLabels"
     :meta="(attachment || {}).meta"
-    @close="attachment=undefined">
-
-    <p slot="header.left" class="m-0">
+    @close="attachment=undefined"
+  >
+    <p
+      slot="header.left"
+      class="m-0"
+    >
       {{ (attachment || {}).name }}
     </p>
 
     <a
-      slot="header.right"
       v-if="attachment"
-      :href="(attachment || {}).download">
+      slot="header.right"
+      :href="(attachment || {}).download"
+    >
       {{ $t('general.label.download') }}
     </a>
   </c-preview-lightbox>

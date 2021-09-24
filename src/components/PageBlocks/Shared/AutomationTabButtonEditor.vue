@@ -8,15 +8,15 @@
     >
       <b-input-group>
         <b-form-input
-          disabled
           v-model="button.label"
+          disabled
         />
         <b-input-group-append>
           <page-translator
             v-if="page"
             :page="page"
             :block="block"
-            :highlight-key="`pageBlock.${this.block.blockID}.automation`"
+            :highlight-key="`pageBlock.${block.blockID}.automation`"
             button-variant="light"
           />
         </b-input-group-append>
@@ -26,9 +26,9 @@
       :label="$t('automation.buttonVariant')"
     >
       <b-select
+        v-model="button.variant"
         class="w-100"
         size="sm"
-        v-model="button.variant"
       >
         <b-select-option
           v-for="({ variant, label }) in variants"
@@ -56,11 +56,11 @@
       {{ button.script }}
     </code>
     <b-alert
+      v-else
       show
       variant="warning"
-      v-else
     >
-      {{ $t('automation.noScript' )}}
+      {{ $t('automation.noScript' ) }}
     </b-alert>
     <p
       v-if="workflow && workflow.meta"
@@ -76,8 +76,8 @@
     </p>
     <template #footer>
       <c-input-confirm
-        @confirmed="$emit('delete', button)"
         variant="link-light"
+        @confirmed="$emit('delete', button)"
       />
     </template>
   </b-card>
@@ -104,11 +104,13 @@ export default {
     script: {
       type: Object,
       required: false,
+      default: () => ({}),
     },
 
     trigger: {
       type: Object,
       required: false,
+      default: () => ({}),
     },
 
     page: {

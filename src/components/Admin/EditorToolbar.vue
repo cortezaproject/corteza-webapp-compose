@@ -3,14 +3,21 @@
     fluid
     class="bg-white shadow border-top p-3"
   >
-    <b-row no-gutters
-           class="align-items-center">
+    <b-row
+      no-gutters
+      class="align-items-center"
+    >
       <div class="flex-grow-1">
-        <b-button variant="link"
-                  :to="backLink"
-                  v-if="backLink"
-                  class="float-left text-dark back">
-          <font-awesome-icon :icon="['fas', 'chevron-left']" class="back-icon"></font-awesome-icon>
+        <b-button
+          v-if="backLink"
+          variant="link"
+          :to="backLink"
+          class="float-left text-dark back"
+        >
+          <font-awesome-icon
+            :icon="['fas', 'chevron-left']"
+            class="back-icon"
+          />
           {{ $t('label.backWithoutSave') }}
         </b-button>
         <slot />
@@ -18,12 +25,12 @@
       <div class="d-flex flex-grow-1 justify-content-end text-nowrap">
         <c-input-confirm
           v-if="!hideDelete"
-          @confirmed="$emit('delete')"
           size="lg"
-          sizeConfirm="lg"
+          size-confirm="lg"
           variant="danger"
           :borderless="false"
           class="mx-1"
+          @confirmed="$emit('delete')"
         >
           {{ $t('label.delete') }}
         </c-input-confirm>
@@ -36,19 +43,24 @@
         >
           {{ $t('label.clone') }}
         </b-button>
-        <b-button v-if="!hideSave"
-                  :disabled="disableSave"
-                  variant="light" @click.prevent="$emit('saveAndClose')"
-                  size="lg"
-                  class="mx-1">
+        <b-button
+          v-if="!hideSave"
+          :disabled="disableSave"
+          variant="light"
+          size="lg"
+          class="mx-1"
+          @click.prevent="$emit('saveAndClose')"
+        >
           {{ $t('label.saveAndClose') }}
         </b-button>
-        <b-button v-if="!hideSave"
-                  :disabled="disableSave"
-                  variant="primary"
-                  size="lg"
-                  @click.prevent="$emit('save')"
-                  class="mx-1">
+        <b-button
+          v-if="!hideSave"
+          :disabled="disableSave"
+          variant="primary"
+          size="lg"
+          class="mx-1"
+          @click.prevent="$emit('save')"
+        >
           {{ $t('label.save') }}
         </b-button>
       </div>
@@ -68,6 +80,7 @@ export default {
     backLink: {
       type: Object,
       required: false,
+      default: () => ({}),
     },
     hideDelete: {
       type: Boolean,

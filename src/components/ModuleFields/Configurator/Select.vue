@@ -3,48 +3,62 @@
     <b-col>
       <b-form-group>
         <div>{{ $t('kind.select.optionsLabel') }}</div>
-        <b-input-group v-for="(option, index) in f.options.options"
-                       class="mb-1"
-                       :key="index">
-          <b-form-input plain
-                        v-model="f.options.options[index].value"
-                        size="sm"
-                        :placeholder="$t('kind.select.optionValuePlaceholder')" />
+        <b-input-group
+          v-for="(option, index) in f.options.options"
+          :key="index"
+          class="mb-1"
+        >
+          <b-form-input
+            v-model="f.options.options[index].value"
+            plain
+            size="sm"
+            :placeholder="$t('kind.select.optionValuePlaceholder')"
+          />
 
-          <b-form-input plain
-                        v-model="f.options.options[index].text"
-                        size="sm"
-                        :placeholder="$t('kind.select.optionLabelPlaceholder')" />
+          <b-form-input
+            v-model="f.options.options[index].text"
+            plain
+            size="sm"
+            :placeholder="$t('kind.select.optionLabelPlaceholder')"
+          />
 
           <b-input-group-append>
-            <b-button @click.prevent="f.options.options.splice(index, 1)"
-                      variant="outline-danger"
-                      class="border-0">
-              <font-awesome-icon :icon="['far', 'trash-alt']"></font-awesome-icon>
+            <b-button
+              variant="outline-danger"
+              class="border-0"
+              @click.prevent="f.options.options.splice(index, 1)"
+            >
+              <font-awesome-icon :icon="['far', 'trash-alt']" />
             </b-button>
           </b-input-group-append>
         </b-input-group>
 
         <b-input-group>
-          <b-form-input plain
-                        v-model="newOption.value"
-                        @keypress.enter.prevent="handleAddOption"
-                        size="sm"
-                        :placeholder="$t('kind.select.optionValuePlaceholder')"
-                        :state="newOptState" />
+          <b-form-input
+            v-model="newOption.value"
+            plain
+            size="sm"
+            :placeholder="$t('kind.select.optionValuePlaceholder')"
+            :state="newOptState"
+            @keypress.enter.prevent="handleAddOption"
+          />
 
-          <b-form-input plain
-                        v-model="newOption.text"
-                        @keypress.enter.prevent="handleAddOption"
-                        size="sm"
-                        :placeholder="$t('kind.select.optionLabelPlaceholder')"
-                        :state="newOptState" />
+          <b-form-input
+            v-model="newOption.text"
+            plain
+            size="sm"
+            :placeholder="$t('kind.select.optionLabelPlaceholder')"
+            :state="newOptState"
+            @keypress.enter.prevent="handleAddOption"
+          />
 
           <b-input-group-append>
-            <b-button @click.prevent="handleAddOption"
-                      variant="primary"
-                      size="sm"
-                      :disabled="newOptState === false || newEmpty">
+            <b-button
+              variant="primary"
+              size="sm"
+              :disabled="newOptState === false || newEmpty"
+              @click.prevent="handleAddOption"
+            >
               + {{ $t('kind.select.optionAdd') }}
             </b-button>
           </b-input-group-append>
@@ -57,7 +71,7 @@
           v-model="f.options.selectType"
           :options="selectOptions"
           stacked
-        ></b-form-radio-group>
+        />
       </b-form-group>
     </b-col>
   </b-row>

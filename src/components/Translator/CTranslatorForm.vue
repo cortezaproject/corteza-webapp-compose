@@ -12,7 +12,6 @@
           :key="lang.tag"
           :disabled="lang.default || lang.visible "
           @click="lang.visible = true"
-
         >
           {{ lang.localizedName }}
         </b-dropdown-item-button>
@@ -21,8 +20,7 @@
     <b-table-simple>
       <b-thead>
         <b-tr>
-          <b-th class="key p-1">
-          </b-th>
+          <b-th class="key p-1" />
           <b-th
             v-for="lang in visibleLanguages"
             :key="lang.tag"
@@ -55,7 +53,7 @@
             class="font-weight-bold border-top-0"
             :colspan="visibleLanguages.length + 1"
           >
-              {{ r.title }}
+            {{ r.title }}
           </b-th>
         </b-tr>
         <b-tr
@@ -87,8 +85,8 @@
             <editable
               :value="msg(r.resource, key, lang.tag)"
               :placeholder="$t('missing-translation')"
-              @input="onUpdate(r.resource, key, lang.tag, $event)"
               :tabindex="langIndex + 1"
+              @input="onUpdate(r.resource, key, lang.tag, $event)"
             />
           </b-td>
         </b-tr>
@@ -149,6 +147,7 @@ export default {
      */
     highlightKey: {
       type: String,
+      default: '',
     },
 
     disabled: {

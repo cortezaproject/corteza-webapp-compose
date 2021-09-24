@@ -20,12 +20,31 @@
                 class="align-items-center"
               >
                 <div class="flex-grow-1 text-nowrap">
-                  <b-form @submit.prevent="handleAddPageFormSubmit" class="mr-1">
-                    <b-form-group v-if="namespace.canCreatePage" class="mb-0">
+                  <b-form
+                    class="mr-1"
+                    @submit.prevent="handleAddPageFormSubmit"
+                  >
+                    <b-form-group
+                      v-if="namespace.canCreatePage"
+                      class="mb-0"
+                    >
                       <b-input-group>
-                        <b-input required type="text" v-model="page.title" class="page-name-input" id="name" :placeholder="$t('newPlaceholder')" />
+                        <b-input
+                          id="name"
+                          v-model="page.title"
+                          required
+                          type="text"
+                          class="page-name-input"
+                          :placeholder="$t('newPlaceholder')"
+                        />
                         <b-input-group-append>
-                          <b-button type="submit" variant="primary" size="lg">{{ $t('createLabel') }}</b-button>
+                          <b-button
+                            type="submit"
+                            variant="primary"
+                            size="lg"
+                          >
+                            {{ $t('createLabel') }}
+                          </b-button>
                         </b-input-group-append>
                       </b-input-group>
                     </b-form-group>
@@ -36,13 +55,16 @@
                     v-if="namespace.canGrant"
                     :resource="`corteza::compose:page/${namespace.namespaceID}/*`"
                     class="btn-lg"
-                    :buttonLabel="$t('label.permissions')"
-                    buttonVariant="light"
+                    :button-label="$t('label.permissions')"
+                    button-variant="light"
                   />
                 </div>
               </b-row>
             </b-card-header>
-            <b-row class="pages-list-header border-top align-content-center" no-gutters>
+            <b-row
+              class="pages-list-header border-top align-content-center"
+              no-gutters
+            >
               <b-col
                 cols="12"
                 class="pl-4"
@@ -88,6 +110,7 @@ export default {
     namespace: {
       type: compose.Namespace,
       required: false,
+      default: () => ({}),
     },
   },
 

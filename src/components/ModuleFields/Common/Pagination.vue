@@ -4,9 +4,9 @@
   >
     <b-button
       class="flex-grow-1"
-      @click="$emit('prev')"
       :disabled="!hasPrevPage"
       size="sm"
+      @click="$emit('prev')"
     >
       <font-awesome-icon
         :icon="['fas', 'chevron-left']"
@@ -14,9 +14,9 @@
     </b-button>
     <b-button
       class="flex-grow-1 ml-1"
-      @click="$emit('next')"
       :disabled="!hasNextPage"
       size="sm"
+      @click="$emit('next')"
     >
       <font-awesome-icon
         :icon="['fas', 'chevron-right']"

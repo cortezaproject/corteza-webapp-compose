@@ -1,23 +1,40 @@
 <template>
   <div>
-    <div v-if="mode === 'list'" class="list">
-      <draggable :list.sync="attachments" :disabled="!enableOrder">
-        <div v-for="(a, index) in attachments" :key="a.attachmentID" class="item">
+    <div
+      v-if="mode === 'list'"
+      class="list"
+    >
+      <draggable
+        :list.sync="attachments"
+        :disabled="!enableOrder"
+      >
+        <div
+          v-for="(a, index) in attachments"
+          :key="a.attachmentID"
+          class="item"
+        >
           <b-row no-gutters>
             <b-col>
-              <div v-if="enableOrder" class="mr-2 d-inline">
-                <font-awesome-icon v-b-tooltip.hover
-                                :icon="['fas', 'bars']"
-                                :title="$t('general.tooltip.dragAndDrop')"
-                                class="handle text-light" />
+              <div
+                v-if="enableOrder"
+                class="mr-2 d-inline"
+              >
+                <font-awesome-icon
+                  v-b-tooltip.hover
+                  :icon="['fas', 'bars']"
+                  :title="$t('general.tooltip.dragAndDrop')"
+                  class="handle text-light"
+                />
               </div>
               <attachment-link :attachment="a" />
               &nbsp;
-              <i18next path="general.label.attachmentFileInfo" tag="label">
+              <i18next
+                path="general.label.attachmentFileInfo"
+                tag="label"
+              >
                 <span>{{ size(a) }}</span>
                 <span>{{ uploadedAt(a) }}</span>
               </i18next>
-
             </b-col>
             <div class="col-sm-2 text-right my-auto">
               <a
@@ -32,7 +49,10 @@
                 class="px-0"
                 @click="deleteAttachment(index)"
               >
-                <font-awesome-icon :icon="['far', 'trash-alt']" class="action text-danger"></font-awesome-icon>
+                <font-awesome-icon
+                  :icon="['far', 'trash-alt']"
+                  class="action text-danger"
+                />
               </b-button>
             </div>
           </b-row>
@@ -40,41 +60,61 @@
       </draggable>
     </div>
 
-    <div v-else-if="mode === 'grid'" class="grid">
-      <div v-for="a in attachments" :key="a.attachmentID" class="p-2">
-        <attachment-link :attachment="a" class="d-block">
-          <font-awesome-icon :icon="['far', 'file-'+ext(a)]" class="text-dark float-left mr-2"></font-awesome-icon>
-          {{a.name}}
+    <div
+      v-else-if="mode === 'grid'"
+      class="grid"
+    >
+      <div
+        v-for="a in attachments"
+        :key="a.attachmentID"
+        class="p-2"
+      >
+        <attachment-link
+          :attachment="a"
+          class="d-block"
+        >
+          <font-awesome-icon
+            :icon="['far', 'file-'+ext(a)]"
+            class="text-dark float-left mr-2"
+          />
+          {{ a.name }}
         </attachment-link>
-        <i18next path="general.label.attachmentFileInfo" tag="label">
+        <i18next
+          path="general.label.attachmentFileInfo"
+          tag="label"
+        >
           <span>{{ size(a) }}</span>
           <span>{{ uploadedAt(a) }}</span>
         </i18next>
       </div>
     </div>
 
-    <div v-else class="single gallery">
+    <div
+      v-else
+      class="single gallery"
+    >
       <div
-        v-for="(a) in files" :key="a.attachmentID"
+        v-for="(a) in files"
+        :key="a.attachmentID"
         class="my-2"
       >
         <c-preview-inline
-          class="ml-0"
           v-if="canPreview(a)"
-          @openPreview="openLightbox({ ...a, ...$event })"
+          class="ml-0"
           :src="inlineUrl(a)"
           :meta="a.meta"
           :name="a.name"
           :alt="a.name"
           :preview-style="{ width: 'unset' }"
           :labels="previewLabels"
+          @openPreview="openLightbox({ ...a, ...$event })"
         />
 
         <div v-else>
           <font-awesome-icon
             :icon="['far', 'file-'+ext(a)]"
             title="Open bookmarks"
-          ></font-awesome-icon>
+          />
         </div>
 
         <div

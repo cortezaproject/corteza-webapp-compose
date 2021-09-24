@@ -39,6 +39,7 @@ export default {
 
     highlightKey: {
       type: String,
+      default: '',
     },
   },
 

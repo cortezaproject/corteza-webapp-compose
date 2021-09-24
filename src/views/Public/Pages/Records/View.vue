@@ -1,9 +1,10 @@
 <template>
   <div class="d-flex flex-grow-1 w-100">
-    <b-alert v-if="isDeleted"
-             show
-             variant="info">
-
+    <b-alert
+      v-if="isDeleted"
+      show
+      variant="info"
+    >
       {{ $t('record.recordDeleted') }}
     </b-alert>
     <grid
@@ -22,10 +23,10 @@
         :processing="processing"
         :processing-submit="processingSubmit"
         :processing-delete="processingDelete"
-        :isDeleted="isDeleted"
-        :inEditing="inEditing"
-        :hideClone="inCreating"
-        :hideAdd="inCreating"
+        :is-deleted="isDeleted"
+        :in-editing="inEditing"
+        :hide-clone="inCreating"
+        :hide-add="inCreating"
         @add="handleAdd()"
         @clone="handleClone()"
         @edit="handleEdit()"
@@ -68,6 +69,7 @@ export default {
     module: {
       type: compose.Module,
       required: false,
+      default: () => ({}),
     },
 
     page: {
@@ -78,6 +80,7 @@ export default {
     recordID: {
       type: String,
       required: false,
+      default: '',
     },
   },
 

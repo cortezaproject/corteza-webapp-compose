@@ -1,23 +1,26 @@
 <template>
-  <wrap v-bind="$props" v-on="$listeners">
+  <wrap
+    v-bind="$props"
+    v-on="$listeners"
+  >
     <div
       v-if="module && record"
     >
       <div
         v-for="(field, index) in fields"
-        class="d-flex flex-column mt-3 px-3"
         :key="index"
+        class="d-flex flex-column mt-3 px-3"
       >
         <label
           class="text-primary mb-0"
           :class="{ 'mb-0': !!(field.options.description || {}).view || false }"
         >
           {{ field.label || field.name }}
-        <hint
-          :text="(field.options.hint || {}).view || ''"
-          :id="field.fieldID"
-          class="d-inline-block"
-        />
+          <hint
+            :id="field.fieldID"
+            :text="(field.options.hint || {}).view || ''"
+            class="d-inline-block"
+          />
         </label>
 
         <small

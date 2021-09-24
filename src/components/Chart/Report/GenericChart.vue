@@ -173,7 +173,6 @@
               breakpoint="md"
               :label="$t('edit.metric.relativePrecision')"
             >
-
               <b-form-input
                 v-model="metric.relativePrecision"
                 type="number"
@@ -186,7 +185,8 @@
         <template v-if="metric.type === 'line'">
           <b-form-checkbox
             v-model="metric.fill"
-            :value="true" :unchecked-value="false"
+            :value="true"
+            :unchecked-value="false"
           >
             {{ $t('edit.metric.fillArea') }}
           </b-form-checkbox>

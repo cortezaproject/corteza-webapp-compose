@@ -1,5 +1,8 @@
 <template>
-  <wrap v-bind="$props" v-on="$listeners">
+  <wrap
+    v-bind="$props"
+    v-on="$listeners"
+  >
     <chart-component
       v-if="chart"
       :chart="chart"

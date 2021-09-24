@@ -27,8 +27,8 @@
                 v-for="(b, i) in buttons"
                 :key="i"
                 :variant="b.variant || 'primary'"
-                @click="currentButton=b"
                 class="cursor-move m-1"
+                @click="currentButton=b"
               >
                 {{ b.label || '-' }}
               </b-button>
@@ -41,9 +41,9 @@
                 {{ $t('automation.addPlaceholderLabel') }}
               </b-button>
               <c-input-confirm
-                @confirmed="buttons.splice(0)"
                 variant="link"
                 size="md"
+                @confirmed="buttons.splice(0)"
               >
                 {{ $t('automation.removeAll') }}
               </c-input-confirm>
@@ -65,14 +65,14 @@
       <b-row class="mt-4">
         <b-col cols="12">
           <b-card
-            :header="$t('automation.availableScriptsAndWorkflow', { count: available.length })"
             v-if="available.length > 0"
+            :header="$t('automation.availableScriptsAndWorkflow', { count: available.length })"
           >
             <b-input
+              v-model="queryAvailable"
               type="search"
               :placeholder="$t('automation.searchPlaceholder')"
               class="mb-1"
-              v-model="queryAvailable"
             />
 
             <b-list-group
@@ -86,8 +86,18 @@
                 <div class="d-flex w-100 justify-content-between">
                   <h5>
                     {{ b.label || b.script }}
-                    <b-badge v-if="b.workflowID" variant="light">{{ $t('automation.badge.workflow') }}</b-badge>
-                    <b-badge v-else-if="b.script" variant="light">{{ $t('automation.badge.script') }}</b-badge>
+                    <b-badge
+                      v-if="b.workflowID"
+                      variant="light"
+                    >
+                      {{ $t('automation.badge.workflow') }}
+                    </b-badge>
+                    <b-badge
+                      v-else-if="b.script"
+                      variant="light"
+                    >
+                      {{ $t('automation.badge.script') }}
+                    </b-badge>
                   </h5>
                   <code v-if="b.label && b.script">{{ b.script }}</code>
                 </div>

@@ -31,7 +31,6 @@
 
     <grid-layout
       v-else
-      @layout-updated="handleLayoutUpdate"
       :layout.sync="layout"
       :col-num="12"
       :row-height="50"
@@ -42,12 +41,13 @@
       :cols="{ lg: 12, md: 12, sm: 1, xs: 1, xxs: 1 }"
       :margin="[0, 0]"
       :responsive="!editable"
+      @layout-updated="handleLayoutUpdate"
     >
       <grid-item
         v-for="(item, index) in grid"
         :key="item.i"
-        class="grid-item"
         ref="items"
+        class="grid-item"
         :min-h="2"
         v-bind="{ ...item }"
       >
@@ -63,7 +63,8 @@
   </div>
   <div
     v-else
-    class="no-builder-grid h-100 pt-5 container text-center">
+    class="no-builder-grid h-100 pt-5 container text-center"
+  >
     <h4>
       {{ $t('noBlock') }}
     </h4>

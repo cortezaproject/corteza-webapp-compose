@@ -8,8 +8,8 @@
         label-cols="4"
       >
         <b-form-input
-          type="color"
           v-model="options.color"
+          type="color"
           class="mb-1"
         />
       </b-form-group>
@@ -19,8 +19,8 @@
         label-cols="4"
       >
         <b-form-input
-          type="color"
           v-model="options.backgroundColor"
+          type="color"
           class="mb-1"
         />
       </b-form-group>
@@ -30,8 +30,8 @@
         label-cols="4"
       >
         <b-form-input
-          type="number"
           v-model="options.fontSize"
+          type="number"
           placeholder="16"
           class="mb-1"
         />

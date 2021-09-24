@@ -1,5 +1,9 @@
 <template>
-  <wrap v-bind="$props" v-on="$listeners" scrollable-body>
+  <wrap
+    v-bind="$props"
+    scrollable-body
+    v-on="$listeners"
+  >
     <template #default>
       <div
         v-if="!isConfigured"
@@ -18,8 +22,9 @@
           class="h-100 px-2 pt-2"
           @change="onDrop"
         >
-          <template #header
+          <template
             v-if="!records.length"
+            #header
           >
             <div
               class="p-2 text-secondary"
@@ -28,9 +33,9 @@
             </div>
           </template>
           <router-link
-            tag="b-card"
             v-for="record in records"
             :key="record.recordID"
+            tag="b-card"
             :class="{ 'mb-2': true, 'grab': canReposition && record.canUpdateRecord }"
             :to="{ name: 'page.record', params: { pageID: roRecordPage.pageID, recordID: record.recordID }, query: null }"
             border-variant="primary"
@@ -41,9 +46,12 @@
                 :field="titleField"
                 :record="record"
                 :namespace="namespace"
-                valueOnly
+                value-only
               />
-              <i v-else class="text-secondary h6">{{ $t('field.noPermission') }}</i>
+              <i
+                v-else
+                class="text-secondary h6"
+              >{{ $t('field.noPermission') }}</i>
             </b-card-title>
             <b-card-text v-if="descriptionField">
               <field-viewer
@@ -51,7 +59,7 @@
                 :field="descriptionField"
                 :record="record"
                 :namespace="namespace"
-                valueOnly
+                value-only
               />
               <i
                 v-else
@@ -65,8 +73,8 @@
       </div>
     </template>
     <template
-      #footer
       v-if="canAddRecord"
+      #footer
     >
       <b-container
         fluid
@@ -79,10 +87,10 @@
             class="pt-1 text-nowrap text-truncate"
           >
             <b-button
-              @click.prevent="createNewRecord"
               size="sm"
               variant="outline-primary"
               class="float-left"
+              @click.prevent="createNewRecord"
             >
               + {{ $t('recordList.addRecord') }}
             </b-button>

@@ -1,9 +1,9 @@
 <template>
   <tr class="w-100 d-inline-block">
     <td
+      v-b-tooltip.hover
       class="handle align-middle w-100 d-inline-block"
       :class="{ 'cursor-grab': !fixed }"
-      v-b-tooltip.hover
     >
       <font-awesome-icon
         v-if="!fixed"

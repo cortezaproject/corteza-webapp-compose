@@ -49,35 +49,56 @@
               class="px-4 py-3"
             >
               <b-row>
-                <b-col cols="12" md="6" xl="4">
-                  <input required type="hidden" v-model="page.pageID" id="id" />
+                <b-col
+                  cols="12"
+                  md="6"
+                  xl="4"
+                >
+                  <input
+                    id="id"
+                    v-model="page.pageID"
+                    required
+                    type="hidden"
+                  >
                   <label class="text-primary">{{ $t('newPlaceholder') }}</label>
-                  <b-form-input required
-                                v-model="page.title"
-                                class="mb-2"
-                                :placeholder="$t('newPlaceholder')" />
+                  <b-form-input
+                    v-model="page.title"
+                    required
+                    class="mb-2"
+                    :placeholder="$t('newPlaceholder')"
+                  />
                 </b-col>
-                <b-col cols="12" md="6" xl="4">
+                <b-col
+                  cols="12"
+                  md="6"
+                  xl="4"
+                >
                   <label class="text-primary">{{ $t('label.handle') }}</label>
-                  <b-form-input v-model="page.handle"
-                                :state="handleState"
-                                class="mb-2"
-                                :placeholder="$t('block.general.placeholder.handle')" />
+                  <b-form-input
+                    v-model="page.handle"
+                    :state="handleState"
+                    class="mb-2"
+                    :placeholder="$t('block.general.placeholder.handle')"
+                  />
                 </b-col>
               </b-row>
               <label class="text-primary mt-3">{{ $t('label.description') }}</label>
-              <b-form-textarea v-model="page.description"
-                              :placeholder="$t('edit.pageDescription')"
-                              class="mb-2"
-                              rows="8"></b-form-textarea>
-              <b-form-checkbox v-model="page.visible"
-                              switch
-                              size="lg"
-                              class="mt-3 d-inline"
-                              id="visible" />
-                <label class="m-1">
-                  {{ $t('edit.visible') }}
-                </label>
+              <b-form-textarea
+                v-model="page.description"
+                :placeholder="$t('edit.pageDescription')"
+                class="mb-2"
+                rows="8"
+              />
+              <b-form-checkbox
+                id="visible"
+                v-model="page.visible"
+                switch
+                size="lg"
+                class="mt-3 d-inline"
+              />
+              <label class="m-1">
+                {{ $t('edit.visible') }}
+              </label>
             </b-form>
           </b-card>
         </b-col>
@@ -86,8 +107,8 @@
     <portal to="admin-toolbar">
       <editor-toolbar
         :back-link="{name: 'admin.pages'}"
-        :hideDelete="!page.canDeletePage"
-        :hideSave="!page.canUpdatePage"
+        :hide-delete="!page.canDeletePage"
+        :hide-save="!page.canUpdatePage"
         hide-clone
         @delete="handleDeletePage"
         @save="handleSave()"

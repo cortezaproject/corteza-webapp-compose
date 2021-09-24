@@ -20,9 +20,9 @@
       :description="enableFromRecordURL ? $t('iframe.srcDesc') : ''"
     >
       <b-form-input
+        v-model="options.src"
         class="form-control"
         type="url"
-        v-model="options.src"
       />
     </b-form-group>
   </b-tab>

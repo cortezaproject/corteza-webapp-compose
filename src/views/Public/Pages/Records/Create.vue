@@ -12,6 +12,7 @@ export default {
     refRecord: {
       type: compose.Record,
       required: false,
+      default: () => ({}),
     },
 
     // If component was called (via router) with some pre-seed values

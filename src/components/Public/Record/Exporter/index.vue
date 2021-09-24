@@ -1,22 +1,24 @@
 <template>
   <div>
-    <b-button @click="toggleModal"
-              size="lg"
-              variant="light">
+    <b-button
+      size="lg"
+      variant="light"
+      @click="toggleModal"
+    >
       {{ $t('label.export') }}
     </b-button>
     <b-modal
       :visible="showExportModal"
-      @hide="toggleModal"
       size="lg"
       title="Export"
       hide-footer
-      body-class="p-0">
-
+      body-class="p-0"
+      @hide="toggleModal"
+    >
       <field-picker
         v-bind="$attrs"
-        v-on="$listeners" />
-
+        v-on="$listeners"
+      />
     </b-modal>
   </div>
 </template>

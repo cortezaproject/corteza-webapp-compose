@@ -45,8 +45,8 @@
                   <c-permissions-button
                     v-if="namespace.canGrant"
                     :resource="`corteza::compose:module/${namespace.namespaceID}/*`"
-                    :buttonLabel="$t('general.label.permissions')"
-                    buttonVariant="light"
+                    :button-label="$t('general.label.permissions')"
+                    button-variant="light"
                     class="btn-lg"
                   />
                 </div>
@@ -56,7 +56,8 @@
                       v-model.trim="query"
                       class="mw-100"
                       type="search"
-                      :placeholder="$t('searchPlaceholder')" />
+                      :placeholder="$t('searchPlaceholder')"
+                    />
                     <b-input-group-append>
                       <b-input-group-text class="text-primary bg-white">
                         <font-awesome-icon
@@ -65,7 +66,6 @@
                       </b-input-group-text>
                     </b-input-group-append>
                   </b-input-group>
-
                 </div>
               </b-row>
             </b-card-header>
@@ -77,13 +77,13 @@
                 :filter-included-fields="['handle', 'name']"
                 :sort-by.sync="sortBy"
                 :sort-desc="sortDesc"
-                @row-clicked="handleRowClicked"
                 head-variant="light"
                 tbody-tr-class="pointer"
                 :empty-text="$t('noModule')"
                 responsive
                 show-empty
                 hover
+                @row-clicked="handleRowClicked"
               >
                 <template v-slot:cell(name)="{ item: m }">
                   <div
@@ -108,14 +108,17 @@
                 </template>
                 <template v-slot:cell(actions)="{ item: m }">
                   <b-button
-                    @click="openPageBuilder(m)"
                     variant="light"
                     class="mr-2"
+                    @click="openPageBuilder(m)"
                   >
-                    {{ pages.find(p => p.moduleID === m.moduleID) ?  $t('recordPage.edit') : $t('recordPage.create') }}
+                    {{ pages.find(p => p.moduleID === m.moduleID) ? $t('recordPage.edit') : $t('recordPage.create') }}
                   </b-button>
                   <span>
-                    <router-link :to="{name: 'admin.modules.record.list', params: { moduleID: m.moduleID }}" class="btn px-2 text-dark">
+                    <router-link
+                      :to="{name: 'admin.modules.record.list', params: { moduleID: m.moduleID }}"
+                      class="btn px-2 text-dark"
+                    >
                       {{ $t('allRecords.label') }}
                     </router-link>
                   </span>

@@ -5,7 +5,7 @@
       :draggable="namespace.canCreatePage"
       :data="{children:list}"
       tag="ul"
-      mixinParentKey="parent"
+      mixin-parent-key="parent"
       class="list-group pb-3"
       @changePosition="handleChangePosition"
     >
@@ -13,8 +13,8 @@
         slot-scope="{item}"
       >
         <b-row
-          no-gutters
           v-if="item.pageID"
+          no-gutters
           class="wrap d-flex pr-2"
         >
           <b-col
@@ -29,12 +29,15 @@
               v-if="!item.visible && item.moduleID == '0'"
               class="text-danger"
             >
-                  <font-awesome-icon
-                    :icon="['fas', 'eye-slash']"
-                    :title="$t('notVisible')"
-                  />
-                </span>
-            <b-badge variant="danger" v-if="!isValid(item)">
+              <font-awesome-icon
+                :icon="['fas', 'eye-slash']"
+                :title="$t('notVisible')"
+              />
+            </span>
+            <b-badge
+              v-if="!isValid(item)"
+              variant="danger"
+            >
               {{ $t('invalid') }}
             </b-badge>
           </b-col>
@@ -48,13 +51,15 @@
               v-if="item.canUpdatePage"
               :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
               class="btn btn-light mr-2"
-            >{{ $t('block.general.label.pageBuilder') }}
+            >
+              {{ $t('block.general.label.pageBuilder') }}
             </router-link>
             <span class="view d-inline-block">
               <router-link
                 v-if="item.blocks && item.blocks.length >= 1"
                 :to="{name: 'page', params: { pageID: item.pageID }}"
-                class="btn">
+                class="btn"
+              >
                 {{ $t('view') }}
               </router-link>
             </span>
@@ -111,7 +116,7 @@ export default {
     namespaces: 'page',
   },
 
-  name: 'page-tree',
+  name: 'PageTree',
 
   components: {
     SortableTree,

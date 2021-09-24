@@ -15,8 +15,8 @@
         </label>
 
         <hint
-          :text="hint"
           :id="field.fieldID"
+          :text="hint"
         />
       </div>
       <small
@@ -26,25 +26,29 @@
       </small>
     </template>
 
-    <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
+    <multi
+      v-if="field.isMulti"
+      v-slot="ctx"
+      :value.sync="value"
+    >
       <b-form-input
+        v-model="value[ctx.index]"
         type="url"
         class="mr-2"
         placeholder="Example URL: https://example.com"
         :formatter="fixUrl"
         lazy-formatter
-        v-model="value[ctx.index]"
       />
     </multi>
     <template
       v-else
     >
       <b-form-input
+        v-model="value"
         type="url"
         placeholder="Example URL: https://example.com"
         :formatter="fixUrl"
         lazy-formatter
-        v-model="value"
       />
       <errors :errors="errors" />
     </template>

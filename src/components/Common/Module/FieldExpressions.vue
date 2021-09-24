@@ -6,12 +6,15 @@
       v-for="(expr, e) in value"
       :key="e"
       class="mb-2"
-      no-gutters>
+      no-gutters
+    >
       <b-input-group>
         <b-input-group-prepend>
-          <b-button variant="dark">ƒ</b-button>
+          <b-button variant="dark">
+            ƒ
+          </b-button>
         </b-input-group-prepend>
-        <slot v-bind:value="value[e]">
+        <slot :value="value[e]">
           <b-form-input
             v-model="value[e]"
             :placeholder="placeholder"
@@ -36,6 +39,7 @@ export default {
   props: {
     value: {
       type: Array,
+      default: () => ([]),
     },
 
     placeholder: {

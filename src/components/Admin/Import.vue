@@ -18,13 +18,16 @@
         <!-- To handle file upload -->
         <template v-if="!importObj">
           <b-form-file
-            @change="loadFile"
             :placeholder="$t('label.importPlaceholder')"
             :browse-text="$t('label.browse')"
             class="font-wight-normal pointer"
+            @change="loadFile"
           />
 
-          <h6 v-if="processing" class="my-auto ml-3 ">
+          <h6
+            v-if="processing"
+            class="my-auto ml-3 "
+          >
             {{ $t('label.processing') }}
           </h6>
         </template>
@@ -32,35 +35,49 @@
         <!-- To confirm selection & import -->
         <template v-else>
           <b-container class="p-0">
-          <b-row no-gutters class="mb-3">
-            <b-button variant="light" @click="selectAll(true)">
-              {{ $t('selectAll') }}
-            </b-button>
-            <b-button class="ml-2" variant="light" @click="selectAll(false)">
-              {{ $t('unselectAll') }}
-            </b-button>
-          </b-row>
-          <b-row no-gutters>
-            <b-col cols="12"
-                   sm="6"
-                   lg="4"
-                   v-for="(o, index) in importObj.list" :key="index">
+            <b-row
+              no-gutters
+              class="mb-3"
+            >
+              <b-button
+                variant="light"
+                @click="selectAll(true)"
+              >
+                {{ $t('selectAll') }}
+              </b-button>
+              <b-button
+                class="ml-2"
+                variant="light"
+                @click="selectAll(false)"
+              >
+                {{ $t('unselectAll') }}
+              </b-button>
+            </b-row>
+            <b-row no-gutters>
+              <b-col
+                v-for="(o, index) in importObj.list"
+                :key="index"
+                cols="12"
+                sm="6"
+                lg="4"
+              >
                 <b-form-checkbox v-model="o.import">
                   {{ o.name || o.title }}
                 </b-form-checkbox>
-            </b-col>
-          </b-row>
-        </b-container>
+              </b-col>
+            </b-row>
+          </b-container>
         </template>
       </b-input-group>
 
       <div slot="modal-footer">
         <b-button
-            :disabled="!importObj || !importObj.list.filter(i => i.import).length > 0"
-            variant="primary"
-            size="lg"
-            @click="jsonImport(importObj)">
-            {{ $t('label.import') }}
+          :disabled="!importObj || !importObj.list.filter(i => i.import).length > 0"
+          variant="primary"
+          size="lg"
+          @click="jsonImport(importObj)"
+        >
+          {{ $t('label.import') }}
         </b-button>
       </div>
     </b-modal>

@@ -1,14 +1,22 @@
 <template>
   <b-tab :title="$t('socialFeed.label')">
-    <fieldset class="form-group" v-if="page.moduleID && page.moduleID !== '0'">
-        <label>{{ $t('socialFeed.twitterProfileField') }}</label>
-        <b-form-select
-            :options="selectOptions"
-            v-model="options.profileSourceField" />
+    <fieldset
+      v-if="page.moduleID && page.moduleID !== '0'"
+      class="form-group"
+    >
+      <label>{{ $t('socialFeed.twitterProfileField') }}</label>
+      <b-form-select
+        v-model="options.profileSourceField"
+        :options="selectOptions"
+      />
     </fieldset>
     <fieldset class="form-group">
-        <label>{{ $t('socialFeed.twitterProfileLabel') }}</label>
-        <input class="form-control" type="text" v-model="options.profileUrl">
+      <label>{{ $t('socialFeed.twitterProfileLabel') }}</label>
+      <input
+        v-model="options.profileUrl"
+        class="form-control"
+        type="text"
+      >
     </fieldset>
   </b-tab>
 </template>

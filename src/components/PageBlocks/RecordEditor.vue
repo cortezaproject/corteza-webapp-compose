@@ -1,5 +1,8 @@
 <template>
-  <wrap v-bind="$props" v-on="$listeners">
+  <wrap
+    v-bind="$props"
+    v-on="$listeners"
+  >
     <div
       v-if="record"
       class="px-3"
@@ -23,11 +26,11 @@
             :class="{ 'mb-0': !!(field.options.description || {}).view || false }"
           >
             {{ field.label || field.name }}
-          <hint
-            :text="(field.options.hint || {}).view || ''"
-            :id="field.fieldID"
-            class="d-inline-block"
-          />
+            <hint
+              :id="field.fieldID"
+              :text="(field.options.hint || {}).view || ''"
+              class="d-inline-block"
+            />
           </label>
 
           <small
@@ -94,6 +97,7 @@ export default {
     errors: {
       type: validator.Validated,
       required: false,
+      default: () => ({}),
     },
   },
 

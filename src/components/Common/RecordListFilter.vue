@@ -19,7 +19,7 @@
       :target="selectedFieldName"
       @show="onOpen()"
     >
-      <div class='py-3 px-2'>
+      <div class="py-3 px-2">
         <table v-if="componentFilter.length">
           <template
             v-for="(filterGroup, groupIndex) in componentFilter"
@@ -61,7 +61,7 @@
                   <field-editor
                     v-if="getField(filter.name)"
                     class="mb-0 filter-field-editor"
-                    valueOnly
+                    value-only
                     :field="getField(filter.name)"
                     :record="filter.record"
                     v-bind="mock"
@@ -102,13 +102,14 @@
                 :key="`groupCondtion-${groupIndex}`"
               >
                 <td
-                  colspan="100%" class="p-0 filter-border justify-content-center"
+                  colspan="100%"
+                  class="p-0 filter-border justify-content-center"
                   :class="{ 'pb-1': filterGroup.groupCondition }"
                 >
                   <b-form-select
                     v-if="filterGroup.groupCondition"
-                    class="w-auto"
                     v-model="filterGroup.groupCondition"
+                    class="w-auto"
                     :options="conditions"
                   />
 
@@ -129,8 +130,16 @@
           </template>
         </table>
 
-        <div ref="filter-footer" class="d-flex justify-content-end">
-          <b-button ref="btnSave" class="mr-3" variant="primary" @click="onSave">
+        <div
+          ref="filter-footer"
+          class="d-flex justify-content-end"
+        >
+          <b-button
+            ref="btnSave"
+            class="mr-3"
+            variant="primary"
+            @click="onSave"
+          >
             {{ $t('general.label.save') }}
           </b-button>
         </div>

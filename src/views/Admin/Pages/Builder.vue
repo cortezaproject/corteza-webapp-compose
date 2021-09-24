@@ -68,10 +68,10 @@
             </b-button>
 
             <c-input-confirm
-              @confirmed="page.blocks.splice(index,1)"
               class="p-1"
               size="md"
               link
+              @confirmed="page.blocks.splice(index,1)"
             />
           </div>
           <page-block
@@ -84,8 +84,8 @@
     </grid>
 
     <b-modal
-      size="lg"
       id="createBlockSelector"
+      size="lg"
       scrollable
       hide-footer
       :title="$t('build.selectBlockTitle')"
@@ -103,11 +103,12 @@
       cancel-variant="link"
       :cancel-title="$t('block.general.label.cancel')"
       size="xl"
-      @ok="updateBlocks"
-      @hide="editor=null"
       :visible="showCreator"
       body-class="p-0 border-top-0"
-      header-class="p-3 pb-0 border-bottom-0">
+      header-class="p-3 pb-0 border-bottom-0"
+      @ok="updateBlocks"
+      @hide="editor=null"
+    >
       <configurator
         v-if="showCreator"
         :namespace="namespace"
@@ -125,11 +126,12 @@
       :cancel-title="$t('label.cancel')"
       cancel-variant="link"
       size="xl"
-      @ok="updateBlocks"
-      @hide="editor=null"
       :visible="showEditor"
       body-class="p-0 border-top-0"
-      header-class="p-3 pb-0 border-bottom-0">
+      header-class="p-3 pb-0 border-bottom-0"
+      @ok="updateBlocks"
+      @hide="editor=null"
+    >
       <configurator
         v-if="showEditor"
         :namespace="namespace"
@@ -145,8 +147,8 @@
       <editor-toolbar
         class=""
         :back-link="{name: 'admin.pages'}"
-        :hideDelete="!page.canDeletePage"
-        :hideSave="!page.canUpdatePage"
+        :hide-delete="!page.canDeletePage"
+        :hide-save="!page.canUpdatePage"
         hide-clone
         @save="handleSave()"
         @delete="handleDeletePage"
@@ -154,10 +156,11 @@
       >
         <b-button
           v-if="page.canUpdatePage"
+          v-b-modal.createBlockSelector
           variant="light"
           size="lg"
           class="mr-1 float-right"
-          v-b-modal.createBlockSelector>
+        >
           + {{ $t('build.addBlock') }}
         </b-button>
       </editor-toolbar>

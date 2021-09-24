@@ -1,19 +1,22 @@
 <template>
   <div>
-    <b-form-group horizontal
-                  :description="$t('kind.file.view.modeFootnote')"
-                  :label="$t('kind.file.view.modeLabel')">
-      <b-form-radio-group v-model="f.options.mode"
-                          buttons
-                          button-variant="outline-secondary"
-                          size="sm"
-                          name="buttons2"
-                          :options="modes">
-      </b-form-radio-group>
+    <b-form-group
+      horizontal
+      :description="$t('kind.file.view.modeFootnote')"
+      :label="$t('kind.file.view.modeLabel')"
+    >
+      <b-form-radio-group
+        v-model="f.options.mode"
+        buttons
+        button-variant="outline-secondary"
+        size="sm"
+        name="buttons2"
+        :options="modes"
+      />
     </b-form-group>
     <b-form-checkbox
-      :disabled="!enableFileNameHiding"
       v-model="f.options.hideFileName"
+      :disabled="!enableFileNameHiding"
     >
       {{ $t('kind.file.view.showName') }}
     </b-form-checkbox>

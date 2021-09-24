@@ -26,7 +26,12 @@
       </b-button-group>
     </portal>
 
-    <b-container @submit.prevent="handleSave" tag="form" v-if="module" fluid="xl">
+    <b-container
+      v-if="module"
+      tag="form"
+      fluid="xl"
+      @submit.prevent="handleSave"
+    >
       <b-row no-gutters>
         <b-col>
           <b-card
@@ -55,9 +60,10 @@
 
                     {{ $t('edit.federationSettings.title') }}
                   </b-button>
-                  <export :list="[this.module]"
-                          type="module"
-                          class="mr-1"
+                  <export
+                    :list="[module]"
+                    type="module"
+                    class="mr-1"
                   />
 
                   <c-permissions-button
@@ -65,24 +71,24 @@
                     :title="module.name"
                     :target="module.name"
                     :resource="`corteza::compose:module/${namespace.namespaceID}/${module.moduleID}`"
-                    :buttonLabel="$t('general.label.permissions')"
-                    buttonVariant="light"
+                    :button-label="$t('general.label.permissions')"
+                    button-variant="light"
                     class="btn-lg mr-1"
                   />
 
                   <c-permissions-button
                     v-if="module.canGrant"
                     :resource="`corteza::compose:module-field/${namespace.namespaceID}/${module.moduleID}/*`"
-                    :buttonLabel="$t('edit.fieldPermissions')"
-                    buttonVariant="light"
+                    :button-label="$t('edit.fieldPermissions')"
+                    button-variant="light"
                     class="btn-lg ml-auto mr-1"
                   />
 
                   <c-permissions-button
                     v-if="module.canGrant"
                     :resource="`corteza::compose:record/${namespace.namespaceID}/${module.moduleID}/*`"
-                    :buttonLabel="$t('edit.recordPermissions')"
-                    buttonVariant="light"
+                    :button-label="$t('edit.recordPermissions')"
+                    button-variant="light"
                     class="btn-lg ml-auto mr-1"
                   />
 
@@ -107,85 +113,138 @@
                   </b-button>
                   <b-button
                     v-else
-                    @click="handleRecordPageCreation"
                     variant="primary"
                     size="lg"
                     class="mr-1"
+                    @click="handleRecordPageCreation"
                   >
                     {{ $t('recordPage.create') }}
                   </b-button>
                 </div>
               </b-row>
             </b-card-header>
-            <b-container fluid class="px-4 pt-3">
-              <h5 class="mb-3">{{ $t('edit.moduleInfo') }}</h5>
+            <b-container
+              fluid
+              class="px-4 pt-3"
+            >
+              <h5 class="mb-3">
+                {{ $t('edit.moduleInfo') }}
+              </h5>
               <b-row>
-                <b-col cols="12" md="6" xl="4">
+                <b-col
+                  cols="12"
+                  md="6"
+                  xl="4"
+                >
                   <b-form-group>
                     <label class="text-primary">{{ $t('newLabel') }}</label>
-                    <b-form-input required
-                                  v-model="module.name"
-                                  :placeholder="$t('newPlaceholder')"></b-form-input>
+                    <b-form-input
+                      v-model="module.name"
+                      required
+                      :placeholder="$t('newPlaceholder')"
+                    />
                   </b-form-group>
                 </b-col>
-                <b-col cols="12" md="6" xl="4">
-                <b-form-group>
-                  <label class="text-primary">{{ $t('general.label.handle') }}</label>
-                  <b-form-input v-model="module.handle"
-                                :state="handleState"
-                                class="mb-2"
-                                :placeholder="$t('general.placeholder.handle')"></b-form-input>
-                </b-form-group>
+                <b-col
+                  cols="12"
+                  md="6"
+                  xl="4"
+                >
+                  <b-form-group>
+                    <label class="text-primary">{{ $t('general.label.handle') }}</label>
+                    <b-form-input
+                      v-model="module.handle"
+                      :state="handleState"
+                      class="mb-2"
+                      :placeholder="$t('general.placeholder.handle')"
+                    />
+                  </b-form-group>
                 </b-col>
               </b-row>
             </b-container>
             <hr>
-            <b-container fluid class="px-4">
-              <h5 class="mb-3">{{ $t('edit.manageRecordFields') }}</h5>
+            <b-container
+              fluid
+              class="px-4"
+            >
+              <h5 class="mb-3">
+                {{ $t('edit.manageRecordFields') }}
+              </h5>
               <b-row no-gutters>
                 <b-form-group class="w-100">
                   <table class="table table-sm table-borderless table-responsive-lg">
                     <thead>
-                    <tr>
-                      <th></th>
-                      <th v-b-tooltip.hover.topright :title="$t('edit.tooltip.name')" class="text-primary">{{ $t('general.label.name') }}</th>
-                      <th v-b-tooltip.hover.topright :title="$t('edit.tooltip.title')" class="text-primary">{{ $t('general.label.title') }}</th>
-                      <th class="text-primary">{{ $t('general.label.type') }}</th>
-                      <th v-b-tooltip.hover :title="$t('edit.tooltip.attributes')" class="text-primary">{{ $t('general.label.attributes') }}</th>
-                      <th></th>
-                    </tr>
+                      <tr>
+                        <th />
+                        <th
+                          v-b-tooltip.hover.topright
+                          :title="$t('edit.tooltip.name')"
+                          class="text-primary"
+                        >
+                          {{ $t('general.label.name') }}
+                        </th>
+                        <th
+                          v-b-tooltip.hover.topright
+                          :title="$t('edit.tooltip.title')"
+                          class="text-primary"
+                        >
+                          {{ $t('general.label.title') }}
+                        </th>
+                        <th class="text-primary">
+                          {{ $t('general.label.type') }}
+                        </th>
+                        <th
+                          v-b-tooltip.hover
+                          :title="$t('edit.tooltip.attributes')"
+                          class="text-primary"
+                        >
+                          {{ $t('general.label.attributes') }}
+                        </th>
+                        <th />
+                      </tr>
                     </thead>
-                    <draggable v-model="module.fields" :options="{handle:'.handle'}" tag="tbody">
-                      <field-row-edit v-for="(field, index) in module.fields"
-                                      @edit="handleFieldEdit(module.fields[index])"
-                                      @delete="module.fields.splice(index, 1)"
-                                      v-model="module.fields[index]"
-                                      :canGrant="namespace.canGrant"
-                                      :hasRecords="hasRecords"
-                                      :module="module"
-                                      :key="index"></field-row-edit>
+                    <draggable
+                      v-model="module.fields"
+                      :options="{handle:'.handle'}"
+                      tag="tbody"
+                    >
+                      <field-row-edit
+                        v-for="(field, index) in module.fields"
+                        :key="index"
+                        v-model="module.fields[index]"
+                        :can-grant="namespace.canGrant"
+                        :has-records="hasRecords"
+                        :module="module"
+                        @edit="handleFieldEdit(module.fields[index])"
+                        @delete="module.fields.splice(index, 1)"
+                      />
                     </draggable>
                     <tr>
                       <td colspan="1" />
                       <td colspan="7">
-                        <b-button @click="handleNewField"
-                                  class="mb-5"
-                                  variant="primary">
+                        <b-button
+                          class="mb-5"
+                          variant="primary"
+                          @click="handleNewField"
+                        >
                           + {{ $t('edit.newField') }}
                         </b-button>
                       </td>
                     </tr>
                     <tr>
-                      <td colspan="7"
-                          class="font-weight-bold"
+                      <td
+                        colspan="7"
+                        class="font-weight-bold"
                       >
                         {{ $t('edit.systemFields') }}
                       </td>
                     </tr>
-                    <field-row-view v-for="(field, index) in module.systemFields()"
-                                    :field="field"
-                                    class="mt-4"
-                                    :key="index"></field-row-view>
+                    <field-row-view
+                      v-for="(field, index) in module.systemFields()"
+                      :key="index"
+                      :field="field"
+                      class="mt-4"
+                    />
                   </table>
                 </b-form-group>
               </b-row>
@@ -202,11 +261,11 @@
       ok-only
       ok-variant="primary"
       size="lg"
-      @ok="handleFieldSave(updateField)"
-      @hide="updateField=null"
       :visible="!!updateField"
       body-class="p-0 border-top-0"
       header-class="p-3 pb-0 border-bottom-0"
+      @ok="handleFieldSave(updateField)"
+      @hide="updateField=null"
     >
       <field-configurator
         :field.sync="updateField"
@@ -225,8 +284,8 @@
     <portal to="admin-toolbar">
       <editor-toolbar
         :back-link="{name: 'admin.modules'}"
-        :hideDelete="hideDelete"
-        :hideSave="hideSave"
+        :hide-delete="hideDelete"
+        :hide-save="hideSave"
         :disable-save="!fieldsValid || processing"
         hide-clone
         @delete="handleDelete"

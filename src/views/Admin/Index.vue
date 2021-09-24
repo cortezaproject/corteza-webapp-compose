@@ -16,12 +16,13 @@
 
 <script>
 export default {
-  name: 'admin-root',
+  name: 'AdminRoot',
 
   props: {
     namespace: {
       type: Object,
       required: false,
+      default: () => ({}),
     },
   },
 

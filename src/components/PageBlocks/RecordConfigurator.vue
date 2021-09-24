@@ -10,9 +10,9 @@
       </label>
       <input
         v-if="module"
+        v-model="module.name"
         class="form-control"
         type="text"
-        v-model="module.name"
         readonly
       >
     </fieldset>

@@ -1,33 +1,39 @@
 <template>
   <div>
-    <b-button @click="showModal=true"
-              size="lg"
-              variant="light">
+    <b-button
+      size="lg"
+      variant="light"
+      @click="showModal=true"
+    >
       {{ $t('general.label.import') }}
     </b-button>
 
-    <b-modal :visible="showModal"
-             @hide="onModalHide"
-             size="lg"
-             :title="$t('recordList.import.to', { modulename: module.name })"
-             hide-footer
-             body-class="p-0">
-
+    <b-modal
+      :visible="showModal"
+      size="lg"
+      :title="$t('recordList.import.to', { modulename: module.name })"
+      hide-footer
+      body-class="p-0"
+      @hide="onModalHide"
+    >
       <keep-alive>
-        <component :is="stepComponent"
-                  v-bind="$props"
-                  :session="session"
-                  @fileUploaded="onFileUploaded"
-                  @fieldsMatched="onFieldsMatched"
-                  @importFailed="onImportFailed"
-                  @back="onBack"
-                  @reset="onReset"
-                  @close="onClose"
-                  v-on="$listeners">
-
-          <label v-if="progress.failed"
-                class="text-danger"
-                slot="uploadLabel">
+        <component
+          :is="stepComponent"
+          v-bind="$props"
+          :session="session"
+          @fileUploaded="onFileUploaded"
+          @fieldsMatched="onFieldsMatched"
+          @importFailed="onImportFailed"
+          @back="onBack"
+          @reset="onReset"
+          @close="onClose"
+          v-on="$listeners"
+        >
+          <label
+            v-if="progress.failed"
+            slot="uploadLabel"
+            class="text-danger"
+          >
 
             {{ $t('recordList.import.failed', progress) }}
           </label>

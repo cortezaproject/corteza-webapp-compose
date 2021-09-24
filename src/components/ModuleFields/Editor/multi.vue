@@ -1,7 +1,10 @@
 <template>
   <div>
-    <div v-if="singleInput" class="mb-2">
-      <slot name="single"></slot>
+    <div
+      v-if="singleInput"
+      class="mb-2"
+    >
+      <slot name="single" />
     </div>
     <draggable
       :list.sync="val"
@@ -20,15 +23,15 @@
         />
 
         <slot
-          v-bind:index="index"
+          :index="index"
           class="flex-shrink-1"
         />
 
         <font-awesome-icon
           v-if="removable"
           :icon="['fas', 'times']"
-          @click="removeValue(index)"
           class="pointer text-danger ml-2 mr-1"
+          @click="removeValue(index)"
         />
       </div>
     </draggable>

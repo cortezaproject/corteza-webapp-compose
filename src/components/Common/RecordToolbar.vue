@@ -1,7 +1,8 @@
 <template>
   <b-container
     fluid
-    class="bg-white shadow border-top p-3">
+    class="bg-white shadow border-top p-3"
+  >
     <b-row
       no-gutters
       class="align-items-center"
@@ -13,7 +14,10 @@
           :disabled="processing"
           @click.prevent="$emit('back')"
         >
-          <font-awesome-icon :icon="['fas', 'chevron-left']" class="back-icon"></font-awesome-icon>
+          <font-awesome-icon
+            :icon="['fas', 'chevron-left']"
+            class="back-icon"
+          />
           {{ $t('label.back') }}
         </b-button>
       </div>
@@ -24,12 +28,12 @@
         <c-input-confirm
           v-if="isCreated"
           :disabled="!canDeleteRecord"
-          @confirmed="$emit('delete')"
           class="mx-1"
           size="lg"
-          sizeConfirm="lg"
+          size-confirm="lg"
           variant="danger"
           :borderless="false"
+          @confirmed="$emit('delete')"
         >
           <b-spinner
             v-if="processingDelete"
@@ -110,11 +114,13 @@ export default {
     module: {
       type: compose.Module,
       required: false,
+      default: () => ({}),
     },
 
     record: {
       type: compose.Record,
       required: false,
+      default: () => ({}),
     },
 
     processing: {

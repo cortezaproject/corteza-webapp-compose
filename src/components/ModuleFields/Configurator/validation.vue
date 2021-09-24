@@ -39,7 +39,7 @@
       </b-form-text>
     </b-form-group>
 
-    <hr />
+    <hr>
 
     <b-form-group
       class="mt-3"
@@ -70,9 +70,9 @@
       </template>
 
       <field-expressions
+        v-slot:default="{ value }"
         v-model="field.expressions.validators"
         @remove="field.expressions.validators.splice($event,1)"
-        v-slot:default="{ value }"
       >
         <b-form-input
           v-model="value.test"
@@ -80,7 +80,9 @@
           disabled
         />
         <b-input-group-prepend>
-          <b-button variant="warning">!</b-button>
+          <b-button variant="warning">
+            !
+          </b-button>
         </b-input-group-prepend>
         <b-form-input
           v-model="value.error"

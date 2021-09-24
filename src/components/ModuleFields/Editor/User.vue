@@ -15,8 +15,8 @@
         </label>
 
         <hint
-          :text="hint"
           :id="field.fieldID"
+          :text="hint"
         />
       </div>
       <small
@@ -26,7 +26,12 @@
       </small>
     </template>
 
-    <multi v-if="field.isMulti" :value.sync="value" :singleInput="field.options.selectType !== 'each'" :removable="field.options.selectType !== 'multiple'">
+    <multi
+      v-if="field.isMulti"
+      :value.sync="value"
+      :single-input="field.options.selectType !== 'each'"
+      :removable="field.options.selectType !== 'multiple'"
+    >
       <template v-slot:single>
         <vue-select
           v-if="field.options.selectType === 'default'"

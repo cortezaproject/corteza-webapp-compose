@@ -5,7 +5,9 @@
   </span>
   <div v-else>
     <label>{{ field.label || field.name }}</label>
-    <div :class="classes">{{ formatted }}</div>
+    <div :class="classes">
+      {{ formatted }}
+    </div>
     <errors :errors="errors" />
   </div>
 </template>

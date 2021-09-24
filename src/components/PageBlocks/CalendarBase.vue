@@ -1,5 +1,8 @@
 <template>
-  <wrap v-bind="$props" v-on="$listeners">
+  <wrap
+    v-bind="$props"
+    v-on="$listeners"
+  >
     <div class="calendar-container m-2">
       <div class="d-flex align-items-baseline justify-content-center mb-2">
         <b-btn
@@ -39,11 +42,11 @@
         </b-btn>
       </div>
       <full-calendar
-        :events="events"
         ref="fc"
+        :events="events"
         v-bind="config"
-        @eventClick="handleEventClick"
         class="my-1"
+        @eventClick="handleEventClick"
       />
     </div>
   </wrap>

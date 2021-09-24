@@ -19,7 +19,6 @@
         :options="fieldOptions"
         :disabled="!selectedModule"
       />
-
     </b-form-group>
 
     <b-form-group
@@ -43,7 +42,10 @@
         :placeholder="$t('kind.record.prefilterPlaceholder')"
       />
       <b-form-text>
-        <i18next path="kind.record.prefilterFootnote" tag="label">
+        <i18next
+          path="kind.record.prefilterFootnote"
+          tag="label"
+        >
           <code>${recordID}</code>
           <code>${ownerID}</code>
           <code>${userID}</code>

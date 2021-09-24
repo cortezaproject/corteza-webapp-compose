@@ -38,13 +38,14 @@
     >
       <b-input-group>
         <b-input-group-append>
-          <b-button variant="dark">ƒ</b-button>
+          <b-button variant="dark">
+            ƒ
+          </b-button>
         </b-input-group-append>
         <b-form-input
-          :placeholder="$t('valueExpr.placeholder')"
           v-model="field.expressions.value"
-        >
-        </b-form-input>
+          :placeholder="$t('valueExpr.placeholder')"
+        />
         <b-input-group-append>
           <b-button
             variant="outline-secondary"
@@ -65,7 +66,7 @@
       class="mt-3 mb-0"
     >
       <field-editor
-        valueOnly
+        value-only
         :append-to-body="false"
         v-bind="mock"
       />
@@ -75,8 +76,8 @@
 
     <b-form-checkbox
       :checked="noDescriptionEdit"
-      @change="$set(field.options.description, 'edit', $event ? undefined : '')"
       tabindex="-1"
+      @change="$set(field.options.description, 'edit', $event ? undefined : '')"
     >
       {{ $t('options.description.same') }}
     </b-form-checkbox>
@@ -106,8 +107,8 @@
 
     <b-form-checkbox
       :checked="noHintEdit"
-      @change="$set(field.options.hint, 'edit', $event ? undefined : '')"
       tabindex="-1"
+      @change="$set(field.options.hint, 'edit', $event ? undefined : '')"
     >
       {{ $t('options.hint.same') }}
     </b-form-checkbox>

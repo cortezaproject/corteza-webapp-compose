@@ -15,8 +15,8 @@
         </label>
 
         <hint
-          :text="hint"
           :id="field.fieldID"
+          :text="hint"
         />
       </div>
       <small
@@ -27,7 +27,10 @@
     </template>
 
     <template v-if="field.isMulti">
-      <multi :value.sync="value" :singleInput="field.options.selectType !== 'each'">
+      <multi
+        :value.sync="value"
+        :single-input="field.options.selectType !== 'each'"
+      >
         <template v-slot:single>
           <b-form-select
             v-if="field.options.selectType === 'default'"
@@ -55,8 +58,8 @@
         <template v-slot:default="ctx">
           <b-form-select
             v-if="field.options.selectType === 'each'"
-            :options="selectOptions"
             v-model="value[ctx.index]"
+            :options="selectOptions"
           >
             <template slot="first">
               <option

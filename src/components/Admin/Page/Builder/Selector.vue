@@ -4,14 +4,13 @@
       <b-col
         cols="4"
       >
-        <b-list-group
-        >
+        <b-list-group>
           <b-list-group-item
             v-for="(type) in types"
-            :disabled="!recordPage && type.recordPageOnly"
-            @click="$emit('select', type.block)"
             :key="type.label"
+            :disabled="!recordPage && type.recordPageOnly"
             button
+            @click="$emit('select', type.block)"
             @mouseover="current = type.image"
           >
             {{ type.label }}

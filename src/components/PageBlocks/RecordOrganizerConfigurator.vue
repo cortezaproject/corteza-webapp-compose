@@ -9,7 +9,6 @@
         value-field="moduleID"
         required
       />
-
     </b-form-group>
 
     <div v-if="selectedModule">
@@ -17,8 +16,12 @@
         <label>{{ $t('field.selector.available') }}</label>
         <div class="d-flex">
           <div class="border fields w-100 p-2">
-            <div v-for="field in allFields" class="field" :key="field.name">
-              <span v-if="field.label">{{ field.label }} ({{field.name}})</span>
+            <div
+              v-for="field in allFields"
+              :key="field.name"
+              class="field"
+            >
+              <span v-if="field.label">{{ field.label }} ({{ field.name }})</span>
               <span v-else>{{ field.name }}</span>
               <span class="small float-right">
                 <span v-if="field.isSystem">{{ $t('field.selector.systemField') }}</span>
@@ -29,73 +32,117 @@
         </div>
       </b-form-group>
 
-      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('recordList.record.prefilterLabel')">
-        <b-form-textarea :value="true"
-                         :placeholder="$t('recordList.record.prefilterPlaceholder')"
-                         v-model.trim="options.filter" />
-          <b-form-text>
-            <i18next path="recordList.record.prefilterFootnote" tag="label">
-              <code>${recordID}</code>
-              <code>${ownerID}</code>
-              <code>${userID}</code>
-            </i18next>
-          </b-form-text>
+      <b-form-group
+        horizontal
+        :label-cols="3"
+        breakpoint="md"
+        :label="$t('recordList.record.prefilterLabel')"
+      >
+        <b-form-textarea
+          v-model.trim="options.filter"
+          :value="true"
+          :placeholder="$t('recordList.record.prefilterPlaceholder')"
+        />
+        <b-form-text>
+          <i18next
+            path="recordList.record.prefilterFootnote"
+            tag="label"
+          >
+            <code>${recordID}</code>
+            <code>${ownerID}</code>
+            <code>${userID}</code>
+          </i18next>
+        </b-form-text>
       </b-form-group>
 
-      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('recordOrganizer.labelField.label')">
+      <b-form-group
+        horizontal
+        :label-cols="3"
+        breakpoint="md"
+        :label="$t('recordOrganizer.labelField.label')"
+      >
         <b-form-select v-model="options.labelField">
-          <option value="">{{ $t('general.label.none') }}</option>
+          <option value="">
+            {{ $t('general.label.none') }}
+          </option>
           <option
             v-for="(field, index) in selectedModuleFields"
             :key="index"
-            :value="field.name">
-
+            :value="field.name"
+          >
             {{ field.label || field.name }} ({{ field.kind }})
           </option>
         </b-form-select>
         <b-form-text>{{ $t('recordOrganizer.labelField.footnote') }}</b-form-text>
       </b-form-group>
 
-      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('recordOrganizer.descriptionField.label')">
+      <b-form-group
+        horizontal
+        :label-cols="3"
+        breakpoint="md"
+        :label="$t('recordOrganizer.descriptionField.label')"
+      >
         <b-form-select v-model="options.descriptionField">
-          <option value="">{{ $t('general.label.none') }}</option>
+          <option value="">
+            {{ $t('general.label.none') }}
+          </option>
           <option
             v-for="(field, index) in selectedModuleFields"
             :key="index"
-            :value="field.name">
-
+            :value="field.name"
+          >
             {{ field.label || field.name }} ({{ field.kind }})
           </option>
         </b-form-select>
-        <b-form-text class="text-secondary small">{{ $t('recordOrganizer.descriptionField.footnote') }}</b-form-text>
+        <b-form-text class="text-secondary small">
+          {{ $t('recordOrganizer.descriptionField.footnote') }}
+        </b-form-text>
       </b-form-group>
 
-      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('recordOrganizer.positionField.label')">
+      <b-form-group
+        horizontal
+        :label-cols="3"
+        breakpoint="md"
+        :label="$t('recordOrganizer.positionField.label')"
+      >
         <b-form-select v-model="options.positionField">
-          <option value="">{{ $t('general.label.none') }}</option>
+          <option value="">
+            {{ $t('general.label.none') }}
+          </option>
           <option
             v-for="(field, index) in positionFields"
             :key="index"
-            :value="field.name">
-
+            :value="field.name"
+          >
             {{ field.label || field.name }}
           </option>
         </b-form-select>
-        <b-form-text class="text-secondary small">{{ $t('recordOrganizer.positionField.footnote') }}</b-form-text>
+        <b-form-text class="text-secondary small">
+          {{ $t('recordOrganizer.positionField.footnote') }}
+        </b-form-text>
       </b-form-group>
 
-      <b-form-group horizontal :label-cols="3" breakpoint="md" :label="$t('recordOrganizer.groupField.label')">
+      <b-form-group
+        horizontal
+        :label-cols="3"
+        breakpoint="md"
+        :label="$t('recordOrganizer.groupField.label')"
+      >
         <b-form-select v-model="options.groupField">
-          <option value="">{{ $t('general.label.none') }}</option>
+          <option value="">
+            {{ $t('general.label.none') }}
+          </option>
           <option
             v-for="(field, index) in groupFields"
             :key="index"
-            :value="field.name">
-
+            :value="field.name"
+          >
             {{ field.label || field.name }}
           </option>
         </b-form-select>
-        <b-form-text class="text-secondary small">{{ $t('recordOrganizer.groupField.footnote') }}</b-form-text>
+        <b-form-text class="text-secondary small">
+          {{ $t('recordOrganizer.groupField.footnote') }}
+        </b-form-text>
       </b-form-group>
 
       <b-form-group
@@ -108,10 +155,12 @@
       >
         <field-editor
           class="mb-0"
-          valueOnly
+          value-only
           v-bind="mock"
         />
-        <b-form-text class="text-secondary small">{{ $t('recordOrganizer.group.footnote') }}</b-form-text>
+        <b-form-text class="text-secondary small">
+          {{ $t('recordOrganizer.group.footnote') }}
+        </b-form-text>
       </b-form-group>
     </div>
   </b-tab>

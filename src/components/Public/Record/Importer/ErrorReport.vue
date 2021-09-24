@@ -76,14 +76,14 @@
           </span>
         </template>
       </div>
-
     </b-form-group>
 
     <div slot="footer">
-      <b-button variant="dark"
-                class="float-right"
-                @click="$emit('close')">
-
+      <b-button
+        variant="dark"
+        class="float-right"
+        @click="$emit('close')"
+      >
         {{ $t('general.label.ok') }}
       </b-button>
     </div>

@@ -4,6 +4,7 @@ export default {
     report: {
       type: [Object, undefined],
       required: false,
+      default: () => ({}),
     },
 
     modules: {

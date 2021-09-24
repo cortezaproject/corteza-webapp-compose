@@ -1,5 +1,8 @@
 <template>
-  <b-card header-bg-variant="white" footer-bg-variant="white">
+  <b-card
+    header-bg-variant="white"
+    footer-bg-variant="white"
+  >
     <b-form-group>
       <label>{{ $t('recordList.export.selectFields') }}</label>
       <field-picker
@@ -7,7 +10,8 @@
         :module="module"
         :system-fields="systemFields"
         :disabled-types="disabledTypes"
-        :fields.sync="selectedFields"/>
+        :fields.sync="selectedFields"
+      />
 
       <i>{{ $t('recordList.export.limitations') }}</i>
     </b-form-group>
@@ -33,8 +37,8 @@
       <b-form-input
         v-if="includeQuery"
         v-model="exportQuery"
-        :placeholder="$t('recordList.export.query')" />
-
+        :placeholder="$t('recordList.export.query')"
+      />
     </b-form-group>
 
     <b-form-group>
@@ -50,64 +54,83 @@
         <b-form-group
           v-if="rangeType === 'range'"
           label-cols="5"
-          :label="$t('recordList.export.rangeBy')">
+          :label="$t('recordList.export.rangeBy')"
+        >
           <b-form-select
             v-model="rangeBy"
-            :options="rangeByOptions" />
-
+            :options="rangeByOptions"
+          />
         </b-form-group>
       </b-col>
     </b-row>
-    <b-row v-if="rangeType === 'range'" no-gutters>
+    <b-row
+      v-if="rangeType === 'range'"
+      no-gutters
+    >
       <b-col cols="5">
         <b-form-group
           label-cols="5"
-          :label="$t('recordList.export.dateRange')">
-            <b-form-select
-              v-model="range"
-              :options="dateRangeOptions" />
-
+          :label="$t('recordList.export.dateRange')"
+        >
+          <b-form-select
+            v-model="range"
+            :options="dateRangeOptions"
+          />
         </b-form-group>
       </b-col>
-      <b-col cols="3" class="ml-5">
+      <b-col
+        cols="3"
+        class="ml-5"
+      >
         <b-form-input
-          :state="dateRangeValid ? null : false"
-          type="date"
           v-model="start"
-          :max="end"
-          @keydown.prevent/>
-
-      </b-col>
-      <b-col cols="3" class="ml-2">
-        <b-form-input
           :state="dateRangeValid ? null : false"
           type="date"
+          :max="end"
+          @keydown.prevent
+        />
+      </b-col>
+      <b-col
+        cols="3"
+        class="ml-2"
+      >
+        <b-form-input
           v-model="end"
+          :state="dateRangeValid ? null : false"
+          type="date"
           :min="start"
-          @keydown.prevent />
-
+          @keydown.prevent
+        />
       </b-col>
     </b-row>
 
-    <div slot="footer" class="d-flex">
-      <span v-if="!!getExportableCount" class="my-auto">
+    <div
+      slot="footer"
+      class="d-flex"
+    >
+      <span
+        v-if="!!getExportableCount"
+        class="my-auto"
+      >
         {{ $t('recordList.export.recordCount', { count: getExportableCount}) }}
       </span>
       <span class="ml-auto">
         <b-button
           v-if="allowJSON"
           :disabled="exportDisabled"
-          @click="doExport('json')"
           variant="dark"
-          class="mr-2">
+          class="mr-2"
+          @click="doExport('json')"
+        >
 
           {{ $t('recordList.export.json') }}
         </b-button>
         <b-button
           v-if="allowCSV"
           :disabled="exportDisabled"
+          variant="dark"
           @click="doExport('csv')"
-          variant="dark">
+        >
 
           {{ $t('recordList.export.csv') }}
         </b-button>

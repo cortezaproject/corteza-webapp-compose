@@ -29,6 +29,7 @@ export default {
     block: {
       type: compose.PageBlock,
       required: false,
+      default: () => ({}),
     },
 
     buttonVariant: {
@@ -38,6 +39,7 @@ export default {
 
     highlightKey: {
       type: String,
+      default: '',
     },
 
     disabled: {

@@ -1,13 +1,29 @@
 <template>
   <div v-if="field.isMulti">
-    <div v-for="(v, index) of value" :key="index">
+    <div
+      v-for="(v, index) of value"
+      :key="index"
+    >
       <span v-if="field.options.outputPlain">{{ getUrlValue(index) }}</span>
-      <span v-else @click.stop><a :href="getUrlValue(index)" target="_blank" @click.stop>{{ getUrlValue(index) }}</a></span>
+      <span
+        v-else
+        @click.stop
+      ><a
+        :href="getUrlValue(index)"
+        target="_blank"
+        @click.stop
+      >{{ getUrlValue(index) }}</a></span>
     </div>
   </div>
   <div v-else>
     <span v-if="field.options.outputPlain">{{ urlValue }}</span>
-    <span v-else @click.stop><a :href="urlValue" target="_blank">{{ urlValue }}</a></span>
+    <span
+      v-else
+      @click.stop
+    ><a
+      :href="urlValue"
+      target="_blank"
+    >{{ urlValue }}</a></span>
   </div>
 </template>
 <script>

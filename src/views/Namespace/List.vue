@@ -22,15 +22,15 @@
             variant="primary"
             size="lg"
           >
-              {{ $t('create') }}
+            {{ $t('create') }}
           </b-btn>
 
           <b-btn
             v-if="canImportNamespace"
-            @click="showImporterModal=true"
             variant="light"
             size="lg"
             class="ml-1"
+            @click="showImporterModal=true"
           >
             {{ $t('import') }}
           </b-btn>
@@ -38,8 +38,8 @@
           <c-permissions-button
             v-if="canGrant"
             resource="corteza::compose:namespace/*"
-            buttonVariant="light"
-            :buttonLabel="$t('label.permissions')"
+            button-variant="light"
+            :button-label="$t('label.permissions')"
             class="ml-1 btn-lg"
           />
         </div>
@@ -49,7 +49,8 @@
               v-model.trim="query"
               class="float-right mw-100"
               type="search"
-              :placeholder="$t('searchPlaceholder')" />
+              :placeholder="$t('searchPlaceholder')"
+            />
             <b-input-group-append>
               <b-input-group-text class="text-primary bg-white">
                 <font-awesome-icon
@@ -95,9 +96,10 @@
       centered
       body-class="p-1"
     >
-      <b-card header-bg-variant="white"
-              footer-bg-variant="white">
-
+      <b-card
+        header-bg-variant="white"
+        footer-bg-variant="white"
+      >
         <b-form-group>
           <slot name="uploadLabel">
             <label>
@@ -105,11 +107,12 @@
             </label>
           </slot>
 
-          <uploader class="uploader"
-                    :endpoint="importNamespaceEndpoint"
-                    @uploaded="onUploaded"
-                    :acceptedFiles="['application/zip']" />
-
+          <uploader
+            class="uploader"
+            :endpoint="importNamespaceEndpoint"
+            :accepted-files="['application/zip']"
+            @uploaded="onUploaded"
+          />
         </b-form-group>
       </b-card>
     </b-modal>

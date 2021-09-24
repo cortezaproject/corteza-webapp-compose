@@ -83,10 +83,10 @@
           >
             <b-form-select
               v-model="d.field"
-              @change="onDimFieldChange($event, d)"
               :options="dimensionFields"
               text-field="name"
               value-field="name"
+              @change="onDimFieldChange($event, d)"
             >
               <template slot="first">
                 <option
@@ -173,8 +173,8 @@
           class="main-fieldset mb-3"
         >
           <font-awesome-icon
-            class="align-baseline text-secondary mr-2"
             v-if="metrics.length>1"
+            class="align-baseline text-secondary mr-2"
             :icon="['fas', 'grip-vertical']"
           />
           <h5 class="mb-3 d-inline-block">
@@ -182,9 +182,9 @@
           </h5>
           <b-button
             v-if="metrics.length > 1"
-            @click.prevent="removeMetric(i)"
             variant="link"
             class="text-danger align-baseline"
+            @click.prevent="removeMetric(i)"
           >
             <font-awesome-icon :icon="['far', 'trash-alt']" />
           </b-button>
@@ -238,15 +238,14 @@
             name="metric-options"
             :metric="m"
           />
-
         </fieldset>
       </draggable>
     </div>
 
     <b-button
       v-if="canAddMetric"
-      @click.prevent="addMetric"
       variant="primary"
+      @click.prevent="addMetric"
     >
       + {{ $t('edit.metric.add') }}
     </b-button>

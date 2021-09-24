@@ -1,9 +1,9 @@
 <template>
   <grid
     v-if="page.blocks"
+    :key="page.pageID"
     :blocks="page.blocks"
     :editable="false"
-    :key="page.pageID"
   >
     <template
       slot-scope="{ boundingRect, block, index }"
@@ -21,7 +21,7 @@ import PageBlock from '../../PageBlocks'
 import { compose } from '@cortezaproject/corteza-js'
 
 export default {
-  name: 'public-grid',
+  name: 'PublicGrid',
 
   components: {
     Grid,

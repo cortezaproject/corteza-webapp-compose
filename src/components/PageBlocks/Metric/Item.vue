@@ -1,6 +1,7 @@
 <template>
-  <div :style="genStyle(metric.valueStyle)"
-       class="h-100 text-center"
+  <div
+    :style="genStyle(metric.valueStyle)"
+    class="h-100 text-center"
   >
     <svg
       :viewBox="getVB"
@@ -16,9 +17,9 @@
         dominant-baseline="central"
         text-rendering="geometricPrecision"
       >
-          <template v-if="metric.prefix">{{ metric.prefix }}</template>
-          {{ value.value }}
-          <template v-if="metric.suffix">{{ metric.suffix }}</template>
+        <template v-if="metric.prefix">{{ metric.prefix }}</template>
+        {{ value.value }}
+        <template v-if="metric.suffix">{{ metric.suffix }}</template>
       </text>
     </svg>
   </div>

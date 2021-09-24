@@ -5,7 +5,7 @@ module.exports = {
     mocha: true,
   },
   extends: [
-    'plugin:vue/essential',
+    'plugin:vue/recommended',
     '@vue/standard',
   ],
   rules: {
@@ -13,6 +13,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'comma-dangle': ['error', 'always-multiline'],
     // https://github.com/vuejs/eslint-plugin-vue/blob/master/docs/rules/order-in-components.md
+    'vue/no-v-html': 'off',
     'vue/order-in-components': ['error'],
   },
   parserOptions: {

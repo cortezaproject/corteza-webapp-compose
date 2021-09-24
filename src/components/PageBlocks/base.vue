@@ -11,6 +11,7 @@ export default {
     boundingRect: {
       type: Object,
       required: false,
+      default: () => ({}),
     },
 
     blockIndex: {
@@ -36,16 +37,19 @@ export default {
     module: {
       type: compose.Module,
       required: false,
+      default: () => ({}),
     },
 
     record: {
       type: compose.Record,
       required: false,
+      default: () => ({}),
     },
 
     mode: {
       type: String,
       required: false,
+      default: '',
     },
   },
 

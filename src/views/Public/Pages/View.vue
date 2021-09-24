@@ -1,5 +1,8 @@
 <template>
-  <div v-if="!!page" class="d-flex w-100 overflow-hidden">
+  <div
+    v-if="!!page"
+    class="d-flex w-100 overflow-hidden"
+  >
     <div
       class="flex-grow-1 overflow-auto d-flex px-2 w-100"
     >
@@ -45,7 +48,10 @@ export default {
     },
 
     // We're using recordID to check if we need to display router-view or grid component
-    recordID: String,
+    recordID: {
+      type: String,
+      default: '',
+    },
   },
 
   computed: {

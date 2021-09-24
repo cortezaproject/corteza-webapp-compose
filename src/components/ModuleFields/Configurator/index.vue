@@ -1,9 +1,13 @@
 <template>
-  <b-tabs nav-wrapper-class="bg-white border-bottom"
-          active-tab-class="tab-content h-auto overflow-auto"
-          card>
-
-    <b-tab active :title="$t('label.general')">
+  <b-tabs
+    nav-wrapper-class="bg-white border-bottom"
+    active-tab-class="tab-content h-auto overflow-auto"
+    card
+  >
+    <b-tab
+      active
+      :title="$t('label.general')"
+    >
       <basic
         :namespace="namespace"
         :field="field"
@@ -11,7 +15,8 @@
     </b-tab>
     <b-tab
       v-if="fieldComponent"
-      :title="field.kind">
+      :title="field.kind"
+    >
       <component
         :is="fieldComponent"
         :namespace="namespace"

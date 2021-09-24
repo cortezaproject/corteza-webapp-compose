@@ -18,7 +18,7 @@
         {{ $t('instructions') }}
         <ul>
           <li>
-            {{ $t('operators.location')}}
+            {{ $t('operators.location') }}
             <ul>
               <li>
                 {{ $t('operators.value-expressions') }}
@@ -74,8 +74,8 @@
 
       <b-card
         v-for="example of examples"
-        :key="example.name"
         :id="example.id"
+        :key="example.name"
         class="mt-2"
         @mouseover="example.chevron = true"
         @mouseleave="example.chevron = false"
@@ -89,7 +89,10 @@
           >
             {{ example.name }}
           </span>
-          <transition name="fade" mode="out-in">
+          <transition
+            name="fade"
+            mode="out-in"
+          >
             <font-awesome-icon
               v-show="example.chevron"
               :icon="['fas', example.collapse ? 'chevron-down' : 'chevron-left']"
@@ -144,8 +147,8 @@
 
       <b-card
         v-for="category of categories"
-        :key="category.name"
         :id="category.id"
+        :key="category.name"
         class="mt-2"
         @mouseover="category.chevron = true"
         @mouseleave="category.chevron = false"
@@ -159,7 +162,10 @@
           >
             {{ category.name }}
           </span>
-          <transition name="fade" mode="out-in">
+          <transition
+            name="fade"
+            mode="out-in"
+          >
             <font-awesome-icon
               v-show="category.chevron"
               :icon="['fas', category.collapse ? 'chevron-down' : 'chevron-left']"
@@ -209,8 +215,8 @@
 
       <b-card
         v-for="category of formatCategories"
-        :key="category.name"
         :id="category.id"
+        :key="category.name"
         class="mt-2"
         @mouseover="category.chevron = true"
         @mouseleave="category.chevron = false"
@@ -224,7 +230,10 @@
           >
             {{ category.name }}
           </span>
-          <transition name="fade" mode="out-in">
+          <transition
+            name="fade"
+            mode="out-in"
+          >
             <font-awesome-icon
               v-show="category.chevron"
               :icon="['fas', category.collapse ? 'chevron-down' : 'chevron-left']"

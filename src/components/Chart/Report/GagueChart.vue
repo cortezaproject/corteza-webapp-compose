@@ -13,29 +13,28 @@
       >
         <b-input-group
           v-for="(step, i) in dimension.meta.steps"
-          class="mb-1"
           :key="i"
+          class="mb-1"
         >
-
           <b-form-input
-            plain
             v-model="step.label"
+            plain
             size="sm"
             :placeholder="$t('general.label.title')"
           />
 
           <b-form-input
-            type="number"
             v-model="step.value"
+            type="number"
             size="sm"
             :placeholder="$t('general.value')"
           />
 
           <b-input-group-append>
             <b-button
-              @click.prevent="dimension.meta.steps.splice(i, 1)"
               variant="link"
               class="border-0 text-danger"
+              @click.prevent="dimension.meta.steps.splice(i, 1)"
             >
               <font-awesome-icon :icon="['far', 'trash-alt']" />
             </b-button>
@@ -69,9 +68,9 @@
         :label-cols="2"
       >
         <b-form-input
+          v-model="metric.backgroundColor"
           type="color"
           class="p-0 border-0 color-picker"
-          v-model="metric.backgroundColor"
         />
       </b-form-group>
 

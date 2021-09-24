@@ -16,8 +16,8 @@
         </label>
 
         <hint
-          :text="hint"
           :id="field.fieldID"
+          :text="hint"
         />
       </div>
       <small
@@ -27,11 +27,15 @@
       </small>
     </template>
 
-    <multi v-if="field.isMulti" :value.sync="value" v-slot="ctx">
+    <multi
+      v-if="field.isMulti"
+      v-slot="ctx"
+      :value.sync="value"
+    >
       <b-form-input
+        v-model="value[ctx.index]"
         type="email"
         class="mr-2"
-        v-model="value[ctx.index]"
       />
       <errors :errors="errors" />
     </multi>
@@ -40,8 +44,8 @@
       v-else
     >
       <b-form-input
-        type="email"
         v-model="value"
+        type="email"
         :state="state"
       />
       <errors :errors="errors" />

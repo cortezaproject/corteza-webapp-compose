@@ -71,7 +71,6 @@
           v-else-if="upstream[upstream.active]"
           class="list-group flex-grow-1 ml-4"
         >
-
           <div
             v-if="upstream[upstream.active].canManageModule"
           >
@@ -106,8 +105,8 @@
                 v-for="f in upstream[upstream.active].fields"
                 :key="`${upstream.active}${f.name}`"
                 v-model="f.value"
-                @change="checkChange($event, 'upstream')"
                 class="mb-2"
+                @change="checkChange($event, 'upstream')"
               >
                 {{ f.label }}
               </b-form-checkbox>
@@ -200,8 +199,8 @@
             >
               <b-form-checkbox
                 v-model="sharedModuleFields.map"
-                @change="checkChange($event, 'downstream')"
                 class="my-2"
+                @change="checkChange($event, 'downstream')"
               >
                 {{ sharedModuleFields.label }}
               </b-form-checkbox>

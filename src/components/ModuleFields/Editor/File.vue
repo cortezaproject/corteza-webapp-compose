@@ -15,8 +15,8 @@
         </label>
 
         <hint
-          :text="hint"
           :id="field.fieldID"
+          :text="hint"
         />
       </div>
       <small
@@ -28,9 +28,9 @@
 
     <uploader
       :endpoint="endpoint"
+      :accepted-files="mimetypes"
+      :max-filesize="maxSize"
       @uploaded="appendAttachment"
-      :acceptedFiles="mimetypes"
-      :maxFilesize="maxSize"
     />
 
     <list-loader

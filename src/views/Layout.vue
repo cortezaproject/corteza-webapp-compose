@@ -54,7 +54,7 @@
     </aside>
 
     <main class="d-inline-flex h-100 overflow-auto">
-            <!--
+      <!--
         Content spacer
         Large and xl screens should push in content when the nav is expanded
       -->

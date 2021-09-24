@@ -3,8 +3,8 @@
     <b-form-checkbox v-model="value">
       {{ field.label || field.name }}
       <hint
-        :text="hint"
         :id="field.fieldID"
+        :text="hint"
         class="d-inline-block text-primary"
       />
     </b-form-checkbox>

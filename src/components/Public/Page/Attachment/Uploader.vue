@@ -1,15 +1,16 @@
 <template>
   <vue-dropzone
-    ref="dropzone"
     id="dropzone"
+    ref="dropzone"
     :use-custom-slot="true"
     :include-styling="false"
+    :options="dzOptions"
     @vdropzone-file-added="onFileAdded"
     @vdropzone-file-added-manually="onFileAdded"
     @vdropzone-success="onSuccess"
     @vdropzone-error="onError"
     @vdropzone-upload-progress="onUploadProgress"
-    :options="dzOptions">
+  >
     <div class="w-100 h-100 position-relative bg-light">
       <template v-if="active">
         <div
@@ -32,8 +33,8 @@
       <div
         v-else
         class="d-flex align-items-center h-100 w-100 p-2 droparea justify-content-center"
-        :class="{ 'bg-danger': error }">
-
+        :class="{ 'bg-danger': error }"
+      >
         {{ error || label || $t('label.dropFiles') }}
       </div>
     </div>

@@ -15,8 +15,8 @@
         </label>
 
         <hint
-          :text="hint"
           :id="field.fieldID"
+          :text="hint"
         />
       </div>
       <small
@@ -77,8 +77,8 @@
         :value="getTime()"
         :required="field.isRequired"
         :state="state"
-        @change="setTime($event)"
         :class="{ 'd-inline w-50': !field.options.onlyTime }"
+        @change="setTime($event)"
       />
 
       <errors :errors="errors" />

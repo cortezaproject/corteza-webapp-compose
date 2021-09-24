@@ -53,9 +53,9 @@
       class="flex-grow-1 overflow-auto d-flex p-2 w-100"
     >
       <component
+        :is="getRecordComponent"
         v-for="(block, index) in blocks"
         :key="index"
-        :is="getRecordComponent"
         :errors="errors"
         v-bind="{ ...bindParams, module, block, record }"
         :class="{ 'flex-grow-1': !inEditing }"
@@ -69,8 +69,8 @@
         :processing="processing"
         :processing-submit="processingSubmit"
         :processing-delete="processingDelete"
-        :isDeleted="isDeleted"
-        :inEditing="inEditing"
+        :is-deleted="isDeleted"
+        :in-editing="inEditing"
         @add="handleAdd()"
         @clone="handleClone()"
         @edit="handleEdit()"

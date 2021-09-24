@@ -1,7 +1,9 @@
 <template>
-  <b-tabs active-nav-item-class="bg-grey"
-          nav-wrapper-class="bg-white border-bottom"
-          card>
+  <b-tabs
+    active-nav-item-class="bg-grey"
+    nav-wrapper-class="bg-white border-bottom"
+    card
+  >
     <template #tabs-end>
       <page-translator
         v-if="page"
@@ -9,62 +11,75 @@
         :block="block"
         button-variant="link"
       />
-
     </template>
-    <b-tab active :title="$t('general.label.general')">
+    <b-tab
+      active
+      :title="$t('general.label.general')"
+    >
       <div class="mh-tab overflow-auto">
-        <b-form-group for="title" :label="$t('general.titleLabel')">
+        <b-form-group
+          for="title"
+          :label="$t('general.titleLabel')"
+        >
           <b-input-group>
             <b-form-input
+              id="title"
               v-model="block.title"
               type="text"
               class="form-control"
-              id="title"
-              :placeholder="$t('general.titlePlaceholder')">
-            </b-form-input>
+              :placeholder="$t('general.titlePlaceholder')"
+            />
             <b-input-group-append>
               <page-translator
                 v-if="page"
                 :page="page"
                 :block="block"
-                :highlight-key="`pageBlock.${this.block.blockID}.title`"
+                :highlight-key="`pageBlock.${block.blockID}.title`"
                 button-variant="light"
               />
             </b-input-group-append>
           </b-input-group>
         </b-form-group>
-        <b-form-group for="description" :label="$t('general.descriptionLabel')">
+        <b-form-group
+          for="description"
+          :label="$t('general.descriptionLabel')"
+        >
           <b-input-group>
             <b-form-input
+              id="description"
               v-model="block.description"
               type="text"
               class="form-control"
-              id="description"
-              :placeholder="$t('general.descriptionPlaceholder')">
-            </b-form-input>
+              :placeholder="$t('general.descriptionPlaceholder')"
+            />
             <b-input-group-append>
               <page-translator
                 v-if="page"
                 :page="page"
                 :block="block"
-                :highlight-key="`pageBlock.${this.block.blockID}.description`"
+                :highlight-key="`pageBlock.${block.blockID}.description`"
                 button-variant="light"
               />
             </b-input-group-append>
           </b-input-group>
         </b-form-group>
-        <b-form-group for="color" :label="$t('general.headerStyle')">
-          <b-form-select id="color"
-                          v-model="block.style.variants.headerText"
-                          :options="textVariants"/>
+        <b-form-group
+          for="color"
+          :label="$t('general.headerStyle')"
+        >
+          <b-form-select
+            id="color"
+            v-model="block.style.variants.headerText"
+            :options="textVariants"
+          />
         </b-form-group>
       </div>
     </b-tab>
     <page-block
       v-bind="{ ...$attrs, ...$props }"
       mode="configurator"
-      v-on="$listeners"
       class="mh-tab overflow-auto"
+      v-on="$listeners"
     />
   </b-tabs>
 </template>

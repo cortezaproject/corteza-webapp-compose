@@ -1,5 +1,10 @@
 <template>
-  <wrap v-if="recordListModule" v-bind="$props" v-on="$listeners" :scrollable-body="false">
+  <wrap
+    v-if="recordListModule"
+    v-bind="$props"
+    :scrollable-body="false"
+    v-on="$listeners"
+  >
     <template
       v-if="showHeader"
       #header
@@ -35,7 +40,7 @@
           no-gutters
           class="justify-content-between"
         >
-         <div class="text-nowrap flex-grow-1">
+          <div class="text-nowrap flex-grow-1">
             <template v-if="!options.hideAddButton && recordListModule.canCreateRecord">
               <template v-if="inlineEditing">
                 <b-btn
@@ -73,8 +78,8 @@
               :record-count="items.length"
               :query="query"
               :selection="selected"
-              @export="onExport"
               class="mr-1 float-left"
+              @export="onExport"
             />
 
             <column-picker
@@ -93,7 +98,8 @@
                 v-model="query"
                 class="float-right mw-100"
                 type="search"
-                :placeholder="$t('general.label.search')" />
+                :placeholder="$t('general.label.search')"
+              />
               <b-input-group-append>
                 <b-input-group-text class="text-primary bg-white">
                   <font-awesome-icon
@@ -179,8 +185,8 @@
               <b-checkbox
                 :disabled="disableSelectAll"
                 :checked="areAllRowsSelected && !disableSelectAll"
-                @change="handleSelectAllOnPage({ isChecked: $event })"
                 class="ml-1"
+                @change="handleSelectAllOnPage({ isChecked: $event })"
               />
             </b-th>
             <b-th />
@@ -190,10 +196,10 @@
               :key="field.key"
               sticky-column
               class="pr-0"
-              @click="handleSort(field)"
               :style="{
                 cursor: field.sortable ? 'pointer' : 'default',
               }"
+              @click="handleSort(field)"
             >
               <div
                 class="d-flex justify-content-between align-self-center"
@@ -208,10 +214,10 @@
                   class="d-flex"
                 >
                   <record-list-filter
-                    :selectedField="field.moduleField"
+                    :selected-field="field.moduleField"
                     :namespace="namespace"
                     :module="recordListModule"
-                    :recordListFilter="recordListFilter"
+                    :record-list-filter="recordListFilter"
                     @filter="onFilter"
                   />
                   <b-button
@@ -248,8 +254,8 @@
 
         <draggable
           v-if="items.length && !processing"
-          :disabled="!inlineEditing || !options.draggable"
           v-model="items"
+          :disabled="!inlineEditing || !options.draggable"
           group="items"
           tag="b-tbody"
           handle=".handle"
@@ -276,8 +282,8 @@
 
             <b-td
               v-if="options.selectable"
-              @click.stop
               class="align-middle pr-0"
+              @click.stop
             >
               <b-form-checkbox
                 class="ml-1"
@@ -287,9 +293,11 @@
             </b-td>
 
             <b-td class="align-middle pl-0">
-              <b-badge v-if="Object.keys(item.r.labels || {}).includes('federation')"
-                      variant="primary"
-                      class="align-text-top">
+              <b-badge
+                v-if="Object.keys(item.r.labels || {}).includes('federation')"
+                variant="primary"
+                class="align-text-top"
+              >
                 F
               </b-badge>
             </b-td>
@@ -366,7 +374,8 @@
                 v-if="!inlineEditing && !options.hideRecordReminderButton"
                 variant="link"
                 class="p-0 m-0 pl-1 text-primary"
-                @click.prevent="createReminder(item.r)">
+                @click.prevent="createReminder(item.r)"
+              >
                 <font-awesome-icon
                   :icon="['far', 'bell']"
                 />
@@ -432,8 +441,7 @@
         <b-tbody
           v-else
         >
-          <b-tr
-          >
+          <b-tr>
             <b-td
               class="text-center align-top py-5"
               :colspan="loaderCollSpan"
@@ -464,8 +472,9 @@
         <b-row no-gutters>
           <b-col class="d-flex justify-content-between align-items-center">
             <div class="text-truncate">
-              <div v-if="options.showTotalCount"
-                  class="ml-2 text-nowrap font-weight-bold"
+              <div
+                v-if="options.showTotalCount"
+                class="ml-2 text-nowrap font-weight-bold"
               >
                 <span v-if="pagination.count > options.perPage">
                   {{ $t('recordList.pagination.showing', getPagination) }}
@@ -492,11 +501,21 @@
                 :total-rows="getPagination.count"
                 @change="goToPage"
               >
-                <template #first-text><font-awesome-icon :icon="['fas', 'angle-double-left']" /></template>
-                <template #prev-text><font-awesome-icon :icon="['fas', 'angle-left']" /></template>
-                <template #next-text><font-awesome-icon :icon="['fas', 'angle-right']" /></template>
-                <template #last-text><font-awesome-icon :icon="['fas', 'angle-double-right']" /></template>
-                <template #elipsis-text><font-awesome-icon :icon="['fas', 'ellipsis-h']" /></template>
+                <template #first-text>
+                  <font-awesome-icon :icon="['fas', 'angle-double-left']" />
+                </template>
+                <template #prev-text>
+                  <font-awesome-icon :icon="['fas', 'angle-left']" />
+                </template>
+                <template #next-text>
+                  <font-awesome-icon :icon="['fas', 'angle-right']" />
+                </template>
+                <template #last-text>
+                  <font-awesome-icon :icon="['fas', 'angle-double-right']" />
+                </template>
+                <template #elipsis-text>
+                  <font-awesome-icon :icon="['fas', 'ellipsis-h']" />
+                </template>
               </b-pagination>
 
               <b-button-group v-else>

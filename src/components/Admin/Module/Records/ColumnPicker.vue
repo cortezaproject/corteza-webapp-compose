@@ -1,9 +1,9 @@
 <template>
   <div>
     <b-button
+      v-b-modal.columns
       size="lg"
       variant="light"
-      v-b-modal.columns
     >
       {{ $t('allRecords.columns.title') }}
     </b-button>

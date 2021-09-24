@@ -48,7 +48,7 @@
           class="ml-auto"
           @click.stop
         >
-          <font-awesome-icon :icon="['far', 'edit']"/>
+          <font-awesome-icon :icon="['far', 'edit']" />
         </b-button>
       </div>
 

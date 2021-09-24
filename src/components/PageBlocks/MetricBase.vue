@@ -1,19 +1,25 @@
 <template>
-  <wrap v-bind="$props" v-on="$listeners">
+  <wrap
+    v-bind="$props"
+    v-on="$listeners"
+  >
     <div
-      v-for="(m, i) in options.metrics"
-      :key="i"
+      v-for="(m, mi) in options.metrics"
+      :key="mi"
       class="h-100 d-flex align-items-center justify-content-center overflow-hidden"
     >
       <div
-        v-for="(v, i) in formatResponse(m, i)"
+        v-for="(v, i) in formatResponse(m, mi)"
         :key="i"
         class="w-100 h-100 px-2 py-1"
       >
         <!-- <h3 :style="genStyle(m.labelStyle)">
           {{ v.label }}
         </h3> -->
-        <metric-item :metric="m" :value="v" />
+        <metric-item
+          :metric="m"
+          :value="v"
+        />
       </div>
     </div>
   </wrap>

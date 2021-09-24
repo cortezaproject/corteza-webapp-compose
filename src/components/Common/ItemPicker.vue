@@ -1,67 +1,67 @@
 <template>
-    <fieldset class="form-group">
-      <div class="items d-flex">
-        <div class="available">
-          <slot name="label-available" />
-          <b-button
-            @click.prevent="selectedItems = [...allItems]"
-            variant="link"
-            class="float-right"
+  <fieldset class="form-group">
+    <div class="items d-flex">
+      <div class="available">
+        <slot name="label-available" />
+        <b-button
+          variant="link"
+          class="float-right"
+          @click.prevent="selectedItems = [...allItems]"
+        >
+          <slot name="label-selectAll" />
+        </b-button>
+
+        <draggable
+          class="drag-area border"
+          :list.sync="availableItems"
+          :options="{ group: 'items', sort: false }"
+        >
+          <div
+            v-for="item in availableItems"
+            :key="item[keyProp]"
+            class="item"
+            @dblclick="selectedItems.push(item)"
           >
-            <slot name="label-selectAll" />
-          </b-button>
-
-          <draggable
-            class="drag-area border"
-            :list.sync="availableItems"
-            :options="{ group: 'items', sort: false }"
-          >
-
-            <div
-              v-for="item in availableItems"
-              @dblclick="selectedItems.push(item)"
-              class="item"
-              :key="item[keyProp]"
-            >
-              <slot
-                :item="item"
-                name="item"
-              />
-            </div>
-          </draggable>
-        </div>
-
-        <div class="selected">
-          <slot name="label-selected" />
-          <b-button
-            @click.prevent="selectedItems.splice(0)"
-            variant="link"
-            class="float-right"
-          >
-            <slot name="label-unSelectAll" />
-          </b-button>
-
-          <draggable
-            class="drag-area border"
-            :list.sync="selectedItems"
-            :options="{ group:'items' }">
-            <div
-              v-for="(item, index) in selectedItems"
-              @dblclick="selectedItems.splice(index,1)"
-              class="item"
-              :key="item.name"
-              >
-              <slot
-                :item="item"
-                name="item"
-              />
-            </div>
-          </draggable>
-        </div>
+            <slot
+              :item="item"
+              name="item"
+            />
+          </div>
+        </draggable>
       </div>
 
-      <slot name="footnote" />
-    </fieldset>
+      <div class="selected">
+        <slot name="label-selected" />
+        <b-button
+          variant="link"
+          class="float-right"
+          @click.prevent="selectedItems.splice(0)"
+        >
+          <slot name="label-unSelectAll" />
+        </b-button>
+
+        <draggable
+          class="drag-area border"
+          :list.sync="selectedItems"
+          :options="{ group:'items' }"
+        >
+          <div
+            v-for="(item, index) in selectedItems"
+            :key="item.name"
+            class="item"
+            @dblclick="selectedItems.splice(index,1)"
+          >
+            <slot
+              :item="item"
+              name="item"
+            />
+          </div>
+        </draggable>
+      </div>
+    </div>
+
+    <slot name="footnote" />
+  </fieldset>
 </template>
 <script>
 import draggable from 'vuedraggable'

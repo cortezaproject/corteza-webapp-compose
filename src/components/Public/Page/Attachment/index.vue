@@ -1,44 +1,56 @@
 <template>
   <div>
     <div v-if="mode === 'list'">
-        <a :href="attachment.download">
-          <font-awesome-icon :icon="['fas', 'download']"></font-awesome-icon>
-          {{attachment.name}}
-        </a>
-        <i18next path="label.attachmentFileInfo" tag="label">
-          <span>{{attachment.size}}</span>
-          <span>{{attachment.changedAt}}</span>
-        </i18next>
+      <a :href="attachment.download">
+        <font-awesome-icon :icon="['fas', 'download']" />
+        {{ attachment.name }}
+      </a>
+      <i18next
+        path="label.attachmentFileInfo"
+        tag="label"
+      >
+        <span>{{ attachment.size }}</span>
+        <span>{{ attachment.changedAt }}</span>
+      </i18next>
     </div>
 
     <div v-if="mode === 'grid'">
-        <a :href="aattachment.download">
-          <font-awesome-icon
-            :icon="['far', 'file-'+ext(a)]"
-            :title="$t('label.openBookmarks')"
-          ></font-awesome-icon>
-          {{aattachment.name}}
-        </a>
-        <i18next path="label.attachmentFileInfo" tag="label">
-          <span>{{attachment.size}}</span>
-          <span>{{attachment.changedAt}}</span>
-        </i18next>
+      <a :href="aattachment.download">
+        <font-awesome-icon
+          :icon="['far', 'file-'+ext(a)]"
+          :title="$t('label.openBookmarks')"
+        />
+        {{ aattachment.name }}
+      </a>
+      <i18next
+        path="label.attachmentFileInfo"
+        tag="label"
+      >
+        <span>{{ attachment.size }}</span>
+        <span>{{ attachment.changedAt }}</span>
+      </i18next>
     </div>
 
-    <div v-if="mode === 'single' || 'gallery'" class="single">
-        <div v-if="isImage(a)">
-          <img :src="attachment.previewUrl" @click="openLightbox(index)" />
-        </div>
-        <div v-else>
-          <font-awesome-icon
-            :icon="['far', 'file-'+ext(a)]"
-            :title="$t('label.openBookmarks')"
-          ></font-awesome-icon>
-          <a :href="attachment.download">
-            {{ $t('label.download') }}
-          </a>
-        </div>
-        {{a.name}}
+    <div
+      v-if="mode === 'single' || 'gallery'"
+      class="single"
+    >
+      <div v-if="isImage(a)">
+        <img
+          :src="attachment.previewUrl"
+          @click="openLightbox(index)"
+        >
+      </div>
+      <div v-else>
+        <font-awesome-icon
+          :icon="['far', 'file-'+ext(a)]"
+          :title="$t('label.openBookmarks')"
+        />
+        <a :href="attachment.download">
+          {{ $t('label.download') }}
+        </a>
+      </div>
+      {{ a.name }}
     </div>
   </div>
 </template>
@@ -61,6 +73,7 @@ export default {
     },
 
     value: {
+      type: [Object, String],
       required: true,
     },
   },

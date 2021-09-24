@@ -2,27 +2,47 @@
   <div>
     <b-form-group>
       <label class="d-block">{{ $t('kind.number.prefixLabel') }}</label>
-      <b-form-input v-model="f.options.prefix" :placeholder="$t('kind.number.prefixPlaceholder')"></b-form-input>
+      <b-form-input
+        v-model="f.options.prefix"
+        :placeholder="$t('kind.number.prefixPlaceholder')"
+      />
     </b-form-group>
     <b-form-group>
       <label class="d-block">{{ $t('kind.number.suffixLabel') }}</label>
-      <b-form-input v-model="f.options.suffix" :placeholder="$t('kind.number.suffixPlaceholder')"></b-form-input>
+      <b-form-input
+        v-model="f.options.suffix"
+        :placeholder="$t('kind.number.suffixPlaceholder')"
+      />
     </b-form-group>
     <b-form-group>
       <label class="d-block">{{ $t('kind.number.precisionLabel') }}</label>
-      <b-form-input v-model="f.options.precision" :placeholder="$t('kind.number.precisionPlaceholder')" type="number" min="0" max="6"></b-form-input>
+      <b-form-input
+        v-model="f.options.precision"
+        :placeholder="$t('kind.number.precisionPlaceholder')"
+        type="number"
+        min="0"
+        max="6"
+      />
     </b-form-group>
     <b-form-group>
       <label class="d-block">{{ $t('kind.number.formatLabel') }}</label>
-      <b-form-input v-model="f.options.format" :placeholder="$t('kind.number.formatPlaceholder')"></b-form-input>
+      <b-form-input
+        v-model="f.options.format"
+        :placeholder="$t('kind.number.formatPlaceholder')"
+      />
     </b-form-group>
     <div>
       <p>{{ $t('kind.number.liveExample') }}</p>
       <div class="d-flex align-items-center">
-        <b-form-input class="w-25" v-model="liveExample"></b-form-input>
-        <span class="ml-3">{{mockField}}</span>
+        <b-form-input
+          v-model="liveExample"
+          class="w-25"
+        />
+        <span class="ml-3">{{ mockField }}</span>
       </div>
-      <p class="mt-3">{{ $t('kind.number.examplesLabel') }}</p>
+      <p class="mt-3">
+        {{ $t('kind.number.examplesLabel') }}
+      </p>
       <table style="width: 100%;">
         <tr>
           <th>{{ $t('kind.number.exampleInput') }}</th>

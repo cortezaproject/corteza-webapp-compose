@@ -1,8 +1,11 @@
 <template>
-  <wrap v-bind="$props" v-on="$listeners">
+  <wrap
+    v-bind="$props"
+    v-on="$listeners"
+  >
     <iframe
-      class="h-100 w-100 border-0"
       v-if="src"
+      class="h-100 w-100 border-0"
       :src="src"
     />
   </wrap>

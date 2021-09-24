@@ -1,5 +1,10 @@
 <template>
-  <b-button v-if="list.length > 0" variant="light" size="lg" @click="jsonExport(list, type)">
+  <b-button
+    v-if="list.length > 0"
+    variant="light"
+    size="lg"
+    @click="jsonExport(list, type)"
+  >
     {{ $t('label.export') }}
   </b-button>
 </template>

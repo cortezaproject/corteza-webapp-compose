@@ -1,13 +1,17 @@
 <template>
   <div>
     <b-tab :title="$t('calendar.viewLabel')">
-      <calendar-display v-bind="$attrs"
-                        v-on="$listeners" />
+      <calendar-display
+        v-bind="$attrs"
+        v-on="$listeners"
+      />
     </b-tab>
 
     <b-tab :title="$t('calendar.feedLabel')">
-      <feed-source v-bind="$attrs"
-                   v-on="$listeners" />
+      <feed-source
+        v-bind="$attrs"
+        v-on="$listeners"
+      />
     </b-tab>
   </div>
 </template>

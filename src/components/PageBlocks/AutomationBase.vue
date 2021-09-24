@@ -1,5 +1,8 @@
 <template>
-  <wrap v-bind="$props" v-on="$listeners">
+  <wrap
+    v-bind="$props"
+    v-on="$listeners"
+  >
     <automation-buttons
       class="d-flex flex-wrap"
       button-class="my-1 mx-3 flex-fill"

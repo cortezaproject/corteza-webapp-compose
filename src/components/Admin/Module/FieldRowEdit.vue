@@ -45,16 +45,17 @@
           <option
             v-for="({ kind, label }) in fieldKinds"
             :key="kind"
-            :value="kind">
+            :value="kind"
+          >
             {{ label }}
           </option>
         </b-select>
         <b-input-group-append>
           <b-button
             :disabled="!value.cap.configurable"
-            @click.prevent="$emit('edit')"
             class="px-2"
             variant="light"
+            @click.prevent="$emit('edit')"
           >
             <font-awesome-icon
               :icon="['fas', 'wrench']"
@@ -93,14 +94,14 @@
       style="min-width: 100px;"
     >
       <c-input-confirm
-        @confirmed="$emit('delete')"
         :no-prompt="!value.name"
         class="mr-2"
+        @confirmed="$emit('delete')"
       />
       <c-permissions-button
         v-if="canGrant"
         class="text-dark px-0"
-        buttonVariant="link"
+        button-variant="link"
         :title="value.name"
         :target="value.name"
         :resource="`corteza::compose:module-field/${module.namespaceID}/${module.moduleID}/${value.fieldID}`"

@@ -1,19 +1,22 @@
 <template>
   <b-tab :title="$t('kind.file.label')">
-    <b-form-group horizontal
-                  :description="$t('kind.file.view.modeFootnote')"
-                  :label="$t('kind.file.view.modeLabel')">
-      <b-form-radio-group v-model="options.mode"
-                          buttons
-                          button-variant="outline-secondary"
-                          size="sm"
-                          name="buttons2"
-                          :options="modes">
-      </b-form-radio-group>
+    <b-form-group
+      horizontal
+      :description="$t('kind.file.view.modeFootnote')"
+      :label="$t('kind.file.view.modeLabel')"
+    >
+      <b-form-radio-group
+        v-model="options.mode"
+        buttons
+        button-variant="outline-secondary"
+        size="sm"
+        name="buttons2"
+        :options="modes"
+      />
     </b-form-group>
     <b-form-checkbox
-      :disabled="!enableFileNameHiding"
       v-model="options.hideFileName"
+      :disabled="!enableFileNameHiding"
       class="mb-3"
     >
       {{ $t('kind.file.view.showName') }}
@@ -22,12 +25,14 @@
       :endpoint="endpoint"
       @uploaded="appendAttachment"
     />
-    <list-loader kind="page"
-                 enable-delete
-                 :namespace="namespace"
-                 :set.sync="options.attachments"
-                 mode="list"
-                 class="mt-2"></list-loader>
+    <list-loader
+      kind="page"
+      enable-delete
+      :namespace="namespace"
+      :set.sync="options.attachments"
+      mode="list"
+      class="mt-2"
+    />
   </b-tab>
 </template>
 <script>

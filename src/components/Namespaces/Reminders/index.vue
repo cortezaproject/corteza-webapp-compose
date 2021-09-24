@@ -11,7 +11,7 @@
     <edit
       v-else
       :edit="edit"
-      :myID="$auth.user.userID"
+      :my-i-d="$auth.user.userID"
       :users="users"
       @save="onSave"
     />

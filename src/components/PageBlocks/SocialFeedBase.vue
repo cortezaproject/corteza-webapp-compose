@@ -1,8 +1,16 @@
 <template>
-  <wrap v-bind="$props" v-on="$listeners">
+  <wrap
+    v-bind="$props"
+    v-on="$listeners"
+  >
     <div v-if="profile">
-      <timeline v-if="isTwitter" :id="profile.twitterHandle" sourceType="profile" :options="{ tweetLimit: 9 }">
-        <div class="spinner"></div>
+      <timeline
+        v-if="isTwitter"
+        :id="profile.twitterHandle"
+        source-type="profile"
+        :options="{ tweetLimit: 9 }"
+      >
+        <div class="spinner" />
       </timeline>
     </div>
     <div v-else>

@@ -5,9 +5,9 @@
     </portal>
 
     <b-container
-      @submit.prevent="handleSave"
       tag="form"
       fluid="xl"
+      @submit.prevent="handleSave"
     >
       <b-row no-gutters>
         <b-col v-if="chart">
@@ -19,17 +19,34 @@
               header-bg-variant="white"
               class="d-flex py-3 align-items-center border-bottom"
             >
-              <export :list="[chart]" type="chart" class="float-right" slot="header"/>
+              <export
+                slot="header"
+                :list="[chart]"
+                type="chart"
+                class="float-right"
+              />
             </b-card-header>
             <b-container
               fluid
               class="px-4 py-3"
             >
               <b-row>
-                <b-col xl="6" md="12">
+                <b-col
+                  xl="6"
+                  md="12"
+                >
                   <fieldset v-if="modules">
-                    <b-form-input v-model="chart.name" :placeholder="$t('newPlaceholder')" class="mb-1"></b-form-input>
-                    <b-form-input v-model="chart.handle" :placeholder="$t('general.placeholder.handle')" :state="handleState" class="mb-1"></b-form-input>
+                    <b-form-input
+                      v-model="chart.name"
+                      :placeholder="$t('newPlaceholder')"
+                      class="mb-1"
+                    />
+                    <b-form-input
+                      v-model="chart.handle"
+                      :placeholder="$t('general.placeholder.handle')"
+                      :state="handleState"
+                      class="mb-1"
+                    />
 
                     <b-form-group>
                       <b-form-select
@@ -73,7 +90,6 @@
                           class="w-100 d-inline-block"
                           tag="tbody"
                         >
-
                           <report-item
                             v-for="(r, i) in reports"
                             :key="i"
@@ -94,7 +110,6 @@
                         </draggable>
                       </div>
                     </b-form-group>
-
                   </fieldset>
 
                   <!-- Generic report editing component -->
@@ -108,13 +123,18 @@
                   />
                 </b-col>
 
-                <b-col xl="6" md="12">
+                <b-col
+                  xl="6"
+                  md="12"
+                >
                   <b-button
                     v-if="!error"
-                    @click.prevent="update"
                     :disabled="processing"
                     class="float-right"
-                    variant="outline-primary">{{ $t('edit.loadData') }}
+                    variant="outline-primary"
+                    @click.prevent="update"
+                  >
+                    {{ $t('edit.loadData') }}
                   </b-button>
                   <b-alert
                     :show="error"
@@ -126,9 +146,9 @@
                   <div class="chart-preview w-100 h-100">
                     <chart-component
                       v-if="chart"
+                      ref="chart"
                       :chart="chart"
                       :reporter="reporter"
-                      ref="chart"
                       width="200"
                       height="200"
                       @error="error=$event"
@@ -151,13 +171,13 @@
       <editor-toolbar
         v-if="chart"
         :back-link="{name: 'admin.charts'}"
-        :hideDelete="hideDelete"
-        :hideSave="hideSave"
+        :hide-delete="hideDelete"
+        :hide-save="hideSave"
         hide-clone
         @delete="handleDelete"
         @save="handleSave()"
-        @saveAndClose="handleSave({ closeOnSuccess: true })">
-      </editor-toolbar>
+        @saveAndClose="handleSave({ closeOnSuccess: true })"
+      />
     </portal>
   </div>
 </template>
@@ -210,6 +230,7 @@ export default {
     category: {
       type: String,
       required: false,
+      default: '',
     },
   },
 
