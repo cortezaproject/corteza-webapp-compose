@@ -26,12 +26,12 @@
 
       <b-form-group
         v-if="recordListModule"
-        label-size="lg"
+        :label="$t('module:general.fields')"
       >
         <field-picker
           :module="recordListModule"
           :fields.sync="options.fields"
-          :search-label="$t('recordList.fields')"
+          max-height="max-height: 30vh;"
         />
       </b-form-group>
 

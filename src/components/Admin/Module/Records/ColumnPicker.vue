@@ -11,25 +11,24 @@
     <b-modal
       id="columns"
       size="lg"
+      scrollable
       :title="$t('allRecords.columns.title')"
       :ok-title="$t('general.label.saveAndClose')"
       body-class="p-0"
       @ok="onSave"
     >
-      <div
-        class="card-body"
+      <b-card-body
+        class="d-flex flex-column mh-100"
       >
+        <p>
+          {{ $t('allRecords.columns.description') }}
+        </p>
         <field-picker
           :module="module"
           :fields.sync="filteredFields"
-          :search-label="$t('block:recordList.fields')"
+          class="d-flex flex-column"
         />
-        <small
-          class="pl-1"
-        >
-          {{ $t('allRecords.columns.description') }}
-        </small>
-      </div>
+      </b-card-body>
     </b-modal>
   </div>
 </template>
@@ -76,3 +75,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.fit-modal {
+  max-height: calc(100% - 3.5rem);
+}
+</style>

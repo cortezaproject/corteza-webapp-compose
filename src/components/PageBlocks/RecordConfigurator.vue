@@ -16,12 +16,17 @@
         readonly
       >
     </fieldset>
-    <field-picker
-      v-if="module"
-      :module="module"
-      :fields.sync="options.fields"
-      :search-label="$t('recordList.fields')"
-    />
+
+    <b-form-group
+      :label="$t('module:general.fields')"
+    >
+      <field-picker
+        v-if="module"
+        :module="module"
+        :fields.sync="options.fields"
+        max-height="max-height: 45vh;"
+      />
+    </b-form-group>
   </b-tab>
 </template>
 <script>

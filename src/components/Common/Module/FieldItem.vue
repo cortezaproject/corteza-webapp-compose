@@ -1,10 +1,10 @@
 <template>
   <div
-    class="d-flex"
+    class="d-flex align-items-center"
   >
     <font-awesome-icon
       :icon="['fas', 'grip-vertical']"
-      class="handle align-baseline mt-1 mr-3 text-primary"
+      class="handle align-baseline mr-3 text-primary"
     />
     <b
       class="cursor-default text-dark text-truncate"
@@ -13,20 +13,20 @@
     </b>
     <small
       v-if="field.isSystem"
-      class="cursor-default ml-auto pt-1 text-truncate"
+      class="cursor-default ml-1 text-truncate"
     >
       {{ $t('selector.systemField') }}
     </small>
     <font-awesome-icon
       v-if="isSelected"
       :icon="['far', 'eye']"
-      class="align-baseline mt-1 ml-auto text-muted pointer"
+      class="align-baseline ml-auto text-muted pointer"
       @click="$emit('unselect-field', field)"
     />
     <font-awesome-icon
       v-else
       :icon="['fas', 'eye-slash']"
-      class="align-baseline mt-1 ml-auto text-muted pointer"
+      class="align-baseline ml-auto text-muted pointer"
       @click="$emit('select-field', field)"
     />
   </div>
