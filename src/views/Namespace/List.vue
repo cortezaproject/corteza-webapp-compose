@@ -180,7 +180,7 @@ export default {
 
       this.$store.dispatch('namespace/load', { force: true })
         .then(() => this.toastSuccess(this.$t('notification.imported')))
-        .catch(this.toastErrorHandler(this.$t('notification.general.composeAccessNotAllowed')))
+        .catch(this.toastErrorHandler(this.$t('notification.importFailed')))
     },
   },
 }

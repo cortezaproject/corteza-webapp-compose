@@ -62,7 +62,7 @@ export default {
     this.$store.dispatch('namespace/load', { force: true }).then(namespaces => {
       this.namespaces = namespaces
       this.loaded = true
-    }).catch(this.toastErrorHandler(this.$t('general.composeAccessNotAllowed')))
+    }).catch(this.toastErrorHandler(this.$t('notification.composeAccessNotAllowed')))
   },
 }
 </script>
