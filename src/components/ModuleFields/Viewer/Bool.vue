@@ -10,9 +10,11 @@ export default {
 
       if (this.value) {
         return trueLabel || 'true'
-      } else {
+      } else if (this.value !== undefined) {
         return falseLabel || 'false'
       }
+
+      return ''
     },
   },
 }
