@@ -72,7 +72,6 @@
           v-for="n in namespacesFiltered"
           :key="n.namespaceID"
           :namespace="n"
-          class="namespace-item"
         />
       </transition-group>
 
@@ -186,26 +185,3 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-  .namespace-col, .namespace-item {
-    transition: all 0.2s ease;
-  }
-
-  .namespace-item {
-    top: 0;
-
-    &:hover {
-      transition: all 0.2s ease;
-      top: -1px;
-    }
-  }
-
-  .namespace-list-leave-active {
-    position: absolute;
-    transition: opacity 0 0s ease;
-  }
-
-  .namespace-list-enter, .namespace-list-leave-to {
-    opacity: 0;
-  }
-</style>

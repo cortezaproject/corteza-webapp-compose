@@ -1,12 +1,10 @@
 <template>
   <b-card
     no-body
-    footer-class="pb-3"
-    class="h-100 shadow-sm mb-4"
-    :class="{ 'pointer': namespace.enabled, 'shadow': hovered }"
+    class="namespace-item h-100 shadow-sm mb-4"
+    :class="{ 'shadow': hovered }"
     @mouseover="hovered = true"
     @mouseleave="hovered = false"
-    @click="visitNamespace()"
   >
     <b-card-img
       v-if="namespace.meta.logoEnabled"
@@ -17,6 +15,7 @@
 
     <b-card-body
       class="mw-100"
+      :class="{ 'pb-0': showFooter }"
     >
       <div
         class="d-flex align-items-center"
@@ -24,14 +23,12 @@
       >
         <div
           class="d-flex flex-column justify-content-center w-100"
-          :class="{ 'align-items-start': showEdit, 'align-items-center': !showEdit }"
-          :style="`min-height: 60px; ${showEdit ? 'max-width: 85%' : ''}`"
         >
-          <h4
+          <h5
             class="d-inline-block text-truncate mb-0 mw-100"
           >
             {{ namespace.name }}
-          </h4>
+          </h5>
           <p
             v-if="namespace.meta.subtitle"
             class="d-inline-block mb-0 mt-1"
@@ -39,26 +36,43 @@
             {{ namespace.meta.subtitle }}
           </p>
         </div>
-        <b-button
-          v-if="showEdit"
-          :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }"
-          :aria-label="$t('edit') + ' ' + namespace.name"
-          variant="light"
-          size="lg"
-          class="ml-auto"
-          @click.stop
-        >
-          <font-awesome-icon :icon="['far', 'edit']" />
-        </b-button>
       </div>
 
       <p
         v-if="namespace.meta.description"
-        class="text-justify overflow-auto ns-description mb-0 mt-2"
+        class="overflow-auto mb-0 mt-2"
       >
-        {{ namespace.meta.description }}
+        <small>{{ namespace.meta.description }}</small>
       </p>
     </b-card-body>
+
+    <b-card-footer
+      v-if="showFooter"
+      footer-bg-variant="white"
+    >
+      <b-button-group
+        size="sm"
+        class="d-flex mt-2"
+      >
+        <b-button
+          v-if="isEnabled"
+          :to="{ name: 'pages', params: { slug: (namespace.slug || namespace.namespaceID) } }"
+          :aria-label="$t('visit') + ' ' + namespace.name"
+          variant="light"
+        >
+          {{ $t('visit') }}
+        </b-button>
+        <b-button
+          v-if="canEdit"
+          :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }"
+          :aria-label="$t('edit') + ' ' + namespace.name"
+          variant="light"
+          class="d-flex align-items-center justify-content-center ml-2"
+        >
+          {{ $t('general:label.edit') }}
+        </b-button>
+      </b-button-group>
+    </b-card-footer>
   </b-card>
 </template>
 <script>
@@ -89,21 +103,28 @@ export default {
       return !!this.namespace.enabled
     },
 
-    showEdit () {
-      return this.hovered && this.namespace.canUpdateNamespace
+    canEdit () {
+      return !!this.namespace.canUpdateNamespace
+    },
+
+    showFooter () {
+      return this.isEnabled || this.canEdit
     },
 
     logo () {
       return this.namespace.meta.logo || this.$Settings.attachment('ui.mainLogo', logo)
     },
   },
-
-  methods: {
-    visitNamespace () {
-      if (this.namespace.enabled) {
-        this.$router.push({ name: 'pages', params: { slug: (this.namespace.slug || this.namespace.namespaceID) } })
-      }
-    },
-  },
 }
 </script>
+
+<style lang="scss" scoped>
+.namespace-item {
+  top: 0;
+
+  &:hover {
+    transition: all 0.2s ease;
+    top: -1px;
+  }
+}
+</style>
