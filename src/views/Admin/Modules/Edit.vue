@@ -39,6 +39,7 @@
             class="shadow-sm"
           >
             <b-card-header
+              v-if="!creatingModule"
               header-bg-variant="white border-bottom"
               class="py-3"
             >

@@ -99,7 +99,7 @@
         @confirmed="$emit('delete')"
       />
       <c-permissions-button
-        v-if="canGrant"
+        v-if="canGrant && exists"
         class="text-dark px-0"
         button-variant="link"
         :title="value.name"
@@ -112,7 +112,7 @@
 
 <script>
 import FieldTranslator from 'corteza-webapp-compose/src/components/Admin/Module/FieldTranslator'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
@@ -167,6 +167,10 @@ export default {
         .map(kind => {
           return { kind, label: this.$t('fieldKinds.' + kind + '.label') }
         })
+    },
+
+    exists () {
+      return this.module.ID !== NoID && this.value.fieldID !== NoID
     },
   },
 
