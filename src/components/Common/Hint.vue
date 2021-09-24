@@ -6,7 +6,6 @@
   >
     <font-awesome-icon
       :icon="['far', 'question-circle']"
-      class="small"
     />
 
     <b-tooltip
