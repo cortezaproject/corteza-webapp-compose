@@ -19,7 +19,7 @@
         >
           {{ $t('edit.edit') }}
           <font-awesome-icon
-            :icon="['fas', 'pen']"
+            :icon="['far', 'edit']"
             size="sm"
             class="ml-2"
           />
