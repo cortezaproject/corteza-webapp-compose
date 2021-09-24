@@ -128,7 +128,8 @@ export default {
     },
 
     handleBack () {
-      this.$router.back()
+      const { pageID } = this.$store.getters['page/homePage'] || {}
+      this.$router.replace({ name: 'page', params: { pageID } })
     },
 
     handleAdd () {
