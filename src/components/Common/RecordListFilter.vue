@@ -198,14 +198,14 @@ export default {
     fields () {
       return [
         ...[...this.module.fields].sort((a, b) =>
-          a.label.localeCompare(b.label),
+          (a.label || a.name).localeCompare(b.label || b.name),
         ),
         ...this.module.systemFields(),
       ].filter(({ isMulti }) => !isMulti)
     },
 
     fieldOptions () {
-      return this.fields.map(({ name, label }) => ({ name, label }))
+      return this.fields.map(({ name, label }) => ({ name, label: label || name }))
     },
 
     inFilter () {

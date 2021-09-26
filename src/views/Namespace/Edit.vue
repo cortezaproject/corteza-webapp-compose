@@ -58,6 +58,7 @@
             v-if="namespace"
             class="btn-lg"
             :namespace.sync="namespace"
+            :disabled="isNew"
           />
         </div>
 
@@ -81,6 +82,7 @@
                     :namespace="namespace"
                     highlight-key="name"
                     button-variant="light"
+                    :disabled="isNew"
                   />
                 </b-input-group-append>
               </b-input-group>
@@ -187,6 +189,7 @@
                     :namespace="namespace"
                     highlight-key="subtitle"
                     button-variant="light"
+                    :disabled="isNew"
                   />
                 </b-input-group-append>
               </b-input-group>
@@ -207,6 +210,7 @@
                     :namespace="namespace"
                     highlight-key="description"
                     button-variant="light"
+                    :disabled="isNew"
                   />
                 </b-input-group-append>
               </b-input-group>
@@ -282,7 +286,7 @@
 <script>
 import logo from 'corteza-webapp-compose/src/themes/corteza-base/img/logo.png'
 import icon from 'corteza-webapp-compose/src/themes/corteza-base/img/icon.png'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import { url } from '@cortezaproject/corteza-vue'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import NamespaceTranslator from 'corteza-webapp-compose/src/components/Namespaces/NamespaceTranslator'
@@ -321,6 +325,10 @@ export default {
 
     canCreateApplication () {
       return this.can('system/', 'application.create')
+    },
+
+    isNew () {
+      return this.namespace.namespaceID === NoID
     },
 
     pageTitle () {

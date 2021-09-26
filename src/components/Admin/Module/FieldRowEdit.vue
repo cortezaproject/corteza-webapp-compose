@@ -14,7 +14,7 @@
         v-model="value.name"
         required
         :readonly="disabled"
-        :state="checkFieldName"
+        :state="fieldState"
         type="text"
         class="form-control"
       />
@@ -30,6 +30,7 @@
           <field-translator
             :field.sync="value"
             :module="module"
+            :disabled="isNew"
             highlight-key="label"
             button-variant="light"
           />
@@ -144,6 +145,11 @@ export default {
       required: true,
       default: false,
     },
+
+    isDuplicate: {
+      type: Boolean,
+      required: false,
+    },
   },
 
   data () {
@@ -157,8 +163,20 @@ export default {
       return (this.disabled || this.value.isValid) ? null : false
     },
 
+    fieldState () {
+      if (this.checkFieldName === false || this.isDuplicate) {
+        return false
+      }
+
+      return null
+    },
+
     disabled () {
-      return this.value.fieldID !== '0' && this.hasRecords
+      return this.value.fieldID !== NoID && this.hasRecords
+    },
+
+    isNew () {
+      return this.module.moduleID === NoID || this.value.fieldID === NoID
     },
 
     fieldKinds () {

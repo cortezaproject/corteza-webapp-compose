@@ -80,6 +80,7 @@
                 head-variant="light"
                 tbody-tr-class="pointer"
                 :empty-text="$t('noModule')"
+                :empty-filtered-text="$t('noModuleFilter')"
                 responsive
                 show-empty
                 hover

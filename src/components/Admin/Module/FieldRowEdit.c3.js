@@ -25,6 +25,7 @@ const props = {
     namespaceID: '3242343234',
     moduleID: '999999442',
   }),
+  isDuplicate: false,
   canGrant: true,
   hasRecords: false,
 }

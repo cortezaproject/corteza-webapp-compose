@@ -216,6 +216,7 @@
                         :can-grant="namespace.canGrant"
                         :has-records="hasRecords"
                         :module="module"
+                        :is-duplicate="!!duplicateFields[index]"
                         @edit="handleFieldEdit(module.fields[index])"
                         @delete="module.fields.splice(index, 1)"
                       />
@@ -365,15 +366,33 @@ export default {
       return handleState(this.module.handle)
     },
 
+    duplicateFields () {
+      const rtr = {}
+      const ix = new Set()
+
+      this.module.fields.forEach((f, i) => {
+        if (ix.has(f.name)) {
+          rtr[i] = f
+        }
+        ix.add(f.name)
+      })
+
+      return rtr
+    },
+
     fieldsValid () {
-      return this.module.fields.reduce((acc, f) => {
+      const valid = this.module.fields.reduce((acc, f) => {
         // Allow, if any old fields are invalid (legacy support)
-        if (f.fieldID !== '0') {
+        if (f.fieldID !== NoID) {
           return acc && true
         }
 
         return acc && f.isValid
       }, true)
+
+      const unique = Object.keys(this.duplicateFields).length === 0
+
+      return valid && unique
     },
 
     editModalTitle () {
