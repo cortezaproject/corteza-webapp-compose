@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-button
-      :id="selectedFieldName"
+      :id="selectedFieldId"
       variant="link p-0 ml-1"
       :class="[inFilter ? 'text-primary' : 'text-secondary']"
       @click.stop
@@ -16,7 +16,7 @@
       delay="0"
       boundary="viewport"
       boundary-padding="2"
-      :target="selectedFieldName"
+      :target="selectedFieldId"
       @show="onOpen()"
     >
       <div class="py-3 px-2">
@@ -214,8 +214,8 @@ export default {
       })
     },
 
-    selectedFieldName () {
-      return this.selectedField.name
+    selectedFieldId () {
+      return this.selectedField.fieldID
     },
   },
 

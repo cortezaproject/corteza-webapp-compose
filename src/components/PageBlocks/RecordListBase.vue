@@ -202,7 +202,7 @@
               @click="handleSort(field)"
             >
               <div
-                class="d-flex justify-content-between align-self-center"
+                class="d-flex align-self-center"
               >
                 <div
                   :class="{ required: field.required }"
