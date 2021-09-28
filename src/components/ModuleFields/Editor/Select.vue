@@ -105,7 +105,7 @@ export default {
 
   computed: {
     selectOptions () {
-      return this.field.options.options.map(o => ({ ...o, disabled: this.value.includes(o.value) }))
+      return this.field.options.options.map(o => ({ ...o, disabled: (this.value || []).includes(o.value) }))
     },
   },
 
