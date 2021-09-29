@@ -25,7 +25,7 @@ export default {
     },
 
     toast (msg, opt = { variant: 'success' }) {
-      this.$bvToast.toast(msg, opt)
+      this.$root.$bvToast.toast(msg, opt)
     },
 
     toastErrorHandler (opt) {
