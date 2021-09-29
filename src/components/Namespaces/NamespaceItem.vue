@@ -25,7 +25,7 @@
           class="d-flex flex-column justify-content-center w-100"
         >
           <h5
-            class="d-inline-block text-truncate mb-0 mw-100"
+            class="mb-0 mw-100 limit-lines overflow-hidden"
           >
             {{ namespace.name }}
           </h5>
@@ -125,6 +125,14 @@ export default {
   &:hover {
     transition: all 0.2s ease;
     top: -1px;
+  }
+
+  .limit-lines {
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    /*! autoprefixer: off */
+    -webkit-box-orient: vertical;
   }
 }
 </style>
