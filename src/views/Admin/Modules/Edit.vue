@@ -93,18 +93,24 @@
 
                     <b-dropdown-item>
                       <c-permissions-button
+                        :title="module.name"
+                        :target="module.name"
                         :resource="`corteza::compose:module-field/${namespace.namespaceID}/${module.moduleID}/*`"
                         :button-label="$t('general:label.field')"
                         :show-button-icon="false"
+                        all-specific
                         button-variant="white w-100"
                       />
                     </b-dropdown-item>
 
                     <b-dropdown-item>
                       <c-permissions-button
+                        :title="module.name"
+                        :target="module.name"
                         :resource="`corteza::compose:record/${namespace.namespaceID}/${module.moduleID}/*`"
                         :button-label="$t('general:label.record')"
                         :show-button-icon="false"
+                        all-specific
                         button-variant="white w-100"
                       />
                     </b-dropdown-item>
