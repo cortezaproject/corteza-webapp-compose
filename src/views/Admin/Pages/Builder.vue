@@ -273,7 +273,11 @@ export default {
       deletePage: 'page/delete',
     }),
 
-    editBlock (block, index = undefined) {
+    editBlock (b, index = undefined) {
+      const block = {
+        ...b,
+        xywh: [0, 1000000, 3, 3],
+      }
       this.$bvModal.hide('createBlockSelector')
       this.editor = { index, block: compose.PageBlockMaker(block) }
     },
@@ -284,6 +288,7 @@ export default {
 
     updateBlocks () {
       const block = compose.PageBlockMaker(this.editor.block)
+      this.page.blocks = this.blocks
       if (this.editor.index !== undefined) {
         this.page.blocks.splice(this.editor.index, 1, block)
       } else {
