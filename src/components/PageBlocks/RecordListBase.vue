@@ -416,7 +416,7 @@
                   />
                 </b-button>
                 <b-button
-                  v-if="!options.hideRecordViewButton && recordPageID"
+                  v-if="!options.hideRecordViewButton && item.r.canReadRecord && recordPageID"
                   variant="link"
                   class="p-0 m-0 pl-1 text-primary"
                   :to="{ name: options.rowViewUrl || 'page.record', params: { pageID: recordPageID, recordID: item.r.recordID }, query: null }"
@@ -427,7 +427,7 @@
                 </b-button>
 
                 <c-permissions-button
-                  v-if="!options.hideRecordPermissionsButton"
+                  v-if="item.r.canGrant && !options.hideRecordPermissionsButton"
                   :resource="`corteza::compose:record/${item.r.namespaceID}/${item.r.moduleID}/${item.r.recordID}`"
                   :target="item.r.recordID"
                   button-variant="link"

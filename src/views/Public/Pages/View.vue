@@ -28,7 +28,7 @@
 <script>
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
 import AttachmentModal from 'corteza-webapp-compose/src/components/Public/Page/Attachment/Modal'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
@@ -60,7 +60,7 @@ export default {
     },
 
     module () {
-      if (this.page.moduleID) {
+      if (this.page.moduleID && this.page.moduleID !== NoID) {
         return this.$store.getters['module/getByID'](this.page.moduleID)
       }
 
