@@ -45,7 +45,6 @@
       </b-button>
 
       <div
-        v-if="navItems.length"
         class="h-100"
       >
         <b-input
@@ -53,6 +52,7 @@
           v-model.trim="query"
           class="namespace-selector mw-100"
           type="search"
+          autocomplete="off"
           :placeholder="$t('searchPlaceholder')"
         />
 
@@ -65,7 +65,7 @@
       </div>
 
       <h5
-        v-else
+        v-if="!navItems.length"
         class="d-flex justify-content-center mt-5"
       >
         {{ $t('noPages') }}
