@@ -71,6 +71,7 @@
                     v-if="module.canGrant"
                     size="lg"
                     variant="light"
+                    class="permissions-dropdown"
                   >
                     <template #button-content>
                       <font-awesome-icon :icon="['fas', 'lock']" />
@@ -86,7 +87,7 @@
                         :resource="`corteza::compose:module/${namespace.namespaceID}/${module.moduleID}`"
                         :button-label="$t('general:label.module')"
                         :show-button-icon="false"
-                        button-variant="white"
+                        button-variant="white w-100"
                       />
                     </b-dropdown-item>
 
@@ -95,7 +96,7 @@
                         :resource="`corteza::compose:module-field/${namespace.namespaceID}/${module.moduleID}/*`"
                         :button-label="$t('general:label.field')"
                         :show-button-icon="false"
-                        button-variant="white"
+                        button-variant="white w-100"
                       />
                     </b-dropdown-item>
 
@@ -104,7 +105,7 @@
                         :resource="`corteza::compose:record/${namespace.namespaceID}/${module.moduleID}/*`"
                         :button-label="$t('general:label.record')"
                         :show-button-icon="false"
-                        button-variant="white"
+                        button-variant="white w-100"
                       />
                     </b-dropdown-item>
                   </b-dropdown>
@@ -653,3 +654,11 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.permissions-dropdown {
+  .dropdown-item {
+    padding: 0;
+  }
+}
+</style>
