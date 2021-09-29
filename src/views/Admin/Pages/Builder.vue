@@ -284,6 +284,7 @@ export default {
 
     updateBlocks () {
       const block = compose.PageBlockMaker(this.editor.block)
+      this.page.blocks = this.blocks
       if (this.editor.index !== undefined) {
         this.page.blocks.splice(this.editor.index, 1, block)
       } else {
