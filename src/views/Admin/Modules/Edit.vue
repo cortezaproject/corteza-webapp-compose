@@ -194,29 +194,45 @@
                       <tr>
                         <th />
                         <th
-                          v-b-tooltip.hover.topright
-                          :title="$t('edit.tooltip.name')"
                           class="text-primary"
                         >
-                          {{ $t('general.label.name') }}
+                          <div
+                            class="d-flex align-items-center"
+                          >
+                            {{ $t('general.label.name') }}
+                            <div
+                              v-b-tooltip.hover.topright
+                              :title="$t('edit.tooltip.name')"
+                              class="ml-1"
+                            >
+                              <font-awesome-icon
+                                :icon="['far', 'question-circle']"
+                              />
+                            </div>
+                          </div>
                         </th>
                         <th
-                          v-b-tooltip.hover.topright
-                          :title="$t('edit.tooltip.title')"
                           class="text-primary"
                         >
-                          {{ $t('general.label.title') }}
+                          <div
+                            class="d-flex align-items-center"
+                          >
+                            {{ $t('general.label.title') }}
+                            <div
+                              v-b-tooltip.hover.topright
+                              :title="$t('edit.tooltip.title')"
+                              class="ml-1"
+                            >
+                              <font-awesome-icon
+                                :icon="['far', 'question-circle']"
+                              />
+                            </div>
+                          </div>
                         </th>
                         <th class="text-primary">
                           {{ $t('general.label.type') }}
                         </th>
-                        <th
-                          v-b-tooltip.hover
-                          :title="$t('edit.tooltip.attributes')"
-                          class="text-primary"
-                        >
-                          {{ $t('general.label.attributes') }}
-                        </th>
+                        <th />
                         <th />
                       </tr>
                     </thead>
