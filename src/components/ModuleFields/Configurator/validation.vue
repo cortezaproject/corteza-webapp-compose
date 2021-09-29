@@ -77,7 +77,6 @@
         <b-form-input
           v-model="value.test"
           :placeholder="$t('validators.expression.placeholder')"
-          disabled
         />
         <b-input-group-prepend>
           <b-button variant="warning">
@@ -87,6 +86,7 @@
         <b-form-input
           v-model="value.error"
           :placeholder="$t('validators.error.placeholder')"
+          disabled
         />
         <b-input-group-append>
           <field-translator
