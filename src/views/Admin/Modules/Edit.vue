@@ -67,31 +67,47 @@
                     class="mr-1"
                   />
 
-                  <c-permissions-button
+                  <b-dropdown
                     v-if="module.canGrant"
-                    :title="module.name"
-                    :target="module.name"
-                    :resource="`corteza::compose:module/${namespace.namespaceID}/${module.moduleID}`"
-                    :button-label="$t('general.label.permissions')"
-                    button-variant="light"
-                    class="btn-lg mr-1"
-                  />
+                    size="lg"
+                    variant="light"
+                  >
+                    <template #button-content>
+                      <font-awesome-icon :icon="['fas', 'lock']" />
+                      <span>
+                        {{ $t('general.label.permissions') }}
+                      </span>
+                    </template>
 
-                  <c-permissions-button
-                    v-if="module.canGrant"
-                    :resource="`corteza::compose:module-field/${namespace.namespaceID}/${module.moduleID}/*`"
-                    :button-label="$t('edit.fieldPermissions')"
-                    button-variant="light"
-                    class="btn-lg ml-auto mr-1"
-                  />
+                    <b-dropdown-item>
+                      <c-permissions-button
+                        :title="module.name"
+                        :target="module.name"
+                        :resource="`corteza::compose:module/${namespace.namespaceID}/${module.moduleID}`"
+                        :button-label="$t('general:label.module')"
+                        :show-button-icon="false"
+                        button-variant="white"
+                      />
+                    </b-dropdown-item>
 
-                  <c-permissions-button
-                    v-if="module.canGrant"
-                    :resource="`corteza::compose:record/${namespace.namespaceID}/${module.moduleID}/*`"
-                    :button-label="$t('edit.recordPermissions')"
-                    button-variant="light"
-                    class="btn-lg ml-auto mr-1"
-                  />
+                    <b-dropdown-item>
+                      <c-permissions-button
+                        :resource="`corteza::compose:module-field/${namespace.namespaceID}/${module.moduleID}/*`"
+                        :button-label="$t('general:label.field')"
+                        :show-button-icon="false"
+                        button-variant="white"
+                      />
+                    </b-dropdown-item>
+
+                    <b-dropdown-item>
+                      <c-permissions-button
+                        :resource="`corteza::compose:record/${namespace.namespaceID}/${module.moduleID}/*`"
+                        :button-label="$t('general:label.record')"
+                        :show-button-icon="false"
+                        button-variant="white"
+                      />
+                    </b-dropdown-item>
+                  </b-dropdown>
 
                   <module-translator
                     v-if="module"

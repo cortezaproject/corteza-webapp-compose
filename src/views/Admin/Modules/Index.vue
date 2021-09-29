@@ -42,13 +42,47 @@
                     type="module"
                     class="mr-1 float-left"
                   />
-                  <c-permissions-button
+
+                  <b-dropdown
                     v-if="namespace.canGrant"
-                    :resource="`corteza::compose:module/${namespace.namespaceID}/*`"
-                    :button-label="$t('general.label.permissions')"
-                    button-variant="light"
-                    class="btn-lg"
-                  />
+                    size="lg"
+                    variant="light"
+                    class="permissions-dropdown"
+                  >
+                    <template #button-content>
+                      <font-awesome-icon :icon="['fas', 'lock']" />
+                      <span>
+                        {{ $t('general:label.permissions') }}
+                      </span>
+                    </template>
+
+                    <b-dropdown-item>
+                      <c-permissions-button
+                        :resource="`corteza::compose:module/${namespace.namespaceID}/*`"
+                        :button-label="$t('general:label.module')"
+                        :show-button-icon="false"
+                        button-variant="white w-100"
+                      />
+                    </b-dropdown-item>
+
+                    <b-dropdown-item>
+                      <c-permissions-button
+                        :resource="`corteza::compose:module-field/${namespace.namespaceID}/*`"
+                        :button-label="$t('general:label.field')"
+                        :show-button-icon="false"
+                        button-variant="white w-100"
+                      />
+                    </b-dropdown-item>
+
+                    <b-dropdown-item>
+                      <c-permissions-button
+                        :resource="`corteza::compose:record/${namespace.namespaceID}/*`"
+                        :button-label="$t('general:label.record')"
+                        :show-button-icon="false"
+                        button-variant="white w-100"
+                      />
+                    </b-dropdown-item>
+                  </b-dropdown>
                 </div>
                 <div class="flex-grow-1">
                   <b-input-group>
@@ -291,5 +325,13 @@ $input-height: 42px;
 
 .module-name-input {
   height: $input-height;
+}
+</style>
+
+<style lang="scss">
+.permissions-dropdown {
+  .dropdown-item {
+    padding: 0;
+  }
 }
 </style>
