@@ -41,6 +41,7 @@
                 {{ $t('automation.addPlaceholderLabel') }}
               </b-button>
               <c-input-confirm
+                v-if="buttons.length"
                 variant="link"
                 size="md"
                 @confirmed="buttons.splice(0)"
