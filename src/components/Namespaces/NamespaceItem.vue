@@ -25,7 +25,7 @@
           class="d-flex flex-column justify-content-center w-100"
         >
           <h5
-            class="d-inline-block text-truncate mb-0 mw-100"
+            class="mb-0 mw-100"
           >
             {{ namespace.name }}
           </h5>
