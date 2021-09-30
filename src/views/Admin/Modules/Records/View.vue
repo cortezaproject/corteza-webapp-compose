@@ -1,5 +1,7 @@
 <template>
-  <div class="d-flex flex-column w-100 overflow-hidden">
+  <div
+    class="overflow-auto px-2"
+  >
     <portal to="topbar-title">
       {{ title }}
     </portal>
@@ -48,19 +50,23 @@
       {{ $t('block.record.recordDeleted') }}
     </b-alert>
 
-    <div
+    <b-row
       v-if="module && record"
-      class="flex-grow-1 overflow-auto d-flex p-2 w-100"
+      no-gutters
     >
-      <component
-        :is="getRecordComponent"
+      <b-col
         v-for="(block, index) in blocks"
         :key="index"
-        :errors="errors"
-        v-bind="{ ...bindParams, module, block, record }"
-        :class="{ 'flex-grow-1': !inEditing }"
-      />
-    </div>
+        md="3"
+        cols="12"
+      >
+        <component
+          :is="getRecordComponent"
+          :errors="errors"
+          v-bind="{ ...bindParams, module, block, record }"
+        />
+      </b-col>
+    </b-row>
 
     <portal to="admin-toolbar">
       <record-toolbar
@@ -190,7 +196,7 @@ export default {
   methods: {
     createBlocks () {
       this.fields.forEach(f => {
-        const block = new compose.PageBlockRecordList()
+        const block = new compose.PageBlockRecord()
         const options = {
           moduleID: this.$attrs.moduleID,
           fields: f,
