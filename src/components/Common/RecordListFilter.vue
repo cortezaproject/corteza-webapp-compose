@@ -74,7 +74,7 @@
                     button-class="text-dark px-0"
                     class="child-inline-flex"
                     @confirmed="deleteFilter(groupIndex, index)"
-                    @canceled="$refs.btnSave.focus()"
+                    @canceled="$refs.addFilter[groupIndex].focus()"
                   />
                 </td>
               </tr>
@@ -315,7 +315,7 @@ export default {
     },
 
     deleteFilter (groupIndex, index) {
-      this.$refs.btnSave.focus()
+      this.$refs.addFilter[groupIndex > 0 ? groupIndex - 1 : groupIndex].focus()
 
       const filterExists = !!(this.componentFilter[groupIndex] || { filter: [] }).filter[index]
 
