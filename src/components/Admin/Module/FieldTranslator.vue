@@ -1,5 +1,5 @@
 <template>
-  <c-translation-button
+  <c-translator-button
     v-if="canManageResourceTranslations && resourceTranslationsEnabled"
     button-variant="light"
     class="btn-lg ml-auto mr-1 py-1 px-3"
@@ -14,8 +14,13 @@
 <script>
 import { compose } from '@cortezaproject/corteza-js'
 import { mapGetters } from 'vuex'
+import CTranslatorButton from 'corteza-webapp-compose/src/components/Translator/CTranslatorButton'
 
 export default {
+  components: {
+    CTranslatorButton,
+  },
+
   i18nOptions: {
     namespaces: 'resource-translator',
     keyPrefix: 'resources.module.field',
