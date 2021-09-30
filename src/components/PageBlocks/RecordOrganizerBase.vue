@@ -76,27 +76,17 @@
       v-if="canAddRecord"
       #footer
     >
-      <b-container
-        fluid
-        class="m-0 p-2"
+      <div
+        class="d-flex justify-content-end align-items-center m-0 p-2"
       >
-        <b-row
-          no-gutters
+        <b-button
+          size="sm"
+          variant="outline-primary"
+          @click.prevent="createNewRecord"
         >
-          <b-col
-            class="pt-1 text-nowrap text-truncate"
-          >
-            <b-button
-              size="sm"
-              variant="outline-primary"
-              class="float-left"
-              @click.prevent="createNewRecord"
-            >
-              + {{ $t('recordList.addRecord') }}
-            </b-button>
-          </b-col>
-        </b-row>
-      </b-container>
+          + {{ $t('recordList.addRecord') }}
+        </b-button>
+      </div>
     </template>
   </wrap>
 </template>
