@@ -59,8 +59,7 @@ export default {
     }),
 
     canManageResourceTranslations () {
-      // return this.can('compose/', 'resource-translations.manage')
-      return true
+      return this.can('compose/', 'resource-translations.manage')
     },
 
     resource () {
