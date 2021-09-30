@@ -64,12 +64,12 @@
         />
       </div>
 
-      <h5
+      <div
         v-if="!navItems.length"
         class="d-flex justify-content-center mt-5"
       >
         {{ $t('noPages') }}
-      </h5>
+      </div>
     </portal>
   </div>
 </template>
