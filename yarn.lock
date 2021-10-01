@@ -701,10 +701,10 @@
     "@babel/helper-validator-identifier" "^7.14.0"
     to-fast-properties "^2.0.0"
 
-"@cortezaproject/corteza-js@^2021.9.0-rc.1":
-  version "2021.9.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.9.0-rc.1.tgz#8d1894f05e6ba129817c3aff3a540539c00e9fd0"
-  integrity sha512-s13aKrNQwWO7d8MXRSY7Q5nTu+dBF1SwjbdL12JKsMLTtF8g0o4Nq3d2/VRobioy9igTvnGJppy76durBi+krw==
+"@cortezaproject/corteza-js@^2021.9.0-rc.2":
+  version "2021.9.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.9.0-rc.2.tgz#0d428e5b630f22e5814c4b57b2ca880771f609f2"
+  integrity sha512-1eH66xInTWKiEi+I01Uo8CfHFpkQkIYrQTLjK8RO7NjG/dJ6XN1bsTIxJ0qVNjv98fMj95qr7FPhFkuAjCVf1A==
   dependencies:
     axios "^0.21.1"
     chart.js "2.9.3"
@@ -717,18 +717,18 @@
     pino "^5.16.0"
     ts-sinon "^1.0.25"
 
-"@cortezaproject/corteza-vue@^2021.9.0-rc.1":
-  version "2021.9.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.9.0-rc.1.tgz#e89738a30449d942b7284a8d3ff858ba4f61e00f"
-  integrity sha512-P501VXtOLUhnJFtvJcbsAw1/efCHzkFyalVPtdRwMgVinEcyr3/wWB8YZwu7v+M4ToqKQ1mjVUU9JC9yJIhKuQ==
+"@cortezaproject/corteza-vue@^2021.9.0-rc.2":
+  version "2021.9.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.9.0-rc.2.tgz#f0b91781b420b6f4500f1aa7b8d1dceb46a1c5e2"
+  integrity sha512-heCg6bdYvM47FTtlm1YXfqE/1lD6A8qckJTW3ImmD7VcwAhQzuLanN1zmsheav4ug4dRI7/ugxJkPU4HiKKqkw==
   dependencies:
-    "@cortezaproject/corteza-js" "^2021.9.0-rc.1"
+    "@cortezaproject/corteza-js" "^2021.9.0-rc.2"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
     "@fortawesome/free-solid-svg-icons" "^5.12.0"
     "@fortawesome/vue-fontawesome" "^0.1.9"
     "@panter/vue-i18next" "^0.15.0"
     acorn "^7.3.1"
-    bootstrap-vue "2.2.2"
+    bootstrap-vue "^2.21.2"
     html-parse-stringify "^3.0.1"
     i18next "^20.0.0"
     i18next-browser-languagedetector "^3.0.2"
@@ -1075,7 +1075,7 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@nuxt/opencollective@^0.3.0", "@nuxt/opencollective@^0.3.2":
+"@nuxt/opencollective@^0.3.2":
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/@nuxt/opencollective/-/opencollective-0.3.2.tgz#83cb70cdb2bac5fad6f8c93529e7b11187d49c02"
   integrity sha512-XG7rUdXG9fcafu9KTDIYjJSkRO38EwjlKYIb5TQ/0WDbiTUTtUtgncMscKOYzfsY86kGs05pAuMOR+3Fi0aN3A==
@@ -2437,17 +2437,6 @@ boolbase@^1.0.0, boolbase@~1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
-bootstrap-vue@2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/bootstrap-vue/-/bootstrap-vue-2.2.2.tgz#750d461d18352e2fd6cd2debfe52ebeb125c191f"
-  integrity sha512-jFw9WcPX2MLCMaMNdakXke2Fwtz5o7EeByMJGhzGjiL1TNBr/nz2PolCAFW475+o2t5Tz3MZT152o6zLQXcElw==
-  dependencies:
-    "@nuxt/opencollective" "^0.3.0"
-    bootstrap ">=4.4.1 <5.0.0"
-    popper.js "^1.16.0"
-    portal-vue "^2.1.7"
-    vue-functional-data-merge "^3.1.0"
-
 bootstrap-vue@^2.21.2:
   version "2.21.2"
   resolved "https://registry.yarnpkg.com/bootstrap-vue/-/bootstrap-vue-2.21.2.tgz#ec38f66c3a2205becccddb6158a991d96509ed0b"
@@ -2459,7 +2448,7 @@ bootstrap-vue@^2.21.2:
     portal-vue "^2.1.7"
     vue-functional-data-merge "^3.1.0"
 
-"bootstrap@>=4.4.1 <5.0.0", "bootstrap@>=4.5.3 <5.0.0":
+"bootstrap@>=4.5.3 <5.0.0":
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.6.0.tgz#97b9f29ac98f98dfa43bf7468262d84392552fd7"
   integrity sha512-Io55IuQY3kydzHtbGvQya3H+KorS/M9rSNyfCGCg9WZ4pyT/lCxIlpJgG1GXW/PswzC84Tr2fBYi+7+jFVQQBw==
@@ -8815,7 +8804,7 @@ pn@^1.1.0:
   resolved "https://registry.yarnpkg.com/pn/-/pn-1.1.0.tgz#e2f4cef0e219f463c179ab37463e4e1ecdccbafb"
   integrity sha512-2qHaIQr2VLRFoxe2nASzsV6ef4yOOH+Fi9FBOVH6cqeSgUnoyySPZkxzLuzd+RYOQTRpROA0ztTMqxROKSb/nA==
 
-popper.js@^1.16.0, popper.js@^1.16.1:
+popper.js@^1.16.1:
   version "1.16.1"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.16.1.tgz#2a223cb3dc7b6213d740e40372be40de43e65b1b"
   integrity sha512-Wb4p1J4zyFTbM+u6WuO4XstYx4Ky9Cewe4DWrel7B0w6VVICvPwdOpotjzcf6eD8TsckVnIMNONQyPIUFOUbCQ==
