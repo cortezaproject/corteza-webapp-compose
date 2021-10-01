@@ -199,6 +199,13 @@ export default {
   },
 
   watch: {
+    defaultValueEnabled: {
+      handler (val) {
+        if (val) {
+          this.showvalueExpr = false
+        }
+      },
+    },
     'mock.record.values': {
       handler ({ defValField: dv }) {
         if (!Array.isArray(dv)) {
