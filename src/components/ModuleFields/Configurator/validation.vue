@@ -94,6 +94,7 @@
             :field="field"
             :module="module"
             :highlight-key="`expression.validator.${value.validatorID}.error`"
+            :disabled="isNew(value)"
             button-variant="light"
           />
         </b-input-group-append>
@@ -118,7 +119,7 @@
 <script>
 import FieldExpressions from 'corteza-webapp-compose/src/components/Common/Module/FieldExpressions'
 import FieldTranslator from 'corteza-webapp-compose/src/components/Admin/Module/FieldTranslator'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 
 export default {
   i18nOptions: {
@@ -184,6 +185,10 @@ export default {
                                     resizable=yes,
                                     width=960px,
                                     height=1080px`)
+    },
+
+    isNew (value) {
+      return !(value.validatorID && value.validatorID !== NoID)
     },
   },
 }

@@ -9,6 +9,7 @@
         v-if="page"
         :page="page"
         :block="block"
+        :disabled="isNew"
         button-variant="link"
       />
     </template>
@@ -84,7 +85,7 @@
   </b-tabs>
 </template>
 <script>
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import PageTranslator from 'corteza-webapp-compose/src/components/Admin/Page/PageTranslator'
 import PageBlock from './index'
 
@@ -126,6 +127,10 @@ export default {
       return [
         'text-' + this.block.style.variants.headerText,
       ]
+    },
+
+    isNew () {
+      return this.block.blockID === NoID
     },
   },
 }
