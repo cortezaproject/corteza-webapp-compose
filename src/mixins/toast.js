@@ -36,6 +36,9 @@ export default {
       const { prefix, title } = opt
 
       return (err = {}) => {
+        if (err.message.startsWith('notification')) {
+          err.message = 'notification:' + err.message.substring('notification.'.length)
+        }
         /* eslint-disable no-console */
         console.error(err)
         const msg = err.message ? (prefix + ': ' + this.$t(err.message)) : prefix
