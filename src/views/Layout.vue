@@ -25,7 +25,7 @@
         </template>
 
         <template #avatar-dropdown>
-          <portal-target name="topbar-dropdown" />
+          <portal-target name="topbar-avatar-dropdown" />
         </template>
       </c-topbar>
     </header>

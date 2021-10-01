@@ -8,7 +8,7 @@
     />
 
     <portal
-      to="topbar-dropdown"
+      to="topbar-avatar-dropdown"
     >
       <b-dropdown-item
         @click="remindersVisible = true"
