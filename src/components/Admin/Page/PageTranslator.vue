@@ -74,9 +74,9 @@ export default {
 
         titles[this.resource] = this.$t('block.title', { title, blockID })
       } else {
-        const { handle } = this.page
+        const { pageID, handle } = this.page
 
-        titles[this.resource] = this.$t('title', { handle })
+        titles[this.resource] = this.$t('title', { handle: handle || pageID })
       }
 
       return titles

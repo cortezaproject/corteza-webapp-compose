@@ -59,10 +59,10 @@ export default {
     },
 
     titles () {
-      const { slug: handle } = this.namespace
+      const { namespaceID, slug: handle } = this.namespace
       const titles = {}
 
-      titles[this.resource] = this.$t('title', { handle })
+      titles[this.resource] = this.$t('title', { handle: handle || namespaceID })
 
       return titles
     },

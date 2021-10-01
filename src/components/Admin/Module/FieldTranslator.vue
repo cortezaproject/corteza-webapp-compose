@@ -64,10 +64,10 @@ export default {
     },
 
     titles () {
-      const { name } = this.field
+      const { fieldID, name } = this.field
       const titles = {}
 
-      titles[this.resource] = this.$t('title', { name })
+      titles[this.resource] = this.$t('title', { name: name || fieldID })
 
       return titles
     },

@@ -58,10 +58,10 @@ export default {
     },
 
     titles () {
-      const { handle, moduleID, namespaceID, fields } = this.module
+      const { moduleID, handle, namespaceID, fields } = this.module
       const titles = {}
 
-      titles[this.resource] = this.$t('title', { handle })
+      titles[this.resource] = this.$t('title', { handle: handle || moduleID })
 
       fields.forEach(({ fieldID, name }) => {
         titles[`compose:module-field/${namespaceID}/${moduleID}/${fieldID}`] = this.$t('field.title', { name })
