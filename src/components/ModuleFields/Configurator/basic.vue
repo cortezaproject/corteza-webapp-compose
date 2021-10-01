@@ -199,10 +199,12 @@ export default {
   },
 
   watch: {
-    defaultValueEnabled: function (val) {
-      if (val) {
-        this.showvalueExpr = false
-      }
+    defaultValueEnabled: {
+      handler (val) {
+        if (val) {
+          this.showvalueExpr = false
+        }
+      },
     },
     'mock.record.values': {
       handler ({ defValField: dv }) {
