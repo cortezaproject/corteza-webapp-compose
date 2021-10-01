@@ -51,7 +51,6 @@
       footer-bg-variant="white"
     >
       <b-button-group
-        size="sm"
         class="d-flex mt-2"
       >
         <b-button
