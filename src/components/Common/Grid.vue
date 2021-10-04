@@ -159,6 +159,7 @@ export default {
   watch: {
     blocks: {
       handler (blocks) {
+        if (blocks.length === 0) this.$emit('change', [])
         this.grid = blocks.map(({ xywh: [x, y, w, h] }, i) => ({ i, x, y, w, h }))
         this.recalculateBoundingRect()
       },
