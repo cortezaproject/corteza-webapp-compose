@@ -68,21 +68,24 @@
                   />
                 </td>
                 <td class="pl-1">
-                  <c-input-confirm
+                  <b-button
+                    :id="`${groupIndex}-${index}`"
+                    ref="delete"
                     variant="link"
-                    size="lg"
-                    button-class="text-dark px-0"
-                    class="child-inline-flex"
-                    @confirmed="deleteFilter(groupIndex, index)"
-                    @canceled="$refs.addFilter[groupIndex].focus()"
-                  />
+                    class="d-flex align-items-center"
+                    @click="deleteFilter(groupIndex, index)"
+                  >
+                    <font-awesome-icon
+                      :icon="['far', 'trash-alt']"
+                      size="sm"
+                    />
+                  </b-button>
                 </td>
               </tr>
 
               <tr :key="`addFilter-${groupIndex}`">
                 <td class="pb-0">
                   <b-button
-                    ref="addFilter"
                     variant="link text-decoration-none"
                     class="d-flex align-items-center"
                     style="min-height: 38px; min-width: 84px;"
@@ -315,11 +318,11 @@ export default {
     },
 
     deleteFilter (groupIndex, index) {
-      this.$refs.addFilter[groupIndex > 0 ? groupIndex - 1 : groupIndex].focus()
-
       const filterExists = !!(this.componentFilter[groupIndex] || { filter: [] }).filter[index]
 
       if (filterExists) {
+        // Set focus to previous element
+        this.onSetFocus(groupIndex, index)
         // Delete filter from filterGroup
         this.componentFilter[groupIndex].filter.splice(index, 1)
 
@@ -336,6 +339,14 @@ export default {
           }
         }
       }
+    },
+
+    onSetFocus (groupIndex, index) {
+      let focusIndex = this.$refs.delete.findIndex(r => r.id === `${groupIndex}-${index}`)
+      if (focusIndex > 0) {
+        focusIndex--
+      }
+      this.$refs.delete[focusIndex].focus()
     },
 
     onOpen () {
