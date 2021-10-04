@@ -202,6 +202,13 @@ export default {
         .filter(r => r.resource === resource)
         .map(r => r.key)
         .filter((r, i, rr) => rr.indexOf(r) === i)
+        .map(t => t.replace(/([A-Z])/, ' $1')
+          .toLowerCase())
+        .map(t => t.replace(/(\d+)/, '#$1'))
+        .map(t => t.substring(0, 1).toUpperCase() + t.substring(1)
+          .split('.')
+          .join(' '),
+        )
     },
 
     find (resource, key, lang) {
