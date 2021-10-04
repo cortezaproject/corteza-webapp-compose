@@ -265,7 +265,7 @@ export default {
   methods: {
     filterFields (fields) {
       return fields
-        .filter(f => f.name.toLowerCase().indexOf(this.query) > -1 || f.label.toLowerCase().indexOf(this.query) > -1)
+        .filter(f => f.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1 || f.label.toLowerCase().indexOf(this.query.toLowerCase()) > -1)
     },
     selectField (field) {
       this.selectedFields = [...this.selectedFields, field]
