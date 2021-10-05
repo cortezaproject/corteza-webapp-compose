@@ -198,8 +198,6 @@
             <b-form-select
               v-model="m.field"
               :options="metricFields"
-              text-field="name"
-              value-field="name"
             >
               <template slot="first">
                 <option
@@ -321,7 +319,12 @@ export default {
     },
 
     metricFields () {
-      return [{ name: 'count' }, ...this.module.fields.filter(f => f.kind === 'Number').sort((a, b) => a.name.localeCompare(b.name))]
+      return [
+        { value: 'count', text: 'Count' },
+        ...this.module.fields.filter(f => f.kind === 'Number')
+          .map(({ name }) => ({ value: name, text: name }))
+          .sort((a, b) => a.text.localeCompare(b.text)),
+      ]
     },
 
     dimensionFields () {
