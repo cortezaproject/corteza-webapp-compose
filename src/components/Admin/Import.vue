@@ -86,7 +86,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Chart from '../Chart'
 import { compose } from '@cortezaproject/corteza-js'
 
 export default {
@@ -112,7 +111,7 @@ export default {
       processing: false,
       classes: {
         module: compose.Module,
-        chart: Chart,
+        chart: compose.Chart,
       },
     }
   },
@@ -140,7 +139,7 @@ export default {
         }
         this.toastSuccess(this.$t('notification.import.successful'))
       } catch (e) {
-        this.toastWarning(this.$t('notification.import.failed'))(e)
+        this.toastErrorHandler(this.$t('notification.import.failed'))(e)
       }
       this.cancelImport()
     },
@@ -181,13 +180,13 @@ export default {
               return { import: true, ...i }
             })
           } catch ({ message }) {
-            this.toastWarning(message)
+            this.toastErrorHandler(message)
           } finally {
             this.processing = false
           }
         }
         reader.onerror = (evt) => {
-          this.toastWarning(this.$t('notification.import.errorReading'))
+          this.toastErrorHandler(this.$t('notification.import.errorReading'))
           this.processing = false
         }
       }
