@@ -71,7 +71,7 @@
               class="p-1"
               size="md"
               link
-              @confirmed="page.blocks.splice(index,1)"
+              @confirmed="deleteBlock(index)"
             />
           </div>
           <page-block
@@ -276,6 +276,11 @@ export default {
     editBlock (block, index = undefined) {
       this.$bvModal.hide('createBlockSelector')
       this.editor = { index, block: compose.PageBlockMaker(block) }
+    },
+
+    deleteBlock (index) {
+      this.blocks.splice(index, 1)
+      this.page.blocks = this.blocks
     },
 
     updatePageBlockGrid (blocks) {
