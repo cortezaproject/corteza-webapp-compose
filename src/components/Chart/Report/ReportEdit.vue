@@ -84,8 +84,6 @@
             <b-form-select
               v-model="d.field"
               :options="dimensionFields"
-              text-field="name"
-              value-field="name"
               @change="onDimFieldChange($event, d)"
             >
               <template slot="first">
@@ -328,15 +326,14 @@ export default {
     },
 
     dimensionFields () {
-      return [{ name: 'created_at', label: 'Created At', kind: 'DateTime' }].concat(this.module.fields).map(f => {
-        const { name, label, kind, options } = f
-        let disabled = !this.dimensionFieldKind.includes(kind)
-        if (kind === 'String') {
-          // this removes the need to check if we allowed strings in the first place
-          disabled = disabled || (options.useRichTextEditor || options.multiLine)
-        }
-        return { name, label, disabled }
-      }).sort((a, b) => a.name.localeCompare(b.name))
+      return [
+        { name: 'created_at', label: 'Created At', kind: 'DateTime' },
+        ...this.module.fields,
+      ].filter(({ kind, options = {} }) => {
+        return this.dimensionFieldKind.includes(kind) && !(options.useRichTextEditor || options.multiLine)
+      }).map(({ name, label, kind }) => {
+        return { value: name, text: `${label} (${kind})` }
+      }).sort((a, b) => a.text.localeCompare(b.text))
     },
 
     moduleID: {
