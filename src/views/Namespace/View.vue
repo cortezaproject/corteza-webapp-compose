@@ -141,7 +141,7 @@ export default {
       }
 
       if (!this.namespace.enabled) {
-        this.toastDanger(this.$t('notification.namespace.disabled'))
+        this.toastDanger(this.$t('notification:namespace.disabled'))
         this.$router.push({ name: 'root' })
         return
       }
