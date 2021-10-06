@@ -453,7 +453,7 @@ export default {
     },
 
     fetchApplication () {
-      this.$SystemAPI.applicationList({ query: this.namespace.name })
+      this.$SystemAPI.applicationList({ query: this.namespace.slug })
         .then(({ set = [] }) => {
           if (set.length) {
             this.application = set[0]
