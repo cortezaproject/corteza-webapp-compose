@@ -3,17 +3,23 @@
     v-bind="$props"
     v-on="$listeners"
   >
-    <div v-if="profile">
+    <div
+      v-if="profile"
+      class="px-3"
+    >
       <timeline
         v-if="isTwitter"
         :id="profile.twitterHandle"
-        source-type="profile"
         :options="{ tweetLimit: 9 }"
+        source-type="profile"
       >
         <div class="spinner" />
       </timeline>
     </div>
-    <div v-else>
+    <div
+      v-else
+      class="px-3"
+    >
       <p>{{ $t('socialFeed.noInput') }}</p>
     </div>
   </wrap>
