@@ -65,10 +65,10 @@
             cols="2"
             class="text-break small"
           >
-            <samp>{{ key }}</samp>
+            <samp>{{ prettifyKey(key) }}</samp>
           </b-td>
           <b-td
-            v-for="lang, langIndex in visibleLanguages"
+            v-for="(lang, langIndex) in visibleLanguages"
             :key="lang.tag"
             :class="{'m-0 p-0': true, 'bg-warning': isDirty(r.resource, key, lang.tag) }"
           >
@@ -193,7 +193,7 @@ export default {
     },
 
     /**
-     * Returns unique set of keys from from the given values for a specific resource
+     * Returns unique set of keys from the given values for a specific resource
      *
      * @returns string[]
      */
@@ -202,13 +202,6 @@ export default {
         .filter(r => r.resource === resource)
         .map(r => r.key)
         .filter((r, i, rr) => rr.indexOf(r) === i)
-        .map(t => t.replace(/([A-Z])/, ' $1')
-          .toLowerCase())
-        .map(t => t.replace(/(\d+)/, '#$1'))
-        .map(t => t.substring(0, 1).toUpperCase() + t.substring(1)
-          .split('.')
-          .join(' '),
-        )
     },
 
     find (resource, key, lang) {
@@ -231,6 +224,15 @@ export default {
         t.message = t.org
         t.dirty = false
       }
+    },
+
+    prettifyKey (key) {
+      return key
+        .replace(/([A-Z])/, ' $1')
+        .toLowerCase()
+        .replace(/(\d+)/, '#$1')
+        .split('.').map(s => s.substring(0, 1).toUpperCase() + s.substring(1))
+        .join(' ')
     },
 
     onUpdate (resource, key, lang, message) {
