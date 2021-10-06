@@ -13,6 +13,7 @@
         variant="primary"
         class="d-flex align-items-center"
         :to="openNamespace"
+        :disabled="!namespaceEnabled"
       >
         {{ $t('visit') }}
       </b-button>
@@ -312,6 +313,7 @@ export default {
         logo: undefined,
         icon: undefined,
       },
+      namespaceEnabled: false,
 
       application: undefined,
       isApplication: false,
@@ -415,6 +417,7 @@ export default {
       if (namespaceID) {
         await this.$store.dispatch('namespace/findByID', { namespaceID })
           .then((ns) => {
+            this.namespaceEnabled = ns.enabled
             if (this.isClone) {
               this.namespace = new compose.Namespace({
                 ...ns,
@@ -494,6 +497,7 @@ export default {
       if (this.isEdit) {
         try {
           await this.$store.dispatch('namespace/update', { ...payload, namespaceID }).then((ns) => {
+            this.namespaceEnabled = ns.enabled
             this.namespace = new compose.Namespace(ns)
 
             this.toastSuccess(this.$t('notification.saved'))
@@ -516,6 +520,7 @@ export default {
       } else {
         try {
           await this.$store.dispatch('namespace/create', payload).then((ns) => {
+            this.namespaceEnabled = ns.enabled
             this.namespace = new compose.Namespace(ns)
 
             this.toastSuccess(this.$t('notification.saved'))
@@ -531,7 +536,7 @@ export default {
 
       if (closeOnSuccess) {
         this.$router.push({ name: 'root' })
-      } else {
+      } else if (!this.isEdit || this.isClone) {
         this.$router.push({ name: 'namespace.edit', params: { namespaceID: this.namespace.namespaceID } })
       }
     },
