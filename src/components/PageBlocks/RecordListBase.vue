@@ -796,6 +796,7 @@ export default {
     options: {
       deep: true,
       handler () {
+        this.prepRecordList()
         this.refresh(true)
       },
     },
