@@ -268,6 +268,7 @@ export default {
         .filter(f => f.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1 || f.label.toLowerCase().indexOf(this.query.toLowerCase()) > -1)
     },
     selectField (field) {
+      if (this.selectedFields.some(selectedField => selectedField.label === field.label)) return
       this.selectedFields = [...this.selectedFields, field]
     },
     unselectField (field) {
