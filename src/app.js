@@ -45,7 +45,7 @@ export default (options = {}) => {
 
       this.websocket()
 
-      return this.$auth.vue(this).handle().then(({ accessTokenFn, user }) => {
+      return this.$auth.vue(this).handle().then(({ user }) => {
         if (user.meta.preferredLanguage) {
           // After user is authenticated, get his preferred language
           // and instruct i18next to change it
@@ -77,7 +77,7 @@ export default (options = {}) => {
           ctx: new corredor.ComposeCtx(
             {
               $invoker: this.$auth.user,
-              accessToken: this.$auth.accessToken,
+              authToken: this.$auth.accessToken,
             },
             this,
           ),
