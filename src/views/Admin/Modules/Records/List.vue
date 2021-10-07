@@ -98,6 +98,7 @@ export default {
         hideRecordReminderButton: true,
         hideRecordViewButton: true,
         hideRecordCloneButton: true,
+        selectable: true,
         allowExport: true,
         presort: 'createdAt DESC',
       },
