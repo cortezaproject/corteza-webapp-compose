@@ -17,40 +17,34 @@
             >
               <b-row
                 no-gutters
-                class="align-items-center"
+                class="justify-content-between wrap-with-vertical-gutters"
               >
-                <div class="flex-grow-1 text-nowrap">
-                  <b-form
-                    class="mr-1"
-                    @submit.prevent="handleAddPageFormSubmit"
+                <div class="flex-grow-1">
+                  <b-input-group
+                    v-if="namespace.canCreatePage"
+                    class="h-100"
                   >
-                    <b-form-group
-                      v-if="namespace.canCreatePage"
-                      class="mb-0"
-                    >
-                      <b-input-group>
-                        <b-input
-                          id="name"
-                          v-model="page.title"
-                          required
-                          type="text"
-                          class="page-name-input"
-                          :placeholder="$t('newPlaceholder')"
-                        />
-                        <b-input-group-append>
-                          <b-button
-                            type="submit"
-                            variant="primary"
-                            size="lg"
-                          >
-                            {{ $t('createLabel') }}
-                          </b-button>
-                        </b-input-group-append>
-                      </b-input-group>
-                    </b-form-group>
-                  </b-form>
+                    <b-input
+                      id="name"
+                      v-model="page.title"
+                      required
+                      type="text"
+                      class="h-100"
+                      :placeholder="$t('newPlaceholder')"
+                    />
+                    <b-input-group-append>
+                      <b-button
+                        type="submit"
+                        variant="primary"
+                        size="lg"
+                        @click="handleAddPageFormSubmit"
+                      >
+                        {{ $t('createLabel') }}
+                      </b-button>
+                    </b-input-group-append>
+                  </b-input-group>
                 </div>
-                <div class="flex-grow-1 text-nowrap">
+                <div class="d-flex justify-content-sm-end flex-grow-1">
                   <c-permissions-button
                     v-if="namespace.canGrant"
                     :resource="`corteza::compose:page/${namespace.namespaceID}/*`"

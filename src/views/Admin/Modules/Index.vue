@@ -16,79 +16,87 @@
               class="py-3"
             >
               <b-row
-                class="align-items-center justify-content-between"
+                class="justify-content-between wrap-with-vertical-gutters"
                 no-gutters
               >
                 <div class="flex-grow-1">
-                  <b-btn
-                    v-if="namespace.canCreateModule"
-                    variant="primary"
-                    size="lg"
-                    class="mr-1 float-left"
-                    :to="{ name: 'admin.modules.create' }"
+                  <div
+                    class="wrap-with-vertical-gutters"
                   >
-                    {{ $t('createLabel') }}
-                  </b-btn>
+                    <b-btn
+                      v-if="namespace.canCreateModule"
+                      variant="primary"
+                      size="lg"
+                      class="mr-1 float-left"
+                      :to="{ name: 'admin.modules.create' }"
+                    >
+                      {{ $t('createLabel') }}
+                    </b-btn>
 
-                  <import
-                    v-if="namespace.canCreateModule"
-                    :namespace="namespace"
-                    type="module"
-                    class="mr-1 float-left"
-                  />
+                    <import
+                      v-if="namespace.canCreateModule"
+                      :namespace="namespace"
+                      type="module"
+                      class="mr-1 float-left"
+                    />
 
-                  <export
-                    :list="modules"
-                    type="module"
-                    class="mr-1 float-left"
-                  />
+                    <export
+                      :list="modules"
+                      type="module"
+                      class="mr-1 float-left"
+                    />
 
-                  <b-dropdown
-                    v-if="namespace.canGrant"
-                    size="lg"
-                    variant="light"
-                    class="permissions-dropdown mr-1"
-                  >
-                    <template #button-content>
-                      <font-awesome-icon :icon="['fas', 'lock']" />
-                      <span>
-                        {{ $t('general:label.permissions') }}
-                      </span>
-                    </template>
+                    <b-dropdown
+                      v-if="namespace.canGrant"
+                      size="lg"
+                      variant="light"
+                      class="permissions-dropdown mr-1"
+                    >
+                      <template #button-content>
+                        <font-awesome-icon :icon="['fas', 'lock']" />
+                        <span>
+                          {{ $t('general:label.permissions') }}
+                        </span>
+                      </template>
 
-                    <b-dropdown-item>
-                      <c-permissions-button
-                        :resource="`corteza::compose:module/${namespace.namespaceID}/*`"
-                        :button-label="$t('general:label.module')"
-                        :show-button-icon="false"
-                        button-variant="white text-left w-100"
-                      />
-                    </b-dropdown-item>
+                      <b-dropdown-item>
+                        <c-permissions-button
+                          :resource="`corteza::compose:module/${namespace.namespaceID}/*`"
+                          :button-label="$t('general:label.module')"
+                          :show-button-icon="false"
+                          button-variant="white text-left w-100"
+                        />
+                      </b-dropdown-item>
 
-                    <b-dropdown-item>
-                      <c-permissions-button
-                        :resource="`corteza::compose:module-field/${namespace.namespaceID}/*`"
-                        :button-label="$t('general:label.field')"
-                        :show-button-icon="false"
-                        button-variant="white text-left w-100"
-                      />
-                    </b-dropdown-item>
+                      <b-dropdown-item>
+                        <c-permissions-button
+                          :resource="`corteza::compose:module-field/${namespace.namespaceID}/*`"
+                          :button-label="$t('general:label.field')"
+                          :show-button-icon="false"
+                          button-variant="white text-left w-100"
+                        />
+                      </b-dropdown-item>
 
-                    <b-dropdown-item>
-                      <c-permissions-button
-                        :resource="`corteza::compose:record/${namespace.namespaceID}/*`"
-                        :button-label="$t('general:label.record')"
-                        :show-button-icon="false"
-                        button-variant="white text-left w-100"
-                      />
-                    </b-dropdown-item>
-                  </b-dropdown>
+                      <b-dropdown-item>
+                        <c-permissions-button
+                          :resource="`corteza::compose:record/${namespace.namespaceID}/*`"
+                          :button-label="$t('general:label.record')"
+                          :show-button-icon="false"
+                          button-variant="white text-left w-100"
+                        />
+                      </b-dropdown-item>
+                    </b-dropdown>
+                  </div>
                 </div>
-                <div class="flex-grow-1">
-                  <b-input-group>
+                <div
+                  class="flex-grow-1"
+                >
+                  <b-input-group
+                    class="h-100 mw-100"
+                  >
                     <b-input
                       v-model.trim="query"
-                      class="mw-100"
+                      class="h-100 mw-100"
                       type="search"
                       :placeholder="$t('searchPlaceholder')"
                     />

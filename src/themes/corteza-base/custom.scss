@@ -250,3 +250,11 @@ input[type="search"]::-webkit-search-cancel-button {
   width: 4em;
   height: 4em;
 }
+
+.wrap-with-vertical-gutters {
+  margin-top: -0.25rem;
+
+  > * {
+    margin-top: 0.25rem;
+  }
+}

@@ -38,65 +38,71 @@
       >
         <b-row
           no-gutters
-          class="justify-content-between"
+          class="justify-content-between wrap-with-vertical-gutters"
         >
           <div class="text-nowrap flex-grow-1">
-            <template v-if="!options.hideAddButton && recordListModule.canCreateRecord">
-              <template v-if="inlineEditing">
-                <b-btn
-                  variant="primary"
-                  size="lg"
-                  class="float-left mr-1"
-                  @click="addInline"
-                >
-                  + {{ $t('recordList.addRecord') }}
-                </b-btn>
+            <div
+              class="wrap-with-vertical-gutters"
+            >
+              <template v-if="!options.hideAddButton && recordListModule.canCreateRecord">
+                <template v-if="inlineEditing">
+                  <b-btn
+                    variant="primary"
+                    size="lg"
+                    class="float-left mr-1"
+                    @click="addInline"
+                  >
+                    + {{ $t('recordList.addRecord') }}
+                  </b-btn>
+                </template>
+
+                <template v-else-if="!inlineEditing && (recordPageID || options.allRecords)">
+                  <router-link
+                    class="btn btn-lg btn-primary float-left mr-1"
+                    :to="{
+                      name: options.rowCreateUrl || 'page.record.create',
+                      params: { pageID: recordPageID, refRecord: record },
+                      query: null,
+                    }"
+                  >
+                    + {{ $t('recordList.addRecord') }}
+                  </router-link>
+                  <importer-modal
+                    :module="recordListModule"
+                    :namespace="namespace"
+                    class="mr-1 float-left"
+                  />
+                </template>
               </template>
 
-              <template v-else-if="!inlineEditing && (recordPageID || options.allRecords)">
-                <router-link
-                  class="btn btn-lg btn-primary float-left mr-1"
-                  :to="{
-                    name: options.rowCreateUrl || 'page.record.create',
-                    params: { pageID: recordPageID, refRecord: record },
-                    query: null,
-                  }"
-                >
-                  + {{ $t('recordList.addRecord') }}
-                </router-link>
-                <importer-modal
-                  :module="recordListModule"
-                  :namespace="namespace"
-                  class="mr-1 float-left"
-                />
-              </template>
-            </template>
+              <exporter-modal
+                v-if="options.allowExport && !inlineEditing"
+                :module="recordListModule"
+                :record-count="items.length"
+                :query="query"
+                :selection="selected"
+                class="mr-1 float-left"
+                @export="onExport"
+              />
 
-            <exporter-modal
-              v-if="options.allowExport && !inlineEditing"
-              :module="recordListModule"
-              :record-count="items.length"
-              :query="query"
-              :selection="selected"
-              class="mr-1 float-left"
-              @export="onExport"
-            />
-
-            <column-picker
-              v-if="options.allRecords"
-              :module="recordListModule"
-              :fields="fields"
-              @updateFields="onUpdateFields"
-            />
+              <column-picker
+                v-if="options.allRecords"
+                :module="recordListModule"
+                :fields="fields"
+                @updateFields="onUpdateFields"
+              />
+            </div>
           </div>
           <div
             v-if="!options.hideSearch && !inlineEditing"
-            class="mt-1 flex-grow-1"
+            class="flex-grow-1"
           >
-            <b-input-group>
+            <b-input-group
+              class="h-100"
+            >
               <b-form-input
                 v-model="query"
-                class="float-right mw-100"
+                class="h-100 mw-100"
                 type="search"
                 :placeholder="$t('general.label.search')"
               />

@@ -16,62 +16,68 @@
               class="py-3"
             >
               <b-row
-                class="align-items-center justify-content-between"
+                class="wrap-with-vertical-gutters justify-content-between"
                 no-gutters
               >
-                <div class="text-nowrap flex-grow-1">
-                  <b-dropdown
-                    v-if="namespace.canCreateChart"
-                    variant="primary"
-                    size="lg"
-                    class="float-left mr-1"
-                    :text="$t('chart.add')"
+                <div class="flex-grow-1">
+                  <div
+                    class="wrap-with-vertical-gutters"
                   >
-                    <b-dropdown-item-button
-                      variant="dark"
-                      @click="$router.push({ name: 'admin.charts.create', params: { category: 'generic' } })"
+                    <b-dropdown
+                      v-if="namespace.canCreateChart"
+                      variant="primary"
+                      size="lg"
+                      class="float-left mr-1"
+                      :text="$t('chart.add')"
                     >
-                      {{ $t('chart.addGeneric') }}
-                    </b-dropdown-item-button>
-                    <b-dropdown-item-button
-                      variant="dark"
-                      @click="$router.push({ name: 'admin.charts.create', params: { category: 'funnel' } })"
-                    >
-                      {{ $t('chart.addFunnel') }}
-                    </b-dropdown-item-button>
-                    <b-dropdown-item-button
-                      variant="dark"
-                      @click="$router.push({ name: 'admin.charts.create', params: { category: 'gauge' } })"
-                    >
-                      {{ $t('chart.addGauge') }}
-                    </b-dropdown-item-button>
-                  </b-dropdown>
+                      <b-dropdown-item-button
+                        variant="dark"
+                        @click="$router.push({ name: 'admin.charts.create', params: { category: 'generic' } })"
+                      >
+                        {{ $t('chart.addGeneric') }}
+                      </b-dropdown-item-button>
+                      <b-dropdown-item-button
+                        variant="dark"
+                        @click="$router.push({ name: 'admin.charts.create', params: { category: 'funnel' } })"
+                      >
+                        {{ $t('chart.addFunnel') }}
+                      </b-dropdown-item-button>
+                      <b-dropdown-item-button
+                        variant="dark"
+                        @click="$router.push({ name: 'admin.charts.create', params: { category: 'gauge' } })"
+                      >
+                        {{ $t('chart.addGauge') }}
+                      </b-dropdown-item-button>
+                    </b-dropdown>
 
-                  <import
-                    v-if="namespace.canCreateChart"
-                    :namespace="namespace"
-                    type="chart"
-                    class="float-left mr-1"
-                  />
+                    <import
+                      v-if="namespace.canCreateChart"
+                      :namespace="namespace"
+                      type="chart"
+                      class="float-left mr-1"
+                    />
 
-                  <export
-                    :list="charts"
-                    type="chart"
-                    class="float-left mr-1"
-                  />
-                  <c-permissions-button
-                    v-if="namespace.canGrant"
-                    :resource="`corteza::compose:chart/${namespace.namespaceID}/*`"
-                    :button-label="$t('general.label.permissions')"
-                    button-variant="light"
-                    class="btn-lg"
-                  />
+                    <export
+                      :list="charts"
+                      type="chart"
+                      class="float-left mr-1"
+                    />
+                    <c-permissions-button
+                      v-if="namespace.canGrant"
+                      :resource="`corteza::compose:chart/${namespace.namespaceID}/*`"
+                      :button-label="$t('general.label.permissions')"
+                      button-variant="light"
+                      class="btn-lg"
+                    />
+                  </div>
                 </div>
                 <div class="flex-grow-1">
-                  <b-input-group>
+                  <b-input-group
+                    class="h-100"
+                  >
                     <b-form-input
                       v-model.trim="query"
-                      class="float-right mw-100"
+                      class="h-100 mw-100"
                       type="search"
                       :placeholder="$t('chart.searchPlaceholder')"
                     />
