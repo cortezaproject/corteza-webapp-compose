@@ -29,6 +29,12 @@ export default {
       required: true,
     },
 
+    automationScripts: {
+      type: Array,
+      required: false,
+      default: () => [],
+    },
+
     buttonClass: {
       type: String,
       default: '',
@@ -69,7 +75,11 @@ export default {
       }
 
       if (b.script) {
-        return !!this.$UIHooks.FindByScript(b.script)
+        if (this.$UIHooks.FindByScript(b.script)) {
+          return true
+        }
+
+        return this.automationScripts.find(({ name }) => name === b.script)
       }
 
       return false
