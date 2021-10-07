@@ -9,7 +9,6 @@
       <b-input-group>
         <b-form-input
           v-model="button.label"
-          disabled
         />
         <b-input-group-append>
           <page-translator
@@ -47,7 +46,7 @@
         {{ workflow.meta.name || $t('automation.noLabel') }}
       </h5>
       <var>
-        {{ $t('automation.stepID', trigger.stepID) }}
+        {{ $t('automation.stepID', { stepID: trigger.stepID}) }}
       </var>
     </div>
     <code
