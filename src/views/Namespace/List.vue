@@ -10,44 +10,51 @@
       class="ns-wrapper"
       fluid="xl"
     >
-      <div
-        class="d-flex align-items-center justify-content-between mb-4"
+      <b-row
+        class="justify-content-between wrap-with-vertical-gutters mb-4"
+        no-gutters
       >
         <div
-          v-if="canCreateNamespace"
           class="flex-grow-1"
         >
-          <b-btn
-            :to="{ name: 'namespace.create' }"
-            variant="primary"
-            size="lg"
+          <div
+            class="wrap-with-vertical-gutters"
           >
-            {{ $t('create') }}
-          </b-btn>
+            <b-btn
+              :to="{ name: 'namespace.create' }"
+              variant="primary"
+              size="lg"
+              class="mr-1"
+            >
+              {{ $t('create') }}
+            </b-btn>
 
-          <b-btn
-            v-if="canImportNamespace"
-            variant="light"
-            size="lg"
-            class="ml-1"
-            @click="showImporterModal=true"
-          >
-            {{ $t('import') }}
-          </b-btn>
+            <b-btn
+              v-if="canImportNamespace"
+              variant="light"
+              size="lg"
+              class="mr-1"
+              @click="showImporterModal=true"
+            >
+              {{ $t('import') }}
+            </b-btn>
 
-          <c-permissions-button
-            v-if="canGrant"
-            resource="corteza::compose:namespace/*"
-            button-variant="light"
-            :button-label="$t('label.permissions')"
-            class="ml-1 btn-lg"
-          />
+            <c-permissions-button
+              v-if="canGrant"
+              resource="corteza::compose:namespace/*"
+              button-variant="light"
+              :button-label="$t('label.permissions')"
+              class="btn-lg"
+            />
+          </div>
         </div>
-        <div class="flex-grow-1 mt-1">
-          <b-input-group>
+        <div class="flex-grow-1">
+          <b-input-group
+            class="h-100"
+          >
             <b-form-input
               v-model.trim="query"
-              class="float-right mw-100"
+              class="h-100 mw-100"
               type="search"
               :placeholder="$t('searchPlaceholder')"
             />
@@ -60,7 +67,7 @@
             </b-input-group-append>
           </b-input-group>
         </div>
-      </div>
+      </b-row>
 
       <transition-group
         v-if="namespacesFiltered && namespacesFiltered.length"
