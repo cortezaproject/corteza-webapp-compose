@@ -6,7 +6,8 @@
     :value="value"
     :placeholder="placeholder"
     @input="$emit('input', $event.target.innerHTML)"
-    v-html="value"
+    @paste.prevent="paste($event)"
+    v-text="value"
   />
 </template>
 <script lang="js">
@@ -29,7 +30,17 @@ export default {
         return
       }
 
-      this.$el.innerHTML = newValue
+      const s = document.createElement('div')
+      s.innerHTML = newValue
+
+      this.$el.innerText = s.innerText
+    },
+  },
+
+  methods: {
+    paste ($event) {
+      $event.preventDefault()
+      this.$el.innerHTML = $event.clipboardData.getData('text/plain')
     },
   },
 }
