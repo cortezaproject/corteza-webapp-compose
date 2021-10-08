@@ -166,7 +166,7 @@ export default {
           } else {
             current.splice(i, 1)
           }
-          p.children.push(cp)
+          p.children.unshift(cp)
         }
       }
 
