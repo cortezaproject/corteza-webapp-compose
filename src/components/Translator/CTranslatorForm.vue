@@ -10,7 +10,7 @@
         <b-dropdown-item-button
           v-for="lang in intLanguages"
           :key="lang.tag"
-          :disabled="lang.default || lang.visible "
+          :disabled="lang.default || lang.visible"
           @click="lang.visible = true"
         >
           {{ lang.localizedName }}
@@ -97,6 +97,8 @@
 <script lang="js">
 import Editable from './Editable'
 
+const lsKey = 'resource-translator.languages'
+
 export default {
   i18nOptions: {
     namespaces: 'resource-translator',
@@ -157,13 +159,16 @@ export default {
   },
 
   data () {
+    const preselected = (window.localStorage.getItem(lsKey) || '').split(',')
+
     return {
       intLanguages: this.languages.map((lang, i) => ({
         ...lang,
-        // first 4 are visible by default
-        visible: i <= 1,
         // 1st one is default
         default: i === 0,
+        // default is always visible
+        // the rest, pick from the list from the local-store
+        visible: i === 0 || preselected.includes(lang.tag),
       })),
       intTranslations: this.translations.map(t => ({ ...t, org: t.message, dirty: false })),
     }
@@ -172,6 +177,16 @@ export default {
   computed: {
     visibleLanguages () {
       return this.intLanguages.filter(({ visible }) => visible)
+    },
+  },
+
+  watch: {
+    intLanguages: {
+      deep: true,
+      handler () {
+        const selected = this.visibleLanguages.map(({ tag }) => tag).join(',')
+        window.localStorage.setItem(lsKey, selected)
+      },
     },
   },
 
