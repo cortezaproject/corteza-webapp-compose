@@ -243,19 +243,16 @@
         </b-form-checkbox>
         <b-form-checkbox
           v-model="options.hideRecordEditButton"
-          :disabled="options.editable"
         >
           {{ $t('recordList.hideRecordEditButton') }}
         </b-form-checkbox>
         <b-form-checkbox
           v-model="options.hideRecordViewButton"
-          :disabled="options.editable"
         >
           {{ $t('recordList.hideRecordViewButton') }}
         </b-form-checkbox>
         <b-form-checkbox
           v-model="options.hideRecordPermissionsButton"
-          :disabled="options.editable"
         >
           {{ $t('recordList.hideRecordPermissionsButton') }}
         </b-form-checkbox>
@@ -380,7 +377,8 @@ export default {
         this.options.hideRecordEditButton = true
         this.options.hideRecordViewButton = true
         this.options.hidePaging = true
-        const f = this.recordListModule.fields.find(({ options: { moduleID } }) => moduleID === this.module.moduleID)
+        let f = null
+        if (this.module && this.module.moduleID) f = this.recordListModule.fields.find(({ options: { moduleID } }) => moduleID === this.module.moduleID)
         this.options.refField = f ? f.name : undefined
       } else {
         this.options.refField = undefined
