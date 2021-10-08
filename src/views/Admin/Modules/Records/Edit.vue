@@ -18,7 +18,8 @@ export default {
 
   computed: {
     title () {
-      return this.$t('allRecords.edit.title', { name: this.module.name || '' })
+      const { name, handle } = this.module
+      return this.$t('allRecords.edit.title', { name: name || handle, interpolation: { escapeValue: false } })
     },
   },
 
