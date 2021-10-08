@@ -204,7 +204,7 @@ export default {
     },
 
     module () {
-      if (this.field.options.moduleID !== '0') {
+      if (this.field.options.moduleID !== NoID) {
         return this.getModuleByID(this.field.options.moduleID)
       } else {
         return undefined
@@ -405,14 +405,17 @@ export default {
     },
 
     fetchRecord (recordID) {
-      const namespaceID = this.namespace.namespaceID
-      const moduleID = this.field.options.moduleID
-      if (!this.fetchedRecords.find(r => r.recordID === recordID)) {
-        this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID }).then(record => {
-          this.fetchedRecords.push(new compose.Record(this.module, record))
-        }).catch(e => {
-          this.fetchedRecords.push(new compose.Record(this.module, { recordID }))
-        })
+      const { namespaceID = NoID } = this.namespace
+      const { moduleID = NoID } = this.field.options
+
+      if (moduleID !== NoID && namespaceID !== NoID) {
+        if (!this.fetchedRecords.find(r => r.recordID === recordID)) {
+          this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID }).then(record => {
+            this.fetchedRecords.push(new compose.Record(this.module, record))
+          }).catch(e => {
+            this.fetchedRecords.push(new compose.Record(this.module, { recordID }))
+          })
+        }
       }
     },
 

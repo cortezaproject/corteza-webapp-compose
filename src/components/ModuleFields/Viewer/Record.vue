@@ -43,7 +43,7 @@
 </template>
 <script>
 import base from './base'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -127,23 +127,26 @@ export default {
     load () {
       const value = this.field.isMulti ? this.value : [this.value]
       if (value) {
-        const { namespaceID } = this.namespace
-        const { moduleID } = this.field.options
-        this.findModuleByID({ namespace: this.namespace, moduleID }).then(m => {
-          for (const v of value) {
-            if (v) {
-              let record = { recordID: v }
-              this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID: v }).then(r => {
-                if (r) {
-                  record = r
-                }
-                this.relRecords.push(new compose.Record(m, record))
-              }).catch(e => {
-                this.relRecords.push(new compose.Record(m, record))
-              })
+        const { namespaceID = NoID } = this.namespace
+        const { moduleID = NoID } = this.field.options
+
+        if (moduleID !== NoID && namespaceID !== NoID) {
+          this.findModuleByID({ namespace: this.namespace, moduleID }).then(m => {
+            for (const v of value) {
+              if (v) {
+                let record = { recordID: v }
+                this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID: v }).then(r => {
+                  if (r) {
+                    record = r
+                  }
+                  this.relRecords.push(new compose.Record(m, record))
+                }).catch(e => {
+                  this.relRecords.push(new compose.Record(m, record))
+                })
+              }
             }
-          }
-        })
+          })
+        }
       }
     },
   },
