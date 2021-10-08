@@ -437,6 +437,7 @@
                   v-if="item.r.canGrant && !options.hideRecordPermissionsButton"
                   :resource="`corteza::compose:record/${item.r.namespaceID}/${item.r.moduleID}/${item.r.recordID}`"
                   :target="item.r.recordID"
+                  :title="item.r.recordID"
                   button-variant="link"
                   class="text-dark m-0 p-0 pl-1"
                 />
