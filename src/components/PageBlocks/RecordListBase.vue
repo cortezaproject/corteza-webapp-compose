@@ -89,6 +89,7 @@
                 v-if="options.allRecords"
                 :module="recordListModule"
                 :fields="fields"
+                class="float-left"
                 @updateFields="onUpdateFields"
               />
             </div>
