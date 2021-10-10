@@ -24,27 +24,23 @@
               :to="{ name: 'namespace.create' }"
               variant="primary"
               size="lg"
-              class="mr-1"
+              class="mr-1 float-left"
             >
               {{ $t('create') }}
             </b-btn>
 
-            <b-btn
-              v-if="canImportNamespace"
-              variant="light"
-              size="lg"
-              class="mr-1"
-              @click="showImporterModal=true"
-            >
-              {{ $t('import') }}
-            </b-btn>
+            <importer-modal
+              class="mr-1 float-left"
+              @imported="onImported"
+              @failed="onFailed"
+            />
 
             <c-permissions-button
               v-if="canGrant"
               resource="corteza::compose:namespace/*"
               button-variant="light"
               :button-label="$t('label.permissions')"
-              class="btn-lg"
+              class="btn-lg float-left"
             />
           </div>
         </div>
@@ -93,41 +89,12 @@
         </h3>
       </div>
     </b-container>
-
-    <b-modal
-      v-if="canImportNamespace"
-      v-model="showImporterModal"
-      hide-header
-      hide-footer
-      centered
-      body-class="p-1"
-    >
-      <b-card
-        header-bg-variant="white"
-        footer-bg-variant="white"
-      >
-        <b-form-group>
-          <slot name="uploadLabel">
-            <label>
-              {{ $t('import') }}
-            </label>
-          </slot>
-
-          <uploader
-            class="uploader"
-            :endpoint="importNamespaceEndpoint"
-            :accepted-files="['application/zip']"
-            @uploaded="onUploaded"
-          />
-        </b-form-group>
-      </b-card>
-    </b-modal>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import NamespaceItem from 'corteza-webapp-compose/src/components/Namespaces/NamespaceItem'
-import Uploader from 'corteza-webapp-compose/src/components/Public/Page/Attachment/Uploader'
+import ImporterModal from 'corteza-webapp-compose/src/components/Namespaces/Importer'
 
 export default {
   i18nOptions: {
@@ -136,13 +103,12 @@ export default {
 
   components: {
     NamespaceItem,
-    Uploader,
+    ImporterModal,
   },
 
   data () {
     return {
       query: '',
-      showImporterModal: false,
     }
   },
 
@@ -182,12 +148,14 @@ export default {
   },
 
   methods: {
-    onUploaded () {
-      this.showImporterModal = false
-
+    onImported () {
       this.$store.dispatch('namespace/load', { force: true })
         .then(() => this.toastSuccess(this.$t('notification.imported')))
         .catch(this.toastErrorHandler(this.$t('notification.importFailed')))
+    },
+
+    onFailed (err) {
+      this.toastErrorHandler(this.$t('notification.importFailed'))(err)
     },
   },
 }
