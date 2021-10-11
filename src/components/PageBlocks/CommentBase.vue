@@ -187,7 +187,7 @@ export default {
       if (this.record) {
         return this.record.recordID !== NoID ? this.record.recordID : ''
       }
-      return ''
+      return NoID
     },
   },
 

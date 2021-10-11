@@ -1,5 +1,8 @@
 <template>
-  <div class="rt-content">
+  <div
+    v-if="formatted"
+    class="rt-content"
+  >
     <div v-if="field.options.useRichTextEditor">
       <span v-html="formatted" />
     </div>
