@@ -22,47 +22,51 @@
         </b-button>
         <slot />
       </div>
-      <div class="d-flex flex-grow-1 justify-content-end text-nowrap">
-        <c-input-confirm
-          v-if="!hideDelete"
-          size="lg"
-          size-confirm="lg"
-          variant="danger"
-          :borderless="false"
-          class="mx-1"
-          @confirmed="$emit('delete')"
+      <div class="flex-grow-1">
+        <div
+          class="float-right"
         >
-          {{ $t('label.delete') }}
-        </c-input-confirm>
-        <b-button
-          v-if="!hideClone"
-          variant="light"
-          size="lg"
-          class="mx-1"
-          @click="$emit('clone')"
-        >
-          {{ $t('label.clone') }}
-        </b-button>
-        <b-button
-          v-if="!hideSave"
-          :disabled="disableSave"
-          variant="light"
-          size="lg"
-          class="mx-1"
-          @click.prevent="$emit('saveAndClose')"
-        >
-          {{ $t('label.saveAndClose') }}
-        </b-button>
-        <b-button
-          v-if="!hideSave"
-          :disabled="disableSave"
-          variant="primary"
-          size="lg"
-          class="mx-1"
-          @click.prevent="$emit('save')"
-        >
-          {{ $t('label.save') }}
-        </b-button>
+          <c-input-confirm
+            v-if="!hideDelete"
+            size="lg"
+            size-confirm="lg"
+            variant="danger"
+            :borderless="false"
+            class="mx-1"
+            @confirmed="$emit('delete')"
+          >
+            {{ $t('label.delete') }}
+          </c-input-confirm>
+          <b-button
+            v-if="!hideClone"
+            variant="light"
+            size="lg"
+            class="mx-1"
+            @click="$emit('clone')"
+          >
+            {{ $t('label.clone') }}
+          </b-button>
+          <b-button
+            v-if="!hideSave"
+            :disabled="disableSave"
+            variant="light"
+            size="lg"
+            class="mx-1"
+            @click.prevent="$emit('saveAndClose')"
+          >
+            {{ $t('label.saveAndClose') }}
+          </b-button>
+          <b-button
+            v-if="!hideSave"
+            :disabled="disableSave"
+            variant="primary"
+            size="lg"
+            class="mx-1"
+            @click.prevent="$emit('save')"
+          >
+            {{ $t('label.save') }}
+          </b-button>
+        </div>
       </div>
     </b-row>
   </b-container>

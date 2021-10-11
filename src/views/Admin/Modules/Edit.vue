@@ -47,7 +47,7 @@
                 no-gutters
                 class="align-items-center"
               >
-                <div class="flex-grow-1 text-nowrap mb-1">
+                <div class="flex-grow-1 wrap-with-vertical-gutters">
                   <b-button
                     v-if="federationEnabled"
                     variant="light"
@@ -123,7 +123,7 @@
                 </div>
                 <div
                   v-if="!creatingModule"
-                  class="flex-grow-1 text-nowrap d-flex justify-content-md-end"
+                  class="flex-grow-1 d-flex justify-content-md-end"
                 >
                   <b-button
                     v-if="recordPage"

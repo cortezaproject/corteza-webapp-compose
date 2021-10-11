@@ -23,80 +23,84 @@
       </div>
       <div
         v-if="module"
-        class="d-flex flex-grow-1 justify-content-end text-nowrap"
+        class="flex-grow-1"
       >
-        <c-input-confirm
-          v-if="isCreated"
-          :disabled="!canDeleteRecord"
-          class="mx-1"
-          size="lg"
-          size-confirm="lg"
-          variant="danger"
-          :borderless="false"
-          @confirmed="$emit('delete')"
+        <div
+          class="float-right"
         >
-          <b-spinner
-            v-if="processingDelete"
-            small
-            type="grow"
-          />
+          <c-input-confirm
+            v-if="isCreated"
+            :disabled="!canDeleteRecord"
+            class="mx-1"
+            size="lg"
+            size-confirm="lg"
+            variant="danger"
+            :borderless="false"
+            @confirmed="$emit('delete')"
+          >
+            <b-spinner
+              v-if="processingDelete"
+              small
+              type="grow"
+            />
 
-          <span v-else>
-            {{ $t('label.delete') }}
-          </span>
-        </c-input-confirm>
+            <span v-else>
+              {{ $t('label.delete') }}
+            </span>
+          </c-input-confirm>
 
-        <b-button
-          v-if="module.canCreateRecord && !hideClone && isCreated"
-          variant="light"
-          size="lg"
-          :disabled="!record || processing"
-          class="mx-1"
-          @click.prevent="$emit('clone')"
-        >
-          {{ $t('label.clone') }}
-        </b-button>
+          <b-button
+            v-if="module.canCreateRecord && !hideClone && isCreated"
+            variant="light"
+            size="lg"
+            :disabled="!record || processing"
+            class="mx-1"
+            @click.prevent="$emit('clone')"
+          >
+            {{ $t('label.clone') }}
+          </b-button>
 
-        <b-button
-          v-if="!inEditing"
-          :disabled="!record || !record.canUpdateRecord || processing"
-          variant="light"
-          size="lg"
-          class="mx-1"
-          @click.prevent="$emit('edit')"
-        >
-          {{ $t('label.edit') }}
-        </b-button>
+          <b-button
+            v-if="!inEditing"
+            :disabled="!record || !record.canUpdateRecord || processing"
+            variant="light"
+            size="lg"
+            class="mx-1"
+            @click.prevent="$emit('edit')"
+          >
+            {{ $t('label.edit') }}
+          </b-button>
 
-        <b-button
-          v-if="module.canCreateRecord && !hideAdd && !inEditing"
-          variant="primary"
-          size="lg"
-          :disabled="processing"
-          class="mx-1"
-          @click.prevent="$emit('add')"
-        >
-          {{ $t('label.addNew') }}
-        </b-button>
+          <b-button
+            v-if="module.canCreateRecord && !hideAdd && !inEditing"
+            variant="primary"
+            size="lg"
+            :disabled="processing"
+            class="mx-1"
+            @click.prevent="$emit('add')"
+          >
+            {{ $t('label.addNew') }}
+          </b-button>
 
-        <b-button
-          v-if="inEditing"
-          :disabled="!canSaveRecord || processing"
-          class="mx-1"
-          variant="primary"
-          size="lg"
-          @click.prevent="$emit('submit')"
-        >
-          <b-spinner
-            v-if="processingSubmit"
-            small
-            type="grow"
-          />
+          <b-button
+            v-if="inEditing"
+            :disabled="!canSaveRecord || processing"
+            class="mx-1"
+            variant="primary"
+            size="lg"
+            @click.prevent="$emit('submit')"
+          >
+            <b-spinner
+              v-if="processingSubmit"
+              small
+              type="grow"
+            />
 
-          <span v-else>
-            {{ $t('label.save') }}
-          </span>
-        </b-button>
+            <span v-else>
+              {{ $t('label.save') }}
+            </span>
+          </b-button>
+        </div>
       </div>
     </b-row>
   </b-container>
