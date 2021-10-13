@@ -98,6 +98,9 @@
                 :state="slugState"
                 :placeholder="$t('slug.placeholder')"
               />
+              <b-form-invalid-feedback :state="slugState">
+                {{ $t('general:tooltip.handleValidation') }}
+              </b-form-invalid-feedback>
             </b-form-group>
             <b-form-group>
               <b-form-checkbox

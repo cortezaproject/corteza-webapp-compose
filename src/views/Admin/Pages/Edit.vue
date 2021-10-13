@@ -80,6 +80,9 @@
                     class="mb-2"
                     :placeholder="$t('block.general.placeholder.handle')"
                   />
+                  <b-form-invalid-feedback :state="handleState">
+                    {{ $t('general:tooltip.handleValidation') }}
+                  </b-form-invalid-feedback>
                 </b-col>
               </b-row>
               <label class="text-primary mt-3">{{ $t('label.description') }}</label>

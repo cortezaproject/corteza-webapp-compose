@@ -182,6 +182,9 @@
                       class="mb-2"
                       :placeholder="$t('general.placeholder.handle')"
                     />
+                    <b-form-invalid-feedback :state="handleState">
+                      {{ $t('general:tooltip.handleValidation') }}
+                    </b-form-invalid-feedback>
                   </b-form-group>
                 </b-col>
               </b-row>
