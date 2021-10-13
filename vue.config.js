@@ -1,7 +1,7 @@
 const buildVueConfig = require('./vue.config-builder')
 
 module.exports = buildVueConfig({
-  appFlavour: 'Corteza',
+  appFlavour: 'Low Code',
   appName: 'compose',
   appLabel: 'Corteza Compose',
   theme: 'corteza-base',
