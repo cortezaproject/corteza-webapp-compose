@@ -213,7 +213,7 @@ export default {
 
     inFilter () {
       return this.recordListFilter.some(({ filter }) => {
-        return filter.some(({ name }) => name === this.selectedField.name)
+        return filter.some(({ name, value }) => name === this.selectedField.name && value)
       })
     },
 
