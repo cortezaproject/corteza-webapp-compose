@@ -23,6 +23,8 @@
     </b-form-checkbox>
     <uploader
       :endpoint="endpoint"
+      :max-filesize="$s('compose.Page.Attachments.MaxSize', 100)"
+      :accepted-files="$s('compose.Page.Attachments.Mimetypes', ['*/*'])"
       @uploaded="appendAttachment"
     />
     <list-loader

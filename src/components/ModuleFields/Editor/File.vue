@@ -74,14 +74,14 @@ export default {
     mimetypes () {
       const a = (this.field.options.mimetypes || '').trim()
       if (!a) {
-        return ['*/*']
+        return this.$s('compose.Record.Attachments.Mimetypes', ['*/*'])
       }
 
       return a.split(',').map(p => p.trim())
     },
 
     maxSize () {
-      return this.field.options.maxSize || 100
+      return this.field.options.maxSize || this.$s('compose.Record.Attachments.MaxSize', 100)
     },
 
     set: {
