@@ -149,8 +149,8 @@ export default {
         types = ['*/*']
       }
       if (!this.validateFileType(file.name, types)) {
-        this.error = this.$t('label.fileTypeNotAllowed')
         this.$refs.dropzone.removeFile(file)
+        this.onError(null, this.$t('label.fileTypeNotAllowed'))
       }
     },
 
