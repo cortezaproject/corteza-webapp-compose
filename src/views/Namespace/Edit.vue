@@ -98,6 +98,9 @@
                 :state="slugState"
                 :placeholder="$t('slug.placeholder')"
               />
+              <b-form-invalid-feedback :state="slugState">
+                {{ $t('slug.invalid-handle-characters') }}
+              </b-form-invalid-feedback>
             </b-form-group>
             <b-form-group>
               <b-form-checkbox

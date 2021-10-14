@@ -47,6 +47,9 @@
                       :state="handleState"
                       class="mb-1"
                     />
+                    <b-form-invalid-feedback :state="handleState">
+                      {{ $t('general.invalid-handle-characters') }}
+                    </b-form-invalid-feedback>
 
                     <b-form-group>
                       <b-form-select
