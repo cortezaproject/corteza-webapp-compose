@@ -48,7 +48,7 @@
                       class="mb-1"
                     />
                     <b-form-invalid-feedback :state="handleState">
-                      {{ $t('general:tooltip.handleValidation') }}
+                      {{ $t('general.invalid-handle-characters') }}
                     </b-form-invalid-feedback>
 
                     <b-form-group>

@@ -81,7 +81,7 @@
                     :placeholder="$t('block.general.placeholder.handle')"
                   />
                   <b-form-invalid-feedback :state="handleState">
-                    {{ $t('general:tooltip.handleValidation') }}
+                    {{ $t('block.general.invalid-handle-characters') }}
                   </b-form-invalid-feedback>
                 </b-col>
               </b-row>
