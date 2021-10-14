@@ -145,7 +145,6 @@
       >
         <b-form-textarea
           v-model="options.prefilter"
-          :value="true"
           :placeholder="$t('recordList.record.prefilterPlaceholder')"
         />
         <b-form-text>

@@ -11,13 +11,47 @@
         :system-fields="systemFields"
         :disabled-types="disabledTypes"
         :fields.sync="selectedFields"
+        max-height="max-height: 45vh;"
       />
 
       <i>{{ $t('recordList.export.limitations') }}</i>
     </b-form-group>
 
+    <b-form-group
+      breakpoint="md"
+      :label="$t('recordList.export.query.label')"
+    >
+      <b-form-input
+        v-model="exportQuery"
+        :placeholder="$t('recordList.export.query.placeholder')"
+      />
+    </b-form-group>
+
+    <b-form-group
+      breakpoint="md"
+      :label="$t('recordList.export.filter.label')"
+    >
+      <b-form-textarea
+        v-model="exportFilter"
+        :placeholder="$t('recordList.export.filter.placeholder')"
+      />
+      <b-form-text>
+        <i18next
+          path="recordList.export.filter.footnote"
+          tag="label"
+        >
+          <code>${recordID}</code>
+          <code>${ownerID}</code>
+          <code>${userID}</code>
+        </i18next>
+      </b-form-text>
+    </b-form-group>
+
     <b-form-group>
-      <b-form-checkbox v-model="forTimezone">
+      <b-form-checkbox
+        v-model="forTimezone"
+        class="mb-1"
+      >
         {{ $t('recordList.export.specifyTimezone') }}
       </b-form-checkbox>
 
@@ -26,18 +60,6 @@
         v-model="exportTimezone"
         :options="timezones"
         :placeholder="$t('recordList.export.timezonePlaceholder')"
-      />
-    </b-form-group>
-
-    <b-form-group>
-      <b-form-checkbox v-model="includeQuery">
-        {{ $t('recordList.export.includeQuery') }}
-      </b-form-checkbox>
-
-      <b-form-input
-        v-if="includeQuery"
-        v-model="exportQuery"
-        :placeholder="$t('recordList.export.query')"
       />
     </b-form-group>
 
@@ -365,6 +387,15 @@ export default {
       },
       set (v) {
         this.filter.query = v
+      },
+    },
+
+    exportFilter: {
+      get () {
+        return this.filter.filter
+      },
+      set (v) {
+        this.filter.filter = v
       },
     },
 

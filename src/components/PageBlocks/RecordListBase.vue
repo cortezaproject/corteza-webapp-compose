@@ -1032,11 +1032,23 @@ export default {
         e.filename += ` - ${timezone.label}`
       }
 
-      const queryF = queryToFilter(filterRaw.includeQuery ? filterRaw.query : undefined, this.prefilter, this.recordListModule.filterFields(this.options.fields), this.recordListFilter)
-      if (e.filters && queryF) {
-        e.filters = `(${e.filters}) AND ${encodeURI(queryF)}`
-      } else if (queryF) {
-        e.filters = encodeURI(queryF)
+      let filter = evaluatePrefilter(filterRaw.filter, {
+        record: this.record,
+        recordID: (this.record || {}).recordID || NoID,
+        ownerID: (this.record || {}).userID || NoID,
+        userID: (this.$auth.user || {}).userID || NoID,
+      })
+
+      if (filter) {
+        filter = `(${filter})`
+      }
+
+      const query = queryToFilter(filterRaw.includeQuery ? filterRaw.query : undefined, filter, this.recordListModule.fields)
+
+      if (e.filters && query) {
+        e.filters = `(${e.filters}) AND ${encodeURI(query)}`
+      } else if (query) {
+        e.filters = encodeURI(query)
       }
 
       const exportUrl = url.Make({
