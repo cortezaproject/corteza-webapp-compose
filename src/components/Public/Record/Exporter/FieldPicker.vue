@@ -205,6 +205,11 @@ export default {
       required: false,
       default: undefined,
     },
+    prefilter: {
+      type: String,
+      required: false,
+      default: undefined,
+    },
     selection: {
       type: Array,
       required: false,
@@ -247,8 +252,8 @@ export default {
       exportTimezone: undefined,
       filter: {
         rangeType: null,
-        includeQuery: false,
         query: this.query,
+        filter: this.prefilter,
         rangeBy: null,
         date: {
           range: null,
@@ -369,15 +374,6 @@ export default {
 
       set (rangeBy) {
         this.filter.rangeBy = rangeBy
-      },
-    },
-
-    includeQuery: {
-      get () {
-        return this.filter.includeQuery
-      },
-      set (v) {
-        this.filter.includeQuery = v
       },
     },
 

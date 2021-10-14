@@ -80,6 +80,7 @@
                 :module="recordListModule"
                 :record-count="items.length"
                 :query="query"
+                :prefilter="prefilter"
                 :selection="selected"
                 class="mr-1 float-left"
                 @export="onExport"
@@ -1043,7 +1044,7 @@ export default {
         filter = `(${filter})`
       }
 
-      const query = queryToFilter(filterRaw.includeQuery ? filterRaw.query : undefined, filter, this.recordListModule.fields)
+      const query = queryToFilter(filterRaw.query, filter, this.recordListModule.fields)
 
       if (e.filters && query) {
         e.filters = `(${e.filters}) AND ${encodeURI(query)}`
