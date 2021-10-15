@@ -35,39 +35,64 @@
                   xl="6"
                   md="12"
                 >
-                  <fieldset v-if="modules">
-                    <b-form-input
-                      v-model="chart.name"
-                      :placeholder="$t('newPlaceholder')"
-                      class="mb-1"
-                    />
-                    <b-form-input
-                      v-model="chart.handle"
-                      :placeholder="$t('general.placeholder.handle')"
-                      :state="handleState"
-                      class="mb-1"
-                    />
-                    <b-form-invalid-feedback :state="handleState">
-                      {{ $t('general.invalid-handle-characters') }}
-                    </b-form-invalid-feedback>
+                  <div v-if="modules">
+                    <b-form-group
+                      :label="$t('name')"
+                    >
+                      <b-form-input
+                        v-model="chart.name"
+                      />
+                    </b-form-group>
 
-                    <b-form-group>
-                      <b-form-select
+                    <b-form-group
+                      :label="$t('handle')"
+                    >
+                      <b-form-input
+                        v-model="chart.handle"
+                        :placeholder="$t('general.placeholder.handle')"
+                        :state="handleState"
+                        class="mb-1"
+                      />
+                      <b-form-invalid-feedback :state="handleState">
+                        {{ $t('general.invalid-handle-characters') }}
+                      </b-form-invalid-feedback>
+                    </b-form-group>
+
+                    <b-form-group
+                      :label="$t('colorScheme.label')"
+                    >
+                      <vue-select
                         v-model="chart.config.colorScheme"
                         :options="colorSchemes"
-                        class="mt-1"
+                        :reduce="cs => cs.value"
+                        label="label"
+                        option-text="label"
+                        option-value="value"
+                        :placeholder="$t('colorScheme.placeholder')"
+                        :clearable="true"
+                        class="h-100 w-100"
                       >
-                        <template slot="first">
-                          <option
-                            :value="undefined"
-                            disabled
-                          >
-                            {{ $t('colorScheme') }}
-                          </option>
+                        <template #option="option">
+                          <div
+                            v-for="(color, index) in option.colors"
+                            :key="`${option.value}-${index}`"
+                            :style="`background: ${color};`"
+                            class="d-inline-block color-box mr-1"
+                          />
                         </template>
-                      </b-form-select>
+                      </vue-select>
+                      <template
+                        v-if="currentColorScheme"
+                      >
+                        <div
+                          v-for="(color, index) in currentColorScheme.colors"
+                          :key="`${currentColorScheme.value}-${index}`"
+                          :style="`background: ${color};`"
+                          class="d-inline-block color-box mr-1"
+                        />
+                      </template>
                     </b-form-group>
-                  </fieldset>
+                  </div>
 
                   <!-- Some charts support multiple reports -->
                   <fieldset
@@ -197,6 +222,7 @@ import ReportItem from 'corteza-webapp-compose/src/components/Chart/ReportItem'
 import Reports from 'corteza-webapp-compose/src/components/Chart/Report'
 import { chartConstructor } from 'corteza-webapp-compose/src/lib/charts'
 import schemes from 'chartjs-plugin-colorschemes/src/colorschemes'
+import VueSelect from 'vue-select'
 
 const defaultReport = {
   moduleID: undefined,
@@ -216,6 +242,7 @@ export default {
     ChartComponent,
     draggable,
     ReportItem,
+    VueSelect,
   },
 
   props: {
@@ -254,6 +281,7 @@ export default {
     }),
 
     colorSchemes () {
+      const capitalize = w => `${w[0].toUpperCase()}${w.slice(1)}`
       const splicer = sc => {
         const rr = (/(\D+)(\d+)$/gi).exec(sc)
         return {
@@ -261,20 +289,25 @@ export default {
           count: rr[2],
         }
       }
-      const capitalize = w => `${w[0].toUpperCase()}${w.slice(1)}`
+
       const rr = []
       for (const g in schemes) {
         for (const sc in schemes[g]) {
           const gn = splicer(sc)
+
           rr.push({
-            text: `${capitalize(g)}: ${capitalize(gn.label)} (${this.$t('colorLabel', gn)})`,
+            label: `${capitalize(g)}: ${capitalize(gn.label)} (${this.$t('colorLabel', gn)})`,
+            colors: [...schemes[g][sc]].reverse(),
             value: `${g}.${sc}`,
-            count: gn.count,
           })
         }
       }
 
       return rr
+    },
+
+    currentColorScheme () {
+      return this.colorSchemes.find(({ value }) => value === this.chart.config.colorScheme)
     },
 
     defaultReport () {
@@ -459,4 +492,8 @@ export default {
   max-height: 50vh;
 }
 
+.color-box {
+  width: 28px;
+  height: 12px;
+}
 </style>

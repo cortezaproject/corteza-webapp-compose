@@ -1,38 +1,35 @@
 <template>
   <div>
     <!-- Configure source module -->
-    <div>
-      <div>
-        <b-form-group>
-          <b-form-select
-            v-model="moduleID"
-            :options="modules"
-            text-field="name"
-            class="mt-1"
-            value-field="moduleID"
+    <b-form-group
+      :label="$t('edit.module.label')"
+    >
+      <b-form-select
+        v-model="moduleID"
+        :options="modules"
+        text-field="name"
+        class="mt-1"
+        value-field="moduleID"
+      >
+        <template slot="first">
+          <option
+            :value="null"
+            disabled
           >
-            <template slot="first">
-              <option
-                :value="null"
-                disabled
-              >
-                {{ $t('edit.modulePick') }}
-              </option>
-            </template>
-          </b-form-select>
-        </b-form-group>
-      </div>
-    </div>
+            {{ $t('edit.module.placeholder') }}
+          </option>
+        </template>
+      </b-form-select>
+    </b-form-group>
 
     <!-- Configure report filters -->
     <div
       v-if="!!module"
       class="mt-1"
     >
-      <h4 class="mb-3">
-        {{ $t('edit.filter.label') }}
-      </h4>
-      <b-form-group>
+      <b-form-group
+        :label="$t('edit.filter.label')"
+      >
         <b-form-select
           v-model="report.filter"
           :disabled="customFilter"
