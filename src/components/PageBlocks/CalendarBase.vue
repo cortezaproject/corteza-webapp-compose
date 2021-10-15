@@ -23,24 +23,44 @@
           <font-awesome-icon :icon="['fas', 'angle-right']" />
         </b-btn>
       </div>
-      <div>
-        <b-btn
-          v-for="view in views"
-          :key="view"
-          variant="light"
-          class="mr-1 mb-1"
-          @click="api().changeView(view)"
+      <b-row
+        no-gutters
+      >
+        <b-col
+          cols="12"
+          sm="10"
+          md="9"
+          lg="8"
+          xl="9"
+          class="d-flex justify-content-sm-start justify-content-center flex-wrap"
         >
-          {{ $t(`calendar.view.${view}`) }}
-        </b-btn>
-        <b-btn
-          variant="light"
-          class="float-right mb-1"
-          @click="api().today()"
+          <b-btn
+            v-for="view in views"
+            :key="view"
+            variant="light"
+            class="mr-1 mb-1"
+            @click="api().changeView(view)"
+          >
+            {{ $t(`calendar.view.${view}`) }}
+          </b-btn>
+        </b-col>
+        <b-col
+          cols="12"
+          sm="2"
+          md="3"
+          lg="4"
+          xl="3"
+          class="d-flex justify-content-end"
         >
-          {{ $t(`calendar.today`) }}
-        </b-btn>
-      </div>
+          <b-btn
+            variant="light"
+            class="mb-1 w-100"
+            @click="api().today()"
+          >
+            {{ $t(`calendar.today`) }}
+          </b-btn>
+        </b-col>
+      </b-row>
       <full-calendar
         ref="fc"
         :events="events"
