@@ -44,7 +44,7 @@
         />
         <b-form-text>
           <i18next
-            path="block.recordList.record.prefilterFootnote"
+            path="recordList.record.prefilterFootnote"
             tag="label"
           >
             <code>${recordID}</code>
