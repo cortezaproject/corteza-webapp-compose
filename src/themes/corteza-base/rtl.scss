@@ -1,0 +1,6 @@
+html[dir="rtl"] {
+  .vs__dropdown-toggle,
+  .vs__selected-options {
+    flex-direction: row-reverse;
+  }
+}

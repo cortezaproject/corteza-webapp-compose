@@ -10,7 +10,7 @@
           class="text-dark"
           @click="api().prev()"
         >
-          <font-awesome-icon :icon="['fas', 'angle-left']" />
+          <font-awesome-icon :icon="['fas', 'angle-right']" />
         </b-btn>
         <span class="h5">
           {{ title }}
@@ -20,7 +20,7 @@
           class="text-dark"
           @click="api().next()"
         >
-          <font-awesome-icon :icon="['fas', 'angle-right']" />
+          <font-awesome-icon :icon="['fas', 'angle-left']" />
         </b-btn>
       </div>
       <b-row
@@ -142,7 +142,7 @@ export default {
         defaultView: this.block.defaultView,
         editable: false,
         eventLimit: true,
-        locale: this.locale,
+        locale: 'he',
         // @todo could be loaded on demand
         plugins: [
           dayGridPlugin,
