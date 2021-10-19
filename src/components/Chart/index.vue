@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 h-100">
+  <div class="position-relative h-100 w-100">
     <canvas
       ref="chartCanvas"
       class="p-2 mh-100 w-auto m-auto"
