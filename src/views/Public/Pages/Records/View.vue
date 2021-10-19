@@ -128,8 +128,11 @@ export default {
     },
 
     handleBack () {
-      const { pageID } = this.$store.getters['page/homePage'] || {}
-      this.$router.replace({ name: 'page', params: { pageID } })
+      /**
+       * Not the best way since we can not always know where we
+       * came from (and "were" is back).
+       */
+      this.$router.back()
     },
 
     handleAdd () {
