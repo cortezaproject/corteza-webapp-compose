@@ -151,7 +151,10 @@ export default {
         // Here, we'll need to nest our pages.
         // If the requested page isn't in the current index, check in the all index.
         // If still not there, just place it somewhere...
-        if (cp.page.selfID && cp.page.selfID !== NoID) {
+        // Remove hidden pages if not in admin pages section
+        if (!this.isAdminPage && !cp.page.visible) {
+          current.splice(i, 1)
+        } else if (cp.page.selfID && cp.page.selfID !== NoID) {
           let p = cx[cp.page.selfID]
           if (!p) {
             if (ax[cp.page.selfID]) {
@@ -166,7 +169,9 @@ export default {
           } else {
             current.splice(i, 1)
           }
-          p.children.unshift(cp)
+          if (cp.page.visible) {
+            p.children.unshift(cp)
+          }
         }
       }
 
