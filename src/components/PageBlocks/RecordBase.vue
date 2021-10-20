@@ -95,11 +95,13 @@ export default {
 
   watch: {
     record: {
-      handler: function () {
-        this.fetchUsers(this.fields, [this.record])
-      },
       deep: true,
       immediate: true,
+      handler (record) {
+        if (record) {
+          this.fetchUsers(this.fields, [record])
+        }
+      },
     },
   },
 
