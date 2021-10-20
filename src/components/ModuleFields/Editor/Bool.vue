@@ -25,11 +25,7 @@ export default {
   computed: {
     value: {
       get () {
-        if (this.record.values[this.field.name]) {
-          return true
-        } else {
-          return false
-        }
+        return this.record.values[this.field.name] === '1'
       },
 
       set (value) {
