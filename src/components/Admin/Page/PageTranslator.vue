@@ -108,15 +108,15 @@ export default {
       return translations => {
         return this.$ComposeAPI
           .pageUpdateTranslations({ namespaceID, pageID, translations })
-          .then(() => {
-            const lang = this.resourceTranslationLanguages[0]
-
+          // re-fetch translations, sanitized and stripped
+          .then(() => this.fetcher())
+          .then((translations) => {
             // When translations are successfully saved,
             // scan changes and apply them back to the passed object
             // not the most elegant solution but is saves us from
             // handling the resource on multiple places
             const find = (key) => {
-              return translations.find(t => t.key === key && t.lang === lang && t.resource === this.resource)
+              return translations.find(t => t.key === key && t.lang === this.currentLanguage && t.resource === this.resource)
             }
 
             let tr = find('title')

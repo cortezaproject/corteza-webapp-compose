@@ -143,7 +143,6 @@ export default {
       this.changes = []
       this.resource = undefined
       this.highlightKey = undefined
-      this.fetcher = undefined
       this.updater = undefined
       this.loaded = false
     },

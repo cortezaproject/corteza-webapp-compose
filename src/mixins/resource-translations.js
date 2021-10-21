@@ -30,5 +30,9 @@ export default {
     defaultTranslationLanguage () {
       return this.resourceTranslationLanguages[0]
     },
+
+    currentLanguage () {
+      return this.$i18n.i18next.language
+    },
   },
 }
