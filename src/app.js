@@ -50,6 +50,13 @@ export default (options = {}) => {
           // After user is authenticated, get his preferred language
           // and instruct i18next to change it
           this.$i18n.i18next.changeLanguage(user.meta.preferredLanguage)
+
+          /**
+           * Let the API know what kind of language do we accept and send
+           */
+          this.$ComposeAPI
+            .setHeader('Accept-Language', user.meta.preferredLanguage)
+            .setHeader('Content-Language', user.meta.preferredLanguage)
         }
 
         // Set up the progress bar
