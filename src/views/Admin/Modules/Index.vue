@@ -70,7 +70,7 @@
 
                       <b-dropdown-item>
                         <c-permissions-button
-                          :resource="`corteza::compose:module-field/${namespace.namespaceID}/*`"
+                          :resource="`corteza::compose:module-field/${namespace.namespaceID}/*/*`"
                           :button-label="$t('general:label.field')"
                           :show-button-icon="false"
                           button-variant="white text-left w-100"
@@ -79,7 +79,7 @@
 
                       <b-dropdown-item>
                         <c-permissions-button
-                          :resource="`corteza::compose:record/${namespace.namespaceID}/*`"
+                          :resource="`corteza::compose:record/${namespace.namespaceID}/*/*`"
                           :button-label="$t('general:label.record')"
                           :show-button-icon="false"
                           button-variant="white text-left w-100"
