@@ -79,6 +79,9 @@ export default {
           return true
         }
 
+        if (!this.automationScripts) {
+          return false
+        }
         return this.automationScripts.find(({ name }) => name === b.script)
       }
 
