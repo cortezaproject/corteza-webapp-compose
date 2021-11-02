@@ -171,9 +171,10 @@
                     {{ error }}
                   </b-alert>
 
-                  <div class="chart-preview w-100 h-100">
+                  <div
+                    class="chart-preview w-100 h-100 mt-5"
+                  >
                     <chart-component
-                      v-if="chart"
                       ref="chart"
                       :chart="chart"
                       :reporter="reporter"
