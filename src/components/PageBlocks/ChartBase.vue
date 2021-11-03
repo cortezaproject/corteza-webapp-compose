@@ -15,6 +15,7 @@ import { mapActions } from 'vuex'
 import base from './base'
 import ChartComponent from '../Chart'
 import { NoID } from '@cortezaproject/corteza-js'
+import { evaluatePrefilter } from 'corteza-webapp-compose/src/lib/record-filter'
 
 export default {
   i18nOptions: {
@@ -50,19 +51,10 @@ export default {
       findChartByID: 'chart/findByID',
     }),
 
-    // Evaluates the given filter. Allows JS template literal expressions
-    // such as id = ${recordID}
-    evaluateFilter (filter, { record, recordID, ownerID, userID }) {
-      return (function (filter) {
-        /* eslint-disable no-eval */
-        return eval('`' + filter + '`')
-      })(filter)
-    },
-
     reporter (r) {
       const nr = { ...r }
       if (nr.filter) {
-        nr.filter = this.evaluateFilter(nr.filter, {
+        nr.filter = evaluatePrefilter(nr.filter, {
           record: this.record,
           recordID: (this.record || {}).recordID || NoID,
           ownerID: (this.record || {}).userID || NoID,

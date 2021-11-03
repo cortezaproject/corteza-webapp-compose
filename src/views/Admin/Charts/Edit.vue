@@ -224,6 +224,7 @@ import Reports from 'corteza-webapp-compose/src/components/Chart/Report'
 import { chartConstructor } from 'corteza-webapp-compose/src/lib/charts'
 import schemes from 'chartjs-plugin-colorschemes/src/colorschemes'
 import VueSelect from 'vue-select'
+import { evaluatePrefilter } from 'corteza-webapp-compose/src/lib/record-filter'
 
 const defaultReport = {
   moduleID: undefined,
@@ -423,7 +424,16 @@ export default {
     },
 
     reporter (r) {
-      return this.$ComposeAPI.recordReport({ namespaceID: this.namespace.namespaceID, ...r })
+      const nr = { ...r }
+      if (nr.filter) {
+        nr.filter = evaluatePrefilter(nr.filter, {
+          record: this.record,
+          recordID: (this.record || {}).recordID || NoID,
+          ownerID: (this.record || {}).userID || NoID,
+          userID: (this.$auth.user || {}).userID || NoID,
+        })
+      }
+      return this.$ComposeAPI.recordReport({ namespaceID: this.namespace.namespaceID, ...nr })
     },
 
     update () {
