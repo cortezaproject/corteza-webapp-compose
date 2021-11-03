@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import BootstrapVue from 'bootstrap-vue'
-import i18n from './i18n'
 import c3catalogue from './components/C3'
-import { components } from '@cortezaproject/corteza-vue'
+import { components, i18n } from '@cortezaproject/corteza-vue'
 import './components'
 import './themes'
 
@@ -28,5 +27,10 @@ export default new Vue({
     mode: 'history',
     routes,
   }),
-  i18n: i18n(),
+  i18n: i18n(Vue,
+    {
+      app: 'corteza-webapp-compose',
+      lng: 'en',
+    },
+  ),
 })
