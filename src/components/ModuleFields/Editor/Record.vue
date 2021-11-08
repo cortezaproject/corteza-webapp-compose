@@ -29,6 +29,7 @@
     <multi
       v-if="field.isMulti"
       :value.sync="value"
+      :errors="errors"
       :single-input="field.options.selectType !== 'each'"
       :removable="field.options.selectType !== 'multiple'"
     >
@@ -117,7 +118,6 @@
           />
         </vue-select>
         <span v-else>{{ (multipleSelected[ctx.index] || {}).label }}</span>
-        <errors :errors="errors" />
       </template>
     </multi>
     <template

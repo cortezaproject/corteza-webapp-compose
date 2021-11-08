@@ -31,6 +31,7 @@
       v-if="field.isMulti"
       v-slot="ctx"
       :value.sync="value"
+      :errors="errors"
     >
       <c-rich-text-input
         v-if="field.options.useRichTextEditor"
@@ -49,7 +50,6 @@
         v-model="value[ctx.index]"
         class="mr-2"
       />
-      <errors :errors="errors" />
     </multi>
 
     <template v-else>
@@ -74,6 +74,7 @@
         v-model="value"
         class="mr-2"
       />
+
       <errors :errors="errors" />
     </template>
   </b-form-group>

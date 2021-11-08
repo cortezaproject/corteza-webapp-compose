@@ -30,6 +30,7 @@
       v-if="field.isMulti"
       v-slot="ctx"
       :value.sync="value"
+      :errors="errors"
     >
       <b-input-group
         :prepend="field.options.prefix"
@@ -42,8 +43,8 @@
           class="mr-2"
         />
       </b-input-group>
-      <errors :errors="errors" />
     </multi>
+
     <b-input-group
       v-else
       :prepend="field.options.prefix"

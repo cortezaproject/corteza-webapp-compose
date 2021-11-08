@@ -4,6 +4,7 @@
       v-for="(error, i) in set"
       :key="i"
       force-show
+      class="m-0"
     >
       {{ error.message }}
     </b-form-invalid-feedback>

@@ -29,6 +29,7 @@
     <template v-if="field.isMulti">
       <multi
         :value.sync="value"
+        :errors="errors"
         :single-input="field.options.selectType !== 'each'"
       >
         <template v-slot:single>
@@ -73,7 +74,6 @@
           <span v-else>{{ findLabel(value[ctx.index]) }}</span>
         </template>
       </multi>
-      <errors :errors="errors" />
     </template>
 
     <template

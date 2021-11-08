@@ -6,6 +6,13 @@
     >
       <slot name="single" />
     </div>
+
+    <errors
+      v-if="errors"
+      :errors="errors"
+      class="mb-1"
+    />
+
     <draggable
       :list.sync="val"
       handle=".handle"
@@ -35,6 +42,7 @@
         />
       </div>
     </draggable>
+
     <b-button
       v-if="!singleInput"
       variant="primary"
@@ -47,7 +55,9 @@
   </div>
 </template>
 <script>
+import errors from '../errors'
 import draggable from 'vuedraggable'
+import { validator } from '@cortezaproject/corteza-js'
 
 export default {
   i18nOptions: {
@@ -56,6 +66,7 @@ export default {
 
   components: {
     draggable,
+    errors,
   },
 
   props: {
@@ -73,6 +84,11 @@ export default {
     singleInput: {
       type: Boolean,
       default: false,
+    },
+
+    errors: {
+      type: validator.Validated,
+      required: true,
     },
   },
 

@@ -31,13 +31,13 @@
       v-if="field.isMulti"
       v-slot="ctx"
       :value.sync="value"
+      :errors="errors"
     >
       <b-form-input
         v-model="value[ctx.index]"
         type="email"
         class="mr-2"
       />
-      <errors :errors="errors" />
     </multi>
 
     <template

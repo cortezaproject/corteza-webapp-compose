@@ -30,6 +30,7 @@
       v-if="field.isMulti"
       v-slot="ctx"
       :value.sync="value"
+      :errors="errors"
     >
       <b-form-input
         v-model="value[ctx.index]"

@@ -30,6 +30,7 @@
       v-if="field.isMulti"
       v-slot="ctx"
       :value.sync="value"
+      :errors="errors"
     >
       <b-form-input
         v-if="!field.options.onlyTime"
@@ -53,7 +54,6 @@
         :class="{ 'd-inline w-50': !field.options.onlyTime }"
         @change="setTime($event, ctx.index)"
       />
-      <errors :errors="errors" />
     </multi>
 
     <template
