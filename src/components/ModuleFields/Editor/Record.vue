@@ -87,6 +87,7 @@
             @next="goToPage(true)"
           />
         </vue-select>
+        <errors :errors="errors" />
       </template>
       <template v-slot:default="ctx">
         <vue-select
