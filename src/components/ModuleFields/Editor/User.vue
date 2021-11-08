@@ -82,6 +82,7 @@
             @next="goToPage(true)"
           />
         </vue-select>
+        <errors :errors="errors" />
       </template>
       <template v-slot:default="ctx">
         <vue-select
@@ -110,8 +111,8 @@
           />
         </vue-select>
         <span v-else>{{ getOptionLabel(getUserByIndex(ctx.index)) }}</span>
+        <errors :errors="errors" />
       </template>
-      <errors :errors="errors" />
     </multi>
     <template
       v-else
