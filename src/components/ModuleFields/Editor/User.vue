@@ -187,7 +187,9 @@ export default {
     }),
 
     options () {
-      return this.users.filter(u => u && !(this.value || []).includes(u.userID))
+      return this.users.filter(({ userID = '' }) => {
+        return userID && this.field.isMulti ? !(this.value || []).includes(userID) : this.value !== userID
+      })
     },
 
     // This is used in the case of using the multiple select option

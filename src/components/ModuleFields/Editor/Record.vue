@@ -200,7 +200,9 @@ export default {
     }),
 
     options () {
-      return this.records.map(this.convert).filter(v => v && !(this.value || []).includes(v.value))
+      return this.records.map(this.convert).filter(({ value = '' }) => {
+        return value && this.field.isMulti ? !(this.value || []).includes(value) : this.value !== value
+      })
     },
 
     module () {
