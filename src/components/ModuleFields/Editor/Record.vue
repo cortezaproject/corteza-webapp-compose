@@ -385,6 +385,20 @@ export default {
         }
       }
 
+      // Ommit records that are selected
+      if (this.value) {
+        let ommitedRecordsQuery
+        if (this.field.isMulti) {
+          ommitedRecordsQuery = this.value.map(recordID => `(recordID != '${recordID}')`).join(' AND ')
+        } else {
+          ommitedRecordsQuery = `recordID != '${this.value}'`
+        }
+
+        if (ommitedRecordsQuery) {
+          query = query ? `(${query}) AND (${ommitedRecordsQuery})` : ommitedRecordsQuery
+        }
+      }
+
       if (q.pageCursor) {
         q.sort = ''
       }
