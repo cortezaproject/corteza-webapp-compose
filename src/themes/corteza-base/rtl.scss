@@ -1,5 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600&display=swap');
+
 html[dir="rtl"] {
-  .vs__dropdown-toggle,
+  body,
+  .h1,.h2,.h3,.h4,.h5,.h6,h1,h2,h3,h4,h5,h6,
+  .btn,
+  .tooltip,
+  .popover,
+  .text-monospace,
+  .btn,label,legend,thead th,
+  .font-weight-bold,b,strong,
+  .nav-active > span > .title {
+    font-family: 'Assistant', sans-serif;
+  }
+
+  .vs__dropdown-toggle {
+    flex-direction: row-reverse;
+
+    input {
+      text-align: right;
+    }
+  }
+
   .vs__selected-options {
     flex-direction: row-reverse;
   }
