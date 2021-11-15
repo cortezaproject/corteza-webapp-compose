@@ -45,6 +45,7 @@
           :calculate-position="calculatePosition"
           :clearable="false"
           :filterable="false"
+          :selectable="option => option.selectable"
           :loading="processing"
           class="bg-white"
           @search="search"
@@ -69,6 +70,7 @@
           :append-to-body="appendToBody"
           :calculate-position="calculatePosition"
           :filterable="false"
+          :selectable="option => option.selectable"
           :loading="processing"
           multiple
           class="bg-white"
@@ -96,6 +98,7 @@
           :calculate-position="calculatePosition"
           :clearable="false"
           :filterable="false"
+          :selectable="option => option.selectable"
           :loading="processing"
           class="bg-white"
           @search="search"
@@ -125,6 +128,7 @@
         :append-to-body="appendToBody"
         :calculate-position="calculatePosition"
         :filterable="false"
+        :selectable="option => option.selectable"
         :loading="processing"
         class="bg-white"
         @input="updateValue($event)"
@@ -187,8 +191,8 @@ export default {
     }),
 
     options () {
-      return this.users.filter(({ userID = '' }) => {
-        return userID && this.field.isMulti ? !(this.value || []).includes(userID) : this.value !== userID
+      return this.users.map(u => {
+        return { ...u, selectable: this.field.isMulti ? !(this.value || []).includes(u.userID) : this.value !== u.userID }
       })
     },
 

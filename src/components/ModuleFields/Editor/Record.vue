@@ -46,6 +46,7 @@
           :calculate-position="calculatePosition"
           :clearable="false"
           :filterable="false"
+          :selectable="option => option.selectable"
           class="bg-white"
           :placeholder="$t('kind.record.suggestionPlaceholder')"
           multiple
@@ -73,6 +74,7 @@
           :calculate-position="calculatePosition"
           :clearable="false"
           :filterable="false"
+          :selectable="option => option.selectable"
           class="bg-white"
           :placeholder="$t('kind.record.suggestionPlaceholder')"
           @input="selectChange($event)"
@@ -101,6 +103,7 @@
           :calculate-position="calculatePosition"
           :clearable="false"
           :filterable="false"
+          :selectable="option => option.selectable"
           class="bg-white"
           :placeholder="$t('kind.record.suggestionPlaceholder')"
           :value="getRecord(ctx.index)"
@@ -134,6 +137,7 @@
         :calculate-position="calculatePosition"
         :placeholder="$t('kind.record.suggestionPlaceholder')"
         :filterable="false"
+        :selectable="option => option.selectable"
         class="bg-white"
         @open="onOpen"
         @search="search"
@@ -200,9 +204,7 @@ export default {
     }),
 
     options () {
-      return this.records.map(this.convert).filter(({ value = '' }) => {
-        return value && this.field.isMulti ? !(this.value || []).includes(value) : this.value !== value
-      })
+      return this.records.map(this.convert).filter(({ value = '' }) => value)
     },
 
     module () {
@@ -316,6 +318,7 @@ export default {
       }
       const value = r.recordID
       let label = value
+      const selectable = this.field.isMulti ? !(this.value || []).includes(value) : this.value !== value
       if (this.field.options.labelField) {
         label = r.values[this.field.options.labelField]
         if (label && label.length > 0) {
@@ -323,7 +326,7 @@ export default {
             label = label.join(', ')
           }
 
-          return { value, label }
+          return { value, label, selectable }
         }
       }
     },
@@ -382,20 +385,6 @@ export default {
           query = `(${pf}) AND (${query})`
         } else {
           query = pf
-        }
-      }
-
-      // Ommit records that are selected
-      if (this.value) {
-        let ommitedRecordsQuery
-        if (this.field.isMulti) {
-          ommitedRecordsQuery = this.value.map(recordID => `(recordID != '${recordID}')`).join(' AND ')
-        } else {
-          ommitedRecordsQuery = `recordID != '${this.value}'`
-        }
-
-        if (ommitedRecordsQuery) {
-          query = query ? `(${query}) AND (${ommitedRecordsQuery})` : ommitedRecordsQuery
         }
       }
 
