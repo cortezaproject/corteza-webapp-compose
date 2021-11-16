@@ -3,21 +3,11 @@
     v-if="formatted"
     class="rt-content"
   >
-    <div v-if="field.options.useRichTextEditor">
-      <span v-html="formatted" />
-    </div>
-    <div
-      v-else-if="field.options.multiLine"
-      class="multiline"
-    >
-      {{ formatted }}
-    </div>
-    <div
-      v-else
-      :class="{'multiline': field.isMulti}"
-    >
-      {{ formatted }}
-    </div>
+    <p
+      :class="{'multiline': field.isMulti || field.options.multiLine }"
+      v-html="formatted"
+    />
+
     <errors :errors="errors" />
   </div>
 </template>
