@@ -137,25 +137,28 @@
         {{ $t('recordList.export.recordCount', { count: getExportableCount}) }}
       </span>
       <span class="ml-auto">
-        <b-button
+        <c-input-processing
           v-if="allowJSON"
+          :processing="processing"
           :disabled="exportDisabled"
-          variant="dark"
-          class="mr-2"
+          :variant="'dark'"
+          size="lg"
+          class="mr-2 mb-2"
           @click="doExport('json')"
         >
-
           {{ $t('recordList.export.json') }}
-        </b-button>
-        <b-button
+        </c-input-processing>
+        <c-input-processing
           v-if="allowCSV"
+          :processing="processing"
           :disabled="exportDisabled"
-          variant="dark"
+          :variant="'dark'"
+          size="lg"
+          class="mr-2 mb-2"
           @click="doExport('csv')"
         >
-
           {{ $t('recordList.export.csv') }}
-        </b-button>
+        </c-input-processing>
       </span>
     </div>
   </b-card>
@@ -242,6 +245,10 @@ export default {
     disabledTypes: {
       type: Array,
       default: () => ['User', 'Record', 'File'],
+    },
+    processing: {
+      type: Boolean,
+      default: false,
     },
   },
 

@@ -82,6 +82,7 @@
                 :query="query"
                 :prefilter="prefilter"
                 :selection="selected"
+                :processing="processing"
                 class="mr-1 float-left"
                 @export="onExport"
               />
@@ -1014,6 +1015,7 @@ export default {
     },
 
     onExport (e) {
+      this.processing = true
       const { namespaceID, moduleID } = this.filter || {}
       const { filterRaw, timezone } = e
       e = {
@@ -1063,6 +1065,7 @@ export default {
       })
 
       window.open(exportUrl)
+      this.processing = false
     },
 
     handleRowClicked ({ r: { recordID } }) {

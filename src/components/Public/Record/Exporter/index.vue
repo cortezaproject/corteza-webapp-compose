@@ -16,6 +16,7 @@
       @hide="toggleModal"
     >
       <field-picker
+        :processing="processing"
         v-bind="$attrs"
         v-on="$listeners"
       />
@@ -36,6 +37,13 @@ export default {
   },
 
   inheritAttrs: true,
+
+  props: {
+    processing: {
+      type: Boolean,
+      default: false,
+    },
+  },
 
   data () {
     return {
