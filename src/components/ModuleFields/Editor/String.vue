@@ -4,9 +4,11 @@
     :state="state"
     :class="formGroupStyleClasses"
   >
-    <template #label>
+    <template
+      v-if="!valueOnly"
+      #label
+    >
       <div
-        v-if="!valueOnly"
         class="d-flex align-items-top"
       >
         <label
