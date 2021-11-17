@@ -45,7 +45,7 @@
             >
               <b-row
                 no-gutters
-                class="align-items-center"
+                class="wrap-with-vertical-gutters align-items-center"
               >
                 <div class="flex-grow-1 wrap-with-vertical-gutters">
                   <b-button
