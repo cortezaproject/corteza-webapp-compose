@@ -49,8 +49,9 @@ export default function (ComposeAPI) {
             commit(types.updateSet, set.map(m => new compose.Module(m, namespace)))
           }
 
-          commit(types.completed)
           return getters.set
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 
@@ -66,8 +67,9 @@ export default function (ComposeAPI) {
         return ComposeAPI.moduleRead({ namespaceID: namespace.namespaceID, moduleID }).then(raw => {
           const module = new compose.Module(raw, namespace)
           commit(types.updateSet, [module])
-          commit(types.completed)
           return module
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 
@@ -76,8 +78,9 @@ export default function (ComposeAPI) {
         return ComposeAPI.moduleCreate(item, request.config(item)).then(raw => {
           const module = new compose.Module(raw, raw.namespace)
           commit(types.updateSet, [module])
-          commit(types.completed)
           return module
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 
@@ -86,8 +89,9 @@ export default function (ComposeAPI) {
         return ComposeAPI.moduleUpdate(item, request.config(item)).then(raw => {
           const module = new compose.Module(raw, raw.namespace)
           commit(types.updateSet, [module])
-          commit(types.completed)
           return module
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 
@@ -95,8 +99,9 @@ export default function (ComposeAPI) {
         commit(types.pending)
         return ComposeAPI.moduleDelete(item).then(() => {
           commit(types.removeFromSet, [item])
-          commit(types.completed)
           return true
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 

@@ -48,8 +48,9 @@ export default function (ComposeAPI) {
             commit(types.updateSet, set.map(c => new compose.Chart(c)))
           }
 
-          commit(types.completed)
           return getters.set
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 
@@ -65,8 +66,9 @@ export default function (ComposeAPI) {
         return ComposeAPI.chartRead({ namespaceID, chartID }).then(raw => {
           const chart = new compose.Chart(raw)
           commit(types.updateSet, [chart])
-          commit(types.completed)
           return chart
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 
@@ -75,8 +77,9 @@ export default function (ComposeAPI) {
         return ComposeAPI.chartCreate(item).then(raw => {
           const chart = new compose.Chart(raw)
           commit(types.updateSet, [chart])
-          commit(types.completed)
           return chart
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 
@@ -85,8 +88,9 @@ export default function (ComposeAPI) {
         return ComposeAPI.chartUpdate(item).then(raw => {
           const chart = new compose.Chart(raw)
           commit(types.updateSet, [chart])
-          commit(types.completed)
           return chart
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 
@@ -94,8 +98,9 @@ export default function (ComposeAPI) {
         commit(types.pending)
         return ComposeAPI.chartDelete(item).then(() => {
           commit(types.removeFromSet, [item])
-          commit(types.completed)
           return true
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 

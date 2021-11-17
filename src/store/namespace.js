@@ -50,8 +50,9 @@ export default function (ComposeAPI) {
             commit(types.updateSet, set.map(n => new compose.Namespace(n)))
           }
 
-          commit(types.completed)
           return getters.set
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 
@@ -67,8 +68,9 @@ export default function (ComposeAPI) {
         return ComposeAPI.namespaceRead({ namespaceID }).then(raw => {
           const namespace = new compose.Namespace(raw)
           commit(types.updateSet, [namespace])
-          commit(types.completed)
           return namespace
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 
@@ -77,8 +79,9 @@ export default function (ComposeAPI) {
         return ComposeAPI.namespaceCreate(item, request.config(item)).then(raw => {
           const namespace = new compose.Namespace(raw)
           commit(types.updateSet, [namespace])
-          commit(types.completed)
           return namespace
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 
@@ -87,8 +90,9 @@ export default function (ComposeAPI) {
         return ComposeAPI.namespaceClone(item).then(raw => {
           const namespace = new compose.Namespace(raw)
           commit(types.updateSet, [namespace])
-          commit(types.completed)
           return namespace
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 
@@ -97,8 +101,9 @@ export default function (ComposeAPI) {
         return ComposeAPI.namespaceUpdate(item, request.config(item)).then(raw => {
           const namespace = new compose.Namespace(raw)
           commit(types.updateSet, [namespace])
-          commit(types.completed)
           return namespace
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 
@@ -106,8 +111,9 @@ export default function (ComposeAPI) {
         commit(types.pending)
         return ComposeAPI.namespaceDelete(item).then(() => {
           commit(types.removeFromSet, [item])
-          commit(types.completed)
           return true
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 

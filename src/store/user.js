@@ -36,6 +36,7 @@ export default function (SystemAPI) {
         commit(types.pending)
         return SystemAPI.userList().then(({ set }) => {
           commit(types.updateSet, set)
+        }).finally(() => {
           commit(types.completed)
         })
       },
@@ -53,6 +54,7 @@ export default function (SystemAPI) {
 
         return SystemAPI.userList({ userID }).then(({ set }) => {
           commit(types.updateSet, set)
+        }).finally(() => {
           commit(types.completed)
         })
       },
@@ -77,6 +79,7 @@ export default function (SystemAPI) {
 
         return SystemAPI.userList({ userID: list }).then(({ set }) => {
           commit(types.updateSet, set)
+        }).finally(() => {
           commit(types.completed)
         })
       },

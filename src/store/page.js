@@ -55,8 +55,9 @@ export default function (ComposeAPI) {
             commit(types.updateSet, set.map(p => new compose.Page(p)))
           }
 
-          commit(types.completed)
           return getters.set
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 
@@ -72,8 +73,9 @@ export default function (ComposeAPI) {
         return ComposeAPI.pageRead({ namespaceID, pageID }).then(raw => {
           const page = new compose.Page(raw)
           commit(types.updateSet, [page])
-          commit(types.completed)
           return page
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 
@@ -82,8 +84,9 @@ export default function (ComposeAPI) {
         return ComposeAPI.pageCreate(item, request.config(item)).then(raw => {
           const page = new compose.Page(raw)
           commit(types.updateSet, [page])
-          commit(types.completed)
           return page
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 
@@ -92,8 +95,9 @@ export default function (ComposeAPI) {
         return ComposeAPI.pageUpdate(item, request.config(item)).then(raw => {
           const page = new compose.Page(raw)
           commit(types.updateSet, [page])
-          commit(types.completed)
           return page
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 
@@ -101,8 +105,9 @@ export default function (ComposeAPI) {
         commit(types.pending)
         return ComposeAPI.pageDelete(item).then(() => {
           commit(types.removeFromSet, [item])
-          commit(types.completed)
           return true
+        }).finally(() => {
+          commit(types.completed)
         })
       },
 

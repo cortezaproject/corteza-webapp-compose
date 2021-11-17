@@ -24,6 +24,7 @@ export default function (SystemAPI) {
         commit(types.pending)
         return SystemAPI.localeList().then(({ set }) => {
           commit(types.updateSet, set)
+        }).finally(() => {
           commit(types.completed)
         })
       },
