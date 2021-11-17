@@ -23,11 +23,11 @@
     </portal>
 
     <portal
-      v-if="!pending && namespace"
+      v-if="namespace"
       to="sidebar-body-expanded"
     >
       <b-button
-        v-if="!pending && isAdminPage"
+        v-if="isAdminPage"
         variant="light"
         class="w-100 mb-2"
         :to="{ name: 'pages', params: { slug: namespace.slug } }"
@@ -36,7 +36,7 @@
       </b-button>
 
       <b-button
-        v-else-if="!pending && namespace && namespace.canManageNamespace"
+        v-else-if="namespace && namespace.canManageNamespace"
         variant="light"
         class="w-100 mb-2"
         :to="{ name: 'admin.modules', params: { slug: namespace.slug } }"
@@ -111,16 +111,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      namespacePending: 'namespace/pending',
-      modulePending: 'module/pending',
-      chartPending: 'chart/pending',
-      pagePending: 'page/pending',
       pages: 'page/set',
     }),
-
-    pending () {
-      return this.namespacePending || this.modulePending || this.chartPending || this.pagePending
-    },
 
     isAdminPage () {
       return this.$route.name.includes('admin.')
