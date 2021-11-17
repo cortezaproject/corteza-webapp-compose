@@ -314,8 +314,9 @@ export default {
 
     convert (r) {
       if (!r || !r.values) {
-        return null
+        return {}
       }
+
       const value = r.recordID
       let label = value
       const selectable = this.field.isMulti ? !(this.value || []).includes(value) : this.value !== value
@@ -329,6 +330,8 @@ export default {
           return { value, label, selectable }
         }
       }
+
+      return {}
     },
 
     search: debounce(function (query = '') {
