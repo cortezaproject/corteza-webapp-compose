@@ -49,7 +49,7 @@
           :filterable="false"
           :selectable="option => option.selectable"
           :loading="processing"
-          class="bg-white"
+          class="bg-white w-100"
           @search="search"
           @input="updateValue($event)"
         >
@@ -75,7 +75,7 @@
           :selectable="option => option.selectable"
           :loading="processing"
           multiple
-          class="bg-white"
+          class="bg-white w-100"
           @search="search"
         >
           <pagination
@@ -102,7 +102,7 @@
           :filterable="false"
           :selectable="option => option.selectable"
           :loading="processing"
-          class="bg-white"
+          class="bg-white w-100"
           @search="search"
           @input="updateValue($event, ctx.index)"
         >
@@ -132,7 +132,7 @@
         :filterable="false"
         :selectable="option => option.selectable"
         :loading="processing"
-        class="bg-white"
+        class="bg-white w-100"
         @input="updateValue($event)"
         @search="search"
       >

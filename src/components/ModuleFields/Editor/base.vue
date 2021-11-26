@@ -90,6 +90,17 @@ export default {
 
       set (value) {
         this.record.values[this.field.name] = value
+        this.$emit('change', value)
+      },
+    },
+
+    showPopover: {
+      get () {
+        return this.preventPopoverClose
+      },
+
+      set (v) {
+        this.$emit('update:preventPopoverClose', v)
       },
     },
 

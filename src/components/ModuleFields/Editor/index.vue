@@ -33,6 +33,7 @@ export default {
     if (cmp) {
       return createElement(cmp, {
         props: this.$props,
+        on: this.$listeners,
       })
     } else {
       return createElement('code', this.$t('field.unknownFieldKind', { kind: this.field.kind }))

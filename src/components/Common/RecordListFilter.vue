@@ -8,6 +8,7 @@
     >
       <font-awesome-icon :icon="['fas', 'filter']" />
     </b-button>
+
     <b-popover
       ref="popover"
       custom-class="cpopover shadow-sm"
@@ -17,7 +18,8 @@
       boundary="viewport"
       boundary-padding="2"
       :target="selectedFieldId"
-      @show="onOpen()"
+      @show="onOpen"
+      @hide="onHide"
     >
       <div class="py-3 px-2">
         <table v-if="componentFilter.length">
@@ -42,7 +44,7 @@
                     :options="conditions"
                   />
                 </td>
-                <td class="d-inline-flex">
+                <td>
                   <b-form-select
                     v-model="filter.name"
                     :options="fieldOptions"
@@ -57,14 +59,15 @@
                     :options="getOperators(filter.kind)"
                   />
                 </td>
-                <td class="d-inline-flex">
+                <td>
                   <field-editor
                     v-if="getField(filter.name)"
-                    class="mb-0 filter-field-editor"
+                    v-bind="mock"
+                    class="mb-0"
                     value-only
                     :field="getField(filter.name)"
                     :record="filter.record"
-                    v-bind="mock"
+                    @change="onValueChange"
                   />
                 </td>
                 <td class="pl-1">
@@ -147,6 +150,12 @@
           </b-button>
         </div>
       </div>
+
+      <a
+        ref="focusMe"
+        href=""
+        disabled
+      />
     </b-popover>
   </div>
 </template>
@@ -194,6 +203,9 @@ export default {
       ],
 
       mock: {},
+
+      // Used to prevent unwanted closure of popover
+      preventPopoverClose: false,
     }
   },
 
@@ -231,6 +243,24 @@ export default {
   },
 
   methods: {
+    onHide (e) {
+      if (this.preventPopoverClose) {
+        e.preventDefault()
+        // Focuses invisible element to refocus popover (problems with closing it otherwise)
+        this.$nextTick(() => {
+          this.$refs.focusMe.focus()
+        })
+      }
+    },
+
+    onValueChange () {
+      this.preventPopoverClose = true
+
+      setTimeout(() => {
+        this.preventPopoverClose = false
+      }, 100)
+    },
+
     onChange (selected, groupIndex, index) {
       const field = this.getField(selected)
       const filterExists = !!(this.componentFilter[groupIndex] || { filter: [] }).filter[index]
@@ -399,7 +429,7 @@ export default {
   border-radius: 0.25rem;
   opacity: 1 !important;
   box-shadow: 0 3px 48px #00000026;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .cpopover .arrow {
@@ -423,18 +453,6 @@ export default {
   display: inline-flex !important;
   vertical-align: -webkit-baseline-middle;
   padding: 0;
-}
-
-.filter-field-editor {
-  width: auto;
-
-  legend {
-    display: none;
-  }
-
-  label {
-    vertical-align: -webkit-baseline-middle;
-  }
 }
 </style>
 <style lang="scss" scoped>

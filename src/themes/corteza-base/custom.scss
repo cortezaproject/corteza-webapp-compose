@@ -60,7 +60,7 @@ th {
 }
 
 .v-select {
-  min-width: 250px;
+  min-width: 150px;
 
   .vs__search {
     margin: 0;
@@ -69,6 +69,7 @@ th {
 
 .vs__dropdown-menu {
   z-index: 1090;
+  min-width: 150px;
 }
 
 .vs__dropdown-toggle {
