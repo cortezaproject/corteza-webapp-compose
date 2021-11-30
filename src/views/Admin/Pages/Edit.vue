@@ -192,7 +192,7 @@ export default {
        * Pass a special tag alongside payload that
        * instructs store layer to add content-language header to the API request
        */
-      const resourceTranslationLanguage = this.defaultTranslationLanguage
+      const resourceTranslationLanguage = this.currentLanguage
       const { namespaceID } = this.namespace
       this.updatePage({ namespaceID, ...this.page, resourceTranslationLanguage }).then((page) => {
         this.page = page.clone()

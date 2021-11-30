@@ -474,7 +474,7 @@ export default {
        * Pass a special tag alongside payload that
        * instructs store layer to add content-language header to the API request
        */
-      const resourceTranslationLanguage = this.defaultTranslationLanguage
+      const resourceTranslationLanguage = this.currentLanguage
       let { namespaceID, name, slug, enabled, meta } = this.namespace
       let assets
 
