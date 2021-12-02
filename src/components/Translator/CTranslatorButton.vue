@@ -3,6 +3,7 @@
     :variant="buttonVariant"
     :class="buttonClass"
     :disabled="disabled"
+    :size="size"
     @click="onClick"
   >
     <slot>
@@ -26,6 +27,11 @@ export default {
     buttonClass: {
       type: String,
       default: () => { return '' },
+    },
+
+    size: {
+      type: String,
+      default: 'lg',
     },
 
     disabled: {
