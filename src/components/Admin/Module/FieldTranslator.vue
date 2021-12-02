@@ -2,7 +2,8 @@
   <c-translator-button
     v-if="canManageResourceTranslations && resourceTranslationsEnabled"
     button-variant="light"
-    class="btn-lg ml-auto mr-1 py-1 px-3"
+    class="ml-auto mr-1 py-1 px-3"
+    :size="size"
     v-bind="$props"
     :resource="resource"
     :titles="titles"
@@ -35,6 +36,11 @@ export default {
     module: {
       type: compose.Module,
       required: true,
+    },
+
+    size: {
+      type: String,
+      default: 'lg',
     },
 
     disabled: {
