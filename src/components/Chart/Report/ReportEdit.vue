@@ -252,10 +252,6 @@ import base from './base'
 
 const aggregateFunctions = [
   {
-    value: 'COUNTD',
-    text: 'countd',
-  },
-  {
     value: 'SUM',
     text: 'sum',
   },

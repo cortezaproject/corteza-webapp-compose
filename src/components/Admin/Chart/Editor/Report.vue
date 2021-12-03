@@ -366,10 +366,6 @@ import { compose } from '@cortezaproject/corteza-js'
 
 const aggregateFunctions = [
   {
-    value: 'COUNTD',
-    text: 'countd',
-  },
-  {
     value: 'SUM',
     text: 'sum',
   },

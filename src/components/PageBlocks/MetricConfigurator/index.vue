@@ -309,10 +309,6 @@ export default {
       dimensionModifiers: compose.chartUtil.dimensionFunctions.map(df => ({ ...df, text: this.$t(`chart.edit.dimension.function.${df.text}`) })),
       operations: [
         {
-          value: 'countd',
-          text: this.$t('metric.edit.operationCountd'),
-        },
-        {
           value: 'sum',
           text: this.$t('metric.edit.operationSum'),
         },
