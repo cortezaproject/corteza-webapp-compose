@@ -54,6 +54,7 @@ import {
   faThumbtack,
   faPlus,
   faColumns,
+  faSearchLocation,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -154,4 +155,5 @@ library.add(
   faEye,
   faPlus,
   faColumns,
+  faSearchLocation,
 )
