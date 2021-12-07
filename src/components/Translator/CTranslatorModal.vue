@@ -12,9 +12,10 @@
         v-if="loaded"
         :primary-resource="resource"
         :translations="translations"
+        :key-prettifier="keyPrettyfier"
         :languages="languages"
         :titles="titles"
-        highlight-key="highlightKey"
+        :highlight-key="highlightKey"
         @change="changes=$event"
       />
       <template #modal-footer>
@@ -98,12 +99,13 @@ export default {
         return
       }
 
-      const { resource, titles, fetcher, updater, highlightKey } = payload
+      const { resource, titles, fetcher, updater, highlightKey, keyPrettyfier } = payload
 
       this.resource = resource
       this.titles = titles
       this.highlightKey = highlightKey
       this.updater = updater
+      this.keyPrettyfier = keyPrettyfier
       this.changes = []
 
       fetcher().then(tt => {
@@ -144,6 +146,7 @@ export default {
       this.resource = undefined
       this.highlightKey = undefined
       this.updater = undefined
+      this.keyPrettyfier = undefined
       this.loaded = false
     },
   },

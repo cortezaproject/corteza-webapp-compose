@@ -66,6 +66,11 @@ export default {
       type: Function,
       default: undefined,
     },
+
+    keyPrettyfier: {
+      type: Function,
+      default: undefined,
+    },
   },
 
   methods: {
@@ -76,6 +81,7 @@ export default {
         highlightKey: this.highlightKey,
         fetcher: this.fetcher,
         updater: this.updater,
+        keyPrettyfier: this.keyPrettyfier,
       })
     },
   },
