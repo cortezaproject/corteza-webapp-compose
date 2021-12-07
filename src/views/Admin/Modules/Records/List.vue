@@ -95,7 +95,7 @@ export default {
     this.block = new compose.PageBlockRecordList({
       options: {
         moduleID: this.$attrs.moduleID,
-        fields: this.module.fields ? [...this.module.fields.sort((a, b) => a.label.localeCompare(b.label)).slice(0, 5)] : [],
+        fields: this.module.fields,
         hideRecordReminderButton: true,
         hideRecordViewButton: true,
         hideRecordCloneButton: true,
