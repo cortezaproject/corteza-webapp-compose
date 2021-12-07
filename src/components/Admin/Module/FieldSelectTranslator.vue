@@ -6,9 +6,9 @@
     :size="size"
     v-bind="$props"
     :resource="resource"
-    :titles="titles"
     :fetcher="fetcher"
     :updater="updater"
+    :key-prettyfier="keyPrettifyer"
   />
 </template>
 
@@ -16,6 +16,13 @@
 import { compose } from '@cortezaproject/corteza-js'
 import { mapGetters } from 'vuex'
 import CTranslatorButton from 'corteza-webapp-compose/src/components/Translator/CTranslatorButton'
+
+const keyPrefix = 'meta.options.'
+const keySuffix = '.text'
+
+function optionValueFromKey (key) {
+  return key.substring(keyPrefix.length, key.length - keySuffix.length)
+}
 
 export default {
   components: {
@@ -69,15 +76,6 @@ export default {
       return `compose:module-field/${namespaceID}/${moduleID}/${fieldID}`
     },
 
-    titles () {
-      const { fieldID, name } = this.field
-      const titles = {}
-
-      titles[this.resource] = this.$t('title', { name: name || fieldID })
-
-      return titles
-    },
-
     fetcher () {
       const { moduleID, namespaceID } = this.module
 
@@ -87,13 +85,34 @@ export default {
           // Fields do not have their own translation endpoints,
           // we'll just filter what we need here.
           .then(set => {
-            return set
+            set = set
               // Extract translations for this field
               .filter(({ resource }) => this.resource === resource)
               // Ignore all option translations
-              .filter(({ key }) => !key.startsWith('meta.options'))
+              .filter(({ key }) => key.startsWith(keyPrefix) && key.endsWith(keySuffix))
+
+            // after translations are fetched, make sure we copy all (updates) values from
+            // the caller so translator editor can operate with recent values
+            set
+              .filter(({ lang }) => this.currentLanguage === lang)
+              .forEach(rt => {
+                // fin the corresponding option
+                const op = this.field.options.options
+                  .find(op => typeof op === 'object' && rt.key === `${keyPrefix}${op.value}${keySuffix}`)
+
+                if (op) {
+                  // and update the message
+                  rt.message = op.text
+                }
+              })
+
+            return set
           })
       }
+    },
+
+    keyPrettifyer () {
+      return optionValueFromKey
     },
 
     updater () {
@@ -113,41 +132,19 @@ export default {
               return translations.find(t => t.key === key && t.lang === this.currentLanguage && t.resource === this.resource)
             }
 
-            let tr
-
-            tr = find('label')
-            if (tr !== undefined) {
-              this.field.label = tr.message
-            }
-
-            tr = find('meta.description.view')
-            if (tr !== undefined) {
-              this.field.options.description.view = tr.message
-            }
-
-            tr = find('meta.description.edit')
-            if (tr !== undefined) {
-              this.field.options.description.edit = tr.message
-            }
-
-            tr = find('meta.hint.view')
-            if (tr !== undefined) {
-              this.field.options.hint.view = tr.message
-            }
-
-            tr = find('meta.hint.edit')
-            if (tr !== undefined) {
-              this.field.options.hint.edit = tr.message
-            }
-
-            if (this.field.expressions && Array.isArray(this.field.expressions.validators)) {
-              for (const vld of this.field.expressions.validators) {
-                tr = find(`expression.validator.${vld.validatorID}.error`)
-                if (tr !== undefined) {
-                  vld.error = tr.message
-                }
+            this.field.options.options = this.field.options.options.map(opt => {
+              if (typeof opt === 'string') {
+                const tr = find(`${keyPrefix}${opt}${keySuffix}`)
+                return { value: opt, text: tr ? tr.message : opt }
               }
-            }
+
+              if (typeof opt === 'object' && opt.value) {
+                const tr = find(`${keyPrefix}${opt.value}${keySuffix}`)
+                opt.text = tr ? tr.message : opt.value
+              }
+
+              return opt
+            })
           })
       }
     },

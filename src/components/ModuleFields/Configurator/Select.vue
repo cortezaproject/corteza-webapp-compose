@@ -24,7 +24,7 @@
           />
 
           <b-input-group-append>
-            <field-translator
+            <field-select-translator
               v-if="field"
               :field="field"
               :module="module"
@@ -90,7 +90,7 @@
 <script>
 import base from './base'
 import { NoID } from '@cortezaproject/corteza-js'
-import FieldTranslator from 'corteza-webapp-compose/src/components/Admin/Module/FieldTranslator'
+import FieldSelectTranslator from 'corteza-webapp-compose/src/components/Admin/Module/FieldSelectTranslator'
 
 export default {
   i18nOptions: {
@@ -98,7 +98,7 @@ export default {
   },
 
   components: {
-    FieldTranslator,
+    FieldSelectTranslator,
   },
 
   extends: base,

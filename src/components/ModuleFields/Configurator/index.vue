@@ -10,6 +10,7 @@
     >
       <basic
         :namespace="namespace"
+        :module="module"
         :field="field"
       />
     </b-tab>

@@ -54,7 +54,7 @@
           <b-button
             variant="link"
             class="p-0 ml-1 mr-auto"
-            @click="field.expressions.validators.push({ test: '', error: '' })"
+            @click="add()"
           >
             {{ $t('sanitizers.add') }}
           </b-button>
@@ -86,7 +86,6 @@
         <b-form-input
           v-model="value.error"
           :placeholder="$t('validators.error.placeholder')"
-          disabled
         />
         <b-input-group-append>
           <field-translator
@@ -175,20 +174,35 @@ export default {
 
   methods: {
     openExpressionsHelp (anchor) {
+      const features = {
+        toolbar: 'no',
+        location: 'no',
+        status: 'no',
+        menubar: 'no',
+        scrollbars: 'yes',
+        resizable: 'yes',
+        width: '960px',
+        height: '1080px',
+      }
+
       const helpRoute = this.$router.resolve({ name: 'field.expressions.help' })
-      window.open(`${helpRoute.href}#${anchor}`, '_blank',
-                                   `toolbar=no,
-                                    location=no,
-                                    status=no,
-                                    menubar=no,
-                                    scrollbars=yes,
-                                    resizable=yes,
-                                    width=960px,
-                                    height=1080px`)
+      window.open(
+        `${helpRoute.href}#${anchor}`,
+        '_blank',
+        Object.keys(features).reduce((p, key) => {
+          p.push(`${key}=${features[key]}`)
+          return p
+        }, []).join(','),
+      )
     },
 
     isNew (value) {
       return !(value.validatorID && value.validatorID !== NoID)
+    },
+
+    add () {
+      this.field.expressions.validators
+        .push({ test: '', error: '' })
     },
   },
 }
