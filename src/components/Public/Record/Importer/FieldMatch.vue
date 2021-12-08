@@ -153,7 +153,7 @@ export default {
       return this.module.fields
         .filter(({ kind }) => !['User', 'Record', 'File'].includes(kind))
         .map(field => field.isRequired === true ? { ...field, label: field.label + '*' } : field)
-        .map(({ name: value, label: text }) => ({ value, text }))
+        .map(({ name: value, label }) => ({ value, text: label || value }))
         .sort((a, b) => a.text.localeCompare(b.text))
     },
 
