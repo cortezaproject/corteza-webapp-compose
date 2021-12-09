@@ -235,7 +235,7 @@ import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   i18nOptions: {
-    namespaces: 'module',
+    namespaces: 'federation',
   },
 
   props: {
@@ -376,12 +376,12 @@ export default {
         .then(({ set = [] }) => {
           this.servers = set.filter(({ canManageNode }) => canManageNode)
         })
-        .catch(this.toastErrorHandler())
+        .catch(this.toastErrorHandler(this.$t('edit.federationSettings.error.fetch.node')))
 
       for (const node of this.servers) {
-        await this.loadSharedModules(node.nodeID).catch(this.toastErrorHandler())
-        await this.loadExposedModules(node.nodeID).catch(this.toastErrorHandler())
-        await this.loadModuleMappings(node.nodeID).catch(this.toastErrorHandler())
+        await this.loadExposedModules(node.nodeID).catch(this.toastErrorHandler(this.$t('edit.federationSettings.error.fetch.exposed')))
+        await this.loadSharedModules(node.nodeID).catch(this.toastErrorHandler(this.$t('edit.federationSettings.error.fetch.shared')))
+        await this.loadModuleMappings(node.nodeID).catch(this.toastErrorHandler(this.$t('edit.federationSettings.error.fetch.mmap')))
       }
 
       this.sharedModulesMapped = this.getSharedModulesMapped()
@@ -460,7 +460,7 @@ export default {
               // Reset update flag
               crtModule.updated = false
             })
-            .catch(this.toastErrorHandler())
+            .catch(this.toastErrorHandler(this.$t('edit.federationSettings.persist.mmap')))
         }
       }
 
@@ -490,7 +490,7 @@ export default {
             // Reset update flag
             (this.upstream[nodeID] || {}).updated = false
           })
-          .catch(this.toastErrorHandler())
+          .catch(this.toastErrorHandler(this.$t('edit.federationSettings.persist.exposed')))
 
         if (!response && !response.moduleID) {
           return
@@ -670,7 +670,7 @@ export default {
     },
 
     async persistModuleMappings (payload) {
-      return this.$FederationAPI.manageStructureCreateMappings(payload).catch(this.toastErrorHandler())
+      return this.$FederationAPI.manageStructureCreateMappings(payload)
     },
 
     //
@@ -685,7 +685,7 @@ export default {
         .then((data = []) => {
           this.sharedModules[nodeID] = data.map(d => ({ ...d, updated: false }))
         })
-        .catch(this.toastErrorHandler())
+        .catch(this.toastErrorHandler(this.$t('edit.federationSettings.error.fetch.shared')))
     },
 
     async loadExposedModules (nodeID) {
@@ -700,7 +700,7 @@ export default {
             this.exposedModules[nodeID] = exposedModule
           }
         })
-        .catch(this.toastErrorHandler())
+        .catch(this.toastErrorHandler(this.$t('edit.federationSettings.error.fetch.exposed')))
     },
 
     async loadModuleMappings (nodeID) {
