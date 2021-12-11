@@ -60,16 +60,24 @@ th {
 }
 
 .v-select {
-  min-width: 150px;
+  min-width: 15vw;
 
   .vs__search {
     margin: 0;
+  }
+
+  .vs__selected-options {
+    word-wrap: break-word;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
 .vs__dropdown-menu {
   z-index: 1090;
-  min-width: 150px;
+  min-width: 15vw;
 }
 
 .vs__dropdown-toggle {

@@ -63,7 +63,7 @@
                   <field-editor
                     v-if="getField(filter.name)"
                     v-bind="mock"
-                    class="mb-0"
+                    class="field-editor mb-0"
                     value-only
                     :field="getField(filter.name)"
                     :record="filter.record"
@@ -453,6 +453,12 @@ export default {
   display: inline-flex !important;
   vertical-align: -webkit-baseline-middle;
   padding: 0;
+}
+
+.field-editor {
+  .v-select {
+    max-width: 15vw;
+  }
 }
 </style>
 <style lang="scss" scoped>
