@@ -364,10 +364,7 @@ export default {
   },
 
   async mounted () {
-    if (window.FederationAPI) {
-      this.$FederationAPI.baseURL = window.FederationAPI
-      this.preload()
-    }
+    this.preload()
   },
 
   methods: {
