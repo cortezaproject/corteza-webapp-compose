@@ -11,6 +11,14 @@
         :system-fields="systemFields"
         :disabled-types="disabledTypes"
         :fields.sync="selectedFields"
+        :labels="{
+          searchPlaceholder: $t('field:selector.search'),
+          availableFields: $t('field:selector.available'),
+          selectAllFields: $t('field:selector.selectAll'),
+          selectedFields: $t('field:selector.selected'),
+          unselectAllFields: $t('field:selector.unselectAll'),
+          systemFieldLabel: $t('field:selector.systemField'),
+        }"
         max-height="max-height: 45vh;"
       />
 
@@ -166,11 +174,12 @@
 
 <script>
 import { compose } from '@cortezaproject/corteza-js'
-import FieldPicker from 'corteza-webapp-compose/src/components/Common/Module/FieldPicker'
+import { components } from '@cortezaproject/corteza-vue'
 import moment from 'moment'
 import tz from 'compact-timezone-list'
 import { VueSelect } from 'vue-select'
 const fmtDate = (d) => d.format('YYYY-MM-DD')
+const { FieldPicker } = components
 
 export default {
   i18nOptions: {

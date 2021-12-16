@@ -26,6 +26,14 @@
         <field-picker
           :module="module"
           :fields.sync="filteredFields"
+          :labels="{
+            searchPlaceholder: $t('field:selector.search'),
+            availableFields: $t('field:selector.available'),
+            selectAllFields: $t('field:selector.selectAll'),
+            selectedFields: $t('field:selector.selected'),
+            unselectAllFields: $t('field:selector.unselectAll'),
+            systemFieldLabel: $t('field:selector.systemField'),
+          }"
           class="d-flex flex-column"
         />
       </b-card-body>
@@ -34,7 +42,8 @@
 </template>
 
 <script>
-import FieldPicker from 'corteza-webapp-compose/src/components/Common/Module/FieldPicker'
+import { components } from '@cortezaproject/corteza-vue'
+const { FieldPicker } = components
 
 export default {
   i18nOptions: {
