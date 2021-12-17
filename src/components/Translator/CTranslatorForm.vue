@@ -65,7 +65,7 @@
             cols="2"
             class="text-break small"
           >
-            <samp>{{ prettifyKey(key) }}</samp>
+            <samp>{{ keyPrettifier(key) }}</samp>
           </b-td>
           <b-td
             v-for="(lang, langIndex) in visibleLanguages"
@@ -136,7 +136,7 @@ export default {
      *
      * What we usually get for each translation is resource type like
      * compose:module/42 and this key/value allows us to map it to 'Module'
-     * This is especially useful in case of fields when it's important that
+     * This is especially useful in case of fields when it's important
      * translator can differentiate between them
      */
     titles: {
@@ -145,7 +145,7 @@ export default {
     },
 
     /**
-     * When set, the row in translator is is highlighted
+     * When set, the row in translator is highlighted
      */
     highlightKey: {
       type: String,
@@ -155,6 +155,18 @@ export default {
     disabled: {
       type: Boolean,
       default: () => false,
+    },
+
+    keyPrettifier: {
+      type: Function,
+      default: (key) => {
+        return key
+          .replace(/([A-Z])/, ' $1')
+          .toLowerCase()
+          .replace(/(\d+)/, '#$1')
+          .split('.').map(s => s.substring(0, 1).toUpperCase() + s.substring(1))
+          .join(' ')
+      },
     },
   },
 
@@ -241,21 +253,13 @@ export default {
       }
     },
 
-    prettifyKey (key) {
-      return key
-        .replace(/([A-Z])/, ' $1')
-        .toLowerCase()
-        .replace(/(\d+)/, '#$1')
-        .split('.').map(s => s.substring(0, 1).toUpperCase() + s.substring(1))
-        .join(' ')
-    },
-
     onUpdate (resource, key, lang, message) {
       const v = this.intTranslations.find(r => r.resource === resource && r.key === key && r.lang === lang)
       if (v === undefined) {
-        this.intTranslations.push({ resource, key, lang, message, org: message, dirty: true })
+        const fresh = { resource, key, lang, message, org: message, dirty: true }
+        this.intTranslations.push(fresh)
       } else {
-        // if new message is different then original, mark translation as dirty
+        // if new message is different as original, mark translation as dirty
         v.dirty = v.org !== message
         v.message = message
       }

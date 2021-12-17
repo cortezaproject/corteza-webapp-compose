@@ -3,6 +3,7 @@
     :variant="buttonVariant"
     :class="buttonClass"
     :disabled="disabled"
+    :size="size"
     @click="onClick"
   >
     <slot>
@@ -26,6 +27,11 @@ export default {
     buttonClass: {
       type: String,
       default: () => { return '' },
+    },
+
+    size: {
+      type: String,
+      default: 'lg',
     },
 
     disabled: {
@@ -60,6 +66,11 @@ export default {
       type: Function,
       default: undefined,
     },
+
+    keyPrettyfier: {
+      type: Function,
+      default: undefined,
+    },
   },
 
   methods: {
@@ -70,6 +81,7 @@ export default {
         highlightKey: this.highlightKey,
         fetcher: this.fetcher,
         updater: this.updater,
+        keyPrettyfier: this.keyPrettyfier,
       })
     },
   },

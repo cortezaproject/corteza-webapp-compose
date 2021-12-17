@@ -1,8 +1,9 @@
 <template>
   <b-row no-gutters>
     <b-col>
-      <b-form-group>
-        <div>{{ $t('kind.select.optionsLabel') }}</div>
+      <b-form-group
+        :label="$t('kind.select.optionsLabel')"
+      >
         <b-input-group
           v-for="(option, index) in f.options.options"
           :key="index"
@@ -23,6 +24,15 @@
           />
 
           <b-input-group-append>
+            <field-select-translator
+              v-if="field"
+              :field="field"
+              :module="module"
+              :highlight-key="`meta.options.${option.value}.text`"
+              size="sm"
+              :disabled="isNew || option.new"
+              button-variant="light"
+            />
             <b-button
               variant="outline-danger"
               class="border-0"
@@ -79,17 +89,23 @@
 
 <script>
 import base from './base'
+import { NoID } from '@cortezaproject/corteza-js'
+import FieldSelectTranslator from 'corteza-webapp-compose/src/components/Admin/Module/FieldSelectTranslator'
 
 export default {
   i18nOptions: {
     namespaces: 'field',
   },
 
+  components: {
+    FieldSelectTranslator,
+  },
+
   extends: base,
 
   data () {
     return {
-      newOption: { value: undefined, text: undefined },
+      newOption: { value: undefined, text: undefined, new: true },
       selectOptions: [
         { text: this.$t('kind.select.optionType.default'), value: 'default' },
         { text: this.$t('kind.select.optionType.multiple'), value: 'multiple' },
@@ -118,6 +134,10 @@ export default {
       }
       return null
     },
+
+    isNew () {
+      return this.module.moduleID === NoID || this.field.fieldID === NoID
+    },
   },
 
   created () {
@@ -132,7 +152,7 @@ export default {
     handleAddOption () {
       if (this.newOption.value) {
         this.f.options.options.push(this.newOption)
-        this.newOption = { value: undefined, text: undefined }
+        this.newOption = { value: undefined, text: undefined, new: true }
       }
     },
   },

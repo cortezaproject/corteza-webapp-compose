@@ -86,10 +86,21 @@
       :label="$t(`options.description.label.${noDescriptionEdit ? 'default' : 'view'}`)"
       class="mt-2"
     >
-      <b-form-input
-        v-model="field.options.description.view"
-        :placeholder="$t(`options.description.placeholder.${noDescriptionEdit ? 'default' : 'view'}`)"
-      />
+      <b-input-group>
+        <b-form-input
+          v-model="field.options.description.view"
+          :placeholder="$t(`options.description.placeholder.${noDescriptionEdit ? 'default' : 'view'}`)"
+        />
+        <b-input-group-append>
+          <field-translator
+            v-if="field"
+            :field="field"
+            :module="module"
+            :highlight-key="`meta.description.view`"
+            button-variant="light"
+          />
+        </b-input-group-append>
+      </b-input-group>
     </b-form-group>
 
     <b-form-group
@@ -97,10 +108,21 @@
       :label="$t('options.description.label.edit')"
       class="mt-2"
     >
-      <b-form-input
-        v-model="field.options.description.edit"
-        :placeholder="$t('options.description.placeholder.edit')"
-      />
+      <b-input-group>
+        <b-form-input
+          v-model="field.options.description.edit"
+          :placeholder="$t('options.description.placeholder.edit')"
+        />
+        <b-input-group-append>
+          <field-translator
+            v-if="field"
+            :field="field"
+            :module="module"
+            :highlight-key="`meta.description.edit`"
+            button-variant="light"
+          />
+        </b-input-group-append>
+      </b-input-group>
     </b-form-group>
 
     <hr>
@@ -117,10 +139,21 @@
       :label="$t(`options.hint.label.${noHintEdit ? 'default' : 'view'}`)"
       class="mt-2"
     >
-      <b-form-input
-        v-model="field.options.hint.view"
-        :placeholder="$t(`options.hint.placeholder.${noHintEdit ? 'default' : 'view'}`)"
-      />
+      <b-input-group>
+        <b-form-input
+          v-model="field.options.hint.view"
+          :placeholder="$t(`options.hint.placeholder.${noHintEdit ? 'default' : 'view'}`)"
+        />
+        <b-input-group-append>
+          <field-translator
+            v-if="field"
+            :field="field"
+            :module="module"
+            :highlight-key="`meta.hint.view`"
+            button-variant="light"
+          />
+        </b-input-group-append>
+      </b-input-group>
     </b-form-group>
 
     <b-form-group
@@ -128,16 +161,28 @@
       :label="$t('options.hint.label.edit')"
       class="mt-2"
     >
-      <b-form-input
-        v-model="field.options.hint.edit"
-        :placeholder="$t('options.hint.placeholder.edit')"
-      />
+      <b-input-group>
+        <b-form-input
+          v-model="field.options.hint.edit"
+          :placeholder="$t('options.hint.placeholder.edit')"
+        />
+        <b-input-group-append>
+          <field-translator
+            v-if="field"
+            :field="field"
+            :module="module"
+            :highlight-key="`meta.hint.edit`"
+            button-variant="light"
+          />
+        </b-input-group-append>
+      </b-input-group>
     </b-form-group>
   </div>
 </template>
 
 <script>
 import FieldEditor from '../Editor'
+import FieldTranslator from 'corteza-webapp-compose/src/components/Admin/Module/FieldTranslator'
 import { compose, validator } from '@cortezaproject/corteza-js'
 import { mapGetters } from 'vuex'
 
@@ -148,11 +193,17 @@ export default {
 
   components: {
     FieldEditor,
+    FieldTranslator,
   },
 
   props: {
     namespace: {
       type: compose.Namespace,
+      required: true,
+    },
+
+    module: {
+      type: compose.Module,
       required: true,
     },
 
