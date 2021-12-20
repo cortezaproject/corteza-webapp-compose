@@ -76,6 +76,11 @@ export default {
       type: String,
       default: null,
     },
+    formData: {
+      type: Object,
+      required: false,
+      default: () => ({}),
+    },
   },
 
   data () {
@@ -92,6 +97,8 @@ export default {
     },
 
     dzOptions () {
+      const vm = this
+
       return {
         paramName: 'upload',
         maxFilesize: this.maxFilesize, // mb
@@ -106,6 +113,13 @@ export default {
         uploadMultiple: false,
         parallelUploads: 1,
         acceptedFiles: null,
+        init: function () {
+          this.on('sending', function (file, xhr, formData) {
+            for (const k in vm.formData || {}) {
+              formData.append(k, vm.formData[k])
+            }
+          })
+        },
         headers: {
           // https://github.com/enyo/dropzone/issues/1154
           'Cache-Control': '',

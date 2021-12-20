@@ -32,6 +32,7 @@
       :endpoint="endpoint"
       :accepted-files="mimetypes"
       :max-filesize="maxSize"
+      :form-data="uploaderFormData"
       @uploaded="appendAttachment"
     />
 
@@ -51,6 +52,7 @@
 import base from './base'
 import Uploader from 'corteza-webapp-compose/src/components/Public/Page/Attachment/Uploader'
 import ListLoader from 'corteza-webapp-compose/src/components/Public/Page/Attachment/ListLoader'
+import { NoID } from '@cortezaproject/corteza-js'
 
 export default {
   components: {
@@ -71,6 +73,18 @@ export default {
         recordID,
         fieldName: this.field.name,
       })
+    },
+
+    uploaderFormData () {
+      const fd = {
+        fieldName: this.field.name,
+      }
+
+      if (this.record && this.record.recordID !== NoID) {
+        fd.recordID = this.record.recordID
+      }
+
+      return fd
     },
 
     mimetypes () {
