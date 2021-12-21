@@ -23,7 +23,7 @@
 
     <b-form-checkbox
       :checked="defaultValueEnabled"
-      :disabled="!!showvalueExpr || field.isMulti"
+      :disabled="!!showvalueExpr"
       @change="toggleDefaultValue()"
     >
       {{ $t('defaultValue') }}
@@ -241,7 +241,7 @@ export default {
     },
 
     defaultValueEnabled () {
-      return this.field.isMulti || !!this.field.defaultValue.length
+      return !!this.field.defaultValue.length
     },
 
     showDefaultField () {
@@ -257,10 +257,13 @@ export default {
         }
       },
     },
+
     'mock.record.values': {
       handler ({ defValField: dv }) {
         if (!Array.isArray(dv)) {
           dv = [dv]
+        } else if (!dv.length) {
+          dv = [undefined]
         }
 
         // Transform to backend value struct
@@ -293,22 +296,11 @@ export default {
     },
 
     'field.isMulti': {
-      handler (isMulti) {
-        if (!this.field.defaultValue.length) {
-          this.initMocks()
+      handler () {
+        // Only init mocks if default value exists, to convert to multi mock
+        if (this.field.defaultValue.length) {
+          this.initMocks(this.field.defaultValue)
         }
-
-        const { defValField } = this.mock.record.values
-
-        if (isMulti) {
-          if (defValField) {
-            this.mock.record.values.defValField = Array.isArray(defValField) ? defValField : [defValField]
-          }
-        } else if (defValField) {
-          this.mock.record.values.defValField = defValField[0]
-        }
-
-        this.mock.field.isMulti = isMulti
       },
     },
   },
@@ -317,13 +309,13 @@ export default {
    * Prepare mock values for default-value field editor
    */
   created () {
-    let { defaultValue, isMulti, expressions } = this.field
+    let { defaultValue, expressions } = this.field
 
     if (!defaultValue) {
       defaultValue = []
     }
 
-    if (defaultValue.length || isMulti) {
+    if (defaultValue.length) {
       this.initMocks(defaultValue)
     }
 
@@ -346,7 +338,7 @@ export default {
   methods: {
     initMocks (defaultValue = []) {
       if (this.field.isMulti) {
-        defaultValue = defaultValue.map(v => v.value)
+        defaultValue = defaultValue.map(v => (v || {}).value).filter(v => v)
       } else {
         defaultValue = (defaultValue[0] || {}).value
       }
