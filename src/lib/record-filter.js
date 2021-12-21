@@ -65,8 +65,8 @@ export function getFieldFilter (name, kind, query, operator = '') {
   }
 
   // Since userID and recordID must be numbers, we check if query is number to avoid wrong queries
-  if (['User', 'Record'].includes(kind) && !isNaN(numQuery) && operator) {
-    return `${name} ${operator} '${query}'`
+  if (['User', 'Record'].includes(kind) && !isNaN(numQuery)) {
+    return `${name} ${operator || '='} '${query}'`
   }
 
   if (['String', 'Url', 'Select', 'Email'].includes(kind)) {
@@ -107,7 +107,7 @@ export function queryToFilter (searchQuery = '', prefilter = '', fields = [], re
       .filter(q => !!q)
       .join(' OR ')
 
-    searchQuery = `(${searchQuery})`
+    searchQuery = searchQuery ? `(${searchQuery})` : ''
   }
 
   const recordListFilterSqlArray = recordListFilter.map(({ groupCondition, filter = [] }) => {
