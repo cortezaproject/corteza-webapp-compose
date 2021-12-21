@@ -152,6 +152,9 @@
         <b-form-checkbox v-model="options.hideAddButton">
           {{ $t('recordList.record.hideAddButton') }}
         </b-form-checkbox>
+        <b-form-checkbox v-model="options.hideImportButton">
+          {{ $t('recordList.record.hideImportButton') }}
+        </b-form-checkbox>
       </b-form-group>
       <b-form-group
         horizontal

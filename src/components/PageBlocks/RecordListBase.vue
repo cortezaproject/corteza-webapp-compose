@@ -44,9 +44,10 @@
             <div
               class="wrap-with-vertical-gutters"
             >
-              <template v-if="!options.hideAddButton && recordListModule.canCreateRecord">
+              <template v-if="recordListModule.canCreateRecord">
                 <template v-if="inlineEditing">
                   <b-btn
+                    v-if="!options.hideAddButton"
                     variant="primary"
                     size="lg"
                     class="float-left mr-1"
@@ -58,6 +59,7 @@
 
                 <template v-else-if="!inlineEditing && (recordPageID || options.allRecords)">
                   <router-link
+                    v-if="!options.hideAddButton"
                     class="btn btn-lg btn-primary float-left mr-1"
                     :to="{
                       name: options.rowCreateUrl || 'page.record.create',
@@ -68,6 +70,7 @@
                     + {{ $t('recordList.addRecord') }}
                   </router-link>
                   <importer-modal
+                    v-if="!options.hideImportButton"
                     :module="recordListModule"
                     :namespace="namespace"
                     class="mr-1 float-left"
