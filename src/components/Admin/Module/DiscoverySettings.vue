@@ -39,6 +39,14 @@
         <field-picker
           :module="module"
           :fields.sync="currentFields"
+          :labels="{
+            searchPlaceholder: $t('field:selector.search'),
+            availableFields: $t('field:selector.available'),
+            selectAllFields: $t('field:selector.selectAll'),
+            selectedFields: $t('field:selector.selected'),
+            unselectAllFields: $t('field:selector.unselectAll'),
+            systemFieldLabel: $t('field:selector.systemField'),
+          }"
           group="fields"
           disable-system-fields
         />
@@ -49,8 +57,9 @@
 
 <script>
 import { compose } from '@cortezaproject/corteza-js'
+import { components } from '@cortezaproject/corteza-vue'
 import { mapGetters } from 'vuex'
-import FieldPicker from 'corteza-webapp-compose/src/components/Common/Module/FieldPicker'
+const { FieldPicker } = components
 
 export default {
   i18nOptions: {
