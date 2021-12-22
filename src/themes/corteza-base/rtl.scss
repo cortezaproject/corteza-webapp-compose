@@ -1,0 +1,20 @@
+[dir] {
+  margin: 0;
+  background-color: $body-bg;
+}
+
+[dir="rtl"] {
+  text-align: right;
+
+  .vs__dropdown-toggle {
+    flex-direction: row-reverse;
+
+    input {
+      text-align: right;
+    }
+  }
+
+  .vs__selected-options {
+    flex-direction: row-reverse;
+  }
+}

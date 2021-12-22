@@ -38,6 +38,7 @@
         :logo="logo"
         :disabled-routes="['namespace.list', 'namespace.edit', 'namespace.create']"
         expand-on-hover
+        :right="textDirectionality === 'rtl'"
       >
         <template #header-expanded>
           <portal-target name="sidebar-header-expanded" />

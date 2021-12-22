@@ -46,6 +46,9 @@ export default (options = {}) => {
       this.websocket()
 
       return this.$auth.vue(this).handle().then(({ user }) => {
+        // switch the page directionality on body based on language
+        document.body.setAttribute('dir', this.textDirectionality)
+
         if (user.meta.preferredLanguage) {
           // After user is authenticated, get his preferred language
           // and instruct i18next to change it
