@@ -68,6 +68,12 @@ export default {
         chart.isValid()
 
         const data = await chart.fetchReports({ reporter: this.reporter })
+        data.labels = data.labels.map(l => {
+          if (l === 'Not defined') {
+            return this.$t('chart:not-defined')
+          }
+          return l
+        })
         const options = chart.makeOptions(data)
         const plugins = chart.plugins()
         if (!options) {
