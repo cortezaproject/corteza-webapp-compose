@@ -257,6 +257,11 @@ export default {
 <style lang="scss">
 .namespace-selector {
   font-size: 1rem;
+  min-width: 100%;
+
+  .vs__dropdown-menu {
+    min-width: 100%;
+  }
 
   .vs__selected-options {
     flex-wrap: nowrap;
