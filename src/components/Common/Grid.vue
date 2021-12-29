@@ -7,47 +7,25 @@
       'flex-grow-1 d-flex': isStretchable,
     }"
   >
-    <div
-      v-if="isStretchable"
-      class="flex-grow-1 d-flex w-100"
-    >
-      <div
-        v-for="(item, index) in sortedGrid"
-        :key="item.i"
-        class="flex-grow-1"
-        :style="{
-          width: ((item.w * 100) / 12) + '%',
-        }"
-      >
-        <slot
-          :block="blocks[item.i]"
-          :index="index"
-          :block-index="item.i"
-          :bounding-rect="boundingRects[index]"
-          v-on="$listeners"
-        />
-      </div>
-    </div>
-
     <grid-layout
-      v-else
+      class="flex-grow-1 d-flex w-100 h-100"
       :layout.sync="layout"
-      :col-num="12"
       :row-height="50"
-      :vertical-compact="true"
       :is-resizable="!!editable"
       :is-draggable="!!editable"
-      :use-css-transforms="true"
-      :cols="{ lg: 12, md: 12, sm: 1, xs: 1, xxs: 1 }"
+      :cols="columnNumber"
       :margin="[0, 0]"
       :responsive="!editable"
       @layout-updated="handleLayoutUpdate"
     >
       <grid-item
-        v-for="(item, index) in grid"
+        v-for="(item, index) in gridCollection"
         :key="item.i"
         ref="items"
         class="grid-item"
+        :class="{
+          'h-100': isStretchable,
+        }"
         :min-h="2"
         v-bind="{ ...item }"
       >
@@ -153,6 +131,20 @@ export default {
       }
 
       return true
+    },
+
+    columnNumber () {
+      if (this.grid.length === 1) {
+        return { lg: 1, md: 1, sm: 1, xs: 1, xxs: 1 }
+      }
+      return { lg: 12, md: 12, sm: 1, xs: 1, xxs: 1 }
+    },
+
+    gridCollection () {
+      if (this.grid.length === 1) {
+        return this.sortedGrid
+      }
+      return this.grid
     },
   },
 
