@@ -55,6 +55,7 @@ import {
   faPlus,
   faColumns,
   faSearchLocation,
+  faMapMarkedAlt,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -156,4 +157,5 @@ library.add(
   faPlus,
   faColumns,
   faSearchLocation,
+  faMapMarkedAlt,
 )
