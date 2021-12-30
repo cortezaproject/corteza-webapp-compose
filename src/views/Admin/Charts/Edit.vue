@@ -54,7 +54,7 @@
                         class="mb-1"
                       />
                       <b-form-invalid-feedback :state="handleState">
-                        {{ $t('general.invalid-handle-characters') }}
+                        {{ $t('general.placeholder.invalid-handle-characters') }}
                       </b-form-invalid-feedback>
                     </b-form-group>
 
