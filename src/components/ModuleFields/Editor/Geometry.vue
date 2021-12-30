@@ -40,18 +40,66 @@
         type="number"
         placeholder="Longitude"
       />
+      <b-button
+        variant="light"
+        rounded
+        @click="openMap"
+      >
+        <font-awesome-icon
+          :icon="['fas', 'map-marked-alt']"
+        />
+      </b-button>
     </b-input-group>
+
+    <b-modal
+      v-model="map.show"
+      size="lg"
+      title="Map"
+      body-class="p-0"
+      hide-header
+    >
+      <template #modal-footer>
+        <div>
+          Click to place marker
+        </div>
+      </template>
+
+      <l-map
+        ref="map"
+        :zoom="map.zoom"
+        :center="map.center"
+        style="height: 75vh; width: 100%;"
+        @click="placeMarker"
+      >
+        <l-tile-layer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          :attribution="map.attribution"
+        />
+        <l-marker
+          v-if="coordinates.length"
+          :lat-lng="getLatLng(coordinates)"
+          @click="removeMarker"
+        />
+      </l-map>
+    </b-modal>
   </b-form-group>
 </template>
 <script>
 import base from './base'
+import { latLng } from 'leaflet'
 
 export default {
   extends: base,
 
   data () {
     return {
-      map: undefined,
+      map: {
+        show: false,
+        zoom: 3,
+        center: [30, 30],
+        rotation: 0,
+        attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a>',
+      },
     }
   },
 
@@ -94,6 +142,30 @@ export default {
 
     coordinates () {
       return this.value.coordinates || ['0', '0']
+    },
+  },
+
+  methods: {
+    openMap () {
+      this.map.show = true
+
+      setTimeout(() => {
+        this.$refs.map.mapObject.invalidateSize()
+      }, 100)
+    },
+
+    getLatLng (coordinates = [0, 0]) {
+      return latLng(coordinates[0], coordinates[1])
+    },
+
+    placeMarker (e) {
+      const { lat = 0, lng = 0 } = e.latlng || {}
+
+      this.value = { coordinates: [lat, lng] }
+    },
+
+    removeMarker (e) {
+      this.value = { coordinates: [] }
     },
   },
 }
