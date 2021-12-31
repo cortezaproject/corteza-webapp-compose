@@ -35,13 +35,14 @@
       :page="page"
       :namespace="namespace"
       :bounding-rect="boundingRect"
+      @save="handleSave"
     />
   </div>
 </template>
 
 <script>
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { compose } from '@cortezaproject/corteza-js'
 import RecordListBase from 'corteza-webapp-compose/src/components/PageBlocks/RecordListBase'
 
@@ -91,11 +92,16 @@ export default {
   },
 
   created () {
+    const { meta = { ui: {} } } = this.module || {}
+
+    let fields = ((meta.ui || {}).admin || {}).fields || []
+    fields = fields.length ? fields : this.module.fields
+
     // Init block
     this.block = new compose.PageBlockRecordList({
       options: {
         moduleID: this.$attrs.moduleID,
-        fields: this.module.fields,
+        fields,
         hideRecordReminderButton: true,
         hideRecordViewButton: true,
         hideRecordCloneButton: true,
@@ -113,6 +119,24 @@ export default {
       rowEditUrl: 'admin.modules.record.edit',
       rowCreateUrl: 'admin.modules.record.create',
     }
+  },
+
+  methods: {
+    ...mapActions({
+      updateModule: 'module/update',
+    }),
+
+    handleSave (fields = []) {
+      if (!this.module.meta.ui) {
+        this.module.meta.ui = { admin: { fields } }
+      } else {
+        this.module.meta.ui.admin = { ...(this.module.meta.ui.admin || {}), fields }
+      }
+
+      this.updateModule(this.module).then(() => {
+        this.toastSuccess(this.$t('notification.columns.saved'))
+      }).catch(this.toastErrorHandler(this.$t('notification.columns.saveFailed')))
+    },
   },
 }
 </script>
