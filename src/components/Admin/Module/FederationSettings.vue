@@ -78,7 +78,7 @@
             <b-form-group
               label-cols-sm="4"
               label-cols-lg="5"
-              label="Copy settings from"
+              :label="$t('edit.federationSettings.upstream.copyFrom')"
             >
               <b-form-select
                 :key="upstream.active"
@@ -235,7 +235,7 @@ import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   i18nOptions: {
-    namespaces: 'federation',
+    namespaces: 'module',
   },
 
   props: {
