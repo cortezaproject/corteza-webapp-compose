@@ -68,24 +68,23 @@ export default {
         chart.isValid()
 
         const data = await chart.fetchReports({ reporter: this.reporter })
-        data.labels = data.labels.map(l => {
-          if (l === 'Not defined') {
-            return this.$t('chart:not-defined')
+        if (!!data.labels && Array.isArray(data.labels)) {
+          data.labels = data.labels.map(l => l === 'undefined' ? this.$t('chart:undefined') : l)
+          const options = chart.makeOptions(data)
+          const plugins = chart.plugins()
+          if (!options) {
+            this.toastWarning(this.$t('chart.optionsBuildFailed'))
           }
-          return l
-        })
-        const options = chart.makeOptions(data)
-        const plugins = chart.plugins()
-        if (!options) {
-          this.toastWarning(this.$t('chart.optionsBuildFailed'))
-        }
-        const type = chart.baseChartType(data.datasets)
+          const type = chart.baseChartType(data.datasets)
 
-        const newRenderer = () => new ChartJS(this.$refs.chartCanvas.getContext('2d'), { options, plugins: [...plugins, Funnel, Gauge, csc], data, type })
-        if (this.renderer) {
-          this.renderer.destroy()
+          const newRenderer = () => new ChartJS(this.$refs.chartCanvas.getContext('2d'), { options, plugins: [...plugins, Funnel, Gauge, csc], data, type })
+          if (this.renderer) {
+            this.renderer.destroy()
+          }
+          this.renderer = newRenderer()
+        } else {
+          data.labels = []
         }
-        this.renderer = newRenderer()
       } catch (e) {
         this.toastErrorHandler(this.$t('chart.optionsBuildFailed'))(e)
       }
