@@ -77,11 +77,15 @@ export default {
           }
           const type = chart.baseChartType(data.datasets)
 
-          const newRenderer = () => new ChartJS(this.$refs.chartCanvas.getContext('2d'), { options, plugins: [...plugins, Funnel, Gauge, csc], data, type })
-          if (this.renderer) {
-            this.renderer.destroy()
+          const canvas = this.$refs.chartCanvas || undefined
+
+          if (canvas) {
+            const newRenderer = () => new ChartJS(this.$refs.chartCanvas.getContext('2d'), { options, plugins: [...plugins, Funnel, Gauge, csc], data, type })
+            if (this.renderer) {
+              this.renderer.destroy()
+            }
+            this.renderer = newRenderer()
           }
-          this.renderer = newRenderer()
         } else {
           data.labels = []
         }
