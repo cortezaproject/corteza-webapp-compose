@@ -1,22 +1,31 @@
 <template>
   <div
-    v-if="formatted"
+    v-if="localValue.length"
   >
+    <div
+      v-if="!valueOnly"
+      class="d-flex mb-2"
+    >
+      <b-button
+        variant="light"
+        rounded
+        class="w-100 ml-auto"
+        @click="openMap"
+      >
+        Open map
+        <font-awesome-icon
+          :icon="['fas', 'map-marked-alt']"
+        />
+      </b-button>
+    </div>
+
     <p
+      v-for="(c, i) in localValue"
+      :key="i"
       class="mb-0"
     >
-      {{ coordinates[0] }}, {{ coordinates[1] }}
+      {{ c[0] }}, {{ c[1] }}
     </p>
-
-    <b-button
-      variant="light"
-      rounded
-      @click="openMap"
-    >
-      <font-awesome-icon
-        :icon="['fas', 'map-marked-alt']"
-      />
-    </b-button>
 
     <b-modal
       v-model="map.show"
@@ -37,8 +46,10 @@
           :attribution="map.attribution"
         />
         <l-marker
-          v-if="coordinates.length"
-          :lat-lng="getLatLng(coordinates)"
+          v-for="(marker, i) in localValue"
+          :key="i"
+          :lat-lng="getLatLng(marker)"
+          @click="removeMarker(i)"
         />
       </l-map>
     </b-modal>
@@ -66,12 +77,14 @@ export default {
   },
 
   computed: {
-    formatted () {
-      return JSON.parse(this.value || '{}')
-    },
-
-    coordinates () {
-      return this.formatted.coordinates || ['0', '0']
+    localValue () {
+      if (this.field.isMulti) {
+        return this.value.map(v => {
+          return JSON.parse(v || '{"coordinates":[]}').coordinates || []
+        })
+      } else {
+        return [JSON.parse(this.value || '{"coordinates":[]}').coordinates || []].filter(c => c.length)
+      }
     },
   },
 
@@ -79,7 +92,9 @@ export default {
     openMap () {
       this.map.show = true
 
-      this.map.center = this.coordinates.length ? this.coordinates : [30, 30]
+      const firstCoordinates = this.localValue[0].coordinates
+
+      this.map.center = firstCoordinates && firstCoordinates.length ? firstCoordinates : [30, 30]
 
       setTimeout(() => {
         this.$refs.map.mapObject.invalidateSize()
