@@ -1,10 +1,5 @@
 <template>
-  <span v-if="valueOnly">
-    <div :class="classes">{{ formatted }}</div>
-    <errors :errors="errors" />
-  </span>
-  <div v-else>
-    <label>{{ field.label || field.name }}</label>
+  <div>
     <div :class="classes">
       {{ formatted }}
     </div>

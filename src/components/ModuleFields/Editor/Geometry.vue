@@ -29,27 +29,57 @@
       </small>
     </template>
 
-    <b-input-group>
-      <b-form-input
-        v-model="latitude"
-        type="number"
-        placeholder="Latitude"
-      />
-      <b-form-input
-        v-model="longitude"
-        type="number"
-        placeholder="Longitude"
-      />
+    <div
+      class="d-flex mb-2"
+    >
       <b-button
         variant="light"
         rounded
+        class="w-100 ml-auto"
         @click="openMap"
       >
+        Open map
         <font-awesome-icon
           :icon="['fas', 'map-marked-alt']"
         />
       </b-button>
-    </b-input-group>
+    </div>
+
+    <multi
+      v-if="field.isMulti"
+      v-slot="ctx"
+      :value.sync="localValue"
+      :errors="errors"
+      :default-value="{ coordinates: [0, 0] }"
+    >
+      <b-input-group>
+        <b-form-input
+          v-model="localValue[ctx.index].coordinates[0]"
+          type="number"
+          placeholder="Latitude"
+        />
+        <b-form-input
+          v-model="localValue[ctx.index].coordinates[1]"
+          type="number"
+          placeholder="Longitude"
+        />
+      </b-input-group>
+    </multi>
+
+    <template v-else>
+      <b-input-group>
+        <b-form-input
+          v-model="localValue.coordinates[0]"
+          type="number"
+          placeholder="Latitude"
+        />
+        <b-form-input
+          v-model="localValue.coordinates[1]"
+          type="number"
+          placeholder="Longitude"
+        />
+      </b-input-group>
+    </template>
 
     <b-modal
       v-model="map.show"
@@ -59,16 +89,18 @@
       hide-header
     >
       <template #modal-footer>
-        <div>
-          Click to place marker
-        </div>
+        <h6
+          class="w-100"
+        >
+          Click to place a marker or click on a marker to remove it
+        </h6>
       </template>
 
       <l-map
         ref="map"
         :zoom="map.zoom"
         :center="map.center"
-        style="height: 75vh; width: 100%;"
+        style="height: 75vh; width: 100%; cursor: pointer;"
         @click="placeMarker"
       >
         <l-tile-layer
@@ -76,9 +108,10 @@
           :attribution="map.attribution"
         />
         <l-marker
-          v-if="coordinates.length"
-          :lat-lng="getLatLng(coordinates)"
-          @click="removeMarker"
+          v-for="(marker, i) in markers"
+          :key="i"
+          :lat-lng="getLatLng(marker)"
+          @click="removeMarker(i)"
         />
       </l-map>
     </b-modal>
@@ -93,6 +126,8 @@ export default {
 
   data () {
     return {
+      localValue: undefined,
+
       map: {
         show: false,
         zoom: 3,
@@ -104,45 +139,33 @@ export default {
   },
 
   computed: {
-    latitude: {
-      get () {
-        return this.coordinates[0]
-      },
+    markers () {
+      let markers = [this.localValue.coordinates]
 
-      set (latitude = '0') {
-        this.value = {
-          ...this.value,
-          coordinates: [latitude, this.coordinates[1]],
-        }
+      if (this.field.isMulti) {
+        markers = this.localValue.map(({ coordinates }) => coordinates && coordinates.length ? coordinates : undefined)
+      }
+
+      return markers.filter(c => c && c.length > 1)
+    },
+  },
+
+  watch: {
+    localValue: {
+      handler (value) {
+        this.value = this.field.isMulti ? value.filter(v => (v || {}).coordinates).map(v => JSON.stringify(v)) : JSON.stringify(value)
       },
     },
+  },
 
-    longitude: {
-      get () {
-        return this.coordinates[1]
-      },
-
-      set (longitude = '0') {
-        this.value = {
-          ...this.value,
-          coordinates: [this.coordinates[0], longitude],
-        }
-      },
-    },
-
-    value: {
-      get () {
-        return JSON.parse(this.record.values[this.field.name] || '{}')
-      },
-
-      set (value) {
-        this.record.values[this.field.name] = JSON.stringify(value)
-      },
-    },
-
-    coordinates () {
-      return this.value.coordinates || ['0', '0']
-    },
+  created () {
+    if (this.field.isMulti) {
+      this.localValue = this.value.map(v => {
+        return JSON.parse(v || '{"coordinates":[]}')
+      })
+    } else {
+      this.localValue = JSON.parse(this.value || '{"coordinates":[]}')
+    }
   },
 
   methods: {
@@ -161,11 +184,19 @@ export default {
     placeMarker (e) {
       const { lat = 0, lng = 0 } = e.latlng || {}
 
-      this.value = { coordinates: [lat, lng] }
+      if (this.field.isMulti) {
+        this.localValue.push({ coordinates: [lat, lng] })
+      } else {
+        this.localValue = { coordinates: [lat, lng] }
+      }
     },
 
-    removeMarker (e) {
-      this.value = { coordinates: [] }
+    removeMarker (i) {
+      if (this.field.isMulti) {
+        this.localValue.splice(i, 1)
+      } else {
+        this.localValue = { coordinates: [] }
+      }
     },
   },
 }
