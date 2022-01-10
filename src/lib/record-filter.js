@@ -53,10 +53,13 @@ export function getFieldFilter (name, kind, query, operator = '') {
     .replace(/^[%]+/, '')
 
   if (['Number'].includes(kind) && !isNaN(numQuery)) {
-    return `${name} ${operator || '='} ${numQuery}`
+    if (operator === 'LIKE' || !operator) {
+      return `${name} LIKE '%${strQuery}%'`
+    } else {
+      return `${name} ${operator || '='} ${numQuery}`
+    }
   }
 
-  // Since userID and recordID must be numbers, we check if query is number to avoid wrong queries
   if (['DateTime'].includes(kind)) {
     const date = moment(query)
     if (date.isValid()) {
