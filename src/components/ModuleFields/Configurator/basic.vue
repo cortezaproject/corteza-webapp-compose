@@ -74,14 +74,6 @@
 
     <hr v-if="showvalueExpr || showDefaultField">
 
-    <b-form-checkbox
-      :checked="noDescriptionEdit"
-      tabindex="-1"
-      @change="$set(field.options.description, 'edit', $event ? undefined : '')"
-    >
-      {{ $t('options.description.same') }}
-    </b-form-checkbox>
-
     <b-form-group
       :label="$t(`options.description.label.${noDescriptionEdit ? 'default' : 'view'}`)"
       class="mt-2"
@@ -125,15 +117,15 @@
       </b-input-group>
     </b-form-group>
 
-    <hr>
-
     <b-form-checkbox
-      :checked="noHintEdit"
+      :checked="noDescriptionEdit"
       tabindex="-1"
-      @change="$set(field.options.hint, 'edit', $event ? undefined : '')"
+      @change="$set(field.options.description, 'edit', $event ? undefined : '')"
     >
-      {{ $t('options.hint.same') }}
+      {{ $t('options.description.same') }}
     </b-form-checkbox>
+
+    <hr>
 
     <b-form-group
       :label="$t(`options.hint.label.${noHintEdit ? 'default' : 'view'}`)"
@@ -177,6 +169,14 @@
         </b-input-group-append>
       </b-input-group>
     </b-form-group>
+
+    <b-form-checkbox
+      :checked="noHintEdit"
+      tabindex="-1"
+      @change="$set(field.options.hint, 'edit', $event ? undefined : '')"
+    >
+      {{ $t('options.hint.same') }}
+    </b-form-checkbox>
   </div>
 </template>
 
@@ -317,6 +317,15 @@ export default {
 
     if (defaultValue.length) {
       this.initMocks(defaultValue)
+    }
+
+    // when loading, assume empty strings are same as undefined
+    if (!this.field.options.hint.edit) {
+      this.$set(this.field.options.hint, 'edit', undefined)
+    }
+
+    if (!this.field.options.description.edit) {
+      this.$set(this.field.options.description, 'edit', undefined)
     }
 
     this.showvalueExpr = expressions.value && expressions.value.length > 0
