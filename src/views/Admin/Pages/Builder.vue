@@ -403,4 +403,11 @@ div.toolbox {
     opacity: 1;
   }
 }
+
+[dir="rtl"] {
+  div.toolbox {
+    left: 0;
+    right: auto;
+  }
+}
 </style>
