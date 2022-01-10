@@ -120,4 +120,12 @@ export default {
     }
   }
 }
+
+[dir="rtl"] {
+  .back {
+    .back-icon {
+      display: none;
+    }
+  }
+}
 </style>

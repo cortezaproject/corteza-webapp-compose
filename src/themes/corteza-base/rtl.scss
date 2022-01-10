@@ -21,4 +21,9 @@
   .vs__clear {
     margin: 0 5px;
   }
+
+  .fa-angle-left,
+  .fa-angle-right {
+    transform: rotate(180deg);
+  }
 }
