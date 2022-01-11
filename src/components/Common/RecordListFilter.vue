@@ -236,7 +236,8 @@ export default {
 
   created () {
     // Change all module fields to single value to keep multi value fields and single value
-    const module = { ...this.module }
+    const module = JSON.parse(JSON.stringify(this.module || {}))
+
     module.fields = module.fields.map(f => {
       f.isMulti = false
       return f
@@ -318,9 +319,7 @@ export default {
     },
 
     getField (name = '') {
-      const field = name ? this.fields.find(f => f.name === name) : undefined
-      // This is to allow the use of multi value fields, in recordListFilter
-      field.isMulti = false
+      const field = name ? this.mock.module.fields.find(f => f.name === name) : undefined
 
       return { ...field }
     },
