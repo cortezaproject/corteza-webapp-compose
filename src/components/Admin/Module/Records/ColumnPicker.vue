@@ -32,7 +32,7 @@
             selectAllFields: $t('field:selector.selectAll'),
             selectedFields: $t('field:selector.selected'),
             unselectAllFields: $t('field:selector.unselectAll'),
-            systemFieldLabel: $t('field:selector.systemField'),
+            systemField: $t('field:selector.systemField'),
           }"
           class="d-flex flex-column"
         />

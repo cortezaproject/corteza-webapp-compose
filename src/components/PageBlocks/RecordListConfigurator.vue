@@ -37,7 +37,7 @@
             selectAllFields: $t('field:selector.selectAll'),
             selectedFields: $t('field:selector.selected'),
             unselectAllFields: $t('field:selector.unselectAll'),
-            systemFieldLabel: $t('field:selector.systemField'),
+            systemField: $t('field:selector.systemField'),
           }"
           max-height="max-height: 30vh;"
         />
@@ -76,7 +76,7 @@
               selectAllFields: $t('field:selector.selectAll'),
               selectedFields: $t('field:selector.selected'),
               unselectAllFields: $t('field:selector.unselectAll'),
-              systemFieldLabel: $t('field:selector.systemField'),
+              systemField: $t('field:selector.systemField'),
             }"
             group="edit-fields"
             disable-system-fields
