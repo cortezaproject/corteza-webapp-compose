@@ -216,7 +216,7 @@ export default {
           (a.label || a.name).localeCompare(b.label || b.name),
         ),
         ...this.module.systemFields(),
-      ].filter(({ isMulti }) => !isMulti)
+      ].filter(({ kind }) => !['File'].includes(kind))
     },
 
     fieldOptions () {
@@ -235,9 +235,16 @@ export default {
   },
 
   created () {
+    // Change all module fields to single value to keep multi value fields and single value
+    const module = { ...this.module }
+    module.fields = module.fields.map(f => {
+      f.isMulti = false
+      return f
+    })
+
     this.mock = {
       namespace: this.namespace,
-      module: this.module,
+      module,
       errors: new validator.Validated(),
     }
   },
@@ -311,7 +318,11 @@ export default {
     },
 
     getField (name = '') {
-      return name ? this.fields.find(f => f.name === name) : undefined
+      const field = name ? this.fields.find(f => f.name === name) : undefined
+      // This is to allow the use of multi value fields, in recordListFilter
+      field.isMulti = false
+
+      return { ...field }
     },
 
     createDefaultFilter (condition, field) {
@@ -321,7 +332,7 @@ export default {
         operator: '=',
         value: undefined,
         kind: field.kind,
-        record: new compose.Record(this.module, {}),
+        record: new compose.Record(this.mock.module, {}),
       }
     },
 
@@ -384,7 +395,7 @@ export default {
         // Create record and fill its values property if value exists
         this.componentFilter = this.recordListFilter.map(({ groupCondition, filter = [] }) => {
           filter = filter.map(({ value, ...f }) => {
-            f.record = new compose.Record(this.module, {})
+            f.record = new compose.Record(this.mock.module, {})
             f.record.values[f.name] = value
             return f
           })
