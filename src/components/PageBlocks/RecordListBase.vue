@@ -456,7 +456,7 @@
         >
           <b-tr>
             <b-td
-              class="text-center align-top py-5"
+              class="text-left align-top py-5"
               :colspan="loaderCollSpan"
             >
               <b-spinner
