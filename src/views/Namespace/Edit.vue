@@ -26,7 +26,7 @@
       >
         <div
           v-if="isEdit"
-          class="d-flex align-items-center mb-2"
+          class="d-flex align-items-center mt-1 mb-2"
         >
           <b-btn
             :to="{ name: 'namespace.create' }"

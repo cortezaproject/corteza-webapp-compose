@@ -11,7 +11,7 @@
       fluid="xl"
     >
       <b-row
-        class="justify-content-between wrap-with-vertical-gutters mb-4"
+        class="justify-content-between wrap-with-vertical-gutters mt-1 mb-4"
         no-gutters
       >
         <div
