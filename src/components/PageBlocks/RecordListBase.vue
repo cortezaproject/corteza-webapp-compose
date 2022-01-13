@@ -450,27 +450,27 @@
             </b-td>
           </b-tr>
         </draggable>
-
-        <b-tbody
-          v-else
-        >
-          <b-tr>
-            <b-td
-              class="text-center align-top py-5"
-              :colspan="loaderCollSpan"
-            >
-              <b-spinner
-                v-if="processing"
-              />
-              <h6
-                v-else
-              >
-                {{ $t('recordList.noRecords') }}
-              </h6>
-            </b-td>
-          </b-tr>
-        </b-tbody>
       </b-table-simple>
+
+      <div
+        v-if="!items.length || processing"
+        class="position-absolute w-100 h-100"
+        style="top: -1rem;"
+      >
+        <div
+          class="d-flex w-100 h-100 justify-content-center align-items-center pt-5"
+        >
+          <b-spinner
+            v-if="processing"
+          />
+          <h6
+            v-else
+            class="text-center mb-0"
+          >
+            {{ $t('recordList.noRecords') }}
+          </h6>
+        </div>
+      </div>
     </template>
 
     <template
