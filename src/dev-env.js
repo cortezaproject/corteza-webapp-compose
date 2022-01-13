@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import BootstrapVue from 'bootstrap-vue'
 import c3catalogue from './components/C3'
 import { components, i18n } from '@cortezaproject/corteza-vue'
+import './mixins'
+
 import './components'
 import './themes'
 
@@ -22,6 +24,9 @@ Vue.use(BootstrapVue)
 export default new Vue({
   el: '#app',
   name: 'DevEnv',
+  async created () {
+    document.body.setAttribute('dir', this.textDirectionality)
+  },
   template: '<router-view/>',
   router: new Router({
     mode: 'history',
