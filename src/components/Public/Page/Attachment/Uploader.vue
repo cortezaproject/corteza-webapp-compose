@@ -146,7 +146,11 @@ export default {
       return numeral(a.size).format('0b')
     },
 
-    onSuccess (file, { response }) {
+    onSuccess (file, { response, error }) {
+      if (error) {
+        return this.onError(error, error.message)
+      }
+
       this.processing = false
       this.active = null
       this.error = null
