@@ -156,8 +156,8 @@ export default {
         ],
 
         // Handle event fetching when view/date-range changes
-        datesRender: ({ view: { currentStart, currentEnd, title } = {} } = {}) => {
-          this.loadEvents(moment(currentStart), moment(currentEnd))
+        datesRender: ({ view: { activeStart, activeEnd, title } = {} } = {}) => {
+          this.loadEvents(moment(activeStart), moment(activeEnd))
           // eslint-disable-next-line
           this.title = title
         },
@@ -304,12 +304,7 @@ export default {
 </style>
 <style lang="scss">
 .calendar-container {
-  // We need a special style to handle
-  // parent height of the calendar
-  //
-  // Make sure used margin (m-2) is
-  // synced with the height difference (20px)
-  height: calc(100% - 20px);
+  height: calc(100% - 7em);
 
   .fc-day-header {
     white-space: pre-wrap;
