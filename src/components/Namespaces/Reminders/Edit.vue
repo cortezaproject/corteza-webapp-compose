@@ -151,6 +151,8 @@ export default {
     remindAtPresets () {
       return [
         { value: null, text: this.$t('reminder.edit.remindAtNone') },
+        { value: 1000 * 60 * 1, text: this.$t('label.timeMinute', { t: 1 }) },
+        { value: 1000 * 60 * 5, text: this.$t('label.timeMinute', { t: 5 }) },
         { value: 1000 * 60 * 15, text: this.$t('label.timeMinute', { t: 15 }) },
         { value: 1000 * 60 * 30, text: this.$t('label.timeMinute', { t: 30 }) },
         { value: 1000 * 60 * 60 * 1, text: this.$t('label.timeHour', { t: 1 }) },
