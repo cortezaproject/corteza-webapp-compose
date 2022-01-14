@@ -77,6 +77,7 @@ export default {
       }
       this.$SystemAPI[h](r).then(r => {
         this.fetchReminders()
+        this.$Reminder.prefetch()
       })
 
       this.onCancel()
