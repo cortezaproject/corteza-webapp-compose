@@ -370,7 +370,7 @@
                 </b-button>
                 <!-- The user should be able to delete the record if it's not yet saved -->
                 <b-button
-                  v-else-if="item.r.canDeleteRecord || !item.r.deletedAt"
+                  v-else-if="item.r.canDeleteRecord && !item.r.deletedAt"
                   variant="link"
                   size="md"
                   class="border-0 show-when-hovered text-danger mt-1"
