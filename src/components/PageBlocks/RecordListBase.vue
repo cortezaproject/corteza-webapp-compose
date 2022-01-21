@@ -140,6 +140,7 @@
             </a>
           </b-col>
           <b-col
+            v-if="canDeleteSelectedRecords"
             class="text-right"
             cols="8"
           >
@@ -791,6 +792,10 @@ export default {
         ...configured,
         ...post,
       ]
+    },
+
+    canDeleteSelectedRecords () {
+      return this.items.filter(({ id, r }) => this.selected.includes(id) && r.canDeleteRecord).length
     },
   },
 
