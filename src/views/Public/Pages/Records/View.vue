@@ -123,7 +123,7 @@ export default {
           .then(record => {
             this.record = new compose.Record(module, record)
           })
-          .catch(this.toastErrorHandler(this.$t('notification.record.loadFailed')))
+          .catch(this.toastErrorHandler(this.$t('notification:record.loadFailed')))
       }
     },
 

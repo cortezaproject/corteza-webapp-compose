@@ -150,12 +150,12 @@ export default {
   methods: {
     onImported () {
       this.$store.dispatch('namespace/load', { force: true })
-        .then(() => this.toastSuccess(this.$t('notification.imported')))
-        .catch(this.toastErrorHandler(this.$t('notification.importFailed')))
+        .then(() => this.toastSuccess(this.$t('notification:namespace.imported')))
+        .catch(this.toastErrorHandler(this.$t('notification:namespace.importFailed')))
     },
 
     onFailed (err) {
-      this.toastErrorHandler(this.$t('notification.importFailed'))(err)
+      this.toastErrorHandler(this.$t('notification:namespace.importFailed'))(err)
     },
   },
 }

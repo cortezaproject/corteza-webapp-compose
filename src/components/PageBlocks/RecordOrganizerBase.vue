@@ -195,7 +195,7 @@ export default {
   beforeMount () {
     if (!this.options.moduleID) {
       // Make sure block is properly configured
-      throw Error(this.$t('notification.record.moduleOrPageNotSet'))
+      throw Error(this.$t('notification:record.moduleOrPageNotSet'))
     }
 
     if (this.roModule) {
@@ -282,11 +282,11 @@ export default {
         // If there is no current record and we are using recordID/ownerID variable in (pre)filter
         // we should disable the block
         if ((this.options.filter || '').includes('${record')) {
-          throw Error(this.$t('notification.record.invalidRecordVar'))
+          throw Error(this.$t('notification:record.invalidRecordVar'))
         }
 
         if ((this.options.filter || '').includes('${ownerID}')) {
-          throw Error(this.$t('notification.record.invalidOwnerVar'))
+          throw Error(this.$t('notification:record.invalidOwnerVar'))
         }
       }
 

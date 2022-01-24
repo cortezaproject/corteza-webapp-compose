@@ -172,7 +172,7 @@ export default {
     errHandler (error) {
       switch ((error.response || {}).status) {
         case 403:
-          this.error = this.$t('notification.composeAccessNotAllowed')
+          this.error = this.$t('notification:general.composeAccessNotAllowed')
       }
 
       return Promise.reject(error)

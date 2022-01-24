@@ -261,7 +261,7 @@ export default {
           this.newRecord.content = ''
           this.reloadRecords()
         })
-          .catch(this.toastErrorHandler(this.$t('record.createFailed')))
+          .catch(this.toastErrorHandler(this.$t('notification:record.createFailed')))
       }
     },
 

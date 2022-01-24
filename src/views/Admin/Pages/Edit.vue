@@ -178,7 +178,7 @@ export default {
       }
 
       this.page = new compose.Page(page)
-    }).catch(this.toastErrorHandler(this.$t('notification.loadFailed')))
+    }).catch(this.toastErrorHandler(this.$t('notification:page.loadFailed')))
   },
 
   methods: {
@@ -196,17 +196,17 @@ export default {
       const { namespaceID } = this.namespace
       this.updatePage({ namespaceID, ...this.page, resourceTranslationLanguage }).then((page) => {
         this.page = page.clone()
-        this.toastSuccess(this.$t('notification.saved'))
+        this.toastSuccess(this.$t('notification:page.saved'))
         if (closeOnSuccess) {
           this.$router.push({ name: 'admin.pages' })
         }
-      }).catch(this.toastErrorHandler(this.$t('notification.saveFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification:page.saveFailed')))
     },
 
     handleDeletePage () {
       this.deletePage(this.page).then(() => {
         this.$router.push({ name: 'admin.pages' })
-      }).catch(this.toastErrorHandler(this.$t('notification.deleteFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification:page.deleteFailed')))
     },
   },
 }

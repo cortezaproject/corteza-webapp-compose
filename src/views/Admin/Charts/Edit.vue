@@ -404,7 +404,7 @@ export default {
             // Make a copy so that we do not change store item by ref
             this.chart = chartConstructor(chart)
             this.onEditReport(0)
-          }).catch(this.toastErrorHandler(this.$t('notification.loadFailed')))
+          }).catch(this.toastErrorHandler(this.$t('notification:chart.loadFailed')))
         }
       },
       immediate: true,
@@ -452,29 +452,29 @@ export default {
       if (this.chart.chartID === NoID) {
         this.createChart(c).then((chart) => {
           this.chart = chartConstructor(chart)
-          this.toastSuccess(this.$t('notification.saved'))
+          this.toastSuccess(this.$t('notification:chart.saved'))
           if (closeOnSuccess) {
             this.redirect()
           } else {
             this.$router.push({ name: 'admin.charts.edit', params: { chartID: this.chart.chartID } })
           }
-        }).catch(this.toastErrorHandler(this.$t('notification.saveFailed')))
+        }).catch(this.toastErrorHandler(this.$t('notification:chart.saveFailed')))
       } else {
         this.updateChart(c).then((chart) => {
           this.chart = chartConstructor(chart)
-          this.toastSuccess(this.$t('notification.saved'))
+          this.toastSuccess(this.$t('notification:chart.saved'))
           if (closeOnSuccess) {
             this.redirect()
           }
-        }).catch(this.toastErrorHandler(this.$t('notification.saveFailed')))
+        }).catch(this.toastErrorHandler(this.$t('notification:chart.saveFailed')))
       }
     },
 
     handleDelete () {
       this.deleteChart(this.chart).then(() => {
-        this.toastSuccess(this.$t('notification.deleted'))
+        this.toastSuccess(this.$t('notification:chart.deleted'))
         this.$router.push({ name: 'admin.charts' })
-      }).catch(this.toastErrorHandler(this.$t('notification.deleteFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification:chart.deleteFailed')))
     },
 
     redirect () {

@@ -17,10 +17,6 @@ import { compose, automation } from '@cortezaproject/corteza-js'
 import base from '../base'
 
 export default {
-  i18nOptions: {
-    namespaces: 'notification',
-  },
-
   extends: base,
 
   props: {
@@ -129,7 +125,7 @@ export default {
               this.$store.dispatch('wfPrompts/update')
             }, 500)
           })
-          .catch(this.toastErrorHandler(this.$t('automation.scriptFailed')))
+          .catch(this.toastErrorHandler(this.$t('notification:automation.scriptFailed')))
           .finally(() => {
             this.processing = false
           })
@@ -152,7 +148,7 @@ export default {
       // etc...
       this.$EventBus
         .Dispatch(ev, b.script)
-        .catch(this.toastErrorHandler(this.$t('automation.scriptFailed')))
+        .catch(this.toastErrorHandler(this.$t('notification:automation.scriptFailed')))
         .finally(() => {
           this.processing = false
         })

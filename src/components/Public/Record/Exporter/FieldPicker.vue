@@ -538,7 +538,7 @@ export default {
       } else if (range === 'today') {
         return fmtDate(m.startOf('day'))
       } else {
-        throw new Error('notification.datePreset.undefined')
+        throw new Error(this.$t('recordList.export.datePresetUndefined'))
       }
     },
 
@@ -554,7 +554,7 @@ export default {
       } else if (range === 'today') {
         return fmtDate(m.endOf('day'))
       } else {
-        throw new Error('notification.datePreset.undefined')
+        throw new Error(this.$t('recordList.export.datePresetUndefined'))
       }
     },
 

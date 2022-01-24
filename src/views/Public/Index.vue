@@ -317,7 +317,7 @@ export default {
 
       this.createModule(newModule).then((module) => {
         this.$router.push({ name: 'admin.modules.edit', params: { moduleID: module.moduleID } })
-      }).catch(this.toastErrorHandler(this.$t('notification.module.createFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification:module.createFailed')))
     },
 
     createNewChart () {
@@ -334,7 +334,7 @@ export default {
 
       this.createChart(newChart).then((chart) => {
         this.$router.push({ name: 'admin.charts.edit', params: { chartID: chart.chartID } })
-      }).catch(this.toastErrorHandler(this.$t('notification.chart.createFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification:chart.createFailed')))
     },
 
     createNewPage () {
@@ -348,7 +348,7 @@ export default {
 
       this.createPage(newPage).then((page) => {
         this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
-      }).catch(this.toastErrorHandler(this.$t('notification.page.saveFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification:page.saveFailed')))
     },
   },
 }

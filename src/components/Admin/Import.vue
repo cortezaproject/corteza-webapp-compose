@@ -137,9 +137,9 @@ export default {
             break
           }
         }
-        this.toastSuccess(this.$t('notification.import.successful'))
+        this.toastSuccess(this.$t('notification:general.import.successful'))
       } catch (e) {
-        this.toastErrorHandler(this.$t('notification.import.failed'))(e)
+        this.toastErrorHandler(this.$t('notification:general.import.failed'))(e)
       }
       this.cancelImport()
     },
@@ -186,7 +186,7 @@ export default {
           }
         }
         reader.onerror = (evt) => {
-          this.toastErrorHandler(this.$t('notification.import.errorReading'))
+          this.toastErrorHandler(this.$t('notification:general.import.errorReading'))
           this.processing = false
         }
       }

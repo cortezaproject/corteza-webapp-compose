@@ -128,7 +128,7 @@ export default {
       const { namespaceID } = this.namespace
       this.$ComposeAPI.pageTree({ namespaceID }).then((tree) => {
         this.tree = tree.map(p => new compose.Page(p))
-      }).catch(this.toastErrorHandler(this.$t('notification.loadFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification:page.loadFailed')))
     },
 
     handleAddPageFormSubmit () {
@@ -136,7 +136,7 @@ export default {
       this.page.weight = this.tree.length
       this.createPage({ ...this.page, namespaceID }).then(({ pageID }) => {
         this.$router.push({ name: 'admin.pages.edit', params: { pageID } })
-      }).catch(this.toastErrorHandler(this.$t('notification.saveFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification:page.saveFailed')))
     },
 
     handleReorder () {

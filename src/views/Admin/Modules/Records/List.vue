@@ -134,8 +134,8 @@ export default {
       }
 
       this.updateModule(this.module).then(() => {
-        this.toastSuccess(this.$t('notification.columns.saved'))
-      }).catch(this.toastErrorHandler(this.$t('notification.columns.saveFailed')))
+        this.toastSuccess(this.$t('notification:module.columns.saved'))
+      }).catch(this.toastErrorHandler(this.$t('notification:module.columns.saveFailed')))
     },
   },
 }

@@ -466,7 +466,7 @@ export default {
             this.isApplication = this.application.enabled
           }
         })
-        .catch(this.toastErrorHandler(this.$t('notification.application.fetchFailed')))
+        .catch(this.toastErrorHandler(this.$t('notification:namespace.application.fetchFailed')))
     },
 
     async handleSave ({ closeOnSuccess = false } = {}) {
@@ -484,7 +484,7 @@ export default {
           assets = await this.uploadAssets()
           meta = { ...meta, ...assets }
         } catch (e) {
-          this.toastErrorHandler(this.$t('notification.assetUploadFailed'))(e)
+          this.toastErrorHandler(this.$t('notification:namespace.assetUploadFailed'))(e)
           return
         }
       }
@@ -503,21 +503,19 @@ export default {
             this.namespaceEnabled = ns.enabled
             this.namespace = new compose.Namespace(ns)
 
-            this.toastSuccess(this.$t('notification.saved'))
+            this.toastSuccess(this.$t('notification:namespace.saved'))
           })
         } catch (e) {
-          this.toastErrorHandler(this.$t('notification.saveFailed'))(e)
+          this.toastErrorHandler(this.$t('notification:namespace.saveFailed'))(e)
           return
         }
       } else if (this.isClone) {
         try {
           await this.$store.dispatch('namespace/clone', { namespaceID, name, slug, enabled, meta }).then((ns) => {
             this.namespace = new compose.Namespace(ns)
-
-            this.toastSuccess(this.$t('notification.saved'))
           })
         } catch (e) {
-          this.toastErrorHandler(this.$t('notification.cloneFailed'))(e)
+          this.toastErrorHandler(this.$t('notification:namespace.cloneFailed'))(e)
           return
         }
       } else {
@@ -526,16 +524,16 @@ export default {
             this.namespaceEnabled = ns.enabled
             this.namespace = new compose.Namespace(ns)
 
-            this.toastSuccess(this.$t('notification.saved'))
+            this.toastSuccess(this.$t('notification:namespace.saved'))
           })
         } catch (e) {
-          this.toastErrorHandler(this.$t('notification.createFailed'))(e)
+          this.toastErrorHandler(this.$t('notification:namespace.createFailed'))(e)
           return
         }
       }
 
       await this.handleApplicationSave()
-        .catch(() => this.toastErrorHandler(this.$t('notification.createAppFailed')))
+        .catch(() => this.toastErrorHandler(this.$t('notification:namespace.createAppFailed')))
 
       if (closeOnSuccess) {
         this.$router.push({ name: 'root' })
@@ -548,7 +546,7 @@ export default {
       const { namespaceID } = this.namespace
       this.$store.dispatch('namespace/delete', { namespaceID }).then(() => {
         this.$router.push({ name: 'root' })
-      }).catch(this.toastErrorHandler(this.$t('notification.deleteFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification:namespace.deleteFailed')))
     },
 
     async handleApplicationSave () {
@@ -573,7 +571,7 @@ export default {
 
         return this.$SystemAPI.applicationUpdate({ ...this.application, enabled })
           .then(app => { this.application = app })
-          .catch(this.toastErrorHandler(this.$t('notification.application.saveFailed')))
+          .catch(this.toastErrorHandler(this.$t('notification:namespace.application.saveFailed')))
       } else if (this.isApplication) {
         // If namespace not an application - create one and enable
         const application = {
@@ -589,7 +587,7 @@ export default {
         }
         return this.$SystemAPI.applicationCreate({ ...application })
           .then(app => { this.application = app })
-          .catch(this.toastErrorHandler(this.$t('notification.application.createFailed')))
+          .catch(this.toastErrorHandler(this.$t('notification:namespace.application.createFailed')))
       }
     },
 

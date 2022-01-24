@@ -312,7 +312,7 @@ export default {
         .then(page => {
           this.$router.push(goto(page))
         })
-        .catch(this.toastErrorHandler(this.$t('notification.page.createFailed')))
+        .catch(this.toastErrorHandler(this.$t('notification:module.recordPage.createFailed')))
     },
 
     handleRowClicked ({ moduleID, canUpdateModule, canDeleteModule }) {

@@ -1173,8 +1173,11 @@ export default {
 
         this.$ComposeAPI
           .recordBulkDelete({ moduleID, namespaceID, recordIDs })
-          .then(() => { this.refresh(true) })
-          .catch(this.toastErrorHandler(this.$t('record.deleteFailed')))
+          .then(() => {
+            this.refresh(true)
+            this.toastSuccess(this.$t('notification:record.deleteBulkSuccess'))
+          })
+          .catch(this.toastErrorHandler(this.$t('notification:record.deleteBulkFailed')))
       }
     },
 
@@ -1260,7 +1263,7 @@ export default {
 
           this.items = records.map(r => this.wrapRecord(r))
         })
-        .catch(this.toastErrorHandler(this.$t('record.listLoadFailed')))
+        .catch(this.toastErrorHandler(this.$t('notification:record.listLoadFailed')))
         .finally(() => {
           this.processing = false
         })

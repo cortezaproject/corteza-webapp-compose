@@ -223,7 +223,7 @@ export default {
 
       this.createChart(c).then((chart) => {
         this.$router.push({ name: 'admin.charts.edit', params: { chartID: chart.chartID } })
-      }).catch(this.toastErrorHandler(this.$t('chart.createFailed')))
+      }).catch(this.toastErrorHandler(this.$t('notification:chart.createFailed')))
     },
     handleRowClicked ({ chartID, canUpdateChart, canDeleteChart }) {
       if (!(canUpdateChart || canDeleteChart)) {
