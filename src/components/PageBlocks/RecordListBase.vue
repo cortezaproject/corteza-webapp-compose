@@ -883,6 +883,12 @@ export default {
 
     addInline () {
       const r = new compose.Record(this.recordListModule, {})
+
+      // Set record values that should be prefilled
+      if (this.record.recordID) {
+        r.values[this.options.refField] = this.record.recordID
+      }
+
       this.items.unshift(this.wrapRecord(r))
     },
 
