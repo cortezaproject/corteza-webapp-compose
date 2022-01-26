@@ -111,6 +111,8 @@
       <editor-toolbar
         :back-link="{name: 'admin.pages'}"
         :hide-delete="!page.canDeletePage"
+        :disable-delete="hasChildren"
+        :delete-tooltip="$t('deleteDisabled')"
         :hide-save="!page.canUpdatePage"
         hide-clone
         @delete="handleDeletePage"
@@ -122,7 +124,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import PageTranslator from 'corteza-webapp-compose/src/components/Admin/Page/PageTranslator'
 import { compose } from '@cortezaproject/corteza-js'
@@ -160,12 +162,20 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      pages: 'page/set',
+    }),
+
     handleState () {
       return handleState(this.page.handle)
     },
 
     pageViewer () {
       return { name: 'page', params: { pageID: this.pageID } }
+    },
+
+    hasChildren () {
+      return this.pages.some(({ selfID }) => selfID === this.page.pageID)
     },
   },
 
@@ -187,6 +197,7 @@ export default {
       updatePage: 'page/update',
       deletePage: 'page/delete',
     }),
+
     handleSave ({ closeOnSuccess = false } = {}) {
       /**
        * Pass a special tag alongside payload that

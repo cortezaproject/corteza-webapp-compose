@@ -33,9 +33,12 @@
       >
         <c-input-confirm
           v-if="!hideDelete"
+          v-b-tooltip.hover
           size="lg"
           size-confirm="lg"
           variant="danger"
+          :disabled="disableDelete"
+          :title="deleteTooltip"
           :borderless="false"
           @confirmed="$emit('delete')"
         >
@@ -101,10 +104,20 @@ export default {
       type: Boolean,
       required: false,
     },
+    disableDelete: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     disableSave: {
       type: Boolean,
       required: false,
       default: false,
+    },
+    deleteTooltip: {
+      type: String,
+      required: false,
+      default: '',
     },
   },
 }

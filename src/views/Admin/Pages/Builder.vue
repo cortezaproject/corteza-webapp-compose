@@ -145,9 +145,10 @@
 
     <portal to="admin-toolbar">
       <editor-toolbar
-        class=""
         :back-link="{name: 'admin.pages'}"
         :hide-delete="!page.canDeletePage"
+        :disable-delete="hasChildren"
+        :delete-tooltip="$t('deleteDisabled')"
         :hide-save="!page.canUpdatePage"
         hide-clone
         @save="handleSave()"
@@ -169,7 +170,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import NewBlockSelector from 'corteza-webapp-compose/src/components/Admin/Page/Builder/Selector'
 import PageTranslator from 'corteza-webapp-compose/src/components/Admin/Page/PageTranslator'
 import Grid from 'corteza-webapp-compose/src/components/Common/Grid'
@@ -214,6 +215,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      pages: 'page/set',
+    }),
+
     title () {
       const title = this.page.title || this.page.handle
       return this.$t('label.pageBuilder') + ' - ' + (title ? `"${title}"` : this.$t('label.noHandle'))
@@ -256,6 +261,10 @@ export default {
 
     pageEditor () {
       return this.page.moduleID === NoID ? { name: 'admin.pages.edit', params: { pageID: this.pageID } } : { name: 'admin.modules.edit', params: { moduleID: this.page.moduleID } }
+    },
+
+    hasChildren () {
+      return this.pages.some(({ selfID }) => selfID === this.page.pageID)
     },
   },
 
