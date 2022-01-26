@@ -486,7 +486,7 @@ export default {
     },
 
     discoveryEnabled () {
-      return this.$Settings.get('Discovery.enabled', false)
+      return this.$Settings.get('discovery.enabled', false)
     },
 
     hideDelete () {
