@@ -1171,6 +1171,8 @@ export default {
           .filter(({ id, r }) => r.canDeleteRecord && this.selected.includes(id))
           .map(({ id }) => id)
 
+        this.processing = true
+
         this.$ComposeAPI
           .recordBulkDelete({ moduleID, namespaceID, recordIDs })
           .then(() => {
@@ -1178,6 +1180,9 @@ export default {
             this.toastSuccess(this.$t('notification:record.deleteBulkSuccess'))
           })
           .catch(this.toastErrorHandler(this.$t('notification:record.deleteBulkFailed')))
+          .finally(() => {
+            this.processing = false
+          })
       }
     },
 
