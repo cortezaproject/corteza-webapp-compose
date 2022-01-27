@@ -21,7 +21,34 @@
       />
     </b-form-group>
 
+    <div
+      v-if="labelField && labelField.kind === 'Record'"
+    >
+      <b-form-group
+        label="Record field label"
+      >
+        <b-form-select
+          v-model="f.options.recordLabelField"
+          :options="labelFieldOptions"
+          :disabled="!selectedModule || !labelFieldModule"
+        />
+      </b-form-group>
+
+      <b-form-group
+        :label="$t('kind.record.queryFieldsLabel')"
+      >
+        <b-form-select
+          v-model="f.options.queryFields"
+          class="form-control"
+          :options="labelFieldQueryOptions"
+          multiple
+          :disabled="!selectedModule || !labelFieldModule"
+        />
+      </b-form-group>
+    </div>
+
     <b-form-group
+      v-else
       :label="$t('kind.record.queryFieldsLabel')"
     >
       <b-form-select
@@ -138,6 +165,45 @@ export default {
 
     queryFieldOptions () {
       return this.fieldOptions.slice(1)
+    },
+
+    labelField () {
+      if (this.field.options.labelField) {
+        return this.selectedModule.fields.find(({ name }) => name === this.field.options.labelField)
+      }
+
+      return undefined
+    },
+
+    labelFieldModule () {
+      if (this.labelField) {
+        return this.$store.getters['module/getByID'](this.labelField.options.moduleID)
+      }
+
+      return undefined
+    },
+
+    labelFieldOptions () {
+      let fields = []
+
+      if (this.labelField && this.labelFieldModule) {
+        fields = this.labelFieldModule.fields.map(({ label, name }) => { return { value: name, text: label || name } })
+
+        return [
+          {
+            value: undefined,
+            text: this.$t('kind.record.recordFieldPlaceholder'),
+            disabled: true,
+          },
+          ...fields.sort((a, b) => a.text.localeCompare(b.text)),
+        ]
+      }
+
+      return fields
+    },
+
+    labelFieldQueryOptions () {
+      return this.labelFieldOptions.filter(({ name }) => name !== this.field.options.recordLabelField)
     },
   },
 
