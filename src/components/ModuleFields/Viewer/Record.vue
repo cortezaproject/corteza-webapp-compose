@@ -131,17 +131,26 @@ export default {
         const { moduleID = NoID } = this.field.options
 
         if (moduleID !== NoID && namespaceID !== NoID) {
-          this.findModuleByID({ namespace: this.namespace, moduleID }).then(m => {
-            for (const v of value) {
-              if (v) {
-                let record = { recordID: v }
-                this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID: v }).then(r => {
-                  if (r) {
-                    record = r
+          this.findModuleByID({ namespace: this.namespace, moduleID }).then(module => {
+            for (const recordID of value) {
+              if (recordID) {
+                this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID }).then(async record => {
+                  debugger
+
+                  record = new compose.Record(module, record)
+
+                  if (this.field.options.recordLabelField) {
+                    // Get actual field
+                    const relatedField = module.fields.find(({ name }) => name === this.field.options.labelField)
+
+                    await this.$ComposeAPI.recordRead({ namespaceID, moduleID: relatedField.options.moduleID, recordID: record.values[this.field.options.labelField] }).then(labelRecord => {
+                      record.values[this.field.options.labelField] = (labelRecord.values.find(({ name }) => name === this.field.options.recordLabelField) || {}).value
+                    })
                   }
-                  this.relRecords.push(new compose.Record(m, record))
+
+                  this.relRecords.push(record)
                 }).catch(e => {
-                  this.relRecords.push(new compose.Record(m, record))
+                  this.relRecords.push(new compose.Record(module, { recordID }))
                 })
               }
             }

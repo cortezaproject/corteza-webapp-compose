@@ -397,13 +397,35 @@ export default {
         q.sort = ''
       }
 
-      this.$ComposeAPI.recordList({ ...q, query })
-        .then(({ filter, set }) => {
+      this.$ComposeAPI.recordList({ ...q, query: this.field.options.recordLabelField ? '' : query })
+        .then(async ({ filter, set }) => {
           this.filter = { ...this.filter, ...filter }
           this.filter.nextPage = filter.nextPage
           this.filter.prevPage = filter.prevPage
-          this.records = set.map(r => new compose.Record(this.module, r))
-          return { filter, set }
+          let tempRecords = set.map(r => new compose.Record(this.module, r))
+
+          if (this.field.options.recordLabelField) {
+            const namespaceID = this.namespace.namespaceID
+            const { moduleID } = (this.module.fields.find(({ name }) => name === this.field.options.labelField) || {}).options
+            query = (query ? `${query} AND (` : '') + tempRecords.map(({ values = {} }) => `recordID = ${values[this.field.options.labelField]}`).join(' OR ') + (query ? ')' : '')
+
+            // Fetch required records
+            await this.$ComposeAPI.recordList({ namespaceID, moduleID, query })
+              .then(({ set }) => {
+                const mappedIDs = {}
+                set.forEach(({ recordID, values = [] }) => {
+                  mappedIDs[recordID] = (values.find(({ name }) => name === this.field.options.recordLabelField) || {}).value
+                })
+
+                tempRecords = tempRecords.filter(({ values = [] }) => !!mappedIDs[values[this.field.options.labelField]])
+                  .map(r => {
+                    r.values[this.field.options.labelField] = mappedIDs[r.values[this.field.options.labelField]]
+                    return r
+                  })
+              })
+          }
+
+          this.records = tempRecords
         })
         .finally(() => {
           this.processing = false
@@ -420,8 +442,19 @@ export default {
 
       if (moduleID !== NoID && namespaceID !== NoID) {
         if (!this.fetchedRecords.find(r => r.recordID === recordID)) {
-          this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID }).then(record => {
-            this.fetchedRecords.push(new compose.Record(this.module, record))
+          this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID }).then(async record => {
+            record = new compose.Record(this.module, record)
+
+            if (this.field.options.recordLabelField) {
+              // Get actual field
+              const relatedField = this.module.fields.find(({ name }) => name === this.field.options.labelField)
+
+              await this.$ComposeAPI.recordRead({ namespaceID, moduleID: relatedField.options.moduleID, recordID: record.values[this.field.options.labelField] }).then(labelRecord => {
+                record.values[this.field.options.labelField] = (labelRecord.values.find(({ name }) => name === this.field.options.recordLabelField) || {}).value
+              })
+            }
+
+            this.fetchedRecords.push(record)
           }).catch(e => {
             this.fetchedRecords.push(new compose.Record(this.module, { recordID }))
           })
