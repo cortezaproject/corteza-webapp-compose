@@ -7,7 +7,6 @@
     >
       {{ $t('allRecords.columns.title') }}
     </b-button>
-
     <b-modal
       id="columns"
       size="lg"
@@ -26,15 +25,8 @@
         <field-picker
           :module="module"
           :fields.sync="filteredFields"
-          :labels="{
-            searchPlaceholder: $t('field:selector.search'),
-            availableFields: $t('field:selector.available'),
-            selectAllFields: $t('field:selector.selectAll'),
-            selectedFields: $t('field:selector.selected'),
-            unselectAllFields: $t('field:selector.unselectAll'),
-            systemField: $t('field:selector.systemField'),
-          }"
           class="d-flex flex-column"
+          style="max-height: 71vh;"
         />
       </b-card-body>
     </b-modal>
@@ -42,8 +34,7 @@
 </template>
 
 <script>
-import { components } from '@cortezaproject/corteza-vue'
-const { FieldPicker } = components
+import FieldPicker from 'corteza-webapp-compose/src/components/Common/FieldPicker'
 
 export default {
   i18nOptions: {
@@ -60,26 +51,29 @@ export default {
       required: true,
       default: () => ({}),
     },
+
     fields: {
       type: Array,
       required: true,
       default: () => [],
     },
   },
+
   data () {
     return {
       filteredFields: [],
     }
   },
+
   created () {
     this.filteredFields = this.fields.map(f => {
       return { ...f.moduleField }
     })
   },
+
   methods: {
     onSave () {
       this.$emit('updateFields', this.filteredFields)
-      this.showModal = false
     },
   },
 }

@@ -7,34 +7,26 @@
     un-skippable
   >
     <template #dimension-options="{ dimension, field }">
-      <picker
+      <field-picker
         v-if="renderPicker(field)"
-        :items="makeOptions(field, dimension)"
-        :selected.sync="dimension.meta.fields"
-        key-prop="value"
-        class="cursor-pointer"
-      >
-        <template #item="{ item }">
-          <div>
-            <span class="ml-1">
-              {{ item.value }}
-            </span>
-          </div>
-        </template>
-      </picker>
+        :module="makeOptions(field, dimension)"
+        :fields.sync="dimension.meta.fields"
+        disable-system-fields
+        class="d-flex flex-column"
+      />
     </template>
   </report-edit>
 </template>
 
 <script>
 import ReportEdit from './ReportEdit'
-import Picker from 'corteza-webapp-compose/src/components/Common/ItemPicker'
+import FieldPicker from 'corteza-webapp-compose/src/components/Common/FieldPicker'
 import base from './base'
 
 export default {
   components: {
     ReportEdit,
-    Picker,
+    FieldPicker,
   },
 
   extends: base,
@@ -46,11 +38,13 @@ export default {
 
     makeOptions (field, dimension) {
       const ff = dimension.meta.fields || []
-      return field.options.options.map(({ text, value }) => ({
-        text,
-        value,
-        color: (ff.find(b => value === b.value) || {}).color,
-      }))
+      return {
+        ...field.options.options.map(({ text, value }) => ({
+          text,
+          value,
+          color: (ff.find(b => value === b.value) || {}).color,
+        })),
+      }
     },
   },
 }

@@ -15,7 +15,7 @@
       body-class="p-0"
       @hide="toggleModal"
     >
-      <field-picker
+      <configurator
         :processing="processing"
         v-bind="$attrs"
         v-on="$listeners"
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import FieldPicker from './FieldPicker'
+import Configurator from './Configurator'
 
 export default {
   i18nOptions: {
@@ -33,7 +33,7 @@ export default {
   },
 
   components: {
-    FieldPicker,
+    Configurator,
   },
 
   inheritAttrs: true,

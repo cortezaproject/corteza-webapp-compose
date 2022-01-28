@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import { default as component } from './FieldPicker.vue'
+import { default as component } from './Configurator.vue'
 import { compose } from '@cortezaproject/corteza-js'
 
 // TypeError: this.module.systemFields is not a function"
@@ -21,8 +21,8 @@ const props = {
 }
 
 export default {
-  name: 'Field picker',
-  group: ['Page Record'],
+  name: 'Configurator',
+  group: ['Exporter'],
   component,
   props,
   controls: [],

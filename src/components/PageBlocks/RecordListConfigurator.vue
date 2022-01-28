@@ -31,15 +31,8 @@
         <field-picker
           :module="recordListModule"
           :fields.sync="options.fields"
-          :labels="{
-            searchPlaceholder: $t('field:selector.search'),
-            availableFields: $t('field:selector.available'),
-            selectAllFields: $t('field:selector.selectAll'),
-            selectedFields: $t('field:selector.selected'),
-            unselectAllFields: $t('field:selector.unselectAll'),
-            systemField: $t('field:selector.systemField'),
-          }"
-          max-height="max-height: 30vh;"
+          style="max-height: 40vh;"
+          class="d-flex flex-column"
         />
       </b-form-group>
 
@@ -68,18 +61,11 @@
         >
           <field-picker
             :module="recordListModule"
-            :field-subset="options.fields"
             :fields.sync="options.editFields"
-            :labels="{
-              searchPlaceholder: $t('field:selector.search'),
-              availableFields: $t('field:selector.available'),
-              selectAllFields: $t('field:selector.selectAll'),
-              selectedFields: $t('field:selector.selected'),
-              unselectAllFields: $t('field:selector.unselectAll'),
-              systemField: $t('field:selector.systemField'),
-            }"
-            group="edit-fields"
+            :field-subset="options.fields"
             disable-system-fields
+            class="d-flex flex-column"
+            style="max-height: 40vh;"
           />
         </b-form-group>
 
@@ -295,8 +281,9 @@ import { mapGetters } from 'vuex'
 import { NoID } from '@cortezaproject/corteza-js'
 import base from './base'
 import AutomationTab from './Shared/AutomationTab'
+import FieldPicker from 'corteza-webapp-compose/src/components/Common/FieldPicker'
 import { components } from '@cortezaproject/corteza-vue'
-const { FieldPicker, CInputPresort } = components
+const { CInputPresort } = components
 
 export default {
   i18nOptions: {

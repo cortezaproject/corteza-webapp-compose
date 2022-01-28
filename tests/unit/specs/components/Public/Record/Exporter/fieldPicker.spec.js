@@ -1,11 +1,11 @@
 /* eslint-disable */
 import { expect } from 'chai'
-import FieldPicker from 'corteza-webapp-compose/src/components/Public/Record/Exporter/FieldPicker'
+import FieldPicker from 'corteza-webapp-compose/src/components/Public/Record/Exporter/Configurator'
 import { shallowMount } from 'corteza-webapp-compose/tests/lib/helpers'
 import moment from 'moment'
 import { compose } from '@cortezaproject/corteza-js'
 
-describe('components/Public/Record/Exporter/FieldPicker.vue', () => {
+describe('components/Public/Record/Exporter/Configurator.vue', () => {
   const mm = () => moment("2019-08-22")
   let propsData
   beforeEach(() => {

@@ -24,23 +24,15 @@
         v-if="module"
         :module="module"
         :fields.sync="options.fields"
-        :labels="{
-          searchPlaceholder: $t('field:selector.search'),
-          availableFields: $t('field:selector.available'),
-          selectAllFields: $t('field:selector.selectAll'),
-          selectedFields: $t('field:selector.selected'),
-          unselectAllFields: $t('field:selector.unselectAll'),
-          systemField: $t('field:selector.systemField'),
-        }"
-        max-height="max-height: 45vh;"
+        class="d-flex flex-column"
+        style="max-height: 52vh;"
       />
     </b-form-group>
   </b-tab>
 </template>
 <script>
 import base from './base'
-import { components } from '@cortezaproject/corteza-vue'
-const { FieldPicker } = components
+import FieldPicker from 'corteza-webapp-compose/src/components/Common/FieldPicker'
 
 export default {
   i18nOptions: {

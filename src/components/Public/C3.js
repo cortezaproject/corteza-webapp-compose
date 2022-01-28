@@ -5,7 +5,7 @@
 export { default as Link } from './Page/Attachment/Link.c3'
 // disabled: uses $auth plugin
 // export { default as Uploader } from './Page/Attachment/Uploader.c3'
-export { default as FieldPicker } from './Record/Exporter/FieldPicker.c3'
+export { default as ExporterConfigurator } from './Record/Exporter/Configurator.c3'
 // disabled: uses api plugin
 // export { default as importerIndex } from './Record/Importer/index.c3'
 // disabled: uses api plugin
