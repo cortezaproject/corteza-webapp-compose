@@ -98,7 +98,7 @@
                 :fields="tableFields"
                 :items="charts"
                 :filter="query"
-                :filter-included-fields="['handle', 'name']"
+                :filter-function="chartFilter"
                 :sort-by.sync="sortBy"
                 :sort-desc="sortDesc"
                 head-variant="light"
@@ -133,6 +133,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { compose, fmt } from '@cortezaproject/corteza-js'
+import { filter } from '@cortezaproject/corteza-vue'
 import Import from 'corteza-webapp-compose/src/components/Admin/Import'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 
@@ -208,6 +209,10 @@ export default {
     ...mapActions({
       createChart: 'chart/create',
     }),
+
+    chartFilter (chart, query) {
+      return filter.Assert(chart, query, 'handle', 'name')
+    },
 
     create (subType) {
       let c = new compose.Chart({ ...this.newChart, namespaceID: this.namespace.namespaceID })
