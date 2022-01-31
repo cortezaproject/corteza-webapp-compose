@@ -77,7 +77,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { NoID } from '@cortezaproject/corteza-js'
-import { components } from '@cortezaproject/corteza-vue'
+import { components, filter } from '@cortezaproject/corteza-vue'
 import { Portal } from 'portal-vue'
 import { VueSelect } from 'vue-select'
 const { CSidebarNavItems } = components
@@ -237,8 +237,7 @@ export default {
     },
 
     checkPage (p, query) {
-      const ix = `${p.pageID}${p.handle}${p.title}`.toLowerCase().trim()
-      return ix.indexOf(query.toLowerCase().trim()) > -1
+      return filter.Assert(p, query, 'handle', 'pageID', 'title')
     },
 
     pageIndex (wraps) {

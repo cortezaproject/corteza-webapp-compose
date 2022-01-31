@@ -116,7 +116,7 @@
                 :fields="tableFields"
                 :items="modules"
                 :filter="query"
-                :filter-included-fields="['handle', 'name']"
+                :filter-function="moduleFilter"
                 :sort-by.sync="sortBy"
                 :sort-desc="sortDesc"
                 head-variant="light"
@@ -185,6 +185,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { compose, fmt } from '@cortezaproject/corteza-js'
+import { filter } from '@cortezaproject/corteza-vue'
 import Import from 'corteza-webapp-compose/src/components/Admin/Import'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 
@@ -267,6 +268,10 @@ export default {
     ...mapActions({
       createPage: 'page/create',
     }),
+
+    moduleFilter (mod, query) {
+      return filter.Assert(mod, query, 'handle', 'name')
+    },
 
     openEditor (module) {
       const { moduleID } = module
