@@ -6,7 +6,7 @@
         label="name"
         class="namespace-selector sticky-top bg-white mt-2"
         :clearable="false"
-        :options="truncatedNamaspaces"
+        :options="truncatedNamespaces"
         :value="namespace"
         :placeholder="$t('pickNamespace')"
         @option:selected="namespaceSelected"
@@ -48,12 +48,11 @@
         class="h-100"
       >
         <b-input
-          v-if="!isAdminPage"
           v-model.trim="query"
           class="namespace-selector mw-100"
           type="search"
           autocomplete="off"
-          :placeholder="$t('searchPlaceholder')"
+          :placeholder="isAdminPage ? 'Search resources...' : $t('searchPlaceholder')"
         />
 
         <c-sidebar-nav-items
@@ -75,12 +74,62 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import { NoID } from '@cortezaproject/corteza-js'
 import { components, filter } from '@cortezaproject/corteza-vue'
 import { Portal } from 'portal-vue'
 import { VueSelect } from 'vue-select'
 const { CSidebarNavItems } = components
+
+const publicPageWrap = (page) => ({ page, children: [], params: { pageID: page.pageID } })
+const adminPageWrap = (page) => {
+  return {
+    page: {
+      name: 'admin.pages.builder',
+      pageID: `page-${page.pageID}`,
+      selfID: page.selfID !== NoID ? `page-${page.selfID}` : 'pages',
+      rootSelfID: 'pages',
+      title: page.title || page.handle,
+      visible: true,
+    },
+    children: [],
+    params: {
+      pageID: page.pageID,
+    },
+  }
+}
+const moduleWrap = (module) => {
+  return {
+    page: {
+      name: 'admin.modules.edit',
+      pageID: `module-${module.moduleID}`,
+      selfID: 'modules',
+      rootSelfID: 'modules',
+      title: module.name || module.handle,
+      visible: true,
+    },
+    children: [],
+    params: {
+      moduleID: module.moduleID,
+    },
+  }
+}
+const chartWrap = (chart) => {
+  return {
+    page: {
+      name: 'admin.charts.edit',
+      pageID: `chart-${chart.chartID}`,
+      selfID: 'charts',
+      rootSelfID: 'charts',
+      title: chart.name || chart.handle,
+      visible: true,
+    },
+    children: [],
+    params: {
+      chartID: chart.chartID,
+    },
+  }
+}
 
 export default {
   i18nOptions: {
@@ -103,9 +152,9 @@ export default {
 
   data () {
     return {
-      query: '',
-
       namespace: undefined,
+
+      query: '',
     }
   },
 
@@ -115,7 +164,9 @@ export default {
       modulePending: 'module/pending',
       chartPending: 'chart/pending',
       pagePending: 'page/pending',
+      modules: 'module/set',
       pages: 'page/set',
+      charts: 'chart/set',
     }),
 
     pending () {
@@ -126,24 +177,44 @@ export default {
       return this.$route.name.includes('admin.')
     },
 
-    adminRoutes () {
-      return [
-        { name: 'admin.modules', title: this.$t('module') },
-        { name: 'admin.pages', title: this.$t('page') },
-        { name: 'admin.charts', title: this.$t('chart') },
-      ]
+    publicRoutes () {
+      return this.pages.filter(({ moduleID, visible }) => visible && moduleID === NoID)
+    },
+
+    filteredPages () {
+      if (this.namespace) {
+        // If on admin page, show admin pages. Otherwise show public pages
+        const pages = [...(this.isAdminPage ? this.adminRoutes() : this.publicRoutes.map(publicPageWrap))]
+
+        if (!this.query) {
+          return pages
+        }
+
+        return pages.filter(({ page }) => !['pages', 'modules', 'charts'].includes(page.pageID) && filter.Assert(page, this.query, 'title'))
+      }
+
+      return []
+    },
+
+    // @todo find a css approach for this
+    truncatedNamespaces () {
+      return this.namespaces.map(ns => ns.name.length > 21 ? { ...ns, name: ns.name.substring(0, 21) + '...' } : ns)
     },
 
     navItems () {
-      let wrap = (page) => ({ page, children: [], params: { pageID: page.pageID } })
+      const current = this.filteredPages
+      const ax = this.pageIndex(this.isAdminPage ? this.adminRoutes() : this.pages.map(publicPageWrap))
 
-      if (this.isAdminPage) {
-        wrap = (page) => ({ page, children: [], params: {} })
+      // Correct potentially missing parent references
+      for (const cp of current) {
+        if (cp.page.selfID && cp.page.selfID !== NoID) {
+          if (!ax[cp.page.selfID]) {
+            cp.page.selfID = cp.page.rootSelfID
+          }
+        }
       }
 
-      const current = this.filteredPages.map(wrap)
       const cx = this.pageIndex(current)
-      const ax = this.pageIndex(this.pages.map(wrap))
 
       for (let i = current.length - 1; i >= 0; i--) {
         const cp = current[i]
@@ -161,11 +232,12 @@ export default {
               current.splice(i, 1, ax[cp.page.selfID])
               p = ax[cp.page.selfID]
               cx[p.page.pageID] = p
+              i++
             } else {
               current.splice(i, 0, cp)
               p = cp
+              cx[p.page.pageID] = p
             }
-            i++
           } else {
             current.splice(i, 1)
           }
@@ -177,48 +249,25 @@ export default {
 
       return current
     },
-
-    filteredPages () {
-      if (this.namespace) {
-        // If on admin page, show admin pages. Otherwise show public pages
-        const pages = this.isAdminPage ? this.adminRoutes : this.pages.filter(({ moduleID, visible }) => visible && moduleID === NoID)
-
-        if (!this.query) {
-          return pages
-        }
-
-        const rr = []
-        for (const p of pages) {
-          if (this.checkPage(p, this.query)) {
-            rr.push(p)
-          }
-        }
-
-        return rr
-      }
-
-      return []
-    },
-
-    truncatedNamaspaces () {
-      return this.namespaces.map(ns => ns.name.length > 21 ? { ...ns, name: ns.name.substring(0, 21) + '...' } : ns)
-    },
   },
 
   watch: {
+    isAdminPage: {
+      handler () {
+        this.query = ''
+      },
+    },
+
     '$route.params.slug': {
       immediate: true,
       handler (slug = '') {
         this.namespace = slug ? this.namespaces.find(n => n.slug === slug) : undefined
+        this.query = ''
       },
     },
   },
 
   methods: {
-    ...mapActions({
-      findPageByID: 'page/findByID',
-    }),
-
     namespaceSelected ({ canManageNamespace, slug = '' }) {
       let { name, params } = this.$route
 
@@ -236,10 +285,6 @@ export default {
       this.$router.push({ name, params: { slug } })
     },
 
-    checkPage (p, query) {
-      return filter.Assert(p, query, 'handle', 'pageID', 'title')
-    },
-
     pageIndex (wraps) {
       const ix = {}
 
@@ -248,6 +293,44 @@ export default {
       }
 
       return ix
+    },
+
+    adminRoutes () {
+      return [
+        {
+          page: {
+            pageID: 'modules',
+            selfID: NoID,
+            name: 'admin.modules',
+            title: this.$t('module'),
+            visible: true,
+          },
+          children: [],
+        },
+        ...this.modules.map(moduleWrap),
+        {
+          page: {
+            pageID: 'pages',
+            selfID: NoID,
+            name: 'admin.pages',
+            title: this.$t('page'),
+            visible: true,
+          },
+          children: [],
+        },
+        ...this.pages.map(adminPageWrap),
+        {
+          page: {
+            pageID: 'charts',
+            selfID: NoID,
+            name: 'admin.charts',
+            title: this.$t('chart'),
+            visible: true,
+          },
+          children: [],
+        },
+        ...this.charts.map(chartWrap),
+      ]
     },
   },
 }
