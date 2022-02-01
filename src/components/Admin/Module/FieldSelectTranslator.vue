@@ -96,7 +96,7 @@ export default {
             set
               .filter(({ lang }) => this.currentLanguage === lang)
               .forEach(rt => {
-                // fin the corresponding option
+                // find the corresponding option
                 const op = this.field.options.options
                   .find(op => typeof op === 'object' && rt.key === `${keyPrefix}${op.value}${keySuffix}`)
 
