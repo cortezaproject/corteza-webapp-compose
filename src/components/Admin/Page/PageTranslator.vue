@@ -86,22 +86,19 @@ export default {
       const { pageID, namespaceID } = this.page
 
       return () => {
-        const locales = this.$ComposeAPI.pageListTranslations({ namespaceID, pageID })
+        return this.$ComposeAPI
+          .pageListTranslations({ namespaceID, pageID })
+          .then(set => {
+            if (this.block) {
+              /**
+               * When block is set, intercept the resolved request and filter out the
+               * translations that are relevant for that block
+               */
+              set = set.filter(({ key }) => key.startsWith(`pageBlock.${this.block.blockID}.`))
+            }
 
-        if (this.block) {
-          /**
-           * When block is set, intercept the resolved request and filter out the
-           * translations that are relevant for that block
-           *
-           * @todo get the block ID out of the block
-           */
-          return locales.then(tt => tt.filter(({ key }) => key.startsWith(`pageBlock.${this.block.blockID}.`)))
-          // @todo pass set of translations to the resource object
-          // The logic there needs to be implemented; the idea is to decode
-          // values from the resource object to the set of translations)
-        }
-
-        return locales
+            return set
+          })
       }
     },
 
@@ -137,17 +134,23 @@ export default {
               this.page.description = tr.message
             }
 
-            // this.page.blocks.forEach(b => {
-            //   tr = find(`pageBlock.${b.blockID}.title`)
-            //   console.log(`pageBlock.${b.blockID}.title`, tr)
-            //   if (tr !== undefined) {
-            //     b.title = tr.message
-            //   }
-            //
-            //   tr = find(`pageBlock.${b.blockID}.description`)
-            //   if (tr !== undefined) {
-            //   }
-            // })
+            switch (true) {
+              case this.block instanceof compose.PageBlockAutomation:
+                this.block.options.buttons.forEach((btn, index) => {
+                  tr = find(`pageBlock.${this.block.blockID}.button.${btn.buttonID || (index + 1)}.label`)
+                  if (tr) {
+                    btn.label = tr.message
+                  }
+                })
+                break
+
+              case this.block instanceof compose.PageBlockContent:
+                tr = find(`pageBlock.${this.block.blockID}.body`)
+                if (tr) {
+                  this.block.options.label = tr.message
+                }
+                break
+            }
           })
       }
     },

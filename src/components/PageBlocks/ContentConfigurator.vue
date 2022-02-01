@@ -1,6 +1,6 @@
 <template>
   <b-tab :title="$t('content.label')">
-    <fieldset class="form-group">
+    <b-form-group>
       <c-rich-text-input
         v-model="options.body"
         :labels="{
@@ -8,7 +8,7 @@
           ok: $t('content.ok'),
         }"
       />
-    </fieldset>
+    </b-form-group>
   </b-tab>
 </template>
 <script>
