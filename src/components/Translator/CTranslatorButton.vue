@@ -31,7 +31,7 @@ export default {
 
     size: {
       type: String,
-      default: 'lg',
+      default: 'md',
     },
 
     disabled: {
