@@ -26,7 +26,6 @@
           />
         </b-button>
         <page-translator
-          v-if="page"
           :page.sync="page"
         />
         <b-button
@@ -107,7 +106,7 @@
       body-class="p-0 border-top-0"
       header-class="p-3 pb-0 border-bottom-0"
       @ok="updateBlocks"
-      @hide="editor=null"
+      @hide="editor = undefined"
     >
       <configurator
         v-if="showCreator"
@@ -130,7 +129,7 @@
       body-class="p-0 border-top-0"
       header-class="p-3 pb-0 border-bottom-0"
       @ok="updateBlocks"
-      @hide="editor=null"
+      @hide="editor = undefined"
     >
       <configurator
         v-if="showEditor"
@@ -207,8 +206,8 @@ export default {
 
   data () {
     return {
-      editor: null,
-      page: null,
+      editor: undefined,
+      page: undefined,
 
       blocks: [],
     }
@@ -220,7 +219,9 @@ export default {
     }),
 
     title () {
-      const title = this.page.title || this.page.handle
+      let { title = '', handle } = this.page || {}
+      title = title || handle
+
       return this.$t('label.pageBuilder') + ' - ' + (title ? `"${title}"` : this.$t('label.noHandle'))
     },
 
@@ -256,23 +257,33 @@ export default {
     },
 
     pageEditorDisabled () {
-      return this.page.moduleID !== NoID
+      return this.page && this.page.moduleID !== NoID
     },
 
     pageEditor () {
-      return this.page.moduleID === NoID ? { name: 'admin.pages.edit', params: { pageID: this.pageID } } : { name: 'admin.modules.edit', params: { moduleID: this.page.moduleID } }
+      return this.page && this.page.moduleID === NoID ? { name: 'admin.pages.edit', params: { pageID: this.pageID } } : { name: 'admin.modules.edit', params: { moduleID: this.page.moduleID } }
     },
 
     hasChildren () {
-      return this.pages.some(({ selfID }) => selfID === this.page.pageID)
+      return this.page ? this.pages.some(({ selfID }) => selfID === this.page.pageID) : false
     },
   },
 
-  mounted () {
-    const { namespaceID } = this.namespace
-    this.findPageByID({ namespaceID, pageID: this.pageID, force: true }).then(page => {
-      this.page = page.clone()
-    })
+  watch: {
+    pageID: {
+      immediate: true,
+      handler (pageID) {
+        if (pageID) {
+          const { namespaceID } = this.namespace
+          this.findPageByID({ namespaceID, pageID: this.pageID, force: true })
+            .then(page => {
+              this.page = page.clone()
+            })
+        } else {
+          this.page = undefined
+        }
+      },
+    },
   },
 
   methods: {
@@ -305,7 +316,7 @@ export default {
         this.page.blocks.push(block)
       }
 
-      this.editor = null
+      this.editor = undefined
     },
 
     async handleSave ({ closeOnSuccess = false, previewOnSuccess = false } = {}) {
