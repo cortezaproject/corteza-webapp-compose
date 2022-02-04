@@ -857,11 +857,22 @@ export default {
     },
 
     sorterStyle ({ key }, dir) {
-      if (this.sortBy !== key || dir !== this.sortDirecton) {
-        return {}
-      }
+      const { sort = '' } = this.filter
 
-      return { color: 'black' }
+      const sortedFields = (sort.includes(',') ? sort.split(',') : [sort])
+
+      const isSorted = sortedFields.map(v => v.trim()).some(value => {
+        let valueDir = 'ASC'
+
+        if (value.includes(' ')) {
+          value = value.split(' ')[0]
+          valueDir = 'DESC'
+        }
+
+        return valueDir === dir && value === key
+      })
+
+      return isSorted ? { color: 'black' } : {}
     },
 
     // Grabs errors specific to this record item

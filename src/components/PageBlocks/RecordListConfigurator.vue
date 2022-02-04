@@ -187,14 +187,21 @@
         breakpoint="md"
         :label="$t('recordList.record.presortLabel')"
       >
-        <b-form-textarea
+        <c-input-presort
           v-model="options.presort"
-          :value="true"
-          :placeholder="$t('recordList.record.presortPlaceholder')"
+          :fields="recordListModuleFields"
+          :labels="{
+            add: $t('general:label.add'),
+            ascending: $t('general:label.ascending'),
+            descending: $t('general:label.descending'),
+            none: $t('general:label.none'),
+            placeholder: $t('recordList.record.presortPlaceholder'),
+            footnote: $t('recordList.record.presortFootnote'),
+            toggleInput: $t('recordList.record.presortToggleInput'),
+          }"
+          allow-text-input
+          class="mb-2"
         />
-        <b-form-text>
-          {{ $t('recordList.record.presortFootnote') }}
-        </b-form-text>
         <b-form-checkbox v-model="options.hideSorting">
           {{ $t('recordList.record.presortHideSort') }}
         </b-form-checkbox>
@@ -289,7 +296,7 @@ import { NoID } from '@cortezaproject/corteza-js'
 import base from './base'
 import AutomationTab from './Shared/AutomationTab'
 import { components } from '@cortezaproject/corteza-vue'
-const { FieldPicker } = components
+const { FieldPicker, CInputPresort } = components
 
 export default {
   i18nOptions: {
@@ -301,6 +308,7 @@ export default {
   components: {
     AutomationTab,
     FieldPicker,
+    CInputPresort,
   },
 
   extends: base,
@@ -325,6 +333,17 @@ export default {
       } else {
         return undefined
       }
+    },
+
+    recordListModuleFields () {
+      if (this.recordListModule) {
+        return [
+          ...this.recordListModule.fields,
+          ...this.recordListModule.systemFields(),
+        ].map(({ name, label }) => ({ name, label }))
+      }
+
+      return []
     },
 
     recordListModuleRecordPage () {
