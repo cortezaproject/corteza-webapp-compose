@@ -52,7 +52,7 @@
           class="namespace-selector mw-100"
           type="search"
           autocomplete="off"
-          :placeholder="isAdminPage ? 'Search resources...' : $t('searchPlaceholder')"
+          :placeholder="$t(`searchPlaceholder.${isAdminPage ? 'admin' : 'public'}`)"
         />
 
         <c-sidebar-nav-items
