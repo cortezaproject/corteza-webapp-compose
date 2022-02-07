@@ -195,12 +195,15 @@ export default {
     },
   },
 
+  created () {
+    this.changeLocale(this.currentLanguage)
+  },
+
   methods: {
     ...mapActions({
       findModuleByID: 'module/findByID',
     }),
 
-    // @todo listen for i18next locale change, and reload
     /**
      * Helper method to load requested locale.
      * See https://github.com/fullcalendar/fullcalendar/tree/master/packages/core/src/locales
