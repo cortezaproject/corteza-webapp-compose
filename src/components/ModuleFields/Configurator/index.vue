@@ -16,7 +16,7 @@
     </b-tab>
     <b-tab
       v-if="fieldComponent"
-      :title="field.kind"
+      :title="$t(`fieldKinds.${field.kind}.label`)"
     >
       <component
         :is="fieldComponent"
