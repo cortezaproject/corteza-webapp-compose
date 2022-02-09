@@ -47,7 +47,7 @@ export default (options = {}) => {
 
       return this.$auth.vue(this).handle().then(({ user }) => {
         // switch the page directionality on body based on language
-        document.body.setAttribute('dir', this.textDirectionality)
+        document.body.setAttribute('dir', this.textDirectionality(user.meta.preferredLanguage))
 
         if (user.meta.preferredLanguage) {
           // After user is authenticated, get his preferred language
