@@ -148,7 +148,7 @@
         :back-link="{name: 'admin.pages'}"
         :hide-delete="!page.canDeletePage"
         :disable-delete="hasChildren"
-        :delete-tooltip="$t('deleteDisabled')"
+        :delete-tooltip="hasChildren ? $t('deleteDisabled') : ''"
         :hide-save="!page.canUpdatePage"
         hide-clone
         @save="handleSave()"
