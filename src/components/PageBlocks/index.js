@@ -26,6 +26,8 @@ import MetricBase from './MetricBase'
 import MetricConfigurator from './MetricConfigurator'
 import CommentBase from './CommentBase'
 import CommentConfigurator from './CommentConfigurator'
+import ReportBase from './Report/Base'
+import ReportConfigurator from './Report/Configurator'
 
 /**
  * List of all known page block components
@@ -51,6 +53,8 @@ const Registry = {
   RecordListConfigurator,
   RecordOrganizerBase,
   RecordOrganizerConfigurator,
+  ReportBase,
+  ReportConfigurator,
   SocialFeedBase,
   SocialFeedConfigurator,
   MetricBase,
