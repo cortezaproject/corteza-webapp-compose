@@ -3,6 +3,10 @@ import { compose } from '@cortezaproject/corteza-js'
 import Wrap from './Wrap'
 
 export default {
+  i18nOptions: {
+    namespaces: 'block',
+  },
+
   components: {
     Wrap,
   },
