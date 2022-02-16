@@ -35,12 +35,15 @@
           <router-link
             v-for="record in records"
             :key="record.recordID"
-            tag="b-card"
+            tag="b-card-body"
+            class="py-0 px-2"
             :class="{ 'mb-2': true, 'grab': canReposition && record.canUpdateRecord }"
             :to="{ name: 'page.record', params: { pageID: roRecordPage.pageID, recordID: record.recordID }, query: null }"
-            border-variant="primary"
           >
-            <b-card-title v-if="titleField">
+            <b-card-title
+              v-if="titleField"
+              title-tag="h5"
+            >
               <field-viewer
                 v-if="titleField.canReadRecordValue"
                 :field="titleField"
