@@ -271,3 +271,8 @@ input[type="search"]::-webkit-search-cancel-button {
     margin-top: 0.25rem;
   }
 }
+
+// to remove the gap on top of the sticky header table
+.b-table-sticky-header > .table.b-table > thead > tr > th {
+  border: 0;
+}
