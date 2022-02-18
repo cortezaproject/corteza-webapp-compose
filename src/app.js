@@ -100,7 +100,7 @@ export default (options = {}) => {
         this.$store.dispatch('rbac/load')
 
         // Initializes reminders subsystems, do prefetch of all pending reminders
-        this.$Reminder.init(this, { assignedTo: user.userID })
+        this.$Reminder.init(this, { filter: { assignedTo: user.userID } })
 
         this.loadBundle(bundleLoaderOpt)
           .then(() => this.$ComposeAPI.automationList({ excludeInvalid: true }))
