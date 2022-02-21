@@ -133,7 +133,11 @@ export default {
       }
 
       this.updater(this.changes)
-        .then(() => this.clear())
+        .then(() => {
+          this.toastSuccess(this.$t('notification:translations.saved'))
+          this.clear()
+        })
+        .catch(this.toastErrorHandler(this.$t('notification:translations.saveFailed')))
     },
 
     onHide () {
