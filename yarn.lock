@@ -701,10 +701,10 @@
     "@babel/helper-validator-identifier" "^7.14.0"
     to-fast-properties "^2.0.0"
 
-"@cortezaproject/corteza-js@^2021.9.7":
-  version "2021.9.7"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.9.7.tgz#db67c84ee48ff42a3313d88a8870ff8f663dc22a"
-  integrity sha512-Xivrd35gA/sZMEC/gcRjgedYid6K//s1KWDu4jU1BuOgxMMiXJrx5tw9V0vIkTL61tk1Fyx3irEa7s5uLKa8sA==
+"@cortezaproject/corteza-js@^2022.3.0-dev.1":
+  version "2022.3.0-dev.1"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2022.3.0-dev.1.tgz#5eaef0fed96003a4e81e86fde9a8f2f41ae1d204"
+  integrity sha512-FBLH726yyTlaWhOFirFXHhPS4R/nK17evu8sxHkCjSNOqPNwPS6G06yUUD4faCXkWmIp64Nt8R+tK/cCf72htg==
   dependencies:
     axios "^0.21.1"
     chart.js "2.9.3"
@@ -717,18 +717,21 @@
     pino "^5.16.0"
     ts-sinon "^1.0.25"
 
-"@cortezaproject/corteza-vue@^2021.9.7":
-  version "2021.9.7"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.9.7.tgz#32225b1d6662db8f87f5425e626171bf66aa2573"
-  integrity sha512-SVH8pu4MWhudjKbuZvpS9nEl8b40yf16Q9iG+6Avkq3M5RXqdtuJYFLjV3TfZdm+G94ecBrxR39y5nF/oAanJw==
+"@cortezaproject/corteza-vue@^2022.3.0-dev.1":
+  version "2022.3.0-dev.1"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2022.3.0-dev.1.tgz#3d4e18c2bc10ce23c63a0fd95a482f7f2965ec8c"
+  integrity sha512-KZI+7ZuLUM6EMqScbZrNs74YEPCY19NuotRclVudQQpcbFZN4NW+3lWrKAjmLvGYwGIjTue+XBfB/mYGW/Nr4w==
   dependencies:
-    "@cortezaproject/corteza-js" "^2021.9.7"
+    "@cortezaproject/corteza-js" "^2022.3.0-dev.1"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
     "@fortawesome/free-solid-svg-icons" "^5.12.0"
     "@fortawesome/vue-fontawesome" "^0.1.9"
     "@panter/vue-i18next" "^0.15.0"
     acorn "^7.3.1"
     bootstrap-vue "^2.21.2"
+    chartjs-plugin-colorschemes "^0.4.0"
+    chartjs-plugin-funnel "^1.1.5"
+    fuzzysort "^1.2.1"
     highlight.js "^10.4.1"
     html-parse-stringify "^3.0.1"
     i18next "^20.0.0"
@@ -5523,6 +5526,11 @@ functional-red-black-tree@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
+
+fuzzysort@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/fuzzysort/-/fuzzysort-1.2.1.tgz#ea23d3c4d7726422888f538044fcea265644d54c"
+  integrity sha512-egTSF3U6H6T9tXtAhEm5P5guSSDjd96/NUWrbmoGlIu3ATMdXra13gwQdEFRY6ehsFe8xec7UnQz+k34CGWCIg==
 
 gauge@~2.7.3:
   version "2.7.4"
