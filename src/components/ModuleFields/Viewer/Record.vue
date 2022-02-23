@@ -135,8 +135,6 @@ export default {
             for (const recordID of value) {
               if (recordID) {
                 this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID }).then(async record => {
-                  debugger
-
                   record = new compose.Record(module, record)
 
                   if (this.field.options.recordLabelField) {
