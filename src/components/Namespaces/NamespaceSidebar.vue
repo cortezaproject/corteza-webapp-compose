@@ -2,6 +2,7 @@
   <div>
     <portal to="sidebar-header-expanded">
       <vue-select
+        v-if="!hideNamespaceList"
         key="namespaceID"
         label="name"
         class="namespace-selector sticky-top bg-white mt-2"
@@ -13,6 +14,7 @@
       >
         <template #list-footer>
           <router-link
+            v-if="!hideNamespaceListLink"
             :to="{ name: 'namespace.list' }"
             class="d-block mt-3 ml-3 mb-1 font-weight-bold"
           >
@@ -171,6 +173,16 @@ export default {
 
     pending () {
       return this.namespacePending || this.modulePending || this.chartPending || this.pagePending
+    },
+
+    hideNamespaceList () {
+      const { hideNamespaceList } = this.$Settings.get('compose.ui.sidebar', {})
+      return hideNamespaceList
+    },
+
+    hideNamespaceListLink () {
+      const { hideNamespaceListLink } = this.$Settings.get('compose.ui.sidebar', {})
+      return hideNamespaceListLink
     },
 
     isAdminPage () {

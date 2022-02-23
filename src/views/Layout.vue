@@ -5,6 +5,7 @@
     >
       <c-topbar
         :sidebar-pinned="pinned"
+        :settings="$Settings.get('ui.topbar', {})"
         :labels="{
           helpForum: $t('help.forum'),
           helpDocumentation: $t('help.documentation'),
