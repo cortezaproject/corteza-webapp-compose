@@ -52,7 +52,6 @@
                 <b-col
                   cols="12"
                   md="6"
-                  xl="4"
                 >
                   <input
                     id="id"
@@ -71,7 +70,6 @@
                 <b-col
                   cols="12"
                   md="6"
-                  xl="4"
                 >
                   <label class="text-primary">{{ $t('label.handle') }}</label>
                   <b-form-input
@@ -85,23 +83,28 @@
                   </b-form-invalid-feedback>
                 </b-col>
               </b-row>
-              <label class="text-primary mt-3">{{ $t('label.description') }}</label>
-              <b-form-textarea
-                v-model="page.description"
-                :placeholder="$t('edit.pageDescription')"
-                class="mb-2"
-                rows="8"
-              />
-              <b-form-checkbox
-                id="visible"
-                v-model="page.visible"
-                switch
-                size="lg"
-                class="mt-3 d-inline"
-              />
-              <label class="m-1">
-                {{ $t('edit.visible') }}
-              </label>
+
+              <b-form-group
+                :label="$t('label.description')"
+                label-class="text-primary"
+              >
+                <b-form-textarea
+                  v-model="page.description"
+                  :placeholder="$t('edit.pageDescription')"
+                  rows="4"
+                />
+              </b-form-group>
+
+              <b-form-group
+                v-if="!isRecordPage"
+              >
+                <b-form-checkbox
+                  v-model="page.visible"
+                  switch
+                >
+                  {{ $t('edit.visible') }}
+                </b-form-checkbox>
+              </b-form-group>
             </b-form>
           </b-card>
         </b-col>
@@ -127,7 +130,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import PageTranslator from 'corteza-webapp-compose/src/components/Admin/Page/PageTranslator'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 
 export default {
@@ -174,6 +177,10 @@ export default {
       return { name: 'page', params: { pageID: this.pageID } }
     },
 
+    isRecordPage () {
+      return this.page && this.page.moduleID !== NoID
+    },
+
     hasChildren () {
       return this.pages.some(({ selfID }) => selfID === this.page.pageID)
     },
@@ -182,11 +189,6 @@ export default {
   created () {
     const { namespaceID } = this.namespace
     this.findPageByID({ namespaceID, pageID: this.pageID }).then((page) => {
-      if (page.isRecordPage) {
-        // Do not allow to edit record pages, move to builder
-        this.$router.replace({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
-      }
-
       this.page = new compose.Page(page)
     }).catch(this.toastErrorHandler(this.$t('notification:page.loadFailed')))
   },

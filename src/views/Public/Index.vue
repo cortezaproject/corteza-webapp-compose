@@ -29,7 +29,6 @@
         <b-button
           variant="primary"
           class="d-flex align-items-center"
-          :disabled="pageEditorDisabled"
           :to="pageEditor"
         >
           <font-awesome-icon
@@ -265,7 +264,7 @@ export default {
     },
 
     pageEditor () {
-      return this.page.moduleID === NoID ? { name: 'admin.pages.edit', params: { pageID: this.pageID } } : { name: 'admin.modules.edit', params: { moduleID: this.page.moduleID } }
+      return { name: 'admin.pages.edit', params: { pageID: this.pageID } }
     },
 
     pageBuilder () {

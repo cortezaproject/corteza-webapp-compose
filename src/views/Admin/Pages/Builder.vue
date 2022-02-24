@@ -31,7 +31,6 @@
         <b-button
           variant="primary"
           class="d-flex align-items-center"
-          :disabled="pageEditorDisabled"
           :to="pageEditor"
         >
           <font-awesome-icon
@@ -175,7 +174,7 @@ import PageTranslator from 'corteza-webapp-compose/src/components/Admin/Page/Pag
 import Grid from 'corteza-webapp-compose/src/components/Common/Grid'
 import PageBlock from 'corteza-webapp-compose/src/components/PageBlocks'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
-import { compose, NoID } from '@cortezaproject/corteza-js'
+import { compose } from '@cortezaproject/corteza-js'
 import Configurator from 'corteza-webapp-compose/src/components/PageBlocks/Configurator'
 
 export default {
@@ -256,12 +255,8 @@ export default {
       return { name: 'page', params: { pageID: this.pageID } }
     },
 
-    pageEditorDisabled () {
-      return this.page && this.page.moduleID !== NoID
-    },
-
     pageEditor () {
-      return this.page && this.page.moduleID === NoID ? { name: 'admin.pages.edit', params: { pageID: this.pageID } } : { name: 'admin.modules.edit', params: { moduleID: this.page.moduleID } }
+      return { name: 'admin.pages.edit', params: { pageID: this.pageID } }
     },
 
     hasChildren () {
