@@ -144,9 +144,7 @@
     <portal to="admin-toolbar">
       <editor-toolbar
         :back-link="{name: 'admin.pages'}"
-        :hide-delete="!page.canDeletePage"
-        :disable-delete="hasChildren"
-        :delete-tooltip="hasChildren ? $t('deleteDisabled') : ''"
+        :hide-delete="hasChildren || !page.canDeletePage"
         :hide-save="!page.canUpdatePage"
         hide-clone
         @save="handleSave()"
@@ -162,6 +160,27 @@
         >
           + {{ $t('build.addBlock') }}
         </b-button>
+
+        <template #delete>
+          <b-dropdown
+            v-if="hasChildren && page.canDeletePage"
+            size="lg"
+            variant="danger"
+            :text="$t('general:label.delete')"
+            class="mr-1"
+          >
+            <b-dropdown-item
+              @click="handleDeletePage('rebase')"
+            >
+              {{ $t('delete.rebase') }}
+            </b-dropdown-item>
+            <b-dropdown-item
+              @click="handleDeletePage('cascade')"
+            >
+              {{ $t('delete.cascade') }}
+            </b-dropdown-item>
+          </b-dropdown>
+        </template>
       </editor-toolbar>
     </portal>
   </div>
@@ -382,8 +401,8 @@ export default {
       return !req.size
     },
 
-    handleDeletePage () {
-      this.deletePage(this.page).then(() => {
+    handleDeletePage (strategy = 'abort') {
+      this.deletePage({ ...this.page, strategy }).then(() => {
         this.$router.push({ name: 'admin.pages' })
       }).catch(this.toastErrorHandler(this.$t('notification:page.deleteFailed')))
     },

@@ -31,6 +31,7 @@
       <div
         class="d-flex wrap-with-vertical-gutters align-items-center ml-auto"
       >
+        <slot name="delete" />
         <c-input-confirm
           v-if="!hideDelete"
           v-b-tooltip.hover
