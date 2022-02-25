@@ -1,7 +1,6 @@
 <template>
   <wrap
     v-bind="$props"
-    scrollable-body
     v-on="$listeners"
   >
     <template #default>
@@ -16,11 +15,12 @@
         class="h-100"
       >
         <draggable
+          :id="draggableID"
           v-model="records"
-          :disabled="!canReposition"
-          :group="{ name: moduleID, put: canReposition }"
-          class="h-100 px-2 pt-2"
-          @change="onDrop"
+          :group="{ name: moduleID, pull: canPull, put: canPut }"
+          :move="checkMove"
+          class="h-100 pt-2 px-2 overflow-auto"
+          @change="onChange"
         >
           <template
             v-if="!records.length"
@@ -34,19 +34,19 @@
           </template>
           <router-link
             v-for="record in records"
-            :key="record.recordID"
-            tag="b-card-body"
-            class="py-0 px-2"
-            :class="{ 'mb-2': true, 'grab': canReposition && record.canUpdateRecord }"
-            :to="{ name: 'page.record', params: { pageID: roRecordPage.pageID, recordID: record.recordID }, query: null }"
+            :key="`${record.recordID}`"
+            tag="div"
+            class="mb-2 py-1 px-2 border rounded"
+            :class="{ 'pointer': roRecordPage, 'grab': canPull && record.canUpdateRecord }"
+            :to="{ name: 'page.record', params: { pageID: (roRecordPage || {}).pageID, recordID: record.recordID }, query: null }"
           >
             <b-card-title
-              v-if="titleField"
+              v-if="labelField"
               title-tag="h5"
             >
               <field-viewer
-                v-if="titleField.canReadRecordValue"
-                :field="titleField"
+                v-if="labelField.canReadRecordValue"
+                :field="labelField"
                 :record="record"
                 :namespace="namespace"
                 value-only
@@ -80,14 +80,14 @@
       #footer
     >
       <div
-        class="d-flex justify-content-end align-items-center m-0 p-2"
+        class="d-flex align-items-center m-0 px-1 py-2"
       >
         <b-button
-          size="sm"
-          variant="outline-primary"
+          variant="link"
+          class="text-decoration-none pl-2"
           @click.prevent="createNewRecord"
         >
-          + {{ $t('recordList.addRecord') }}
+          {{ $t('recordOrganizer.addNewRecord') }}
         </b-button>
       </div>
     </template>
@@ -136,6 +136,10 @@ export default {
       pages: 'page/set',
     }),
 
+    draggableID () {
+      return `recordOrganizer-${this.blockIndex}`
+    },
+
     roModule () {
       return this.getModuleByID(this.moduleID)
     },
@@ -148,7 +152,7 @@ export default {
       return this.options.moduleID
     },
 
-    titleField () {
+    labelField () {
       const { labelField } = this.options
 
       if (!labelField) {
@@ -172,18 +176,28 @@ export default {
       const { positionField } = this.options
 
       if (!positionField) {
-        return {}
+        return undefined
       }
 
       return this.roModule.fields.find(f => f.name === positionField) || {}
     },
 
-    canReposition () {
-      if (!this.positionField.fieldID) {
-        return false
+    groupField () {
+      const { groupField } = this.options
+
+      if (!groupField) {
+        return undefined
       }
 
-      return this.positionField.canUpdateRecordValue
+      return this.roModule.fields.find(f => f.name === groupField) || {}
+    },
+
+    canPull () {
+      return this.positionField ? this.positionField.canUpdateRecordValue : true
+    },
+
+    canPut () {
+      return this.canPull && (this.groupField ? this.groupField.canUpdateRecordValue : true)
     },
 
     canAddRecord () {
@@ -191,31 +205,46 @@ export default {
     },
 
     isConfigured () {
-      return !!(this.titleField || this.descriptionField)
+      return !!(this.labelField || this.descriptionField)
     },
   },
 
-  beforeMount () {
-    if (!this.options.moduleID) {
-      // Make sure block is properly configured
-      throw Error(this.$t('notification:record.moduleOrPageNotSet'))
-    }
+  watch: {
+    options: {
+      immediate: true,
+      deep: true,
+      handler (options = {}) {
+        if (!options.moduleID) {
+          // Make sure block is properly configured
+          throw Error(this.$t('notification:record.moduleOrPageNotSet'))
+        }
 
-    if (this.roModule) {
-      this.fetchRecords(this.roModule, this.expandFilter())
-        .then(rr => {
-          this.records = rr
-          const fields = [this.titleField, this.descriptionField].filter(f => !!f)
-          this.fetchUsers(fields, this.records)
-        })
-        .catch(e => {
-          console.error(e)
-        })
-    }
+        if (this.roModule) {
+          this.fetchRecords(this.roModule, this.expandFilter())
+            .then(rr => {
+              this.records = rr
+              const fields = [this.labelField, this.descriptionField].filter(f => !!f)
+              this.fetchUsers(fields, this.records)
+            })
+            .catch(e => {
+              console.error(e)
+            })
+        }
+      },
+    },
   },
 
   methods: {
-    onDrop ({ added, moved, ...foo }) {
+    // Allow move if repositioned or if record isn't in target record organizer
+    checkMove ({ draggedContext = {}, relatedContext = {} }) {
+      const { recordID } = draggedContext.element || {}
+      const { $el = {}, $options = {} } = relatedContext.component || {}
+      const relatedRecords = ($options.propsData || {}).value || []
+
+      return this.draggableID === $el.id || !relatedRecords.some(r => r.recordID === recordID)
+    },
+
+    onChange ({ added, moved }) {
       if (added) {
         this.reorganize(added)
       } else if (moved) {
@@ -364,8 +393,9 @@ export default {
         throw Error('Module incompatible, module mismatch')
       }
 
-      const { positionField: sort } = this.options
+      const { labelField, descriptionField, positionField } = this.options
       const { moduleID, namespaceID } = module
+      const sort = positionField || `updatedAt, ${labelField || descriptionField}`
 
       return this.$ComposeAPI.recordList({ namespaceID, moduleID, query, sort })
         .then(({ set }) => set.map(r => Object.freeze(new compose.Record(module, r))))
@@ -376,6 +406,6 @@ export default {
 
 <style lang="scss" scoped>
 .grab {
-  cursor: grab;
+  cursor: grab !important;
 }
 </style>
