@@ -6,45 +6,53 @@
     :supported-metrics="1"
     un-skippable
   >
-    <template #dimension-options="{ dimension, field }">
-      <field-picker
-        v-if="renderPicker(field)"
-        :module="makeOptions(field, dimension)"
-        :fields.sync="dimension.meta.fields"
-        disable-system-fields
+    <template #dimension-options="{ index, dimension, field }">
+      <c-item-picker
+        v-if="showPicker(field)"
+        :value="getOptions(dimension)"
+        :options="field.options.options"
+        :labels="{
+          searchPlaceholder:$t('edit.dimension.optionsPicker.searchPlaceholder'),
+          availableItems: $t('edit.dimension.optionsPicker.availableItems'),
+          selectAllItems: $t('edit.dimension.optionsPicker.selectAllItems'),
+          selectedItems: $t('edit.dimension.optionsPicker.selectedItems'),
+          unselectAllItems: $t('edit.dimension.optionsPicker.unselectAllItems'),
+          noItemsFound: $t('edit.dimension.optionsPicker.noItemsFound'),
+        }"
         class="d-flex flex-column"
+        style="max-height: 60vh;"
+        @update:value="setOptions(index, field, $event)"
       />
     </template>
   </report-edit>
 </template>
 
 <script>
-import ReportEdit from './ReportEdit'
-import FieldPicker from 'corteza-webapp-compose/src/components/Common/FieldPicker'
 import base from './base'
+import ReportEdit from './ReportEdit'
+import { components } from '@cortezaproject/corteza-vue'
+const { CItemPicker } = components
 
 export default {
   components: {
     ReportEdit,
-    FieldPicker,
+    CItemPicker,
   },
 
   extends: base,
 
   methods: {
-    renderPicker (field) {
-      return field && field.kind === 'Select' && field.options.options
+    showPicker (field) {
+      return this.chartModule && field && field.kind === 'Select' && field.options.options
     },
 
-    makeOptions (field, dimension) {
-      const ff = dimension.meta.fields || []
-      return {
-        ...field.options.options.map(({ text, value }) => ({
-          text,
-          value,
-          color: (ff.find(b => value === b.value) || {}).color,
-        })),
-      }
+    getOptions ({ meta = {} }) {
+      const { fields = [] } = meta
+      return fields.map(({ value }) => value)
+    },
+
+    setOptions (index, field, fields) {
+      this.editReport.dimensions[index].meta.fields = field.options.options.filter(({ value }) => fields.includes(value))
     },
   },
 }

@@ -70,7 +70,7 @@
                         option-value="value"
                         :placeholder="$t('colorScheme.placeholder')"
                         :clearable="true"
-                        class="h-100 w-100"
+                        class="bg-white h-100 w-100"
                       >
                         <template #option="option">
                           <div

@@ -146,6 +146,7 @@
 
           <slot
             name="dimension-options"
+            :index="i"
             :dimension="d"
             :field="getField(d)"
           />
