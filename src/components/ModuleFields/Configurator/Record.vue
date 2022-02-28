@@ -12,7 +12,7 @@
     </b-form-group>
 
     <b-form-group
-      :label="$t('kind.record.recordFieldLabel')"
+      :label="$t('kind.record.moduleField')"
     >
       <b-form-select
         v-model="f.options.labelField"
@@ -25,7 +25,7 @@
       v-if="labelField && labelField.kind === 'Record'"
     >
       <b-form-group
-        label="Record field label"
+        :label="$t('kind.record.fieldFromModuleField')"
       >
         <b-form-select
           v-model="f.options.recordLabelField"
@@ -156,7 +156,7 @@ export default {
       return [
         {
           value: undefined,
-          text: this.$t('kind.record.recordFieldPlaceholder'),
+          text: this.$t('kind.record.pickField'),
           disabled: true,
         },
         ...fields.sort((a, b) => a.text.localeCompare(b.text)),
@@ -192,7 +192,7 @@ export default {
         return [
           {
             value: undefined,
-            text: this.$t('kind.record.recordFieldPlaceholder'),
+            text: this.$t('kind.record.pickField'),
             disabled: true,
           },
           ...fields.sort((a, b) => a.text.localeCompare(b.text)),
