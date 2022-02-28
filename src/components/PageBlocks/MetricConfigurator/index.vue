@@ -392,7 +392,9 @@ export default {
     addMetric () {
       const m = {
         labelStyle: {},
-        valueStyle: {},
+        valueStyle: {
+          backgroundColor: '#ffffff',
+        },
       }
       this.metrics.push(m)
       this.editMetric(m)
