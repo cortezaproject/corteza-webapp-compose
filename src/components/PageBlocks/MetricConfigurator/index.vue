@@ -262,7 +262,10 @@
           lg="5"
         >
           <b-card>
-            <div class="text-right">
+            <div
+              v-if="metrics.length"
+              class="d-flex ml-auto"
+            >
               <b-btn
                 variant="outline-primary"
                 @click="$root.$emit('metric.update')"
