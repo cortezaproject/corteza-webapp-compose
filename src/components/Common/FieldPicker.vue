@@ -108,6 +108,7 @@ export default {
      */
     selected: {
       get () {
+        // debugger
         // Only need names of the fields
         return this.fields.map(({ name }) => name)
       },
@@ -125,6 +126,7 @@ export default {
     },
 
     options () {
+      // debugger
       let mFields = []
       if (this.fieldSubset) {
         mFields = this.module.filterFields(this.fieldSubset)
@@ -169,6 +171,7 @@ export default {
         }))
       } else {
         return Object.keys(this.module).map(key => {
+          // debugger
           return this.module[key]
         }).map(f => ({
           ...f,
@@ -176,6 +179,17 @@ export default {
             name: f.text,
           },
         }))
+
+        // debugger
+        // return Object.keys(this.module).map(key => {
+        //   // debugger
+        //   return this.module[key]
+        // }).map(f => ({
+        //   ...f,
+        //   field: {
+        //     name: f.text,
+        //   },
+        // }))
       }
     },
   },
