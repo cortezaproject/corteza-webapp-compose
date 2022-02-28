@@ -51,13 +51,14 @@
       footer-bg-variant="white"
     >
       <b-button-group
-        class="d-flex mt-2"
+        class="mt-2 d-block d-md-flex"
       >
         <b-button
           v-if="isEnabled"
           :to="{ name: 'pages', params: { slug: (namespace.slug || namespace.namespaceID) } }"
           :aria-label="$t('visit') + ' ' + namespace.name"
           variant="light"
+          class="d-flex align-items-center justify-content-center mb-1 mb-md-0"
         >
           {{ $t('visit') }}
         </b-button>
@@ -66,7 +67,7 @@
           :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }"
           :aria-label="$t('edit') + ' ' + namespace.name"
           variant="light"
-          class="d-flex align-items-center justify-content-center ml-2"
+          class="d-flex align-items-center justify-content-center ml-md-1"
         >
           {{ $t('general:label.edit') }}
         </b-button>
