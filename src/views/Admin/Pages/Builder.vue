@@ -56,6 +56,7 @@
         >
           <div
             class="toolbox border-0 p-2 pr-3 m-0 text-light text-center"
+            style="z-index: 1021;"
           >
             <b-button
               class="p-1 text-light"
