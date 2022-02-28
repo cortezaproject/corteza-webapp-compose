@@ -43,7 +43,7 @@ export default {
 
   methods: {
     showPicker (field) {
-      return this.chartModule && field && field.kind === 'Select' && field.options.options
+      return field && field.kind === 'Select' && field.options.options
     },
 
     getOptions ({ meta = {} }) {
