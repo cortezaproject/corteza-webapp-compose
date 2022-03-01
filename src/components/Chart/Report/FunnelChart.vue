@@ -52,7 +52,10 @@ export default {
     },
 
     setOptions (index, field, fields) {
-      this.editReport.dimensions[index].meta.fields = field.options.options.filter(({ value }) => fields.includes(value))
+      this.editReport.dimensions[index].meta.fields = fields.map(f => {
+        const { options = [] } = field.options || {}
+        return options.find(({ value }) => value === f)
+      })
     },
   },
 }

@@ -116,9 +116,9 @@ export default {
         // take list of field names passed to the setter
         // and filter out the options to recreate the list
         // module field objects
-        const fields = this.options
-          .filter(f => selected.includes(f.value))
-          .map(({ field }) => field)
+        const fields = selected.map(s => {
+          return (this.options.find(({ value }) => value === s) || {}).field
+        }).filter(f => f)
 
         this.$emit('update:fields', fields)
       },
