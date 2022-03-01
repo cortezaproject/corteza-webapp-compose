@@ -6,7 +6,7 @@
       force-show
       class="m-0"
     >
-      {{ error.message }}
+      {{ $t(error.message) }}
     </b-form-invalid-feedback>
   </div>
 </template>
