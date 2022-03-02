@@ -1,5 +1,6 @@
 <template>
   <wrap
+    class="d-print-block"
     v-bind="$props"
     v-on="$listeners"
   >

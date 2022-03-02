@@ -12,8 +12,7 @@
       >
         <b-button
           variant="primary"
-          style="margin-right:2px;"
-          class="d-flex align-items-center"
+          class="d-flex align-items-center mr-1"
           :to="pageBuilder"
         >
           {{ $t('label.pageBuilder') }}

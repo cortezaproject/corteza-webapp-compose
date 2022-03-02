@@ -6,7 +6,7 @@
     <div
       v-for="(m, mi) in options.metrics"
       :key="mi"
-      class="h-100 d-flex align-items-center justify-content-center overflow-hidden"
+      class="h-100 align-items-center justify-content-center overflow-hidden"
     >
       <div
         v-for="(v, i) in formatResponse(m, mi)"

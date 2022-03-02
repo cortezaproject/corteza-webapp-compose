@@ -16,6 +16,7 @@
           userSettingsChangePassword: $t('userSettings.changePassword'),
           userSettingsLogout: $t('userSettings.logout'),
         }"
+        class="d-print-none"
       >
         <template #title>
           <portal-target name="topbar-title" />
@@ -31,7 +32,7 @@
       </c-topbar>
     </header>
 
-    <aside>
+    <aside class="d-print-none">
       <c-sidebar
         :expanded.sync="expanded"
         :pinned.sync="pinned"
@@ -55,14 +56,14 @@
       </c-sidebar>
     </aside>
 
-    <main class="d-inline-flex h-100 overflow-auto">
+    <main class="d-inline-flex h-100 overflow-auto d-print-flex">
       <!--
         Content spacer
         Large and xl screens should push in content when the nav is expanded
       -->
       <template>
         <div
-          class="spacer"
+          class="spacer d-print-none"
           :class="{
             'expanded': expanded && pinned,
           }"

@@ -33,7 +33,7 @@
     <template #toolbar>
       <b-container
         ref="toolbar"
-        class="py-2"
+        class="py-2 d-print-none"
         fluid
       >
         <b-row
@@ -227,6 +227,7 @@
                   class="d-flex"
                 >
                   <record-list-filter
+                    class="d-print-none"
                     :selected-field="field.moduleField"
                     :namespace="namespace"
                     :module="recordListModule"
@@ -238,7 +239,9 @@
                     variant="link p-0 ml-1"
                     class="d-flex align-items-center justify-content-center"
                   >
-                    <font-awesome-layers>
+                    <font-awesome-layers
+                      class="d-print-none"
+                    >
                       <font-awesome-icon
                         :icon="['fas', 'angle-up']"
                         class="mb-1"
@@ -431,7 +434,7 @@
                 <b-button
                   v-if="!options.hideRecordViewButton && item.r.canReadRecord && recordPageID"
                   variant="link"
-                  class="p-0 m-0 pl-1 text-primary"
+                  class="p-0 m-0 pl-1 text-primary d-print-none"
                   :to="{ name: options.rowViewUrl || 'page.record', params: { pageID: recordPageID, recordID: item.r.recordID }, query: null }"
                 >
                   <font-awesome-icon
@@ -455,7 +458,7 @@
 
       <div
         v-if="!items.length || processing"
-        class="position-absolute w-100 h-100"
+        class="position-absolute w-100 h-100 d-print-none"
         style="top: -1rem;"
       >
         <div
@@ -507,7 +510,7 @@
                 v-if="options.fullPageNavigation"
                 align="right"
                 aria-controls="record-list"
-                class="m-0"
+                class="m-0 d-print-none"
                 pills
                 variant="link"
                 :value="getPagination.page"

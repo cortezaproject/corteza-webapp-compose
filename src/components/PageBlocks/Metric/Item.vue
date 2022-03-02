@@ -3,6 +3,16 @@
     :style="genStyle(metric.valueStyle)"
     class="h-100 text-center"
   >
+    <!--    This div is here because .svg metrics dont render with print to PDF option-->
+    <div class="d-none d-print-block">
+      <template v-if="metric.prefix">
+        {{ metric.prefix }}
+      </template>
+      {{ value.value }}
+      <template v-if="metric.suffix">
+        {{ metric.suffix }}
+      </template>
+    </div>
     <svg
       :viewBox="getVB"
       class="h-100 w-100 align-items-end d-flex"
@@ -17,9 +27,13 @@
         dominant-baseline="central"
         text-rendering="geometricPrecision"
       >
-        <template v-if="metric.prefix">{{ metric.prefix }}</template>
+        <template v-if="metric.prefix">
+          {{ metric.prefix }}
+        </template>
         {{ value.value }}
-        <template v-if="metric.suffix">{{ metric.suffix }}</template>
+        <template v-if="metric.suffix">
+          {{ metric.suffix }}
+        </template>
       </text>
     </svg>
   </div>
