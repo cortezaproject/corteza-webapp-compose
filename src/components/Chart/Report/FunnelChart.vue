@@ -20,7 +20,7 @@
           noItemsFound: $t('edit.dimension.optionsPicker.noItemsFound'),
         }"
         class="d-flex flex-column"
-        style="max-height: 60vh;"
+        style="max-height: 45vh;"
         @update:value="setOptions(index, field, $event)"
       />
     </template>
