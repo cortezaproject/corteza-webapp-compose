@@ -24,6 +24,20 @@
         @update:value="setOptions(index, field, $event)"
       />
     </template>
+
+    <template #metric-options="{ metric }">
+      <b-form-group
+        horizontal
+        :label-cols="2"
+        breakpoint="md"
+      >
+        <b-form-checkbox
+          v-model="metric.cumulative"
+        >
+          {{ $t('edit.metric.cumulative') }}
+        </b-form-checkbox>
+      </b-form-group>
+    </template>
   </report-edit>
 </template>
 
