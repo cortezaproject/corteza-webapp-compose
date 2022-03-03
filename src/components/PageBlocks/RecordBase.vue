@@ -35,7 +35,6 @@
         >
           <field-viewer
             v-bind="{ ...$props, field }"
-            value-only
           />
         </div>
         <i

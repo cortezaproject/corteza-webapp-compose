@@ -48,7 +48,7 @@
       variant="primary"
       size="sm"
       :class="{ 'mt-2': val.length }"
-      @click="val.push(undefined)"
+      @click="val.push(defaultValue)"
     >
       + {{ $t('label.addValue') }}
     </b-button>
@@ -89,6 +89,11 @@ export default {
     errors: {
       type: validator.Validated,
       required: true,
+    },
+
+    defaultValue: {
+      type: undefined,
+      default: undefined,
     },
   },
 
