@@ -139,10 +139,9 @@
       class="d-flex"
     >
       <span
-        v-if="!!getExportableCount"
         class="my-auto"
       >
-        {{ $t('recordList.export.recordCount', { count: getExportableCount}) }}
+        {{ $t('recordList.export.recordCount', { count: getExportableCount || 0 }) }}
       </span>
       <span class="ml-auto">
         <c-input-processing
@@ -277,6 +276,7 @@ export default {
           end: null,
         },
       },
+      rangeRecordCount: 0,
     }
   },
 
@@ -365,6 +365,8 @@ export default {
       // when exporting selection, only selected records are applicable
       if (this.rangeType === 'selection') {
         return this.selection.length
+      } else if (this.rangeType === 'range') {
+        return this.rangeRecordCount
       }
       return this.recordCount
     },
@@ -456,6 +458,13 @@ export default {
         this.filter.date.range = 'custom'
       },
     },
+
+    currentRange () {
+      if (this.rangeType === 'range') {
+        return { start: this.start, end: this.end, rangeBy: this.rangeBy }
+      }
+      return undefined
+    },
   },
 
   // Watchers needed for storybook
@@ -513,6 +522,12 @@ export default {
         }
       },
       immediate: true,
+    },
+
+    currentRange: {
+      handler (range = {}) {
+        this.getTotalRangeCount(range)
+      },
     },
   },
 
@@ -593,6 +608,19 @@ export default {
         filterRaw: this.filter,
         timezone: this.forTimezone ? this.exportTimezone : undefined,
       })
+    },
+
+    getTotalRangeCount ({ start, end }) {
+      if (start || end) {
+        const { moduleID, namespaceID } = this.module || {}
+        const query = this.makeFilters(this.filter)
+        if (moduleID && namespaceID) {
+          this.$ComposeAPI.recordList({ namespaceID, moduleID, query, incTotal: true })
+            .then(({ filter = {} }) => {
+              this.rangeRecordCount = filter.total || 0
+            })
+        }
+      }
     },
   },
 }
