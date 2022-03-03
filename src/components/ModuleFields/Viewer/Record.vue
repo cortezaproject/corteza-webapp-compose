@@ -1,6 +1,5 @@
 <template>
   <div>
-    <label v-if="!valueOnly">{{ field.label || field.name }}</label>
     <div v-if="valid">
       <div v-if="field.isMulti">
         <span
