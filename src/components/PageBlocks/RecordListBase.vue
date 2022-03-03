@@ -81,7 +81,7 @@
               <exporter-modal
                 v-if="options.allowExport && !inlineEditing"
                 :module="recordListModule"
-                :record-count="items.length"
+                :record-count="pagination.count"
                 :query="query"
                 :prefilter="prefilter"
                 :selection="selected"
