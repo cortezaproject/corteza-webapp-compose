@@ -61,6 +61,18 @@
 
                     {{ $t('edit.federationSettings.title') }}
                   </b-button>
+                  <b-button
+                    v-if="discoveryEnabled"
+                    variant="light"
+                    size="lg"
+                    class="mr-1"
+                    @click="discoverySettings.modal = true"
+                  >
+                    <font-awesome-icon
+                      :icon="['fas', 'search-location']"
+                    />
+                    {{ $t('edit.discoverySettings.title') }}
+                  </b-button>
                   <export
                     :list="[module]"
                     type="module"
@@ -325,6 +337,13 @@
       @change="federationSettings.modal = ($event || false)"
     />
 
+    <discovery-settings
+      v-if="discoveryEnabled"
+      :modal.sync="discoverySettings.modal"
+      :module.sync="module"
+      @save="onDiscoverySettingsSave"
+    />
+
     <portal to="admin-toolbar">
       <editor-toolbar
         :back-link="{name: 'admin.modules'}"
@@ -347,6 +366,7 @@ import FieldConfigurator from 'corteza-webapp-compose/src/components/ModuleField
 import FieldRowEdit from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowEdit'
 import FieldRowView from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowView'
 import FederationSettings from 'corteza-webapp-compose/src/components/Admin/Module/FederationSettings'
+import DiscoverySettings from 'corteza-webapp-compose/src/components/Admin/Module/DiscoverySettings'
 import ModuleTranslator from 'corteza-webapp-compose/src/components/Admin/Module/ModuleTranslator'
 import { compose, NoID } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
@@ -364,6 +384,7 @@ export default {
     FieldRowEdit,
     FieldRowView,
     FederationSettings,
+    DiscoverySettings,
     ModuleTranslator,
     EditorToolbar,
     Export,
@@ -390,6 +411,10 @@ export default {
       processing: false,
 
       federationSettings: {
+        modal: false,
+      },
+
+      discoverySettings: {
         modal: false,
       },
     }
@@ -458,6 +483,10 @@ export default {
 
     federationEnabled () {
       return this.$Settings.get('federation.enabled', false) && this.module.moduleID && !this.creatingModule
+    },
+
+    discoveryEnabled () {
+      return this.$Settings.get('discovery.enabled', false)
     },
 
     hideDelete () {
@@ -530,6 +559,10 @@ export default {
       if (i > -1) {
         this.module.fields.splice(i, 1, field)
       }
+    },
+
+    onDiscoverySettingsSave (meta) {
+      this.module.meta = { ...this.module.meta, ...meta }
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {
