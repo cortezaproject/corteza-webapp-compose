@@ -154,6 +154,7 @@
             />
             <c-input-confirm
               v-if="!inlineEditing"
+              class="ml-2"
               variant="link-light"
               @confirmed="handleDeleteSelectedRecords()"
             />
