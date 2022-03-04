@@ -12,7 +12,7 @@
 
     <automation-buttons
       v-else
-      class="d-flex flex-wrap"
+      class="d-flex flex-wrap my-2"
       button-class="my-1 mx-3 flex-fill"
       :buttons="options.buttons"
       :automation-scripts="automationScripts"
