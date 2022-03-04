@@ -3,9 +3,7 @@ import VTooltip from 'v-tooltip'
 import BootstrapVue from 'bootstrap-vue'
 import Router from 'vue-router'
 import Vuex from 'vuex'
-import VueProgressBar from 'vue-progressbar'
 import VueNativeSock from 'vue-native-websocket'
-import vars from '../themes/corteza-base/variables.scss'
 
 import { plugins, websocket } from '@cortezaproject/corteza-vue'
 
@@ -25,13 +23,7 @@ Vue.use(BootstrapVue, {
 })
 Vue.use(Router)
 Vue.use(Vuex)
-Vue.use(VueProgressBar, {
-  color: vars.primary,
-  failedColor: vars.danger,
-  thickness: '7px',
-})
 
-//
 Vue.use(plugins.Auth(), { app: 'compose' })
 
 Vue.use(plugins.CortezaAPI('compose'))

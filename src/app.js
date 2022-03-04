@@ -21,7 +21,7 @@ export default (options = {}) => {
   options = {
     el: '#app',
     name: 'compose',
-    template: '<div><router-view v-if="loaded && i18nLoaded" /><vue-progress-bar /></div>',
+    template: '<div><router-view v-if="loaded && i18nLoaded" /></div>',
 
     mixins: [
       mixins.corredor,
@@ -32,13 +32,7 @@ export default (options = {}) => {
       i18nLoaded: false,
     }),
 
-    mounted () {
-      this.$Progress.finish()
-    },
-
     async created () {
-      this.$Progress.start()
-
       this.$i18n.i18next.on('loaded', () => {
         this.i18nLoaded = true
       })
@@ -61,15 +55,6 @@ export default (options = {}) => {
             .setHeader('Accept-Language', user.meta.preferredLanguage)
             .setHeader('Content-Language', user.meta.preferredLanguage)
         }
-
-        // Set up the progress bar
-        this.$router.beforeEach((to, from, next) => {
-          this.$Progress.start()
-          next()
-        })
-        this.$router.afterEach((to, from) => {
-          this.$Progress.finish()
-        })
 
         // ref to vue is needed inside compose helper
         // load and register bundle and list of client/server scripts

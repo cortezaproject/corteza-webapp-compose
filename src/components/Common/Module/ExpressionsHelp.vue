@@ -527,22 +527,6 @@ export default {
   overflow-y: auto;
 }
 
-/deep/.w10 {
-  width: 10%;
-}
-
-/deep/.w20 {
-  width: 20%;
-}
-
-/deep/.w25 {
-  width: 25%;
-}
-
-/deep/.w30 {
-  width: 30%;
-}
-
 kbd {
   margin: 2px;
 }

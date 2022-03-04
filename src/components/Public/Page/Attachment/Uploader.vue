@@ -186,10 +186,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#dropzone /deep/ .dz-message {
-  height: 100%;
-}
-
 div {
   .droparea {
     cursor: pointer;

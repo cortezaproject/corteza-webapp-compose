@@ -189,7 +189,7 @@
         hover
         responsive
         sticky-header
-        class="mh-100 h-100 border-top"
+        class="record-table mh-100 h-100 border-top"
       >
         <b-thead>
           <b-tr>
@@ -1297,20 +1297,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/deep/ table {
-  tbody {
-    tr {
-      td.record-value {
-        cursor: pointer;
-      }
-
-      th.selector, td.selector {
-        width: 25px !important;
-      }
-    }
-  }
-}
-
 .handle {
   cursor: grab;
 }
