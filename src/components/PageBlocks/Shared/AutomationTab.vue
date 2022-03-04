@@ -44,7 +44,7 @@
                 v-if="buttons.length"
                 variant="link"
                 size="md"
-                @confirmed="buttons.splice(0)"
+                @confirmed="removeAllButtons"
               >
                 {{ $t('automation.removeAll') }}
               </c-input-confirm>
@@ -257,12 +257,10 @@ export default {
       this.buttons.push(this.currentButton)
     },
 
-    deleteButton ({ script = '', stepID = '', workflowID = '' }) {
-      const i = this.buttons.findIndex(b => (b.script === script) || (`${b.workflowID}-${b.stepID}` === `${workflowID}-${stepID}`))
-      if (i > -1) {
-        this.buttons.splice(i, 1)
-        this.currentButton = undefined
-      }
+    deleteButton (button = {}) {
+      const i = this.buttons.indexOf(button)
+      this.buttons.splice(i, 1)
+      this.currentButton = undefined
     },
 
     async fetchTriggers () {
@@ -331,6 +329,11 @@ export default {
         .catch(err => {
           console.error(err)
         })
+    },
+
+    removeAllButtons () {
+      this.buttons.splice(0)
+      this.currentButton = undefined
     },
   },
 }
