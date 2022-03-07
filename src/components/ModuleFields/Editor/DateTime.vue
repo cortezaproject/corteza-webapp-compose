@@ -40,6 +40,9 @@
         :no-time="field.options.onlyDate"
         :only-future="field.options.onlyFutureValues"
         :only-past="field.options.onlyPastValues"
+        :labels="{
+          none: $t('general:label.none')
+        }"
       />
     </multi>
 
@@ -52,6 +55,9 @@
         :no-time="field.options.onlyDate"
         :only-future="field.options.onlyFutureValues"
         :only-past="field.options.onlyPastValues"
+        :labels="{
+          none: $t('general:label.none')
+        }"
       />
       <errors :errors="errors" />
     </template>

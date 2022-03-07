@@ -15,7 +15,7 @@
       triggers="click blur"
       placement="bottom"
       delay="0"
-      boundary="viewport"
+      boundary="window"
       boundary-padding="2"
       :target="selectedFieldId"
       @show="onOpen"
@@ -428,18 +428,24 @@ export default {
 }
 </script>
 <style lang="scss">
-.cpopover .popover-body {
-  max-width: 800px;
-  max-height: 500px;
-  overflow-y: auto;
-  padding: 0;
-  color: #2d2d2d;
-  text-align: center;
-  background: white;
-  border-radius: 0.25rem;
+.cpopover {
+  max-width: 800px !important;
   opacity: 1 !important;
-  box-shadow: 0 3px 48px #00000026;
-  font-size: 0.9rem;
+  border-color: transparent;
+
+  .popover-body {
+    max-width: 800px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 0;
+    color: #2d2d2d;
+    text-align: center;
+    background: white;
+    border-radius: 0.25rem;
+    opacity: 1 !important;
+    box-shadow: 0 3px 48px #00000026;
+    font-size: 0.9rem;
+  }
 }
 
 .cpopover .arrow {
@@ -451,12 +457,6 @@ export default {
   &::after {
     border-top-color: white;
   }
-}
-
-.cpopover {
-  max-width: 800px;
-  opacity: 1 !important;
-  border-color: transparent;
 }
 
 .child-inline-flex > span {
@@ -471,6 +471,7 @@ export default {
   }
 }
 </style>
+
 <style lang="scss" scoped>
 .filter-border {
   background-image: linear-gradient(to left, lightgray, lightgray);
