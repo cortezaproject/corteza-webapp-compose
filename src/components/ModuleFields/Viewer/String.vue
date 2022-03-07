@@ -18,9 +18,3 @@ export default {
   extends: base,
 }
 </script>
-
-<style>
-.multiline {
-  white-space: pre-line;
-}
-</style>

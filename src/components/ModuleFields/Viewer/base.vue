@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div :class="classes">
-      {{ formatted }}
-    </div>
+    <!-- Extra empty line is added thanks to white-space: pre-line (multivalue) if we write div in multiple lines  -->
+    <!-- eslint-disable-next-line -->
+    <div :class="classes">{{ formatted }}</div>
     <errors :errors="errors" />
   </div>
 </template>

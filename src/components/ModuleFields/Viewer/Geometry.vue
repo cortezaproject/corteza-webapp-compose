@@ -107,9 +107,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.multiline {
-  white-space: pre-line;
-}
-</style>

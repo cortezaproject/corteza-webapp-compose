@@ -13,7 +13,7 @@ export default {
 
     classes () {
       if (this.field.isMulti) {
-        return ['multiline', 'text-nowrap']
+        return ['multiline']
       }
       return ['text-nowrap']
     },
