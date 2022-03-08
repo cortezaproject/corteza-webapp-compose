@@ -46,18 +46,22 @@
                 </td>
                 <td>
                   <vue-select
-                    v-model="selectedField.label"
+                    v-model="filter.name"
                     :options="fieldOptions"
                     :clearable="false"
-                    option-text="name"
-                    option-value="label"
                     :append-to-body="true"
+                    :placeholder="$t('recordList.filter.fieldPlaceholder')"
+                    option-value="name"
+                    option-text="label"
+                    :reduce="f => f.name"
+                    :class="{ 'filter-field-picker': !!filter.name }"
                     class="bg-white"
                     @input="onChange($event, groupIndex, index)"
                   />
                 </td>
                 <td>
                   <b-form-select
+                    v-if="getField(filter.name)"
                     v-model="filter.operator"
                     :options="getOperators(filter.kind)"
                   />
@@ -66,7 +70,7 @@
                   <field-editor
                     v-if="getField(filter.name)"
                     v-bind="mock"
-                    class="field-editor mb-0"
+                    class="filter-field-editor mb-0"
                     value-only
                     :field="getField(filter.name)"
                     :record="filter.record"
@@ -226,12 +230,12 @@ export default {
     },
 
     fieldOptions () {
-      return this.fields.filter(f => !f.isSystem).map(({ name, label }) => ({ name, label: label || name }))
+      return this.fields.map(({ name, label }) => ({ name, label: label || name }))
     },
 
     inFilter () {
       return this.recordListFilter.some(({ filter }) => {
-        return filter.some(({ name, value }) => name === this.selectedField.name && value)
+        return filter.some(({ name }) => name === this.selectedField.name)
       })
     },
 
@@ -332,16 +336,16 @@ export default {
     getField (name = '') {
       const field = name ? this.mock.module.fields.find(f => f.name === name) : undefined
 
-      return { ...field }
+      return field ? { ...field } : undefined
     },
 
-    createDefaultFilter (condition, field) {
+    createDefaultFilter (condition) {
       return {
-        condition: condition,
-        name: field.name,
+        condition,
+        name: undefined,
         operator: '=',
         value: undefined,
-        kind: field.kind,
+        kind: undefined,
         record: new compose.Record(this.mock.module, {}),
       }
     },
@@ -350,14 +354,14 @@ export default {
       return {
         groupCondition,
         filter: [
-          this.createDefaultFilter('Where', this.selectedField),
+          this.createDefaultFilter('Where'),
         ],
       }
     },
 
     addFilter (groupIndex) {
       if ((this.componentFilter[groupIndex] || {}).filter) {
-        this.componentFilter[groupIndex].filter.push(this.createDefaultFilter('AND', this.selectedField))
+        this.componentFilter[groupIndex].filter.push(this.createDefaultFilter('AND'))
       }
     },
 
@@ -476,9 +480,10 @@ export default {
   padding: 0;
 }
 
-.field-editor {
+.filter-field-editor {
   .v-select {
-    max-width: 15vw;
+    min-width: 13vw;
+    max-width: 13vw;
   }
 }
 </style>
@@ -505,5 +510,10 @@ td {
     background-color: $primary !important;
     color: white !important;
   }
+}
+
+.filter-field-picker {
+  min-width: 13vw;
+  max-width: 13vw;
 }
 </style>
