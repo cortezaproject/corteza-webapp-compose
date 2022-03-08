@@ -238,10 +238,13 @@ export default {
     // Change all module fields to single value to keep multi value fields and single value
     const module = JSON.parse(JSON.stringify(this.module || {}))
 
-    module.fields = module.fields.map(f => {
-      f.isMulti = false
-      return f
-    })
+    module.fields = [
+      ...[...module.fields].map(f => {
+        f.isMulti = false
+        return f
+      }),
+      ...this.module.systemFields(),
+    ]
 
     this.mock = {
       namespace: this.namespace,
@@ -277,6 +280,7 @@ export default {
         tempFilter[groupIndex].filter[index].kind = field.kind
         tempFilter[groupIndex].filter[index].name = field.name
         tempFilter[groupIndex].filter[index].value = undefined
+        tempFilter[groupIndex].filter[index].operator = '='
         this.componentFilter = tempFilter
       }
     },
