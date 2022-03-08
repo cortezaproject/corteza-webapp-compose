@@ -45,12 +45,15 @@
                   />
                 </td>
                 <td>
-                  <b-form-select
-                    v-model="filter.name"
+                  <vue-select
+                    v-model="selectedField.label"
                     :options="fieldOptions"
-                    value-field="name"
-                    text-field="label"
-                    @change="onChange($event, groupIndex, index)"
+                    :clearable="false"
+                    option-text="name"
+                    option-value="label"
+                    :append-to-body="true"
+                    class="bg-white"
+                    @input="onChange($event, groupIndex, index)"
                   />
                 </td>
                 <td>
@@ -162,6 +165,8 @@
 <script>
 import FieldEditor from '../ModuleFields/Editor'
 import { compose, validator } from '@cortezaproject/corteza-js'
+import { VueSelect } from 'vue-select'
+
 export default {
   i18nOptions: {
     namespaces: 'block',
@@ -169,6 +174,7 @@ export default {
 
   components: {
     FieldEditor,
+    VueSelect,
   },
   props: {
     selectedField: {
@@ -220,7 +226,7 @@ export default {
     },
 
     fieldOptions () {
-      return this.fields.map(({ name, label }) => ({ name, label: label || name }))
+      return this.fields.filter(f => !f.isSystem).map(({ name, label }) => ({ name, label: label || name }))
     },
 
     inFilter () {
@@ -273,7 +279,7 @@ export default {
     },
 
     onChange (selected, groupIndex, index) {
-      const field = this.getField(selected)
+      const field = this.getField(selected.name)
       const filterExists = !!(this.componentFilter[groupIndex] || { filter: [] }).filter[index]
       if (field && filterExists) {
         const tempFilter = [...this.componentFilter]
@@ -283,6 +289,7 @@ export default {
         tempFilter[groupIndex].filter[index].operator = '='
         this.componentFilter = tempFilter
       }
+      this.onValueChange()
     },
 
     getOperators (kind) {
