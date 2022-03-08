@@ -29,7 +29,7 @@ export default {
       },
 
       set (value) {
-        this.record.values[this.field.name] = value
+        this.record.values[this.field.name] = value ? '1' : '0'
       },
     },
   },

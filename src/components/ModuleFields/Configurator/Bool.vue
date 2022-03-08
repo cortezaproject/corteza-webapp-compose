@@ -1,19 +1,21 @@
 <template>
   <div>
-    <div>
-      <label class="d-block">{{ $t('kind.bool.checkedValueLabel') }}</label>
+    <b-form-group
+      :label="$t('kind.bool.checkedValueLabel')"
+    >
       <b-form-input
         v-model="f.options.trueLabel"
         :placeholder="$t('kind.bool.checkedValuePlaceholder')"
       />
-    </div>
-    <div>
-      <label class="d-block">{{ $t('kind.bool.uncheckedValueLabel') }}</label>
+    </b-form-group>
+    <b-form-group
+      :label="$t('kind.bool.uncheckedValueLabel')"
+    >
       <b-form-input
         v-model="f.options.falseLabel"
         :placeholder="$t('kind.bool.uncheckedValuePlaceholder')"
       />
-    </div>
+    </b-form-group>
   </div>
 </template>
 

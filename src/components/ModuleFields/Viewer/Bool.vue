@@ -6,15 +6,12 @@ export default {
 
   computed: {
     formatted () {
-      const {
-        trueLabel = 'true',
-        falseLabel = 'false',
-      } = this.field.options
+      const { trueLabel, falseLabel } = this.field.options
 
       if (this.value === '1') {
-        return trueLabel
+        return trueLabel || this.$t('general:label.yes')
       } else if (this.value === '0') {
-        return falseLabel
+        return falseLabel || this.$t('general:label.no')
       }
 
       return ''

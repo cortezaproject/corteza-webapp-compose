@@ -5,14 +5,18 @@ import moment from 'moment'
 export function getRecordListFilterSql (filter) {
   let query = ''
 
-  let existPeviousElement = false
-  filter.forEach((f, index) => {
-    if (f.name && f.value && f.operator) {
-      if (existPeviousElement) {
+  let existsPreviousElement = false
+  filter.forEach(f => {
+    if (f.name && f.operator) {
+      if (existsPreviousElement) {
         query += ` ${f.condition} `
       }
-      query += getFieldFilter(f.name, f.kind, f.value, f.operator)
-      existPeviousElement = true
+
+      const fieldFilter = getFieldFilter(f.name, f.kind, f.value, f.operator)
+      if (fieldFilter) {
+        query += getFieldFilter(f.name, f.kind, f.value, f.operator)
+        existsPreviousElement = true
+      }
     }
   })
 
@@ -20,7 +24,7 @@ export function getRecordListFilterSql (filter) {
 }
 
 // Helper function that creates a query for a specific field kind
-export function getFieldFilter (name, kind, query, operator = '') {
+export function getFieldFilter (name, kind, query = '', operator = '') {
   const boolQuery = toBoolean(query)
   const numQuery = Number.parseFloat(query)
 
@@ -28,19 +32,23 @@ export function getFieldFilter (name, kind, query, operator = '') {
   // At the moment it doesn't seem to be working as intended
 
   if (kind === 'Bool') {
-    if (operator) {
-      if (operator === '=') {
-        return `${name} is ${query}`
-      } else {
-        return `${name} is not ${query}`
-      }
-    } else if (boolQuery !== undefined) {
-      if (boolQuery) {
-        return `${name} is true`
-      } else {
-        return `${name} is false OR ${name} IS NULL`
-      }
+    const operation = operator === '=' ? 'is' : 'is not'
+    if (boolQuery) {
+      return `${name} ${operation} true`
+    } else {
+      return `${name} ${operation} false OR ${name} IS NULL`
     }
+  }
+
+  // Take care of special case where query is undefined and its not a Bool field
+  if (!query) {
+    if (operator === '=') {
+      return `${name} IS NULL`
+    } else if (operator === '!=') {
+      return `${name} IS NOT NULL`
+    }
+
+    return undefined
   }
 
   // To SQLish LIKE param
