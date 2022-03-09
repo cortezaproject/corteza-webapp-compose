@@ -356,10 +356,10 @@ export default {
         throw Error('Record incompatible, module mismatch')
       }
 
-      const { filter, positionField, groupField } = this.options
+      const { positionField, groupField } = this.options
       const args = {
         recordID,
-        filter,
+        filter: this.expandFilter(),
         positionField,
         position,
       }
