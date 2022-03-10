@@ -23,7 +23,8 @@
           <b-button
             variant="link"
             class="p-0 ml-1"
-            @click="openExpressionsHelp('sanitizer')"
+            :href="documentationURL"
+            target="_blank"
           >
             {{ $t('sanitizers.examples') }}
           </b-button>
@@ -62,7 +63,8 @@
           <b-button
             variant="link"
             class="p-0 ml-1"
-            @click="openExpressionsHelp('validator')"
+            :href="documentationURL"
+            target="_blank"
           >
             {{ $t('sanitizers.examples') }}
           </b-button>
@@ -148,6 +150,14 @@ export default {
     }
   },
 
+  computed: {
+    documentationURL () {
+      // eslint-disable-next-line no-undef
+      const [year, month] = VERSION.split('.')
+      return `https://docs.cortezaproject.org/corteza-docs/${year}.${month}/integrator-guide/expr/index.html`
+    },
+  },
+
   mounted () {
     if (!this.field.expressions.sanitizers) {
       this.$set(this.field.expressions, 'sanitizers', [])
@@ -173,29 +183,6 @@ export default {
   },
 
   methods: {
-    openExpressionsHelp (anchor) {
-      const features = {
-        toolbar: 'no',
-        location: 'no',
-        status: 'no',
-        menubar: 'no',
-        scrollbars: 'yes',
-        resizable: 'yes',
-        width: '960px',
-        height: '1080px',
-      }
-
-      const helpRoute = this.$router.resolve({ name: 'field.expressions.help' })
-      window.open(
-        `${helpRoute.href}#${anchor}`,
-        '_blank',
-        Object.keys(features).reduce((p, key) => {
-          p.push(`${key}=${features[key]}`)
-          return p
-        }, []).join(','),
-      )
-    },
-
     isNew (value) {
       return !(value.validatorID && value.validatorID !== NoID)
     },

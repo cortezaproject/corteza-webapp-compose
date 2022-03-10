@@ -49,7 +49,9 @@
         <b-input-group-append>
           <b-button
             variant="outline-secondary"
-            @click="openExpressionsHelp()"
+            :href="documentationURL"
+            class="d-flex justify-content-center align-items-center"
+            target="_blank"
           >
             ?
           </b-button>
@@ -247,6 +249,12 @@ export default {
     showDefaultField () {
       return this.defaultValueEnabled && this.mock.show && this.mock.field
     },
+
+    documentationURL () {
+      // eslint-disable-next-line no-undef
+      const [year, month] = VERSION.split('.')
+      return `https://docs.cortezaproject.org/corteza-docs/${year}.${month}/integrator-guide/expr/index.html`
+    },
   },
 
   watch: {
@@ -366,19 +374,6 @@ export default {
       } else {
         this.initMocks()
       }
-    },
-
-    openExpressionsHelp () {
-      const helpRoute = this.$router.resolve({ name: 'field.expressions.help' })
-      window.open(`${helpRoute.href}#valueExpressions`, '_blank',
-                                   `toolbar=no,
-                                    location=no,
-                                    status=no,
-                                    menubar=no,
-                                    scrollbars=yes,
-                                    resizable=yes,
-                                    width=960px,
-                                    height=1080px`)
     },
   },
 }

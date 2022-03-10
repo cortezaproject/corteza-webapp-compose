@@ -161,7 +161,6 @@ export default (options = {}) => {
       { app: 'corteza-webapp-compose' },
       'block',
       'chart',
-      'expressions-help',
       'field',
       'general',
       'module',

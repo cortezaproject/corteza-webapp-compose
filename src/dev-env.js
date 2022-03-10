@@ -36,7 +36,6 @@ export default new Vue({
     { app: 'corteza-webapp-compose' },
     'block',
     'chart',
-    'expressions-help',
     'field',
     'general',
     'module',
