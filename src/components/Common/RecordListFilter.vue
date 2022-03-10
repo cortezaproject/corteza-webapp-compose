@@ -189,22 +189,18 @@ export default {
     selectedField: {
       type: Object,
       required: true,
-      default: () => {},
     },
     namespace: {
       type: Object,
       required: true,
-      default: () => ({}),
     },
     module: {
       type: Object,
       required: true,
-      default: () => ({}),
     },
     recordListFilter: {
       type: Array,
       required: true,
-      default: () => [],
     },
   },
 
@@ -344,29 +340,29 @@ export default {
       return field ? { ...field } : undefined
     },
 
-    createDefaultFilter (condition) {
+    createDefaultFilter (condition, field = {}) {
       return {
         condition,
-        name: undefined,
+        name: field.name,
         operator: '=',
         value: undefined,
-        kind: undefined,
+        kind: field.kind,
         record: new compose.Record(this.mock.module, {}),
       }
     },
 
-    createDefaultFilterGroup (groupCondition = undefined) {
+    createDefaultFilterGroup (groupCondition = undefined, field) {
       return {
         groupCondition,
         filter: [
-          this.createDefaultFilter('Where'),
+          this.createDefaultFilter('Where', field),
         ],
       }
     },
 
     addFilter (groupIndex) {
       if ((this.componentFilter[groupIndex] || {}).filter) {
-        this.componentFilter[groupIndex].filter.push(this.createDefaultFilter('AND'))
+        this.componentFilter[groupIndex].filter.push(this.createDefaultFilter('AND', this.selectedField))
       }
     },
 
@@ -374,7 +370,7 @@ export default {
       this.$refs.btnSave.focus()
 
       this.componentFilter[this.componentFilter.length - 1].groupCondition = 'AND'
-      this.componentFilter.push(this.createDefaultFilterGroup())
+      this.componentFilter.push(this.createDefaultFilterGroup(undefined, this.selectedField))
     },
 
     deleteFilter (groupIndex, index) {
@@ -412,20 +408,22 @@ export default {
     onOpen () {
       if (this.recordListFilter.length) {
         // Create record and fill its values property if value exists
-        this.componentFilter = this.recordListFilter.map(({ groupCondition, filter = [] }) => {
-          filter = filter.map(({ value, ...f }) => {
-            f.record = new compose.Record(this.mock.module, {})
-            f.record.values[f.name] = value
-            return f
-          })
+        this.componentFilter = this.recordListFilter
+          .filter(({ filter = [] }) => filter.some(f => f.name))
+          .map(({ groupCondition, filter = [] }) => {
+            filter = filter.map(({ value, ...f }) => {
+              f.record = new compose.Record(this.mock.module, {})
+              f.record.values[f.name] = value
+              return f
+            })
 
-          return { groupCondition, filter }
-        })
+            return { groupCondition, filter }
+          })
       }
 
       // If no filterGroups, add default
       if (!this.componentFilter.length) {
-        this.componentFilter.push(this.createDefaultFilterGroup())
+        this.componentFilter.push(this.createDefaultFilterGroup(undefined, this.selectedField))
       }
     },
 
