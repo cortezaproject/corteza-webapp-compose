@@ -237,9 +237,13 @@ export default {
   methods: {
     // Allow move if repositioned or if record isn't in target record organizer
     checkMove ({ draggedContext = {}, relatedContext = {} }) {
-      const { recordID } = draggedContext.element || {}
-      const { $el = {}, $options = {} } = relatedContext.component || {}
+      const { moduleID, recordID } = draggedContext.element || {}
+      const { $attrs = {}, $el = {}, $options = {} } = relatedContext.component || {}
       const relatedRecords = ($options.propsData || {}).value || []
+
+      if (moduleID !== $attrs.group.name) {
+        return false
+      }
 
       return this.draggableID === $el.id || !relatedRecords.some(r => r.recordID === recordID)
     },
