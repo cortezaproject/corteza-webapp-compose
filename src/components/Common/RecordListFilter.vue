@@ -291,8 +291,8 @@ export default {
       }, 100)
     },
 
-    onChange (selected, groupIndex, index) {
-      const field = this.getField(selected.name)
+    onChange (fieldName, groupIndex, index) {
+      const field = this.getField(fieldName)
       const filterExists = !!(this.componentFilter[groupIndex] || { filter: [] }).filter[index]
       if (field && filterExists) {
         const tempFilter = [...this.componentFilter]
