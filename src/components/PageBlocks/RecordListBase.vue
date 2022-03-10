@@ -229,6 +229,7 @@
                 >
                   <record-list-filter
                     class="d-print-none"
+                    :target="block.blockID"
                     :selected-field="field.moduleField"
                     :namespace="namespace"
                     :module="recordListModule"

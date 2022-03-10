@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-button
-      :id="selectedFieldId"
+      :id="popoverTarget"
       variant="link p-0 ml-1"
       :class="[inFilter ? 'text-primary' : 'text-secondary']"
       @click.stop
@@ -17,7 +17,7 @@
       delay="0"
       boundary="window"
       boundary-padding="2"
-      :target="selectedFieldId"
+      :target="popoverTarget"
       @show="onOpen"
       @hide="onHide"
     >
@@ -181,6 +181,11 @@ export default {
     VueSelect,
   },
   props: {
+    target: {
+      type: String,
+      default: '',
+    },
+
     selectedField: {
       type: Object,
       required: true,
@@ -241,6 +246,10 @@ export default {
 
     selectedFieldId () {
       return this.selectedField.fieldID
+    },
+
+    popoverTarget () {
+      return `${this.target || '0'}-${this.selectedFieldId}`
     },
   },
 
