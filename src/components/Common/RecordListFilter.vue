@@ -244,12 +244,8 @@ export default {
       })
     },
 
-    selectedFieldId () {
-      return this.selectedField.fieldID
-    },
-
     popoverTarget () {
-      return `${this.target || '0'}-${this.selectedFieldId}`
+      return `${this.target || '0'}-${this.selectedField.name}`
     },
   },
 
