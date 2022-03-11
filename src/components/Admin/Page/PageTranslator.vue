@@ -1,7 +1,6 @@
 <template>
   <c-translator-button
     v-if="canManageResourceTranslations && resourceTranslationsEnabled"
-    class="ml-auto mr-1"
     v-bind="$props"
     :resource="resource"
     :titles="titles"

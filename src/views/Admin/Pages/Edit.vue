@@ -12,7 +12,6 @@
       >
         <b-button
           variant="primary"
-          style="margin-right:2px;"
           class="d-flex align-items-center"
           :to="{ name: 'admin.pages.builder' }"
         >
@@ -25,9 +24,11 @@
         <page-translator
           v-if="page"
           :page="page"
+          style="margin-left:2px;"
         />
         <b-button
           variant="primary"
+          style="margin-left:2px;"
           class="d-flex align-items-center"
           :to="pageViewer"
         >

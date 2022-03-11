@@ -12,7 +12,7 @@
       >
         <b-button
           variant="primary"
-          class="d-flex align-items-center mr-1"
+          class="d-flex align-items-center"
           :to="pageBuilder"
         >
           {{ $t('label.pageBuilder') }}
@@ -24,9 +24,11 @@
         <page-translator
           v-if="page"
           :page="page"
+          style="margin-left:2px;"
         />
         <b-button
           variant="primary"
+          style="margin-left:2px;"
           class="d-flex align-items-center"
           :to="pageEditor"
         >

@@ -17,7 +17,6 @@
           :disabled="!modulePage"
           :to="modulePage"
           class="d-flex align-items-center"
-          style="margin-right:2px;"
         >
           {{ $t('edit.edit') }}
           <font-awesome-icon
@@ -32,6 +31,7 @@
           variant="primary"
           :disabled="!allRecords"
           :to="allRecords"
+          style="margin-left:2px;"
           class="d-flex align-items-center"
         >
           <font-awesome-icon
