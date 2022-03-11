@@ -484,7 +484,8 @@ export default {
           assets = await this.uploadAssets()
           meta = { ...meta, ...assets }
         } catch (e) {
-          this.toastErrorHandler(this.$t('notification:namespace.assetUploadFailed'))(e)
+          const error = JSON.stringify(e) === '{}' ? '' : e
+          this.toastErrorHandler(this.$t('notification:namespace.assetUploadFailed'))(error)
           return
         }
       }

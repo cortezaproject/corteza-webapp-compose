@@ -43,14 +43,14 @@
                 variant="light"
                 @click="selectAll(true)"
               >
-                {{ $t('selectAll') }}
+                {{ $t('field.selectAll') }}
               </b-button>
               <b-button
                 class="ml-2"
                 variant="light"
                 @click="selectAll(false)"
               >
-                {{ $t('unselectAll') }}
+                {{ $t('field.unselectAll') }}
               </b-button>
             </b-row>
             <b-row no-gutters>
@@ -167,12 +167,13 @@ export default {
       this.showModal = false
     },
 
-    loadFile (e) {
-      var file = e.target.files[0]
-      if (file) {
+    loadFile (e = {}) {
+      const { files = [] } = (e.type === 'drop' ? e.dataTransfer : e.target) || {}
+
+      if (files[0]) {
         this.processing = true
         var reader = new FileReader()
-        reader.readAsText(file)
+        reader.readAsText(files[0])
         reader.onload = (evt) => {
           try {
             this.importObj = JSON.parse(evt.target.result)
