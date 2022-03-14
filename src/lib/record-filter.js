@@ -24,7 +24,7 @@ export function getRecordListFilterSql (filter) {
 }
 
 // Helper function that creates a query for a specific field kind
-export function getFieldFilter (name, kind, query = '', operator = '') {
+export function getFieldFilter (name, kind, query = '', operator = '=') {
   const boolQuery = toBoolean(query)
   const numQuery = Number.parseFloat(query)
 
@@ -61,10 +61,10 @@ export function getFieldFilter (name, kind, query = '', operator = '') {
     .replace(/^[%]+/, '')
 
   if (['Number'].includes(kind) && !isNaN(numQuery)) {
-    if (operator === 'LIKE' || !operator) {
+    if (operator === 'LIKE') {
       return `${name} LIKE '%${strQuery}%'`
     } else {
-      return `${name} ${operator || '='} ${numQuery}`
+      return `${name} ${operator} ${numQuery}`
     }
   }
 
@@ -74,19 +74,19 @@ export function getFieldFilter (name, kind, query = '', operator = '') {
     const time = moment(query, ['HH:mm'])
 
     if (date.isValid()) {
-      return `DATE(${name}) ${operator || '='} DATE('${date.format()}')`
+      return `DATE(${name}) ${operator} DATE('${date.format()}')`
     } else if (time.isValid()) {
-      return `TIME(${name}) ${operator || '='} TIME('${query}')`
+      return `TIME(${name}) ${operator} TIME('${query}')`
     }
   }
 
   // Since userID and recordID must be numbers, we check if query is number to avoid wrong queries
   if (['User', 'Record'].includes(kind) && !isNaN(numQuery)) {
-    return `${name} ${operator || '='} '${query}'`
+    return `${name} ${operator} '${query}'`
   }
 
   if (['String', 'Url', 'Select', 'Email'].includes(kind)) {
-    if (operator === 'LIKE' || !operator) {
+    if (operator === 'LIKE') {
       return `${name} LIKE '%${strQuery}%'`
     } else if (operator === '!=') {
       return `(${name} ${operator} '${strQuery}' OR ${name} is null)`
@@ -119,7 +119,7 @@ export function queryToFilter (searchQuery = '', prefilter = '', fields = [], re
   // Create query for search string
   if (searchQuery) {
     searchQuery = fields
-      .map(qf => getFieldFilter(qf.name, qf.kind, searchQuery))
+      .map(qf => getFieldFilter(qf.name, qf.kind, searchQuery, 'LIKE'))
       .filter(q => !!q)
       .join(' OR ')
 
