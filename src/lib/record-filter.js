@@ -69,9 +69,14 @@ export function getFieldFilter (name, kind, query = '', operator = '') {
   }
 
   if (['DateTime'].includes(kind)) {
-    const date = moment(query)
+    // Build different querries if date, time or datetime
+    const date = moment(query, ['YYYY-MM-DDTHH:mm:ssZ', 'YYYY-MM-DD'])
+    const time = moment(query, ['HH:mm'])
+
     if (date.isValid()) {
-      return `DATE(${name}) ${operator || '='} DATE('${date.format('YYYY-MM-DD')}')`
+      return `DATE(${name}) ${operator || '='} DATE('${date.format()}')`
+    } else if (time.isValid()) {
+      return `TIME(${name}) ${operator || '='} TIME('${query}')`
     }
   }
 
