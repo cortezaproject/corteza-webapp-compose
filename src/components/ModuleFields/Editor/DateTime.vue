@@ -41,7 +41,10 @@
         :only-future="field.options.onlyFutureValues"
         :only-past="field.options.onlyPastValues"
         :labels="{
-          none: $t('general:label.none')
+          clear: $t('general:label.clear'),
+          none: $t('general:label.none'),
+          now: $t('general:label.now'),
+          today: $t('general:label.today'),
         }"
       />
     </multi>
@@ -56,7 +59,10 @@
         :only-future="field.options.onlyFutureValues"
         :only-past="field.options.onlyPastValues"
         :labels="{
-          none: $t('general:label.none')
+          clear: $t('general:label.clear'),
+          none: $t('general:label.none'),
+          now: $t('general:label.now'),
+          today: $t('general:label.today'),
         }"
       />
       <errors :errors="errors" />
