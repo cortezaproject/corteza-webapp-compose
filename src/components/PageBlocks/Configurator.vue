@@ -35,6 +35,7 @@
                 v-if="page"
                 :page="page"
                 :block="block"
+                :disabled="isNew"
                 :highlight-key="`pageBlock.${block.blockID}.title`"
                 button-variant="light"
               />
@@ -58,6 +59,7 @@
                 v-if="page"
                 :page="page"
                 :block="block"
+                :disabled="isNew"
                 :highlight-key="`pageBlock.${block.blockID}.description`"
                 button-variant="light"
               />

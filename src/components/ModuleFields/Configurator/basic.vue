@@ -90,6 +90,7 @@
             v-if="field"
             :field="field"
             :module="module"
+            :disabled="isNew"
             :highlight-key="`meta.description.view`"
             button-variant="light"
           />
@@ -112,6 +113,7 @@
             v-if="field"
             :field="field"
             :module="module"
+            :disabled="isNew"
             :highlight-key="`meta.description.edit`"
             button-variant="light"
           />
@@ -143,6 +145,7 @@
             v-if="field"
             :field="field"
             :module="module"
+            :disabled="isNew"
             :highlight-key="`meta.hint.view`"
             button-variant="light"
           />
@@ -165,6 +168,7 @@
             v-if="field"
             :field="field"
             :module="module"
+            :disabled="isNew"
             :highlight-key="`meta.hint.edit`"
             button-variant="light"
           />
@@ -185,7 +189,7 @@
 <script>
 import FieldEditor from '../Editor'
 import FieldTranslator from 'corteza-webapp-compose/src/components/Admin/Module/FieldTranslator'
-import { compose, validator } from '@cortezaproject/corteza-js'
+import { compose, validator, NoID } from '@cortezaproject/corteza-js'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -254,6 +258,10 @@ export default {
       // eslint-disable-next-line no-undef
       const [year, month] = VERSION.split('.')
       return `https://docs.cortezaproject.org/corteza-docs/${year}.${month}/integrator-guide/expr/index.html`
+    },
+
+    isNew () {
+      return this.field.fieldID === NoID
     },
   },
 

@@ -4,7 +4,6 @@
     button-variant="light"
     class="btn ml-auto mr-1"
     v-bind="$props"
-    :disabled="disabled"
     :resource="resource"
     :titles="titles"
     :fetcher="fetcher"

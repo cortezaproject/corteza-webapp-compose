@@ -15,6 +15,7 @@
             v-if="page"
             :page="page"
             :block="block"
+            :disabled="isNew"
             :highlight-key="`pageBlock.${block.blockID}.automation`"
             button-variant="light"
           />
@@ -82,7 +83,7 @@
   </b-card>
 </template>
 <script>
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import PageTranslator from 'corteza-webapp-compose/src/components/Admin/Page/PageTranslator'
 
 export default {
@@ -138,6 +139,10 @@ export default {
 
     workflow () {
       return this.trigger ? this.trigger.workflow : undefined
+    },
+
+    isNew () {
+      return this.block.blockID === NoID
     },
   },
 }
