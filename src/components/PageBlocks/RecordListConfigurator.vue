@@ -362,7 +362,6 @@ export default {
 
     /*
      Inline record editor is disabled if:
-      - Page is not record page
       - An inline record editor for the same module already exists
       - Record list module doesn't have record page (inline record autoselected and disabled)
     */
@@ -376,7 +375,7 @@ export default {
         }
       })
 
-      return this.page.moduleID === NoID || otherInlineWithSameModule || !this.recordListModuleRecordPage
+      return otherInlineWithSameModule || !this.recordListModuleRecordPage
     },
   },
 
