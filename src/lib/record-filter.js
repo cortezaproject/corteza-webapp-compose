@@ -74,7 +74,7 @@ export function getFieldFilter (name, kind, query = '', operator = '=') {
     const time = moment(query, ['HH:mm'])
 
     if (date.isValid()) {
-      return `DATE(${name}) ${operator} DATE('${date.format()}')`
+      return `TIMESTAMP(${name}) ${operator} TIMESTAMP('${date.format()}')`
     } else if (time.isValid()) {
       return `TIME(${name}) ${operator} TIME('${query}')`
     }
