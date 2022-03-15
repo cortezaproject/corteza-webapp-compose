@@ -11,6 +11,7 @@
       ><a
         :href="'mailto:' + value"
         target="_blank"
+        rel="noopener noreferrer"
       >{{ value[index] }}</a></span>
     </div>
   </div>
@@ -22,6 +23,7 @@
     ><a
       :href="'mailto:' + value"
       target="_blank"
+      rel="noopener noreferrer"
     >{{ value }}</a></span>
   </div>
 </template>

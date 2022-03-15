@@ -71,7 +71,7 @@ export default {
         zoom: 3,
         center: [30, 30],
         rotation: 0,
-        attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a>',
+        attribution: '&copy; <a target="_blank" rel="noopener noreferrer" href="http://osm.org/copyright">OpenStreetMap</a>',
       },
     }
   },

@@ -52,6 +52,7 @@
       <a
         href="https://momentjs.com/docs/#/displaying/format/"
         target="_blank"
+        rel="noopener noreferrer"
       >Moment.js</a>
     </i18next>
   </div>
