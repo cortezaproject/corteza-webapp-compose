@@ -11,6 +11,7 @@
       ><a
         :href="getUrlValue(index)"
         target="_blank"
+        rel="noopener noreferrer"
         @click.stop
       >{{ getUrlValue(index) }}</a></span>
     </div>
@@ -23,6 +24,7 @@
     ><a
       :href="urlValue"
       target="_blank"
+      rel="noopener noreferrer"
     >{{ urlValue }}</a></span>
   </div>
 </template>
