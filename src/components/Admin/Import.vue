@@ -177,17 +177,22 @@ export default {
         reader.onload = (evt) => {
           try {
             this.importObj = JSON.parse(evt.target.result)
-            this.importObj.list = this.importObj.list.map(i => {
-              return { import: true, ...i }
-            })
-          } catch ({ message }) {
-            this.toastErrorHandler(message)
+            if (!this.importObj.list) {
+              throw new Error(this.$t('notification:general.import.readingError'))
+            } else {
+              this.importObj.list = this.importObj.list.map(i => {
+                return { import: true, ...i }
+              })
+            }
+          } catch (err) {
+            this.toastErrorHandler(this.$t('notification:general.import.failed'))(err)
+            this.importObj = null
           } finally {
             this.processing = false
           }
         }
         reader.onerror = (evt) => {
-          this.toastErrorHandler(this.$t('notification:general.import.errorReading'))
+          this.toastErrorHandler(this.$t('notification:general.import.readingError'))
           this.processing = false
         }
       }
