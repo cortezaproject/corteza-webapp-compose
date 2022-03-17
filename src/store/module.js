@@ -105,6 +105,10 @@ export default function (ComposeAPI) {
         })
       },
 
+      updateSet ({ commit }, module) {
+        commit(types.updateSet, [module])
+      },
+
       clearSet ({ commit }) {
         commit(types.clearSet)
       },

@@ -107,6 +107,11 @@ export default {
             if (tr !== undefined) {
               this.module.name = tr.message
             }
+
+            return this.module
+          })
+          .then(module => {
+            this.$emit('update:module', module)
           })
       }
     },

@@ -22,8 +22,8 @@
           />
         </b-button>
         <page-translator
-          v-if="page"
-          :page="page"
+          v-if="trPage"
+          :page.sync="trPage"
           style="margin-left:2px;"
         />
         <b-button
@@ -231,6 +231,15 @@ export default {
       return this.documentWidth > pushContentAbove
     },
 
+    trPage: {
+      get () {
+        return this.page.clone()
+      },
+      set (v) {
+        this.updatePageSet(v)
+      },
+    },
+
     page () {
       return this.$store.getters['page/getByID'](this.pageID) || new compose.Page()
     },
@@ -304,6 +313,7 @@ export default {
       createModule: 'module/create',
       createPage: 'page/create',
       createChart: 'chart/create',
+      updatePageSet: 'page/updateSet',
     }),
 
     createNewModule () {

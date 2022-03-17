@@ -25,7 +25,7 @@
           />
         </b-button>
         <page-translator
-          :page.sync="page"
+          :page.sync="trPage"
           style="margin-left:2px;"
         />
         <b-button
@@ -238,6 +238,19 @@ export default {
       pages: 'page/set',
     }),
 
+    trPage: {
+      get () {
+        if (!this.page) {
+          return new compose.Page()
+        }
+        return this.page
+      },
+      set (v) {
+        this.page = v
+        this.updatePageSet(v)
+      },
+    },
+
     title () {
       let { title = '', handle } = this.page || {}
       title = title || handle
@@ -307,6 +320,7 @@ export default {
       findPageByID: 'page/findByID',
       updatePage: 'page/update',
       deletePage: 'page/delete',
+      updatePageSet: 'page/updateSet',
     }),
 
     editBlock (block, index = undefined) {

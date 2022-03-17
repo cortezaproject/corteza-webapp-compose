@@ -111,6 +111,10 @@ export default function (ComposeAPI) {
         })
       },
 
+      updateSet ({ commit }, page) {
+        commit(types.updateSet, [page])
+      },
+
       clearSet ({ commit }) {
         commit(types.clearSet)
       },

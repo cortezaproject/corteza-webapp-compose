@@ -130,7 +130,7 @@
 
                   <module-translator
                     v-if="module"
-                    :module.sync="module"
+                    :module.sync="trModule"
                   />
                 </div>
                 <div
@@ -429,6 +429,19 @@ export default {
       return this.creatingModule ? this.$t('edit.create') : this.$t('edit.edit')
     },
 
+    trModule: {
+      get () {
+        if (!this.module) {
+          return new compose.Module()
+        }
+        return this.module
+      },
+      set (v) {
+        this.module = v
+        this.updateModuleSet(v)
+      },
+    },
+
     handleState () {
       return handleState(this.module.handle)
     },
@@ -540,6 +553,7 @@ export default {
     ...mapActions({
       findModuleByID: 'module/findByID',
       updateModule: 'module/update',
+      updateModuleSet: 'module/updateSet',
       createModule: 'module/create',
       deleteModule: 'module/delete',
       createPage: 'page/create',

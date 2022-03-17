@@ -150,6 +150,10 @@ export default {
                 }
                 break
             }
+            return this.page
+          })
+          .then(page => {
+            this.$emit('update:page', page)
           })
       }
     },
