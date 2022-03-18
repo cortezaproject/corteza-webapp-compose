@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VTooltip from 'v-tooltip'
 import BootstrapVue from 'bootstrap-vue'
 import Router from 'vue-router'
-import Vuex from 'vuex'
 import VueNativeSock from 'vue-native-websocket'
 
 import { plugins, websocket } from '@cortezaproject/corteza-vue'
@@ -22,7 +21,6 @@ Vue.use(BootstrapVue, {
   },
 })
 Vue.use(Router)
-Vue.use(Vuex)
 
 Vue.use(plugins.Auth(), { app: 'compose' })
 

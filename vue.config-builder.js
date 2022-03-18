@@ -81,6 +81,14 @@ module.exports = ({ appFlavour, appLabel, version = process.env.BUILD_VERSION, t
         config.resolve.alias.set(packageAlias, root)
       }
 
+      if (isTest) {
+        const scssRule = config.module.rule('scss')
+        scssRule.uses.clear()
+        scssRule
+          .use('null-loader')
+          .loader('null-loader')
+      }
+
       const scssNormal = config.module.rule('scss').oneOf('normal')
 
       scssNormal.use('sass-loader')
