@@ -96,7 +96,7 @@
                   >
                     <b-input
                       v-model.trim="query"
-                      class="h-100 mw-100"
+                      class="h-100 mw-100 text-truncate"
                       type="search"
                       :placeholder="$t('searchPlaceholder')"
                     />

@@ -73,7 +73,7 @@
               v-model="queryAvailable"
               type="search"
               :placeholder="$t('automation.searchPlaceholder')"
-              class="mb-1"
+              class="mb-1 text-truncate"
             />
 
             <b-list-group
