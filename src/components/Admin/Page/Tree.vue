@@ -97,12 +97,12 @@
       </template>
     </sortable-tree>
 
-    <h6
+    <div
       v-else
-      class="text-center mt-5 mb-4 p-2"
+      class="text-center mt-5 mb-4 pb-1"
     >
       {{ $t('noPages') }}
-    </h6>
+    </div>
   </div>
 </template>
 
