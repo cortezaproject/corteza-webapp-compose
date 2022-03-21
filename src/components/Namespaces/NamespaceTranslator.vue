@@ -2,7 +2,7 @@
   <c-translator-button
     v-if="canManageResourceTranslations && resourceTranslationsEnabled"
     button-variant="light"
-    class="btn ml-auto mr-1"
+    class="btn ml-auto"
     v-bind="$props"
     :resource="resource"
     :titles="titles"
