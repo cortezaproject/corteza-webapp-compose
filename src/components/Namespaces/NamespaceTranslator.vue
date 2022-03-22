@@ -103,12 +103,12 @@ export default {
               this.namespace.name = tr.message
             }
 
-            tr = find('subtitle')
+            tr = find('meta.subtitle')
             if (tr !== undefined) {
               this.namespace.meta.subtitle = tr.message
             }
 
-            tr = find('description')
+            tr = find('meta.description')
             if (tr !== undefined) {
               this.namespace.meta.description = tr.message
             }
