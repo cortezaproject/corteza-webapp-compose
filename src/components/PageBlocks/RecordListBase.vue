@@ -978,10 +978,12 @@ export default {
         throw Error(this.$t('record.moduleOrPageNotSet'))
       }
 
+      const { recordID = NoID } = this.record || {}
+
       // If there is no current record and we are using recordID/ownerID variable in (pre)filter
       // we should disable the block
       /* eslint-disable no-template-curly-in-string */
-      if (!this.record) {
+      if (recordID === NoID) {
         if ((prefilter || '').includes('${record')) {
           throw Error(this.$t('record.invalidRecordVar'))
         }
