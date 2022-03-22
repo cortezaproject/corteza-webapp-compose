@@ -107,6 +107,9 @@ export default {
         hideRecordCloneButton: true,
         selectable: true,
         allowExport: true,
+        perPage: 14,
+        fullPageNavigation: true,
+        showTotalCount: true,
         presort: 'createdAt DESC',
       },
     })
