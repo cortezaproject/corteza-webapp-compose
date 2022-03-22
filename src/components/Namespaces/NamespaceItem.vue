@@ -76,7 +76,6 @@
   </b-card>
 </template>
 <script>
-import logo from 'corteza-webapp-compose/src/themes/corteza-base/img/logo.png'
 
 export default {
   i18nOptions: {
@@ -112,7 +111,7 @@ export default {
     },
 
     logo () {
-      return this.namespace.meta.logo || this.$Settings.attachment('ui.mainLogo', logo)
+      return this.namespace.meta.logo || this.$Settings.attachment('ui.mainLogo')
     },
   },
 }

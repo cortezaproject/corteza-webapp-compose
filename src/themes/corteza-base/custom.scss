@@ -96,12 +96,6 @@ th {
   display: inline-flex;
 }
 
-.ns-logo {
-  i {
-    background-image: url($logo);
-  }
-}
-
 .loader {
   height: calc(100vh - 2 * #{$topbar-height});
   display: flex;

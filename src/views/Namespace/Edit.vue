@@ -288,8 +288,6 @@
 </template>
 
 <script>
-import logo from 'corteza-webapp-compose/src/themes/corteza-base/img/logo.png'
-import icon from 'corteza-webapp-compose/src/themes/corteza-base/img/icon.png'
 import { compose, NoID } from '@cortezaproject/corteza-js'
 import { url } from '@cortezaproject/corteza-vue'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
@@ -582,8 +580,8 @@ export default {
             name: this.namespace.name,
             listed: true,
             url: `compose/ns/${this.namespace.slug}/pages`,
-            icon: this.namespace.meta.icon || this.$Settings.attachment('ui.iconLogo', icon),
-            logo: this.namespace.meta.logo || this.$Settings.attachment('ui.mainLogo', logo),
+            icon: this.namespace.meta.icon || this.$Settings.attachment('ui.iconLogo'),
+            logo: this.namespace.meta.logo || this.$Settings.attachment('ui.mainLogo'),
           },
         }
         return this.$SystemAPI.applicationCreate({ ...application })
