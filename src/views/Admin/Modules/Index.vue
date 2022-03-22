@@ -151,9 +151,10 @@
                 </template>
                 <template v-slot:cell(actions)="{ item: m }">
                   <b-button
-                    variant="light"
+                    :variant="pages.find(p => p.moduleID === m.moduleID) ? 'light' : 'primary'"
+                    :disabled="creatingRecordPage"
                     class="mr-2"
-                    @click="openPageBuilder(m)"
+                    @click.stop="openPageBuilder(m)"
                   >
                     {{ pages.find(p => p.moduleID === m.moduleID) ? $t('recordPage.edit') : $t('recordPage.create') }}
                   </b-button>
@@ -214,6 +215,8 @@ export default {
 
       sortBy: 'name',
       sortDesc: false,
+
+      creatingRecordPage: false,
 
       newModule: new compose.Module(
         { fields: [new compose.ModuleFieldString({ fieldID: '0', name: 'Sample' })] },
@@ -279,30 +282,22 @@ export default {
     },
 
     openPageBuilder ({ moduleID }) {
-      // Create params for $router.push
-      const goto = ({ pageID }) => {
-        return {
-          name: 'admin.pages.builder',
-          params: { pageID },
-        }
-      }
-
-      const recordPage = this.pages.find(p => p.moduleID === moduleID)
-      if (recordPage) {
+      const { pageID } = this.pages.find(p => p.moduleID === moduleID) || {}
+      if (pageID) {
         // Record page already exists
-        this.$router.push(goto(recordPage))
+        this.$router.push({ name: 'admin.pages.builder', params: { pageID } })
         return
       }
 
-      // Collect params and create new record page
+      // Collect params and construct payload for new record page
       const module = this.modules.find(m => m.moduleID === moduleID)
       const { namespaceID } = this.namespace
-
-      // Get recordList page if it exists
       const blocks = [new compose.PageBlockRecord({ xywh: [0, 0, 12, 16] })]
-      const selfID = (this.pages.find(p => {
+
+      // Get recordList page if it exists and make it parent of record page
+      const { pageID: selfID } = this.pages.find(p => {
         return p.blocks.find(b => b.options.moduleID === module.moduleID)
-      }) || {}).pageID
+      }) || {}
 
       const payload = {
         namespaceID,
@@ -312,12 +307,14 @@ export default {
         selfID,
       }
 
-      // Create page and open it
+      // Create page record page
+      this.creatingRecordPage = true
+
       this.createPage(payload)
-        .then(page => {
-          this.$router.push(goto(page))
-        })
         .catch(this.toastErrorHandler(this.$t('notification:module.recordPage.createFailed')))
+        .finally(() => {
+          this.creatingRecordPage = false
+        })
     },
 
     handleRowClicked ({ moduleID, canUpdateModule, canDeleteModule }) {

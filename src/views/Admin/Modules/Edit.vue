@@ -151,6 +151,7 @@
                     v-else
                     variant="primary"
                     size="lg"
+                    :disabled="processing"
                     class="mr-1"
                     @click="handleRecordPageCreation"
                   >
@@ -349,6 +350,7 @@
         :back-link="{name: 'admin.modules'}"
         :hide-delete="hideDelete"
         :hide-save="hideSave"
+        :disable-delete="processing"
         :disable-save="!fieldsValid || processing"
         hide-clone
         @delete="handleDelete"
@@ -641,9 +643,12 @@ export default {
     },
 
     handleDelete () {
+      this.processing = true
+
       this.deleteModule(this.module).then(() => {
         this.toastSuccess(this.$t('notification:module.deleted'))
         this.$router.push({ name: 'admin.modules' })
+        this.processing = false
       }).catch(this.toastErrorHandler(this.$t('notification:module.deleteFailed')))
     },
 
@@ -667,13 +672,17 @@ export default {
     },
 
     handleRecordPageCreation () {
+      this.processing = true
+
       // A simple record block w/o preselected fields
       const blocks = [new compose.PageBlockRecord({ xywh: [0, 0, 12, 16] })]
       const selfID = (this.recordListPage || {}).pageID
 
-      this.createDefaultPage({ blocks, selfID }).then(page => {
-        this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
-      }).catch(this.toastErrorHandler(this.$t('notification:module.recordPage.createFailed')))
+      this.createDefaultPage({ blocks, selfID })
+        .catch(this.toastErrorHandler(this.$t('notification:module.recordPage.createFailed')))
+        .finally(() => {
+          this.processing = false
+        })
     },
 
     handleRecordListCreation () {
