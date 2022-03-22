@@ -375,7 +375,7 @@ export default {
     },
 
     hideDelete () {
-      return this.chart.chartID === NoID || !this.chart.canDeleteChart
+      return this.chart.chartID === NoID || !this.chart.canDeleteChart || this.chart.deletedAt
     },
 
     hideSave () {

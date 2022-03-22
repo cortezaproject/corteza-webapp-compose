@@ -505,7 +505,7 @@ export default {
     },
 
     hideDelete () {
-      return this.module.moduleID === NoID || !this.module.canDeleteModule
+      return this.module.moduleID === NoID || !this.module.canDeleteModule || this.module.deletedAt
     },
 
     hideSave () {

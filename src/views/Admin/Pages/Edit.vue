@@ -114,7 +114,7 @@
     <portal to="admin-toolbar">
       <editor-toolbar
         :back-link="{name: 'admin.pages'}"
-        :hide-delete="hasChildren || !page.canDeletePage"
+        :hide-delete="hideDelete"
         :hide-save="!page.canUpdatePage"
         hide-clone
         @delete="handleDeletePage"
@@ -203,6 +203,10 @@ export default {
 
     hasChildren () {
       return this.pages.some(({ selfID }) => selfID === this.page.pageID)
+    },
+
+    hideDelete () {
+      return this.hasChildren || !this.page.canDeletePage || this.page.deletedAt
     },
   },
 

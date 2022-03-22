@@ -146,7 +146,7 @@
     <portal to="admin-toolbar">
       <editor-toolbar
         :back-link="{name: 'admin.pages'}"
-        :hide-delete="hasChildren || !page.canDeletePage"
+        :hide-delete="hideDelete"
         :hide-save="!page.canUpdatePage"
         hide-clone
         @save="handleSave()"
@@ -296,6 +296,10 @@ export default {
     hasChildren () {
       return this.page ? this.pages.some(({ selfID }) => selfID === this.page.pageID) : false
     },
+
+    hideDelete () {
+      return this.hasChildren || !this.page.canDeletePage || this.page.deletedAt
+    },
   },
 
   watch: {
@@ -358,7 +362,7 @@ export default {
         return
       }
 
-      // Cecord lines blocks
+      // Inline record lists
       const queue = []
       this.blocks.forEach((b, index) => {
         if (b.kind === 'RecordList' && b.options.editable) {

@@ -233,7 +233,7 @@
 
     <editor-toolbar
       :back-link="{name: 'root'}"
-      :hide-delete="!loaded || !isEdit"
+      :hide-delete="hideDelete"
       :hide-clone="!loaded || !isEdit"
       :hide-save="!loaded"
       :disable-delete="!canDelete"
@@ -400,6 +400,10 @@ export default {
       }
 
       return this.slugState
+    },
+
+    hideDelete () {
+      return !this.loaded || !this.isEdit || this.namespace.deletedAt
     },
   },
 
