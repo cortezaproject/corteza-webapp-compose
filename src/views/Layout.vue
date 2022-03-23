@@ -38,7 +38,7 @@
         :pinned.sync="pinned"
         :icon="icon"
         :logo="logo"
-        :disabled-routes="['namespace.list', 'namespace.edit', 'namespace.create']"
+        :disabled-routes="disabledRoutes"
         expand-on-hover
         :right="textDirectionality() === 'rtl'"
       >
@@ -106,6 +106,14 @@ export default {
       pinned: false,
 
       toasts: [],
+
+      disabledRoutes: [
+        'namespaces',
+        'namespace.list',
+        'namespace.edit',
+        'namespace.create',
+        'namespace.clone',
+      ],
     }
   },
 
