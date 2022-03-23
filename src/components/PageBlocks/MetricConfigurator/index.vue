@@ -261,7 +261,9 @@
           cols="12"
           lg="5"
         >
-          <b-card>
+          <div
+            class="h-50"
+          >
             <div
               v-if="metrics.length"
               class="d-flex ml-auto"
@@ -275,10 +277,10 @@
             </div>
 
             <metric-base
-              class="mt-2"
               v-bind="$props"
+              class="mt-2"
             />
-          </b-card>
+          </div>
         </b-col>
       </b-row>
     </b-tab>
