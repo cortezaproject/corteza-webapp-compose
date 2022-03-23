@@ -165,7 +165,7 @@
 
         <template #delete>
           <b-dropdown
-            v-if="hasChildren && page.canDeletePage"
+            v-if="showDeleteDropdown"
             size="lg"
             variant="danger"
             :text="$t('general:label.delete')"
@@ -298,7 +298,11 @@ export default {
     },
 
     hideDelete () {
-      return this.hasChildren || !this.page.canDeletePage || this.page.deletedAt
+      return this.hasChildren || !this.page.canDeletePage || !!this.page.deletedAt
+    },
+
+    showDeleteDropdown () {
+      return this.hasChildren && this.page.canDeletePage && !this.page.deletedAt
     },
   },
 

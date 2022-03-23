@@ -406,7 +406,7 @@ export default {
     },
 
     hideDelete () {
-      return !this.loaded || !this.isEdit || this.namespace.deletedAt
+      return !this.loaded || !this.isEdit || !!this.namespace.deletedAt
     },
   },
 
