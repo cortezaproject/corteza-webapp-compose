@@ -149,7 +149,7 @@
                   </b-button>
 
                   <b-button
-                    v-if="logoPreview"
+                    v-if="!!namespace.meta.logo"
                     variant="light"
                     size="sm"
                     class="py-0 ml-2"
@@ -258,21 +258,11 @@
       centered
       body-class="p-1"
     >
-      <div class="ns-wrap">
-        <div>
-          <b-img
-            v-if="logoPreview"
-            :src="logoPreview"
-            fluid-grow
-          />
-          <div
-            v-else
-            class="ns-logo"
-          >
-            <i class="d-block m-auto" />
-          </div>
-        </div>
-      </div>
+      <b-img
+        v-if="logoPreview"
+        :src="logoPreview"
+        fluid-grow
+      />
     </b-modal>
 
     <b-modal
@@ -282,14 +272,10 @@
       centered
       body-class="p-1"
     >
-      <div class="ns-wrap">
-        <div>
-          <b-img
-            :src="iconPreview"
-            fluid-grow
-          />
-        </div>
-      </div>
+      <b-img
+        :src="iconPreview"
+        fluid-grow
+      />
     </b-modal>
   </div>
 </template>
@@ -374,7 +360,7 @@ export default {
     },
 
     logoPreview () {
-      return this.namespace.meta.logo || ''
+      return this.namespace.meta.logo || this.$Settings.attachment('ui.mainLogo')
     },
 
     iconPreview () {
@@ -647,13 +633,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.ns-logo i {
-  height: 90px;
-  width: 100%;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position-y: center;
-}
-</style>
