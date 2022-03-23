@@ -8,15 +8,26 @@
     </portal>
 
     <portal to="topbar-tools">
-      <b-button
-        v-if="isEdit"
-        variant="primary"
-        class="d-flex align-items-center"
-        :to="openNamespace"
-        :disabled="!namespaceEnabled"
+      <b-button-group
+        size="sm"
+        class="mr-1"
       >
-        {{ $t('visit') }}
-      </b-button>
+        <b-button
+          v-if="isEdit"
+          variant="primary"
+          class="d-flex align-items-center"
+          :to="openNamespace"
+          :disabled="!namespaceEnabled"
+        >
+          {{ $t('visit') }}
+        </b-button>
+        <namespace-translator
+          v-if="namespace"
+          :namespace.sync="namespace"
+          :disabled="isNew"
+          style="margin-left:2px;"
+        />
+      </b-button-group>
     </portal>
 
     <div class="flex-grow-1 overflow-auto mb-2">
@@ -53,13 +64,6 @@
             button-variant="light"
             :button-label="$t('label.permissions')"
             class="ml-1 btn-lg"
-          />
-
-          <namespace-translator
-            v-if="namespace"
-            class="btn-lg"
-            :namespace.sync="namespace"
-            :disabled="isNew"
           />
         </div>
 

@@ -23,6 +23,11 @@
             class="ml-2"
           />
         </b-button>
+        <module-translator
+          v-if="module"
+          :module.sync="trModule"
+          style="margin-left:2px;"
+        />
       </b-button-group>
     </portal>
 
@@ -127,11 +132,6 @@
                       />
                     </b-dropdown-item>
                   </b-dropdown>
-
-                  <module-translator
-                    v-if="module"
-                    :module.sync="trModule"
-                  />
                 </div>
                 <div
                   v-if="!creatingModule"

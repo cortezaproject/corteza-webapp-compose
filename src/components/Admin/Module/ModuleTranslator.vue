@@ -1,8 +1,6 @@
 <template>
   <c-translator-button
     v-if="canManageResourceTranslations && resourceTranslationsEnabled"
-    button-variant="light"
-    class="btn-lg ml-auto mr-1"
     v-bind="$props"
     :resource="resource"
     :titles="titles"
@@ -35,6 +33,11 @@ export default {
     highlightKey: {
       type: String,
       default: '',
+    },
+
+    buttonVariant: {
+      type: String,
+      default: () => 'primary',
     },
 
     disabled: {
