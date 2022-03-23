@@ -6,12 +6,11 @@
 
     <portal to="topbar-tools">
       <b-button-group
-        v-if="allRecords"
+        v-if="allRecords && !creatingModule"
         size="sm"
         class="mr-1"
       >
         <b-button
-          v-if="allRecords && !creatingModule"
           variant="primary"
           :disabled="!allRecords"
           :to="allRecords"
@@ -137,26 +136,11 @@
                   v-if="!creatingModule"
                   class="flex-grow-1 d-flex justify-content-md-end"
                 >
-                  <b-button
-                    v-if="recordPage"
-                    :disabled="!namespace.canManageNamespace"
-                    :to="{ name: 'admin.pages.builder', params: { pageID: recordPage.pageID } }"
-                    variant="light"
-                    class="mr-1"
+                  <related-pages
+                    :namespace="namespace"
+                    :module="module"
                     size="lg"
-                  >
-                    {{ $t('recordPage.edit') }}
-                  </b-button>
-                  <b-button
-                    v-else
-                    variant="primary"
-                    size="lg"
-                    :disabled="processing"
-                    class="mr-1"
-                    @click="handleRecordPageCreation"
-                  >
-                    {{ $t('recordPage.create') }}
-                  </b-button>
+                  />
                 </div>
               </b-row>
             </b-card-header>
@@ -362,7 +346,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import draggable from 'vuedraggable'
 import FieldConfigurator from 'corteza-webapp-compose/src/components/ModuleFields/Configurator'
 import FieldRowEdit from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowEdit'
@@ -370,6 +354,7 @@ import FieldRowView from 'corteza-webapp-compose/src/components/Admin/Module/Fie
 import FederationSettings from 'corteza-webapp-compose/src/components/Admin/Module/FederationSettings'
 import DiscoverySettings from 'corteza-webapp-compose/src/components/Admin/Module/DiscoverySettings'
 import ModuleTranslator from 'corteza-webapp-compose/src/components/Admin/Module/ModuleTranslator'
+import RelatedPages from 'corteza-webapp-compose/src/components/Admin/Module/RelatedPages'
 import { compose, NoID } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
@@ -388,6 +373,7 @@ export default {
     FederationSettings,
     DiscoverySettings,
     ModuleTranslator,
+    RelatedPages,
     EditorToolbar,
     Export,
   },
@@ -423,10 +409,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      pages: 'page/set',
-    }),
-
     title () {
       return this.creatingModule ? this.$t('edit.create') : this.$t('edit.edit')
     },
@@ -484,16 +466,6 @@ export default {
 
       const { name } = this.updateField
       return name ? this.$t('edit.specificFieldSettings', { name: this.updateField.name }) : this.$t('edit.moduleFieldSettings')
-    },
-
-    recordPage () {
-      return this.pages.find(p => p.moduleID === this.moduleID)
-    },
-
-    recordListPage () {
-      return this.pages.find(p => {
-        return p.blocks.find(b => b.options.moduleID === this.moduleID)
-      })
     },
 
     federationEnabled () {
@@ -558,8 +530,6 @@ export default {
       updateModuleSet: 'module/updateSet',
       createModule: 'module/create',
       deleteModule: 'module/delete',
-      createPage: 'page/create',
-      updatePage: 'page/update',
     }),
 
     handleNewField () {
@@ -650,67 +620,6 @@ export default {
         this.$router.push({ name: 'admin.modules' })
         this.processing = false
       }).catch(this.toastErrorHandler(this.$t('notification:module.deleteFailed')))
-    },
-
-    async createDefaultPage (page = {}) {
-      if (this.recordPage) {
-        return this.recordPage
-      }
-
-      const { name, moduleID } = this.module
-      const { namespaceID } = this.namespace
-
-      return this.createPage({
-        namespaceID,
-        moduleID,
-
-        title: `${this.$t('forModule.recordPage')} "${name || moduleID}"`,
-        blocks: [],
-
-        ...page,
-      })
-    },
-
-    handleRecordPageCreation () {
-      this.processing = true
-
-      // A simple record block w/o preselected fields
-      const blocks = [new compose.PageBlockRecord({ xywh: [0, 0, 12, 16] })]
-      const selfID = (this.recordListPage || {}).pageID
-
-      this.createDefaultPage({ blocks, selfID })
-        .catch(this.toastErrorHandler(this.$t('notification:module.recordPage.createFailed')))
-        .finally(() => {
-          this.processing = false
-        })
-    },
-
-    handleRecordListCreation () {
-      this.createDefaultPage().then(recordPage => {
-        const { namespaceID } = this.namespace
-        const { name, moduleID } = this.module
-
-        const recListBlock = new compose.PageBlockRecordList({
-          xywh: [0, 0, 12, 16],
-          options: {
-            moduleID,
-            pageID: recordPage.pageID,
-            fields: [],
-          },
-        })
-
-        const page = new compose.Page({
-          title: `${this.$t('forModule.recordList')} "${name || moduleID}"`,
-          namespaceID,
-          blocks: [
-            recListBlock,
-          ],
-        })
-
-        this.createPage(page).then((page) => {
-          this.$router.push({ name: 'admin.pages.builder', params: { pageID: page.pageID } })
-        })
-      }).catch(this.toastErrorHandler(this.$t('notification:module.recordPage.createFailed')))
     },
 
     redirect () {

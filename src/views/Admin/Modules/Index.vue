@@ -150,22 +150,10 @@
                   {{ (m.updatedAt || m.createdAt) | locDate }}
                 </template>
                 <template v-slot:cell(actions)="{ item: m }">
-                  <b-button
-                    :variant="pages.find(p => p.moduleID === m.moduleID) ? 'light' : 'primary'"
-                    :disabled="creatingRecordPage"
-                    class="mr-2"
-                    @click.stop="openPageBuilder(m)"
-                  >
-                    {{ pages.find(p => p.moduleID === m.moduleID) ? $t('recordPage.edit') : $t('recordPage.create') }}
-                  </b-button>
-                  <span>
-                    <router-link
-                      :to="{name: 'admin.modules.record.list', params: { moduleID: m.moduleID }}"
-                      class="btn px-2 text-dark"
-                    >
-                      {{ $t('allRecords.label') }}
-                    </router-link>
-                  </span>
+                  <related-pages
+                    :namespace="namespace"
+                    :module="m"
+                  />
                   <c-permissions-button
                     v-if="m.canGrant"
                     :title="m.name"
@@ -187,6 +175,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import { compose, fmt } from '@cortezaproject/corteza-js'
 import { filter } from '@cortezaproject/corteza-vue'
+import RelatedPages from 'corteza-webapp-compose/src/components/Admin/Module/RelatedPages'
 import Import from 'corteza-webapp-compose/src/components/Admin/Import'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 
@@ -200,6 +189,7 @@ export default {
   components: {
     Import,
     Export,
+    RelatedPages,
   },
 
   props: {
