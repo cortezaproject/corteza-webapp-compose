@@ -23,7 +23,7 @@
         </b-button>
         <namespace-translator
           v-if="namespace"
-          :namespace.sync="namespace"
+          :namespace="namespace"
           :disabled="isNew"
           style="margin-left:2px;"
         />
@@ -434,6 +434,11 @@ export default {
         this.isApplication = false
       }
 
+      this.namespace.meta = {
+        subtitle: '',
+        description: '',
+        ...this.namespace.meta,
+      }
       this.loaded = true
     },
 
@@ -535,6 +540,12 @@ export default {
         this.$router.push({ name: 'root' })
       } else if (!this.isEdit || this.isClone) {
         this.$router.push({ name: 'namespace.edit', params: { namespaceID: this.namespace.namespaceID } })
+      }
+
+      this.namespace.meta = {
+        subtitle: '',
+        description: '',
+        ...this.namespace.meta,
       }
     },
 
