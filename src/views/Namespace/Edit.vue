@@ -133,12 +133,15 @@
                 <div class="d-flex align-items-center">
                   {{ $t('logo.label') }}
                   <b-button
+                    v-if="logoPreview"
                     v-b-modal.logo
-                    variant="primary"
+                    variant="link"
                     size="sm"
-                    class="py-0 ml-2"
+                    class="d-flex align-items-center border-0 p-0 ml-2"
                   >
-                    {{ $t('logo.preview') }}
+                    <font-awesome-icon
+                      :icon="['far', 'eye']"
+                    />
                   </b-button>
 
                   <b-button
@@ -146,7 +149,7 @@
                     variant="light"
                     size="sm"
                     class="py-0 ml-2"
-                    @click="namespace.meta.logo = undefined"
+                    @click="resetLogo()"
                   >
                     {{ $t('logo.reset') }}
                   </b-button>
@@ -631,6 +634,11 @@ export default {
       }
 
       return rr
+    },
+
+    resetLogo () {
+      this.namespace.meta.logo = undefined
+      this.namespace.meta.logoID = undefined
     },
   },
 }
