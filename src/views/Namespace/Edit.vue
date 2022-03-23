@@ -9,11 +9,11 @@
 
     <portal to="topbar-tools">
       <b-button-group
+        v-if="isEdit"
         size="sm"
         class="mr-1"
       >
         <b-button
-          v-if="isEdit"
           variant="primary"
           class="d-flex align-items-center"
           :to="openNamespace"
