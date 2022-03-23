@@ -3,6 +3,7 @@
     active-nav-item-class="bg-grey"
     nav-wrapper-class="bg-white border-bottom"
     card
+    lazy
   >
     <template #tabs-end>
       <page-translator

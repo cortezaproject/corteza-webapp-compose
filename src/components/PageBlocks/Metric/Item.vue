@@ -68,13 +68,13 @@ export default {
 
   watch: {
     metric: {
-      handler: function () {
+      handler () {
         this.update()
       },
       immediate: true,
     },
     value: {
-      handler: function () {
+      handler () {
         this.update()
       },
       immediate: true,
@@ -83,7 +83,7 @@ export default {
 
   methods: {
     update () {
-      this.$nextTick(function () {
+      this.$nextTick(() => {
         const { width, height } = this.$refs.metricItem.getBBox()
         const tmp = [...this.vvb]
         tmp[2] = parseInt(Math.ceil(width))
