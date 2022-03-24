@@ -131,7 +131,7 @@
             </b-form-group>
 
             <b-form-group
-              v-if="namespace.meta.logoEnabled"
+              v-if="namespace.meta.logoEnabled && isEdit"
             >
               <template #label>
                 <div class="d-flex align-items-center">
