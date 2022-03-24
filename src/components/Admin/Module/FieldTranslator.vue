@@ -92,6 +92,7 @@ export default {
               .filter(({ resource }) => this.resource === resource)
               // Ignore all option translations
               .filter(({ key }) => !key.startsWith('meta.options'))
+              .filter(({ key }) => !key.startsWith('meta.bool'))
 
             // @todo pass set of translations to the object (ModuleField* class)
             // The logic there needs to be implemented; the idea is to decode
