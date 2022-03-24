@@ -5,63 +5,76 @@
     v-on="$listeners"
   >
     <div class="calendar-container m-2">
-      <div class="d-flex align-items-baseline justify-content-center mb-2">
-        <b-btn
-          variant="link"
-          class="text-dark"
-          @click="api().prev()"
-        >
-          <font-awesome-icon :icon="['fas', 'angle-left']" />
-        </b-btn>
-        <span class="h5">
-          {{ title }}
-        </span>
-        <b-btn
-          variant="link"
-          class="text-dark"
-          @click="api().next()"
-        >
-          <font-awesome-icon :icon="['fas', 'angle-right']" />
-        </b-btn>
-      </div>
-      <b-row
-        no-gutters
+      <div
+        v-if="!header.hide"
       >
-        <b-col
-          cols="12"
-          sm="10"
-          md="9"
-          lg="8"
-          xl="9"
-          class="d-flex justify-content-sm-start justify-content-center flex-wrap"
+        <div
+          v-if="!header.hidePrevNext || !header.hideTitle"
+          class="d-flex align-items-baseline justify-content-center mb-2"
         >
           <b-btn
-            v-for="view in views"
-            :key="view"
-            variant="light"
-            class="mr-1 mb-1"
-            @click="api().changeView(view)"
+            v-if="!header.hidePrevNext"
+            variant="link"
+            class="text-dark"
+            @click="api().prev()"
           >
-            {{ $t(`calendar.view.${view}`) }}
+            <font-awesome-icon :icon="['fas', 'angle-left']" />
           </b-btn>
-        </b-col>
-        <b-col
-          cols="12"
-          sm="2"
-          md="3"
-          lg="4"
-          xl="3"
-          class="d-flex justify-content-end"
-        >
+          <span
+            v-if="!header.hideTitle"
+            class="h5"
+          >
+            {{ title }}
+          </span>
           <b-btn
-            variant="light"
-            class="mb-1 w-100"
-            @click="api().today()"
+            v-if="!header.hidePrevNext"
+            variant="link"
+            class="text-dark"
+            @click="api().next()"
           >
-            {{ $t(`calendar.today`) }}
+            <font-awesome-icon :icon="['fas', 'angle-right']" />
           </b-btn>
-        </b-col>
-      </b-row>
+        </div>
+        <b-row
+          no-gutters
+        >
+          <b-col
+            cols="12"
+            sm="10"
+            md="9"
+            lg="8"
+            xl="9"
+            class="d-flex justify-content-sm-start justify-content-center flex-wrap"
+          >
+            <b-btn
+              v-for="view in views"
+              :key="view"
+              variant="light"
+              class="mr-1 mb-1"
+              @click="api().changeView(view)"
+            >
+              {{ $t(`calendar.view.${view}`) }}
+            </b-btn>
+          </b-col>
+          <b-col
+            v-if="!header.hideToday && !header.hide"
+            cols="12"
+            sm="2"
+            md="3"
+            lg="4"
+            xl="3"
+            class="d-flex justify-content-end"
+          >
+            <b-btn
+              variant="light"
+              class="mb-1 w-100"
+              @click="api().today()"
+            >
+              {{ $t(`calendar.today`) }}
+            </b-btn>
+          </b-col>
+        </b-row>
+      </div>
       <full-calendar
         ref="fc"
         :events="events"
@@ -140,7 +153,7 @@ export default {
         header: false,
         height: 'parent',
         themeSystem: 'corteza',
-        defaultView: this.block.defaultView,
+        defaultView: 'dayGridMonth',
         editable: false,
         eventLimit: true,
         locale: this.locale,

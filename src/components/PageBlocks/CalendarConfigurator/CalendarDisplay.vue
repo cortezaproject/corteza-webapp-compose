@@ -6,32 +6,24 @@
     >
       <b-form-checkbox
         v-model="options.header.hide"
-        :value="true"
-        :unchecked-value="false"
       >
         {{ $t('calendar.hideHeader') }}
       </b-form-checkbox>
       <b-form-checkbox
         v-model="options.header.hidePrevNext"
         :disabled="options.header.hide"
-        value="true"
-        :unchecked-value="false"
       >
         {{ $t('calendar.hideNavigation') }}
       </b-form-checkbox>
       <b-form-checkbox
         v-model="options.header.hideToday"
         :disabled="options.header.hide"
-        :value="true"
-        :unchecked-value="false"
       >
         {{ $t('calendar.hideToday') }}
       </b-form-checkbox>
       <b-form-checkbox
         v-model="options.header.hideTitle"
         :disabled="options.header.hide"
-        :value="true"
-        :unchecked-value="false"
       >
         {{ $t('calendar.hideTitle') }}
       </b-form-checkbox>
