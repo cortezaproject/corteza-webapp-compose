@@ -101,10 +101,14 @@ export default function (ComposeAPI) {
         })
       },
 
-      async delete ({ commit }, item) {
+      async delete ({ commit, dispatch }, item) {
         commit(types.pending)
         return ComposeAPI.pageDelete(item).then(() => {
           commit(types.removeFromSet, [item])
+          const { namespaceID } = item || {}
+          if (namespaceID) {
+            dispatch('load', { namespaceID: item.namespaceID, clear: true })
+          }
           return true
         }).finally(() => {
           commit(types.completed)
