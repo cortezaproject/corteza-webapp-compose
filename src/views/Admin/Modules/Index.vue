@@ -154,6 +154,14 @@
                     :namespace="namespace"
                     :module="m"
                   />
+                  <span>
+                    <router-link
+                      :to="{name: 'admin.modules.record.list', params: { moduleID: m.moduleID }}"
+                      class="btn px-2 text-dark"
+                    >
+                      {{ $t('allRecords.label') }}
+                    </router-link>
+                  </span>
                   <c-permissions-button
                     v-if="m.canGrant"
                     :title="m.name"
