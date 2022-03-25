@@ -123,7 +123,8 @@ import { latLng } from 'leaflet'
 
 export default {
   i18nOptions: {
-    namespaces: 'field.kind.geometry',
+    namespaces: 'field',
+    keyPrefix: 'kind.geometry',
   },
 
   extends: base,
