@@ -75,7 +75,9 @@
         </b-input-group>
       </b-form-group>
 
-      <b-form-group>
+      <b-form-group
+        v-if="f.isMulti"
+      >
         <label class="d-block">{{ $t('kind.select.optionType.label') }}</label>
         <b-form-radio-group
           v-model="f.options.selectType"
