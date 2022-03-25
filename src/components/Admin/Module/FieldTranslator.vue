@@ -137,7 +137,7 @@ export default {
 
             tr = find('meta.description.edit')
             if (tr !== undefined) {
-              this.field.options.description.edit = tr.message
+              this.field.options.description.edit = tr.message || undefined
             }
 
             tr = find('meta.hint.view')
@@ -147,7 +147,7 @@ export default {
 
             tr = find('meta.hint.edit')
             if (tr !== undefined) {
-              this.field.options.hint.edit = tr.message
+              this.field.options.hint.edit = tr.message || undefined
             }
 
             if (this.field.expressions && Array.isArray(this.field.expressions.validators)) {
