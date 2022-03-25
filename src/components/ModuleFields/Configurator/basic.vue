@@ -22,6 +22,7 @@
     </b-form-checkbox>
 
     <b-form-checkbox
+      v-if="showDefaultValue"
       :checked="defaultValueEnabled"
       :disabled="!!showvalueExpr"
       @change="toggleDefaultValue()"
@@ -244,6 +245,10 @@ export default {
 
     noHintEdit () {
       return this.field.options.hint.edit === undefined
+    },
+
+    showDefaultValue () {
+      return !['File'].includes(this.field.kind)
     },
 
     defaultValueEnabled () {
