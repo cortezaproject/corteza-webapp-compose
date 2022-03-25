@@ -137,7 +137,9 @@ export default {
 
           throw err
         })
-        .then((record) => this.record.apply(record))
+        .then(record => {
+          this.record = new compose.Record(this.module, record)
+        })
         .then(() => this.dispatchUiEvent('afterFormSubmit', this.record, { $records: records }))
         .then(() => this.updatePrompts())
         .then(() => {
@@ -186,8 +188,10 @@ export default {
 
           throw err
         })
-        .then((record) => this.record.apply(record))
-        .then(() => this.dispatchUiEvent('afterFormSubmit'))
+        .then(record => {
+          this.record = new compose.Record(this.module, record)
+        })
+        .then(() => this.dispatchUiEvent('beforeFormSubmit', this.record))
         .then(() => this.updatePrompts())
         .then(() => {
           this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
