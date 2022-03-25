@@ -20,11 +20,11 @@
     </div>
 
     <p
-      v-for="(c, i) in localValue"
-      :key="i"
+      v-for="(c, index) in localValue"
+      :key="index"
       class="mb-0"
     >
-      {{ c[0] }}, {{ c[1] }}
+      {{ c[0] }}, {{ c[1] }}{{ index !== localValue.length - 1 ? field.options.multiDelimiter : '' }}
     </p>
 
     <b-modal
