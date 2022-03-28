@@ -241,10 +241,10 @@
     <editor-toolbar
       :back-link="{name: 'root'}"
       :hide-delete="hideDelete"
-      :hide-clone="!loaded || !isEdit"
-      :hide-save="!loaded"
-      :disable-delete="!canDelete"
-      :disable-save="!canSave"
+      :hide-clone="!isEdit"
+      :disable-delete="!canDelete || processing"
+      :disable-save="!canSave || processing"
+      :disable-clone="processing"
       @delete="handleDelete"
       @save="handleSave()"
       @clone="$router.push({ name: 'namespace.clone', params: { namespaceID: namespace.namespaceID }})"
@@ -301,6 +301,7 @@ export default {
   data () {
     return {
       loaded: false,
+      processing: false,
 
       namespace: new compose.Namespace({ enabled: true }),
       namespaceAssets: {
@@ -396,7 +397,7 @@ export default {
     },
 
     hideDelete () {
-      return !this.loaded || !this.isEdit || !!this.namespace.deletedAt
+      return !this.isEdit || !!this.namespace.deletedAt
     },
   },
 
@@ -411,6 +412,8 @@ export default {
 
   methods: {
     async fetchNamespace () {
+      this.processing = true
+
       const namespaceID = this.$route.params.namespaceID
       if (namespaceID) {
         await this.$store.dispatch('namespace/findByID', { namespaceID })
@@ -439,6 +442,8 @@ export default {
         description: '',
         ...this.namespace.meta,
       }
+
+      this.processing = false
       this.loaded = true
     },
 
@@ -470,6 +475,8 @@ export default {
     },
 
     async handleSave ({ closeOnSuccess = false } = {}) {
+      this.processing = true
+
       /**
        * Pass a special tag alongside payload that
        * instructs store layer to add content-language header to the API request
@@ -486,6 +493,7 @@ export default {
         } catch (e) {
           const error = JSON.stringify(e) === '{}' ? '' : e
           this.toastErrorHandler(this.$t('notification:namespace.assetUploadFailed'))(error)
+          this.processing = false
           return
         }
       }
@@ -508,6 +516,7 @@ export default {
           })
         } catch (e) {
           this.toastErrorHandler(this.$t('notification:namespace.saveFailed'))(e)
+          this.processing = false
           return
         }
       } else if (this.isClone) {
@@ -517,6 +526,7 @@ export default {
           })
         } catch (e) {
           this.toastErrorHandler(this.$t('notification:namespace.cloneFailed'))(e)
+          this.processing = false
           return
         }
       } else {
@@ -529,12 +539,15 @@ export default {
           })
         } catch (e) {
           this.toastErrorHandler(this.$t('notification:namespace.createFailed'))(e)
+          this.processing = false
           return
         }
       }
 
       await this.handleApplicationSave()
         .catch(() => this.toastErrorHandler(this.$t('notification:namespace.createAppFailed')))
+
+      this.processing = false
 
       if (closeOnSuccess) {
         this.$router.push({ name: 'root' })
@@ -550,10 +563,22 @@ export default {
     },
 
     handleDelete () {
+      this.processing = true
+
       const { namespaceID } = this.namespace
-      this.$store.dispatch('namespace/delete', { namespaceID }).then(() => {
-        this.$router.push({ name: 'root' })
-      }).catch(this.toastErrorHandler(this.$t('notification:namespace.deleteFailed')))
+      const { applicationID } = this.application || {}
+
+      this.$store.dispatch('namespace/delete', { namespaceID })
+        .catch(this.toastErrorHandler(this.$t('notification:namespace.deleteFailed')))
+        .then(() => {
+          if (applicationID) {
+            return this.$SystemAPI.applicationDelete({ applicationID })
+          }
+        })
+        .finally(() => {
+          this.processing = false
+          this.$router.push({ name: 'root' })
+        })
     },
 
     async handleApplicationSave () {
