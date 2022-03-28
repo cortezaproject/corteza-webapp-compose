@@ -36,7 +36,8 @@
       <div class="d-flex align-items-center">
         <b-form-input
           v-model="liveExample"
-          class="w-25"
+          type="number"
+          class="w-50"
         />
         <span class="ml-3">{{ mockField }}</span>
       </div>
@@ -90,8 +91,11 @@ export default {
     }
   },
   computed: {
-
     mockField () {
+      if (!this.liveExample) {
+        return
+      }
+
       const mockField = new compose.ModuleFieldNumber({
         options: {
           format: this.f.options.format,
@@ -101,6 +105,7 @@ export default {
           multiDelimiter: '\n',
         },
       })
+
       return mockField.formatValue(this.liveExample)
     },
   },
