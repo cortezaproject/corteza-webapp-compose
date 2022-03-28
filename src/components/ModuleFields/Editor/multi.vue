@@ -29,10 +29,13 @@
           class="handle text-light ml-1 mr-2"
         />
 
-        <slot
-          :index="index"
-          class="flex-shrink-1"
-        />
+        <div
+          class="flex-grow-1"
+        >
+          <slot
+            :index="index"
+          />
+        </div>
 
         <font-awesome-icon
           v-if="removable"

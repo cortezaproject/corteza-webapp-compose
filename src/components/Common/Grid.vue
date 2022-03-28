@@ -16,17 +16,18 @@
       :cols="columnNumber"
       :margin="[0, 0]"
       :responsive="!editable"
+      :use-css-transforms="false"
       @layout-updated="handleLayoutUpdate"
     >
       <grid-item
         v-for="(item, index) in gridCollection"
         :key="item.i"
         ref="items"
+        :min-h="2"
         class="grid-item"
         :class="{
           'h-100': isStretchable,
         }"
-        :min-h="2"
         v-bind="{ ...item }"
       >
         <slot

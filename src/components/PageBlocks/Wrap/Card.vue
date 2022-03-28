@@ -45,7 +45,7 @@
       </div>
 
       <b-card-body
-        class="position-relative p-0"
+        class="p-0"
         :class="{ 'overflow-auto': scrollableBody }"
       >
         <slot
