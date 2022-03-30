@@ -459,23 +459,21 @@
       </b-table-simple>
 
       <div
-        v-if="!items.length || processing"
-        class="position-absolute w-100 h-100 d-print-none"
-        style="top: -1rem;"
+        v-if="processing || !items.length"
+        class="position-absolute d-print-none text-center"
+        style="left: 0; right: 0; bottom: 50%;"
       >
-        <div
-          class="d-flex w-100 h-100 justify-content-center align-items-center pt-5"
+        <b-spinner
+          v-if="processing"
+        />
+
+        <h6
+          v-else
+          class="position-absolute d-print-none text-center mb-0"
+          style="left: 0; right: 0; bottom: 50%;"
         >
-          <b-spinner
-            v-if="processing"
-          />
-          <h6
-            v-else
-            class="text-center mb-0"
-          >
-            {{ $t('recordList.noRecords') }}
-          </h6>
-        </div>
+          {{ $t('recordList.noRecords') }}
+        </h6>
       </div>
     </template>
 
@@ -1301,6 +1299,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .handle {
   cursor: grab;
 }
