@@ -37,6 +37,7 @@
             option-value="userID"
             option-text="label"
             :placeholder="$t('field.kind.user.suggestionPlaceholder')"
+            class="bg-white"
             @search="searchAssignees"
           />
         </b-form-group>

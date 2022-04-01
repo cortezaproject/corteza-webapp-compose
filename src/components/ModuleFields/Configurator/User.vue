@@ -17,9 +17,11 @@
         option-value="roleID"
         option-text="name"
         :close-on-select="false"
+        append-to-body
         :placeholder="$t('kind.user.roles.placeholder')"
         multiple
         label="name"
+        class="bg-white"
       />
     </b-form-group>
 

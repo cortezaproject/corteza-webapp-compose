@@ -60,6 +60,7 @@
         v-if="forTimezone"
         v-model="exportTimezone"
         :options="timezones"
+        class="bg-white"
         :placeholder="$t('recordList.export.timezonePlaceholder')"
       />
     </b-form-group>

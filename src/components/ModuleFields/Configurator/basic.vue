@@ -70,7 +70,6 @@
     >
       <field-editor
         value-only
-        :append-to-body="false"
         v-bind="mock"
       />
     </b-form-group>

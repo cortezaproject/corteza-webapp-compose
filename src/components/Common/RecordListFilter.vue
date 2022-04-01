@@ -49,11 +49,11 @@
                     v-model="filter.name"
                     :options="fieldOptions"
                     :clearable="false"
-                    :append-to-body="true"
                     :placeholder="$t('recordList.filter.fieldPlaceholder')"
                     option-value="name"
                     option-text="label"
                     :reduce="f => f.name"
+                    append-to-body
                     :class="{ 'filter-field-picker': !!filter.name }"
                     class="bg-white"
                     @input="onChange($event, groupIndex, index)"
