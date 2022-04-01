@@ -1,6 +1,8 @@
 import { compose } from '@cortezaproject/corteza-js'
 
 const types = {
+  loading: 'loading',
+  loaded: 'loaded',
   pending: 'pending',
   completed: 'completed',
   updateSet: 'updateSet',
@@ -13,11 +15,14 @@ export default function (ComposeAPI) {
     namespaced: true,
 
     state: {
+      loading: false,
       pending: false,
       set: [],
     },
 
     getters: {
+      loading: (state) => state.loading,
+
       pending: (state) => state.pending,
 
       getByID (state) {
@@ -42,6 +47,7 @@ export default function (ComposeAPI) {
           return new Promise((resolve) => resolve(getters.set))
         }
 
+        commit(types.loading)
         commit(types.pending)
         return ComposeAPI.chartList({ namespaceID, sort: 'name ASC' }).then(({ set, filter }) => {
           if (set && set.length > 0) {
@@ -50,6 +56,7 @@ export default function (ComposeAPI) {
 
           return getters.set
         }).finally(() => {
+          commit(types.loaded)
           commit(types.completed)
         })
       },
@@ -110,6 +117,14 @@ export default function (ComposeAPI) {
     },
 
     mutations: {
+      [types.loading] (state) {
+        state.loading = true
+      },
+
+      [types.loaded] (state) {
+        state.loading = false
+      },
+
       [types.pending] (state) {
         state.pending = true
       },

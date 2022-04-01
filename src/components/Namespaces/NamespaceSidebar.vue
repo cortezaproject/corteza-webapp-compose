@@ -51,7 +51,7 @@
 
         <b-input
           v-model.trim="query"
-          :disabled="pending"
+          :disabled="loading"
           class="namespace-selector mw-100"
           type="search"
           autocomplete="off"
@@ -59,7 +59,7 @@
         />
 
         <div
-          v-if="!pending"
+          v-if="!loading"
         >
           <c-sidebar-nav-items
             :items="navItems"
@@ -174,17 +174,17 @@ export default {
 
   computed: {
     ...mapGetters({
-      namespacePending: 'namespace/pending',
-      modulePending: 'module/pending',
-      chartPending: 'chart/pending',
-      pagePending: 'page/pending',
+      moduleLoading: 'module/loading',
+      chartLoading: 'chart/loading',
+      pageLoading: 'page/loading',
       modules: 'module/set',
       pages: 'page/set',
       charts: 'chart/set',
     }),
 
-    pending () {
-      return this.namespacePending || this.modulePending || this.chartPending || this.pagePending
+    // Loading is true only when a resource is being force loaded (API call)
+    loading () {
+      return this.moduleLoading || this.chartLoading || this.pageLoading
     },
 
     hideNamespaceList () {
