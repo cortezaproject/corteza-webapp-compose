@@ -15,6 +15,7 @@
         class="h-100"
       >
         <draggable
+          v-if="!processing"
           :id="draggableID"
           v-model="records"
           :group="{ name: moduleID, pull: canPull, put: canPut }"
@@ -73,6 +74,15 @@
             </b-card-text>
           </router-link>
         </draggable>
+        <h5
+          v-else
+          class="d-flex align-items-center justify-content-center w-100 h-100"
+        >
+          <b-spinner
+            variant="primary"
+            class="p-4"
+          />
+        </h5>
       </div>
     </template>
     <template
@@ -121,6 +131,8 @@ export default {
 
   data () {
     return {
+      processing: false,
+
       filter: {
         sort: '',
         query: '',
@@ -220,6 +232,8 @@ export default {
         }
 
         if (this.roModule) {
+          this.processing = true
+
           this.fetchRecords(this.roModule, this.expandFilter())
             .then(rr => {
               this.records = rr
@@ -228,6 +242,9 @@ export default {
             })
             .catch(e => {
               console.error(e)
+            })
+            .finally(() => {
+              this.processing = false
             })
         }
       },
