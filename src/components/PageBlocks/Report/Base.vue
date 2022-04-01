@@ -11,7 +11,7 @@
     </div>
 
     <display-element
-      v-else
+      v-else-if="displayElement"
       :display-element="displayElement"
       :labels="{
         previous: $t('recordList.pagination.prev'),
