@@ -269,6 +269,10 @@ input[type="search"]::-webkit-search-cancel-button {
   border: 0;
 }
 
+.vs__actions {
+  padding-top: 0;
+}
+
 // Supporting CSS to improve print-to-PDF option
 @media print {
   header {
