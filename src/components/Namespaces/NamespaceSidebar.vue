@@ -25,51 +25,63 @@
     </portal>
 
     <portal
-      v-if="!pending && namespace"
       to="sidebar-body-expanded"
     >
-      <b-button
-        v-if="!pending && isAdminPage"
-        variant="light"
-        class="w-100 mb-2"
-        :to="{ name: 'pages', params: { slug: namespace.slug } }"
-      >
-        {{ $t('publicPages') }}
-      </b-button>
-
-      <b-button
-        v-else-if="!pending && namespace && namespace.canManageNamespace"
-        variant="light"
-        class="w-100 mb-2"
-        :to="{ name: 'admin.modules', params: { slug: namespace.slug } }"
-      >
-        {{ $t('adminPanel') }}
-      </b-button>
-
       <div
-        class="h-100"
+        v-if="namespace"
+        class="d-flex flex-column flex-grow-1"
       >
+        <b-button
+          v-if="isAdminPage"
+          variant="light"
+          class="w-100 mb-2"
+          :to="{ name: 'pages', params: { slug: namespace.slug } }"
+        >
+          {{ $t('publicPages') }}
+        </b-button>
+
+        <b-button
+          v-else-if="namespace.canManageNamespace"
+          variant="light"
+          class="w-100 mb-2"
+          :to="{ name: 'admin.modules', params: { slug: namespace.slug } }"
+        >
+          {{ $t('adminPanel') }}
+        </b-button>
+
         <b-input
           v-model.trim="query"
+          :disabled="pending"
           class="namespace-selector mw-100"
           type="search"
           autocomplete="off"
           :placeholder="$t(`searchPlaceholder.${isAdminPage ? 'admin' : 'public'}`)"
         />
 
-        <c-sidebar-nav-items
-          :items="navItems"
-          :start-expanded="!!query"
-          default-route-name="page"
-          class="overflow-auto h-100"
-        />
-      </div>
+        <div
+          v-if="!pending"
+        >
+          <c-sidebar-nav-items
+            :items="navItems"
+            :start-expanded="!!query"
+            default-route-name="page"
+            class="overflow-auto h-100"
+          />
 
-      <div
-        v-if="!navItems.length"
-        class="d-flex justify-content-center mt-5"
-      >
-        {{ $t('noPages') }}
+          <div
+            v-if="!navItems.length"
+            class="d-flex justify-content-center mt-5"
+          >
+            {{ $t('noPages') }}
+          </div>
+        </div>
+
+        <div
+          v-else
+          class="d-flex align-items-center justify-content-center mt-5"
+        >
+          <b-spinner />
+        </div>
       </div>
     </portal>
   </div>
