@@ -779,7 +779,7 @@ export default {
 
       const configured = fields.map(mf => ({
         key: mf.name,
-        label: mf.label || mf.name,
+        label: mf.isSystem ? this.$t(`field:system.${mf.name}`) : mf.label || mf.name,
         moduleField: mf,
         sortable: !this.options.hideSorting && !(this.options.editable && this.editing) && !mf.isMulti && mf.isSortable,
         tdClass: 'record-value',

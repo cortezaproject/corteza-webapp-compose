@@ -114,7 +114,9 @@ export default {
       }
 
       // Show filtered & ordered list of fields
-      return this.module.filterFields(this.options.fields)
+      return this.module.filterFields(this.options.fields).map(sf => {
+        return { ...sf, label: this.$t(`field:system.${sf.name}`) }
+      })
     },
 
     errorID () {

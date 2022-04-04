@@ -326,7 +326,9 @@ export default {
       if (this.recordListModule) {
         return [
           ...this.recordListModule.fields,
-          ...this.recordListModule.systemFields(),
+          ...this.recordListModule.systemFields().map(sf => {
+            return { ...sf, label: this.$t(`field:system.${sf.name}`) }
+          }),
         ].map(({ name, label }) => ({ name, label }))
       }
 

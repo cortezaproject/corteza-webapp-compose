@@ -281,7 +281,7 @@
                       </td>
                     </tr>
                     <field-row-view
-                      v-for="(field, index) in module.systemFields()"
+                      v-for="(field, index) in systemFields"
                       :key="index"
                       :field="field"
                       class="mt-4"
@@ -457,6 +457,12 @@ export default {
       const unique = Object.keys(this.duplicateFields).length === 0
 
       return valid && unique
+    },
+
+    systemFields () {
+      return this.module.systemFields().map(sf => {
+        return { ...sf, label: this.$t(`field:system.${sf.name}`) }
+      })
     },
 
     editModalTitle () {

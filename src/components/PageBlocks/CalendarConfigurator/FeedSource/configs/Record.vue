@@ -198,8 +198,12 @@ export default {
       }
 
       const moduleFields = this.module.fields.slice().sort((a, b) => a.label.localeCompare(b.label))
-      return [...moduleFields, ...this.module.systemFields()]
-        .filter(f => f.kind === 'DateTime' && !f.isMulti)
+      return [
+        ...moduleFields,
+        ...this.module.systemFields().map(sf => {
+          return { ...sf, label: this.$t(`field:system.${sf.name}`) }
+        }),
+      ].filter(f => f.kind === 'DateTime' && !f.isMulti)
     },
   },
 }

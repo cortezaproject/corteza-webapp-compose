@@ -226,7 +226,9 @@ export default {
         ...[...this.module.fields].sort((a, b) =>
           (a.label || a.name).localeCompare(b.label || b.name),
         ),
-        ...this.module.systemFields(),
+        ...this.module.systemFields().map(sf => {
+          return { ...sf, label: this.$t(`field:system.${sf.name}`) }
+        }),
       ].filter(({ kind }) => !['File'].includes(kind))
     },
 
@@ -254,7 +256,9 @@ export default {
         f.isMulti = false
         return f
       }),
-      ...this.module.systemFields(),
+      ...this.module.systemFields().map(sf => {
+        return { ...sf, label: this.$t(`field:system.${sf.name}`) }
+      }),
     ]
 
     this.mock = {

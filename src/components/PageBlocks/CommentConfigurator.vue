@@ -203,7 +203,9 @@ export default {
       if (this.options.moduleID) {
         return [
           ...this.selectedModuleFields,
-          ...this.selectedModule.systemFields(),
+          ...this.selectedModule.systemFields().map(sf => {
+            return { ...sf, label: this.$t(`field:system.${sf.name}`) }
+          }),
         ]
       }
       return []
