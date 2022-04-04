@@ -1,6 +1,8 @@
 <template>
   <div>
-    <b-tab :title="$t('recordList.label')">
+    <b-tab
+      :title="$t('recordList.label')"
+    >
       <b-form-group
         class="form-group"
         :label="$t('general.module')"

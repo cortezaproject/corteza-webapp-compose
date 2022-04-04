@@ -27,6 +27,7 @@
                     <b-input
                       id="name"
                       v-model="page.title"
+                      data-test-id="input-name"
                       required
                       type="text"
                       class="h-100"
@@ -34,6 +35,7 @@
                     />
                     <b-input-group-append>
                       <b-button
+                        data-test-id="button-create-page"
                         type="submit"
                         variant="primary"
                         size="lg"

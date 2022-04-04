@@ -21,6 +21,7 @@
             class="wrap-with-vertical-gutters"
           >
             <b-btn
+              data-test-id="button-create"
               :to="{ name: 'namespace.create' }"
               variant="primary"
               size="lg"

@@ -12,6 +12,7 @@
       >
         <b-button
           v-if="backLink"
+          data-test-id="button-back-without-save"
           variant="link"
           :to="backLink"
           class="text-dark back mr-auto"
@@ -35,6 +36,7 @@
         <c-input-confirm
           v-if="!hideDelete"
           v-b-tooltip.hover
+          data-test-id="button-delete"
           :disabled="disableDelete"
           size="lg"
           size-confirm="lg"
@@ -47,6 +49,7 @@
         </c-input-confirm>
         <b-button
           v-if="!hideClone"
+          data-test-id="button-clone"
           :disabled="disableClone"
           variant="light"
           size="lg"
@@ -57,6 +60,7 @@
         </b-button>
         <b-button
           v-if="!hideSave"
+          data-test-id="button-save-and-close"
           :disabled="disableSave"
           variant="light"
           size="lg"
@@ -67,6 +71,7 @@
         </b-button>
         <b-button
           v-if="!hideSave"
+          data-test-id="button-save"
           :disabled="disableSave"
           variant="primary"
           size="lg"

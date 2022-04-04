@@ -48,6 +48,7 @@
                 <template v-if="inlineEditing">
                   <b-btn
                     v-if="!options.hideAddButton"
+                    data-test-id="button-add-record"
                     variant="primary"
                     size="lg"
                     class="float-left mr-1"
@@ -60,6 +61,7 @@
                 <template v-else-if="!inlineEditing && (recordPageID || options.allRecords)">
                   <router-link
                     v-if="!options.hideAddButton"
+                    data-test-id="button-add-record"
                     class="btn btn-lg btn-primary float-left mr-1"
                     :to="{
                       name: options.rowCreateUrl || 'page.record.create',

@@ -25,6 +25,7 @@
                   >
                     <b-btn
                       v-if="namespace.canCreateModule"
+                      data-test-id="button-create"
                       variant="primary"
                       size="lg"
                       class="mr-1 float-left"
@@ -155,6 +156,7 @@
                     :module="m"
                   />
                   <b-button
+                    data-test-id="button-all-records"
                     variant="link"
                     :to="{name: 'admin.modules.record.list', params: { moduleID: m.moduleID }}"
                     class="text-dark text-decoration-none"

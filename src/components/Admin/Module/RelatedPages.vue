@@ -12,6 +12,7 @@
     >
       <b-dropdown-item>
         <b-button
+          data-test-id="dropdown-link-record-page-edit"
           :disabled="!namespace.canManageNamespace"
           :to="{ name: 'admin.pages.builder', params: { pageID: recordPage.pageID } }"
           variant="link"
@@ -24,6 +25,7 @@
       <b-dropdown-item>
         <b-button
           v-if="recordListPage"
+          data-test-id="dropdown-link-record-list-page-edit"
           :disabled="!namespace.canManageNamespace"
           :to="{ name: 'admin.pages.builder', params: { pageID: recordListPage.pageID } }"
           variant="link"
@@ -33,6 +35,7 @@
         </b-button>
         <b-button
           v-else
+          data-test-id="dropdown-link-record-list-page-create"
           variant="link"
           href=""
           :disabled="processing"
@@ -46,6 +49,7 @@
 
     <b-button
       v-else
+      data-test-id="button-record-page-create"
       variant="primary"
       :size="size"
       :disabled="processing"

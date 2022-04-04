@@ -155,6 +155,7 @@
         <b-button
           v-if="page.canUpdatePage"
           v-b-modal.createBlockSelector
+          data-test-id="button-add-block"
           variant="light"
           size="lg"
           class="mr-1 float-right"

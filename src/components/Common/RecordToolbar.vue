@@ -95,7 +95,10 @@
             type="grow"
           />
 
-          <span v-else>
+          <span
+            v-else
+            data-test-id="button-save"
+          >
             {{ $t('label.save') }}
           </span>
         </b-button>

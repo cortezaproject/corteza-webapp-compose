@@ -49,6 +49,7 @@
           >
             <router-link
               v-if="item.canUpdatePage"
+              data-test-id="button-page-builder"
               :to="{name: 'admin.pages.builder', params: { pageID: item.pageID }}"
               class="btn btn-light mr-2"
             >
@@ -57,6 +58,7 @@
             <span class="view d-inline-block">
               <router-link
                 v-if="item.blocks && item.blocks.length >= 1"
+                data-test-id="button-page-view"
                 :to="{name: 'page', params: { pageID: item.pageID }}"
                 class="btn"
               >

@@ -77,6 +77,7 @@
                 <b-form-input
                   id="ns-nm"
                   v-model="namespace.name"
+                  data-test-id="input-name"
                   type="text"
                   required
                   :state="nameState"
@@ -98,6 +99,7 @@
             >
               <b-form-input
                 v-model="namespace.slug"
+                data-test-id="input-slug"
                 type="text"
                 :state="slugState"
                 :placeholder="$t('slug.placeholder')"
