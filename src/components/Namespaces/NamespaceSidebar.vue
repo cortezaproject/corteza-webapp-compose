@@ -95,7 +95,20 @@ import { Portal } from 'portal-vue'
 import { VueSelect } from 'vue-select'
 const { CSidebarNavItems } = components
 
-const publicPageWrap = (page) => ({ page, children: [], params: { pageID: page.pageID } })
+const publicPageWrap = ({ pageID, selfID, title, visible }) => ({
+  page: {
+    // name omitted as default is provided
+    pageID,
+    selfID,
+    title,
+    visible,
+  },
+  children: [],
+  params: {
+    pageID,
+  },
+})
+
 const adminPageWrap = (page) => {
   return {
     page: {
