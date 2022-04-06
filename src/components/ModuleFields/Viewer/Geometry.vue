@@ -91,8 +91,8 @@ export default {
   methods: {
     openMap () {
       this.map.show = true
-
-      const firstCoordinates = this.localValue[0].coordinates
+      this.map.zoom = this.field.options.zoomLevel
+      const firstCoordinates = this.localValue[0]
 
       this.map.center = firstCoordinates && firstCoordinates.length ? firstCoordinates : [30, 30]
 

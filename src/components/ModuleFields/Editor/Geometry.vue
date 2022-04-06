@@ -175,6 +175,8 @@ export default {
 
   methods: {
     openMap () {
+      this.map.center = this.localValue.coordinates
+      this.map.zoom = this.field.options.zoomLevel
       this.map.show = true
 
       setTimeout(() => {
