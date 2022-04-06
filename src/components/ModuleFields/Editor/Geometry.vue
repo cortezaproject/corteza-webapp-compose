@@ -175,7 +175,7 @@ export default {
 
   methods: {
     openMap () {
-      this.map.center = this.localValue.coordinates
+      this.map.center = this.localValue.coordinates && this.localValue.coordinates.length ? this.localValue.coordinates : [30, 30]
       this.map.zoom = this.field.options.zoomLevel
       this.map.show = true
 
