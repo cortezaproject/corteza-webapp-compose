@@ -1,14 +1,16 @@
 <template>
   <div>
-    <b-form-group>
-      <label class="d-block">Initial Zoom Level</label>
+    <b-form-group
+      :label="$t('kind.geometry.zoomLevel.label')"
+    >
       <b-form-input
         v-model="f.options.zoomLevel"
-        placeholder="Zoom Level"
-        type="number"
+        number
+        type="range"
         min="0"
         max="18"
       />
+      {{ f.options.zoomLevel }}
     </b-form-group>
   </div>
 </template>
