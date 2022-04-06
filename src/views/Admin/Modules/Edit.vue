@@ -346,7 +346,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import draggable from 'vuedraggable'
 import FieldConfigurator from 'corteza-webapp-compose/src/components/ModuleFields/Configurator'
 import FieldRowEdit from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowEdit'
@@ -409,6 +409,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      pages: 'page/set',
+    }),
+
     title () {
       return this.creatingModule ? this.$t('edit.create') : this.$t('edit.edit')
     },
@@ -536,6 +540,7 @@ export default {
       updateModuleSet: 'module/updateSet',
       createModule: 'module/create',
       deleteModule: 'module/delete',
+      deletePage: 'page/delete',
     }),
 
     handleNewField () {
@@ -596,7 +601,7 @@ export default {
 
           this.toastSuccess(this.$t('notification:module.saved'))
           if (closeOnSuccess) {
-            this.redirect()
+            this.$router.push({ name: 'admin.modules' })
           } else {
             this.$router.push({ name: 'admin.modules.edit', params: { moduleID: this.module.moduleID } })
           }
@@ -609,7 +614,7 @@ export default {
           this.module = new compose.Module({ ...module }, this.namespace)
           this.toastSuccess(this.$t('notification:module.saved'))
           if (closeOnSuccess) {
-            this.redirect()
+            this.$router.push({ name: 'admin.modules' })
           }
         }).catch(this.toastErrorHandler(this.$t('notification:module.saveFailed')))
           .finally(() => {
@@ -622,14 +627,16 @@ export default {
       this.processing = true
 
       this.deleteModule(this.module).then(() => {
-        this.toastSuccess(this.$t('notification:module.deleted'))
-        this.$router.push({ name: 'admin.modules' })
-        this.processing = false
+        const moduleRecordPage = this.pages.find(p => p.moduleID === this.module.moduleID)
+        if (moduleRecordPage) {
+          return this.deletePage({ ...moduleRecordPage, strategy: 'rebase' })
+        }
       }).catch(this.toastErrorHandler(this.$t('notification:module.deleteFailed')))
-    },
-
-    redirect () {
-      this.$router.push({ name: 'admin.modules' })
+        .finally(() => {
+          this.toastSuccess(this.$t('notification:module.deleted'))
+          this.processing = false
+          this.$router.push({ name: 'admin.modules' })
+        })
     },
   },
 }
