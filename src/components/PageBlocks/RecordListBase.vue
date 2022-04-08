@@ -190,7 +190,7 @@
         hover
         responsive
         sticky-header
-        class="record-table mh-100 h-100 border-top"
+        class="border-top mh-100 h-100 mb-0"
       >
         <b-thead>
           <b-tr>
@@ -456,25 +456,24 @@
             </b-td>
           </b-tr>
         </draggable>
-      </b-table-simple>
 
-      <div
-        v-if="processing || !items.length"
-        class="position-absolute d-print-none text-center"
-        style="left: 0; right: 0; bottom: 50%;"
-      >
-        <b-spinner
-          v-if="processing"
-        />
-
-        <h6
+        <div
           v-else
-          class="position-absolute d-print-none text-center mb-0"
-          style="left: 0; right: 0; bottom: 50%;"
+          class="position-absolute text-center mt-5"
+          style="left: 0; right: 0;"
         >
-          {{ $t('recordList.noRecords') }}
-        </h6>
-      </div>
+          <b-spinner
+            v-if="processing"
+          />
+
+          <h6
+            v-else-if="!items.length"
+            class="mb-0"
+          >
+            {{ $t('recordList.noRecords') }}
+          </h6>
+        </div>
+      </b-table-simple>
     </template>
 
     <template

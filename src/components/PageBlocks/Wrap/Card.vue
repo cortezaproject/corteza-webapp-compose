@@ -38,6 +38,7 @@
 
       <div
         v-if="toolbarSet"
+        class="overflow-hidden"
       >
         <slot
           name="toolbar"
@@ -46,7 +47,7 @@
 
       <b-card-body
         class="p-0"
-        :class="{ 'overflow-auto': scrollableBody }"
+        :class="{ 'overflow-auto': scrollableBody, 'position-relative overflow-hidden': !scrollableBody }"
       >
         <slot
           name="default"
