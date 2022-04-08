@@ -819,10 +819,10 @@ export default {
   created () {
     // Set uniqueID so that events dont mix
     this.uniqueID = `${this.page.pageID}-${(this.record || {}).recordID || '0'}-${this.blockIndex}`
-
-    this.prepRecordList()
     this.$root.$on(`record-line:collect:${this.uniqueID}`, this.resolveRecords)
     this.$root.$on(`page-block:validate:${this.uniqueID}`, this.validatePageBlock)
+
+    this.prepRecordList()
     this.pullRecords(true)
   },
 
