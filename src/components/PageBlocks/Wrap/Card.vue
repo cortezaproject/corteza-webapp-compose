@@ -7,7 +7,7 @@
     >
       <b-card-header
         v-if="headerSet || block.title || block.description"
-        class="sticky-top border-0 text-nowrap px-3"
+        class="border-0 text-nowrap px-3"
         :class="{ 'p-0': !(block.title || block.description)}"
         header-bg-variant="white"
         :header-text-variant="block.style.variants.headerText"
