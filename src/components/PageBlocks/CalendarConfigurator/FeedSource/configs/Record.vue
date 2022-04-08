@@ -201,7 +201,8 @@ export default {
       return [
         ...moduleFields,
         ...this.module.systemFields().map(sf => {
-          return { ...sf, label: this.$t(`field:system.${sf.name}`) }
+          sf.label = this.$t(`field:system.${sf.name}`)
+          return sf
         }),
       ].filter(f => f.kind === 'DateTime' && !f.isMulti)
     },

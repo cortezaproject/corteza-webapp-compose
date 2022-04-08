@@ -228,7 +228,8 @@ export default {
         return [
           ...this.selectedModuleFields,
           ...this.selectedModule.systemFields().map(sf => {
-            return { ...sf, label: this.$t(`field:system.${sf.name}`) }
+            sf.label = this.$t(`field:system.${sf.name}`)
+            return sf
           }),
         ]
       }

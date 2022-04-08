@@ -227,7 +227,8 @@ export default {
           (a.label || a.name).localeCompare(b.label || b.name),
         ),
         ...this.module.systemFields().map(sf => {
-          return { ...sf, label: this.$t(`field:system.${sf.name}`) }
+          sf.label = this.$t(`field:system.${sf.name}`)
+          return sf
         }),
       ].filter(({ kind }) => !['File'].includes(kind))
     },
