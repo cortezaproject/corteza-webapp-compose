@@ -47,7 +47,8 @@
 
       <b-card-body
         class="p-0"
-        :class="{ 'overflow-auto': scrollableBody, 'position-relative overflow-hidden': !scrollableBody }"
+        :class="{ 'overflow-auto': scrollableBody }"
+        style="flex-shrink: 10;"
       >
         <slot
           name="default"
@@ -56,7 +57,7 @@
 
       <b-card-footer
         v-if="footerSet"
-        class="p-0"
+        class="p-0 overflow-hidden"
       >
         <slot
           name="footer"
