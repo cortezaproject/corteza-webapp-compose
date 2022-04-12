@@ -52,6 +52,14 @@
               >
                 <div class="flex-grow-1 wrap-with-vertical-gutters">
                   <b-button
+                    variant="light"
+                    size="lg"
+                    class="mr-1"
+                    @click="privacySettings.modal = true"
+                  >
+                    Privacy Settings
+                  </b-button>
+                  <b-button
                     v-if="federationEnabled"
                     data-test-id="button-federation-settings"
                     variant="light"
@@ -249,9 +257,14 @@
                           </div>
                         </th>
                         <th class="text-primary">
-                          {{ $t('general.label.type') }}
+                          {{ $t('general:label.type') }}
                         </th>
-                        <th />
+                        <th class="text-primary text-center">
+                          {{ $t('general:label.required') }}
+                        </th>
+                        <th class="text-primary text-center">
+                          {{ $t('general:label.sensitive') }}
+                        </th>
                         <th />
                       </tr>
                     </thead>
@@ -342,6 +355,10 @@
       />
     </b-container>
 
+    <privacy-settings
+      :modal.sync="privacySettings.modal"
+    />
+
     <portal to="admin-toolbar">
       <editor-toolbar
         :processing="processing"
@@ -366,6 +383,7 @@ import FieldRowEdit from 'corteza-webapp-compose/src/components/Admin/Module/Fie
 import FieldRowView from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowView'
 import FederationSettings from 'corteza-webapp-compose/src/components/Admin/Module/FederationSettings'
 import DiscoverySettings from 'corteza-webapp-compose/src/components/Admin/Module/DiscoverySettings'
+import PrivacySettings from 'corteza-webapp-compose/src/components/Admin/Module/PrivacySettings'
 import ModuleTranslator from 'corteza-webapp-compose/src/components/Admin/Module/ModuleTranslator'
 import RelatedPages from 'corteza-webapp-compose/src/components/Admin/Module/RelatedPages'
 import { compose, NoID } from '@cortezaproject/corteza-js'
@@ -385,6 +403,7 @@ export default {
     FieldRowView,
     FederationSettings,
     DiscoverySettings,
+    PrivacySettings,
     ModuleTranslator,
     RelatedPages,
     EditorToolbar,
@@ -416,6 +435,10 @@ export default {
       },
 
       discoverySettings: {
+        modal: false,
+      },
+
+      privacySettings: {
         modal: false,
       },
     }
