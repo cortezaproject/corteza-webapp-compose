@@ -68,29 +68,29 @@
       </b-input-group>
     </td>
     <td
-      class="align-middle"
+      class="align-middle text-center"
     >
       <b-form-checkbox
         v-model="value.isRequired"
         :disabled="!value.cap.required"
-        :value="true"
-        :unchecked-value="false"
-      >
-        {{ $t('label.required') }}
-      </b-form-checkbox>
+      />
     </td>
     <td
       v-if="false"
-      class="align-middle"
+      class="align-middle text-center"
     >
       <b-form-checkbox
         v-model="value.isPrivate"
         :disabled="!value.cap.private"
-        :value="true"
-        :unchecked-value="false"
-      >
-        {{ $t('label.private') }}
-      </b-form-checkbox>
+      />
+    </td>
+    <td
+      class="align-middle text-center"
+    >
+      <b-form-checkbox
+        v-model="value.isSensitive"
+        :disabled="!value.cap.sensitive"
+      />
     </td>
     <td
       class="text-right align-middle pr-2"

@@ -4,14 +4,21 @@
       v-model="field.isRequired"
       :disabled="!field.cap.required || showvalueExpr"
     >
-      {{ $t('label.required') }}
+      {{ $t('general:label.required') }}
+    </b-form-checkbox>
+
+    <b-form-checkbox
+      v-model="field.isSensitive"
+      :disabled="!field.cap.sensitive"
+    >
+      {{ $t('general:label.sensitive') }}
     </b-form-checkbox>
 
     <b-form-checkbox
       v-model="field.isMulti"
       :disabled="!field.cap.multi"
     >
-      {{ $t('label.multi') }}
+      {{ $t('general:label.multi') }}
     </b-form-checkbox>
 
     <b-form-checkbox
