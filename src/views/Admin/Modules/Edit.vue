@@ -263,7 +263,6 @@
                           {{ $t('general:label.type') }}
                         </th>
                         <th />
-                        <th />
                         <th class="text-primary text-center">
                           {{ $t('general:label.required') }}
                         </th>
@@ -362,6 +361,10 @@
         @save="onPrivacySettingsSave"
       />
     </b-container>
+
+    <privacy-settings
+      :modal.sync="privacySettings.modal"
+    />
 
     <portal to="admin-toolbar">
       <editor-toolbar
