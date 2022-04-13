@@ -57,7 +57,7 @@
                     class="mr-1"
                     @click="privacySettings.modal = true"
                   >
-                    Privacy Settings
+                    {{ $t('privacy.title') }}
                   </b-button>
                   <b-button
                     v-if="federationEnabled"
