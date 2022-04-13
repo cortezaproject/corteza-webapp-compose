@@ -1,7 +1,7 @@
 <template>
   <b-modal
     v-model="showModal"
-    title="Privacy Settings"
+    :title="$t('privacy.title')"
     :ok-title="$t('general.label.saveAndClose')"
     ok-only
     ok-variant="primary"
@@ -9,7 +9,7 @@
     @ok="onSave()"
   >
     <b-form-group
-      label="Data Source"
+      :label="$t('privacy.data-source')"
       label-class="text-primary"
       :class="{ 'mb-0': !datasource }"
     >
@@ -18,7 +18,7 @@
         :options="datasources"
         option-text="label"
         option-value="datasourceID"
-        placeholder="Select a Data Source"
+        :placeholder="$t('privacy.select-data-source')"
         class="h-100 bg-white"
       />
     </b-form-group>
@@ -32,7 +32,7 @@
           sm="6"
         >
           <b-form-group
-            label="Location"
+            :label="$t('privacy.location')"
             label-class="text-primary"
           >
             <span
@@ -47,7 +47,7 @@
           sm="6"
         >
           <b-form-group
-            label="Ownership"
+            :label="$t('privacy.ownership')"
             label-class="text-primary"
           >
             <span
