@@ -30,31 +30,24 @@
         <b-col
           cols="12"
           sm="6"
+          lg="4"
         >
           <b-form-group
             :label="$t('privacy.location')"
             label-class="text-primary"
           >
-            <span
-              class="ml-2"
-            >
-              {{ datasource.location }}
-            </span>
+            {{ datasource.location }}
           </b-form-group>
         </b-col>
         <b-col
           cols="12"
-          sm="6"
+          sm="4"
         >
           <b-form-group
             :label="$t('privacy.ownership')"
             label-class="text-primary"
           >
-            <span
-              class="ml-2"
-            >
-              {{ datasource.ownership }}
-            </span>
+            {{ datasource.ownership }}
           </b-form-group>
         </b-col>
       </b-row>
@@ -71,10 +64,12 @@
           sm="6"
           lg="4"
         >
-          <b-form-group>
+          <b-form-group
+            class="mb-4"
+          >
             <template #label>
               <div
-                class="d-flex align-items-center text-capitalize text-primary h6 mb-0 mr-5"
+                class="d-flex align-items-center text-capitalize text-primary mr-5"
               >
                 {{ cap.name }}
                 <font-awesome-icon
@@ -87,7 +82,8 @@
             <b-form-checkbox
               v-model="cap.enabled"
               :disabled="cap.supportType !== 'supported'"
-              class="text-capitalize ml-3"
+              switch
+              class="text-capitalize"
             >
               {{ cap.supportType === 'supported' ? 'Enabled' : cap.supportType }}
             </b-form-checkbox>
@@ -124,15 +120,15 @@ export default {
       datasources: [
         {
           datasourceID: '1',
-          label: 'Primary Database (Owned by ACME LTD and Located in Ireland',
+          label: 'Primary Data Source',
           location: 'Ireland',
-          ownership: 'Private',
+          ownership: 'ACME Ltd.',
         },
         {
           datasourceID: '2',
-          label: 'Secondary Database (Owned by ASGR LTD and Located in France',
-          location: 'France',
-          ownership: 'Private',
+          label: 'Primary Data Lake',
+          location: 'Switzerland',
+          ownership: 'ACME Ltd.',
         },
       ],
 
@@ -142,11 +138,11 @@ export default {
         { name: 'accessControl', supportType: 'enforced', enabled: true },
         { name: 'softDelete', supportType: 'enforced', enabled: true },
         { name: 'revisioned', supportType: 'enforced', enabled: true },
-        { name: 'automation', supportType: 'unsupported', enabled: false },
-        { name: 'pagination', supportType: 'enforced', enabled: true },
+        { name: 'automation', supportType: 'not supported', enabled: false },
+        { name: 'pagination', supportType: 'supported', enabled: false },
         { name: 'filtering', supportType: 'enforced', enabled: true },
         { name: 'search', supportType: 'enforced', enabled: true },
-        { name: 'ownership', supportType: 'enforced', enabled: true },
+        { name: 'ownership', supportType: 'not supported', enabled: false },
         { name: 'timestamps', supportType: 'enforced', enabled: true },
         { name: 'auditLog', supportType: 'enforced', enabled: true },
       ],
