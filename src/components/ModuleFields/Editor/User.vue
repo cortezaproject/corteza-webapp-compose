@@ -154,7 +154,7 @@ import { debounce } from 'lodash'
 import base from './base'
 import { VueSelect } from 'vue-select'
 import { mapActions, mapGetters } from 'vuex'
-import { createPopper } from '@popperjs/core'
+import calculatePosition from 'corteza-webapp-compose/src/mixins/vue-select-position'
 import Pagination from '../Common/Pagination.vue'
 
 export default {
@@ -168,6 +168,10 @@ export default {
   },
 
   extends: base,
+
+  mixins: [
+    calculatePosition,
+  ],
 
   data () {
     return {
@@ -341,49 +345,6 @@ export default {
         .finally(() => {
           this.processing = false
         })
-    },
-
-    calculatePosition (dropdownList, component, { width }) {
-      /**
-       * We need to explicitly define the dropdown width since
-       * it is usually inherited from the parent with CSS.
-       */
-      dropdownList.style.width = width
-
-      /**
-       * Here we position the dropdownList relative to the $refs.toggle Element.
-       *
-       * The 'offset' modifier aligns the dropdown so that the $refs.toggle and
-       * the dropdownList overlap by 1 pixel.
-       *
-       * The 'toggleClass' modifier adds a 'drop-up' class to the Vue Select
-       * wrapper so that we can set some styles for when the dropdown is placed
-       * above.
-       */
-      const popper = createPopper(component.$refs.toggle, dropdownList, {
-        placement: 'bottom',
-        modifiers: [
-          {
-            name: 'offset',
-            options: {
-              offset: [0, -1],
-            },
-          },
-          {
-            name: 'toggleClass',
-            enabled: true,
-            phase: 'write',
-            fn ({ state }) {
-              component.$el.classList.toggle('drop-up', state.placement === 'top')
-            },
-          }],
-      })
-
-      /**
-       * To prevent memory leaks Popper needs to be destroyed.
-       * If you return function, it will be called just before dropdown is removed from DOM.
-       */
-      return () => popper.destroy()
     },
 
     goToPage (next = true) {

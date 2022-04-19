@@ -54,6 +54,7 @@
                     option-text="label"
                     :reduce="f => f.name"
                     append-to-body
+                    :calculate-position="calculatePosition"
                     :class="{ 'filter-field-picker': !!filter.name }"
                     class="bg-white"
                     @input="onChange($event, groupIndex, index)"
@@ -170,6 +171,7 @@
 import FieldEditor from '../ModuleFields/Editor'
 import { compose, validator } from '@cortezaproject/corteza-js'
 import { VueSelect } from 'vue-select'
+import calculatePosition from 'corteza-webapp-compose/src/mixins/vue-select-position'
 
 export default {
   i18nOptions: {
@@ -180,6 +182,11 @@ export default {
     FieldEditor,
     VueSelect,
   },
+
+  mixins: [
+    calculatePosition,
+  ],
+
   props: {
     target: {
       type: String,
