@@ -11,7 +11,7 @@
 
     <b-popover
       ref="popover"
-      custom-class="cpopover shadow-sm"
+      custom-class="record-list-filter shadow-sm"
       triggers="click blur"
       placement="bottom"
       delay="0"
@@ -21,143 +21,175 @@
       @show="onOpen"
       @hide="onHide"
     >
-      <div class="py-3 px-2">
-        <table v-if="componentFilter.length">
-          <template
-            v-for="(filterGroup, groupIndex) in componentFilter"
+      <b-card
+        no-body
+        class="position-static w-100"
+      >
+        <b-card-body
+          class="px-1 pb-0 overflow-auto"
+        >
+          <b-table-simple
+            v-if="componentFilter.length"
+            borderless
+            class="mb-0"
           >
-            <template v-if="filterGroup.filter.length">
-              <tr
-                v-for="(filter, index) in filterGroup.filter"
-                :key="`${groupIndex}-${index}`"
-              >
-                <td>
-                  <h6
-                    v-if="index === 0"
-                    class="mb-0"
-                  >
-                    {{ $t('recordList.filter.where') }}
-                  </h6>
-                  <b-form-select
-                    v-else
-                    v-model="filter.condition"
-                    :options="conditions"
-                  />
-                </td>
-                <td>
-                  <vue-select
-                    v-model="filter.name"
-                    :options="fieldOptions"
-                    :clearable="false"
-                    :placeholder="$t('recordList.filter.fieldPlaceholder')"
-                    option-value="name"
-                    option-text="label"
-                    :reduce="f => f.name"
-                    append-to-body
-                    :calculate-position="calculatePosition"
-                    :class="{ 'filter-field-picker': !!filter.name }"
-                    class="bg-white"
-                    @input="onChange($event, groupIndex, index)"
-                  />
-                </td>
-                <td>
-                  <b-form-select
-                    v-if="getField(filter.name)"
-                    v-model="filter.operator"
-                    :options="getOperators(filter.kind)"
-                  />
-                </td>
-                <td>
-                  <field-editor
-                    v-if="getField(filter.name)"
-                    v-bind="mock"
-                    class="filter-field-editor mb-0"
-                    value-only
-                    :field="getField(filter.name)"
-                    :record="filter.record"
-                    @change="onValueChange"
-                  />
-                </td>
-                <td class="pl-1">
-                  <b-button
-                    :id="`${groupIndex}-${index}`"
-                    ref="delete"
-                    variant="link"
-                    class="d-flex align-items-center"
-                    @click="deleteFilter(groupIndex, index)"
-                  >
-                    <font-awesome-icon
-                      :icon="['far', 'trash-alt']"
-                      size="sm"
-                    />
-                  </b-button>
-                </td>
-              </tr>
-
-              <tr :key="`addFilter-${groupIndex}`">
-                <td class="pb-0">
-                  <b-button
-                    variant="link text-decoration-none"
-                    class="d-flex align-items-center"
-                    style="min-height: 38px; min-width: 84px;"
-                    @click="addFilter(groupIndex)"
-                  >
-                    <font-awesome-icon
-                      :icon="['fas', 'plus']"
-                      size="sm"
-                      class="mr-1"
-                    />
-                    {{ $t('general.label.add') }}
-                  </b-button>
-                </td>
-              </tr>
-
-              <tr
-                :key="`groupCondtion-${groupIndex}`"
-              >
-                <td
-                  colspan="100%"
-                  class="p-0 filter-border justify-content-center"
-                  :class="{ 'pb-1': filterGroup.groupCondition }"
+            <template
+              v-for="(filterGroup, groupIndex) in componentFilter"
+            >
+              <template v-if="filterGroup.filter.length">
+                <b-tr
+                  v-for="(filter, index) in filterGroup.filter"
+                  :key="`${groupIndex}-${index}`"
+                  class="pb-2"
                 >
-                  <b-form-select
-                    v-if="filterGroup.groupCondition"
-                    v-model="filterGroup.groupCondition"
-                    class="w-auto"
-                    :options="conditions"
-                  />
-
-                  <b-button
-                    v-else
-                    variant="outline-primary"
-                    class="btn-add-group bg-white py-2 px-3"
-                    @click="addGroup()"
+                  <b-td
+                    style="width: 1%;"
                   >
-                    <font-awesome-icon
-                      :icon="['fas', 'plus']"
-                      class="h6 mb-0 "
+                    <h6
+                      v-if="index === 0"
+                      class="mb-0"
+                    >
+                      {{ $t('recordList.filter.where') }}
+                    </h6>
+                    <b-form-select
+                      v-else
+                      v-model="filter.condition"
+                      :options="conditions"
                     />
-                  </b-button>
-                </td>
-              </tr>
-            </template>
-          </template>
-        </table>
+                  </b-td>
+                  <b-td
+                    class="px-2"
+                  >
+                    <vue-select
+                      v-model="filter.name"
+                      :options="fieldOptions"
+                      :clearable="false"
+                      :placeholder="$t('recordList.filter.fieldPlaceholder')"
+                      option-value="name"
+                      option-text="label"
+                      :reduce="f => f.name"
+                      append-to-body
+                      :calculate-position="calculatePosition"
+                      :class="{ 'filter-field-picker': !!filter.name }"
+                      class="field-selector bg-white"
+                      @input="onChange($event, groupIndex, index)"
+                    />
+                  </b-td>
+                  <b-td
+                    v-if="getField(filter.name)"
+                    :class="{ 'pr-2': getField(filter.name) }"
+                  >
+                    <b-form-select
+                      v-if="getField(filter.name)"
+                      v-model="filter.operator"
+                      :options="getOperators(filter.kind)"
+                      class="d-flex field-operator w-100"
+                    />
+                  </b-td>
+                  <b-td
+                    v-if="getField(filter.name)"
+                  >
+                    <field-editor
+                      v-bind="mock"
+                      class="field-editor mb-0"
+                      value-only
+                      :field="getField(filter.name)"
+                      :record="filter.record"
+                      @change="onValueChange"
+                    />
+                  </b-td>
+                  <b-td
+                    v-if="getField(filter.name)"
+                    style="width: 1%;"
+                  >
+                    <b-button
+                      :id="`${groupIndex}-${index}`"
+                      ref="delete"
+                      variant="link"
+                      class="d-flex align-items-center"
+                      @click="deleteFilter(groupIndex, index)"
+                    >
+                      <font-awesome-icon
+                        :icon="['far', 'trash-alt']"
+                        size="sm"
+                      />
+                    </b-button>
+                  </b-td>
+                </b-tr>
 
-        <div
-          ref="filter-footer"
-          class="d-flex justify-content-end"
+                <b-tr :key="`addFilter-${groupIndex}`">
+                  <b-td class="pb-0">
+                    <b-button
+                      variant="link text-decoration-none"
+                      style="min-height: 38px; min-width: 84px;"
+                      @click="addFilter(groupIndex)"
+                    >
+                      <font-awesome-icon
+                        :icon="['fas', 'plus']"
+                        size="sm"
+                        class="mr-1"
+                      />
+                      {{ $t('general.label.add') }}
+                    </b-button>
+                  </b-td>
+                </b-tr>
+
+                <b-tr
+                  :key="`groupCondtion-${groupIndex}`"
+                >
+                  <b-td
+                    colspan="100%"
+                    class="p-0 justify-content-center"
+                    :class="{ 'pb-3': filterGroup.groupCondition }"
+                  >
+                    <div
+                      class="group-separator"
+                    >
+                      <b-form-select
+                        v-if="filterGroup.groupCondition"
+                        v-model="filterGroup.groupCondition"
+                        class="w-auto"
+                        :options="conditions"
+                      />
+
+                      <b-button
+                        v-else
+                        variant="outline-primary"
+                        class="btn-add-group bg-white py-2 px-3"
+                        @click="addGroup()"
+                      >
+                        <font-awesome-icon
+                          :icon="['fas', 'plus']"
+                          class="h6 mb-0 "
+                        />
+                      </b-button>
+                    </div>
+                  </b-td>
+                </b-tr>
+              </template>
+            </template>
+          </b-table-simple>
+        </b-card-body>
+
+        <b-card-footer
+          class="d-flex justify-content-between bg-white shadow-sm"
         >
           <b-button
+            variant="light"
+            @click="resetFilter"
+          >
+            {{ $t('general:label.reset') }}
+          </b-button>
+
+          <b-button
             ref="btnSave"
-            class="mr-3"
             variant="primary"
             @click="onSave"
           >
             {{ $t('general.label.save') }}
           </b-button>
-        </div>
-      </div>
+        </b-card-footer>
+      </b-card>
 
       <a
         ref="focusMe"
@@ -385,6 +417,14 @@ export default {
       this.componentFilter.push(this.createDefaultFilterGroup(undefined, this.selectedField))
     },
 
+    resetFilter () {
+      this.componentFilter = [
+        this.createDefaultFilterGroup(),
+      ]
+
+      this.onSave(false)
+    },
+
     deleteFilter (groupIndex, index) {
       const filterExists = !!(this.componentFilter[groupIndex] || { filter: [] }).filter[index]
 
@@ -439,8 +479,10 @@ export default {
       }
     },
 
-    onSave () {
-      this.$refs.popover.$emit('close')
+    onSave (close = true) {
+      if (close) {
+        this.$refs.popover.$emit('close')
+      }
 
       // Emit only value and not whole record with every filter
       this.$emit('filter', this.componentFilter.map(({ groupCondition, filter = [] }) => {
@@ -457,16 +499,19 @@ export default {
   },
 }
 </script>
+
 <style lang="scss">
-.cpopover {
+.record-list-filter {
+  z-index: 1040;
   max-width: 800px !important;
   opacity: 1 !important;
   border-color: transparent;
 
   .popover-body {
-    max-width: 800px;
-    max-height: 500px;
-    overflow-y: auto;
+    display: flex;
+    width: 800px;
+    min-width: min(98vw, 350px);
+    max-height: 60vh;
     padding: 0;
     color: #2d2d2d;
     text-align: center;
@@ -476,48 +521,36 @@ export default {
     box-shadow: 0 3px 48px #00000026;
     font-size: 0.9rem;
   }
-}
 
-.cpopover .arrow {
-  &::before {
-    border-bottom-color: white;
-    border-top-color: white;
+  .v-select, .field-operator, .field-editor {
+    min-width: 120px;
   }
 
-  &::after {
-    border-top-color: white;
-  }
-}
+  .arrow {
+    &::before {
+      border-bottom-color: white;
+      border-top-color: white;
+    }
 
-.child-inline-flex > span {
-  display: inline-flex !important;
-  vertical-align: -webkit-baseline-middle;
-  padding: 0;
-}
-
-.filter-field-editor {
-  .v-select {
-    min-width: 13vw;
-    max-width: 13vw;
+    &::after {
+      border-top-color: white;
+    }
   }
 }
 </style>
 
 <style lang="scss" scoped>
-.filter-border {
+.group-separator {
   background-image: linear-gradient(to left, lightgray, lightgray);
   background-repeat: no-repeat;
   background-size: 100% 1px;
   background-position: center;
 }
 
-table {
-  border-collapse: separate;
-}
-
 td {
-  padding-bottom: 0.25rem;
-  padding-right: 0.25rem;
+  padding: 0;
+  padding-bottom: 0.5rem;
+  vertical-align: middle;
 }
 
 .btn-add-group {
@@ -525,10 +558,5 @@ td {
     background-color: $primary !important;
     color: white !important;
   }
-}
-
-.filter-field-picker {
-  min-width: 13vw;
-  max-width: 13vw;
 }
 </style>
