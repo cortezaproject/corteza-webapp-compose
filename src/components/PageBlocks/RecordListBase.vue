@@ -829,6 +829,10 @@ export default {
     this.$root.$on(`record-line:collect:${this.uniqueID}`, this.resolveRecords)
     this.$root.$on(`page-block:validate:${this.uniqueID}`, this.validatePageBlock)
 
+    // Get record list filters from localStorage
+    const currentFilters = JSON.parse(window.localStorage.getItem('record-list-filters') || '{}')
+    this.recordListFilter = currentFilters[this.uniqueID] || []
+
     this.prepRecordList()
     this.pullRecords(true)
   },
@@ -841,6 +845,9 @@ export default {
   methods: {
     onFilter (filter = []) {
       this.recordListFilter = filter
+      const currentListFilters = JSON.parse(window.localStorage.getItem('record-list-filters') || '{}')
+      currentListFilters[this.uniqueID] = this.recordListFilter
+      window.localStorage.setItem('record-list-filters', JSON.stringify(currentListFilters))
       this.refresh(true)
     },
 
