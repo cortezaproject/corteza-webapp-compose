@@ -1,7 +1,27 @@
 <template>
   <div>
     <b-form-group
-      horizontal
+      :label="$t('kind.file.view.maxSizeLabel')"
+    >
+      <b-input-group>
+        <b-form-input
+          v-model="f.options.maxSize"
+          type="number"
+        />
+      </b-input-group>
+    </b-form-group>
+
+    <b-form-group
+      :label="$t('kind.file.view.mimetypesLabel')"
+      :description="$t('kind.file.view.mimetypesFootnote')"
+      class="mt-2"
+    >
+      <b-form-input
+        v-model="f.options.mimetypes"
+      />
+    </b-form-group>
+
+    <b-form-group
       :description="$t('kind.file.view.modeFootnote')"
       :label="$t('kind.file.view.modeLabel')"
     >
@@ -14,31 +34,15 @@
         :options="modes"
       />
     </b-form-group>
-    <b-form-checkbox
-      v-model="f.options.hideFileName"
-      :disabled="!enableFileNameHiding"
-    >
-      {{ $t('kind.file.view.showName') }}
-    </b-form-checkbox>
-
     <b-form-group
-      :label="$t('kind.file.view.mimetypesLabel')"
-      :description="$t('kind.file.view.mimetypesFootnote')"
+      v-if="enableFileNameHiding"
+      class="mb-0"
     >
-      <b-input-group class="m-0">
-        <b-form-input v-model="f.options.mimetypes" />
-      </b-input-group>
-    </b-form-group>
-
-    <b-form-group
-      :label="$t('kind.file.view.maxSizeLabel')"
-    >
-      <b-input-group>
-        <b-form-input
-          v-model="f.options.maxSize"
-          type="number"
-        />
-      </b-input-group>
+      <b-form-checkbox
+        v-model="f.options.hideFileName"
+      >
+        {{ $t('kind.file.view.showName') }}
+      </b-form-checkbox>
     </b-form-group>
   </div>
 </template>
