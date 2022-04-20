@@ -175,8 +175,9 @@ export default {
 
   methods: {
     openMap () {
-      this.map.center = this.localValue.coordinates && this.localValue.coordinates.length ? this.localValue.coordinates : [30, 30]
-      this.map.zoom = this.field.options.zoomLevel
+      const firstCoordinates = (this.field.isMulti ? this.localValue[0] : this.localValue) || {}
+      this.map.center = firstCoordinates.coordinates && firstCoordinates.coordinates.length ? firstCoordinates.coordinates : this.field.options.center
+      this.map.zoom = this.field.options.zoom
       this.map.show = true
 
       setTimeout(() => {

@@ -3,16 +3,19 @@
     v-if="localValue.length"
   >
     <div
-      v-if="!valueOnly"
       class="d-flex mb-2"
     >
       <b-button
         variant="light"
         rounded
         class="w-100 ml-auto"
-        @click="openMap"
+        @click.stop="openMap"
       >
-        Open map
+        <span
+          v-if="!valueOnly"
+        >
+          {{ $t('openMap') }}
+        </span>
         <font-awesome-icon
           :icon="['fas', 'map-marked-alt']"
         />
@@ -49,7 +52,6 @@
           v-for="(marker, i) in localValue"
           :key="i"
           :lat-lng="getLatLng(marker)"
-          @click="removeMarker(i)"
         />
       </l-map>
     </b-modal>
@@ -63,6 +65,11 @@ import { latLng } from 'leaflet'
 
 export default {
   extends: base,
+
+  i18nOptions: {
+    namespaces: 'field',
+    keyPrefix: 'kind.geometry',
+  },
 
   data () {
     return {
@@ -90,11 +97,10 @@ export default {
 
   methods: {
     openMap () {
-      this.map.show = true
-      this.map.zoom = this.field.options.zoomLevel
       const firstCoordinates = this.localValue[0]
-
-      this.map.center = firstCoordinates && firstCoordinates.length ? firstCoordinates : [30, 30]
+      this.map.center = firstCoordinates && firstCoordinates.length ? firstCoordinates : this.field.options.center
+      this.map.zoom = this.field.options.zoom
+      this.map.show = true
 
       setTimeout(() => {
         this.$refs.map.mapObject.invalidateSize()
