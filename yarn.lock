@@ -701,6 +701,22 @@
     "@babel/helper-validator-identifier" "^7.14.0"
     to-fast-properties "^2.0.0"
 
+"@cortezaproject/corteza-js@^2021.9.10":
+  version "2021.9.10"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.9.10.tgz#4196f34cf8550edfa749eb104bdeef455e86cce5"
+  integrity sha512-DwE/V+Cccre8Ln9VmdtLQXbaQZc7K6WxPHwXmHv+OEm1+8AsVb6JUndRksTrm+hJ5WYPML67lv7woQ7cyu0nVw==
+  dependencies:
+    axios "^0.21.1"
+    chart.js "2.9.3"
+    hex-rgb "^4.1.0"
+    lodash "^4.17.15"
+    minimalist "^1.0.0"
+    minimatch "^3.0.4"
+    moment "2.25.3"
+    numeral "^2.0.6"
+    pino "^5.16.0"
+    ts-sinon "^1.0.25"
+
 "@cortezaproject/corteza-js@^2021.9.9":
   version "2021.9.9"
   resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2021.9.9.tgz#bffc0e9a637ccec40d6f54ef58a28b7774aaa25e"
@@ -717,7 +733,7 @@
     pino "^5.16.0"
     ts-sinon "^1.0.25"
 
-"@cortezaproject/corteza-vue@^2021.9.9":
+"@cortezaproject/corteza-vue@^2021.9.10":
   version "2021.9.10"
   resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2021.9.10.tgz#a277cc40dc6098876b596943272410d2a6d20322"
   integrity sha512-PIMH3fs2UA2Veqnx3SN6A+smFxKx1fp/Nqjx4AsS6lkmRiDtodzH6ggHrCahGO9LwgfwXrNjmVnHVLH8IrdlOA==
