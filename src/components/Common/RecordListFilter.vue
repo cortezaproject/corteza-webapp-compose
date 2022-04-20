@@ -172,7 +172,7 @@
         </b-card-body>
 
         <b-card-footer
-          class="d-flex justify-content-between bg-white shadow-sm"
+          class="d-flex justify-content-between bg-white shadow-sm rounded"
         >
           <b-button
             variant="light"
@@ -510,7 +510,8 @@ export default {
   .popover-body {
     display: flex;
     width: 800px;
-    min-width: min(98vw, 350px);
+    min-width: min(99vw, 350px);
+    max-width: 99vw;
     max-height: 60vh;
     padding: 0;
     color: #2d2d2d;
