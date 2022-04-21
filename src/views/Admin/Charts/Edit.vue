@@ -145,6 +145,7 @@
                     :is="reportEditor"
                     v-if="editReport"
                     :report.sync="editReport"
+                    :chart="chart"
                     :modules="modules"
                     :dimension-field-kind="['Select']"
                     :supported-metrics="1"
