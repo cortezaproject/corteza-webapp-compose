@@ -28,6 +28,8 @@ export default {
         'Number',
         'Bool',
         'String',
+        'Record',
+        'User',
       ],
     },
 

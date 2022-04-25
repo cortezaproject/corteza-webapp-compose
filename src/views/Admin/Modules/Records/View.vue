@@ -114,6 +114,7 @@ export default {
     record,
     users,
   ],
+
   data () {
     return {
       blocks: [],

@@ -385,7 +385,7 @@ export default {
 
   watch: {
     chartID: {
-      handler: function (chartID) {
+      handler (chartID) {
         if (chartID === NoID) {
           let c = new compose.Chart({ namespaceID: this.namespace.namespaceID })
           switch (this.category) {
@@ -451,7 +451,6 @@ export default {
 
       if (this.chart.chartID === NoID) {
         this.createChart(c).then((chart) => {
-          this.chart = chartConstructor(chart)
           this.toastSuccess(this.$t('notification:chart.saved'))
           if (closeOnSuccess) {
             this.redirect()
@@ -462,6 +461,7 @@ export default {
       } else {
         this.updateChart(c).then((chart) => {
           this.chart = chartConstructor(chart)
+          this.update()
           this.toastSuccess(this.$t('notification:chart.saved'))
           if (closeOnSuccess) {
             this.redirect()

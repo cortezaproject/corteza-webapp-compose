@@ -321,13 +321,16 @@ export default {
 
     dimensionFields () {
       return [
-        { name: 'created_at', label: 'Created At', kind: 'DateTime' },
-        ...this.module.fields,
+        ...[...this.module.fields].sort((a, b) => a.label.localeCompare(b.text)),
+        ...this.module.systemFields().map(sf => {
+          sf.label = this.$t(`field:system.${sf.name}`)
+          return sf
+        }),
       ].filter(({ kind, options = {} }) => {
         return this.dimensionFieldKind.includes(kind) && !(options.useRichTextEditor || options.multiLine)
       }).map(({ name, label, kind }) => {
         return { value: name, text: `${label} (${kind})` }
-      }).sort((a, b) => a.text.localeCompare(b.text))
+      })
     },
 
     moduleID: {

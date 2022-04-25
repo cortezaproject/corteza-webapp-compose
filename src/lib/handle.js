@@ -4,9 +4,5 @@ export const isValid = (h) => re.test(h)
 
 // Used for state
 export function handleState (h) {
-  if (!h || h.length === 0) {
-    return null
-  }
-
   return isValid(h)
 }

@@ -405,7 +405,7 @@ export default {
     return {
       updateField: null,
       module: new compose.Module(),
-      hasRecords: false,
+      hasRecords: true,
       processing: false,
 
       federationSettings: {

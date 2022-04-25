@@ -8,12 +8,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { chartConstructor } from 'corteza-webapp-compose/src/lib/charts'
 import ChartJS from 'chart.js'
 import Funnel from 'chartjs-plugin-funnel'
 import Gauge from 'chartjs-gauge'
 import csc from 'chartjs-plugin-colorschemes'
-import { NoID } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 
 export default {
   i18nOptions: {
@@ -35,6 +36,13 @@ export default {
     return {
       renderer: null,
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      getModuleByID: 'module/getByID',
+      getUserByID: 'user/findByID',
+    }),
   },
 
   watch: {
@@ -69,6 +77,64 @@ export default {
 
         const data = await chart.fetchReports({ reporter: this.reporter })
         if (!!data.labels && Array.isArray(data.labels)) {
+          // Get dimension field kind
+          const [report = {}] = this.chart.config.reports
+          const [dimension = {}] = report.dimensions
+          let { field } = dimension
+          const module = this.getModuleByID(report.moduleID)
+
+          if (module) {
+            field = [
+              ...module.fields,
+              ...module.systemFields(),
+            ].find(({ name }) => name === field)
+          }
+
+          if (['User', 'Record'].includes(field.kind)) {
+            if (field.kind === 'User') {
+              // Fetch and map users to labels
+              await this.$store.dispatch('user/fetchUsers', data.labels)
+              data.labels = data.labels.map(label => {
+                return field.formatter(this.getUserByID(label)) || label
+              })
+            } else {
+              // Fetch and map records and their values to labels
+              const { namespaceID } = this.chart || {}
+              const recordModule = this.getModuleByID(field.options.moduleID)
+              if (recordModule && data.labels) {
+                await Promise.all(data.labels.map(recordID => {
+                  if (recordID && recordID !== 'undefined') {
+                    console.log(recordID)
+                    return this.$ComposeAPI.recordRead({ namespaceID, moduleID: recordModule.moduleID, recordID }).then(record => {
+                      record = new compose.Record(recordModule, record)
+
+                      if (field.options.recordLabelField) {
+                        // Get actual field
+                        const relatedField = recordModule.fields.find(({ name }) => name === field.options.labelField)
+
+                        return this.$ComposeAPI.recordRead({ namespaceID, moduleID: relatedField.options.moduleID, recordID: record.values[field.options.labelField] }).then(labelRecord => {
+                          record.values[field.options.labelField] = (labelRecord.values.find(({ name }) => name === this.field.options.recordLabelField) || {}).value
+                          return record
+                        })
+                      } else {
+                        return record
+                      }
+                    })
+                  } else {
+                    const record = { values: {} }
+                    record.values[field.options.labelField] = recordID
+                    return record
+                  }
+                })).then(records => {
+                  data.labels = records.map(record => {
+                    const value = field.options.labelField ? record.values[field.options.labelField] : record.recordID
+                    return Array.isArray(value) ? value.join(', ') : value
+                  })
+                })
+              }
+            }
+          }
+
           data.labels = data.labels.map(l => l === 'undefined' ? this.$t('chart:undefined') : l)
           const options = chart.makeOptions(data)
           const plugins = chart.plugins()

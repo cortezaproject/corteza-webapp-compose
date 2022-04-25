@@ -84,6 +84,7 @@
         <b-form-input
           v-model="metric.backgroundColor"
           type="color"
+          debounce="300"
           class="color-picker"
         />
       </b-form-group>
@@ -97,7 +98,6 @@
       >
         <b-form-input
           v-model="metric.label"
-          :placeholder="$t('edit.metric.labelPlaceholder')"
         />
       </b-form-group>
 
