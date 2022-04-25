@@ -93,7 +93,7 @@ export default {
       if (this.selectedReport) {
         this.selectedReport.blocks.forEach(b => {
           elements.push({
-            label: b.title || b.key,
+            label: b.title || `${this.$t('general:label.block')} ${b.key}`,
             options: b.elements.map(({ elementID, name, kind }) => ({ elementID, name: name || kind })),
           })
         })
