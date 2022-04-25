@@ -20,6 +20,7 @@
       <record-toolbar
         :module="module"
         :record="record"
+        :labels="recordToolbarLabels"
         :processing="processing"
         :processing-submit="processingSubmit"
         :processing-delete="processingDelete"
@@ -101,13 +102,21 @@ export default {
     getUiEventResourceType () {
       return 'record-page'
     },
+
+    recordToolbarLabels () {
+      // Use an intermediate object so we can reflect all changes in one go;
+      const aux = {}
+      Object.entries((this.page.config || {}).buttons).forEach(([key, { label = '' }]) => {
+        aux[key] = label
+      })
+      return aux
+    },
   },
 
   watch: {
     recordID: {
       immediate: true,
       handler () {
-        this.record = undefined
         this.loadRecord()
       },
     },
@@ -115,6 +124,8 @@ export default {
 
   methods: {
     async loadRecord () {
+      this.record = undefined
+
       if (this.page && this.recordID && this.recordID !== NoID && this.page.moduleID !== NoID) {
         const { namespaceID, moduleID } = this.page
         const module = Object.freeze(this.getModuleByID(moduleID).clone())

@@ -11,6 +11,7 @@
         class="wrap-with-vertical-gutters align-items-center"
       >
         <b-button
+          v-if="!settings.hideBack"
           variant="link"
           class="text-dark back"
           :disabled="processing"
@@ -20,7 +21,7 @@
             :icon="['fas', 'chevron-left']"
             class="back-icon"
           />
-          {{ $t('label.back') }}
+          {{ labels.back || $t('label.back') }}
         </b-button>
       </div>
 
@@ -29,7 +30,7 @@
         class="d-flex wrap-with-vertical-gutters align-items-center ml-auto"
       >
         <c-input-confirm
-          v-if="isCreated"
+          v-if="isCreated && !settings.hideDelete"
           :disabled="!canDeleteRecord"
           size="lg"
           size-confirm="lg"
@@ -44,45 +45,45 @@
           />
 
           <span v-else>
-            {{ $t('label.delete') }}
+            {{ labels.delete || $t('label.delete') }}
           </span>
         </c-input-confirm>
 
         <b-button
-          v-if="module.canCreateRecord && !hideClone && isCreated"
+          v-if="module.canCreateRecord && !hideClone && isCreated && !settings.hideClone"
           variant="light"
           size="lg"
           :disabled="!record || processing"
           class="ml-2"
           @click.prevent="$emit('clone')"
         >
-          {{ $t('label.clone') }}
+          {{ labels.clone || $t('label.clone') }}
         </b-button>
 
         <b-button
-          v-if="!inEditing"
+          v-if="!inEditing && !settings.hideEdit"
           :disabled="!record || !record.canUpdateRecord || processing"
           variant="light"
           size="lg"
           class="ml-2"
           @click.prevent="$emit('edit')"
         >
-          {{ $t('label.edit') }}
+          {{ labels.edit || $t('label.edit') }}
         </b-button>
 
         <b-button
-          v-if="module.canCreateRecord && !hideAdd && !inEditing"
+          v-if="module.canCreateRecord && !hideAdd && !inEditing && !settings.hideNew"
           variant="primary"
           size="lg"
           :disabled="processing"
           class="ml-2"
           @click.prevent="$emit('add')"
         >
-          {{ $t('label.addNew') }}
+          {{ labels.new || $t('label.addNew') }}
         </b-button>
 
         <b-button
-          v-if="inEditing"
+          v-if="inEditing && !settings.hideSubmit"
           :disabled="!canSaveRecord || processing"
           class="d-flex align-items-center justify-content-center ml-2"
           variant="primary"
@@ -99,7 +100,7 @@
             v-else
             data-test-id="button-save"
           >
-            {{ $t('label.save') }}
+            {{ labels.submit || $t('label.save') }}
           </span>
         </b-button>
       </div>
@@ -126,6 +127,11 @@ export default {
       type: compose.Record,
       required: false,
       default: undefined,
+    },
+
+    labels: {
+      type: Object,
+      default: () => ({}),
     },
 
     processing: {
@@ -167,6 +173,10 @@ export default {
   computed: {
     isCreated () {
       return this.record && this.record.recordID !== NoID
+    },
+
+    settings () {
+      return this.$Settings.get('compose.ui.record-toolbar', {})
     },
 
     canSaveRecord () {

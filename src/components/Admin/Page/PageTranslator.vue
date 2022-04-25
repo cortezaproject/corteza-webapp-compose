@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import { mapGetters } from 'vuex'
 import CTranslatorButton from 'corteza-webapp-compose/src/components/Translator/CTranslatorButton'
 
@@ -131,6 +131,39 @@ export default {
             tr = find('description')
             if (tr !== undefined) {
               this.page.description = tr.message
+            }
+
+            // Refresh page buttons for record pages
+            if (this.page.moduleID && this.page.moduleID !== NoID) {
+              tr = find('recordToolbar.new.label')
+              if (tr) {
+                this.$set(this.page.config.buttons.new, 'label', tr.message)
+              }
+
+              tr = find('recordToolbar.edit.label')
+              if (tr) {
+                this.$set(this.page.config.buttons.edit, 'label', tr.message)
+              }
+
+              tr = find('recordToolbar.submit.label')
+              if (tr) {
+                this.$set(this.page.config.buttons.submit, 'label', tr.message)
+              }
+
+              tr = find('recordToolbar.delete.label')
+              if (tr) {
+                this.$set(this.page.config.buttons.delete, 'label', tr.message)
+              }
+
+              tr = find('recordToolbar.clone.label')
+              if (tr) {
+                this.$set(this.page.config.buttons.clone, 'label', tr.message)
+              }
+
+              tr = find('recordToolbar.back.label')
+              if (tr) {
+                this.$set(this.page.config.buttons.back, 'label', tr.message)
+              }
             }
 
             switch (true) {
