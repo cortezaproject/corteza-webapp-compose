@@ -9,12 +9,14 @@
         class="text-light grab"
       />
     </td>
-    <td>
+    <td
+      style="width: 25%;"
+    >
       <b-form-input
         v-model="value.name"
         required
         :readonly="disabled"
-        :state="fieldState"
+        :state="nameState"
         type="text"
         class="form-control"
       />
@@ -143,7 +145,6 @@ export default {
     hasRecords: {
       type: Boolean,
       required: true,
-      default: false,
     },
 
     isDuplicate: {
@@ -159,16 +160,16 @@ export default {
   },
 
   computed: {
-    checkFieldName () {
-      return (this.disabled || this.value.isValid) ? null : false
-    },
+    nameState () {
+      if (this.disabled) {
+        return null
+      }
 
-    fieldState () {
-      if (this.checkFieldName === false || this.isDuplicate) {
+      if (this.isDuplicate) {
         return false
       }
 
-      return null
+      return this.value.isValid
     },
 
     disabled () {
