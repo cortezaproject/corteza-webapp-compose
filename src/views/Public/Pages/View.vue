@@ -67,5 +67,14 @@ export default {
       return undefined
     },
   },
+
+  watch: {
+    'page.title': {
+      immediate: true,
+      handler (title) {
+        document.title = [title, this.namespace.name, this.$t('general:label.app-name.public')].filter(v => v).join(' | ')
+      },
+    },
+  },
 }
 </script>

@@ -26,6 +26,17 @@ export default {
     },
   },
 
+  watch: {
+    '$route.name': {
+      immediate: true,
+      handler (name, oldName) {
+        if (!oldName || oldName === 'admin.pages.builder') {
+          document.title = this.$t('general:label.app-name.private')
+        }
+      },
+    },
+  },
+
   mounted () {
     if (!this.namespace.canManageNamespace) {
       this.$router.push({ name: 'pages' })

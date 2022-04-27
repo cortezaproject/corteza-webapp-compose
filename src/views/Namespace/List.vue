@@ -148,6 +148,10 @@ export default {
     },
   },
 
+  mounted () {
+    document.title = this.$t('general:label.app-name.public')
+  },
+
   methods: {
     onImported () {
       this.$store.dispatch('namespace/load', { force: true })

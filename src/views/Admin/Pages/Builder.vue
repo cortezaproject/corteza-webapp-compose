@@ -311,9 +311,11 @@ export default {
       immediate: true,
       handler (pageID) {
         if (pageID) {
-          const { namespaceID } = this.namespace
+          const { namespaceID, name } = this.namespace
           this.findPageByID({ namespaceID, pageID: this.pageID, force: true })
             .then(page => {
+              document.title = [page.title, name, this.$t('general:label.app-name.private')].filter(v => v).join(' | ')
+
               this.page = page.clone()
             })
         } else {
