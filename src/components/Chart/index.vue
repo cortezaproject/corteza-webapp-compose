@@ -90,7 +90,7 @@ export default {
             ].find(({ name }) => name === field)
           }
 
-          if (['User', 'Record'].includes(field.kind)) {
+          if (field && ['User', 'Record'].includes(field.kind)) {
             if (field.kind === 'User') {
               // Fetch and map users to labels
               await this.$store.dispatch('user/fetchUsers', data.labels)
