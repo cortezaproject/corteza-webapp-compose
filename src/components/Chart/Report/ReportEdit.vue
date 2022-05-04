@@ -303,7 +303,7 @@ export default {
     },
 
     canAddMetric () {
-      return this.supportedMetrics < 0 || this.metrics.length < this.supportedMetrics
+      return (this.supportedMetrics < 0 || this.metrics.length < this.supportedMetrics) && this.moduleID
     },
 
     module () {
