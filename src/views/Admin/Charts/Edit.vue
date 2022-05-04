@@ -386,7 +386,9 @@ export default {
 
   watch: {
     chartID: {
+      immediate: true,
       handler (chartID) {
+        this.chart = undefined
         if (chartID === NoID) {
           let c = new compose.Chart({ namespaceID: this.namespace.namespaceID })
           switch (this.category) {
@@ -405,10 +407,9 @@ export default {
             // Make a copy so that we do not change store item by ref
             this.chart = chartConstructor(chart)
             this.onEditReport(0)
-          }).catch(this.toastErrorHandler(this.$t('notification:chart.loadFailed')))
+          }).catch(e => this.toastErrorHandler(this.$t('notification:chart.loadFailed'))(e))
         }
       },
-      immediate: true,
     },
   },
 
@@ -451,12 +452,12 @@ export default {
       delete (c.config.renderer.data)
 
       if (this.chart.chartID === NoID) {
-        this.createChart(c).then((chart) => {
+        this.createChart(c).then(({ chartID }) => {
           this.toastSuccess(this.$t('notification:chart.saved'))
           if (closeOnSuccess) {
             this.redirect()
           } else {
-            this.$router.push({ name: 'admin.charts.edit', params: { chartID: this.chart.chartID } })
+            this.$router.push({ name: 'admin.charts.edit', params: { chartID: chartID } })
           }
         }).catch(this.toastErrorHandler(this.$t('notification:chart.saveFailed')))
       } else {

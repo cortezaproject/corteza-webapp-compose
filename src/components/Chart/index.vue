@@ -104,7 +104,6 @@ export default {
               if (recordModule && data.labels) {
                 await Promise.all(data.labels.map(recordID => {
                   if (recordID && recordID !== 'undefined') {
-                    console.log(recordID)
                     return this.$ComposeAPI.recordRead({ namespaceID, moduleID: recordModule.moduleID, recordID }).then(record => {
                       record = new compose.Record(recordModule, record)
 
