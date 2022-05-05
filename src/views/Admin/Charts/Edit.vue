@@ -422,7 +422,7 @@ export default {
             // Make a copy so that we do not change store item by ref
             this.chart = chartConstructor(chart)
             this.onEditReport(0)
-          }).catch(e => this.toastErrorHandler(this.$t('notification:chart.loadFailed'))(e))
+          }).catch(this.toastErrorHandler(this.$t('notification:chart.loadFailed')))
         }
       },
     },
