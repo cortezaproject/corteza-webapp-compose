@@ -15,6 +15,7 @@
           data-test-id="button-back-without-save"
           variant="link"
           :to="backLink"
+          :disabled="processing"
           class="text-dark back mr-auto"
         >
           <font-awesome-icon
@@ -37,7 +38,7 @@
           v-if="!hideDelete"
           v-b-tooltip.hover
           data-test-id="button-delete"
-          :disabled="disableDelete"
+          :disabled="disableDelete || processing"
           size="lg"
           size-confirm="lg"
           variant="danger"
@@ -50,7 +51,7 @@
         <b-button
           v-if="!hideClone"
           data-test-id="button-clone"
-          :disabled="disableClone"
+          :disabled="disableClone || processing"
           variant="light"
           size="lg"
           class="ml-2"
@@ -61,7 +62,7 @@
         <b-button
           v-if="!hideSave"
           data-test-id="button-save-and-close"
-          :disabled="disableSave"
+          :disabled="disableSave || processing"
           variant="light"
           size="lg"
           class="ml-2"
@@ -72,7 +73,7 @@
         <b-button
           v-if="!hideSave"
           data-test-id="button-save"
-          :disabled="disableSave"
+          :disabled="disableSave || processing"
           variant="primary"
           size="lg"
           class="ml-2"
@@ -94,6 +95,10 @@ export default {
   inheritAttrs: true,
 
   props: {
+    processing: {
+      type: Boolean,
+      default: false,
+    },
     backLink: {
       type: Object,
       required: false,

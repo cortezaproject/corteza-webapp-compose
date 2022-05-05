@@ -41,6 +41,7 @@
                     >
                       <b-form-input
                         v-model="chart.name"
+                        :state="nameState"
                       />
                     </b-form-group>
 
@@ -197,13 +198,15 @@
         </b-col>
       </b-row>
     </b-container>
+
     <portal to="admin-toolbar">
       <editor-toolbar
-        v-if="chart"
-        :back-link="{name: 'admin.charts'}"
+        :processing="processing"
+        :back-link="{ name: 'admin.charts' }"
         :hide-delete="hideDelete"
         :hide-save="hideSave"
         hide-clone
+        :disable-save="disableSave"
         @delete="handleDelete"
         @save="handleSave()"
         @saveAndClose="handleSave({ closeOnSuccess: true })"
@@ -317,8 +320,12 @@ export default {
       return Object.assign({}, defaultReport)
     },
 
+    nameState () {
+      return this.chart.name.length > 0 ? null : false
+    },
+
     handleState () {
-      return handleState(this.chart.handle)
+      return this.chart.handle.length > 0 ? handleState(this.chart.handle) : false
     },
 
     supportsMultipleReports () {
@@ -375,12 +382,20 @@ export default {
       },
     },
 
+    disableSave () {
+      return [this.nameState, this.handleState].includes(false)
+    },
+
     hideDelete () {
-      return this.chart.chartID === NoID || !this.chart.canDeleteChart || !!this.chart.deletedAt
+      return !this.isEdit || !this.chart.canDeleteChart || !!this.chart.deletedAt
     },
 
     hideSave () {
-      return this.chart.chartID !== NoID && !this.chart.canUpdateChart
+      return this.isEdit && !this.chart.canUpdateChart
+    },
+
+    isEdit () {
+      return this.chart.chartID !== NoID
     },
   },
 

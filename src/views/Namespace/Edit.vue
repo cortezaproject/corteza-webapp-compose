@@ -101,6 +101,7 @@
                 v-model="namespace.slug"
                 data-test-id="input-slug"
                 type="text"
+                required
                 :state="slugState"
                 :placeholder="$t('slug.placeholder')"
               />
@@ -241,12 +242,12 @@
     </div>
 
     <editor-toolbar
-      :back-link="{name: 'root'}"
+      :processing="processing"
+      :back-link="{ name: 'root' }"
       :hide-delete="hideDelete"
       :hide-clone="!isEdit"
-      :disable-delete="!canDelete || processing"
-      :disable-save="!canSave || processing"
-      :disable-clone="processing"
+      :hide-save="hideSave"
+      :disable-save="disableSave"
       @delete="handleDelete"
       @save="handleSave()"
       @clone="$router.push({ name: 'namespace.clone', params: { namespaceID: namespace.namespaceID }})"
@@ -358,10 +359,6 @@ export default {
       return this.$route.name === 'namespace.clone'
     },
 
-    slugState () {
-      return handleState(this.namespace.slug)
-    },
-
     logoPreview () {
       return this.namespace.meta.logo || this.$Settings.attachment('ui.mainLogo')
     },
@@ -371,35 +368,27 @@ export default {
     },
 
     nameState () {
-      if (!this.isEdit && this.namespace.name.length === 0) {
-        return null
-      }
+      return this.namespace.name.length > 0 ? null : false
+    },
 
-      return this.namespace.name.length > 0
+    slugState () {
+      return this.namespace.slug.length > 0 ? handleState(this.namespace.slug) : false
     },
 
     canToggleApplication () {
       return this.canCreateApplication
     },
 
-    canDelete () {
-      if (this.isEdit) {
-        return this.namespace.canDeleteNamespace
-      }
-
-      return false
+    disableSave () {
+      return [this.nameState, this.slugState].includes(false)
     },
 
-    canSave () {
-      if (this.isEdit && !this.namespace.canUpdateNamespace) {
-        return false
-      }
-
-      return this.slugState
+    hideSave () {
+      return this.isEdit && !this.namespace.canUpdateNamespace
     },
 
     hideDelete () {
-      return !this.isEdit || !!this.namespace.deletedAt
+      return !this.isEdit || !!this.namespace.deletedAt || (this.isEdit && !this.namespace.canDeleteNamespace)
     },
   },
 

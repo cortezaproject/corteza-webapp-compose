@@ -221,7 +221,7 @@ fieldset.required {
   label::after {
     content: "*";
     display: inline-block;
-    color: $danger;
+    color: $primary;
     width: 10px;
     height: 18px;
     overflow: hidden;

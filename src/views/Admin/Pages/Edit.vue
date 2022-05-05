@@ -54,39 +54,43 @@
                   cols="12"
                   md="6"
                 >
-                  <input
-                    id="id"
-                    v-model="page.pageID"
-                    required
-                    type="hidden"
+                  <b-form-group
+                    :label="`${$t('newPlaceholder')} *`"
+                    label-class="text-primary"
                   >
-                  <label class="text-primary">{{ $t('newPlaceholder') }}</label>
-                  <b-form-input
-                    v-model="page.title"
-                    required
-                    class="mb-2"
-                    :placeholder="$t('newPlaceholder')"
-                  />
+                    <input
+                      id="id"
+                      v-model="page.pageID"
+                      required
+                      type="hidden"
+                    >
+                    <b-form-input
+                      v-model="page.title"
+                      required
+                      :state="titleState"
+                      class="mb-2"
+                    />
+                  </b-form-group>
                 </b-col>
                 <b-col
                   cols="12"
                   md="6"
                 >
-                  <label
-                    class="text-primary"
+                  <b-form-group
+                    :label="$t('label.handle')"
+                    label-class="text-primary"
                   >
-                    {{ $t('label.handle') }}
-                  </label>
-                  <b-form-input
-                    v-model="page.handle"
-                    data-test-id="input-handle"
-                    :state="handleState"
-                    class="mb-2"
-                    :placeholder="$t('block.general.placeholder.handle')"
-                  />
-                  <b-form-invalid-feedback :state="handleState">
-                    {{ $t('block.general.invalid-handle-characters') }}
-                  </b-form-invalid-feedback>
+                    <b-form-input
+                      v-model="page.handle"
+                      data-test-id="input-handle"
+                      :state="handleState"
+                      class="mb-2"
+                      :placeholder="$t('block.general.placeholder.handle')"
+                    />
+                    <b-form-invalid-feedback :state="handleState">
+                      {{ $t('block.general.invalid-handle-characters') }}
+                    </b-form-invalid-feedback>
+                  </b-form-group>
                 </b-col>
               </b-row>
 
@@ -116,12 +120,14 @@
         </b-col>
       </b-row>
     </b-container>
+
     <portal to="admin-toolbar">
       <editor-toolbar
-        :back-link="{name: 'admin.pages'}"
+        :back-link="{ name: 'admin.pages' }"
         :hide-delete="hideDelete"
-        :hide-save="!page.canUpdatePage"
         hide-clone
+        :hide-save="!page.canUpdatePage"
+        :disable-save="disableSave"
         @delete="handleDeletePage"
         @save="handleSave()"
         @saveAndClose="handleSave({ closeOnSuccess: true })"
@@ -194,6 +200,10 @@ export default {
       pages: 'page/set',
     }),
 
+    titleState () {
+      return this.page.title.length > 0 ? null : false
+    },
+
     handleState () {
       return handleState(this.page.handle)
     },
@@ -208,6 +218,10 @@ export default {
 
     hasChildren () {
       return this.pages.some(({ selfID }) => selfID === this.page.pageID)
+    },
+
+    disableSave () {
+      return [this.titleState, this.handleState].includes(false)
     },
 
     hideDelete () {

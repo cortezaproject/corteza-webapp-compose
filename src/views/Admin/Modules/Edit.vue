@@ -6,13 +6,12 @@
 
     <portal to="topbar-tools">
       <b-button-group
-        v-if="allRecords && !creatingModule"
+        v-if="isEdit"
         size="sm"
         class="mr-1"
       >
         <b-button
           variant="primary"
-          :disabled="!allRecords"
           :to="allRecords"
           class="d-flex align-items-center"
         >
@@ -43,7 +42,7 @@
             class="shadow-sm"
           >
             <b-card-header
-              v-if="!creatingModule"
+              v-if="isEdit"
               header-bg-variant="white border-bottom"
               class="py-3"
             >
@@ -133,7 +132,7 @@
                   </b-dropdown>
                 </div>
                 <div
-                  v-if="!creatingModule"
+                  v-if="isEdit"
                   class="flex-grow-1 d-flex justify-content-md-end"
                 >
                   <related-pages
@@ -167,6 +166,7 @@
                       v-model="module.name"
                       data-test-id="input-module-name"
                       required
+                      :state="nameState"
                       :placeholder="$t('newPlaceholder')"
                     />
                   </b-form-group>
@@ -181,9 +181,9 @@
                     <b-form-input
                       v-model="module.handle"
                       data-test-id="input-module-handle"
-                      class="mb-2"
                       :state="handleState"
                       :placeholder="$t('general.placeholder.handle')"
+                      class="mb-2"
                     />
                     <b-form-invalid-feedback :state="handleState">
                       {{ $t('general.placeholder.invalid-handle-characters') }}
@@ -341,12 +341,12 @@
 
     <portal to="admin-toolbar">
       <editor-toolbar
-        :back-link="{name: 'admin.modules'}"
+        :processing="processing"
+        :back-link="{ name: 'admin.modules' }"
         :hide-delete="hideDelete"
-        :hide-save="hideSave"
-        :disable-delete="processing"
-        :disable-save="!fieldsValid || processing"
         hide-clone
+        :hide-save="hideSave"
+        :disable-save="disableSave"
         @delete="handleDelete"
         @save="handleSave()"
         @saveAndClose="handleSave({ closeOnSuccess: true })"
@@ -424,7 +424,7 @@ export default {
     }),
 
     title () {
-      return this.creatingModule ? this.$t('edit.create') : this.$t('edit.edit')
+      return this.isEdit ? this.$t('edit.edit') : this.$t('edit.create')
     },
 
     trModule: {
@@ -438,6 +438,10 @@ export default {
         this.module = v
         this.updateModuleSet(v)
       },
+    },
+
+    nameState () {
+      return this.module.name.length > 0 ? null : false
     },
 
     handleState () {
@@ -459,14 +463,9 @@ export default {
     },
 
     fieldsValid () {
-      const valid = this.module.fields.reduce((acc, f) => {
-        // Allow, if any old fields are invalid (legacy support)
-        if (f.fieldID !== NoID) {
-          return acc && true
-        }
-
-        return acc && f.isValid
-      }, true)
+      const valid = !this.module.fields.some(f => {
+        return f.fieldID === NoID && !f.isValid
+      })
 
       const unique = Object.keys(this.duplicateFields).length === 0
 
@@ -490,7 +489,7 @@ export default {
     },
 
     federationEnabled () {
-      return this.$Settings.get('federation.enabled', false) && this.module.moduleID && !this.creatingModule
+      return this.isEdit && this.$Settings.get('federation.enabled', false)
     },
 
     discoveryEnabled () {
@@ -498,23 +497,23 @@ export default {
     },
 
     hideDelete () {
-      return this.module.moduleID === NoID || !this.module.canDeleteModule || !!this.module.deletedAt
+      return !this.isEdit || !this.module.canDeleteModule || !!this.module.deletedAt
+    },
+
+    disableSave () {
+      return [this.fieldsValid, this.nameState, this.handleState].includes(false)
     },
 
     hideSave () {
-      return this.module.moduleID !== NoID && !this.module.canUpdateModule
+      return this.isEdit && !this.module.canUpdateModule
     },
 
-    creatingModule () {
-      return this.module.moduleID === NoID
+    isEdit () {
+      return this.module.moduleID !== NoID
     },
 
     allRecords () {
-      if (this.moduleID) {
-        return { name: 'admin.modules.record.list', params: { moduleID: this.moduleID } }
-      }
-
-      return undefined
+      return this.isEdit ? { name: 'admin.modules.record.list', params: { moduleID: this.moduleID } } : undefined
     },
   },
 
@@ -581,7 +580,7 @@ export default {
       const resourceTranslationLanguage = this.currentLanguage
       this.processing = true
 
-      if (this.module.moduleID === NoID) {
+      if (!this.isEdit) {
         // Filter out record fields that reference this not yet created module
         let fields = []
         const toBeUpdatedFields = []

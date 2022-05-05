@@ -169,7 +169,7 @@ export default {
         return false
       }
 
-      return this.value.isValid
+      return this.value.isValid ? null : false
     },
 
     disabled () {
