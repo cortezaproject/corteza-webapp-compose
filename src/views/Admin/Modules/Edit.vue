@@ -303,41 +303,41 @@
           </b-card>
         </b-col>
       </b-row>
-    </b-container>
 
-    <b-modal
-      v-if="updateField"
-      :title="editModalTitle"
-      :ok-title="$t('general.label.saveAndClose')"
-      ok-only
-      ok-variant="primary"
-      size="lg"
-      :visible="!!updateField"
-      body-class="p-0 border-top-0"
-      header-class="p-3 pb-0 border-bottom-0"
-      @ok="handleFieldSave(updateField)"
-      @hide="updateField=null"
-    >
-      <field-configurator
-        :field.sync="updateField"
-        :namespace="namespace"
+      <b-modal
+        v-if="updateField"
+        :title="editModalTitle"
+        :ok-title="$t('general.label.saveAndClose')"
+        ok-only
+        ok-variant="primary"
+        size="lg"
+        :visible="!!updateField"
+        body-class="p-0 border-top-0"
+        header-class="p-3 pb-0 border-bottom-0"
+        @ok="handleFieldSave(updateField)"
+        @hide="updateField=null"
+      >
+        <field-configurator
+          :field.sync="updateField"
+          :namespace="namespace"
+          :module="module"
+        />
+      </b-modal>
+
+      <federation-settings
+        v-if="federationEnabled"
+        :modal="federationSettings.modal"
         :module="module"
+        @change="federationSettings.modal = ($event || false)"
       />
-    </b-modal>
 
-    <federation-settings
-      v-if="federationEnabled"
-      :modal="federationSettings.modal"
-      :module="module"
-      @change="federationSettings.modal = ($event || false)"
-    />
-
-    <discovery-settings
-      v-if="discoveryEnabled"
-      :modal.sync="discoverySettings.modal"
-      :module.sync="module"
-      @save="onDiscoverySettingsSave"
-    />
+      <discovery-settings
+        v-if="discoveryEnabled"
+        :modal.sync="discoverySettings.modal"
+        :module.sync="module"
+        @save="onDiscoverySettingsSave"
+      />
+    </b-container>
 
     <portal to="admin-toolbar">
       <editor-toolbar
@@ -404,7 +404,7 @@ export default {
   data () {
     return {
       updateField: null,
-      module: new compose.Module(),
+      module: undefined,
       hasRecords: true,
       processing: false,
 
@@ -451,8 +451,9 @@ export default {
     duplicateFields () {
       const rtr = {}
       const ix = new Set()
+      const { fields = [] } = this.module || {}
 
-      this.module.fields.forEach((f, i) => {
+      fields.forEach((f, i) => {
         if (ix.has(f.name)) {
           rtr[i] = f
         }
@@ -463,7 +464,8 @@ export default {
     },
 
     fieldsValid () {
-      const valid = !this.module.fields.some(f => {
+      const { fields = [] } = this.module || {}
+      const valid = !fields.some(f => {
         return f.fieldID === NoID && !f.isValid
       })
 
@@ -501,7 +503,7 @@ export default {
     },
 
     disableSave () {
-      return [this.fieldsValid, this.nameState, this.handleState].includes(false)
+      return !this.module || [this.fieldsValid, this.nameState, this.handleState].includes(false)
     },
 
     hideSave () {
@@ -509,7 +511,7 @@ export default {
     },
 
     isEdit () {
-      return this.module.moduleID !== NoID
+      return this.module && this.module.moduleID !== NoID
     },
 
     allRecords () {
@@ -519,7 +521,8 @@ export default {
 
   watch: {
     moduleID: {
-      handler: function (moduleID) {
+      immediate: true,
+      handler (moduleID) {
         if (moduleID === NoID) {
           this.module = new compose.Module(
             { fields: [new compose.ModuleFieldString({ fieldID: NoID, name: this.$t('general.placeholder.sample') })] },
@@ -539,7 +542,6 @@ export default {
           })
         }
       },
-      immediate: true,
     },
   },
 
