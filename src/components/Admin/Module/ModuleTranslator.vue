@@ -13,6 +13,7 @@
 import { compose } from '@cortezaproject/corteza-js'
 import { mapGetters } from 'vuex'
 import CTranslatorButton from 'corteza-webapp-compose/src/components/Translator/CTranslatorButton'
+import moduleResTr from 'corteza-webapp-compose/src/lib/resource-translations/module'
 
 export default {
   components: {
@@ -97,19 +98,7 @@ export default {
             // scan changes and apply them back to the passed object
             // not the most elegant solution but is saves us from
             // handling the resource on multiple places
-            //
-            //
-            // @todo move this to Namespace* classes
-            // the logic there needs to be implemented; the idea is to encode
-            // values from the set of translations back to the resource object
-            const find = (key) => {
-              return translations.find(t => t.key === key && t.lang === this.currentLanguage && t.resource === this.resource)
-            }
-
-            const tr = find('name')
-            if (tr !== undefined) {
-              this.module.name = tr.message
-            }
+            moduleResTr(this.module, translations, this.currentLanguage, this.resource)
 
             return this.module
           })

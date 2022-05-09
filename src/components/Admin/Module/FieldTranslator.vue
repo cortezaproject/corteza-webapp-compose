@@ -16,6 +16,7 @@
 import { compose } from '@cortezaproject/corteza-js'
 import { mapGetters } from 'vuex'
 import CTranslatorButton from 'corteza-webapp-compose/src/components/Translator/CTranslatorButton'
+import moduleFieldResTr from 'corteza-webapp-compose/src/lib/resource-translations/module-field'
 
 export default {
   components: {
@@ -119,45 +120,7 @@ export default {
             // the logic there needs to be implemented; the idea is to encode
             // values from the set of translations back to the resource object
 
-            const find = (key) => {
-              return translations.find(t => t.key === key && t.lang === this.currentLanguage && t.resource === this.resource)
-            }
-
-            let tr
-
-            tr = find('label')
-            if (tr !== undefined) {
-              this.field.label = tr.message
-            }
-
-            tr = find('meta.description.view')
-            if (tr !== undefined) {
-              this.field.options.description.view = tr.message
-            }
-
-            tr = find('meta.description.edit')
-            if (tr !== undefined) {
-              this.field.options.description.edit = tr.message || undefined
-            }
-
-            tr = find('meta.hint.view')
-            if (tr !== undefined) {
-              this.field.options.hint.view = tr.message
-            }
-
-            tr = find('meta.hint.edit')
-            if (tr !== undefined) {
-              this.field.options.hint.edit = tr.message || undefined
-            }
-
-            if (this.field.expressions && Array.isArray(this.field.expressions.validators)) {
-              for (const vld of this.field.expressions.validators) {
-                tr = find(`expression.validator.${vld.validatorID}.error`)
-                if (tr !== undefined) {
-                  vld.error = tr.message
-                }
-              }
-            }
+            moduleFieldResTr(this.field, translations, this.currentLanguage, this.resource)
           })
       }
     },

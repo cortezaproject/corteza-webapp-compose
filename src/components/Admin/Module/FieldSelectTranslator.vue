@@ -16,6 +16,7 @@
 import { compose } from '@cortezaproject/corteza-js'
 import { mapGetters } from 'vuex'
 import CTranslatorButton from 'corteza-webapp-compose/src/components/Translator/CTranslatorButton'
+import moduleFieldSelectResTr from 'corteza-webapp-compose/src/lib/resource-translations/module-field-select'
 
 const keyPrefix = 'meta.options.'
 const keySuffix = '.text'
@@ -136,23 +137,7 @@ export default {
             // @todo move this to ModuleFieldSelect classes
             // the logic there needs to be implemented; the idea is to encode
             // values from the set of translations back to the resource object
-            const find = (key) => {
-              return translations.find(t => t.key === key && t.lang === this.currentLanguage && t.resource === this.resource)
-            }
-
-            this.field.options.options = this.field.options.options.map(opt => {
-              if (typeof opt === 'string') {
-                const tr = find(`${keyPrefix}${opt}${keySuffix}`)
-                return { value: opt, text: tr ? tr.message : opt }
-              }
-
-              if (typeof opt === 'object' && opt.value) {
-                const tr = find(`${keyPrefix}${opt.value}${keySuffix}`)
-                opt.text = tr ? tr.message : opt.value
-              }
-
-              return opt
-            })
+            moduleFieldSelectResTr(this.field, translations, this.currentLanguage, this.resource)
           })
       }
     },
