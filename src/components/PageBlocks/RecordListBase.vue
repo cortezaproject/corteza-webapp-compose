@@ -588,6 +588,7 @@ import AutomationButtons from './Shared/AutomationButtons'
 import { compose, validator, NoID } from '@cortezaproject/corteza-js'
 import users from 'corteza-webapp-compose/src/mixins/users'
 import { evaluatePrefilter, queryToFilter } from 'corteza-webapp-compose/src/lib/record-filter'
+import { getItem, setItem, removeItem } from 'corteza-webapp-compose/src/lib/local-storage'
 import { url } from '@cortezaproject/corteza-vue'
 import draggable from 'vuedraggable'
 import RecordListFilter from 'corteza-webapp-compose/src/components/Common/RecordListFilter'
@@ -829,12 +830,10 @@ export default {
     this.$root.$on(`record-line:collect:${this.uniqueID}`, this.resolveRecords)
     this.$root.$on(`page-block:validate:${this.uniqueID}`, this.validatePageBlock)
 
-    // Get record list filters from localStorage
-    const currentFilters = JSON.parse(window.localStorage.getItem('record-list-filters') || '{}')
-    this.recordListFilter = currentFilters[this.uniqueID] || []
+    this.getStorageRecordListFilter()
 
     this.prepRecordList()
-    this.pullRecords(true)
+    this.refresh(true)
   },
 
   beforeDestroy () {
@@ -845,9 +844,7 @@ export default {
   methods: {
     onFilter (filter = []) {
       this.recordListFilter = filter
-      const currentListFilters = JSON.parse(window.localStorage.getItem('record-list-filters') || '{}')
-      currentListFilters[this.uniqueID] = this.recordListFilter
-      window.localStorage.setItem('record-list-filters', JSON.stringify(currentListFilters))
+      this.setStorageRecordListFilter()
       this.refresh(true)
     },
 
@@ -1306,6 +1303,40 @@ export default {
         .finally(() => {
           this.processing = false
         })
+    },
+
+    getStorageRecordListFilter () {
+      try {
+        // Get record list filters from localStorage
+        const currentFilters = getItem(`record-list-filters-${this.uniqueID}`)
+
+        // Check type of filter value
+        if (!Array.isArray(currentFilters)) {
+          console.warn(this.$t('notification:record-list.incorrect-filter-structure', { filterID: this.uniqueID }))
+          // Remove the filter from the local storage if the type doesn't match
+          removeItem(`record-list-filters-${this.uniqueID}`)
+        } else {
+          this.recordListFilter = currentFilters
+        }
+      } catch (e) {
+        // Land here if the filter is corrupted
+        console.warn(this.$t('notification:record-list.corrupted-filter'))
+        // Remove filter from the local storage
+        removeItem(`record-list-filters-${this.uniqueID}`)
+      }
+    },
+
+    setStorageRecordListFilter () {
+      let currentListFilters = []
+
+      try {
+        // Get record list filters from localStorage
+        currentListFilters = getItem(`record-list-filters-${this.uniqueID}`)
+        currentListFilters = this.recordListFilter
+        setItem(`record-list-filters-${this.uniqueID}`, currentListFilters)
+      } catch (e) {
+        console.warning(this.$t('notification:record-list.corrupted-filter'))
+      }
     },
   },
 }
