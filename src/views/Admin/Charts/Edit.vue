@@ -5,12 +5,13 @@
     </portal>
 
     <b-container
+      v-if="chart"
       tag="form"
       fluid="xl"
       @submit.prevent="handleSave"
     >
       <b-row no-gutters>
-        <b-col v-if="chart">
+        <b-col>
           <b-card
             no-body
             class="shadow-sm"
@@ -383,7 +384,7 @@ export default {
     },
 
     disableSave () {
-      return [this.nameState, this.handleState].includes(false)
+      return !this.chart || [this.nameState, this.handleState].includes(false)
     },
 
     hideDelete () {
@@ -395,7 +396,7 @@ export default {
     },
 
     isEdit () {
-      return this.chart.chartID !== NoID
+      return this.chart && this.chart.chartID !== NoID
     },
   },
 
