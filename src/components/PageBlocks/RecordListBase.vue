@@ -843,11 +843,15 @@ export default {
     this.uniqueID = `${this.page.pageID}-${(this.record || {}).recordID || '0'}-${this.blockIndex}`
     this.$root.$on(`record-line:collect:${this.uniqueID}`, this.resolveRecords)
     this.$root.$on(`page-block:validate:${this.uniqueID}`, this.validatePageBlock)
+    this.$root.$on(`refetch-non-record-blocks:${this.page.pageID}`, () => {
+      this.refresh(true)
+    })
   },
 
   beforeDestroy () {
     this.$root.$off(`record-line:collect:${this.uniqueID}`)
     this.$root.$off(`page-block:validate:${this.uniqueID}`)
+    this.$root.$off(`refetch-non-record-blocks:${this.page.pageID}`)
   },
 
   methods: {
