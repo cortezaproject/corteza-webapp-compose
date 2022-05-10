@@ -853,15 +853,21 @@ export default {
     'record.recordID': {
       immediate: true,
       handler (recordID = NoID) {
+        const { pageID = NoID } = this.page
+
         // Set uniqueID so that events dont mix
         if (this.uniqueID) {
           this.$root.$off(`record-line:collect:${this.uniqueID}`)
           this.$root.$off(`page-block:validate:${this.uniqueID}`)
+          this.$root.$off(`refetch-non-record-blocks:${pageID}`)
         }
 
-        this.uniqueID = `${this.page.pageID}-${recordID}-${this.blockIndex}`
+        this.uniqueID = `${pageID}-${recordID}-${this.blockIndex}`
         this.$root.$on(`record-line:collect:${this.uniqueID}`, this.resolveRecords)
         this.$root.$on(`page-block:validate:${this.uniqueID}`, this.validatePageBlock)
+        this.$root.$on(`refetch-non-record-blocks:${pageID}`, () => {
+          this.refresh(true)
+        })
 
         this.getStorageRecordListFilter()
         this.prepRecordList()
@@ -873,6 +879,7 @@ export default {
   beforeDestroy () {
     this.$root.$off(`record-line:collect:${this.uniqueID}`)
     this.$root.$off(`page-block:validate:${this.uniqueID}`)
+    this.$root.$off(`refetch-non-record-blocks:${this.page.pageID}`)
   },
 
   methods: {
