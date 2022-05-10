@@ -60,12 +60,14 @@ export default {
 
   mounted () {
     this.$root.$on('chart.update', this.requestChartUpdate)
+    this.$root.$on(`refetch-non-record-blocks:${this.page.pageID}`, this.requestChartUpdate)
   },
 
   beforeDestroy () {
     if (this.renderer) {
       this.renderer.destroy()
     }
+    this.$root.$off(`refetch-non-record-blocks:${this.page.pageID}`)
   },
 
   methods: {
