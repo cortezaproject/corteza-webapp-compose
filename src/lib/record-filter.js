@@ -73,10 +73,14 @@ export function getFieldFilter (name, kind, query = '', operator = '=') {
     const date = moment(query, ['YYYY-MM-DDTHH:mm:ssZ', 'YYYY-MM-DD'])
     const time = moment(query, ['HH:mm'])
 
+    // @note tweaking the template a bit:
+    // * adding %f to include fractions; mysql sometimes forces them when formatting date
+    // * changing Z to +00:00
+    // * doing the same for time-only fields
     if (date.isValid()) {
-      return `TIMESTAMP(DATE_FORMAT(${name}, '%Y-%m-%dT%H:%i:00Z')) ${operator} TIMESTAMP(DATE_FORMAT('${date.format()}', '%Y-%m-%dT%H:%i:00Z'))`
+      return `TIMESTAMP(DATE_FORMAT(${name}, '%Y-%m-%dT%H:%i:00.%f+00:00')) ${operator} TIMESTAMP(DATE_FORMAT('${date.format()}', '%Y-%m-%dT%H:%i:00.%f+00:00'))`
     } else if (time.isValid()) {
-      return `TIME(${name}) ${operator} TIME('${query}')`
+      return `TIME(DATE_FORMAT(${name}, '%Y-%m-%dT%H:%i:00.%f+00:00')) ${operator} TIME('${query}')`
     }
   }
 
