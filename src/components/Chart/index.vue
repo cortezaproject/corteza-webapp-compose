@@ -79,6 +79,7 @@ export default {
 
   mounted () {
     this.$root.$on('chart.update', this.requestChartUpdate)
+    this.$root.$on(`refetch-non-record-blocks:${this.page.pageID}`, this.requestChartUpdate)
   },
 
   beforeDestroy () {
