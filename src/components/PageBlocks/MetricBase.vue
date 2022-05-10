@@ -77,10 +77,12 @@ export default {
 
   mounted () {
     this.$root.$on('metric.update', this.update)
+    this.$root.$on(`refetch-non-record-blocks:${this.page.pageID}`, this.update)
   },
 
   beforeDestroy () {
     this.$root.$off('metric.update', this.update)
+    this.$root.$off(`refetch-non-record-blocks:${this.page.pageID}`)
   },
 
   methods: {
