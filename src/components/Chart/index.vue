@@ -26,7 +26,7 @@ import ChartJS from 'chart.js'
 import Funnel from 'chartjs-plugin-funnel'
 import Gauge from 'chartjs-gauge'
 import csc from 'chartjs-plugin-colorschemes'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 
 export default {
   i18nOptions: {
@@ -68,6 +68,8 @@ export default {
     'record.recordID': {
       immediate: true,
       handler () {
+        const { pageID = NoID } = this.$route.params
+        this.$root.$on(`refetch-non-record-blocks:${pageID}`, this.requestChartUpdate)
         this.$nextTick(() => {
           this.updateChart()
         })
@@ -83,6 +85,9 @@ export default {
     if (this.renderer) {
       this.renderer.destroy()
     }
+
+    const { pageID = NoID } = this.$route.params
+    this.$root.$off(`refetch-non-record-blocks:${pageID}`)
   },
 
   methods: {

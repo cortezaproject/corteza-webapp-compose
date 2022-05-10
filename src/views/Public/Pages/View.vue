@@ -76,5 +76,16 @@ export default {
       },
     },
   },
+
+  created () {
+    this.$root.$on('refetch-records', () => {
+      // If on a record page, let it take care of events else just refetch non record-blocks (that use records)
+      this.$root.$emit(this.page.moduleID !== NoID ? 'refetch-record-blocks' : `refetch-non-record-blocks:${this.page.pageID}`)
+    })
+  },
+
+  beforeDestroy () {
+    this.$root.$off('refetch-records')
+  },
 }
 </script>
