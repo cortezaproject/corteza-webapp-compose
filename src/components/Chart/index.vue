@@ -64,6 +64,8 @@ export default {
       immediate: true,
       handler (chartID = NoID) {
         if (chartID !== NoID) {
+          const { pageID = NoID } = this.$route.params
+          this.$root.$on(`refetch-non-record-blocks:${pageID}`, this.requestChartUpdate)
           this.$nextTick(() => {
             this.updateChart()
           })
@@ -80,6 +82,9 @@ export default {
     if (this.renderer) {
       this.renderer.destroy()
     }
+
+    const { pageID = NoID } = this.$route.params
+    this.$root.$off(`refetch-non-record-blocks:${pageID}`)
   },
 
   methods: {
