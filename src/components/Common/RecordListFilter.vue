@@ -440,7 +440,7 @@ export default {
 
           // If no more filterGroups, add default back
           if (!this.componentFilter.length) {
-            this.componentFilter.push(this.createDefaultFilterGroup())
+            this.resetFilter()
           } else if (groupIndex === this.componentFilter.length) {
             // Reset first filterGroup groupCondition if last filterGroup was deleted
             this.componentFilter[groupIndex - 1].groupCondition = undefined
