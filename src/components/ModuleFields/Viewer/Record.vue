@@ -1,45 +1,26 @@
 <template>
-  <div>
-    <div v-if="valid">
-      <div v-if="field.isMulti">
-        <span
-          v-for="(r, index) of value"
-          :key="index"
-        >
-          <span
-            v-if="index && index !== value.length"
-            v-html="getDelimiter"
-          />
-          <span
-            v-if="linkToRecord(index)"
-            @click.stop
-          >
-            <router-link :to="linkToRecord(index)">{{ format(index) }}</router-link>
-          </span>
-          <span v-else>
-            {{ format(index) }}
-          </span>
-        </span>
-      </div>
-      <div
-        v-else
-        class="text-nowrap"
+  <b-spinner
+    v-if="processing"
+    variant="primary"
+    small
+  />
+
+  <div v-else>
+    <span
+      v-for="(v, index) of formatedValue"
+      :key="index"
+      @click.stop
+    >
+      <router-link
+        :to="v.to"
+        :class="{ 'text-decoration-none default-cursor': !v.to}"
       >
-        <div
-          v-if="linkToRecord()"
-          @click.stop
-        >
-          <router-link :to="linkToRecord()">
-            {{ format() }}
-          </router-link>
-        </div>
-        <div v-else>
-          {{ format() }}
-        </div>
-      </div>
-    </div>
+        {{ v.value }}
+      </router-link>
+    </span>
   </div>
 </template>
+
 <script>
 import base from './base'
 import { compose, NoID } from '@cortezaproject/corteza-js'
@@ -50,6 +31,10 @@ export default {
 
   data () {
     return {
+      processing: false,
+
+      recordValues: {},
+
       relRecords: [],
     }
   },
@@ -57,104 +42,119 @@ export default {
   computed: {
     ...mapGetters({
       pages: 'page/set',
+      findUserByID: 'user/findByID',
     }),
 
-    valid () {
-      if (this.relRecords.length > 0) {
-        for (const record of this.relRecords) {
-          if (!record) {
-            return false
-          }
+    formatedValue () {
+      const value = Array.isArray(this.value) ? this.value : [this.value].filter(v => v) || []
+      return value.map(v => {
+        return {
+          to: this.linkToRecord(v),
+          value: this.recordValues[v] || v,
         }
-        return true
-      }
-      return false
+      })
     },
 
-    getDelimiter () {
-      if (this.field.options.multiDelimiter === '\n') {
-        return '<br>'
-      }
-      return this.field.options.multiDelimiter
+    recordPage () {
+      return this.pages.find(p => p.moduleID === this.field.options.moduleID)
     },
   },
 
-  mounted () {
-    this.load()
+  watch: {
+    value: {
+      immediate: true,
+      handler (value) {
+        this.formatRecordValues(value)
+      },
+    },
   },
 
   methods: {
     ...mapActions({
       findModuleByID: 'module/findByID',
+      resolveUsers: 'user/fetchUsers',
     }),
 
-    format (index = 0) {
-      if (this.relRecords[index]) {
-        let value = ''
-        if (this.field.options.labelField) {
-          value = this.relRecords[index].values[this.field.options.labelField]
-        } else {
-          value = this.relRecords[index].recordID
-        }
-        if (value && value.length > 0) {
-          if (Array.isArray(value)) {
-            return value.join(', ')
-          } else {
-            return value
-          }
-        }
-      }
-      return null
-    },
-
-    linkToRecord (index = 0) {
-      const recordPage = this.pages.find(p => p.moduleID === this.field.options.moduleID)
-      const recordID = (this.relRecords[index] || {}).recordID
-      if (!recordPage || !recordID) {
-        return null
+    linkToRecord (recordID) {
+      if (!this.recordPage || !recordID) {
+        return ''
       }
 
       return {
         name: 'page.record',
         params: {
-          pageID: recordPage.pageID,
+          pageID: this.recordPage.pageID,
           recordID: recordID,
         },
       }
     },
 
-    load () {
-      const value = this.field.isMulti ? this.value : [this.value]
-      if (value) {
-        const { namespaceID = NoID } = this.namespace
-        const { moduleID = NoID } = this.field.options
+    async formatRecordValues (value) {
+      value = Array.isArray(value) ? value : [value].filter(v => v) || []
+      const { namespaceID = NoID } = this.namespace
+      const { moduleID = NoID, labelField, recordLabelField } = this.field.options
 
-        if (moduleID !== NoID && namespaceID !== NoID) {
-          this.findModuleByID({ namespace: this.namespace, moduleID }).then(module => {
-            for (const recordID of value) {
-              if (recordID) {
-                this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID }).then(async record => {
-                  record = new compose.Record(module, record)
-
-                  if (this.field.options.recordLabelField) {
-                    // Get actual field
-                    const relatedField = module.fields.find(({ name }) => name === this.field.options.labelField)
-
-                    await this.$ComposeAPI.recordRead({ namespaceID, moduleID: relatedField.options.moduleID, recordID: record.values[this.field.options.labelField] }).then(labelRecord => {
-                      record.values[this.field.options.labelField] = (labelRecord.values.find(({ name }) => name === this.field.options.recordLabelField) || {}).value
-                    })
-                  }
-
-                  this.relRecords.push(record)
-                }).catch(e => {
-                  this.relRecords.push(new compose.Record(module, { recordID }))
-                })
-              }
-            }
-          })
-        }
+      if (!value.length || [moduleID, namespaceID].includes(NoID) || !labelField) {
+        return
       }
+
+      this.processing = true
+
+      // Get configured module/field
+      return this.findModuleByID({ namespace: this.namespace, moduleID }).then(module => {
+        let relatedField = module.fields.find(({ name }) => name === labelField)
+        const query = value.map(recordID => `recordID = ${recordID}`).join(' OR ')
+
+        return this.$ComposeAPI.recordList({ namespaceID, moduleID, query, deleted: 1 }).then(async ({ set = [] }) => {
+          if (recordLabelField) {
+            set = await this.findModuleByID({ namespaceID, moduleID: relatedField.options.moduleID }).then(relatedModule => {
+              const mappedIDs = {}
+              const queryIDs = []
+
+              set.forEach(r => {
+                r = new compose.Record(module, r)
+                mappedIDs[r.values[labelField]] = r.recordID
+                queryIDs.push(`recordID = ${r.values[labelField]}`)
+              })
+
+              return this.$ComposeAPI.recordList({ namespaceID, moduleID: relatedField.options.moduleID, query: queryIDs.join(' OR '), deleted: 1 }).then(({ set = [] }) => {
+                relatedField = relatedModule.fields.find(({ name }) => name === this.field.options.recordLabelField)
+                return set.map(r => {
+                  r.recordID = mappedIDs[r.recordID]
+                  return new compose.Record(relatedModule, r)
+                })
+              })
+            })
+          } else {
+            set = set.map(r => new compose.Record(module, r))
+          }
+
+          set.forEach(async record => {
+            let recordValue = relatedField.isMulti ? record.values[relatedField.name] : [record.values[relatedField.name]]
+
+            if (recordValue.length && relatedField.kind === 'User') {
+              recordValue = await Promise.all(recordValue.map(async v => {
+                if (!this.findUserByID(v)) {
+                  await this.resolveUsers(v)
+                }
+
+                return relatedField.formatter(this.findUserByID(v))
+              }))
+            }
+
+            this.$set(this.recordValues, record.recordID, recordValue.join(relatedField.options.multiDelimiter))
+          })
+        })
+      }).finally(() => {
+        this.processing = false
+      })
     },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.default-cursor {
+  cursor: default;
+}
+</style>

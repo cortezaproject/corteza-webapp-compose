@@ -48,11 +48,11 @@
           :calculate-position="calculatePosition"
           :clearable="false"
           :filterable="false"
+          :searchable="searchable"
           :selectable="option => option.selectable"
           class="bg-white w-100"
           :placeholder="$t('kind.record.suggestionPlaceholder')"
           multiple
-          @open="onOpen"
           @search="search"
         >
           <pagination
@@ -76,11 +76,11 @@
           :calculate-position="calculatePosition"
           :clearable="false"
           :filterable="false"
+          :searchable="searchable"
           :selectable="option => option.selectable"
           class="bg-white w-100"
           :placeholder="$t('kind.record.suggestionPlaceholder')"
           @input="selectChange($event)"
-          @open="onOpen"
           @search="search"
         >
           <pagination
@@ -105,11 +105,11 @@
           :calculate-position="calculatePosition"
           :clearable="false"
           :filterable="false"
+          :searchable="searchable"
           :selectable="option => option.selectable"
           class="bg-white w-100"
           :placeholder="$t('kind.record.suggestionPlaceholder')"
           :value="getRecord(ctx.index)"
-          @open="onOpen"
           @input="setRecord($event, ctx.index)"
           @search="search"
         >
@@ -122,7 +122,14 @@
             @next="goToPage(true)"
           />
         </vue-select>
-        <span v-else>{{ (multipleSelected[ctx.index] || {}).label }}</span>
+        <b-spinner
+          v-else-if="processing"
+          variant="primary"
+          small
+        />
+        <span v-else>
+          {{ (multipleSelected[ctx.index] || {}).label }}
+        </span>
       </template>
     </multi>
     <template
@@ -139,9 +146,9 @@
         :calculate-position="calculatePosition"
         :placeholder="$t('kind.record.suggestionPlaceholder')"
         :filterable="false"
+        :searchable="searchable"
         :selectable="option => option.selectable"
         class="bg-white w-100"
-        @open="onOpen"
         @search="search"
       >
         <pagination
@@ -159,11 +166,11 @@
 </template>
 <script>
 import base from './base'
-import { VueSelect } from 'vue-select'
-import { compose, NoID } from '@cortezaproject/corteza-js'
 import { debounce } from 'lodash'
+import { compose, NoID } from '@cortezaproject/corteza-js'
+import { mapActions, mapGetters } from 'vuex'
+import { VueSelect } from 'vue-select'
 import calculatePosition from 'corteza-webapp-compose/src/mixins/vue-select-position'
-import { mapGetters } from 'vuex'
 import { evaluatePrefilter } from 'corteza-webapp-compose/src/lib/record-filter'
 import Pagination from '../Common/Pagination.vue'
 
@@ -189,9 +196,9 @@ export default {
 
       query: '',
 
-      fetchedRecords: [],
       records: [],
-      latest: [], // set of 10 latest records for default list
+
+      recordValues: {},
 
       filter: {
         query: '',
@@ -207,10 +214,11 @@ export default {
   computed: {
     ...mapGetters({
       getModuleByID: 'module/getByID',
+      findUserByID: 'user/findByID',
     }),
 
     options () {
-      return this.records.map(this.convert).filter(({ value = '' }) => value)
+      return this.records.map(this.convert).filter(({ value, label }) => value && label)
     },
 
     module () {
@@ -221,20 +229,19 @@ export default {
       }
     },
 
+    searchable () {
+      return !this.field.options.recordLabelField
+    },
+
     multipleSelected: {
       get () {
-        return this.value
-          .map(v => this.convert(this.fetchedRecords.find(r => r.recordID === v)))
-          .filter(e => e)
+        return this.value.map(v => this.convert({ recordID: v })).filter(({ value, label }) => value && label)
       },
 
       set (value) {
         if (value.length !== this.value.length) {
           this.value = value.map(({ value }) => {
-            if (!this.value.includes(value)) {
-              this.fetchRecord(value)
-            }
-            return value
+            return this.value.includes(value) ? value : this.formatRecordValues(value)
           })
         }
       },
@@ -277,22 +284,20 @@ export default {
     this.loadLatest()
     const value = this.field.isMulti ? this.value : [this.value]
     if (value) {
-      const { moduleID } = this.field.options
-      if (moduleID) {
-        for (const v of value) {
-          if (v) {
-            this.fetchRecord(v)
-          }
-        }
-      }
+      this.formatRecordValues(value)
     }
   },
 
   methods: {
+    ...mapActions({
+      findModuleByID: 'module/findByID',
+      resolveUsers: 'user/fetchUsers',
+    }),
+
     getRecord (index = undefined) {
       const value = index !== undefined ? this.value[index] : this.value
       if (value) {
-        return this.convert(this.fetchedRecords.find(r => r.recordID === value))
+        return this.convert({ recordID: value })
       }
     },
 
@@ -302,7 +307,8 @@ export default {
       if (value !== crtValue) {
         if (value) {
           // Set selected to value
-          this.fetchRecord(value)
+          this.formatRecordValues(value)
+
           if (index !== undefined) {
             this.value[index] = value
           } else {
@@ -319,25 +325,15 @@ export default {
     },
 
     convert (r) {
-      if (!r || !r.values) {
+      if (!r || !this.field.options.labelField) {
         return {}
       }
 
-      const value = r.recordID
-      let label = value
-      const selectable = this.field.isMulti ? !(this.value || []).includes(value) : this.value !== value
-      if (this.field.options.labelField) {
-        label = r.values[this.field.options.labelField]
-        if (label && label.length > 0) {
-          if (Array.isArray(label)) {
-            label = label.join(', ')
-          }
-
-          return { value, label, selectable }
-        }
+      return {
+        value: r.recordID,
+        label: this.recordValues[r.recordID] || r.recordID,
+        selectable: this.field.isMulti ? !(this.value || []).includes(r.recordID) : this.value !== r.recordID,
       }
-
-      return {}
     },
 
     search: debounce(function (query = '') {
@@ -401,35 +397,15 @@ export default {
         q.sort = ''
       }
 
-      this.$ComposeAPI.recordList({ ...q, query: this.field.options.recordLabelField ? '' : query })
-        .then(async ({ filter, set }) => {
+      this.$ComposeAPI.recordList({ ...q, query })
+        .then(({ filter, set }) => {
           this.filter = { ...this.filter, ...filter }
           this.filter.nextPage = filter.nextPage
           this.filter.prevPage = filter.prevPage
-          let tempRecords = set.map(r => new compose.Record(this.module, r))
 
-          if (this.field.options.recordLabelField) {
-            const namespaceID = this.namespace.namespaceID
-            const { moduleID } = (this.module.fields.find(({ name }) => name === this.field.options.labelField) || {}).options
-            query = (query ? `${query} AND (` : '') + tempRecords.map(({ values = {} }) => `recordID = ${values[this.field.options.labelField]}`).join(' OR ') + (query ? ')' : '')
-
-            // Fetch required records
-            await this.$ComposeAPI.recordList({ namespaceID, moduleID, query })
-              .then(({ set }) => {
-                const mappedIDs = {}
-                set.forEach(({ recordID, values = [] }) => {
-                  mappedIDs[recordID] = (values.find(({ name }) => name === this.field.options.recordLabelField) || {}).value
-                })
-
-                tempRecords = tempRecords.filter(({ values = [] }) => !!mappedIDs[values[this.field.options.labelField]])
-                  .map(r => {
-                    r.values[this.field.options.labelField] = mappedIDs[r.values[this.field.options.labelField]]
-                    return r
-                  })
-              })
-          }
-
-          this.records = tempRecords
+          return this.formatRecordValues(set.map(({ recordID }) => recordID)).then(() => {
+            this.records = set.map(r => new compose.Record(this.module, r))
+          })
         })
         .finally(() => {
           this.processing = false
@@ -440,36 +416,71 @@ export default {
       return [this.field.options.labelField].filter(f => !!f).join(', ')
     },
 
-    fetchRecord (recordID) {
+    async formatRecordValues (value) {
+      value = Array.isArray(value) ? value : [value].filter(v => v) || []
       const { namespaceID = NoID } = this.namespace
-      const { moduleID = NoID } = this.field.options
+      const { moduleID = NoID, labelField, recordLabelField } = this.field.options
 
-      if (moduleID !== NoID && namespaceID !== NoID) {
-        if (!this.fetchedRecords.find(r => r.recordID === recordID)) {
-          this.$ComposeAPI.recordRead({ namespaceID, moduleID, recordID }).then(async record => {
-            record = new compose.Record(this.module, record)
+      if (!value.length || [moduleID, namespaceID].includes(NoID) || !labelField) {
+        return
+      }
 
-            if (this.field.options.recordLabelField) {
-              // Get actual field
-              const relatedField = this.module.fields.find(({ name }) => name === this.field.options.labelField)
+      this.processing = true
 
-              await this.$ComposeAPI.recordRead({ namespaceID, moduleID: relatedField.options.moduleID, recordID: record.values[this.field.options.labelField] }).then(labelRecord => {
-                record.values[this.field.options.labelField] = (labelRecord.values.find(({ name }) => name === this.field.options.recordLabelField) || {}).value
+      // Get configured module/field
+      return this.findModuleByID({ namespace: this.namespace, moduleID }).then(module => {
+        let relatedField = module.fields.find(({ name }) => name === labelField)
+        const query = value.map(recordID => `recordID = ${recordID}`).join(' OR ')
+
+        return this.$ComposeAPI.recordList({ namespaceID, moduleID, query, deleted: 1 }).then(async ({ set = [] }) => {
+          if (recordLabelField) {
+            set = await this.findModuleByID({ namespaceID, moduleID: relatedField.options.moduleID }).then(relatedModule => {
+              const mappedIDs = {}
+              const queryIDs = []
+
+              set.forEach(r => {
+                r = new compose.Record(module, r)
+                mappedIDs[r.values[labelField]] = r.recordID
+                queryIDs.push(`recordID = ${r.values[labelField]}`)
               })
+
+              return this.$ComposeAPI.recordList({ namespaceID, moduleID: relatedField.options.moduleID, query: queryIDs.join(' OR '), deleted: 1 }).then(({ set = [] }) => {
+                relatedField = relatedModule.fields.find(({ name }) => name === this.field.options.recordLabelField)
+                return set.map(r => {
+                  r.recordID = mappedIDs[r.recordID]
+                  return new compose.Record(relatedModule, r)
+                })
+              })
+            })
+          } else {
+            set = set.map(r => new compose.Record(module, r))
+          }
+
+          set.forEach(async record => {
+            let recordValue = relatedField.isMulti ? record.values[relatedField.name] : [record.values[relatedField.name]]
+
+            if (recordValue.length && relatedField.kind === 'User') {
+              recordValue = await Promise.all(recordValue.map(async v => {
+                if (!this.findUserByID(v)) {
+                  await this.resolveUsers(v)
+                }
+
+                return relatedField.formatter(this.findUserByID(v))
+              }))
             }
 
-            this.fetchedRecords.push(record)
-          }).catch(e => {
-            this.fetchedRecords.push(new compose.Record(this.module, { recordID }))
+            this.$set(this.recordValues, record.recordID, recordValue.join(relatedField.options.multiDelimiter))
           })
-        }
-      }
+        })
+      }).finally(() => {
+        this.processing = false
+      })
     },
 
     selectChange (event) {
       const { value } = event || {}
       if (value) {
-        this.fetchRecord(value)
+        this.formatRecordValues(value)
         this.value.push(value)
         // Cant mutate props so we use magic(refs)
         this.$refs.singleSelect.mutableValue = null
@@ -477,7 +488,7 @@ export default {
     },
 
     onOpen () {
-      this.loadLatest()
+      // this.loadLatest()
     },
 
     goToPage (next = true) {

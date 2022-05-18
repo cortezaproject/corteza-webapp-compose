@@ -33,22 +33,9 @@
           :disabled="!selectedModule || !labelFieldModule"
         />
       </b-form-group>
-
-      <b-form-group
-        :label="$t('kind.record.queryFieldsLabel')"
-      >
-        <b-form-select
-          v-model="f.options.queryFields"
-          class="form-control"
-          :options="labelFieldQueryOptions"
-          multiple
-          :disabled="!selectedModule || !labelFieldModule"
-        />
-      </b-form-group>
     </div>
 
     <b-form-group
-      v-else
       :label="$t('kind.record.queryFieldsLabel')"
     >
       <b-form-select
