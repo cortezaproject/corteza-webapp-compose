@@ -474,7 +474,7 @@
 
             <h6
               v-else-if="!items.length"
-              class="mb-0"
+              class="mb-0 mx-2"
             >
               {{ $t('recordList.noRecords') }}
             </h6>
@@ -822,6 +822,17 @@ export default {
         this.refresh(true)
       },
     },
+
+    'record.recordID': {
+      immediate: true,
+      handler (recordID = NoID) {
+        if (this.page.moduleID === NoID || recordID !== NoID) {
+          this.getStorageRecordListFilter()
+          this.prepRecordList()
+          this.refresh(true)
+        }
+      },
+    },
   },
 
   created () {
@@ -829,11 +840,6 @@ export default {
     this.uniqueID = `${this.page.pageID}-${(this.record || {}).recordID || '0'}-${this.blockIndex}`
     this.$root.$on(`record-line:collect:${this.uniqueID}`, this.resolveRecords)
     this.$root.$on(`page-block:validate:${this.uniqueID}`, this.validatePageBlock)
-
-    this.getStorageRecordListFilter()
-
-    this.prepRecordList()
-    this.refresh(true)
   },
 
   beforeDestroy () {

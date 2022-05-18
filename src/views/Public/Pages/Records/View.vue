@@ -7,8 +7,8 @@
     >
       {{ $t('record.recordDeleted') }}
     </b-alert>
+
     <grid
-      v-if="record"
       v-bind="$props"
       :errors="errors"
       :record="record"
@@ -106,7 +106,8 @@ export default {
     recordToolbarLabels () {
       // Use an intermediate object so we can reflect all changes in one go;
       const aux = {}
-      Object.entries((this.page.config || {}).buttons).forEach(([key, { label = '' }]) => {
+      const { buttons = {} } = this.page.config || {}
+      Object.entries(buttons).forEach(([key, { label = '' }]) => {
         aux[key] = label
       })
       return aux

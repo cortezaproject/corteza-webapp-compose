@@ -4,7 +4,7 @@
     v-on="$listeners"
   >
     <div
-      v-if="record"
+      v-if="module && record"
       class="px-3"
     >
       <div
@@ -43,6 +43,7 @@
             class="value"
           >
             <field-viewer
+              v-if="record && record.recordID !== NoID"
               :field="field"
               v-bind="{ ...$props, errors: fieldErrors(field.name) }"
               value-only
@@ -59,12 +60,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div
-      v-else
-      class="d-flex align-items-center justify-content-center p-3 text-dark h-100 h5"
-    >
-      {{ $t('record.preview.blockNoRecord') }}
     </div>
   </wrap>
 </template>
@@ -126,10 +121,15 @@ export default {
     },
   },
 
-  created () {
-    if (this.record.recordID) {
-      this.fetchUsers(this.fields, [this.record])
-    }
+  watch: {
+    'record.recordID': {
+      immediate: true,
+      handler (recordID) {
+        if (recordID && recordID !== NoID) {
+          this.fetchUsers(this.fields, [this.record])
+        }
+      },
+    },
   },
 
   methods: {

@@ -4,7 +4,7 @@
     v-on="$listeners"
   >
     <div
-      v-if="module && record"
+      v-if="module"
       class="mt-3"
     >
       <div
@@ -34,6 +34,7 @@
           class="value mt-2"
         >
           <field-viewer
+            v-if="showValues"
             v-bind="{ ...$props, field }"
           />
         </div>
@@ -45,15 +46,10 @@
         </i>
       </div>
     </div>
-    <div
-      v-else
-      class="d-flex align-items-center justify-content-center p-3 text-dark h-100 h5"
-    >
-      {{ $t('record.preview.blockNoRecord') }}
-    </div>
   </wrap>
 </template>
 <script>
+import { NoID } from '@cortezaproject/corteza-js'
 import base from './base'
 import FieldViewer from 'corteza-webapp-compose/src/components/ModuleFields/Viewer'
 import Hint from 'corteza-webapp-compose/src/components/Common/Hint.vue'
@@ -93,15 +89,18 @@ export default {
         return f
       })
     },
+
+    showValues () {
+      return this.record && this.record.recordID !== NoID
+    },
   },
 
   watch: {
-    record: {
-      deep: true,
+    'record.recordID': {
       immediate: true,
-      handler (record) {
-        if (record) {
-          this.fetchUsers(this.fields, [record])
+      handler (recordID) {
+        if (recordID && recordID !== NoID) {
+          this.fetchUsers(this.fields, [this.record])
         }
       },
     },

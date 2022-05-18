@@ -244,9 +244,7 @@ export default {
 
       set (value) {
         if (value.length !== this.value.length) {
-          this.value = value.map(({ value }) => {
-            return this.value.includes(value) ? value : this.formatRecordValues(value)
-          })
+          this.value = value.map(({ value }) => value)
         }
       },
     },
@@ -286,9 +284,8 @@ export default {
 
   created () {
     this.loadLatest()
-    const value = this.field.isMulti ? this.value : [this.value]
-    if (value) {
-      this.formatRecordValues(value)
+    if (this.value) {
+      this.formatRecordValues(this.value)
     }
   },
 
@@ -335,7 +332,7 @@ export default {
 
       return {
         value: r.recordID,
-        label: this.recordValues[r.recordID] || r.recordID,
+        label: this.processing ? '' : this.recordValues[r.recordID] || r.recordID,
         selectable: this.field.isMulti ? !(this.value || []).includes(r.recordID) : this.value !== r.recordID,
       }
     },

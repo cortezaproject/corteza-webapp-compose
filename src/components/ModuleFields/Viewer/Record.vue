@@ -9,6 +9,7 @@
     <span
       v-for="(v, index) of formatedValue"
       :key="index"
+      class="text-nowrap"
       @click.stop
     >
       <router-link
@@ -47,10 +48,10 @@ export default {
 
     formatedValue () {
       const value = Array.isArray(this.value) ? this.value : [this.value].filter(v => v) || []
-      return value.map(v => {
+      return value.map(recordID => {
         return {
-          to: this.linkToRecord(v),
-          value: this.recordValues[v] || v,
+          to: this.linkToRecord(recordID),
+          value: this.processing ? '' : this.recordValues[recordID] || recordID,
         }
       })
     },
