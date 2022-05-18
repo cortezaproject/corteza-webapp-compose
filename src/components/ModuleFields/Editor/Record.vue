@@ -51,7 +51,7 @@
           :searchable="searchable"
           :selectable="option => option.selectable"
           class="bg-white w-100"
-          :placeholder="$t('kind.record.suggestionPlaceholder')"
+          :placeholder="placeholder"
           multiple
           @search="search"
         >
@@ -79,7 +79,7 @@
           :searchable="searchable"
           :selectable="option => option.selectable"
           class="bg-white w-100"
-          :placeholder="$t('kind.record.suggestionPlaceholder')"
+          :placeholder="placeholder"
           @input="selectChange($event)"
           @search="search"
         >
@@ -108,7 +108,7 @@
           :searchable="searchable"
           :selectable="option => option.selectable"
           class="bg-white w-100"
-          :placeholder="$t('kind.record.suggestionPlaceholder')"
+          :placeholder="placeholder"
           :value="getRecord(ctx.index)"
           @input="setRecord($event, ctx.index)"
           @search="search"
@@ -144,7 +144,7 @@
         option-text="label"
         :append-to-body="appendToBody"
         :calculate-position="calculatePosition"
-        :placeholder="$t('kind.record.suggestionPlaceholder')"
+        :placeholder="placeholder"
         :filterable="false"
         :searchable="searchable"
         :selectable="option => option.selectable"
@@ -231,6 +231,10 @@ export default {
 
     searchable () {
       return !this.field.options.recordLabelField
+    },
+
+    placeholder () {
+      return this.searchable ? this.$t('kind.record.suggestionPlaceholder') : this.$t('kind.select.placeholder')
     },
 
     multipleSelected: {
