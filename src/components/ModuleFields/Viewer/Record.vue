@@ -51,7 +51,7 @@ export default {
       return value.map(recordID => {
         return {
           to: this.linkToRecord(recordID),
-          value: this.processing ? '' : this.recordValues[recordID] || recordID,
+          value: this.recordValues[recordID] || recordID,
         }
       })
     },
@@ -147,7 +147,9 @@ export default {
           })
         })
       }).finally(() => {
-        this.processing = false
+        setTimeout(() => {
+          this.processing = false
+        }, 300)
       })
     },
   },
