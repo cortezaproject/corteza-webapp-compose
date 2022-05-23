@@ -7,7 +7,7 @@
         label="name"
         class="namespace-selector sticky-top bg-white mt-2"
         :clearable="false"
-        :options="truncatedNamespaces"
+        :options="namespaces"
         :value="namespace"
         :placeholder="$t('pickNamespace')"
         @option:selected="namespaceSelected"
@@ -235,11 +235,6 @@ export default {
       return []
     },
 
-    // @todo find a css approach for this
-    truncatedNamespaces () {
-      return this.namespaces.map(ns => ns.name.length > 21 ? { ...ns, name: ns.name.substring(0, 21) + '...' } : ns)
-    },
-
     navItems () {
       const current = this.filteredPages
       const ax = this.pageIndex(this.isAdminPage ? this.adminRoutes() : this.pages.map(publicPageWrap))
@@ -382,6 +377,11 @@ export default {
 
   .vs__dropdown-menu {
     min-width: 100%;
+  }
+
+  .vs__dropdown-option {
+    text-overflow: ellipsis;
+    overflow-x: hidden;
   }
 
   .vs__selected-options {
