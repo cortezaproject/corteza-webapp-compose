@@ -234,6 +234,7 @@
                     class="d-flex"
                   >
                     <record-list-filter
+                      v-if="field.filterable"
                       class="d-print-none"
                       :target="block.blockID"
                       :selected-field="field.moduleField"
@@ -789,6 +790,7 @@ export default {
         label: mf.isSystem ? this.$t(`field:system.${mf.name}`) : mf.label || mf.name,
         moduleField: mf,
         sortable: !this.options.hideSorting && !(this.options.editable && this.editing) && !mf.isMulti && mf.isSortable,
+        filterable: mf.isFilterable,
         tdClass: 'record-value',
         editable: !!editable.find(f => mf.name === f),
         required: this.inlineEditing && mf.isRequired,
