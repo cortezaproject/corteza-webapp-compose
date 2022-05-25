@@ -1,6 +1,13 @@
 <template>
   <div class="position-relative h-100 w-100">
+    <div
+      v-if="processing"
+      class="d-flex align-items-center justify-content-center h-100"
+    >
+      <b-spinner />
+    </div>
     <canvas
+      v-show="!processing"
       ref="chartCanvas"
       class="p-2 mh-100 w-auto m-auto"
     />
@@ -34,6 +41,8 @@ export default {
 
   data () {
     return {
+      processing: false,
+
       renderer: null,
     }
   },
@@ -72,12 +81,15 @@ export default {
 
   methods: {
     async updateChart () {
+      this.processing = true
+
       const chart = chartConstructor(this.chart)
 
       try {
         chart.isValid()
 
         const data = await chart.fetchReports({ reporter: this.reporter })
+
         if (!!data.labels && Array.isArray(data.labels)) {
           // Get dimension field kind
           const [report = {}] = this.chart.config.reports
@@ -157,8 +169,10 @@ export default {
           data.labels = []
         }
       } catch (e) {
+        this.processing = false
         this.toastErrorHandler(this.$t('chart.optionsBuildFailed'))(e)
       }
+      this.processing = false
       this.$emit('updated')
     },
 

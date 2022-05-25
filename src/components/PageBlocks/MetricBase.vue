@@ -4,24 +4,32 @@
     v-on="$listeners"
   >
     <div
-      v-for="(m, mi) in options.metrics"
-      :key="mi"
-      class="h-100 align-items-center justify-content-center overflow-hidden"
+      v-if="processing"
+      class="d-flex align-items-center justify-content-center h-100"
     >
-      <div
-        v-for="(v, i) in formatResponse(m, mi)"
-        :key="i"
-        class="w-100 h-100 px-2 py-1"
-      >
-        <!-- <h3 :style="genStyle(m.labelStyle)">
-          {{ v.label }}
-        </h3> -->
-        <metric-item
-          :metric="m"
-          :value="v"
-        />
-      </div>
+      <b-spinner />
     </div>
+    <template v-else>
+      <div
+        v-for="(m, mi) in options.metrics"
+        :key="mi"
+        class="h-100 align-items-center justify-content-center overflow-hidden"
+      >
+        <div
+          v-for="(v, i) in formatResponse(m, mi)"
+          :key="i"
+          class="w-100 h-100 px-2 py-1"
+        >
+          <!-- <h3 :style="genStyle(m.labelStyle)">
+            {{ v.label }}
+          </h3> -->
+          <metric-item
+            :metric="m"
+            :value="v"
+          />
+        </div>
+      </div>
+    </template>
   </wrap>
 </template>
 
@@ -51,6 +59,8 @@ export default {
 
   data () {
     return {
+      processing: false,
+
       reports: [],
     }
   },
@@ -97,29 +107,36 @@ export default {
      * Pulls fresh data from the API
      */
     async update () {
-      const rtr = []
-      const namespaceID = this.namespace.namespaceID
-      const reporter = r => this.$ComposeAPI.recordReport({ ...r, namespaceID })
+      this.processing = true
 
-      for (const m of this.options.metrics) {
-        if (m.moduleID) {
-          // prepare a fresh metric with an evaluated prefilter
-          const auxM = { ...m }
-          if (auxM.filter) {
-            auxM.filter = evaluatePrefilter(auxM.filter, {
-              record: this.record,
-              recordID: (this.record || {}).recordID || NoID,
-              ownerID: (this.record || {}).userID || NoID,
-              userID: (this.$auth.user || {}).userID || NoID,
-            })
+      try {
+        const rtr = []
+        const namespaceID = this.namespace.namespaceID
+        const reporter = r => this.$ComposeAPI.recordReport({ ...r, namespaceID })
+
+        for (const m of this.options.metrics) {
+          if (m.moduleID) {
+            // prepare a fresh metric with an evaluated prefilter
+            const auxM = { ...m }
+            if (auxM.filter) {
+              auxM.filter = evaluatePrefilter(auxM.filter, {
+                record: this.record,
+                recordID: (this.record || {}).recordID || NoID,
+                ownerID: (this.record || {}).userID || NoID,
+                userID: (this.$auth.user || {}).userID || NoID,
+              })
+            }
+
+            const vals = await this.block.fetch({ m: auxM }, reporter)
+            rtr.push(vals)
           }
-
-          const vals = await this.block.fetch({ m: auxM }, reporter)
-          rtr.push(vals)
         }
-      }
 
-      this.reports = rtr
+        this.reports = rtr
+        this.processing = false
+      } catch {
+        this.processing = false
+      }
     },
   },
 }

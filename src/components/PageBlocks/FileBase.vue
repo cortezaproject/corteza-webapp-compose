@@ -4,9 +4,10 @@
     v-on="$listeners"
   >
     <div
-      class="p-2"
+      class="p-2 h-100"
     >
       <list-loader
+        class="h-100"
         kind="page"
         :set="options.attachments"
         :namespace="namespace"
