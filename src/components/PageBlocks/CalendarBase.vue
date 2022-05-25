@@ -75,7 +75,14 @@
           </b-col>
         </b-row>
       </div>
+      <div
+        v-if="processing"
+        class="d-flex align-items-center justify-content-center h-100"
+      >
+        <b-spinner />
+      </div>
       <full-calendar
+        v-else
         ref="fc"
         :events="events"
         v-bind="config"
@@ -132,6 +139,8 @@ export default {
 
   data () {
     return {
+      processing: false,
+
       events: [],
       locale: undefined,
       title: '',
@@ -257,11 +266,13 @@ export default {
 
       this.events = []
 
-      this.options.feeds.forEach(feed => {
+      this.processing = true
+
+      Promise.all(this.options.feeds.map(feed => {
         switch (feed.resource) {
           case compose.PageBlockCalendar.feedResources.record:
-            this.findModuleByID({ namespace: this.namespace, moduleID: feed.options.moduleID })
-              .then((module) => {
+            return this.findModuleByID({ namespace: this.namespace, moduleID: feed.options.moduleID })
+              .then(module => {
                 const ff = {
                   ...feed,
                   options: { ...feed.options },
@@ -277,20 +288,21 @@ export default {
                   })
                 }
 
-                compose.PageBlockCalendar.RecordFeed(this.$ComposeAPI, module, this.namespace, ff, this.loaded)
+                return compose.PageBlockCalendar.RecordFeed(this.$ComposeAPI, module, this.namespace, ff, this.loaded)
                   .then(events => {
                     this.events.push(...events)
                   })
               })
-            break
           case compose.PageBlockCalendar.feedResources.reminder:
-            compose.PageBlockCalendar.ReminderFeed(this.$SystemAPI, this.$auth.user, feed, this.loaded)
+            return compose.PageBlockCalendar.ReminderFeed(this.$SystemAPI, this.$auth.user, feed, this.loaded)
               .then(events => {
                 this.events.push(...events)
               })
-            break
         }
-      })
+      }))
+        .finally(() => {
+          this.processing = false
+        })
     },
 
     /**

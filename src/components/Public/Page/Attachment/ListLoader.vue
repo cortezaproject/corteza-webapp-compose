@@ -1,7 +1,13 @@
 <template>
   <div>
     <div
-      v-if="mode === 'list'"
+      v-if="processing"
+      class="d-flex align-items-center justify-content-center h-100"
+    >
+      <b-spinner />
+    </div>
+    <div
+      v-else-if="mode === 'list'"
       class="list"
     >
       <draggable
@@ -187,6 +193,8 @@ export default {
 
   data () {
     return {
+      processing: false,
+
       attachments: [],
     }
   },
@@ -230,7 +238,7 @@ export default {
   watch: {
     set: {
       immediate: true,
-      async handler (set) {
+      handler (set) {
         // Handle attachments provided as objects
         const att = set.map(a => {
           if (typeof a === 'object') {
@@ -242,18 +250,25 @@ export default {
 
         // Handle attachmentsprovided as attachmentID
         const namespaceID = this.namespace.namespaceID
-        for (const [index, attachmentID] of Object.entries(set)) {
+
+        this.processing = true
+
+        Promise.all(Object.entries(set).map(([index, attachmentID]) => {
           if (typeof attachmentID === 'string') {
-            await this.$ComposeAPI.attachmentRead({ kind: this.kind, attachmentID, namespaceID }).then(a => {
+            return this.$ComposeAPI.attachmentRead({ kind: this.kind, attachmentID, namespaceID }).then(a => {
               att.splice(index, 1, new shared.Attachment(a, this.baseURL))
             })
           }
-        }
-
-        // Filter out invalid/missing attachments
-        this.attachments = att
-          .filter(a => !!a)
-          .filter(a => typeof a === 'object')
+        }))
+          .then(() => {
+          // Filter out invalid/missing attachments
+            this.attachments = att
+              .filter(a => !!a)
+              .filter(a => typeof a === 'object')
+          })
+          .finally(() => {
+            this.processing = false
+          })
       },
     },
   },

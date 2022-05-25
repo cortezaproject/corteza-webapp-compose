@@ -5,15 +5,20 @@
   >
     <div
       v-if="profile"
-      class="px-3"
+      class="px-3 h-100"
     >
       <timeline
         v-if="isTwitter"
         :id="profile.twitterHandle"
+        class="h-100"
         :options="{ tweetLimit: 9 }"
         source-type="profile"
       >
-        <div class="spinner" />
+        <div
+          class="d-flex align-items-center justify-content-center h-100"
+        >
+          <b-spinner />
+        </div>
       </timeline>
     </div>
     <div

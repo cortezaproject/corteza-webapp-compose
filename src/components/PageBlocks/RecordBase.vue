@@ -4,7 +4,13 @@
     v-on="$listeners"
   >
     <div
-      v-if="module"
+      v-if="processing"
+      class="d-flex align-items-center justify-content-center h-100"
+    >
+      <b-spinner />
+    </div>
+    <div
+      v-else-if="module"
       class="mt-3"
     >
       <div
@@ -34,7 +40,6 @@
           class="value mt-2"
         >
           <field-viewer
-            v-if="showValues"
             v-bind="{ ...$props, field }"
           />
         </div>
@@ -90,8 +95,8 @@ export default {
       })
     },
 
-    showValues () {
-      return this.record && this.record.recordID !== NoID
+    processing () {
+      return !(this.record && this.record.recordID !== NoID)
     },
   },
 

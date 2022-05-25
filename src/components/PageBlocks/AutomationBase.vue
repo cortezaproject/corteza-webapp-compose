@@ -4,8 +4,8 @@
     v-on="$listeners"
   >
     <div
-      v-if="loading"
-      class="h-100 d-flex align-items-center justify-content-center"
+      v-if="processing"
+      class="d-flex align-items-center justify-content-center h-100"
     >
       <b-spinner />
     </div>
@@ -37,8 +37,9 @@ export default {
 
   data () {
     return {
+      processing: false,
+
       automationScripts: [],
-      loading: true,
     }
   },
 
@@ -48,16 +49,19 @@ export default {
     },
   },
 
-  async created () {
+  created () {
     if (this.$UIHooks.set && !!this.$UIHooks.set.length) {
-      this.loading = false
       return
     }
 
-    const { set } = await this.$ComposeAPI.automationList({ eventTypes: ['onManual'], excludeInvalid: true })
-    this.automationScripts = set
-    this.loading = false
+    this.processing = true
+    return this.$ComposeAPI.automationList({ eventTypes: ['onManual'], excludeInvalid: true })
+      .then(({ set = [] }) => {
+        this.automationScripts = set
+      })
+      .finally(() => {
+        this.processing = false
+      })
   },
-
 }
 </script>
