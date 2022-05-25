@@ -323,6 +323,10 @@ export default {
 .calendar-container {
   height: calc(100% - 7em);
 
+  .fc-content {
+    cursor: pointer;
+  }
+
   .fc-day-header {
     white-space: pre-wrap;
   }
