@@ -57,6 +57,9 @@
                     class="mr-1"
                     @click="privacySettings.modal = true"
                   >
+                    <font-awesome-icon
+                      :icon="['fas', 'key']"
+                    />
                     {{ $t('privacy.title') }}
                   </b-button>
                   <b-button
@@ -259,6 +262,8 @@
                         <th class="text-primary">
                           {{ $t('general:label.type') }}
                         </th>
+                        <th />
+                        <th />
                         <th class="text-primary text-center">
                           {{ $t('general:label.required') }}
                         </th>
@@ -350,14 +355,16 @@
       <discovery-settings
         v-if="discoveryEnabled"
         :modal.sync="discoverySettings.modal"
-        :module.sync="module"
+        :module="module"
         @save="onDiscoverySettingsSave"
       />
-    </b-container>
 
-    <privacy-settings
-      :modal.sync="privacySettings.modal"
-    />
+      <privacy-settings
+        :modal.sync="privacySettings.modal"
+        :module="module"
+        @save="onPrivacySettingsSave"
+      />
+    </b-container>
 
     <portal to="admin-toolbar">
       <editor-toolbar
@@ -598,6 +605,10 @@ export default {
 
     onDiscoverySettingsSave (meta) {
       this.module.meta = { ...this.module.meta, ...meta }
+    },
+
+    onPrivacySettingsSave (modelConfig) {
+      this.module.modelConfig = { ...this.module.modelConfig, ...modelConfig }
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {
