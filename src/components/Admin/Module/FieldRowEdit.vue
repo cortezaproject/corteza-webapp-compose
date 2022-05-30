@@ -67,6 +67,8 @@
         </b-input-group-append>
       </b-input-group>
     </td>
+    <td />
+    <td />
     <td
       class="align-middle text-center"
     >
@@ -89,7 +91,7 @@
       class="align-middle text-center"
     >
       <b-form-checkbox
-        v-model="value.isSensitive"
+        v-model="value.isPrivate"
         :disabled="!value.cap.sensitive"
         switch
       />

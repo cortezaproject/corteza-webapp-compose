@@ -6,37 +6,37 @@
     ok-only
     ok-variant="primary"
     size="lg"
+    @show="fetchConnections()"
     @ok="onSave()"
   >
     <b-form-group
       :label="$t('privacy.data-source')"
       label-class="text-primary"
-      :class="{ 'mb-0': !datasource }"
+      :class="{ 'mb-0': !connection }"
     >
       <vue-select
-        v-model="datasource"
-        :options="datasources"
-        option-text="label"
-        option-value="datasourceID"
+        v-model="connection"
+        :options="connections"
+        :clearable="false"
+        label="name"
         :placeholder="$t('privacy.select-data-source')"
         class="h-100 bg-white"
       />
     </b-form-group>
 
     <div
-      v-if="datasource"
+      v-if="connection"
     >
       <b-row>
         <b-col
           cols="12"
-          sm="6"
-          lg="4"
+          sm="8"
         >
           <b-form-group
             :label="$t('privacy.location')"
             label-class="text-primary"
           >
-            {{ datasource.location }}
+            {{ connectionLocationName }}
           </b-form-group>
         </b-col>
         <b-col
@@ -47,7 +47,7 @@
             :label="$t('privacy.ownership')"
             label-class="text-primary"
           >
-            {{ datasource.ownership }}
+            {{ connection.ownership }}
           </b-form-group>
         </b-col>
       </b-row>
@@ -58,8 +58,8 @@
         class="mt-4 pt-2"
       >
         <b-col
-          v-for="cap in capabilities"
-          :key="cap.name"
+          v-for="cap in capabilityTypes"
+          :key="cap"
           cols="12"
           sm="6"
           lg="4"
@@ -71,7 +71,7 @@
               <div
                 class="d-flex align-items-center text-capitalize text-primary mr-5"
               >
-                {{ cap.name }}
+                {{ cap.split('corteza::dal:capability:')[1] }}
                 <font-awesome-icon
                   :icon="['far', 'question-circle']"
                   class="text-dark ml-2"
@@ -80,12 +80,11 @@
             </template>
 
             <b-form-checkbox
-              v-model="cap.enabled"
-              :disabled="cap.supportType !== 'supported'"
-              switch
+              v-model="capabilities[cap].enabled"
+              :disabled="capabilities[cap].support != 'supported'"
               class="text-capitalize"
             >
-              {{ cap.supportType === 'supported' ? 'Enabled' : cap.supportType }}
+              {{ capabilities[cap].support === 'supported' ? 'Enabled' : capabilities[cap].support }}
             </b-form-checkbox>
           </b-form-group>
         </b-col>
@@ -96,6 +95,7 @@
 
 <script>
 import VueSelect from 'vue-select'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 
 export default {
   i18nOptions: {
@@ -111,41 +111,30 @@ export default {
       type: Boolean,
       required: false,
     },
+
+    module: {
+      type: compose.Module,
+      required: true,
+    },
   },
 
   data () {
     return {
-      datasource: undefined,
+      connection: undefined,
 
-      datasources: [
-        {
-          datasourceID: '1',
-          label: 'Primary Data Source',
-          location: 'Ireland',
-          ownership: 'ACME Ltd.',
-        },
-        {
-          datasourceID: '2',
-          label: 'Primary Data Lake',
-          location: 'Switzerland',
-          ownership: 'ACME Ltd.',
-        },
-      ],
+      connections: [],
 
-      capabilities: [
-        { name: 'immutable', supportType: 'enforced', enabled: true },
-        { name: 'encrypted', supportType: 'supported', enabled: false },
-        { name: 'accessControl', supportType: 'enforced', enabled: true },
-        { name: 'softDelete', supportType: 'enforced', enabled: true },
-        { name: 'revisioned', supportType: 'enforced', enabled: true },
-        { name: 'automation', supportType: 'not supported', enabled: false },
-        { name: 'pagination', supportType: 'supported', enabled: false },
-        { name: 'filtering', supportType: 'enforced', enabled: true },
-        { name: 'search', supportType: 'enforced', enabled: true },
-        { name: 'ownership', supportType: 'not supported', enabled: false },
-        { name: 'timestamps', supportType: 'enforced', enabled: true },
-        { name: 'auditLog', supportType: 'enforced', enabled: true },
-      ],
+      capabilities: {
+        'corteza::dal:capability:create': { support: 'unsupported', enabled: false },
+        'corteza::dal:capability:update': { support: 'unsupported', enabled: false },
+        'corteza::dal:capability:delete': { support: 'unsupported', enabled: false },
+        'corteza::dal:capability:search': { support: 'unsupported', enabled: false },
+        'corteza::dal:capability:lookup': { support: 'unsupported', enabled: false },
+        'corteza::dal:capability:paging': { support: 'unsupported', enabled: false },
+        'corteza::dal:capability:stats': { support: 'unsupported', enabled: false },
+        'corteza::dal:capability:sorting': { support: 'unsupported', enabled: false },
+        'corteza::dal:capability:RBAC': { support: 'unsupported', enabled: false },
+      },
     }
   },
 
@@ -159,10 +148,72 @@ export default {
         this.$emit('update:modal', showModal)
       },
     },
+
+    connectionLocationName () {
+      const { name } = this.connection.location.properties
+      return name || ''
+    },
+
+    capabilityTypes () {
+      return Object.keys(this.capabilities)
+    },
+  },
+
+  watch: {
+    'connection.connectionID': {
+      immediate: true,
+      handler () {
+        const { capabilities = {} } = this.connection || {}
+        const enabled = capabilities.enabled || []
+        const types = ['enforced', 'supported', 'unsupported']
+
+        types.forEach(support => {
+          (capabilities[support] || []).forEach(c => {
+            this.capabilities[c] = { support, enabled: enabled.includes(c) }
+          })
+        })
+      },
+    },
   },
 
   methods: {
+    fetchConnections () {
+      this.processing = true
+      this.connection = undefined
+      const { connectionID = NoID, capabilities = [] } = this.module.modelConfig || ''
+
+      this.$SystemAPI.dalConnectionList()
+        .then(({ set = [] }) => {
+          this.connections = set.map(c => {
+            if (c.connectionID === connectionID) {
+              c.capabilities.enabled = capabilities
+            }
+
+            return c
+          })
+
+          this.connection = set.find(({ connectionID }) => connectionID === this.module.modelConfig.connectionID) || set[0]
+        })
+        .catch(this.toastErrorHandler(this.$t('Failed to load connections')))
+        .finally(() => {
+          this.processing = false
+        })
+    },
+
     onSave () {
+      const capabilities = []
+      this.capabilityTypes.forEach(cap => {
+        const { enabled } = this.capabilities[cap]
+        if (enabled) {
+          capabilities.push(cap)
+        }
+      })
+
+      this.module.modelConfig.connectionID = this.connection.connectionID
+      this.module.modelConfig.capabilities = capabilities
+      this.module.modelConfig.partitioned = false
+
+      this.$emit('save', this.module.modelConfig)
     },
   },
 }
