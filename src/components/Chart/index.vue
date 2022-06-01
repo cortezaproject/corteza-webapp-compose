@@ -1,16 +1,20 @@
 <template>
-  <div class="position-relative h-100 w-100">
+  <div class="h-100">
     <div
       v-if="processing"
       class="d-flex align-items-center justify-content-center h-100"
     >
       <b-spinner />
     </div>
-    <canvas
-      v-show="!processing"
-      ref="chartCanvas"
-      class="p-2 mh-100 w-auto m-auto"
-    />
+
+    <div
+      class="position-relative h-100 p-2 overflow-hidden"
+      :class="{ 'd-none': processing }"
+    >
+      <canvas
+        ref="chartCanvas"
+      />
+    </div>
   </div>
 </template>
 
