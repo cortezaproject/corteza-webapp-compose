@@ -11,61 +11,63 @@
       />
     </b-form-group>
 
-    <b-form-group
-      :label="$t('kind.record.moduleField')"
-    >
-      <b-form-select
-        v-model="f.options.labelField"
-        :options="fieldOptions"
-        :disabled="!selectedModule"
-      />
-    </b-form-group>
-
-    <div
-      v-if="labelField && labelField.kind === 'Record'"
+    <template
+      v-if="selectedModule"
     >
       <b-form-group
-        :label="$t('kind.record.fieldFromModuleField')"
+        :label="$t('kind.record.moduleField')"
       >
         <b-form-select
-          v-model="f.options.recordLabelField"
-          :options="labelFieldOptions"
-          :disabled="!selectedModule || !labelFieldModule"
+          v-model="f.options.labelField"
+          :options="fieldOptions"
         />
       </b-form-group>
-    </div>
 
-    <b-form-group
-      :label="$t('kind.record.queryFieldsLabel')"
-    >
-      <b-form-select
-        v-model="f.options.queryFields"
-        class="form-control"
-        :options="queryFieldOptions"
-        multiple
-        :disabled="!selectedModule"
-      />
-    </b-form-group>
-
-    <b-form-group
-      :label="$t('kind.record.prefilterLabel')"
-    >
-      <b-form-textarea
-        v-model="f.options.prefilter"
-        class="form-control"
-        :placeholder="$t('kind.record.prefilterPlaceholder')"
-      />
-      <b-form-text>
-        <i18next
-          path="kind.record.prefilterFootnote"
-          tag="label"
+      <div
+        v-if="labelField && labelField.kind === 'Record'"
+      >
+        <b-form-group
+          :label="$t('kind.record.fieldFromModuleField')"
         >
-          <code>${recordID}</code>
-          <code>${ownerID}</code>
-          <code>${userID}</code>
-        </i18next>
-      </b-form-text>
-    </b-form-group>
+          <b-form-select
+            v-model="f.options.recordLabelField"
+            :options="labelFieldOptions"
+            :disabled="!labelFieldModule"
+          />
+        </b-form-group>
+      </div>
+
+      <b-form-group
+        :label="$t('kind.record.queryFieldsLabel')"
+      >
+        <b-form-select
+          v-model="f.options.queryFields"
+          class="form-control"
+          :options="queryFieldOptions"
+          multiple
+        />
+      </b-form-group>
+
+      <b-form-group
+        :label="$t('kind.record.prefilterLabel')"
+      >
+        <b-form-textarea
+          v-model="f.options.prefilter"
+          class="form-control"
+          :placeholder="$t('kind.record.prefilterPlaceholder')"
+        />
+        <b-form-text>
+          <i18next
+            path="kind.record.prefilterFootnote"
+            tag="label"
+          >
+            <code>${recordID}</code>
+            <code>${ownerID}</code>
+            <code>${userID}</code>
+          </i18next>
+        </b-form-text>
+      </b-form-group>
+    </template>
 
     <b-form-group
       v-if="field.isMulti"
