@@ -96,7 +96,7 @@ export default {
     },
 
     processing () {
-      return !(this.record && this.record.recordID !== NoID)
+      return !this.record
     },
   },
 

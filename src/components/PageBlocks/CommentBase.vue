@@ -9,7 +9,7 @@
     >
       <b-spinner />
     </div>
-    <template v-else>
+    <template v-else-if="roModule">
       <section
         v-if="canAddRecord"
         class="d-flex flex-column px-3 py-2"
@@ -55,7 +55,7 @@
             </div>
             <div class="border p-3 d-flex flex-column">
               <field-viewer
-                v-if="(titleField || {}).canReadRecordValue && options.titleField"
+                v-if="titleField.canReadRecordValue"
                 class="mb-3 text-muted font-weight-bold"
                 :field="titleField"
                 :record="record"
@@ -143,19 +143,11 @@ export default {
     titleField () {
       const { titleField } = this.options
 
-      if (!titleField) {
-        return undefined
-      }
-
       return this.roModule.fields.find(f => f.name === titleField) || {}
     },
 
     contentField () {
       const { contentField } = this.options
-
-      if (!contentField) {
-        return undefined
-      }
 
       return this.roModule.fields.find(f => f.name === contentField) || {}
     },
