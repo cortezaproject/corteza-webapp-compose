@@ -1,10 +1,8 @@
 import Vue from 'vue'
 import { capitalize } from 'lodash'
 
-import Card
-  from './Card'
-import Plain
-  from './Plain'
+import Card from './Card'
+import Plain from './Plain'
 
 const Registry = {
   Card,
