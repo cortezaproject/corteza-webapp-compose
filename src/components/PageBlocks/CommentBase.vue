@@ -9,13 +9,13 @@
     >
       <b-spinner />
     </div>
-    <template v-else-if="roModule">
+    <template v-else-if="roModule && contentField">
       <section
         v-if="canAddRecord"
         class="d-flex flex-column px-3 py-2"
       >
         <b-form-input
-          v-if="options.titleField"
+          v-if="titleField"
           v-model="newRecord.title"
           class="mb-2"
           :placeholder="$t('comment.titleInput')"
@@ -55,7 +55,7 @@
             </div>
             <div class="border p-3 d-flex flex-column">
               <field-viewer
-                v-if="titleField.canReadRecordValue"
+                v-if="titleField && titleField.canReadRecordValue"
                 class="mb-3 text-muted font-weight-bold"
                 :field="titleField"
                 :record="record"
@@ -143,13 +143,21 @@ export default {
     titleField () {
       const { titleField } = this.options
 
-      return this.roModule.fields.find(f => f.name === titleField) || {}
+      if (!titleField) {
+        return undefined
+      }
+
+      return this.roModule.fields.find(f => f.name === titleField)
     },
 
     contentField () {
       const { contentField } = this.options
 
-      return this.roModule.fields.find(f => f.name === contentField) || {}
+      if (!contentField) {
+        return undefined
+      }
+
+      return this.roModule.fields.find(f => f.name === contentField)
     },
 
     referenceField () {
@@ -158,6 +166,7 @@ export default {
       if (!referenceField) {
         return undefined
       }
+
       return this.roModule.fields.find(f => f.name === referenceField) || {}
     },
 
@@ -197,7 +206,6 @@ export default {
   },
 
   methods: {
-
     getFormattedDate (date) {
       return fmt.fullDateTime(date)
     },
@@ -219,7 +227,7 @@ export default {
       // Make sure block is properly configured
         throw Error(this.$t('record.moduleOrPageNotSet'))
       }
-      if (this.roModule) {
+      if (this.roModule && this.contentField) {
         this.processing = true
         this.fetchRecords(this.roModule, this.expandFilter())
           .then(rr => {
