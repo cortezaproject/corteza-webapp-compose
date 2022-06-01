@@ -9,17 +9,22 @@
         :clearable="false"
         :options="namespaces"
         :value="namespace"
+        :selectable="option => option.namespaceID !== namespace.namespaceID"
         :placeholder="$t('pickNamespace')"
         @option:selected="namespaceSelected"
       >
-        <template #list-footer>
-          <router-link
+        <template #list-header>
+          <li
             v-if="!hideNamespaceListLink"
-            :to="{ name: 'namespace.list' }"
-            class="d-block mt-3 ml-3 mb-1 font-weight-bold"
+            class="border-bottom text-center mb-1"
           >
-            {{ $t('namespaceList') }}
-          </router-link>
+            <router-link
+              :to="{ name: 'namespace.list' }"
+              class="d-block my-1 font-weight-bold text-decoration-none"
+            >
+              {{ $t('namespaceList') }}
+            </router-link>
+          </li>
         </template>
       </vue-select>
     </portal>
