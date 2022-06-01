@@ -8,11 +8,12 @@
     </div>
 
     <div
-      class="position-relative h-100 p-2 overflow-hidden"
-      :class="{ 'd-none': processing }"
+      class="justify-content-center position-relative h-100 p-1 overflow-hidden"
+      :class="{ 'd-none': processing, 'd-flex': !processing }"
     >
       <canvas
         ref="chartCanvas"
+        class="mh-100 w-auto"
       />
     </div>
   </div>
