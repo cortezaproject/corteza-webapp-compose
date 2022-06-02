@@ -158,13 +158,23 @@ export default {
     },
 
     isFieldEditable (field) {
-      return field &&
-        field.canUpdateRecordValue &&
-        !field.isSystem &&
-        !(
-          field.expressions &&
-          field.expressions.value
-        )
+      if (!field) {
+        return false
+      }
+
+      const { name, canUpdateRecordValue, isSystem, expressions = {} } = field || {}
+      const { canManageOwnerOnRecord } = this.record || {}
+
+      if (!canUpdateRecordValue) {
+        return false
+      }
+
+      // Make ownedBy field editable if correct permissions
+      if (isSystem && !(name === 'ownedBy' && canManageOwnerOnRecord)) {
+        return false
+      }
+
+      return !expressions.value
     },
   },
 }
