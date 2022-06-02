@@ -59,7 +59,7 @@
             <b-button
               class="p-1 text-light"
               variant="link"
-              @click="editBlock(block, index)"
+              @click="editBlock(index)"
             >
               <font-awesome-icon
                 :icon="['far', 'edit']"
@@ -91,7 +91,7 @@
     >
       <new-block-selector
         :record-page="!!module"
-        @select="editBlock($event)"
+        @select="addBlock"
       />
     </b-modal>
 
@@ -333,9 +333,13 @@ export default {
       updatePageSet: 'page/updateSet',
     }),
 
-    editBlock (block, index = undefined) {
+    addBlock (block, index = undefined) {
       this.$bvModal.hide('createBlockSelector')
       this.editor = { index, block: compose.PageBlockMaker(block) }
+    },
+
+    editBlock (index = undefined) {
+      this.editor = { index, block: compose.PageBlockMaker(this.blocks[index]) }
     },
 
     deleteBlock (index) {
@@ -350,6 +354,7 @@ export default {
     updateBlocks () {
       const block = compose.PageBlockMaker(this.editor.block)
       this.page.blocks = this.blocks
+
       if (this.editor.index !== undefined) {
         this.page.blocks.splice(this.editor.index, 1, block)
       } else {
