@@ -4,7 +4,13 @@
     v-on="$listeners"
   >
     <div
-      v-if="module && record"
+      v-if="processing"
+      class="d-flex align-items-center justify-content-center h-100"
+    >
+      <b-spinner />
+    </div>
+    <div
+      v-else-if="module"
       class="px-3"
     >
       <div
@@ -43,7 +49,6 @@
             class="value"
           >
             <field-viewer
-              v-if="record && record.recordID !== NoID"
               :field="field"
               v-bind="{ ...$props, errors: fieldErrors(field.name) }"
               value-only
@@ -118,6 +123,10 @@ export default {
     errorID () {
       const { recordID = NoID } = this.record || {}
       return recordID === NoID ? 'parent:0' : recordID
+    },
+
+    processing () {
+      return !this.record
     },
   },
 
