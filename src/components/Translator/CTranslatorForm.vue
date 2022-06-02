@@ -254,6 +254,8 @@ export default {
     },
 
     onUpdate (resource, key, lang, message) {
+      message = this.stripHtml(message)
+
       const v = this.intTranslations.find(r => r.resource === resource && r.key === key && r.lang === lang)
       if (v === undefined) {
         const fresh = { resource, key, lang, message, org: message, dirty: true }
@@ -269,6 +271,12 @@ export default {
         .map(({ resource, key, lang, message }) => ({ resource, key, lang, message }))
 
       this.$emit('change', dirty)
+    },
+
+    stripHtml (v) {
+      const el = document.createElement('div')
+      el.innerHTML = v
+      return el.textContent || el.innerText || ''
     },
   },
 }
