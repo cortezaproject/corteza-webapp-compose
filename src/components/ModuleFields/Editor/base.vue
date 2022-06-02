@@ -85,11 +85,20 @@ export default {
 
     value: {
       get () {
+        if (this.field.isSystem) {
+          return this.record[this.field.name]
+        }
+
         return this.record.values[this.field.name]
       },
 
       set (value) {
-        this.record.values[this.field.name] = value
+        if (this.field.isSystem) {
+          this.record[this.field.name] = value
+        } else {
+          this.record.values[this.field.name] = value
+        }
+
         this.$emit('change', value)
       },
     },
