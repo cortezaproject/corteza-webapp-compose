@@ -185,7 +185,7 @@ export default {
         // for now this field is hidden, since it's implementation is mia.
         .map(kind => {
           return { kind, label: this.$t('fieldKinds.' + kind + '.label') }
-        })
+        }).sort((a, b) => a.label.localeCompare(b.text))
     },
 
     exists () {
