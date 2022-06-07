@@ -33,6 +33,7 @@ export default new Vuex.Store({
       ...cvStore.wfPrompts({
         api: Vue.prototype.$AutomationAPI,
         ws: Vue.prototype.$socket,
+        webapp: 'compose',
       }),
     },
   },
