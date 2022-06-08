@@ -72,23 +72,10 @@
                   </div>
                 </div>
                 <div class="flex-grow-1">
-                  <b-input-group
-                    class="h-100"
-                  >
-                    <b-form-input
-                      v-model.trim="query"
-                      class="h-100 mw-100 text-truncate"
-                      type="search"
-                      :placeholder="$t('chart.searchPlaceholder')"
-                    />
-                    <b-input-group-append>
-                      <b-input-group-text class="text-primary bg-white">
-                        <font-awesome-icon
-                          :icon="['fas', 'search']"
-                        />
-                      </b-input-group-text>
-                    </b-input-group-append>
-                  </b-input-group>
+                  <c-input-search
+                    v-model.trim="query"
+                    :placeholder="$t('chart.searchPlaceholder')"
+                  />
                 </div>
               </b-row>
             </b-card-header>
@@ -133,9 +120,10 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { compose, fmt } from '@cortezaproject/corteza-js'
-import { filter } from '@cortezaproject/corteza-vue'
+import { filter, components } from '@cortezaproject/corteza-vue'
 import Import from 'corteza-webapp-compose/src/components/Admin/Import'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
+const { CInputSearch } = components
 
 export default {
   i18nOptions: {
@@ -147,6 +135,7 @@ export default {
   components: {
     Import,
     Export,
+    CInputSearch,
   },
 
   props: {
