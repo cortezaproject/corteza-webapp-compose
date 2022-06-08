@@ -105,23 +105,10 @@
             v-if="!options.hideSearch && !inlineEditing"
             class="flex-grow-1"
           >
-            <b-input-group
-              class="h-100"
-            >
-              <b-form-input
-                v-model="query"
-                class="h-100 mw-100"
-                type="search"
-                :placeholder="$t('general.label.search')"
-              />
-              <b-input-group-append>
-                <b-input-group-text class="text-primary bg-white">
-                  <font-awesome-icon
-                    :icon="['fas', 'search']"
-                  />
-                </b-input-group-text>
-              </b-input-group-append>
-            </b-input-group>
+            <c-input-search
+              v-model.trim="query"
+              :placeholder="$t('general.label.search')"
+            />
           </div>
         </b-row>
         <b-row
@@ -593,10 +580,11 @@ import { compose, validator, NoID } from '@cortezaproject/corteza-js'
 import users from 'corteza-webapp-compose/src/mixins/users'
 import { evaluatePrefilter, queryToFilter } from 'corteza-webapp-compose/src/lib/record-filter'
 import { getItem, setItem, removeItem } from 'corteza-webapp-compose/src/lib/local-storage'
-import { url } from '@cortezaproject/corteza-vue'
+import { components, url } from '@cortezaproject/corteza-vue'
 import draggable from 'vuedraggable'
 import RecordListFilter from 'corteza-webapp-compose/src/components/Common/RecordListFilter'
 import ColumnPicker from 'corteza-webapp-compose/src/components/Admin/Module/Records/ColumnPicker'
+const { CInputSearch } = components
 
 export default {
   i18nOptions: {
@@ -612,6 +600,7 @@ export default {
     draggable,
     RecordListFilter,
     ColumnPicker,
+    CInputSearch,
   },
 
   extends: base,

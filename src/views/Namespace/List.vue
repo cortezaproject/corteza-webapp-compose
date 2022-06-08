@@ -46,23 +46,10 @@
           </div>
         </div>
         <div class="flex-grow-1">
-          <b-input-group
-            class="h-100"
-          >
-            <b-form-input
-              v-model.trim="query"
-              class="h-100 mw-100 text-truncate"
-              type="search"
-              :placeholder="$t('searchPlaceholder')"
-            />
-            <b-input-group-append>
-              <b-input-group-text class="text-primary bg-white">
-                <font-awesome-icon
-                  :icon="['fas', 'search']"
-                />
-              </b-input-group-text>
-            </b-input-group-append>
-          </b-input-group>
+          <c-input-search
+            v-model.trim="query"
+            :placeholder="$t('searchPlaceholder')"
+          />
         </div>
       </b-row>
 
@@ -96,6 +83,8 @@
 import { mapGetters } from 'vuex'
 import NamespaceItem from 'corteza-webapp-compose/src/components/Namespaces/NamespaceItem'
 import ImporterModal from 'corteza-webapp-compose/src/components/Namespaces/Importer'
+import { components } from '@cortezaproject/corteza-vue'
+const { CInputSearch } = components
 
 export default {
   i18nOptions: {
@@ -105,6 +94,7 @@ export default {
   components: {
     NamespaceItem,
     ImporterModal,
+    CInputSearch,
   },
 
   data () {
