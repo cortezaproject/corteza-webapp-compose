@@ -69,11 +69,10 @@
             v-if="available.length > 0"
             :header="$t('automation.availableScriptsAndWorkflow', { count: available.length })"
           >
-            <b-input
+            <c-input-search
               v-model="queryAvailable"
-              type="search"
+              class="mb-1"
               :placeholder="$t('automation.searchPlaceholder')"
-              class="mb-1 text-truncate"
             />
 
             <b-list-group
@@ -129,10 +128,12 @@
 </template>
 <script>
 import { compose } from '@cortezaproject/corteza-js'
+import { components } from '@cortezaproject/corteza-vue'
 import draggable from 'vuedraggable'
 import base from '../base'
 import { words } from 'lodash'
 import ButtonEditor from './AutomationTabButtonEditor'
+const { CInputSearch } = components
 
 export default {
   i18nOptions: {
@@ -142,6 +143,7 @@ export default {
   components: {
     ButtonEditor,
     draggable,
+    CInputSearch,
   },
 
   extends: base,

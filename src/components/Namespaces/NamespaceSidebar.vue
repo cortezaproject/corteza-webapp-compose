@@ -56,13 +56,11 @@
           {{ $t('adminPanel') }}
         </b-button>
 
-        <b-input
+        <c-input-search
           v-model.trim="query"
           :disabled="loading"
-          class="namespace-selector mw-100"
-          type="search"
-          autocomplete="off"
           :placeholder="$t(`searchPlaceholder.${isAdminPage ? 'admin' : 'public'}`)"
+          :autocomplete="'off'"
         />
 
         <div
@@ -100,7 +98,7 @@ import { NoID } from '@cortezaproject/corteza-js'
 import { components, filter } from '@cortezaproject/corteza-vue'
 import { Portal } from 'portal-vue'
 import { VueSelect } from 'vue-select'
-const { CSidebarNavItems } = components
+const { CSidebarNavItems, CInputSearch } = components
 
 const publicPageWrap = ({ pageID, selfID, title, visible }) => ({
   page: {
@@ -174,6 +172,7 @@ export default {
     Portal,
     VueSelect,
     CSidebarNavItems,
+    CInputSearch,
   },
 
   props: {
