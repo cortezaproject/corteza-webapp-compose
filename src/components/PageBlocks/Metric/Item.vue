@@ -4,7 +4,10 @@
     class="h-100 text-center"
   >
     <!--    This div is here because .svg metrics dont render with print to PDF option-->
-    <div class="d-none d-print-block">
+    <div
+      class="d-none d-print-flex h-100 w-100 align-items-center justify-content-center overflow-hidden"
+      :style="genStyle(metric.valueStyle)"
+    >
       <template v-if="metric.prefix">
         {{ metric.prefix }}
       </template>
@@ -13,9 +16,10 @@
         {{ metric.suffix }}
       </template>
     </div>
+
     <svg
       :viewBox="getVB"
-      class="h-100 w-100 align-items-end d-flex"
+      class="h-100 w-100 d-flex d-print-none"
       width="100%"
       height="100%"
     >
@@ -97,6 +101,7 @@ export default {
         fill: s.color,
         backgroundColor: s.backgroundColor,
         fontSize: s.fontSize ? s.fontSize + 'px' : undefined,
+        color: s.color,
       }
 
       for (const v of Object.keys(d)) {

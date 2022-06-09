@@ -275,24 +275,20 @@ input[type="search"]::-webkit-search-cancel-button {
 
 // Supporting CSS to improve print-to-PDF option
 @media print {
-  header {
+  @page {
+    size: auto;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  header, footer, aside, nav {
     display: none;
   }
 
   .block {
     break-inside: avoid;
     width: 100%;
-  }
-
-  .d-flex {
-    display: contents !important;
-  }
-
-  //To reset the fixed Vue grid layout
-  .vue-grid-item.grid-item.cssTransforms {
-    width: 100% !important;
-    height: auto !important;
-    transform: none !important;
-    position: relative !important;
   }
 }

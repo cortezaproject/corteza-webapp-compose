@@ -201,7 +201,10 @@
           <b-thead>
             <b-tr>
               <b-th v-if="options.draggable && inlineEditing" />
-              <b-th v-if="options.selectable">
+              <b-th
+                v-if="options.selectable"
+                class="d-print-none"
+              >
                 <b-checkbox
                   :disabled="disableSelectAll"
                   :checked="areAllRowsSelected && !disableSelectAll"
@@ -307,7 +310,7 @@
 
               <b-td
                 v-if="options.selectable"
-                class="align-middle pr-0"
+                class="align-middle pr-0 d-print-none"
                 @click.stop
               >
                 <b-form-checkbox
@@ -374,7 +377,7 @@
                     v-if="item.r.deletedAt"
                     variant="link"
                     size="md"
-                    class="border-0 text-dark mt-1"
+                    class="border-0 text-dark mt-1 d-print-none"
                     @click.prevent="handleRestoreInline(item, index)"
                   >
                     <font-awesome-icon
@@ -386,7 +389,7 @@
                     v-else-if="item.r.canDeleteRecord && !item.r.deletedAt"
                     variant="link"
                     size="md"
-                    class="border-0 show-when-hovered text-danger mt-1"
+                    class="border-0 show-when-hovered text-danger mt-1 d-print-none"
                     @click.prevent="handleDeleteInline(item, index)"
                   >
                     <font-awesome-icon
@@ -398,7 +401,7 @@
                 <b-button
                   v-if="!inlineEditing && !options.hideRecordReminderButton"
                   variant="link"
-                  class="p-0 m-0 pl-1 text-primary"
+                  class="p-0 m-0 pl-1 text-primary d-print-none"
                   @click.prevent="createReminder(item.r)"
                 >
                   <font-awesome-icon
@@ -410,7 +413,7 @@
                   <b-button
                     v-if="!inlineEditing"
                     variant="link"
-                    class="p-0 m-0 pl-1 text-secondary"
+                    class="p-0 m-0 pl-1 text-secondary d-print-none"
                     :to="{ name: options.rowCreateUrl || 'page.record.create', params: { pageID: recordPageID, values: item.r.values }, query: null }"
                   >
                     <font-awesome-icon
@@ -420,7 +423,7 @@
                   <b-button
                     v-else
                     variant="link"
-                    class="p-0 m-0 pl-1 text-primary"
+                    class="p-0 m-0 pl-1 text-primary d-print-none"
                     @click="handleCloneInline(item.r)"
                   >
                     <font-awesome-icon
@@ -433,7 +436,7 @@
                   <b-button
                     v-if="!options.hideRecordEditButton && item.r.canUpdateRecord && recordPageID"
                     variant="link"
-                    class="p-0 m-0 pl-1 text-primary"
+                    class="p-0 m-0 pl-1 text-primary d-print-none"
                     :to="{ name: options.rowEditUrl || 'page.record.edit', params: { pageID: recordPageID, recordID: item.r.recordID }, query: null }"
                   >
                     <font-awesome-icon
@@ -457,7 +460,7 @@
                     :target="item.r.recordID"
                     :title="item.r.recordID"
                     button-variant="link"
-                    class="text-dark m-0 p-0 pl-1"
+                    class="text-dark m-0 p-0 pl-1 d-print-none"
                   />
                 </template>
               </b-td>
@@ -466,7 +469,7 @@
 
           <div
             v-else
-            class="position-absolute text-center mt-5"
+            class="position-absolute text-center mt-5 d-print-none"
             style="left: 0; right: 0;"
           >
             <b-spinner

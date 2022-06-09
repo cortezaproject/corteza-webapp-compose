@@ -9,11 +9,12 @@
     >
       <b-spinner />
     </div>
+
     <template v-else>
       <div
         v-for="(m, mi) in options.metrics"
         :key="mi"
-        class="h-100 align-items-center justify-content-center overflow-hidden"
+        class="d-flex align-items-center justify-content-center overflow-hidden h-100"
       >
         <div
           v-for="(v, i) in formatResponse(m, mi)"

@@ -16,7 +16,6 @@
           userSettingsChangePassword: $t('userSettings.changePassword'),
           userSettingsLogout: $t('userSettings.logout'),
         }"
-        class="d-print-none"
       >
         <template #title>
           <portal-target name="topbar-title" />
@@ -32,7 +31,7 @@
       </c-topbar>
     </header>
 
-    <aside class="d-print-none">
+    <aside>
       <c-sidebar
         :expanded.sync="expanded"
         :pinned.sync="pinned"
