@@ -1,31 +1,24 @@
 <template>
-  <div v-if="field.isMulti">
-    <div
-      v-for="(v, index) of value"
+  <div>
+    <span
+      v-for="(v, index) of formattedValue"
       :key="index"
+      :class="{ 'd-block': field.options.multiDelimiter === '\n' }"
     >
-      <span v-if="field.options.outputPlain">{{ getUrlValue(index) }}{{ index !== value.length - 1 ? field.options.multiDelimiter : '' }}</span>
-      <span
+      <span v-if="field.options.outputPlain">
+        {{ fixUrl(v) }}{{ index !== formattedValue.length - 1 ? field.options.multiDelimiter : '' }}
+      </span>
+
+      <a
         v-else
-        @click.stop
-      ><a
-        :href="getUrlValue(index)"
+        :href="fixUrl(v)"
         target="_blank"
         rel="noopener noreferrer"
         @click.stop
-      >{{ getUrlValue(index) }}{{ index !== value.length - 1 ? field.options.multiDelimiter : '' }}</a></span>
-    </div>
-  </div>
-  <div v-else>
-    <span v-if="field.options.outputPlain">{{ urlValue }}</span>
-    <span
-      v-else
-      @click.stop
-    ><a
-      :href="urlValue"
-      target="_blank"
-      rel="noopener noreferrer"
-    >{{ urlValue }}</a></span>
+      >
+        {{ fixUrl(v) }}{{ index !== formattedValue.length - 1 ? field.options.multiDelimiter : '' }}
+      </a>
+    </span>
   </div>
 </template>
 <script>
@@ -36,17 +29,12 @@ export default {
   extends: base,
 
   computed: {
-    urlValue () {
-      return this.getUrlValue()
+    formattedValue () {
+      return this.field.isMulti ? this.value : [this.value].filter(v => v)
     },
   },
 
   methods: {
-    getUrlValue (index = undefined) {
-      const value = index !== undefined ? this.value[index] : this.value
-      return this.fixUrl(value)
-    },
-
     fixUrl (value) {
       // run through all the attributes
       if (this.field.options.trimFragment) {
