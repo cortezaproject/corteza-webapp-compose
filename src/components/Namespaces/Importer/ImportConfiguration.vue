@@ -66,7 +66,7 @@ export default {
 
   computed: {
     canContinue () {
-      return !!this.name && this.slugState === true
+      return !!this.name && !!this.slug && this.slugState !== false
     },
 
     slugState () {
