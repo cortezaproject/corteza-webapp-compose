@@ -18,6 +18,9 @@
         :state="slugState"
         :placeholder="$t('slug.placeholder')"
       />
+      <b-form-invalid-feedback :state="slugState">
+        {{ $t('slug.invalid-handle-characters') }}
+      </b-form-invalid-feedback>
     </b-form-group>
 
     <div slot="footer">
@@ -31,7 +34,7 @@
 
       <b-button
         variant="dark"
-        :disabled="!canContinue"
+        :disabled="submitDisabled"
         class="float-right"
         @click="nextStep"
       >
@@ -65,18 +68,22 @@ export default {
   },
 
   computed: {
-    canContinue () {
-      return !!this.name && !!this.slug && this.slugState !== false
+    submitDisabled () {
+      return [this.nameState, this.slugState].includes(false)
+    },
+
+    nameState () {
+      return this.name.length > 0 ? null : false
     },
 
     slugState () {
-      return handleState(this.slug)
+      return this.slug.length > 0 ? handleState(this.slug) : false
     },
   },
 
   methods: {
     nextStep () {
-      if (!this.canContinue) {
+      if (!this.submitDisabled) {
         return
       }
 
