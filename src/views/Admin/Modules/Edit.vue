@@ -42,7 +42,6 @@
             class="shadow-sm"
           >
             <b-card-header
-              v-if="isEdit"
               header-bg-variant="white border-bottom"
               class="py-3"
             >
@@ -62,88 +61,89 @@
                     />
                     {{ $t('privacy.title') }}
                   </b-button>
-                  <b-button
-                    v-if="federationEnabled"
-                    data-test-id="button-federation-settings"
-                    variant="light"
-                    size="lg"
-                    class="mr-1"
-                    @click="federationSettings.modal = true"
-                  >
-                    <font-awesome-icon
-                      :icon="['fas', 'share-alt']"
+
+                  <template v-if="isEdit">
+                    <b-button
+                      v-if="federationEnabled"
+                      variant="light"
+                      size="lg"
+                      class="mr-1"
+                      @click="federationSettings.modal = true"
+                    >
+                      <font-awesome-icon
+                        :icon="['fas', 'share-alt']"
+                      />
+
+                      {{ $t('edit.federationSettings.title') }}
+                    </b-button>
+                    <b-button
+                      v-if="discoveryEnabled"
+                      variant="light"
+                      size="lg"
+                      class="mr-1"
+                      @click="discoverySettings.modal = true"
+                    >
+                      <font-awesome-icon
+                        :icon="['fas', 'search-location']"
+                      />
+                      {{ $t('edit.discoverySettings.title') }}
+                    </b-button>
+
+                    <export
+                      :list="[module]"
+                      type="module"
+                      class="mr-1"
                     />
 
-                    {{ $t('edit.federationSettings.title') }}
-                  </b-button>
-                  <b-button
-                    v-if="discoveryEnabled"
-                    data-test-id="button-discovery-settings"
-                    variant="light"
-                    size="lg"
-                    class="mr-1"
-                    @click="discoverySettings.modal = true"
-                  >
-                    <font-awesome-icon
-                      :icon="['fas', 'search-location']"
-                    />
-                    {{ $t('edit.discoverySettings.title') }}
-                  </b-button>
-                  <export
-                    data-test-id="button-export"
-                    :list="[module]"
-                    type="module"
-                    class="mr-1"
-                  />
+                    <b-dropdown
+                      v-if="module.canGrant"
+                      size="lg"
+                      variant="light"
+                      class="permissions-dropdown mr-1"
+                    >
+                      <template #button-content>
+                        <font-awesome-icon :icon="['fas', 'lock']" />
+                        <span>
+                          {{ $t('general.label.permissions') }}
+                        </span>
+                      </template>
 
-                  <b-dropdown
-                    v-if="module.canGrant"
-                    size="lg"
-                    variant="light"
-                    class="permissions-dropdown mr-1"
-                  >
-                    <template #button-content>
-                      <font-awesome-icon :icon="['fas', 'lock']" />
-                      <span>
-                        {{ $t('general.label.permissions') }}
-                      </span>
-                    </template>
+                      <b-dropdown-item>
+                        <c-permissions-button
+                          :title="module.name"
+                          :target="module.name"
+                          :resource="`corteza::compose:module/${namespace.namespaceID}/${module.moduleID}`"
+                          :button-label="$t('general:label.module')"
+                          :show-button-icon="false"
+                          button-variant="white text-left w-100"
+                        />
+                      </b-dropdown-item>
 
-                    <b-dropdown-item>
-                      <c-permissions-button
-                        :title="module.name"
-                        :target="module.name"
-                        :resource="`corteza::compose:module/${namespace.namespaceID}/${module.moduleID}`"
-                        :button-label="$t('general:label.module')"
-                        :show-button-icon="false"
-                        button-variant="white text-left w-100"
-                      />
-                    </b-dropdown-item>
+                      <b-dropdown-item>
+                        <c-permissions-button
+                          :title="module.name"
+                          :target="module.name"
+                          :resource="`corteza::compose:module-field/${namespace.namespaceID}/${module.moduleID}/*`"
+                          :button-label="$t('general:label.field')"
+                          :show-button-icon="false"
+                          all-specific
+                          button-variant="white text-left w-100"
+                        />
+                      </b-dropdown-item>
 
-                    <b-dropdown-item>
-                      <c-permissions-button
-                        :title="module.name"
-                        :target="module.name"
-                        :resource="`corteza::compose:module-field/${namespace.namespaceID}/${module.moduleID}/*`"
-                        :button-label="$t('general:label.field')"
-                        :show-button-icon="false"
-                        all-specific
-                        button-variant="white text-left w-100"
-                      />
-                    </b-dropdown-item>
-
-                    <b-dropdown-item>
-                      <c-permissions-button
-                        :title="module.name"
-                        :target="module.name"
-                        :resource="`corteza::compose:record/${namespace.namespaceID}/${module.moduleID}/*`"
-                        :button-label="$t('general:label.record')"
-                        :show-button-icon="false"
-                        all-specific
-                        button-variant="white text-left w-100"
-                      />
-                    </b-dropdown-item>
-                  </b-dropdown>
+                      <b-dropdown-item>
+                        <c-permissions-button
+                          :title="module.name"
+                          :target="module.name"
+                          :resource="`corteza::compose:record/${namespace.namespaceID}/${module.moduleID}/*`"
+                          :button-label="$t('general:label.record')"
+                          :show-button-icon="false"
+                          all-specific
+                          button-variant="white text-left w-100"
+                        />
+                      </b-dropdown-item>
+                    </b-dropdown>
+                  </template>
                 </div>
                 <div
                   v-if="isEdit"
