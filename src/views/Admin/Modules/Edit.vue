@@ -53,6 +53,7 @@
                 <div class="flex-grow-1 wrap-with-vertical-gutters">
                   <b-button
                     v-if="federationEnabled"
+                    data-test-id="button-federation-settings"
                     variant="light"
                     size="lg"
                     class="mr-1"
@@ -66,6 +67,7 @@
                   </b-button>
                   <b-button
                     v-if="discoveryEnabled"
+                    data-test-id="button-discovery-settings"
                     variant="light"
                     size="lg"
                     class="mr-1"
@@ -77,6 +79,7 @@
                     {{ $t('edit.discoverySettings.title') }}
                   </b-button>
                   <export
+                    data-test-id="button-export"
                     :list="[module]"
                     type="module"
                     class="mr-1"

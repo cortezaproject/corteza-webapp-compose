@@ -25,6 +25,7 @@
           class="d-flex flex-column justify-content-center w-100"
         >
           <h5
+            :data-test-id="namespace.name"
             class="mb-0 mw-100"
           >
             {{ namespace.name }}
@@ -56,6 +57,7 @@
         <b-button
           v-if="isEnabled"
           :to="{ name: 'pages', params: { slug: (namespace.slug || namespace.namespaceID) } }"
+          data-test-id="button-visit-namespace"
           :aria-label="$t('visit') + ' ' + namespace.name"
           variant="light"
           class="d-flex align-items-center justify-content-center mb-1 mb-md-0"
@@ -65,6 +67,7 @@
         <b-button
           v-if="canEdit"
           :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }"
+          data-test-id="button-edit-namespace"
           :aria-label="$t('edit') + ' ' + namespace.name"
           variant="light"
           class="d-flex align-items-center justify-content-center ml-md-1"

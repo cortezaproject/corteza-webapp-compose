@@ -40,6 +40,7 @@
           class="d-flex align-items-center mt-1 mb-2"
         >
           <b-btn
+            data-test-id="button-create-namespace"
             :to="{ name: 'namespace.create' }"
             variant="primary"
             size="lg"
@@ -48,6 +49,7 @@
           </b-btn>
 
           <b-btn
+            data-test-id="button-export-namespace"
             variant="light"
             size="lg"
             class="ml-1"
@@ -58,6 +60,7 @@
 
           <c-permissions-button
             v-if="namespace.canGrant"
+            data-test-id="button-permissions"
             :title="namespace.name"
             :target="namespace.name"
             :resource="'corteza::compose:namespace/'+namespace.namespaceID"
@@ -112,6 +115,7 @@
             <b-form-group>
               <b-form-checkbox
                 v-model="namespace.enabled"
+                data-test-id="checkbox-enable-namespace"
                 class="mb-3"
               >
                 {{ $t('enabled.label') }}
@@ -128,6 +132,7 @@
             <b-form-group>
               <b-form-checkbox
                 v-model="namespace.meta.logoEnabled"
+                data-test-id="checkbox-show-logo"
               >
                 {{ $t('logo.show') }}
               </b-form-checkbox>
@@ -195,6 +200,7 @@
               <b-input-group>
                 <b-form-input
                   v-model="namespace.meta.subtitle"
+                  data-test-id="input-subtitle"
                   type="text"
                   :placeholder="$t('subtitle.placeholder')"
                 />
@@ -216,6 +222,7 @@
               <b-input-group>
                 <b-form-textarea
                   v-model="namespace.meta.description"
+                  data-test-id="input-description"
                   rows="1"
                   :placeholder="$t('description.placeholder')"
                 />

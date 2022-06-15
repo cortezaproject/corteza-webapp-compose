@@ -1,6 +1,7 @@
 <template>
   <b-container
     fluid
+    data-test-id="editor-toolbar"
     class="bg-white shadow border-top p-3"
   >
     <b-row
@@ -37,7 +38,6 @@
         <c-input-confirm
           v-if="!hideDelete"
           v-b-tooltip.hover
-          data-test-id="button-delete"
           :disabled="disableDelete || processing"
           size="lg"
           size-confirm="lg"

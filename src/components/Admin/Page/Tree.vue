@@ -71,6 +71,7 @@
               <router-link
                 v-if="item.moduleID !== '0'"
                 v-b-tooltip.hover.top
+                data-test-id="button-module-edit"
                 :title="moduleName(item)"
                 class="btn text-primary"
                 :to="{ name: 'admin.modules.edit', params: { moduleID: item.moduleID }}"
@@ -80,6 +81,7 @@
               <router-link
                 v-if="item.canUpdatePage && item.moduleID === '0'"
                 :to="{name: 'admin.pages.edit', params: { pageID: item.pageID }}"
+                data-test-id="button-page-edit"
                 class="btn text-primary"
               >
                 {{ $t('edit.edit') }}

@@ -12,6 +12,7 @@
       >
         <b-button
           v-if="!settings.hideBack"
+          data-test-id="button-back"
           variant="link"
           class="text-dark back"
           :disabled="processing"
@@ -51,6 +52,7 @@
 
         <b-button
           v-if="!inEditing && module.canCreateRecord && !hideClone && isCreated && !settings.hideClone"
+          data-test-id="button-clone"
           variant="light"
           size="lg"
           :disabled="!record || processing"
@@ -62,6 +64,7 @@
 
         <b-button
           v-if="!inEditing && !settings.hideEdit && isCreated"
+          data-test-id="button-edit"
           :disabled="!record.canUpdateRecord || processing"
           variant="light"
           size="lg"
@@ -73,6 +76,7 @@
 
         <b-button
           v-if="module.canCreateRecord && !hideAdd && !inEditing && !settings.hideNew"
+          data-test-id="button-add-new"
           variant="primary"
           size="lg"
           :disabled="processing"
@@ -84,6 +88,7 @@
 
         <b-button
           v-if="inEditing && !settings.hideSubmit"
+          data-test-id="button-submit"
           :disabled="!canSaveRecord || processing"
           class="d-flex align-items-center justify-content-center ml-2"
           variant="primary"

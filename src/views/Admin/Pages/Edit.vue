@@ -66,6 +66,7 @@
                     >
                     <b-form-input
                       v-model="page.title"
+                      data-test-id="input-title"
                       required
                       :state="titleState"
                       class="mb-2"
@@ -100,6 +101,7 @@
               >
                 <b-form-textarea
                   v-model="page.description"
+                  data-test-id="input-description"
                   :placeholder="$t('edit.pageDescription')"
                   rows="4"
                 />
@@ -110,6 +112,7 @@
               >
                 <b-form-checkbox
                   v-model="page.visible"
+                  data-test-id="checkbox-page-visibility"
                   switch
                 >
                   {{ $t('edit.visible') }}
@@ -135,17 +138,20 @@
         <template #delete>
           <b-dropdown
             v-if="showDeleteDropdown"
+            data-test-id="dropdown-delete"
             size="lg"
             variant="danger"
             :text="$t('general:label.delete')"
             class="mr-1"
           >
             <b-dropdown-item
+              data-test-id="dropdown-item-delete-update-parent-of-sub-pages"
               @click="handleDeletePage('rebase')"
             >
               {{ $t('delete.rebase') }}
             </b-dropdown-item>
             <b-dropdown-item
+              data-test-id="dropdown-item-delete-sub-pages"
               @click="handleDeletePage('cascade')"
             >
               {{ $t('delete.cascade') }}

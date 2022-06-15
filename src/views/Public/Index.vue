@@ -71,6 +71,7 @@
             >
               <b-button
                 v-if="!hasModules"
+                data-test-id="button-module-create"
                 :disabled="!namespace.canCreateModule"
                 variant="outline-primary"
                 size="lg"
@@ -83,6 +84,7 @@
                 :to="{ name: 'admin.modules' }"
               >
                 <b-button
+                  data-test-id="button-module-view"
                   :disabled="!namespace.canManageNamespace"
                   variant="primary"
                   size="lg"
@@ -135,6 +137,7 @@
             >
               <b-button
                 v-if="!hasPages"
+                data-test-id="button-page-build"
                 :disabled="!hasModules || !namespace.canCreatePage"
                 variant="outline-primary"
                 size="lg"
@@ -148,6 +151,7 @@
               >
                 <b-button
                   :disabled="!namespace.canManageNamespace"
+                  data-test-id="button-page-view"
                   variant="primary"
                   size="lg"
                 >

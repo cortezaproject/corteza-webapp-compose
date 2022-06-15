@@ -166,17 +166,20 @@
         <template #delete>
           <b-dropdown
             v-if="showDeleteDropdown"
+            data-test-id="dropdown-delete"
             size="lg"
             variant="danger"
             :text="$t('general:label.delete')"
             class="mr-1"
           >
             <b-dropdown-item
+              data-test-id="dropdown-item-delete-update-parent-of-sub-pages"
               @click="handleDeletePage('rebase')"
             >
               {{ $t('delete.rebase') }}
             </b-dropdown-item>
             <b-dropdown-item
+              data-test-id="dropdown-item-delete-sub-pages"
               @click="handleDeletePage('cascade')"
             >
               {{ $t('delete.cascade') }}

@@ -114,6 +114,7 @@
             </b-card-header>
             <b-card-body class="p-0">
               <b-table
+                data-test-id="table-modules-list"
                 :fields="tableFields"
                 :items="modules"
                 :filter="query"
