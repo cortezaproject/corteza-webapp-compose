@@ -17,6 +17,7 @@
       <vue-select
         v-model="connection"
         :options="connections"
+        :disabled="isEdit"
         :clearable="false"
         label="name"
         :placeholder="$t('privacy.select-data-source')"
@@ -94,8 +95,8 @@
 </template>
 
 <script>
-import VueSelect from 'vue-select'
 import { compose, NoID } from '@cortezaproject/corteza-js'
+import VueSelect from 'vue-select'
 
 export default {
   i18nOptions: {
@@ -139,6 +140,10 @@ export default {
   },
 
   computed: {
+    isEdit () {
+      return this.module.moduleID !== NoID
+    },
+
     showModal: {
       get () {
         return this.modal
