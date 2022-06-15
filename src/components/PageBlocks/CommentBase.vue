@@ -201,8 +201,13 @@ export default {
     },
   },
 
-  beforeMount () {
-    this.reloadRecords()
+  watch: {
+    'record.recordID': {
+      immediate: true,
+      handler () {
+        this.reloadRecords()
+      },
+    },
   },
 
   methods: {
