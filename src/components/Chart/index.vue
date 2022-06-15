@@ -26,7 +26,7 @@ import ChartJS from 'chart.js'
 import Funnel from 'chartjs-plugin-funnel'
 import Gauge from 'chartjs-gauge'
 import csc from 'chartjs-plugin-colorschemes'
-import { compose, NoID } from '@cortezaproject/corteza-js'
+import { compose } from '@cortezaproject/corteza-js'
 
 export default {
   i18nOptions: {
@@ -36,11 +36,11 @@ export default {
   props: {
     chart: {
       type: Object,
-      default: null,
+      required: true,
     },
     reporter: {
       type: Function,
-      default: null,
+      required: true,
     },
   },
 
@@ -60,14 +60,12 @@ export default {
   },
 
   watch: {
-    'chart.chartID': {
+    'record.recordID': {
       immediate: true,
-      handler (chartID = NoID) {
-        if (chartID !== NoID) {
-          this.$nextTick(() => {
-            this.updateChart()
-          })
-        }
+      handler () {
+        this.$nextTick(() => {
+          this.updateChart()
+        })
       },
     },
   },

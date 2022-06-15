@@ -831,20 +831,21 @@ export default {
     'record.recordID': {
       immediate: true,
       handler (recordID = NoID) {
-        if (this.page.moduleID === NoID || recordID !== NoID) {
-          this.getStorageRecordListFilter()
-          this.prepRecordList()
-          this.refresh(true)
+        // Set uniqueID so that events dont mix
+        if (this.uniqueID) {
+          this.$root.$off(`record-line:collect:${this.uniqueID}`)
+          this.$root.$off(`page-block:validate:${this.uniqueID}`)
         }
+
+        this.uniqueID = `${this.page.pageID}-${recordID}-${this.blockIndex}`
+        this.$root.$on(`record-line:collect:${this.uniqueID}`, this.resolveRecords)
+        this.$root.$on(`page-block:validate:${this.uniqueID}`, this.validatePageBlock)
+
+        this.getStorageRecordListFilter()
+        this.prepRecordList()
+        this.refresh(true)
       },
     },
-  },
-
-  created () {
-    // Set uniqueID so that events dont mix
-    this.uniqueID = `${this.page.pageID}-${(this.record || {}).recordID || '0'}-${this.blockIndex}`
-    this.$root.$on(`record-line:collect:${this.uniqueID}`, this.resolveRecords)
-    this.$root.$on(`page-block:validate:${this.uniqueID}`, this.validatePageBlock)
   },
 
   beforeDestroy () {
@@ -997,12 +998,10 @@ export default {
         throw Error(this.$t('record.moduleOrPageNotSet'))
       }
 
-      const { recordID = NoID } = this.record || {}
-
       // If there is no current record and we are using recordID/ownerID variable in (pre)filter
       // we should disable the block
       /* eslint-disable no-template-curly-in-string */
-      if (recordID === NoID) {
+      if (!this.record) {
         if ((prefilter || '').includes('${record')) {
           throw Error(this.$t('record.invalidRecordVar'))
         }

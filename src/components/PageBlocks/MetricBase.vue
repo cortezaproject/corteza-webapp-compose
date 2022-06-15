@@ -66,9 +66,16 @@ export default {
     }
   },
 
-  mounted () {
-    this.update()
+  watch: {
+    'record.recordID': {
+      immediate: true,
+      handler () {
+        this.update()
+      },
+    },
+  },
 
+  mounted () {
     this.$root.$on('metric.update', this.update)
   },
 
