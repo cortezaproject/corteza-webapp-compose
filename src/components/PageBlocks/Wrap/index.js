@@ -15,13 +15,15 @@ const defaultWrap = 'Card'
  * @param block {compose.PageBLock}
  * @returns component
  */
-function GetWrapComponent ({ block, wrap = defaultWrap }) {
-  const cmpName = capitalize(wrap)
+function GetWrapComponent ({ block }) {
+  const { kind = defaultWrap } = block.style.wrap
+
+  const cmpName = capitalize(kind)
   if (Object.hasOwnProperty.call(Registry, cmpName)) {
     return Registry[capitalize(cmpName)]
   }
 
-  throw new Error('unknown wrap: ' + wrap)
+  throw new Error('unknown wrap: ' + kind)
 }
 
 /**
