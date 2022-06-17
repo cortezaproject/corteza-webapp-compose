@@ -77,8 +77,18 @@
             :options="textVariants"
           />
         </b-form-group>
+
+        <b-form-checkbox
+          v-model="block.style.wrap.kind"
+          value="card"
+          unchecked-value="plain"
+          switch
+        >
+          {{ $t('general.wrap') }}
+        </b-form-checkbox>
       </div>
     </b-tab>
+
     <page-block
       v-bind="{ ...$attrs, ...$props }"
       mode="configurator"
