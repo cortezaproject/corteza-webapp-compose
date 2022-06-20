@@ -58,8 +58,6 @@
 
         <c-input-search
           v-model.trim="query"
-          class="namespace-selector"
-          hide-icon
           :disabled="loading"
           :placeholder="$t(`searchPlaceholder.${isAdminPage ? 'admin' : 'public'}`)"
           :autocomplete="'off'"

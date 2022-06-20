@@ -72,7 +72,6 @@
             <c-input-search
               v-model="queryAvailable"
               class="mb-1"
-              hide-icon
               :placeholder="$t('automation.searchPlaceholder')"
             />
 
