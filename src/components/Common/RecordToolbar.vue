@@ -50,7 +50,7 @@
         </c-input-confirm>
 
         <b-button
-          v-if="module.canCreateRecord && !hideClone && isCreated && !settings.hideClone"
+          v-if="!inEditing && module.canCreateRecord && !hideClone && isCreated && !settings.hideClone"
           variant="light"
           size="lg"
           :disabled="!record || processing"
@@ -61,8 +61,8 @@
         </b-button>
 
         <b-button
-          v-if="!inEditing && !settings.hideEdit"
-          :disabled="!record || !record.canUpdateRecord || processing"
+          v-if="!inEditing && !settings.hideEdit && isCreated"
+          :disabled="!record.canUpdateRecord || processing"
           variant="light"
           size="lg"
           class="ml-2"

@@ -195,7 +195,7 @@ import PageTranslator from 'corteza-webapp-compose/src/components/Admin/Page/Pag
 import Grid from 'corteza-webapp-compose/src/components/Common/Grid'
 import PageBlock from 'corteza-webapp-compose/src/components/PageBlocks'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import Configurator from 'corteza-webapp-compose/src/components/PageBlocks/Configurator'
 
 export default {
@@ -267,7 +267,7 @@ export default {
     },
 
     module () {
-      if (this.page && this.page.moduleID !== '0') {
+      if (this.page && this.page.moduleID !== NoID) {
         return this.$store.getters['module/getByID'](this.page.moduleID)
       } else {
         return undefined
@@ -286,7 +286,11 @@ export default {
     },
 
     pageViewer () {
-      return { name: 'page', params: { pageID: this.pageID } }
+      if (this.module) {
+        return { name: 'page.record', params: { pageID: this.pageID, recordID: NoID } }
+      } else {
+        return { name: 'page', params: { pageID: this.pageID } }
+      }
     },
 
     pageEditor () {
@@ -378,7 +382,7 @@ export default {
       this.blocks.forEach((b, index) => {
         if (b.kind === 'RecordList' && b.options.editable) {
           const p = new Promise((resolve) => {
-            this.$root.$emit(`page-block:validate:${this.page.pageID}-${(this.record || {}).recordID || '0'}-${index}`, resolve)
+            this.$root.$emit(`page-block:validate:${this.page.pageID}-${(this.record || {}).recordID || NoID}-${index}`, resolve)
           })
 
           queue.push(p)

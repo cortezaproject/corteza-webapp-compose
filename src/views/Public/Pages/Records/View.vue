@@ -127,15 +127,22 @@ export default {
     async loadRecord () {
       this.record = undefined
 
-      if (this.page && this.recordID && this.recordID !== NoID && this.page.moduleID !== NoID) {
-        const { namespaceID, moduleID } = this.page
-        const module = Object.freeze(this.getModuleByID(moduleID).clone())
+      if (!this.page) {
+        return
+      }
+
+      const { namespaceID, moduleID } = this.page
+      const module = Object.freeze(this.getModuleByID(moduleID).clone())
+
+      if (this.recordID && this.recordID !== NoID && moduleID !== NoID) {
         await this.$ComposeAPI
           .recordRead({ namespaceID, moduleID, recordID: this.recordID })
           .then(record => {
             this.record = new compose.Record(module, record)
           })
           .catch(this.toastErrorHandler(this.$t('notification:record.loadFailed')))
+      } else if (module) {
+        this.record = new compose.Record(module, {})
       }
     },
 

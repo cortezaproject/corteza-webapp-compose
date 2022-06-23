@@ -209,7 +209,12 @@ export default {
     },
 
     pageViewer () {
-      return { name: 'page', params: { pageID: this.pageID } }
+      const { pageID } = this.page
+      if (this.isRecordPage) {
+        return { name: 'page.record', params: { pageID, recordID: NoID } }
+      } else {
+        return { name: 'page', params: { pageID } }
+      }
     },
 
     isRecordPage () {

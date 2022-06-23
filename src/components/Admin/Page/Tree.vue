@@ -59,7 +59,7 @@
               <router-link
                 v-if="item.blocks && item.blocks.length >= 1"
                 data-test-id="button-page-view"
-                :to="{name: 'page', params: { pageID: item.pageID }}"
+                :to="pageViewer(item)"
                 class="btn"
               >
                 {{ $t('view') }}
@@ -173,6 +173,14 @@ export default {
       }
 
       return (this.getModuleByID(moduleID) || {}).name
+    },
+
+    pageViewer ({ pageID = NoID, moduleID = NoID }) {
+      if (moduleID) {
+        return { name: 'page.record', params: { pageID, recordID: NoID } }
+      } else {
+        return { name: 'page', params: { pageID } }
+      }
     },
 
     handleChangePosition ({ beforeParent, data, afterParent }) {
