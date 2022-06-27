@@ -46,8 +46,8 @@
           v-if="reminder.payload.link"
           :label="$t('reminder.routesTo')"
         >
-          <c-toaster-link
-            :toast="reminder"
+          <b-form-input
+            v-model="reminder.payload.link.label"
           />
         </b-form-group>
       </b-form>
@@ -69,8 +69,6 @@ import _ from 'lodash'
 import moment from 'moment'
 import { VueSelect } from 'vue-select'
 import { system } from '@cortezaproject/corteza-js'
-import { components } from '@cortezaproject/corteza-vue'
-const { CToasterLink } = components
 
 export default {
   i18nOptions: {
@@ -79,7 +77,6 @@ export default {
 
   components: {
     VueSelect,
-    CToasterLink,
   },
   props: {
     edit: {

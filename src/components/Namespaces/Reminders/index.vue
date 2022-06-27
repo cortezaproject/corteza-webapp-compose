@@ -68,6 +68,8 @@ export default {
           payload,
         }
       }
+
+      this.$root.$emit('reminders.show')
     },
 
     onSave (r) {

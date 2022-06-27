@@ -1049,18 +1049,24 @@ export default {
 
     createReminder (record) {
       // Determine initial reminder title
-      const tField = ((this.options.fields || []).find(({ name }) => !!record.values[name]) || {}).name
-      const title = record.values[tField]
+      const { recordID, values = {} } = record
+      const tField = ((this.options.fields || []).find(({ name }) => !!values[name]) || {}).name
+      const title = values[tField]
 
+      const resource = `compose:record:${recordID}`
       const payload = {
         title,
         link: {
-          namespaceSlug: this.namespace.slug,
-          pageID: this.recordPageID,
-          moduleID: record.moduleID,
+          name: 'page.record',
+          label: 'Record page',
+          params: {
+            slug: this.namespace.slug,
+            pageID: this.recordPageID,
+            recordID: recordID,
+          },
         },
       }
-      const resource = `compose:record:${record.recordID}`
+
       this.$root.$emit('reminder.create', { payload, resource })
       this.$root.$emit('rightPanel.toggle', true)
     },

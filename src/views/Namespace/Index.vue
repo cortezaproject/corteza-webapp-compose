@@ -63,6 +63,10 @@ export default {
       this.namespaces = namespaces
       this.loaded = true
     }).catch(this.toastErrorHandler(this.$t('notification:general.composeAccessNotAllowed')))
+
+    this.$root.$on('reminders.show', () => {
+      this.remindersVisible = true
+    })
   },
 }
 </script>
