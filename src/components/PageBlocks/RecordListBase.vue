@@ -111,9 +111,10 @@
               <b-form-input
                 v-model="query"
                 type="search"
-                :disabled="processing"
                 :placeholder="$t('general.label.search')"
                 class="bg-white h-100 mw-100"
+                @keydown="processing ? $event.preventDefault() : null"
+                @click="processing ? $event.preventDefault() : null"
               />
               <b-input-group-append>
                 <b-input-group-text class="text-primary bg-white">
