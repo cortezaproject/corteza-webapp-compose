@@ -1,7 +1,7 @@
 import moment from 'moment'
 
 const noneQueryableFieldNames = ['recordID']
-const noneQueryableFieldKinds = ['Record', 'User', 'Bool', 'DateTime', 'File', 'Geometry']
+const noneQueryableFieldKinds = ['Number', 'Record', 'User', 'Bool', 'DateTime', 'File', 'Geometry']
 
 // Generate record list sql query string based on filter object input
 
@@ -64,11 +64,7 @@ export function getFieldFilter (name, kind, query = '', operator = '=') {
     .replace(/^[%]+/, '')
 
   if (['Number'].includes(kind) && !isNaN(numQuery)) {
-    if (operator === 'LIKE') {
-      return `${name} LIKE '%${strQuery}%'`
-    } else {
-      return `${name} ${operator} ${numQuery}`
-    }
+    return `${name} ${operator} ${numQuery}`
   }
 
   if (['DateTime'].includes(kind)) {
