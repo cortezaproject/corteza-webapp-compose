@@ -1126,19 +1126,25 @@ export default {
     },
 
     handleRowClicked ({ r: { recordID } }) {
-      if (this.options.editable && this.editing) {
+      if ((this.options.editable && this.editing) || !this.recordPageID) {
         return
       }
 
       const pageID = this.recordPageID
-      this.$router.push({
+      const route = {
         name: this.options.rowViewUrl || 'page.record',
         params: {
           pageID,
           recordID,
         },
         query: null,
-      })
+      }
+
+      if (this.options.openInNewTab) {
+        window.open(this.$router.resolve(route).href)
+      } else {
+        this.$router.push(route)
+      }
     },
 
     handleSort ({ key, sortable }) {

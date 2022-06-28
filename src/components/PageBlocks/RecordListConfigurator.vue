@@ -241,6 +241,11 @@
         <b-form-checkbox v-model="options.selectable">
           {{ $t('recordList.selectable') }}
         </b-form-checkbox>
+        <b-form-checkbox
+          v-model="options.openInNewTab"
+        >
+          {{ $t('recordList.record.openInNewTab') }}
+        </b-form-checkbox>
       </b-form-group>
       <b-form-group
         horizontal
