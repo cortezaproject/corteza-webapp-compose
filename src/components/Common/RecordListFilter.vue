@@ -269,7 +269,7 @@ export default {
           sf.label = this.$t(`field:system.${sf.name}`)
           return sf
         }),
-      ].filter(({ kind }) => !['File'].includes(kind))
+      ].filter(({ isFilterable }) => isFilterable)
     },
 
     fieldOptions () {

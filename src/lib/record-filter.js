@@ -1,7 +1,7 @@
 import moment from 'moment'
 
 const noneQueryableFieldNames = ['recordID']
-const noneQueryableFieldKinds = ['Bool']
+const noneQueryableFieldKinds = ['Record', 'User', 'Bool', 'DateTime', 'File', 'Geometry']
 
 // Generate record list sql query string based on filter object input
 
