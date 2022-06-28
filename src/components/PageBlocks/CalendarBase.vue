@@ -81,7 +81,7 @@
         <b-spinner />
       </div>
       <full-calendar
-        v-else
+        v-show="!processing"
         ref="fc"
         :events="events"
         v-bind="config"
