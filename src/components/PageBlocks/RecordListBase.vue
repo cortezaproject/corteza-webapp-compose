@@ -110,9 +110,10 @@
             >
               <b-form-input
                 v-model="query"
-                class="h-100 mw-100"
                 type="search"
+                :disabled="processing"
                 :placeholder="$t('general.label.search')"
+                class="bg-white h-100 mw-100"
               />
               <b-input-group-append>
                 <b-input-group-text class="text-primary bg-white">
@@ -347,10 +348,11 @@
                 />
                 <div
                   v-else-if="field.moduleField.canReadRecordValue && !field.edit"
-                  class="mb-0"
+                  class="cursor-default mb-0"
                   :class="{
                     'field-adjust-offset': inlineEditing,
                   }"
+                  @click.stop
                 >
                   <field-viewer
                     :field="field.moduleField"
@@ -581,7 +583,7 @@
   </wrap>
 </template>
 <script>
-import { throttle } from 'lodash'
+import { debounce } from 'lodash'
 import { mapGetters } from 'vuex'
 import base from './base'
 import FieldViewer from 'corteza-webapp-compose/src/components/ModuleFields/Viewer'
@@ -815,8 +817,7 @@ export default {
   },
 
   watch: {
-    query: throttle(function (e) {
-      this.filter.query = queryToFilter(this.query, this.prefilter, this.recordListModule.filterFields(this.options.fields), this.recordListFilter)
+    query: debounce(function (e) {
       this.refresh(true)
     }, 500),
 
@@ -1368,6 +1369,10 @@ export default {
 
 .handle {
   cursor: grab;
+}
+
+.cursor-default {
+  cursor: default !important;
 }
 
 .pointer {

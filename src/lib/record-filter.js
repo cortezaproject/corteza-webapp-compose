@@ -1,5 +1,8 @@
 import moment from 'moment'
 
+const noneQueryableFieldNames = ['recordID']
+const noneQueryableFieldKinds = ['Bool']
+
 // Generate record list sql query string based on filter object input
 
 export function getRecordListFilterSql (filter) {
@@ -123,7 +126,8 @@ export function queryToFilter (searchQuery = '', prefilter = '', fields = [], re
   // Create query for search string
   if (searchQuery) {
     searchQuery = fields
-      .map(qf => getFieldFilter(qf.name, qf.kind, searchQuery, 'LIKE'))
+      .filter(f => !noneQueryableFieldNames.includes(f.name) && !noneQueryableFieldKinds.includes(f.kind))
+      .map(f => getFieldFilter(f.name, f.kind, searchQuery, 'LIKE'))
       .filter(q => !!q)
       .join(' OR ')
 
