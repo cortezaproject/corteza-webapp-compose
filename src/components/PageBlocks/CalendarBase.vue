@@ -3,10 +3,8 @@
     v-bind="$props"
     v-on="$listeners"
   >
-    <div class="calendar-container m-2">
-      <div
-        v-if="!header.hide"
-      >
+    <div class="d-flex flex-column calendar-container p-2 h-100">
+      <div v-if="!header.hide">
         <div
           v-if="!header.hidePrevNext || !header.hideTitle"
           class="d-flex align-items-baseline justify-content-center mb-2"
@@ -74,20 +72,27 @@
           </b-col>
         </b-row>
       </div>
+
       <div
-        v-if="processing"
-        class="d-flex align-items-center justify-content-center h-100"
+        ref="cc"
+        class="h-100"
       >
-        <b-spinner />
+        <div
+          v-if="processing"
+          class="d-flex align-items-center justify-content-center h-100"
+        >
+          <b-spinner />
+        </div>
+
+        <full-calendar
+          v-show="show && !processing"
+          ref="fc"
+          :height="getHeight()"
+          :events="events"
+          v-bind="config"
+          @eventClick="handleEventClick"
+        />
       </div>
-      <full-calendar
-        v-show="!processing"
-        ref="fc"
-        :events="events"
-        v-bind="config"
-        class="my-1"
-        @eventClick="handleEventClick"
-      />
     </div>
   </wrap>
 </template>
@@ -104,6 +109,7 @@ import { compose, NoID } from '@cortezaproject/corteza-js'
 import { BootstrapTheme } from '@fullcalendar/bootstrap'
 import { createPlugin } from '@fullcalendar/core'
 import { evaluatePrefilter } from 'corteza-webapp-compose/src/lib/record-filter'
+import { throttle } from 'lodash'
 
 /**
  * FullCalendar Corteza theme definition.
@@ -139,6 +145,7 @@ export default {
   data () {
     return {
       processing: false,
+      show: false,
 
       events: [],
       locale: undefined,
@@ -159,7 +166,6 @@ export default {
     config () {
       return {
         header: false,
-        height: 'parent',
         themeSystem: 'corteza',
         defaultView: 'dayGridMonth',
         editable: false,
@@ -180,7 +186,6 @@ export default {
         // Handle event fetching when view/date-range changes
         datesRender: ({ view: { activeStart, activeEnd, title } = {} } = {}) => {
           this.loadEvents(moment(activeStart), moment(activeEnd))
-          // eslint-disable-next-line
           this.title = title
         },
       }
@@ -200,20 +205,19 @@ export default {
   },
 
   watch: {
-    'boundingRect.height': {
-      handler: function () {
-        // This is required, since vue-grid calculates grid item's dimensions
-        // inside mounted hook
+    'block.options': {
+      deep: true,
+      handler () {
+        this.updateSize()
+      },
+    },
+    boundingRect: {
+      deep: true,
+      handler () {
         setTimeout(() => {
-          const fc = this.$refs.fc
-          if (!fc) {
-            return
-          }
-          fc.getApi().windowResize({ target: window })
-          fc.getApi().updateSize()
+          this.updateSize()
         })
       },
-      immediate: true,
     },
   },
 
@@ -225,6 +229,14 @@ export default {
     ...mapActions({
       findModuleByID: 'module/findByID',
     }),
+
+    updateSize: throttle(function () {
+      this.show = false
+
+      this.$nextTick(() => {
+        this.show = true
+      })
+    }, 200),
 
     /**
      * Helper method to load requested locale.
@@ -301,6 +313,9 @@ export default {
       }))
         .finally(() => {
           this.processing = false
+          setTimeout(() => {
+            this.updateSize()
+          })
         })
     },
 
@@ -320,6 +335,13 @@ export default {
 
       this.$router.push({ name: 'page.record', params: { recordID, pageID: page.pageID } })
     },
+
+    getHeight () {
+      if (this.$refs.cc) {
+        return this.$refs.cc.clientHeight
+      }
+      return 'auto'
+    },
   },
 }
 </script>
@@ -332,8 +354,6 @@ export default {
 </style>
 <style lang="scss">
 .calendar-container {
-  height: calc(100% - 7em);
-
   .fc-content {
     cursor: pointer;
   }

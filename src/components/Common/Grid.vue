@@ -28,6 +28,7 @@
         :class="{
           'h-100': isStretchable,
         }"
+        style="touch-action: none;"
         v-bind="{ ...item }"
       >
         <slot
@@ -154,7 +155,6 @@ export default {
       handler (blocks) {
         if (blocks.length === 0) this.$emit('change', [])
         this.grid = blocks.map(({ xywh: [x, y, w, h] }, i) => ({ i, x, y, w, h }))
-        this.recalculateBoundingRect()
       },
       immediate: true,
       deep: true,
@@ -176,13 +176,17 @@ export default {
     // Fetch bounding boxes of all grid items
     recalculateBoundingRect () {
       this.boundingRects = (this.$refs.items || [])
-        .map(({ $el }) => ({ ...$el.getBoundingClientRect() }))
+        .map(({ $el }) => {
+          const { x, y, width: w, height: h } = $el.getBoundingClientRect()
+          return { x, y, w, h }
+        })
     },
 
     handleLayoutUpdate (layout) {
       this.$emit('change', layout.map(
         ({ x, y, w, h, i }) => new compose.PageBlockMaker({ ...this.blocks[i], xywh: [x, y, w, h] }),
       ))
+      this.recalculateBoundingRect()
     },
   },
 }
