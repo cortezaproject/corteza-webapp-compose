@@ -125,6 +125,7 @@ export default {
       },
     }
   },
+
   computed: {
     title () {
       const { name, handle } = this.module
@@ -153,6 +154,8 @@ export default {
       for (i = 0, j = moduleFields.length; i < j; i += fieldSetSize) {
         fields.push(moduleFields.slice(i, i + fieldSetSize))
       }
+
+      fields.push(this.module.systemFields())
 
       return fields
     },
