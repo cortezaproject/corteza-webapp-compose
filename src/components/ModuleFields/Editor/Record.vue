@@ -445,11 +445,17 @@ export default {
                 queryIDs.push(`recordID = ${r.values[labelField]}`)
               })
 
-              return this.$ComposeAPI.recordList({ namespaceID, moduleID: relatedField.options.moduleID, query: queryIDs.join(' OR '), deleted: 1 }).then(({ set = [] }) => {
+              return this.$ComposeAPI.recordList({ namespaceID, moduleID: relatedField.options.moduleID, query: queryIDs.join(' OR '), deleted: 1 }).then(({ set: resolvedSet = [] }) => {
                 relatedField = relatedModule.fields.find(({ name }) => name === this.field.options.recordLabelField)
+                resolvedSet.forEach(r => {
+                  mappedIDs[r.recordID] = r
+                })
+
                 return set.map(r => {
-                  r.recordID = mappedIDs[r.recordID]
-                  return new compose.Record(relatedModule, r)
+                  r = new compose.Record(module, r)
+                  const relatedRecord = mappedIDs[r.values[labelField]]
+                  relatedRecord.recordID = r.recordID
+                  return new compose.Record(relatedModule, relatedRecord)
                 })
               })
             })
