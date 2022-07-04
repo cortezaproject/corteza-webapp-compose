@@ -6,6 +6,7 @@
     <chart-component
       v-if="chart"
       :chart="chart"
+      :record="record"
       :reporter="reporter"
     />
   </wrap>
@@ -54,6 +55,12 @@ export default {
     reporter (r) {
       const nr = { ...r }
       if (nr.filter) {
+        // If we use ${record} or ${ownerID} and there is no record, resolve empty
+        /* eslint-disable no-template-curly-in-string */
+        if (!this.record && (nr.filter.includes('${record}') || nr.filter.includes('${ownerID}'))) {
+          return new Promise((resolve) => resolve([]))
+        }
+
         nr.filter = evaluatePrefilter(nr.filter, {
           record: this.record,
           recordID: (this.record || {}).recordID || NoID,

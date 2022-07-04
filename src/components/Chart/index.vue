@@ -42,6 +42,11 @@ export default {
       type: Function,
       required: true,
     },
+    record: {
+      type: compose.Record,
+      required: false,
+      default: undefined,
+    },
   },
 
   data () {

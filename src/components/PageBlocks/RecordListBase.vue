@@ -349,11 +349,10 @@
                 />
                 <div
                   v-else-if="field.moduleField.canReadRecordValue && !field.edit"
-                  class="cursor-default mb-0"
+                  class="mb-0"
                   :class="{
                     'field-adjust-offset': inlineEditing,
                   }"
-                  @click.stop
                 >
                   <field-viewer
                     :field="field.moduleField"
@@ -1004,7 +1003,7 @@ export default {
       // we should disable the block
       /* eslint-disable no-template-curly-in-string */
       if (!this.record) {
-        if ((prefilter || '').includes('${record')) {
+        if ((prefilter || '').includes('${record}')) {
           throw Error(this.$t('record.invalidRecordVar'))
         }
 
@@ -1370,10 +1369,6 @@ export default {
 
 .handle {
   cursor: grab;
-}
-
-.cursor-default {
-  cursor: default !important;
 }
 
 .pointer {
