@@ -162,15 +162,21 @@ export default {
         return false
       }
 
+      const { canCreateOwnedRecord } = this.module || {}
+      const { createdAt, canManageOwnerOnRecord } = this.record || {}
       const { name, canUpdateRecordValue, isSystem, expressions = {} } = field || {}
-      const { canManageOwnerOnRecord } = this.record || {}
 
       if (!canUpdateRecordValue) {
         return false
       }
 
-      // Make ownedBy field editable if correct permissions
-      if (isSystem && !(name === 'ownedBy' && canManageOwnerOnRecord)) {
+      if (isSystem) {
+        // Make ownedBy field editable if correct permissions
+        if (name === 'ownedBy') {
+          // If not created we check module permissions, otherwise the canManageOwnerOnRecord
+          return createdAt ? canManageOwnerOnRecord : canCreateOwnedRecord
+        }
+
         return false
       }
 
