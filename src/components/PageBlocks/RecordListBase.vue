@@ -205,6 +205,7 @@
               <b-th v-if="options.draggable && inlineEditing" />
               <b-th
                 v-if="options.selectable"
+                style="width: 0%;"
                 class="d-print-none"
               >
                 <b-checkbox
@@ -214,7 +215,7 @@
                   @change="handleSelectAllOnPage({ isChecked: $event })"
                 />
               </b-th>
-              <b-th />
+              <b-th class="w-5" />
 
               <b-th
                 v-for="field in fields"
@@ -278,7 +279,7 @@
                 </div>
               </b-th>
 
-              <b-th />
+              <b-th class="w-5" />
             </b-tr>
           </b-thead>
 
@@ -425,7 +426,7 @@
                   <b-button
                     v-else
                     variant="link"
-                    class="p-0 m-0 pl-1 text-primary d-print-none"
+                    class="pl-1 text-primary d-print-none"
                     @click="handleCloneInline(item.r)"
                   >
                     <font-awesome-icon
@@ -1384,5 +1385,9 @@ th .required::after {
   width: 10px;
   height: 16px;
   overflow: hidden;
+}
+
+.w-5 {
+  width: 5%;
 }
 </style>
