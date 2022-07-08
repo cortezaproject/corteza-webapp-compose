@@ -8,6 +8,19 @@ import { plugins, websocket } from '@cortezaproject/corteza-vue'
 
 import pairs from './eventbus-pairs'
 
+import * as Sentry from '@sentry/vue'
+
+if (window.SentryDSN) {
+  Sentry.init({
+    Vue,
+    trackComponents: true,
+    dsn: window.SentryDSN,
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    tracesSampleRate: 1.0,
+  })
+}
+
 const notProduction = (process.env.NODE_ENV !== 'production')
 const verboseUIHooks = window.location.search.includes('verboseUIHooks')
 const verboseEventbus = window.location.search.includes('verboseEventbus')
