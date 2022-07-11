@@ -23,6 +23,7 @@
         </b-button>
         <namespace-translator
           v-if="namespace"
+          :title="$t('tooltip.translations')"
           :namespace="namespace"
           :disabled="isNew"
           style="margin-left:2px;"
@@ -85,6 +86,7 @@
                 />
                 <b-input-group-append>
                   <namespace-translator
+                    :title="$t('tooltip.translations')"
                     :namespace="namespace"
                     highlight-key="name"
                     button-variant="light"
@@ -200,6 +202,7 @@
                 />
                 <b-input-group-append>
                   <namespace-translator
+                    :title="$t('tooltip.translations')"
                     :namespace="namespace"
                     highlight-key="subtitle"
                     button-variant="light"
@@ -221,6 +224,7 @@
                 />
                 <b-input-group-append>
                   <namespace-translator
+                    :title="$t('tooltip.translations')"
                     :namespace="namespace"
                     highlight-key="description"
                     button-variant="light"

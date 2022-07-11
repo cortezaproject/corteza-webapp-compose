@@ -5,6 +5,7 @@
     class="ml-auto mr-1 py-1 px-3"
     :size="size"
     v-bind="$props"
+    :title="$t('tooltip.translations')"
     :resource="resource"
     :fetcher="fetcher"
     :updater="updater"

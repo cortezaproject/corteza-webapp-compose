@@ -235,6 +235,7 @@
                     />
                     <b-button
                       v-if="field.sortable"
+                      :title="$t('recordList.sort.tooltip')"
                       variant="link p-0 ml-1"
                       class="d-flex align-items-center justify-content-center"
                     >
@@ -364,6 +365,7 @@
                     v-if="item.r.deletedAt"
                     variant="link"
                     size="md"
+                    :title="$t('recordList.record.tooltip.undelete')"
                     class="border-0 text-dark mt-1 d-print-none"
                     @click.prevent="handleRestoreInline(item, index)"
                   >
@@ -388,6 +390,7 @@
                 <b-button
                   v-if="!inlineEditing && !options.hideRecordReminderButton"
                   variant="link"
+                  :title="$t('recordList.record.tooltip.reminder')"
                   class="p-0 m-0 pl-1 text-primary d-print-none"
                   @click.prevent="createReminder(item.r)"
                 >
@@ -400,6 +403,7 @@
                   <b-button
                     v-if="!inlineEditing"
                     variant="link"
+                    :title="$t('recordList.record.tooltip.clone')"
                     class="p-0 m-0 pl-1 text-secondary d-print-none"
                     :to="{ name: options.rowCreateUrl || 'page.record.create', params: { pageID: recordPageID, values: item.r.values }, query: null }"
                   >
@@ -410,6 +414,7 @@
                   <b-button
                     v-else
                     variant="link"
+                    :title="$t('recordList.record.tooltip.clone')"
                     class="p-0 m-0 pl-1 text-primary d-print-none"
                     @click="handleCloneInline(item.r)"
                   >
@@ -423,6 +428,7 @@
                   <b-button
                     v-if="!options.hideRecordEditButton && item.r.canUpdateRecord && recordPageID"
                     variant="link"
+                    :title="$t('recordList.record.tooltip.edit')"
                     class="p-0 m-0 pl-1 text-primary d-print-none"
                     :to="{ name: options.rowEditUrl || 'page.record.edit', params: { pageID: recordPageID, recordID: item.r.recordID }, query: null }"
                   >
@@ -433,6 +439,7 @@
                   <b-button
                     v-if="!options.hideRecordViewButton && item.r.canReadRecord && recordPageID"
                     variant="link"
+                    :title="$t('recordList.record.tooltip.view')"
                     class="p-0 m-0 pl-1 text-primary d-print-none"
                     :to="{ name: options.rowViewUrl || 'page.record', params: { pageID: recordPageID, recordID: item.r.recordID }, query: null }"
                   >
@@ -443,6 +450,7 @@
 
                   <c-permissions-button
                     v-if="item.r.canGrant && !options.hideRecordPermissionsButton"
+                    :tooltip="$t('recordList.record.tooltip.permissions')"
                     :resource="`corteza::compose:record/${item.r.namespaceID}/${item.r.moduleID}/${item.r.recordID}`"
                     :target="item.r.recordID"
                     :title="item.r.recordID"

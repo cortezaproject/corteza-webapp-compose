@@ -25,6 +25,7 @@
           />
         </b-button>
         <page-translator
+          :title="$t('tooltip.list-page-translations')"
           :page.sync="trPage"
           style="margin-left:2px;"
         />
@@ -32,6 +33,7 @@
           variant="primary"
           style="margin-left:2px;"
           class="d-flex align-items-center"
+          :title="$t('tooltip.edit.page-configuration')"
           :to="pageEditor"
         >
           <font-awesome-icon
@@ -59,6 +61,7 @@
             <b-button
               class="p-1 text-light"
               variant="link"
+              :title="$t('tooltip.edit.block-configuration')"
               @click="editBlock(index)"
             >
               <font-awesome-icon

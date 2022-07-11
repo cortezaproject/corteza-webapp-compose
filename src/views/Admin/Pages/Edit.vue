@@ -23,6 +23,7 @@
         </b-button>
         <page-translator
           v-if="page"
+          :title="$t('tooltip.list-page-translations')"
           :page="page"
           style="margin-left:2px;"
         />
@@ -30,6 +31,7 @@
           variant="primary"
           style="margin-left:2px;"
           class="d-flex align-items-center"
+          :title="$t('tooltip.view-record-page')"
           :to="pageViewer"
         >
           <font-awesome-icon

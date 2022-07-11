@@ -88,6 +88,7 @@
             </span>
             <c-permissions-button
               v-if="namespace.canGrant"
+              :tooltip="$t('tooltip.tree')"
               :title="item.title"
               :target="item.title"
               :resource="`corteza::compose:page/${namespace.namespaceID}/${item.pageID}`"

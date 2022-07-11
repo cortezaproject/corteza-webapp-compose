@@ -13,6 +13,7 @@
         <b-input-group-append>
           <page-translator
             v-if="page"
+            :title="$t('general.tooltip.translations')"
             :page="page"
             :block="block"
             :disabled="isNew"
