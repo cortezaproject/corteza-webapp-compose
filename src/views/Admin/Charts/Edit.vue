@@ -464,7 +464,13 @@ export default {
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {
-      const c = Object.assign({}, this.chart)
+      /**
+       * Pass a special tag alongside payload that
+       * instructs store layer to add content-language header to the API request
+       */
+      const resourceTranslationLanguage = this.currentLanguage
+
+      const c = Object.assign({}, this.chart, resourceTranslationLanguage)
       delete (c.config.renderer.data)
 
       if (this.chart.chartID === NoID) {

@@ -108,15 +108,30 @@ export default {
             const [report = {}] = this.chart.config.reports
             tr = find('yAxis.label')
             if (tr !== undefined) {
-              report.yAxis.label = tr.message
+              this.$set(report.yAxis, 'label', tr.message)
             }
 
             report.metrics.forEach((metric) => {
               tr = find(`metrics.${metric.metricID}.label`)
               if (tr) {
-                metric.label = tr.message
+                this.$set(metric, 'label', tr.message)
               }
             })
+
+            if (Array.isArray(report.dimensions)) {
+              report.dimensions.forEach(d => {
+                if (!Array.isArray(d.meta.steps)) {
+                  return
+                }
+
+                d.meta.steps.forEach((step) => {
+                  tr = find(`dimensions.${d.dimensionID}.meta.steps.${step.stepID}.label`)
+                  if (tr) {
+                    this.$set(step, 'label', tr.message)
+                  }
+                })
+              })
+            }
 
             return this.chart
           })

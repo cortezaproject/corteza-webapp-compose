@@ -22,6 +22,15 @@
             size="sm"
             :placeholder="$t('general.label.title')"
           />
+          <b-input-group-append>
+            <chart-translator
+              :field.sync="step.label"
+              :chart="chart"
+              :disabled="isNew"
+              :highlight-key="`dimensions.${dimension.dimensionID}.meta.steps.${step.stepID}.label`"
+              button-variant="light"
+            />
+          </b-input-group-append>
 
           <b-form-input
             v-model="step.value"
@@ -87,6 +96,8 @@
 
 <script>
 import ReportEdit from './ReportEdit'
+import ChartTranslator from 'corteza-webapp-compose/src/components/Chart/ChartTranslator'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import base from './base'
 
 export default {
@@ -95,10 +106,24 @@ export default {
   },
 
   components: {
+    ChartTranslator,
     ReportEdit,
   },
 
   extends: base,
+
+  props: {
+    chart: {
+      type: compose.Chart,
+      required: true,
+    },
+  },
+
+  computed: {
+    isNew () {
+      return this.chart.chartID === NoID
+    },
+  },
 
   methods: {
     renderPicker (field) {
