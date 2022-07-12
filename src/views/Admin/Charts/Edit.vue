@@ -357,7 +357,7 @@ export default {
         return Reports.FunnelChart
       }
       if (this.chart instanceof compose.GaugeChart) {
-        return Reports.GagueChart
+        return Reports.GaugeChart
       }
       return Reports.GenericChart
     },

@@ -1,9 +1,9 @@
 import FunnelChart from './FunnelChart'
 import GenericChart from './GenericChart'
-import GagueChart from './GagueChart'
+import GaugeChart from './GaugeChart'
 
 export default {
   FunnelChart,
   GenericChart,
-  GagueChart,
+  GaugeChart,
 }
