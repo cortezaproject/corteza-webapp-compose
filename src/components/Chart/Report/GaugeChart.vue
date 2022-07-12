@@ -19,7 +19,7 @@
           <b-form-input
             v-model="step.label"
             plain
-            size="sm"
+            class="w-50"
             :placeholder="$t('general.label.title')"
           />
           <b-input-group-append>
@@ -35,7 +35,7 @@
           <b-form-input
             v-model="step.value"
             type="number"
-            size="sm"
+            class="text-right w-25"
             :placeholder="$t('general.value')"
           />
 
