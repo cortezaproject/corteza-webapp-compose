@@ -28,9 +28,10 @@
         />
         <b-button
           variant="primary"
-          style="margin-left:2px;"
-          class="d-flex align-items-center"
+          :disabled="!pageViewer"
           :to="pageViewer"
+          class="d-flex align-items-center"
+          style="margin-left:2px;"
         >
           <font-awesome-icon
             :icon="['far', 'eye']"
@@ -215,12 +216,11 @@ export default {
     },
 
     pageViewer () {
-      const { pageID } = this.page
       if (this.isRecordPage) {
-        return { name: 'page.record', params: { pageID, recordID: NoID } }
-      } else {
-        return { name: 'page', params: { pageID } }
+        return undefined
       }
+      const { pageID } = this.page
+      return { name: 'page', params: { pageID } }
     },
 
     isRecordPage () {

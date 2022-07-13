@@ -178,11 +178,11 @@ export default {
     },
 
     pageViewer ({ pageID = NoID, moduleID = NoID }) {
-      if (moduleID) {
-        return { name: 'page.record', params: { pageID, recordID: NoID } }
-      } else {
-        return { name: 'page', params: { pageID } }
+      if (moduleID !== NoID) {
+        return undefined
       }
+
+      return { name: 'page', params: { pageID } }
     },
 
     handleChangePosition ({ beforeParent, data, afterParent }) {

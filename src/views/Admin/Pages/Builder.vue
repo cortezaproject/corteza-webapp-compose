@@ -16,6 +16,7 @@
         <b-button
           variant="primary"
           class="d-flex align-items-center"
+          :disabled="!pageViewer"
           :to="pageViewer"
         >
           {{ $t('navigation.viewPage') }}
@@ -290,10 +291,10 @@ export default {
 
     pageViewer () {
       if (this.module) {
-        return { name: 'page.record', params: { pageID: this.pageID, recordID: NoID } }
-      } else {
-        return { name: 'page', params: { pageID: this.pageID } }
+        return undefined
       }
+
+      return { name: 'page', params: { pageID: this.pageID } }
     },
 
     pageEditor () {
