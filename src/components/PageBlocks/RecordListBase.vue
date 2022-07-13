@@ -1004,7 +1004,7 @@ export default {
       // we should disable the block
       /* eslint-disable no-template-curly-in-string */
       if (!this.record) {
-        if ((prefilter || '').includes('${record}')) {
+        if ((prefilter || '').includes('${record')) {
           throw Error(this.$t('record.invalidRecordVar'))
         }
 

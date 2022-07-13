@@ -57,7 +57,7 @@ export default {
       if (nr.filter) {
         // If we use ${record} or ${ownerID} and there is no record, resolve empty
         /* eslint-disable no-template-curly-in-string */
-        if (!this.record && (nr.filter.includes('${record}') || nr.filter.includes('${ownerID}'))) {
+        if (!this.record && (nr.filter.includes('${record') || nr.filter.includes('${ownerID}'))) {
           return new Promise((resolve) => resolve([]))
         }
 
