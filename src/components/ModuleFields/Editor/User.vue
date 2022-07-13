@@ -284,6 +284,11 @@ export default {
      * Handles single & multi value fields
      */
     updateValue (user, index = -1) {
+      // reset singleSelect value for better value presentation
+      if (this.$refs.singleSelect) {
+        this.$refs.singleSelect._data._value = undefined
+      }
+
       if (user) {
         // update list of resolved users for every item we add
         this.addUserToResolved({ ...user })

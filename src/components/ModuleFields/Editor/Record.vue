@@ -307,9 +307,6 @@ export default {
       const { value } = event || {}
       if (value !== crtValue) {
         if (value) {
-          // Set selected to value
-          this.formatRecordValues(value)
-
           if (index !== undefined) {
             this.value[index] = value
           } else {
@@ -489,10 +486,12 @@ export default {
     selectChange (event) {
       const { value } = event || {}
       if (value) {
-        this.formatRecordValues(value)
         this.value.push(value)
-        // Cant mutate props so we use magic(refs)
-        this.$refs.singleSelect.mutableValue = null
+
+        // reset singleSelect value for better value presentation
+        if (this.$refs.singleSelect) {
+          this.$refs.singleSelect._data._value = undefined
+        }
       }
     },
 
