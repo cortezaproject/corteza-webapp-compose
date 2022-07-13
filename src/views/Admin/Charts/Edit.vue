@@ -160,7 +160,7 @@
                 >
                   <b-button
                     v-if="!error"
-                    :disabled="processing"
+                    :disabled="processing || !reportsValid"
                     class="float-right"
                     variant="outline-primary"
                     @click.prevent="update"

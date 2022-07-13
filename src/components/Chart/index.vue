@@ -87,6 +87,12 @@ export default {
 
   methods: {
     async updateChart () {
+      const [report = {}] = this.chart.config.reports
+
+      if ((!this.chart.name && !this.chart.handle) && !report.moduleID) {
+        return
+      }
+
       this.processing = true
 
       const chart = chartConstructor(this.chart)
@@ -98,7 +104,6 @@ export default {
 
         if (!!data.labels && Array.isArray(data.labels)) {
           // Get dimension field kind
-          const [report = {}] = this.chart.config.reports
           const [dimension = {}] = report.dimensions
           let { field } = dimension
           const module = this.getModuleByID(report.moduleID)
