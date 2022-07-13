@@ -63,11 +63,7 @@
                     v-if="!options.hideAddButton"
                     data-test-id="button-add-record"
                     class="btn btn-lg btn-primary float-left mr-1"
-                    :to="{
-                      name: options.rowCreateUrl || 'page.record.create',
-                      params: { pageID: recordPageID, refRecord: record },
-                      query: null,
-                    }"
+                    :to="newRecordRoute"
                   >
                     + {{ $t('recordList.addRecord') }}
                   </router-link>
@@ -346,6 +342,7 @@
                   :namespace="namespace"
                   :errors="recordErrors(item, field)"
                   class="mb-0"
+                  style="min-width: 150px;"
                   @click.stop
                 />
                 <div
@@ -815,6 +812,21 @@ export default {
     canDeleteSelectedRecords () {
       return this.items.filter(({ id, r }) => this.selected.includes(id) && r.canDeleteRecord).length
     },
+
+    newRecordRoute () {
+      const refRecord = this.options.linkToParent ? this.record : undefined
+      const pageID = this.recordPageID
+
+      if (pageID || this.options.rowCreateUrl) {
+        return {
+          name: this.options.rowCreateUrl || 'page.record.create',
+          params: { pageID, refRecord },
+          query: null,
+        }
+      }
+
+      return undefined
+    },
   },
 
   watch: {
@@ -928,7 +940,7 @@ export default {
       const r = new compose.Record(this.recordListModule, {})
 
       // Set record values that should be prefilled
-      if (this.record.recordID) {
+      if (this.record.recordID && this.options.linkToParent) {
         r.values[this.options.refField] = this.record.recordID
       }
 

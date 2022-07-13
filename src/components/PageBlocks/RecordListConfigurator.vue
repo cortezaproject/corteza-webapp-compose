@@ -131,6 +131,7 @@
           </b-form-checkbox>
         </b-form-group>
       </div>
+
       <b-form-group
         horizontal
         :label-cols="3"
@@ -143,7 +144,14 @@
         <b-form-checkbox v-model="options.hideImportButton">
           {{ $t('recordList.record.hideImportButton') }}
         </b-form-checkbox>
+        <b-form-checkbox
+          v-if="onRecordPage"
+          v-model="options.linkToParent"
+        >
+          {{ $t('recordList.record.linkToParent') }}
+        </b-form-checkbox>
       </b-form-group>
+
       <b-form-group
         horizontal
         :label-cols="3"
@@ -168,6 +176,7 @@
           {{ $t('recordList.record.prefilterHideSearch') }}
         </b-form-checkbox>
       </b-form-group>
+
       <b-form-group
         v-if="!options.positionField"
         horizontal
@@ -194,6 +203,7 @@
           {{ $t('recordList.record.presortHideSort') }}
         </b-form-checkbox>
       </b-form-group>
+
       <b-form-group
         v-if="!options.editable"
         horizontal
@@ -222,6 +232,7 @@
           {{ $t('recordList.record.showTotalCount') }}
         </b-form-checkbox>
       </b-form-group>
+
       <b-form-group
         horizontal
         :label-cols="3"
@@ -341,6 +352,10 @@ export default {
       }
 
       return []
+    },
+
+    onRecordPage () {
+      return this.page && this.page.moduleID !== NoID
     },
 
     recordListModuleRecordPage () {
