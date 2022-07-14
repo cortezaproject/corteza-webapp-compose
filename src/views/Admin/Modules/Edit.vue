@@ -53,6 +53,7 @@
                   <b-button
                     variant="light"
                     size="lg"
+                    :disabled="!module"
                     class="mr-1"
                     @click="privacySettings.modal = true"
                   >
@@ -361,10 +362,6 @@
         @save="onPrivacySettingsSave"
       />
     </b-container>
-
-    <privacy-settings
-      :modal.sync="privacySettings.modal"
-    />
 
     <portal to="admin-toolbar">
       <editor-toolbar

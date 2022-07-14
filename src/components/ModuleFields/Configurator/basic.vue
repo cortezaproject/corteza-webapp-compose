@@ -74,7 +74,18 @@
       />
     </b-form-group>
 
-    <hr v-if="showvalueExpr || showDefaultField">
+    <b-form-group
+      :label="$t('privacy.sensitivityLevel.label')"
+      class="text-primary"
+    >
+      <c-sensitivity-level-picker
+        v-model="field.privacy.sensitivityLevel"
+        :placeholder="$t('privacy.sensitivityLevel.placeholder')"
+        :max-level="maxLevelID"
+      />
+    </b-form-group>
+
+    <hr>
 
     <b-form-group
       :label="$t(`options.description.label.${noDescriptionEdit ? 'default' : 'view'}`)"
@@ -187,10 +198,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { compose, validator, NoID } from '@cortezaproject/corteza-js'
+import { components } from '@cortezaproject/corteza-vue'
 import FieldEditor from '../Editor'
 import FieldTranslator from 'corteza-webapp-compose/src/components/Admin/Module/FieldTranslator'
-import { compose, validator, NoID } from '@cortezaproject/corteza-js'
-import { mapGetters } from 'vuex'
+const { CSensitivityLevelPicker } = components
 
 export default {
   i18nOptions: {
@@ -200,6 +213,7 @@ export default {
   components: {
     FieldEditor,
     FieldTranslator,
+    CSensitivityLevelPicker,
   },
 
   props: {
@@ -221,7 +235,10 @@ export default {
 
   data () {
     return {
+      maxLevelID: undefined,
+
       showvalueExpr: false,
+
       mock: {
         show: true,
         namespace: undefined,
@@ -352,6 +369,8 @@ export default {
     if (!this.field.expressions.value) {
       this.$set(this.field.expressions, 'value', '')
     }
+
+    this.maxLevelID = this.module.privacy.sensitivityLevel
   },
 
   beforeDestroy () {
