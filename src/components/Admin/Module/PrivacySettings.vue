@@ -53,6 +53,24 @@
         </b-col>
       </b-row>
 
+      <b-row>
+        <b-col
+          cols="12"
+          lg="6"
+        >
+          <b-form-group
+            :label="$t('privacy.sensitivityLevel.label')"
+            class="text-primary"
+          >
+            <c-sensitivity-level-picker
+              v-model="module.privacy.sensitivityLevel"
+              :placeholder="$t('privacy.sensitivityLevel.placeholder')"
+              :max-level="maxLevelID"
+            />
+          </b-form-group>
+        </b-col>
+      </b-row>
+
       <hr>
 
       <b-row
@@ -97,6 +115,8 @@
 <script>
 import { compose, NoID } from '@cortezaproject/corteza-js'
 import VueSelect from 'vue-select'
+import { components } from '@cortezaproject/corteza-vue'
+const { CSensitivityLevelPicker } = components
 
 export default {
   i18nOptions: {
@@ -105,6 +125,7 @@ export default {
 
   components: {
     VueSelect,
+    CSensitivityLevelPicker,
   },
 
   props: {
@@ -122,6 +143,7 @@ export default {
   data () {
     return {
       connection: undefined,
+      maxLevelID: undefined,
 
       connections: [],
 
@@ -168,7 +190,7 @@ export default {
     'connection.connectionID': {
       immediate: true,
       handler () {
-        const { capabilities = {} } = this.connection || {}
+        const { capabilities = {}, sensitivityLevel } = this.connection || {}
         const enabled = capabilities.enabled || []
         const types = ['enforced', 'supported', 'unsupported']
 
@@ -177,6 +199,9 @@ export default {
             this.capabilities[c] = { support, enabled: enabled.includes(c) }
           })
         })
+
+        this.module.privacy.sensitivityLevel = this.module.privacy.sensitivityLevel || sensitivityLevel
+        this.maxLevelID = sensitivityLevel
       },
     },
   },
