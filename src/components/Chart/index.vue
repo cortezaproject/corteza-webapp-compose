@@ -89,7 +89,7 @@ export default {
     async updateChart () {
       const [report = {}] = this.chart.config.reports
 
-      if ((!this.chart.name && !this.chart.handle) && !report.moduleID) {
+      if (!report.moduleID) {
         return
       }
 
