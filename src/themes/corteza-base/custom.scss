@@ -84,18 +84,11 @@ th {
     fill: $gray-900;
     display: inline-flex;
   }
-
-  .vs__selected-options {
-    word-wrap: break-word;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
 }
 
 .vs__dropdown-menu {
-  z-index: 1090;
   min-width: min(100%, 15vw);
+  z-index: 1090;
 }
 
 .loader {
