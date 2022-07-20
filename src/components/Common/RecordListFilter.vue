@@ -2,6 +2,7 @@
   <div>
     <b-button
       :id="popoverTarget"
+      :title="$t('recordList.filter.title')"
       variant="link p-0 ml-1"
       :class="[inFilter ? 'text-primary' : 'text-secondary']"
       @click.stop

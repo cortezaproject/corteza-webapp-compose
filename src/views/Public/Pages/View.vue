@@ -3,6 +3,46 @@
     v-if="!!page"
     class="d-flex w-100 overflow-hidden"
   >
+    <portal to="topbar-title">
+      {{ pageTitle }}
+    </portal>
+
+    <portal to="topbar-tools">
+      <b-button-group
+        v-if="page && page.canUpdatePage"
+        size="sm"
+        class="mr-1"
+      >
+        <b-button
+          variant="primary"
+          class="d-flex align-items-center"
+          :to="pageBuilder"
+        >
+          {{ $t('general:label.pageBuilder') }}
+          <font-awesome-icon
+            :icon="['fas', 'cogs']"
+            class="ml-2"
+          />
+        </b-button>
+        <page-translator
+          v-if="trPage"
+          :page.sync="trPage"
+          style="margin-left:2px;"
+        />
+        <b-button
+          :title="$t('tooltip.edit.page')"
+          :to="pageEditor"
+          variant="primary"
+          class="d-flex align-items-center"
+          style="margin-left:2px;"
+        >
+          <font-awesome-icon
+            :icon="['far', 'edit']"
+          />
+        </b-button>
+      </b-button-group>
+    </portal>
+
     <div
       class="flex-grow-1 overflow-auto d-flex px-2 w-100"
     >
@@ -28,12 +68,19 @@
 <script>
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
 import AttachmentModal from 'corteza-webapp-compose/src/components/Public/Page/Attachment/Modal'
+import PageTranslator from 'corteza-webapp-compose/src/components/Admin/Page/PageTranslator'
+
 import { compose, NoID } from '@cortezaproject/corteza-js'
 
 export default {
+  i18nOptions: {
+    namespaces: 'page',
+  },
+
   components: {
     Grid,
     AttachmentModal,
+    PageTranslator,
   },
 
   props: {
@@ -65,6 +112,32 @@ export default {
       }
 
       return undefined
+    },
+
+    trPage: {
+      get () {
+        return this.page.clone()
+      },
+      set (v) {
+        this.updatePageSet(v)
+      },
+    },
+
+    pageTitle () {
+      if (this.page.pageID !== NoID) {
+        const { title = '', handle = '' } = this.page
+        return title || handle || this.$t('navigation:noPageTitle')
+      }
+
+      return ''
+    },
+
+    pageEditor () {
+      return { name: 'admin.pages.edit', params: { pageID: this.page.pageID } }
+    },
+
+    pageBuilder () {
+      return { name: 'admin.pages.builder', params: { pageID: this.page.pageID } }
     },
   },
 
