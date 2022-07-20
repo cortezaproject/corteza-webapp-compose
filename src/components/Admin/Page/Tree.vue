@@ -93,6 +93,7 @@
               :title="item.title"
               :target="item.title"
               :resource="`corteza::compose:page/${namespace.namespaceID}/${item.pageID}`"
+              :tooltip="$t('permissions:resources.compose.page.tooltip')"
               link
               class="btn px-2"
             />

@@ -156,6 +156,7 @@
                     :title="m.name"
                     :target="m.name"
                     :resource="`corteza::compose:module/${m.namespaceID}/${m.moduleID}`"
+                    :tooltip="$t('permissions:resources.compose.module.tooltip')"
                     class="btn px-2"
                     link
                   />

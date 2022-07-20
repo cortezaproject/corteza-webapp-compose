@@ -31,9 +31,10 @@
         />
         <b-button
           variant="primary"
-          style="margin-left:2px;"
-          class="d-flex align-items-center"
+          :title="$t('tooltip.edit.page')"
           :to="pageEditor"
+          class="d-flex align-items-center"
+          style="margin-left:2px;"
         >
           <font-awesome-icon
             :icon="['far', 'edit']"
@@ -58,8 +59,9 @@
             class="toolbox border-0 p-2 pr-3 m-0 text-light text-center"
           >
             <b-button
-              class="p-1 text-light"
+              :title="$t('tooltip.edit.block')"
               variant="link"
+              class="p-1 text-light"
               @click="editBlock(index)"
             >
               <font-awesome-icon
