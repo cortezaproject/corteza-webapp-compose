@@ -1,44 +1,5 @@
 <template>
   <div class="d-flex flex-column h-100 w-100">
-    <portal to="topbar-title">
-      {{ pageTitle }}
-    </portal>
-
-    <portal to="topbar-tools">
-      <b-button-group
-        v-if="page && page.canUpdatePage"
-        size="sm"
-        class="mr-1"
-      >
-        <b-button
-          variant="primary"
-          class="d-flex align-items-center"
-          :to="pageBuilder"
-        >
-          {{ $t('label.pageBuilder') }}
-          <font-awesome-icon
-            :icon="['fas', 'cogs']"
-            class="ml-2"
-          />
-        </b-button>
-        <page-translator
-          v-if="trPage"
-          :page.sync="trPage"
-          style="margin-left:2px;"
-        />
-        <b-button
-          variant="primary"
-          style="margin-left:2px;"
-          class="d-flex align-items-center"
-          :to="pageEditor"
-        >
-          <font-awesome-icon
-            :icon="['far', 'edit']"
-          />
-        </b-button>
-      </b-button-group>
-    </portal>
-
     <div
       v-if="showSteps"
       class="d-flex flex-column m-5 vh-75"
@@ -163,6 +124,7 @@
         </b-row>
       </b-container>
     </div>
+
     <router-view
       v-else
       class="flex-grow-1 overflow-auto"
@@ -177,11 +139,9 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { compose } from '@cortezaproject/corteza-js'
 import CircleStep from 'corteza-webapp-compose/src/components/Common/CircleStep'
-import PageTranslator from 'corteza-webapp-compose/src/components/Admin/Page/PageTranslator'
-import { compose, NoID } from '@cortezaproject/corteza-js'
 
-const pushContentAbove = 610
 const demoPageHandle = 'demo_page'
 
 export default {
@@ -193,7 +153,6 @@ export default {
 
   components: {
     CircleStep,
-    PageTranslator,
   },
 
   props: {
@@ -224,26 +183,6 @@ export default {
       charts: 'chart/set',
     }),
 
-    routerViewClass () {
-      return {
-        'compose-content': true,
-        padded: this.navVisible && this.canPushContent,
-      }
-    },
-
-    canPushContent () {
-      return this.documentWidth > pushContentAbove
-    },
-
-    trPage: {
-      get () {
-        return this.page.clone()
-      },
-      set (v) {
-        this.updatePageSet(v)
-      },
-    },
-
     page () {
       return this.$store.getters['page/getByID'](this.pageID) || new compose.Page()
     },
@@ -262,27 +201,6 @@ export default {
 
     hasPages () {
       return this.pages.filter(p => p.visible || p.handle === demoPageHandle).length > 0
-    },
-
-    pageTitle () {
-      if (this.page.pageID !== NoID) {
-        const { title = '', handle = '' } = this.page
-        return title || handle || this.$t('navigation.noPageTitle')
-      }
-
-      return ''
-    },
-
-    pageEditorDisabled () {
-      return this.page.moduleID !== NoID
-    },
-
-    pageEditor () {
-      return { name: 'admin.pages.edit', params: { pageID: this.pageID } }
-    },
-
-    pageBuilder () {
-      return { name: 'admin.pages.builder', params: { pageID: this.pageID } }
     },
   },
 
