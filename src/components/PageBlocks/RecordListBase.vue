@@ -1140,7 +1140,7 @@ export default {
     },
 
     handleRowClicked ({ r: { recordID } }) {
-      if ((this.options.editable && this.editing) || !this.recordPageID) {
+      if ((this.options.editable && this.editing) || (!this.recordPageID && !this.options.rowViewUrl)) {
         return
       }
 

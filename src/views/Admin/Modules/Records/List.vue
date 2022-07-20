@@ -105,6 +105,7 @@ export default {
         hideRecordReminderButton: true,
         hideRecordViewButton: true,
         hideRecordCloneButton: true,
+        hideRecordPermissionsButton: false,
         selectable: true,
         allowExport: true,
         perPage: 14,
