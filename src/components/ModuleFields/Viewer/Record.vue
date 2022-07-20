@@ -7,16 +7,17 @@
 
   <div v-else>
     <span
-      v-for="(v, index) of formatedValue"
+      v-for="(v, index) of formattedValue"
       :key="index"
       class="text-nowrap"
+      :class="{ 'd-block': field.options.multiDelimiter === '\n' }"
       @click.stop
     >
       <router-link
         :to="v.to"
         :class="{ 'text-decoration-none default-cursor': !v.to}"
       >
-        {{ v.value }}
+        {{ v.value }}{{ index !== formattedValue.length - 1 ? field.options.multiDelimiter : '' }}
       </router-link>
     </span>
   </div>
@@ -46,7 +47,7 @@ export default {
       findUserByID: 'user/findByID',
     }),
 
-    formatedValue () {
+    formattedValue () {
       const value = Array.isArray(this.value) ? this.value : [this.value].filter(v => v) || []
       return value.map(recordID => {
         return {
