@@ -28,6 +28,7 @@
         />
         <b-button
           variant="primary"
+          :title="$t('tooltip.view')"
           :disabled="!pageViewer"
           :to="pageViewer"
           class="d-flex align-items-center"
