@@ -55,9 +55,10 @@
         </b-select>
         <b-input-group-append>
           <b-button
+            variant="light"
+            :title="$t('tooltip.field')"
             :disabled="!value.cap.configurable"
             class="px-2"
-            variant="light"
             @click.prevent="$emit('edit')"
           >
             <font-awesome-icon
@@ -111,6 +112,7 @@
         button-variant="link"
         :title="value.name"
         :target="value.name"
+        :tooltip="$t('permissions:resources.compose.module-field.tooltip')"
         :resource="`corteza::compose:module-field/${module.namespaceID}/${module.moduleID}/${value.fieldID}`"
       />
     </td>
