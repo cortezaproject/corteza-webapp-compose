@@ -1087,8 +1087,9 @@ export default {
 
     onExport (e) {
       this.processing = true
+
       const { namespaceID, moduleID } = this.filter || {}
-      const { filterRaw, timezone } = e
+      const { filter, filterRaw, timezone } = e
       e = {
         ...e,
         namespaceID,
@@ -1106,30 +1107,11 @@ export default {
         e.filename += ` - ${timezone.label}`
       }
 
-      let filter = evaluatePrefilter(filterRaw.filter, {
-        record: this.record,
-        recordID: (this.record || {}).recordID || NoID,
-        ownerID: (this.record || {}).userID || NoID,
-        userID: (this.$auth.user || {}).userID || NoID,
-      })
-
-      if (filter) {
-        filter = `(${filter})`
-      }
-
-      const query = queryToFilter(filterRaw.query, filter, this.recordListModule.fields)
-
-      if (e.filters && query) {
-        e.filters = `(${e.filters}) AND ${encodeURI(query)}`
-      } else if (query) {
-        e.filters = encodeURI(query)
-      }
-
       const exportUrl = url.Make({
         url: `${this.$ComposeAPI.baseURL}${this.$ComposeAPI.recordExportEndpoint(e)}`,
         query: {
           fields: e.fields,
-          filter: e.filters,
+          filter: encodeURI(filter),
           jwt: this.$auth.accessToken,
           timezone: timezone ? timezone.tzCode : undefined,
         },

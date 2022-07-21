@@ -3,8 +3,11 @@
     header-bg-variant="white"
     footer-bg-variant="white"
   >
-    <b-form-group>
-      <label>{{ $t('recordList.export.selectFields') }}</label>
+    <b-form-group
+      :label="$t('recordList.export.selectFields')"
+      :description="$t('recordList.export.limitations')"
+      label-class="text-primary"
+    >
       <field-picker
         v-if="module"
         :module="module"
@@ -14,38 +17,6 @@
         class="d-flex flex-column"
         style="max-height: 45vh;"
       />
-
-      <i>{{ $t('recordList.export.limitations') }}</i>
-    </b-form-group>
-
-    <b-form-group
-      breakpoint="md"
-      :label="$t('recordList.export.query.label')"
-    >
-      <b-form-input
-        v-model="exportQuery"
-        :placeholder="$t('recordList.export.query.placeholder')"
-      />
-    </b-form-group>
-
-    <b-form-group
-      breakpoint="md"
-      :label="$t('recordList.export.filter.label')"
-    >
-      <b-form-textarea
-        v-model="exportFilter"
-        :placeholder="$t('recordList.export.filter.placeholder')"
-      />
-      <b-form-text>
-        <i18next
-          path="recordList.export.filter.footnote"
-          tag="label"
-        >
-          <code>${recordID}</code>
-          <code>${ownerID}</code>
-          <code>${userID}</code>
-        </i18next>
-      </b-form-text>
     </b-form-group>
 
     <b-form-group>
@@ -73,38 +44,45 @@
       />
     </b-form-group>
 
-    <b-row no-gutters>
-      <b-col cols="5">
-        <b-form-group
-          v-if="rangeType === 'range'"
-          label-cols="5"
-          :label="$t('recordList.export.rangeBy')"
+    <template v-if="rangeType === 'range'">
+      <b-row
+        v-if="rangeType === 'range'"
+      >
+        <b-col
+          md="6"
         >
-          <b-form-select
-            v-model="rangeBy"
-            :options="rangeByOptions"
-          />
-        </b-form-group>
-      </b-col>
-    </b-row>
+          <b-form-group
+            :label="$t('recordList.export.rangeBy')"
+            label-class="text-primary"
+          >
+            <b-form-select
+              v-model="rangeBy"
+              :options="rangeByOptions"
+            />
+          </b-form-group>
+        </b-col>
+        <b-col
+          md="6"
+        >
+          <b-form-group
+            :label="$t('recordList.export.dateRange')"
+            label-class="text-primary"
+          >
+            <b-form-select
+              v-model="range"
+              :options="dateRangeOptions"
+            />
+          </b-form-group>
+        </b-col>
+      </b-row>
+    </template>
+
     <b-row
       v-if="rangeType === 'range'"
-      no-gutters
+      class="mb-3"
     >
-      <b-col cols="5">
-        <b-form-group
-          label-cols="5"
-          :label="$t('recordList.export.dateRange')"
-        >
-          <b-form-select
-            v-model="range"
-            :options="dateRangeOptions"
-          />
-        </b-form-group>
-      </b-col>
       <b-col
-        cols="3"
-        class="ml-5"
+        cols="6"
       >
         <b-form-input
           v-model="start"
@@ -115,8 +93,7 @@
         />
       </b-col>
       <b-col
-        cols="3"
-        class="ml-2"
+        cols="6"
       >
         <b-form-input
           v-model="end"
@@ -128,6 +105,33 @@
       </b-col>
     </b-row>
 
+    <template
+      v-if="rangeType !== 'selection'"
+    >
+      <b-form-group
+        :label="$t('recordList.export.query.label')"
+        label-class="text-primary"
+      >
+        <b-form-input
+          v-model="exportQuery"
+          :placeholder="$t('recordList.export.query.placeholder')"
+          debounce="500"
+        />
+      </b-form-group>
+
+      <b-form-group
+        :label="$t('recordList.export.filter.label')"
+        label-class="text-primary"
+        class="mb-0"
+      >
+        <b-form-textarea
+          v-model="exportFilter"
+          :placeholder="$t('recordList.export.filter.placeholder')"
+          debounce="500"
+        />
+      </b-form-group>
+    </template>
+
     <div
       slot="footer"
       class="d-flex"
@@ -135,16 +139,23 @@
       <span
         class="my-auto"
       >
-        {{ $t('recordList.export.recordCount', { count: getExportableCount || 0 }) }}
+        <b-spinner
+          v-if="processingCount"
+          small
+        />
+        <span
+          v-else
+        >
+          {{ $t('recordList.export.recordCount', { count: getExportableCount || 0 }) }}
+        </span>
       </span>
       <span class="ml-auto">
         <c-input-processing
           v-if="allowJSON"
           :processing="processing"
           :disabled="exportDisabled"
-          :variant="'dark'"
+          variant="light"
           size="lg"
-          class="mr-2 mb-2"
           @click="doExport('json')"
         >
           {{ $t('recordList.export.json') }}
@@ -153,9 +164,9 @@
           v-if="allowCSV"
           :processing="processing"
           :disabled="exportDisabled"
-          :variant="'dark'"
+          variant="light"
           size="lg"
-          class="mr-2 mb-2"
+          class="ml-2"
           @click="doExport('csv')"
         >
           {{ $t('recordList.export.csv') }}
@@ -170,6 +181,7 @@ import { compose } from '@cortezaproject/corteza-js'
 import FieldPicker from 'corteza-webapp-compose/src/components/Common/FieldPicker'
 import moment from 'moment'
 import tz from 'compact-timezone-list'
+import { queryToFilter } from 'corteza-webapp-compose/src/lib/record-filter'
 import { VueSelect } from 'vue-select'
 const fmtDate = (d) => d.format('YYYY-MM-DD')
 
@@ -270,6 +282,7 @@ export default {
         },
       },
       rangeRecordCount: 0,
+      processingCount: false,
     }
   },
 
@@ -280,7 +293,7 @@ export default {
 
     // These should be computed, because of i18n
     rangeTypeOptions () {
-      return [
+      const options = [
         {
           value: 'all',
           text: this.$t('recordList.export.all'),
@@ -289,12 +302,16 @@ export default {
           value: 'range',
           text: this.$t('recordList.export.inRange'),
         },
-        {
+      ]
+
+      if (this.hasSelection) {
+        options.push({
           value: 'selection',
           text: this.$t('recordList.export.selection'),
-          disabled: !this.hasSelection,
-        },
-      ]
+        })
+      }
+
+      return options
     },
 
     /**
@@ -358,10 +375,9 @@ export default {
       // when exporting selection, only selected records are applicable
       if (this.rangeType === 'selection') {
         return this.selection.length
-      } else if (this.rangeType === 'range') {
-        return this.rangeRecordCount
       }
-      return this.recordCount
+
+      return this.rangeRecordCount
     },
 
     exportDisabled () {
@@ -463,64 +479,59 @@ export default {
   // Watchers needed for storybook
   watch: {
     filter: {
-      handler: function (nv) {
+      handler () {
         this.$emit('change', this.filter)
+        this.getTotalCount()
       },
       deep: true,
     },
 
     preselectedFields: {
-      handler: function (value) {
+      handler (value) {
         this.fields = value.filter(f => this.disabledTypes.indexOf(f.kind) < 0)
       },
       immediate: true,
     },
 
     filterRangeType: {
-      handler: function (value) {
+      immediate: true,
+      handler (value) {
         this.filter.rangeType = value
       },
-      immediate: true,
     },
 
     filterRangeBy: {
-      handler: function (value) {
+      handler (value) {
         this.filter.rangeBy = value
       },
       immediate: true,
     },
 
     startDate: {
-      handler: function (value) {
+      handler (value) {
         this.start = value
       },
     },
 
     endDate: {
-      handler: function (value) {
+      handler (value) {
         this.end = value
       },
     },
 
     dateRange: {
-      handler: function (value) {
+      handler (value) {
         this.range = value
       },
     },
 
     hasSelection: {
-      handler: function (h) {
+      handler (h) {
         if (h) {
           this.rangeType = 'selection'
         }
       },
       immediate: true,
-    },
-
-    currentRange: {
-      handler (range = {}) {
-        this.getTotalRangeCount(range)
-      },
     },
   },
 
@@ -566,53 +577,61 @@ export default {
       }
     },
 
-    makeFilters ({ rangeType, rangeBy, date }) {
+    makeFilter ({ query, filter, rangeType, rangeBy, date }) {
+      query = queryToFilter(query, filter, this.module.fields)
+
       if (rangeType === 'all') {
-        return undefined
+        return query
       }
 
       if (rangeType === 'selection') {
         // @todo improve with IN operator when supported
-        return `(${
-          this.selection.map(r => `recordID='${r}'`)
-            .join(' OR ')
-        })`
+        return this.selection.map(r => `recordID='${r}'`).join(' OR ')
       }
 
-      let start, end
+      let dateQuery, start, end
       if (date.start) {
         start = `DATE(${rangeBy})>='${date.start}'`
       }
+
       if (date.end) {
         end = `DATE(${rangeBy})<='${date.end}'`
       }
 
       if (start && end) {
-        return `(${start}) AND (${end})`
+        dateQuery = `(${start}) AND (${end})`
+      } else {
+        dateQuery = start || end
       }
-      return start || end
+
+      return query ? `(${query}) AND ${dateQuery}` : dateQuery
     },
 
     doExport (kind) {
       this.$emit('export', {
         ext: kind,
         fields: this.fields.map(({ name }) => name),
-        filters: this.makeFilters(this.filter),
+        filter: this.makeFilter(this.filter),
         filterRaw: this.filter,
         timezone: this.forTimezone ? this.exportTimezone : undefined,
       })
     },
 
-    getTotalRangeCount ({ start, end }) {
-      if (start || end) {
-        const { moduleID, namespaceID } = this.module || {}
-        const query = this.makeFilters(this.filter)
-        if (moduleID && namespaceID) {
-          this.$ComposeAPI.recordList({ namespaceID, moduleID, query, incTotal: true })
-            .then(({ filter = {} }) => {
-              this.rangeRecordCount = filter.total || 0
-            })
-        }
+    getTotalCount () {
+      const { moduleID, namespaceID } = this.module || {}
+      const query = this.makeFilter(this.filter)
+      if (moduleID && namespaceID) {
+        this.processingCount = true
+        this.$ComposeAPI.recordList({ namespaceID, moduleID, query, limit: 1, incTotal: true })
+          .then(({ filter = {} }) => {
+            this.rangeRecordCount = filter.total || 0
+          })
+          .catch(() => {
+            this.rangeRecordCount = 0
+          })
+          .finally(() => {
+            this.processingCount = false
+          })
       }
     },
   },
