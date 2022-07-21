@@ -105,7 +105,7 @@ export default {
         if (!!data.labels && Array.isArray(data.labels)) {
           // Get dimension field kind
           const [dimension = {}] = report.dimensions
-          let { field } = dimension
+          let { field, meta = {} } = dimension
           const module = this.getModuleByID(report.moduleID)
 
           if (module) {
@@ -113,6 +113,10 @@ export default {
               ...module.fields,
               ...module.systemFields(),
             ].find(({ name }) => name === field)
+
+            if (meta.fields) {
+              meta.fields = meta.fields.map(({ value }) => field.options.options.find(o => o.value === value))
+            }
           }
 
           if (field && ['User', 'Record'].includes(field.kind)) {
