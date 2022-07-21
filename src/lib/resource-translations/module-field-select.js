@@ -1,13 +1,10 @@
 import { getter } from './util'
-import moduleFieldResTr from './module-field'
 
 // @note copied from FieldSelectTranslator.vue
 const keyPrefix = 'meta.options.'
 const keySuffix = '.text'
 
 export default function (field, translations, currentLanguage, resource) {
-  moduleFieldResTr(field, translations, currentLanguage, resource)
-
   const get = getter(translations, currentLanguage, resource)
 
   field.options.options = field.options.options.map(opt => {
