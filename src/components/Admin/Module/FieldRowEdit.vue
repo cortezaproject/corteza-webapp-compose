@@ -80,24 +80,6 @@
       />
     </td>
     <td
-      v-if="false"
-      class="align-middle text-center"
-    >
-      <b-form-checkbox
-        v-model="value.isPrivate"
-        :disabled="!value.cap.private"
-      />
-    </td>
-    <td
-      class="align-middle text-center"
-    >
-      <b-form-checkbox
-        v-model="value.isPrivate"
-        :disabled="!value.cap.sensitive"
-        switch
-      />
-    </td>
-    <td
       class="text-right align-middle pr-2"
       style="min-width: 100px;"
     >

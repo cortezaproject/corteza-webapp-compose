@@ -17,7 +17,6 @@ const props = {
     },
     isMulti: true,
     isRequired: true,
-    isPrivate: false,
     fieldId: '453534534534343',
     isValid: true,
   },
@@ -42,7 +41,6 @@ export default {
     checkbox('private', 'value.cap.private'),
     checkbox('isMulti', 'value.isMulti'),
     checkbox('isRequired', 'value.isRequired'),
-    checkbox('isPrivate', 'value.isPrivate'),
     checkbox('isValid', 'value.isValid'),
   ],
 
@@ -66,7 +64,6 @@ export default {
           },
           isMulti: false,
           isRequired: false,
-          isPrivate: false,
           isValid: false,
         },
       },
