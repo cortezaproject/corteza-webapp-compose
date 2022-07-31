@@ -8,13 +8,6 @@
     </b-form-checkbox>
 
     <b-form-checkbox
-      v-model="field.isSensitive"
-      :disabled="!field.cap.sensitive"
-    >
-      {{ $t('general:label.sensitive') }}
-    </b-form-checkbox>
-
-    <b-form-checkbox
       v-model="field.isMulti"
       :disabled="!field.cap.multi"
     >
