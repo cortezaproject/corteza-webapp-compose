@@ -267,9 +267,6 @@
                         <th class="text-primary text-center">
                           {{ $t('general:label.required') }}
                         </th>
-                        <th class="text-primary text-center">
-                          {{ $t('general:label.sensitive') }}
-                        </th>
                         <th />
                       </tr>
                     </thead>
@@ -603,12 +600,12 @@ export default {
       }
     },
 
-    onDiscoverySettingsSave (meta) {
+    onDiscoverySettingsSave (changes) {
       this.module.meta = { ...this.module.meta, ...meta }
     },
 
-    onPrivacySettingsSave (modelConfig) {
-      this.module.modelConfig = { ...this.module.modelConfig, ...modelConfig }
+    onPrivacySettingsSave (changes) {
+      this.module.config = { ...this.module.config, ...changes }
     },
 
     handleSave ({ closeOnSuccess = false } = {}) {

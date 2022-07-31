@@ -185,7 +185,7 @@ export default {
     fetchConnections () {
       this.processing = true
       this.connection = undefined
-      const { connectionID = NoID, capabilities = [] } = this.module.modelConfig || ''
+      const { connectionID = NoID, capabilities = [] } = this.module.config.dal || {}
 
       this.$SystemAPI.dalConnectionList()
         .then(({ set = [] }) => {
@@ -197,7 +197,7 @@ export default {
             return c
           })
 
-          this.connection = set.find(({ connectionID }) => connectionID === this.module.modelConfig.connectionID) || set[0]
+          this.connection = set.find(({ connectionID }) => connectionID === this.module.config.dal.connectionID) || set[0]
         })
         .catch(this.toastErrorHandler(this.$t('Failed to load connections')))
         .finally(() => {
@@ -214,11 +214,11 @@ export default {
         }
       })
 
-      this.module.modelConfig.connectionID = this.connection.connectionID
-      this.module.modelConfig.capabilities = capabilities
-      this.module.modelConfig.partitioned = false
+      this.module.config.dal.connectionID = this.connection.connectionID
+      this.module.config.dal.capabilities = capabilities
+      this.module.config.dal.partitioned = false
 
-      this.$emit('save', this.module.modelConfig)
+      this.$emit('save', this.module.config)
     },
   },
 }
