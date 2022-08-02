@@ -42,7 +42,7 @@
             class="shadow-sm"
           >
             <b-card-header
-              header-bg-variant="white border-bottom"
+              header-bg-variant="white"
               class="py-3"
             >
               <b-row
@@ -50,19 +50,6 @@
                 class="wrap-with-vertical-gutters align-items-center"
               >
                 <div class="flex-grow-1 wrap-with-vertical-gutters">
-                  <b-button
-                    variant="light"
-                    size="lg"
-                    :disabled="!module"
-                    class="mr-1"
-                    @click="privacySettings.modal = true"
-                  >
-                    <font-awesome-icon
-                      :icon="['fas', 'key']"
-                    />
-                    {{ $t('privacy.title') }}
-                  </b-button>
-
                   <template v-if="isEdit">
                     <b-button
                       v-if="federationEnabled"
@@ -158,166 +145,199 @@
                 </div>
               </b-row>
             </b-card-header>
-            <b-container
-              fluid
-              class="px-4 pt-3"
+
+            <b-tabs
+              nav-wrapper-class="bg-white white border-bottom"
+              card
             >
-              <h5 class="mb-3">
-                {{ $t('edit.moduleInfo') }}
-              </h5>
-              <b-row>
-                <b-col
-                  cols="12"
-                  md="6"
-                  xl="4"
+              <b-tab
+                title="Fields"
+                active
+              >
+                <b-container
+                  fluid
+                  class="px-4"
                 >
-                  <b-form-group>
-                    <label
-                      class="text-primary"
+                  <h5 class="mb-3">
+                    {{ $t('edit.moduleInfo') }}
+                  </h5>
+                  <b-row>
+                    <b-col
+                      cols="12"
+                      md="6"
+                      xl="4"
                     >
-                      {{ $t('newLabel') }}
-                    </label>
-                    <b-form-input
-                      v-model="module.name"
-                      data-test-id="input-module-name"
-                      required
-                      :state="nameState"
-                      :placeholder="$t('newPlaceholder')"
-                    />
-                  </b-form-group>
-                </b-col>
-                <b-col
-                  cols="12"
-                  md="6"
-                  xl="4"
-                >
-                  <b-form-group>
-                    <label class="text-primary">{{ $t('general.label.handle') }}</label>
-                    <b-form-input
-                      v-model="module.handle"
-                      data-test-id="input-module-handle"
-                      :state="handleState"
-                      :placeholder="$t('general.placeholder.handle')"
-                      class="mb-2"
-                    />
-                    <b-form-invalid-feedback :state="handleState">
-                      {{ $t('general.placeholder.invalid-handle-characters') }}
-                    </b-form-invalid-feedback>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-            </b-container>
-            <hr>
-            <b-container
-              fluid
-              class="px-4"
-            >
-              <h5 class="mb-3">
-                {{ $t('edit.manageRecordFields') }}
-              </h5>
-              <b-row no-gutters>
-                <b-form-group class="w-100">
-                  <table
-                    data-test-id="table-module-fields"
-                    class="table table-sm table-borderless table-responsive-lg"
-                  >
-                    <thead>
-                      <tr>
-                        <th />
-                        <th
+                      <b-form-group>
+                        <label
                           class="text-primary"
                         >
-                          <div
-                            class="d-flex align-items-center"
-                          >
-                            {{ $t('general.label.name') }}
-                            <div
-                              v-b-tooltip.hover.topright
-                              :title="$t('edit.tooltip.name')"
-                              class="ml-1"
-                            >
-                              <font-awesome-icon
-                                :icon="['far', 'question-circle']"
-                              />
-                            </div>
-                          </div>
-                        </th>
-                        <th
-                          class="text-primary"
-                        >
-                          <div
-                            class="d-flex align-items-center"
-                          >
-                            {{ $t('general.label.title') }}
-                            <div
-                              v-b-tooltip.hover.topright
-                              :title="$t('edit.tooltip.title')"
-                              class="ml-1"
-                            >
-                              <font-awesome-icon
-                                :icon="['far', 'question-circle']"
-                              />
-                            </div>
-                          </div>
-                        </th>
-                        <th class="text-primary">
-                          {{ $t('general:label.type') }}
-                        </th>
-                        <th />
-                        <th class="text-primary text-center">
-                          {{ $t('general:label.required') }}
-                        </th>
-                        <th />
-                      </tr>
-                    </thead>
-                    <draggable
-                      v-model="module.fields"
-                      :options="{handle:'.handle'}"
-                      tag="tbody"
+                          {{ $t('newLabel') }}
+                        </label>
+                        <b-form-input
+                          v-model="module.name"
+                          data-test-id="input-module-name"
+                          required
+                          :state="nameState"
+                          :placeholder="$t('newPlaceholder')"
+                        />
+                      </b-form-group>
+                    </b-col>
+                    <b-col
+                      cols="12"
+                      md="6"
+                      xl="4"
                     >
-                      <field-row-edit
-                        v-for="(field, index) in module.fields"
-                        :key="index"
-                        v-model="module.fields[index]"
-                        :can-grant="namespace.canGrant"
-                        :has-records="hasRecords"
-                        :module="module"
-                        :is-duplicate="!!duplicateFields[index]"
-                        @edit="handleFieldEdit(module.fields[index])"
-                        @delete="module.fields.splice(index, 1)"
-                      />
-                    </draggable>
-                    <tr>
-                      <td colspan="1" />
-                      <td colspan="7">
-                        <b-button
-                          data-test-id="button-field-add"
-                          class="mb-5"
-                          variant="primary"
-                          @click="handleNewField"
-                        >
-                          + {{ $t('edit.newField') }}
-                        </b-button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td
-                        colspan="7"
-                        class="font-weight-bold"
+                      <b-form-group>
+                        <label class="text-primary">{{ $t('general.label.handle') }}</label>
+                        <b-form-input
+                          v-model="module.handle"
+                          data-test-id="input-module-handle"
+                          :state="handleState"
+                          :placeholder="$t('general.placeholder.handle')"
+                          class="mb-2"
+                        />
+                        <b-form-invalid-feedback :state="handleState">
+                          {{ $t('general.placeholder.invalid-handle-characters') }}
+                        </b-form-invalid-feedback>
+                      </b-form-group>
+                    </b-col>
+                  </b-row>
+                </b-container>
+                <hr>
+                <b-container
+                  fluid
+                  class="px-4"
+                >
+                  <h5 class="mb-3">
+                    {{ $t('edit.manageRecordFields') }}
+                  </h5>
+                  <b-row no-gutters>
+                    <b-form-group class="w-100">
+                      <table
+                        data-test-id="table-module-fields"
+                        class="table table-sm table-borderless table-responsive-lg"
                       >
-                        {{ $t('edit.systemFields') }}
-                      </td>
-                    </tr>
-                    <field-row-view
-                      v-for="(field, index) in systemFields"
-                      :key="index"
-                      :field="field"
-                      class="mt-4"
-                    />
-                  </table>
-                </b-form-group>
-              </b-row>
-            </b-container>
+                        <thead>
+                          <tr>
+                            <th />
+                            <th
+                              class="text-primary"
+                            >
+                              <div
+                                class="d-flex align-items-center"
+                              >
+                                {{ $t('general.label.name') }}
+                                <div
+                                  v-b-tooltip.hover.topright
+                                  :title="$t('edit.tooltip.name')"
+                                  class="ml-1"
+                                >
+                                  <font-awesome-icon
+                                    :icon="['far', 'question-circle']"
+                                  />
+                                </div>
+                              </div>
+                            </th>
+                            <th
+                              class="text-primary"
+                            >
+                              <div
+                                class="d-flex align-items-center"
+                              >
+                                {{ $t('general.label.title') }}
+                                <div
+                                  v-b-tooltip.hover.topright
+                                  :title="$t('edit.tooltip.title')"
+                                  class="ml-1"
+                                >
+                                  <font-awesome-icon
+                                    :icon="['far', 'question-circle']"
+                                  />
+                                </div>
+                              </div>
+                            </th>
+                            <th class="text-primary">
+                              {{ $t('general:label.type') }}
+                            </th>
+                            <th />
+                            <th />
+                            <th class="text-primary text-center">
+                              {{ $t('general:label.required') }}
+                            </th>
+                            <th />
+                          </tr>
+                        </thead>
+                        <draggable
+                          v-model="module.fields"
+                          :options="{handle:'.handle'}"
+                          tag="tbody"
+                        >
+                          <field-row-edit
+                            v-for="(field, index) in module.fields"
+                            :key="index"
+                            v-model="module.fields[index]"
+                            :can-grant="namespace.canGrant"
+                            :has-records="hasRecords"
+                            :module="module"
+                            :is-duplicate="!!duplicateFields[index]"
+                            @edit="handleFieldEdit(module.fields[index])"
+                            @delete="module.fields.splice(index, 1)"
+                          />
+                        </draggable>
+                        <tr>
+                          <td colspan="1" />
+                          <td colspan="7">
+                            <b-button
+                              data-test-id="button-field-add"
+                              class="mb-5"
+                              variant="primary"
+                              @click="handleNewField"
+                            >
+                              + {{ $t('edit.newField') }}
+                            </b-button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            colspan="7"
+                            class="font-weight-bold"
+                          >
+                            {{ $t('edit.systemFields') }}
+                          </td>
+                        </tr>
+                        <field-row-view
+                          v-for="(field, index) in systemFields"
+                          :key="index"
+                          :field="field"
+                          class="mt-4"
+                        />
+                      </table>
+                    </b-form-group>
+                  </b-row>
+                </b-container>
+              </b-tab>
+
+              <b-tab :title="$t('edit.config.dal.title')">
+                <dal-settings
+                  :module="module"
+                  :editable="isEdit"
+                />
+              </b-tab>
+
+              <b-tab :title="$t('edit.config.privacy.title')">
+                <data-privacy-settings
+                  :module="module"
+                  :editable="isEdit"
+                />
+              </b-tab>
+
+              <b-tab :title="$t('edit.config.record-revisions.title')">
+                <record-revisions-settings
+                  :module="module"
+                  :editable="isEdit"
+                />
+              </b-tab>
+            </b-tabs>
           </b-card>
         </b-col>
       </b-row>
@@ -355,12 +375,6 @@
         :module="module"
         @save="onDiscoverySettingsSave"
       />
-
-      <privacy-settings
-        :modal.sync="privacySettings.modal"
-        :module="module"
-        @save="onPrivacySettingsSave"
-      />
     </b-container>
 
     <portal to="admin-toolbar">
@@ -387,7 +401,9 @@ import FieldRowEdit from 'corteza-webapp-compose/src/components/Admin/Module/Fie
 import FieldRowView from 'corteza-webapp-compose/src/components/Admin/Module/FieldRowView'
 import FederationSettings from 'corteza-webapp-compose/src/components/Admin/Module/FederationSettings'
 import DiscoverySettings from 'corteza-webapp-compose/src/components/Admin/Module/DiscoverySettings'
-import PrivacySettings from 'corteza-webapp-compose/src/components/Admin/Module/PrivacySettings'
+import DalSettings from 'corteza-webapp-compose/src/components/Admin/Module/DalSettings'
+import RecordRevisionsSettings from 'corteza-webapp-compose/src/components/Admin/Module/RecordRevisionsSettings'
+import DataPrivacySettings from 'corteza-webapp-compose/src/components/Admin/Module/DataPrivacySettings'
 import ModuleTranslator from 'corteza-webapp-compose/src/components/Admin/Module/ModuleTranslator'
 import RelatedPages from 'corteza-webapp-compose/src/components/Admin/Module/RelatedPages'
 import { compose, NoID } from '@cortezaproject/corteza-js'
@@ -407,7 +423,9 @@ export default {
     FieldRowView,
     FederationSettings,
     DiscoverySettings,
-    PrivacySettings,
+    DalSettings,
+    RecordRevisionsSettings,
+    DataPrivacySettings,
     ModuleTranslator,
     RelatedPages,
     EditorToolbar,
@@ -439,10 +457,6 @@ export default {
       },
 
       discoverySettings: {
-        modal: false,
-      },
-
-      privacySettings: {
         modal: false,
       },
     }
@@ -601,7 +615,7 @@ export default {
     },
 
     onDiscoverySettingsSave (changes) {
-      this.module.meta = { ...this.module.meta, ...changes }
+      this.module.config = { ...this.module.config, ...changes }
     },
 
     onPrivacySettingsSave (changes) {
