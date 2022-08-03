@@ -37,13 +37,15 @@ export default {
       label: 'Empty form',
       props: {
         ...props,
-        meta: {
-          subtitle: '',
-          description: '',
+        namespace: {
+          meta: {
+            subtitle: '',
+            description: '',
+          },
+          name: '',
+          enabled: false,
+          canUpdateNamespace: false,
         },
-        name: 'CRM',
-        enabled: false,
-        canUpdateNamespace: false,
       },
     },
   ],
