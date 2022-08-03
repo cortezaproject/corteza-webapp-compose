@@ -601,7 +601,7 @@ export default {
     },
 
     onDiscoverySettingsSave (changes) {
-      this.module.meta = { ...this.module.meta, ...meta }
+      this.module.meta = { ...this.module.meta, ...changes }
     },
 
     onPrivacySettingsSave (changes) {
