@@ -140,7 +140,6 @@
             </a>
           </b-col>
           <b-col
-            v-if="canDeleteSelectedRecords"
             class="text-right"
             cols="8"
           >
@@ -152,34 +151,36 @@
               v-bind="$props"
               @refresh="refresh()"
             />
-            <c-input-confirm
-              v-if="!inlineEditing"
-              class="ml-2"
-              variant="link-light"
-              @confirmed="handleDeleteSelectedRecords()"
-            />
-            <b-button
-              v-else-if="!areAllRowsDeleted"
-              variant="link"
-              size="md"
-              @click.prevent="handleDeleteSelectedRecords()"
-            >
-              <font-awesome-icon
+            <span v-if="canDeleteSelectedRecords">
+              <c-input-confirm
+                v-if="!inlineEditing"
+                class="ml-2"
+                variant="link-light"
+                @confirmed="handleDeleteSelectedRecords()"
+              />
+              <b-button
+                v-else-if="!areAllRowsDeleted"
+                variant="link"
+                size="md"
+                @click.prevent="handleDeleteSelectedRecords()"
+              >
+                <font-awesome-icon
+                  class="text-danger"
+                  :icon="['far', 'trash-alt']"
+                />
+              </b-button>
+              <b-button
+                v-else
+                variant="link"
+                size="md"
                 class="text-danger"
-                :icon="['far', 'trash-alt']"
-              />
-            </b-button>
-            <b-button
-              v-else
-              variant="link"
-              size="md"
-              class="text-danger"
-              @click.prevent="handleRestoreSelectedRecords()"
-            >
-              <font-awesome-icon
-                :icon="['fa', 'trash-restore']"
-              />
-            </b-button>
+                @click.prevent="handleRestoreSelectedRecords()"
+              >
+                <font-awesome-icon
+                  :icon="['fa', 'trash-restore']"
+                />
+              </b-button>
+            </span>
           </b-col>
         </b-row>
       </b-container>
