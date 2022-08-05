@@ -1,10 +1,12 @@
 import component from './CTranslatorButton.vue'
 import { components } from '@cortezaproject/corteza-vue'
-const { input } = components.C3.controls
+const { input, checkbox } = components.C3.controls
 
 const props = {
-  buttonClass: 'p-0 m-0',
-  buttonVariant: 'link',
+  resource: 'Resource',
+  buttonClass: 'p-1 m-1',
+  buttonVariant: 'dark',
+  disabled: false,
 }
 
 export default {
@@ -13,7 +15,23 @@ export default {
   component,
   props,
   controls: [
-    input('Button class', 'buttonClass'),
-    input('Button variant', 'buttonVariant'),
+    input('Class', 'buttonClass'),
+    input('Variant', 'buttonVariant'),
+    checkbox('Disabled', 'disabled'),
+  ],
+  scenarios: [
+    {
+      label: 'Full form',
+      props,
+    },
+    {
+      label: 'Empty form',
+      props: {
+        ...props,
+        buttonClass: 'p-0 m-0',
+        buttonVariant: 'light',
+        disabled: true,
+      },
+    },
   ],
 }
