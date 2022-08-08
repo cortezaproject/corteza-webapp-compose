@@ -1,6 +1,7 @@
 // eslint-disable-next-line
 import { default as component } from './ErrorReport.vue'
 
+// Read-only component
 const props = {
   session: {
     fields: {},
