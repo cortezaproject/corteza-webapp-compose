@@ -18,6 +18,8 @@ import RecordConfigurator from './RecordConfigurator'
 import RecordEditor from './RecordEditor'
 import RecordListBase from './RecordListBase'
 import RecordListConfigurator from './RecordListConfigurator'
+import RecordRevisionsBase from './RecordRevisionsBase'
+import RecordRevisionsConfigurator from './RecordRevisionsConfigurator'
 import RecordOrganizerBase from './RecordOrganizerBase'
 import RecordOrganizerConfigurator from './RecordOrganizerConfigurator'
 import SocialFeedBase from './SocialFeedBase'
@@ -51,6 +53,8 @@ const Registry = {
   RecordEditor,
   RecordListBase,
   RecordListConfigurator,
+  RecordRevisionsBase,
+  RecordRevisionsConfigurator,
   RecordOrganizerBase,
   RecordOrganizerConfigurator,
   ReportBase,
