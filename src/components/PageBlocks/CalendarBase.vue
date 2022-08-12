@@ -167,7 +167,7 @@ export default {
       return {
         header: false,
         themeSystem: 'corteza',
-        defaultView: 'dayGridMonth',
+        defaultView: this.options.defaultView,
         editable: false,
         eventLimit: true,
         locale: this.locale,
