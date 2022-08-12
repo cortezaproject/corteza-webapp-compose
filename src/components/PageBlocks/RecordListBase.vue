@@ -99,7 +99,7 @@
           </div>
           <div
             v-if="!options.hideSearch && !inlineEditing"
-            class="flex-grow-1"
+            class="flex-grow-1 w-25"
           >
             <c-input-search
               v-model.trim="query"

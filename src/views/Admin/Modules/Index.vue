@@ -90,7 +90,7 @@
                   </div>
                 </div>
                 <div
-                  class="flex-grow-1"
+                  class="flex-grow-1 w-25"
                 >
                   <c-input-search
                     v-model="query"
