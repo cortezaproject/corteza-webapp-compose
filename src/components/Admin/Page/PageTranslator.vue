@@ -176,6 +176,15 @@ export default {
                 })
                 break
 
+              case this.block instanceof compose.PageBlockRecordList:
+                this.block.options.selectionButtons.forEach((btn, index) => {
+                  tr = find(`pageBlock.${this.block.blockID}.button.${btn.buttonID || (index + 1)}.label`)
+                  if (tr) {
+                    btn.label = tr.message
+                  }
+                })
+                break
+
               case this.block instanceof compose.PageBlockContent:
                 tr = find(`pageBlock.${this.block.blockID}.body`)
                 if (tr) {
