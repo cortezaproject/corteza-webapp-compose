@@ -8,6 +8,7 @@
         <b-form-group :label="$t('reminder.edit.titleLabel')">
           <b-form-input
             v-model="title"
+            data-test-id="input-title"
             required
             type="text"
             :placeholder="$t('reminder.edit.titlePlaceholder')"
@@ -17,6 +18,7 @@
         <b-form-group :label="$t('reminder.edit.notesLabel')">
           <b-form-textarea
             v-model="notes"
+            data-test-id="textarea-notes"
             :placeholder="$t('reminder.edit.notesPlaceholder')"
             rows="6"
             max-rows="10"
@@ -26,6 +28,7 @@
         <b-form-group :label="$t('reminder.edit.remindAtLabel')">
           <b-form-select
             v-model="remindAt"
+            data-test-id="select-remind-at"
             :options="remindAtPresets"
           />
         </b-form-group>
@@ -33,6 +36,7 @@
         <b-form-group :label="$t('reminder.edit.assigneeLabel')">
           <vue-select
             v-model="assignedTo"
+            data-test-id="select-assignee"
             :options="assignees"
             option-value="userID"
             option-text="label"
@@ -48,12 +52,14 @@
         >
           <b-form-input
             v-model="reminder.payload.link.label"
+            data-test-id="input-link"
           />
         </b-form-group>
       </b-form>
     </b-list-group-item>
     <div class="position-sticky text-center bg-white py-1 fixed-bottom">
       <b-button
+        data-test-id="button-save"
         variant="outline-primary"
         class="px-2"
         @click="save"

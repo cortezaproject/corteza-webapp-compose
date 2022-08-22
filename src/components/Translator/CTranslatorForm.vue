@@ -4,12 +4,14 @@
       class="text-right mb-2"
     >
       <b-dropdown
+        data-test-id="dropdown-add-language"
         :text="$t('add-language')"
         variant="light"
       >
         <b-dropdown-item-button
           v-for="lang in intLanguages"
           :key="lang.tag"
+          :data-test-id="`dropdown-language-item-${lang.localizedName}`"
           :disabled="lang.default || lang.visible"
           @click="lang.visible = true"
         >
@@ -24,6 +26,7 @@
           <b-th
             v-for="lang in visibleLanguages"
             :key="lang.tag"
+            :data-test-id="`language-${lang.localizedName}`"
             class="text-truncate"
             :style="{ 'width': `${100 / visibleLanguages.length}%` }"
           >
@@ -50,6 +53,7 @@
           v-if="!r.isPrimary"
         >
           <b-th
+            :data-test-id="`translation-title-${r.title}`"
             class="font-weight-bold border-top-0"
             :colspan="visibleLanguages.length + 1"
           >
@@ -65,7 +69,11 @@
             cols="2"
             class="text-break small"
           >
-            <samp>{{ keyPrettifier(key) }}</samp>
+            <samp
+              :data-test-id="`translation-field-${keyPrettifier(key)}`"
+            >
+              {{ keyPrettifier(key) }}
+            </samp>
           </b-td>
           <b-td
             v-for="(lang, langIndex) in visibleLanguages"
@@ -83,6 +91,7 @@
               />
             </b-button>
             <editable
+              :data-test-id="`translation-value-${keyPrettifier(key)}-language-${lang.name}`"
               :value="msg(r.resource, key, lang.tag)"
               :placeholder="$t('missing-translation')"
               :tabindex="langIndex + 1"

@@ -6,6 +6,7 @@
     <b-form-group :label="$t('name.label')">
       <b-form-input
         v-model="name"
+        data-test-id="input-name"
         class="mt-1"
         :placeholder="$t('name.placeholder')"
       />
@@ -14,6 +15,7 @@
     <b-form-group :label="$t('slug.label')">
       <b-form-input
         v-model="slug"
+        data-test-id="input-handle"
         class="mt-1"
         :state="slugState"
         :placeholder="$t('slug.placeholder')"
@@ -25,6 +27,7 @@
 
     <div slot="footer">
       <b-button
+        data-test-id="button-back"
         variant="outline-dark"
         class="float-left"
         @click="$emit('back')"
@@ -33,6 +36,7 @@
       </b-button>
 
       <b-button
+        data-test-id="button-import"
         variant="dark"
         :disabled="submitDisabled"
         class="float-right"

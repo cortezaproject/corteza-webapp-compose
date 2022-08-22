@@ -6,6 +6,7 @@
       class="text-center bg-white py-2 sticky-top"
     >
       <b-button
+        data-test-id="button-add-reminder"
         size="sm"
         variant="outline-primary"
         @click="$emit('edit')"
@@ -20,11 +21,13 @@
       class="d-flex align-items-center mb-1 overflow-auto"
     >
       <b-form-checkbox
+        data-test-id="checkbox-dismiss-reminder"
         :checked="!!r.dismissedAt"
         :disabled="!!r.dismissedAt"
         @change="$emit('dismiss', r)"
       >
         <span
+          data-test-id="span-reminder-title"
           class="text-break"
           :style="`${!!r.dismissedAt ? 'text-decoration: line-through;' : ''}`"
         >
@@ -37,6 +40,7 @@
       >
         <font-awesome-icon
           v-if="r.snoozeCount"
+          data-test-id="icon-snoozed-reminder"
           :icon="['far', 'clock']"
           class="ml-1"
         />
@@ -44,12 +48,14 @@
         <font-awesome-icon
           v-else-if="r.remindAt"
           v-b-tooltip.hover
+          data-test-id="icon-remind-at"
           :title="makeTooltip(r)"
           :icon="['far', 'bell']"
           class="ml-1"
         />
 
         <b-button
+          data-test-id="button-edit-reminder"
           variant="link"
           class="p-1 ml-2"
           @click="$emit('edit', r)"
@@ -61,6 +67,7 @@
         </b-button>
 
         <b-button
+          data-test-id="button-delete-reminder"
           variant="link"
           class="text-dark p-1"
           @click.prevent="$emit('delete', r)"

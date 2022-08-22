@@ -122,6 +122,7 @@
               </b-form-checkbox>
               <b-form-checkbox
                 v-model="isApplication"
+                data-test-id="checkbox-toggle-application"
                 :disabled="!canToggleApplication"
               >
                 {{ $t('application.label') }}
@@ -147,6 +148,7 @@
                   <b-button
                     v-if="logoPreview"
                     v-b-modal.logo
+                    data-test-id="button-logo-preview"
                     variant="link"
                     size="sm"
                     class="d-flex align-items-center border-0 p-0 ml-2"
@@ -158,6 +160,7 @@
 
                   <b-button
                     v-if="!!namespace.meta.logo"
+                    data-test-id="button-logo-reset"
                     variant="light"
                     size="sm"
                     class="py-0 ml-2"
@@ -170,6 +173,7 @@
 
               <b-form-file
                 v-model="namespaceAssets.logo"
+                data-test-id="file-logo-upload"
                 accept="image/*"
                 :placeholder="$t('logo.placeholder')"
               />

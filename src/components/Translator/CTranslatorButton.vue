@@ -1,5 +1,6 @@
 <template>
   <b-button
+    data-test-id="button-translation"
     :variant="buttonVariant"
     :class="buttonClass"
     :disabled="disabled"

@@ -1,6 +1,7 @@
 <template>
   <div>
     <b-button
+      data-test-id="button-import"
       size="lg"
       variant="light"
       @click="showModal=true"

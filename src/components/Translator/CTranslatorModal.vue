@@ -20,6 +20,7 @@
       />
       <template #modal-footer>
         <b-button
+          data-test-id="button-submit"
           type="submit"
           variant="primary"
           :tabindex="languages.length + 1"

@@ -11,6 +11,7 @@
       to="topbar-avatar-dropdown"
     >
       <b-dropdown-item
+        data-test-id="dropdown-item-reminders"
         @click="remindersVisible = true"
       >
         {{ $t('reminder.listLabel') }}
