@@ -3,7 +3,7 @@
     <b-alert
       v-if="isDeleted"
       show
-      variant="info"
+      variant="warning"
     >
       {{ $t('record.recordDeleted') }}
     </b-alert>
