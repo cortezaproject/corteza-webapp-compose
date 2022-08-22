@@ -320,6 +320,7 @@ export default {
     },
 
     dimensionFields () {
+      console.error('this.module.systemFields()', this.module.systemFields())
       return [
         ...[...this.module.fields].sort((a, b) => a.label.localeCompare(b.text)),
         ...this.module.systemFields().map(sf => {

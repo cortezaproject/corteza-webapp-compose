@@ -26,7 +26,22 @@ const props = {
       name: 'Case',
       fields: [{
         kind: 'Record',
+        label: 'Record ID',
         name: 'AccountId',
+        options: {
+          multiLine: false,
+          useRichTextEditor: false,
+        },
+      }],
+    },
+    {
+      moduleID: '291598304537084005',
+      handle: 'Cake',
+      name: 'Cake',
+      fields: [{
+        kind: 'User',
+        label: 'Owned By',
+        name: 'createdBy',
         options: {
           multiLine: false,
           useRichTextEditor: false,

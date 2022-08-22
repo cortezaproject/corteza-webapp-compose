@@ -21,9 +21,21 @@ const props = {
   disabledTypes: ['User', 'Record', 'File'],
   processingCount: false,
   rangeRecordCount: 5,
+  filter: {
+    rangeType: null,
+    query: '',
+    filter: '',
+    rangeBy: null,
+    date: {
+      range: null,
+      start: null,
+      end: null,
+    },
+  },
 }
 
 export default {
+  wip: true,
   name: 'Configurator',
   group: ['Exporter'],
   component,
@@ -31,7 +43,7 @@ export default {
   controls: [
     checkbox('Allow JSON', 'allowJSON'),
     checkbox('Allow CSV', 'allowCSV'),
-    select('Module', 'module', [{ value: new compose.Module(), text: 'new compose.Module()' }, undefined]),
+    // select('Module', 'module', [{ value: new compose.Module(), text: 'new compose.Module()' }, undefined]),
     select('Filter range by', 'filterRangeBy', [{ value: 'created_at', text: 'created_at' }, { value: 'deleted_at', text: 'deleted_at' }]),
   ],
   scenarios: [
