@@ -31,6 +31,7 @@ const props = {
 }
 
 export default {
+  wip: true,
   name: 'Field row edit',
   group: ['Admin', 'Module'],
   component,

@@ -55,6 +55,7 @@ const props = {
 }
 
 export default {
+  wip: true,
   name: 'Edit',
   group: ['Chart', 'Report'],
   component,

@@ -9,6 +9,7 @@ const props = {
 }
 
 export default {
+  wip: true,
   name: 'Report item',
   group: ['Chart'],
   component,
