@@ -7,7 +7,7 @@
       label-class="text-primary"
     >
       <vue-select
-        v-model="module.config.dal.connectionID"
+        v-model="selectedConnectionID"
         :options="connections"
         :disabled="!editable || processing"
         :clearable="false"
@@ -23,7 +23,7 @@
       label-class="text-primary"
     >
       <b-input
-        v-model="module.config.dal.partitionFormat"
+        v-model="module.config.dal.ident"
         :disabled="!editable"
         :placeholder="$t('ident-placeholder')"
         @change="module.config.dal.partitioned=true"
@@ -33,8 +33,10 @@
 </template>
 
 <script>
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import VueSelect from 'vue-select'
+
+const PrimaryConnType = 'corteza::system:primary-dal-connection'
 
 export default {
   i18nOptions: {
@@ -61,15 +63,48 @@ export default {
   data () {
     return {
       processing: false,
-      defaultIdent: false,
       connections: [],
     }
   },
 
+  computed: {
+    /**
+     * Returns configured connection
+     */
+    selectedConnectionID: {
+      get () {
+        const { connectionID: ID = NoID } = this.module.config.dal
+
+        if (ID === NoID) {
+          return this.primaryConnectionID
+        }
+
+        return ID
+      },
+
+      /**
+       * Keep NoID when primary connection is used
+       * @todo could be handled on the backend
+       */
+      set (value) {
+        if (value === this.primaryConnectionID) {
+          this.module.config.dal.connectionID = NoID
+        } else {
+          this.module.config.dal.connectionID = value
+        }
+      },
+    },
+
+    /**
+     * Returns ID of the primary connection and fallsback to NoID
+     */
+    primaryConnectionID () {
+      return (this.connections.find(c => c.type === PrimaryConnType) || { ID: NoID }).ID
+    },
+  },
+
   mounted () {
     this.fetchConnections()
-
-    this.defaultIdent = this.module.config.dal.partitionFormat.length === 0
   },
 
   methods: {
@@ -77,10 +112,12 @@ export default {
       this.processing = true
       return this.$SystemAPI.dalConnectionList()
         .then(({ set = [] }) => {
-          this.connections = set.map(({ connectionID: ID, handle, meta: { name }, config }) => ({
+          console.log('loading...')
+          this.connections = set.map(({ connectionID: ID, handle, type, meta: { name }, config }) => ({
             ID,
             label: name || handle || ID,
             config,
+            type,
           }))
         })
         .catch(this.toastErrorHandler(this.$t('connections.fetch-failed')))
