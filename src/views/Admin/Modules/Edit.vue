@@ -147,6 +147,7 @@
             </b-card-header>
 
             <b-tabs
+              v-model="activeTab"
               nav-wrapper-class="bg-white white border-bottom"
               card
             >
@@ -447,6 +448,8 @@ export default {
 
   data () {
     return {
+      activeTab: 0,
+
       updateField: null,
       module: undefined,
       hasRecords: true,
@@ -567,6 +570,11 @@ export default {
     moduleID: {
       immediate: true,
       handler (moduleID) {
+        /**
+         * Every time module changes we switch to the 1st tab
+         */
+        this.activeTab = 0
+
         if (moduleID === NoID) {
           this.module = new compose.Module(
             { fields: [new compose.ModuleFieldString({ fieldID: NoID, name: this.$t('general.placeholder.sample') })] },
