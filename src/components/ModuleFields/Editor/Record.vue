@@ -460,7 +460,7 @@ export default {
             set = set.map(r => new compose.Record(module, r))
           }
 
-          set.forEach(async record => {
+          for (const record of set) {
             let recordValue = relatedField.isMulti ? record.values[relatedField.name] : [record.values[relatedField.name]]
 
             if (recordValue.length && relatedField.kind === 'User') {
@@ -474,7 +474,7 @@ export default {
             }
 
             this.$set(this.recordValues, record.recordID, recordValue.join(relatedField.options.multiDelimiter))
-          })
+          }
         })
       }).finally(() => {
         setTimeout(() => {

@@ -122,7 +122,7 @@ export default {
     },
 
     /**
-     * Helper to resolve a label for a gievn value
+     * Helper to resolve a label for a given value
      * @param {String} v Value in question
      * @returns {String}
      */
