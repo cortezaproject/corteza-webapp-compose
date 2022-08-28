@@ -289,7 +289,7 @@ export default {
             const workflow = set.find(wf => wf.workflowID === workflowID)
             if (!workflow) {
               // Can not link to workflow (might be disabled or missing)
-              console.log(
+              console.warn(
                 'trigger referencing an non existing workflow',
                 { triggerID, workflowID: trigger.workflowID },
               )
@@ -303,7 +303,7 @@ export default {
             const step = workflow.steps.find(s => s.stepID === stepID)
             if (!step) {
               // Can not link to step
-              console.log(
+              console.warn(
                 'trigger referencing an non existing step',
                 { triggerID, workflowID, stepID },
               )
