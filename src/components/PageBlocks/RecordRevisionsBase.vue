@@ -25,11 +25,18 @@
       #default
     >
       <b-alert
-        v-if="!record || revisionsDisabledOnModule"
+        v-if="!record"
         show
         variant="warn"
       >
-        {{ $t('disabled') }}
+        {{ $t('errors.no-record') }}
+      </b-alert>
+      <b-alert
+        v-else-if="revisionsDisabledOnModule"
+        show
+        variant="warn"
+      >
+        {{ $t('errors.disabled-on-module') }}
       </b-alert>
       <div
         v-else-if="!options.preload && !preloadRequested"
@@ -39,6 +46,7 @@
           @click="refresh()"
         >
           Show record revisions ({{ record.revision }}).
+          {{ $t('show-revisions', { revision: record.revision }) }}
         </b-button>
       </div>
       <div
@@ -50,7 +58,7 @@
       <b-table-lite
         v-else
         :items="revisions"
-        :fields="fields"
+        :fields="columns"
       >
         <template #cell(timestamp)="row">
           {{ row.item.timestamp | locFullDateTime }}
@@ -64,7 +72,7 @@
             class="py-0 m-0"
             @click="row.toggleDetails"
           >
-            {{ row.detailsShowing ? '&times;' : `${row.item.changes.length} changes` }}
+            {{ row.detailsShowing ? '&times;' : $t(`show-changes`, { count: row.item.changes.length }) }}
           </b-button>
         </template>
         <template #row-details="row">
@@ -76,9 +84,9 @@
             >
               <b-thead>
                 <b-tr>
-                  <b-th>Field</b-th>
-                  <b-th>Old value</b-th>
-                  <b-th>New value</b-th>
+                  <b-th>{{ $t('changes.columns.field.label') }}</b-th>
+                  <b-th>{{ $t('changes.columns.old-value.label') }}</b-th>
+                  <b-th>{{ $t('changes.columns.new-value.label') }}</b-th>
                 </b-tr>
               </b-thead>
               <b-tbody
@@ -109,12 +117,12 @@
 </template>
 <script>
 import base from './base'
-import { system, compose, NoID } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 
 export default {
   i18nOptions: {
     namespaces: 'block',
-    key: 'record-revisions',
+    keyPrefix: 'recordRevisions.viewer',
   },
 
   components: {},
@@ -159,16 +167,23 @@ export default {
        * Please note that table utilizes row-details feature
        * where changes are displayed
        */
-      fields: [
+      columns: [
         {
           key: 'revision',
           label: '',
           class: 'text-right',
         },
-        { key: 'timestamp' },
-        { key: 'operation' },
+        {
+          key: 'timestamp',
+          label: this.$t('revisions.columns.timestamp.label'),
+        },
+        {
+          key: 'operation',
+          label: this.$t('revisions.columns.operation.label'),
+        },
         {
           key: 'user',
+          label: this.$t('revisions.columns.user.label'),
           formatter: (u) => u ? (u.name || u.email || u.userID) : '-',
         },
         {
@@ -226,44 +241,15 @@ export default {
         return
       }
 
+      const { $ComposeAPI, $SystemAPI } = this
+
       this.processing = true
-      return this.block.fetch(this.$ComposeAPI, this.record)
+      return this.block.fetch($ComposeAPI, this.record)
         .then(set => { this.revisions = set })
-        .then(() => this.resolveUsers())
-        .then(() => this.resolveRecords())
+        .then(() => this.block.expandReferences({ $ComposeAPI, $SystemAPI }, this.module, this.revisions))
         .finally(() => {
           this.processing = false
         })
-    },
-
-    async resolveUsers () {
-      /**
-       * List of all userIDs found in the record revisions
-       * that need to be resolved
-       */
-      const userID = [
-        ...(new Set(this.revisions.map(({ userID }) => userID))),
-        // @todo add list of values (old and new) from ownedBy field changes
-        // @todo add list of values (old and new) from User-kind field changes
-      ]
-
-      return this.$SystemAPI
-        .userList({ userID })
-        .then(({ set }) => {
-          const users = set.map(u => new system.User(u))
-
-          this.revisions.forEach(r => {
-            const user = users.find(u => u.userID === r.userID)
-            if (user) {
-              r.user = user
-            }
-          })
-        })
-    },
-
-    async resolveRecords () {
-      // @todo scan Record-kind field values from revisions
-      return undefined
     },
   },
 }
