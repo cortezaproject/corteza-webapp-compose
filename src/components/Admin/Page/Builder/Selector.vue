@@ -121,7 +121,7 @@ export default {
         {
           label: this.$t('recordRevisions.label'),
           block: new compose.PageBlockRecordRevisions(),
-          image: images.RecordOrganizer,
+          image: images.RecordRevisions,
         },
         {
           label: this.$t('report.label'),
