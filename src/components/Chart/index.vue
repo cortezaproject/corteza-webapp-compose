@@ -115,7 +115,10 @@ export default {
             ].find(({ name }) => name === field)
 
             if (meta.fields) {
-              meta.fields = meta.fields.map(({ value }) => field.options.options.find(o => o.value === value))
+              data.labels = data.labels.map(value => {
+                const { text } = field.options.options.find(o => o.value === value) || {}
+                return text || value
+              })
             }
           }
 
