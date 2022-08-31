@@ -1,82 +1,83 @@
 <template>
-  <b-card
-    no-body
-    class="namespace-item h-100 shadow-sm mb-4"
-    :class="{ 'shadow': hovered }"
-    @mouseover="hovered = true"
-    @mouseleave="hovered = false"
+  <b-col
+    class="my-2"
+    sm="6"
+    md="4"
+    lg="3"
   >
-    <b-card-img
-      v-if="namespace.meta.logoEnabled"
-      :src="logo"
-      :alt="namespace.name"
-      class="p-2"
-    />
-
-    <b-card-body
-      class="mw-100"
-      :class="{ 'pb-0': showFooter }"
+    <b-card
+      no-body
+      class="h-100 shadow-sm pt-3 mx-2"
+      footer-bg-variant="white"
+      footer-class="text-center pt-0"
+      :class="{ 'shadow': hovered && isEnabled, 'namespace-item' : isEnabled, 'disabled' : !isEnabled}"
+      @mouseover="hovered = true"
+      @mouseleave="hovered = false"
     >
       <div
-        class="d-flex align-items-center"
-        :class="{ 'h-100': !namespace.meta.description }"
+        class="circled-avatar d-flex align-items-center justify-content-center m-auto"
+        :class="[namespace.meta.logoEnabled ? 'p-2' : 'bg-light p-3']"
+      >
+        <b-img
+          v-if="namespace.meta.logoEnabled"
+          :src="logo"
+          :alt="namespace.name"
+          class="mw-100 mh-100"
+        />
+        <h1
+          v-else
+          class="ns-initial m-auto text-uppercase text-secondary"
+        >
+          {{ namespace.initials }}
+        </h1>
+      </div>
+      <b-card-body
+        class="mw-100 text-center pb-0"
       >
         <div
-          class="d-flex flex-column justify-content-center w-100"
+          class="d-flex align-items-baseline"
+          :class="{ 'h-100': !namespace.meta.description }"
         >
-          <h5
-            :data-test-id="namespace.name"
-            class="mb-0 mw-100"
+          <div
+            class="d-flex flex-column justify-content-center w-100"
           >
-            {{ namespace.name }}
-          </h5>
-          <p
-            v-if="namespace.meta.subtitle"
-            class="d-inline-block mb-0 mt-1"
-          >
-            {{ namespace.meta.subtitle }}
-          </p>
+            <h5
+              :data-test-id="namespace.name"
+            >
+              {{ namespace.name }}
+            </h5>
+            <p
+              v-if="namespace.meta.subtitle"
+              class="d-inline-block my-1 text-secondary"
+            >
+              {{ namespace.meta.subtitle }}
+            </p>
+          </div>
         </div>
-      </div>
 
-      <p
-        v-if="namespace.meta.description"
-        class="overflow-auto mb-0 mt-2"
-      >
-        <small>{{ namespace.meta.description }}</small>
-      </p>
-    </b-card-body>
-
-    <b-card-footer
-      v-if="showFooter"
-      footer-bg-variant="white"
-    >
-      <b-button-group
-        class="mt-2 d-block d-md-flex"
-      >
-        <b-button
+        <p
+          v-if="namespace.meta.description"
+          class="overflow-auto"
+        >
+          <small>{{ namespace.meta.description }}</small>
+        </p>
+      </b-card-body>
+      <template #footer>
+        <b-link
           v-if="isEnabled"
           :to="{ name: 'pages', params: { slug: (namespace.slug || namespace.namespaceID) } }"
           data-test-id="button-visit-namespace"
           :aria-label="$t('visit') + ' ' + namespace.name"
-          variant="light"
-          class="d-flex align-items-center justify-content-center mb-1 mb-md-0"
+          class="stretched-link"
         >
-          {{ $t('visit') }}
-        </b-button>
-        <b-button
-          v-if="canEdit"
-          :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }"
-          data-test-id="button-edit-namespace"
-          :aria-label="$t('edit') + ' ' + namespace.name"
-          variant="light"
-          class="d-flex align-items-center justify-content-center ml-md-1"
-        >
-          {{ $t('general:label.edit') }}
-        </b-button>
-      </b-button-group>
-    </b-card-footer>
-  </b-card>
+          <font-awesome-icon
+            :icon="['fas', 'arrow-right']"
+            class="arrow"
+          />
+        </b-link>
+      </template>
+    </b-card>
+  </b-col>
 </template>
 <script>
 
@@ -121,12 +122,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.namespace-item {
-  top: 0;
+$avatar-size: 110px;
+$disabled-opacity: 0.6;
 
+.namespace-item {
   &:hover {
     transition: all 0.2s ease;
     top: -1px;
   }
+}
+
+.circled-avatar {
+  width: $avatar-size;
+  height: $avatar-size;
+  border-radius: 50%;
+}
+
+.disabled {
+  opacity: $disabled-opacity;
 }
 </style>
