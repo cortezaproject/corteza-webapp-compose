@@ -65,10 +65,10 @@
       <template #footer>
         <b-link
           v-if="isEnabled"
-          :to="{ name: 'namespace.edit', params: { namespaceID: namespace.namespaceID } }"
+          :to="{ name: 'pages', params: { slug: (namespace.slug || namespace.namespaceID) } }"
+          data-test-id="button-visit-namespace"
           :aria-label="$t('visit') + ' ' + namespace.name"
           class="stretched-link"
-          data-test-id="button-visit-namespace"
         >
           <font-awesome-icon
             :icon="['fas', 'arrow-right']"

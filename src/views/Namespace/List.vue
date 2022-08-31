@@ -21,7 +21,7 @@
             size="lg"
             class="mr-1 float-left"
           >
-            Manage namespaces
+            *! Manage namespaces
           </b-btn>
         </b-col>
         <b-col
@@ -63,6 +63,7 @@
       >
         <b-card
           no-body
+          class="w-100"
         >
           <b-card-header
             header-bg-variant="white"
@@ -113,6 +114,8 @@
           <b-table
             :fields="namespacesFields"
             :items="namespaces"
+            :filter="query"
+            :empty-text="$t('noResults')"
             head-variant="light"
             tbody-tr-class="pointer"
             class="position-relative"
