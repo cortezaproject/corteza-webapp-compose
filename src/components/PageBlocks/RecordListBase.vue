@@ -14,7 +14,7 @@
       >
         {{ block.title }}
         <b-badge
-          v-if="Object.keys(recordListModule.labels || {}).includes('federation')"
+          v-if="isFederated"
           variant="primary"
           class="d-inline-block mb-0 ml-2"
         >
@@ -212,13 +212,14 @@
                   @change="handleSelectAllOnPage({ isChecked: $event })"
                 />
               </b-th>
-              <b-th class="w-5" />
+              <b-th v-if="isFederated" />
 
               <b-th
-                v-for="field in fields"
+                v-for="(field, index) in fields"
                 :key="field.key"
                 sticky-column
                 class="pr-0"
+                :class="{ 'pl-3': !index && !(options.draggable && inlineEditing || options.selectable || isFederated)}"
                 :style="{
                   cursor: field.sortable ? 'pointer' : 'default',
                 }"
@@ -276,7 +277,7 @@
                 </div>
               </b-th>
 
-              <b-th class="w-5" />
+              <b-th />
             </b-tr>
           </b-thead>
 
@@ -320,7 +321,10 @@
                 />
               </b-td>
 
-              <b-td class="align-middle pl-0">
+              <b-td
+                v-if="isFederated"
+                class="align-middle pl-0"
+              >
                 <b-badge
                   v-if="Object.keys(item.r.labels || {}).includes('federation')"
                   variant="primary"
@@ -331,8 +335,9 @@
               </b-td>
 
               <b-td
-                v-for="field in fields"
+                v-for="(field, i) in fields"
                 :key="field.key"
+                :class="{ 'pl-3': !i && !(options.draggable && inlineEditing || options.selectable || isFederated)}"
               >
                 <field-editor
                   v-if="field.moduleField.canUpdateRecordValue && field.editable"
@@ -685,8 +690,12 @@ export default {
       return base
     },
 
+    isFederated () {
+      return Object.keys(this.recordListModule.labels || {}).includes('federation')
+    },
+
     showHeader () {
-      return !!(this.block.title || this.block.description || Object.keys(this.recordListModule.labels || {}).includes('federation'))
+      return !!(this.block.title || this.block.description || this.isFederated)
     },
 
     showFooter () {
@@ -1380,9 +1389,5 @@ th .required::after {
   width: 10px;
   height: 16px;
   overflow: hidden;
-}
-
-.w-5 {
-  width: 5%;
 }
 </style>
