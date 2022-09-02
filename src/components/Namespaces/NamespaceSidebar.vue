@@ -19,7 +19,7 @@
             class="border-bottom text-center mb-1"
           >
             <router-link
-              :to="{ name: 'namespace.list' }"
+              :to="{ name: 'namespace.manage' }"
               class="d-block my-1 font-weight-bold text-decoration-none"
             >
               {{ $t('namespaceList') }}

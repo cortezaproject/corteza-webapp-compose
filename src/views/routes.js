@@ -22,6 +22,7 @@ export default [
         redirect: 'namespaces.list',
         children: [
           r('namespace.list', '/namespaces', 'Namespace/List'),
+          r('namespace.manage', '/namespaces/manage', 'Namespace/Manage'),
           r('namespace.create', '/admin/namespace/create', 'Namespace/Edit'),
           r('namespace.edit', '/admin/namespace/edit/:namespaceID', 'Namespace/Edit'),
           r('namespace.clone', '/admin/namespace/clone/:namespaceID', 'Namespace/Edit'),
