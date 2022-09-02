@@ -40,15 +40,6 @@
           class="d-flex align-items-center mt-1 mb-2"
         >
           <b-btn
-            data-test-id="button-create-namespace"
-            :to="{ name: 'namespace.create' }"
-            variant="primary"
-            size="lg"
-          >
-            {{ $t('create') }}
-          </b-btn>
-
-          <b-btn
             data-test-id="button-export-namespace"
             variant="light"
             size="lg"
@@ -254,7 +245,7 @@
 
     <editor-toolbar
       :processing="processing"
-      :back-link="{ name: 'root' }"
+      :back-link="{ name: 'namespace.manage' }"
       :hide-delete="hideDelete"
       :hide-clone="!isEdit"
       :hide-save="hideSave"
