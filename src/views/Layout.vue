@@ -139,6 +139,7 @@ export default {
         'namespace.edit',
         'namespace.create',
         'namespace.clone',
+        'namespace.manage',
       ],
     }
   },
