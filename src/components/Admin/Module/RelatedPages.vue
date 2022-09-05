@@ -6,7 +6,7 @@
       v-if="recordPage"
       :size="size"
       variant="light"
-      text="Related pages"
+      :text="$t('related-pages')"
       boundary="viewport"
       class="related-pages-dropdown"
     >
