@@ -215,11 +215,10 @@
               <b-th v-if="isFederated" />
 
               <b-th
-                v-for="(field, index) in fields"
+                v-for="field in fields"
                 :key="field.key"
                 sticky-column
                 class="pr-0"
-                :class="{ 'pl-3': !index && !(options.draggable && inlineEditing || options.selectable || isFederated)}"
                 :style="{
                   cursor: field.sortable ? 'pointer' : 'default',
                 }"
@@ -335,9 +334,8 @@
               </b-td>
 
               <b-td
-                v-for="(field, i) in fields"
+                v-for="field in fields"
                 :key="field.key"
-                :class="{ 'pl-3': !i && !(options.draggable && inlineEditing || options.selectable || isFederated)}"
               >
                 <field-editor
                   v-if="field.moduleField.canUpdateRecordValue && field.editable"
