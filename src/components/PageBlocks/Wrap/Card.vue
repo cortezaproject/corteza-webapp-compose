@@ -2,7 +2,7 @@
   <div class="h-100 p-2">
     <b-card
       no-body
-      class="h-100 border-0 shadow-sm"
+      class="h-100 border-0 shadow"
       :class="blockClass"
     >
       <b-card-header
