@@ -30,6 +30,8 @@ import CommentBase from './CommentBase'
 import CommentConfigurator from './CommentConfigurator'
 import ReportBase from './Report/Base'
 import ReportConfigurator from './Report/Configurator'
+import ProgressBase from './ProgressBase'
+import ProgressConfigurator from './ProgressConfigurator'
 
 /**
  * List of all known page block components
@@ -65,6 +67,8 @@ const Registry = {
   MetricConfigurator,
   CommentBase,
   CommentConfigurator,
+  ProgressBase,
+  ProgressConfigurator,
 }
 
 const defaultMode = 'Base'

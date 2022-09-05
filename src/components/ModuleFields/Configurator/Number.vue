@@ -1,20 +1,46 @@
 <template>
   <div>
-    <b-form-group>
-      <label class="d-block">{{ $t('kind.number.prefixLabel') }}</label>
-      <b-form-input
-        v-model="f.options.prefix"
-        :placeholder="$t('kind.number.prefixPlaceholder')"
+    <b-form-group
+      :label="$t('kind.number.displayType.label')"
+    >
+      <b-form-radio-group
+        v-model="f.options.display"
+        button-variant="outline-primary"
+        :options="displayOptions"
+        buttons
       />
     </b-form-group>
-    <b-form-group>
-      <label class="d-block">{{ $t('kind.number.suffixLabel') }}</label>
-      <b-form-input
-        v-model="f.options.suffix"
-        :placeholder="$t('kind.number.suffixPlaceholder')"
-      />
-    </b-form-group>
+
     <b-row>
+      <template v-if="f.options.display === 'number'">
+        <b-col
+          cols="12"
+          sm="6"
+        >
+          <b-form-group
+            :label="$t('kind.number.prefixLabel')"
+          >
+            <b-form-input
+              v-model="f.options.prefix"
+              :placeholder="$t('kind.number.prefixPlaceholder')"
+            />
+          </b-form-group>
+        </b-col>
+        <b-col
+          cols="12"
+          sm="6"
+        >
+          <b-form-group
+            :label="$t('kind.number.suffixLabel')"
+          >
+            <b-form-input
+              v-model="f.options.suffix"
+              :placeholder="$t('kind.number.suffixPlaceholder')"
+            />
+          </b-form-group>
+        </b-col>
+      </template>
+
       <b-col
         cols="12"
         sm="6"
@@ -32,35 +58,191 @@
           class="mt-1 mb-2"
         />
       </b-col>
-      <b-col
-        cols="12"
-        sm="6"
+
+      <template v-if="f.options.display === 'number'">
+        <b-col
+          cols="12"
+          sm="6"
+        >
+          <b-form-group
+            :label="$t('kind.number.formatLabel')"
+          >
+            <b-form-input
+              v-model="f.options.format"
+              :placeholder="$t('kind.number.formatPlaceholder')"
+            />
+          </b-form-group>
+        </b-col>
+      </template>
+
+      <template v-if="f.options.display === 'progress'">
+        <b-col
+          cols="12"
+          sm="6"
+        >
+          <b-form-group
+            :label="$t('kind.number.maximumValue')"
+          >
+            <b-form-input
+              v-model="f.options.max"
+              type="number"
+            />
+          </b-form-group>
+        </b-col>
+
+        <b-col
+          cols="12"
+          sm="6"
+        >
+          <b-form-group
+            :label="$t('kind.number.progress.variants.default')"
+          >
+            <b-form-select
+              v-model="f.options.variant"
+              :options="variants"
+            />
+          </b-form-group>
+        </b-col>
+
+        <b-col
+          cols="12"
+          sm="3"
+        >
+          <b-form-group
+            class="mb-0"
+          >
+            <b-form-checkbox
+              v-model="f.options.showValue"
+              class="mb-2"
+            >
+              {{ $t('kind.number.progress.show.value') }}
+            </b-form-checkbox>
+            <b-form-checkbox
+              v-model="f.options.animated"
+            >
+              {{ $t('kind.number.progress.animated') }}
+            </b-form-checkbox>
+          </b-form-group>
+        </b-col>
+
+        <b-col
+          cols="12"
+          sm="3"
+        >
+          <b-form-group
+            v-if="f.options.showValue"
+            class="mb-0"
+          >
+            <b-form-checkbox
+              v-model="f.options.showRelative"
+              class="mb-2"
+            >
+              {{ $t('kind.number.progress.show.relative') }}
+            </b-form-checkbox>
+            <b-form-checkbox
+              v-model="f.options.showProgress"
+            >
+              {{ $t('kind.number.progress.show.progress') }}
+            </b-form-checkbox>
+          </b-form-group>
+        </b-col>
+
+        <b-col
+          cols="12"
+        >
+          <b-form-group>
+            <template #label>
+              <div
+                class="d-flex align-items-center"
+              >
+                {{ $t('kind.number.progress.thresholds.label') }}
+                <b-button
+                  variant="link"
+                  class="text-decoration-none ml-1"
+                  @click="addThreshold()"
+                >
+                  {{ $t('general:label.add-with-plus') }}
+                </b-button>
+              </div>
+
+              <small
+                class="text-muted"
+              >
+                {{ $t('kind.number.progress.thresholds.description') }}
+              </small>
+            </template>
+            <b-row
+              v-for="(t, i) in field.options.thresholds"
+              :key="i"
+              align-v="center"
+              :class="{ 'mt-2': i }"
+            >
+              <b-col>
+                <b-form-input
+                  v-model="t.value"
+                  :placeholder="'Threshold'"
+                  type="number"
+                  number
+                />
+              </b-col>
+              <b-col
+                class="d-flex align-items-center justify-content-center"
+              >
+                <b-form-select
+                  v-model="t.variant"
+                  :options="variants"
+                />
+
+                <font-awesome-icon
+                  :icon="['fas', 'times']"
+                  class="pointer text-danger ml-3"
+                  @click="removeThreshold(i)"
+                />
+              </b-col>
+            </b-row>
+          </b-form-group>
+        </b-col>
+      </template>
+    </b-row>
+
+    <b-form-group
+      :label=" $t('kind.number.liveExample')"
+      class="mb-0 w-100"
+    >
+      <b-row
+        align-v="center"
       >
-        <b-form-group
-          :label="$t('kind.number.formatLabel')"
+        <b-col
+          cols="12"
+          sm="6"
         >
           <b-form-input
-            v-model="f.options.format"
-            :placeholder="$t('kind.number.formatPlaceholder')"
+            v-model="liveExample"
+            type="number"
+            step="0.01"
           />
-        </b-form-group>
-      </b-col>
-    </b-row>
-    <div>
-      <p>{{ $t('kind.number.liveExample') }}</p>
-      <div class="d-flex align-items-center">
-        <b-form-input
-          v-model="liveExample"
-          type="number"
-          step="0.01"
-          class="w-50"
-        />
-        <span class="ml-3">{{ mockField }}</span>
-      </div>
-      <p class="mt-3">
-        {{ $t('kind.number.examplesLabel') }}
-      </p>
-      <table style="width: 100%;">
+        </b-col>
+
+        <b-col
+          cols="12"
+          sm="6"
+        >
+          <field-viewer
+            value-only
+            v-bind="mock"
+          />
+        </b-col>
+      </b-row>
+    </b-form-group>
+
+    <b-form-group
+      v-if="f.options.display === 'number'"
+      :label="$t('kind.number.examplesLabel')"
+      class="mt-3"
+    >
+      <table
+        style="width: 100%;"
+      >
         <tr>
           <th>{{ $t('kind.number.exampleInput') }}</th>
           <th>{{ $t('kind.number.exampleFormat') }}</th>
@@ -87,47 +269,101 @@
           <td>0:03:58</td>
         </tr>
       </table>
-    </div>
+    </b-form-group>
   </div>
 </template>
 
 <script>
 import base from './base'
-import { compose } from '@cortezaproject/corteza-js'
+import FieldViewer from '../Viewer'
+import { compose, validator } from '@cortezaproject/corteza-js'
 
 export default {
   i18nOptions: {
     namespaces: 'field',
   },
 
+  components: {
+    FieldViewer,
+  },
+
   extends: base,
+
   data () {
     return {
-      liveExample: 123.456789,
+      liveExample: undefined,
+
+      displayOptions: [
+        { text: this.$t('kind.number.displayType.number'), value: 'number' },
+        { text: this.$t('kind.number.displayType.progress'), value: 'progress' },
+      ],
+
+      variants: [
+        { text: this.$t('kind.number.progress.variants.primary'), value: 'primary' },
+        { text: this.$t('kind.number.progress.variants.secondary'), value: 'secondary' },
+        { text: this.$t('kind.number.progress.variants.success'), value: 'success' },
+        { text: this.$t('kind.number.progress.variants.warning'), value: 'warning' },
+        { text: this.$t('kind.number.progress.variants.danger'), value: 'danger' },
+        { text: this.$t('kind.number.progress.variants.info'), value: 'info' },
+        { text: this.$t('kind.number.progress.variants.light'), value: 'light' },
+        { text: this.$t('kind.number.progress.variants.dark'), value: 'dark' },
+      ],
+
+      mock: {
+        namespace: undefined,
+        module: undefined,
+        field: undefined,
+        record: undefined,
+        errors: new validator.Validated(),
+      },
     }
   },
-  computed: {
-    mockField () {
-      if (!this.liveExample) {
-        return
+
+  watch: {
+    'field.options.display': {
+      handler (display) {
+        this.liveExample = display === 'number' ? 123.45679 : 33
+      },
+    },
+
+    'field.options': {
+      deep: true,
+      handler (options) {
+        if (this.mock.field) {
+          this.mock.field.options = options
+          this.mock.record.values.mockField = Number(this.liveExample).toFixed(this.field.options.precision)
+        }
+      },
+    },
+
+    liveExample: {
+      handler (value) {
+        if (this.mock.field) {
+          value = Number(value).toFixed(this.field.options.precision)
+          this.mock.record.values.mockField = this.field.isMulti ? [value] : value
+        }
+      },
+    },
+  },
+
+  created () {
+    this.mock.namespace = this.namespace
+    this.mock.field = compose.ModuleFieldMaker(this.field)
+    this.mock.field.apply({ name: 'mockField' })
+    this.mock.module = new compose.Module({ fields: [this.mock.field] }, this.namespace)
+    this.mock.record = new compose.Record(this.mock.module, { })
+    this.liveExample = this.field.options.display === 'number' ? 123.45679 : 33
+  },
+
+  methods: {
+    addThreshold () {
+      this.field.options.thresholds.push({ value: 0, variant: 'success' })
+    },
+
+    removeThreshold (index) {
+      if (index > -1) {
+        this.field.options.thresholds.splice(index, 1)
       }
-
-      const { format, prefix, suffix, precision = 0 } = this.f.options
-
-      // Apply backend precision to the preview, to prevent confusion
-      const value = Number(this.liveExample).toFixed(precision)
-
-      const mockField = new compose.ModuleFieldNumber({
-        options: {
-          format,
-          prefix,
-          suffix,
-          precision,
-          multiDelimiter: '\n',
-        },
-      })
-
-      return mockField.formatValue(value)
     },
   },
 }

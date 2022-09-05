@@ -23,7 +23,6 @@
         v-for="(item, index) in gridCollection"
         :key="item.i"
         ref="items"
-        :min-h="2"
         class="grid-item"
         :class="{
           'h-100': isStretchable,
