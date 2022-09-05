@@ -14,29 +14,45 @@
         :placeholder="$t('kind.number.suffixPlaceholder')"
       />
     </b-form-group>
-    <b-form-group>
-      <label class="d-block">{{ $t('kind.number.precisionLabel') }}</label>
-      <b-form-input
-        v-model="f.options.precision"
-        :placeholder="$t('kind.number.precisionPlaceholder')"
-        type="number"
-        min="0"
-        max="6"
-      />
-    </b-form-group>
-    <b-form-group>
-      <label class="d-block">{{ $t('kind.number.formatLabel') }}</label>
-      <b-form-input
-        v-model="f.options.format"
-        :placeholder="$t('kind.number.formatPlaceholder')"
-      />
-    </b-form-group>
+    <b-row>
+      <b-col
+        cols="12"
+        sm="6"
+      >
+        <label class="d-block mb-3">
+          {{ $t('kind.number.precisionLabel') }} ({{ f.options.precision }})
+        </label>
+        <b-form-input
+          v-model="f.options.precision"
+          :placeholder="$t('kind.number.precisionPlaceholder')"
+          type="range"
+          min="0"
+          max="6"
+          size="lg"
+          class="mt-1 mb-2"
+        />
+      </b-col>
+      <b-col
+        cols="12"
+        sm="6"
+      >
+        <b-form-group
+          :label="$t('kind.number.formatLabel')"
+        >
+          <b-form-input
+            v-model="f.options.format"
+            :placeholder="$t('kind.number.formatPlaceholder')"
+          />
+        </b-form-group>
+      </b-col>
+    </b-row>
     <div>
       <p>{{ $t('kind.number.liveExample') }}</p>
       <div class="d-flex align-items-center">
         <b-form-input
           v-model="liveExample"
           type="number"
+          step="0.01"
           class="w-50"
         />
         <span class="ml-3">{{ mockField }}</span>
@@ -87,7 +103,7 @@ export default {
   extends: base,
   data () {
     return {
-      liveExample: 101070,
+      liveExample: 123.456789,
     }
   },
   computed: {
@@ -96,17 +112,22 @@ export default {
         return
       }
 
+      const { format, prefix, suffix, precision = 0 } = this.f.options
+
+      // Apply backend precision to the preview, to prevent confusion
+      const value = Number(this.liveExample).toFixed(precision)
+
       const mockField = new compose.ModuleFieldNumber({
         options: {
-          format: this.f.options.format,
-          prefix: this.f.options.prefix,
-          suffix: this.f.options.suffix,
-          precision: this.f.options.precision,
+          format,
+          prefix,
+          suffix,
+          precision,
           multiDelimiter: '\n',
         },
       })
 
-      return mockField.formatValue(this.liveExample)
+      return mockField.formatValue(value)
     },
   },
 }
