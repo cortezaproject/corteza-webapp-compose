@@ -192,12 +192,14 @@ export default {
 
       const reorder = () => {
         const pageIDs = afterParent.children.map(p => p.pageID)
-        if (pageIDs.length > 1) {
+        if (pageIDs.length) {
           this.$ComposeAPI.pageReorder({ namespaceID, selfID: afterID, pageIDs: pageIDs }).then(() => {
-            this.$store.dispatch('page/load', { namespaceID, clear: true, force: true })
+            return this.$store.dispatch('page/load', { namespaceID, clear: true, force: true })
+          }).then(() => {
             this.toastSuccess(this.$t('reordered'))
             this.$emit('reorder')
-          }).catch(this.toastErrorHandler(this.$t('pageMoveFailed')))
+          })
+            .catch(this.toastErrorHandler(this.$t('pageMoveFailed')))
         }
       }
 
