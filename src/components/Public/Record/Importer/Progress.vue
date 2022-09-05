@@ -10,6 +10,7 @@
         show-progress
         variant="primary"
         height="80px"
+        class="bg-light"
       >
         <b-progress-bar
           :value="progress.completed"
