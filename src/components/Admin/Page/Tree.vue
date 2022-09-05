@@ -57,7 +57,7 @@
             </router-link>
             <span class="view d-inline-block">
               <router-link
-                v-if="item.blocks && item.blocks.length >= 1"
+                v-if="!hideViewPageButton(item)"
                 data-test-id="button-page-view"
                 :to="pageViewer(item)"
                 class="btn"
@@ -177,12 +177,12 @@ export default {
       return (this.getModuleByID(moduleID) || {}).name
     },
 
-    pageViewer ({ pageID = NoID, moduleID = NoID }) {
-      if (moduleID !== NoID) {
-        return undefined
-      }
-
+    pageViewer ({ pageID = NoID }) {
       return { name: 'page', params: { pageID } }
+    },
+
+    hideViewPageButton ({ blocks = {}, moduleID = NoID }) {
+      return blocks && blocks.length >= 1 && moduleID !== NoID
     },
 
     handleChangePosition ({ beforeParent, data, afterParent }) {
