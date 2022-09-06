@@ -9,7 +9,7 @@
       <page-translator
         v-if="page"
         :page="page"
-        :block="block"
+        :block.sync="block"
         :disabled="isNew"
         button-variant="link"
       />
@@ -35,7 +35,7 @@
               <page-translator
                 v-if="page"
                 :page="page"
-                :block="block"
+                :block.sync="block"
                 :disabled="isNew"
                 :highlight-key="`pageBlock.${block.blockID}.title`"
                 button-variant="light"
@@ -59,7 +59,7 @@
               <page-translator
                 v-if="page"
                 :page="page"
-                :block="block"
+                :block.sync="block"
                 :disabled="isNew"
                 :highlight-key="`pageBlock.${block.blockID}.description`"
                 button-variant="light"

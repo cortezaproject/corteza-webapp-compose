@@ -166,36 +166,53 @@ export default {
               }
             }
 
-            switch (true) {
-              case this.block instanceof compose.PageBlockAutomation:
-                this.block.options.buttons.forEach((btn, index) => {
-                  tr = find(`pageBlock.${this.block.blockID}.button.${btn.buttonID || (index + 1)}.label`)
-                  if (tr) {
-                    btn.label = tr.message
-                  }
-                })
-                break
-
-              case this.block instanceof compose.PageBlockRecordList:
-                this.block.options.selectionButtons.forEach((btn, index) => {
-                  tr = find(`pageBlock.${this.block.blockID}.button.${btn.buttonID || (index + 1)}.label`)
-                  if (tr) {
-                    btn.label = tr.message
-                  }
-                })
-                break
-
-              case this.block instanceof compose.PageBlockContent:
-                tr = find(`pageBlock.${this.block.blockID}.body`)
-                if (tr) {
-                  this.block.options.label = tr.message
-                }
-                break
+            if (this.block) {
+              this.block.title = (find(`pageBlock.${this.block.blockID}.title`) || {}).message
+              this.block.description = (find(`pageBlock.${this.block.blockID}.description`) || {}).message
             }
+
+            this.page.blocks = this.page.blocks.map(block => {
+              block.title = (find(`pageBlock.${block.blockID}.title`) || {}).message
+              block.description = (find(`pageBlock.${block.blockID}.description`) || {}).message
+
+              switch (true) {
+                case block instanceof compose.PageBlockAutomation:
+                  block.options.buttons.forEach((btn, index) => {
+                    tr = find(`pageBlock.${block.blockID}.button.${btn.buttonID || (index + 1)}.label`)
+                    if (tr) {
+                      btn.label = tr.message
+                    }
+                  })
+                  break
+
+                case block instanceof compose.PageBlockRecordList:
+                  block.options.selectionButtons.forEach((btn, index) => {
+                    tr = find(`pageBlock.${block.blockID}.button.${btn.buttonID || (index + 1)}.label`)
+                    if (tr) {
+                      btn.label = tr.message
+                    }
+                  })
+                  break
+
+                case block instanceof compose.PageBlockContent:
+                  tr = find(`pageBlock.${block.blockID}.body`)
+                  if (tr) {
+                    block.options.label = tr.message
+                  }
+                  break
+              }
+
+              return block
+            })
+
             return this.page
           })
           .then(page => {
             this.$emit('update:page', page)
+
+            if (this.block) {
+              this.$emit('update:block', this.block)
+            }
           })
       }
     },
