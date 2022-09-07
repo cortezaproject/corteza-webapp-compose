@@ -79,7 +79,7 @@
       class="text-primary"
     >
       <c-sensitivity-level-picker
-        v-model="field.privacy.sensitivityLevel"
+        v-model="field.config.privacy.sensitivityLevelID"
         :placeholder="$t('privacy.sensitivityLevel.placeholder')"
         :max-level="maxLevelID"
       />
@@ -370,7 +370,7 @@ export default {
       this.$set(this.field.expressions, 'value', '')
     }
 
-    this.maxLevelID = this.module.privacy.sensitivityLevel
+    this.maxLevelID = this.field.config.privacy.sensitivityLevelID
   },
 
   beforeDestroy () {
