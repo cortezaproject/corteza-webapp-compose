@@ -321,21 +321,18 @@
               <b-tab :title="$t('edit.config.dal.title')">
                 <dal-settings
                   :module="module"
-                  :editable="isEdit"
                 />
               </b-tab>
 
               <b-tab :title="$t('edit.config.privacy.title')">
                 <data-privacy-settings
                   :module="module"
-                  :editable="isEdit"
                 />
               </b-tab>
 
               <b-tab :title="$t('edit.config.record-revisions.title')">
                 <record-revisions-settings
                   :module="module"
-                  :editable="isEdit"
                 />
               </b-tab>
             </b-tabs>

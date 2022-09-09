@@ -10,14 +10,14 @@
       </b-form-checkbox>
     </b-form-group>
     <b-form-group
-      :label="$t('ident')"
-      :description="$t('ident-description')"
+      :label="$t('ident.label')"
+      :description="$t('ident.description')"
       label-class="text-primary"
     >
       <b-input
         v-model="module.config.recordRevisions.ident"
-        :disabled="!editable || !module.config.recordRevisions.enabled"
-        :placeholder="$t('ident-placeholder')"
+        :disabled="!module.config.recordRevisions.enabled"
+        :placeholder="$t('ident.placeholder')"
       />
     </b-form-group>
   </b-container>
@@ -36,11 +36,6 @@ export default {
     module: {
       type: compose.Module,
       required: true,
-    },
-
-    editable: {
-      type: Boolean,
-      default: false,
     },
   },
 

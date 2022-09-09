@@ -3,29 +3,28 @@
     v-if="module"
   >
     <b-form-group
-      :label="$t('sensitivity-level')"
-      :description="$t('sensitivity-level-description')"
+      :label="$t('sensitivity-level.label')"
+      :description="$t('sensitivity-level.description')"
       label-class="text-primary"
     >
       <vue-select
         v-model="module.config.privacy.sensitivityLevelID"
         :options="sensitivityLevels"
-        :disabled="!editable || processing"
+        :disabled="processing"
         :clearable="false"
         :reduce="s => s.ID"
+        :placeholder="$t('sensitivity-level.placeholder')"
         label="label"
         value="ID"
         class="bg-white"
       />
     </b-form-group>
     <b-form-group
-      :label="$t('usage-disclosure')"
+      :label="$t('usage-disclosure.label')"
       label-class="text-primary"
     >
       <b-textarea
         v-model="module.config.privacy.usageDisclosure"
-        :disabled="!editable"
-        :placeholder="$t('usage-disclosure-placeholder')"
       />
     </b-form-group>
   </b-container>
@@ -49,11 +48,6 @@ export default {
     module: {
       type: compose.Module,
       required: true,
-    },
-
-    editable: {
-      type: Boolean,
-      default: false,
     },
   },
 
