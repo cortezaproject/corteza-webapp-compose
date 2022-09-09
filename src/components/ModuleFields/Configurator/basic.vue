@@ -80,7 +80,6 @@
     >
       <c-sensitivity-level-picker
         v-model="field.config.privacy.sensitivityLevelID"
-        :placeholder="$t('privacy.sensitivityLevel.placeholder')"
         :max-level="maxLevelID"
       />
     </b-form-group>
