@@ -3,30 +3,29 @@
     v-if="module"
   >
     <b-form-group
-      :label="$t('connection')"
+      :label="$t('connection.label')"
       label-class="text-primary"
     >
       <vue-select
         v-model="selectedConnectionID"
         :options="connections"
-        :disabled="!editable || processing"
+        :disabled="processing"
         :clearable="false"
         :reduce="s => s.ID"
+        :placeholder="$t('connection.placeholder')"
         label="label"
         value="ID"
         class="bg-white"
       />
     </b-form-group>
     <b-form-group
-      :label="$t('ident')"
-      :description="$t('ident-description')"
+      :label="$t('ident.label')"
+      :description="$t('ident.description')"
       label-class="text-primary"
     >
       <b-input
         v-model="module.config.dal.ident"
-        :disabled="!editable"
-        :placeholder="$t('ident-placeholder')"
-        @change="module.config.dal.partitioned=true"
+        :placeholder="$t('ident.placeholder')"
       />
     </b-form-group>
   </b-container>
@@ -52,11 +51,6 @@ export default {
     module: {
       type: compose.Module,
       required: true,
-    },
-
-    editable: {
-      type: Boolean,
-      default: false,
     },
   },
 

@@ -75,11 +75,12 @@
     </b-form-group>
 
     <b-form-group
-      :label="$t('privacy.sensitivityLevel.label')"
+      :label="$t('privacy.sensitivity-level.label')"
       class="text-primary"
     >
       <c-sensitivity-level-picker
         v-model="field.config.privacy.sensitivityLevelID"
+        :placeholder="$t('privacy.sensitivity-level.placeholder')"
         :max-level="maxLevelID"
       />
     </b-form-group>
