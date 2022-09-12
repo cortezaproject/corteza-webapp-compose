@@ -152,7 +152,7 @@
               card
             >
               <b-tab
-                title="Fields"
+                :title="$t('fields.label')"
                 active
               >
                 <b-container

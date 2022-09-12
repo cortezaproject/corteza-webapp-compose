@@ -1,11 +1,11 @@
 <template>
   <b-tab
-    title="Progress"
+    :title="$t('progress.tab.label')"
     class="vh-100"
   >
     <template>
       <h5 class="text-primary">
-        Value
+        {{ $t('progress.value.label') }}
       </h5>
 
       <b-row>
@@ -13,12 +13,12 @@
           cols="12"
         >
           <b-form-group
-            label="Module"
+            :label="$t('progress.module.label')"
           >
             <vue-select
               v-model="options.value.moduleID"
               label="name"
-              placeholder="Select module"
+              :placeholder="$t('progress.module.select')"
               :options="modules"
               :reduce="m => m.moduleID"
               class="bg-white"
@@ -54,12 +54,12 @@
             sm="6"
           >
             <b-form-group
-              label="Field"
+              :label="$t('progress.field.label')"
             >
               <vue-select
                 v-model="options.value.field"
                 label="name"
-                placeholder="Select field"
+                :placeholder="$t('progress.field.select')"
                 :options="valueModuleFields"
                 :reduce="f => f.fieldID"
                 class="bg-white"
@@ -72,13 +72,13 @@
             sm="6"
           >
             <b-form-group
-              label="Aggregation operation"
+              :label="$t('progress.aggregate.label')"
             >
               <vue-select
                 v-model="options.value.aggregation"
                 label="name"
                 :disabled="!options.value.field || options.value.field === 'count'"
-                placeholder="Select aggregation operation"
+                :placeholder="$t('progress.aggregate.select')"
                 :options="aggregationOperations"
                 :reduce="a => a.operation"
                 class="bg-white"
@@ -93,7 +93,7 @@
 
     <template>
       <h5 class="text-primary">
-        Maximum value
+        {{ $t('progress.value.max') }}
       </h5>
 
       <b-row>
@@ -101,12 +101,12 @@
           cols="12"
         >
           <b-form-group
-            label="Module"
+            :label="$t('progress.module.label')"
           >
             <vue-select
               v-model="options.maxValue.moduleID"
               label="name"
-              placeholder="Select module"
+              :placeholder="$t('progress.module.select')"
               :options="modules"
               :reduce="m => m.moduleID"
               class="bg-white"
@@ -142,12 +142,12 @@
             sm="6"
           >
             <b-form-group
-              label="Field"
+              :label="$t('progress.field.label')"
             >
               <vue-select
                 v-model="options.maxValue.field"
                 label="name"
-                placeholder="Select field"
+                :placeholder="$t('progress.field.select')"
                 :options="maxValueModuleFields"
                 :reduce="f => f.fieldID"
                 class="bg-white"
@@ -160,13 +160,13 @@
             sm="6"
           >
             <b-form-group
-              label="Aggregation operation"
+              :label="$t('progress.aggregate.label')"
             >
               <vue-select
                 v-model="options.maxValue.aggregation"
                 label="name"
                 :disabled="!options.maxValue.field || options.maxValue.field === 'count'"
-                placeholder="Select aggregation operation"
+                placeholder="$t('progress.aggregate.select')"
                 :options="aggregationOperations"
                 :reduce="a => a.operation"
                 class="bg-white"
@@ -181,7 +181,7 @@
 
     <template>
       <h5 class="text-primary">
-        Display options
+        {{ $t('progress.display-options') }}
       </h5>
 
       <b-row
@@ -192,7 +192,7 @@
           sm="6"
         >
           <b-form-group
-            :label="'Default variant'"
+            :label="$t('progress.default-variant')"
           >
             <b-form-select
               v-model="options.display.variant"
@@ -213,12 +213,12 @@
               v-model="options.display.showValue"
               class="mb-2"
             >
-              Show value
+              {{ $t('progress.show.value') }}
             </b-form-checkbox>
             <b-form-checkbox
               v-model="options.display.animated"
             >
-              Animated
+              {{ $t('progress.animated') }}
             </b-form-checkbox>
           </b-form-group>
         </b-col>
@@ -236,12 +236,12 @@
               v-model="options.display.showRelative"
               class="mb-2"
             >
-              Show relative
+              {{ $t('progress.show.relative') }}
             </b-form-checkbox>
             <b-form-checkbox
               v-model="options.display.showProgress"
             >
-              Show progress
+              {{ $t('progress.show.progress') }}
             </b-form-checkbox>
           </b-form-group>
         </b-col>
@@ -254,20 +254,20 @@
               <div
                 class="d-flex align-items-center"
               >
-                Thresholds
+                {{ $t('progress.thresholds') }}
                 <b-button
                   variant="link"
                   class="text-decoration-none ml-1"
                   @click="addThreshold()"
                 >
-                  + Add
+                  {{ $t('progress.add') }}
                 </b-button>
               </div>
 
               <small
                 class="text-muted"
               >
-                Set which variant to show if value exceeds the threshold
+                {{ $t('progress.threshold.variant') }}
               </small>
             </template>
             <b-row
@@ -279,7 +279,7 @@
               <b-col>
                 <b-form-input
                   v-model="t.value"
-                  :placeholder="'Threshold'"
+                  :placeholder="$t('progress.threshold.label')"
                   type="number"
                   number
                 />
@@ -311,7 +311,7 @@
           class="preview bg-white position-absolute p-3"
         >
           <h6 class="text-primary">
-            Preview
+            {{ $t('progress.preview') }}
           </h6>
 
           <b-progress
@@ -334,10 +334,10 @@
               cols="12"
               sm="6"
             >
-              Value
+              {{ $t('progress.value.label') }}
               <b-form-input
                 v-model="preview.value"
-                placeholder="Value"
+                :placeholder="$t('progress.value.label')"
                 type="number"
                 size="sm"
               />
@@ -347,10 +347,10 @@
               cols="12"
               sm="6"
             >
-              Maximum value
+              {{ $t('progress.value.max') }}
               <b-form-input
                 v-model="preview.max"
-                placeholder="Maximum value"
+                :placeholder="$t('progress.value.max')"
                 type="number"
                 size="sm"
               />
@@ -407,14 +407,14 @@ export default {
       ],
 
       variants: [
-        { text: 'Primary', value: 'primary' },
-        { text: 'Secondary', value: 'secondary' },
-        { text: 'Success', value: 'success' },
-        { text: 'Warning', value: 'warning' },
-        { text: 'Danger', value: 'danger' },
-        { text: 'Info', value: 'info' },
-        { text: 'Light', value: 'light' },
-        { text: 'Dark', value: 'dark' },
+        { text: this.$t('progress.variant.primary'), value: 'primary' },
+        { text: this.$t('progress.variant.secondary'), value: 'secondary' },
+        { text: this.$t('progress.variant.success'), value: 'success' },
+        { text: this.$t('progress.variant.warning'), value: 'warning' },
+        { text: this.$t('progress.variant.danger'), value: 'danger' },
+        { text: this.$t('progress.variant.info'), value: 'info' },
+        { text: this.$t('progress.variant.light'), value: 'light' },
+        { text: this.$t('progress.variant.dark'), value: 'dark' },
       ],
     }
   },
