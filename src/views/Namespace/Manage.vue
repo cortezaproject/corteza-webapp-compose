@@ -5,6 +5,7 @@
     <portal to="topbar-title">
       {{ $t('title') }}
     </portal>
+
     <portal to="topbar-tools">
       <b-btn
         data-test-id="public-view"
