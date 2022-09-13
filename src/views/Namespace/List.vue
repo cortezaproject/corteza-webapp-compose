@@ -5,8 +5,10 @@
     <portal to="topbar-title">
       {{ $t('title') }}
     </portal>
+
     <portal to="topbar-tools">
       <b-btn
+        v-if="canManage"
         data-test-id="public-view"
         variant="primary"
         size="sm"

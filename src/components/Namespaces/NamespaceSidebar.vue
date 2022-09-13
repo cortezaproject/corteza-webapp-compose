@@ -15,14 +15,14 @@
       >
         <template #list-header>
           <li
-            v-if="!hideNamespaceListLink"
+            v-if="showNamespaceListLink"
             class="border-bottom text-center mb-1"
           >
             <router-link
               :to="{ name: 'namespace.manage' }"
               class="d-block my-1 font-weight-bold text-decoration-none"
             >
-              {{ $t('namespaceList') }}
+              {{ $t('manageNamespaces') }}
             </router-link>
           </li>
         </template>
@@ -199,6 +199,7 @@ export default {
       modules: 'module/set',
       pages: 'page/set',
       charts: 'chart/set',
+      can: 'rbac/can',
     }),
 
     // Loading is true only when a resource is being force loaded (API call)
@@ -211,9 +212,19 @@ export default {
       return hideNamespaceList
     },
 
-    hideNamespaceListLink () {
+    canManageNamespaces () {
+      if (this.can('compose/', 'namespace.create') || this.can('compose/', 'grant')) {
+        return true
+      }
+
+      return this.namespaces.reduce((acc, ns) => {
+        return acc || ns.canUpdateNamespace || ns.canDeleteNamespace
+      }, false)
+    },
+
+    showNamespaceListLink () {
       const { hideNamespaceListLink } = this.$Settings.get('compose.ui.sidebar', {})
-      return hideNamespaceListLink
+      return !hideNamespaceListLink && this.canManageNamespaces
     },
 
     isAdminPage () {
