@@ -1,5 +1,5 @@
 <template>
-  <b-container
+  <div
     v-if="module"
   >
     <b-form-group>
@@ -20,7 +20,7 @@
         :placeholder="$t('ident.placeholder')"
       />
     </b-form-group>
-  </b-container>
+  </div>
 </template>
 
 <script>
