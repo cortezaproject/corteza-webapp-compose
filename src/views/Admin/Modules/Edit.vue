@@ -152,7 +152,7 @@
               card
             >
               <b-tab
-                :title="$t('fields.label')"
+                :title="$t('edit.fields.label')"
                 active
               >
                 <h5 class="mb-3">
