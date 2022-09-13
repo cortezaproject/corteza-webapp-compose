@@ -45,14 +45,36 @@
         :namespace="namespace"
       />
     </b-tab>
+    <b-tab
+      :title="$t('label.privacy')"
+    >
+      <data-privacy-settings
+        v-if="connection"
+        :resource="field"
+        :connection="connection"
+        :sensitivity-levels="sensitivityLevels"
+        :max-level="maxLevelID"
+        :translations="{
+          sensitivity: {
+            label: $t('field:privacy.sensitivity-level.label'),
+            placeholder: $t('field:privacy.sensitivity-level.placeholder'),
+          },
+          usage: {
+            label: $t('field:privacy.usage-disclosure.label'),
+          },
+        }"
+      />
+    </b-tab>
   </b-tabs>
 </template>
 <script>
+import { NoID } from '@cortezaproject/corteza-js'
 import base from './base'
 import * as Configurators from './loader'
 import multi from './multi'
 import basic from './basic'
 import validation from './validation'
+import DataPrivacySettings from 'corteza-webapp-compose/src/components/Admin/Module/DataPrivacySettings'
 
 export default {
   i18nOptions: {
@@ -64,6 +86,7 @@ export default {
     multi,
     basic,
     validation,
+    DataPrivacySettings,
   },
 
   extends: base,
@@ -72,6 +95,11 @@ export default {
     fieldComponent () {
       // If field doesn't have a configurator, we show no field tab
       return Configurators[this.field.kind]
+    },
+
+    maxLevelID () {
+      const { sensitivityLevelID = NoID } = this.module.config.privacy || {}
+      return sensitivityLevelID
     },
   },
 }

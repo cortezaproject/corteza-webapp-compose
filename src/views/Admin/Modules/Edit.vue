@@ -155,167 +155,157 @@
                 :title="$t('fields.label')"
                 active
               >
-                <b-container
-                  fluid
-                  class="px-4"
-                >
-                  <h5 class="mb-3">
-                    {{ $t('edit.moduleInfo') }}
-                  </h5>
-                  <b-row>
-                    <b-col
-                      cols="12"
-                      md="6"
-                      xl="4"
-                    >
-                      <b-form-group>
-                        <label
-                          class="text-primary"
-                        >
-                          {{ $t('newLabel') }}
-                        </label>
-                        <b-form-input
-                          v-model="module.name"
-                          data-test-id="input-module-name"
-                          required
-                          :state="nameState"
-                          :placeholder="$t('newPlaceholder')"
-                        />
-                      </b-form-group>
-                    </b-col>
-                    <b-col
-                      cols="12"
-                      md="6"
-                      xl="4"
-                    >
-                      <b-form-group>
-                        <label class="text-primary">{{ $t('general.label.handle') }}</label>
-                        <b-form-input
-                          v-model="module.handle"
-                          data-test-id="input-module-handle"
-                          :state="handleState"
-                          :placeholder="$t('general.placeholder.handle')"
-                          class="mb-2"
-                        />
-                        <b-form-invalid-feedback :state="handleState">
-                          {{ $t('general.placeholder.invalid-handle-characters') }}
-                        </b-form-invalid-feedback>
-                      </b-form-group>
-                    </b-col>
-                  </b-row>
-                </b-container>
-                <hr>
-                <b-container
-                  fluid
-                  class="px-4"
-                >
-                  <h5 class="mb-3">
-                    {{ $t('edit.manageRecordFields') }}
-                  </h5>
-                  <b-row no-gutters>
-                    <b-form-group class="w-100">
-                      <table
-                        data-test-id="table-module-fields"
-                        class="table table-sm table-borderless table-responsive-lg"
+                <h5 class="mb-3">
+                  {{ $t('edit.moduleInfo') }}
+                </h5>
+                <b-row>
+                  <b-col
+                    cols="12"
+                    md="6"
+                    xl="4"
+                  >
+                    <b-form-group>
+                      <label
+                        class="text-primary"
                       >
-                        <thead>
-                          <tr>
-                            <th />
-                            <th
-                              class="text-primary"
-                            >
-                              <div
-                                class="d-flex align-items-center"
-                              >
-                                {{ $t('general.label.name') }}
-                                <div
-                                  v-b-tooltip.hover.topright
-                                  :title="$t('edit.tooltip.name')"
-                                  class="ml-1"
-                                >
-                                  <font-awesome-icon
-                                    :icon="['far', 'question-circle']"
-                                  />
-                                </div>
-                              </div>
-                            </th>
-                            <th
-                              class="text-primary"
-                            >
-                              <div
-                                class="d-flex align-items-center"
-                              >
-                                {{ $t('general.label.title') }}
-                                <div
-                                  v-b-tooltip.hover.topright
-                                  :title="$t('edit.tooltip.title')"
-                                  class="ml-1"
-                                >
-                                  <font-awesome-icon
-                                    :icon="['far', 'question-circle']"
-                                  />
-                                </div>
-                              </div>
-                            </th>
-                            <th class="text-primary">
-                              {{ $t('general:label.type') }}
-                            </th>
-                            <th />
-                            <th />
-                            <th class="text-primary text-center">
-                              {{ $t('general:label.required') }}
-                            </th>
-                            <th />
-                          </tr>
-                        </thead>
-                        <draggable
-                          v-model="module.fields"
-                          :options="{handle:'.handle'}"
-                          tag="tbody"
-                        >
-                          <field-row-edit
-                            v-for="(field, index) in module.fields"
-                            :key="index"
-                            v-model="module.fields[index]"
-                            :can-grant="namespace.canGrant"
-                            :has-records="hasRecords"
-                            :module="module"
-                            :is-duplicate="!!duplicateFields[index]"
-                            @edit="handleFieldEdit(module.fields[index])"
-                            @delete="module.fields.splice(index, 1)"
-                          />
-                        </draggable>
-                        <tr>
-                          <td colspan="1" />
-                          <td colspan="7">
-                            <b-button
-                              data-test-id="button-field-add"
-                              class="mb-5"
-                              variant="primary"
-                              @click="handleNewField"
-                            >
-                              + {{ $t('edit.newField') }}
-                            </b-button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td
-                            colspan="7"
-                            class="font-weight-bold"
-                          >
-                            {{ $t('edit.systemFields') }}
-                          </td>
-                        </tr>
-                        <field-row-view
-                          v-for="(field, index) in systemFields"
-                          :key="index"
-                          :field="field"
-                          class="mt-4"
-                        />
-                      </table>
+                        {{ $t('newLabel') }}
+                      </label>
+                      <b-form-input
+                        v-model="module.name"
+                        data-test-id="input-module-name"
+                        required
+                        :state="nameState"
+                        :placeholder="$t('newPlaceholder')"
+                      />
                     </b-form-group>
-                  </b-row>
-                </b-container>
+                  </b-col>
+                  <b-col
+                    cols="12"
+                    md="6"
+                    xl="4"
+                  >
+                    <b-form-group>
+                      <label class="text-primary">{{ $t('general.label.handle') }}</label>
+                      <b-form-input
+                        v-model="module.handle"
+                        data-test-id="input-module-handle"
+                        :state="handleState"
+                        :placeholder="$t('general.placeholder.handle')"
+                        class="mb-2"
+                      />
+                      <b-form-invalid-feedback :state="handleState">
+                        {{ $t('general.placeholder.invalid-handle-characters') }}
+                      </b-form-invalid-feedback>
+                    </b-form-group>
+                  </b-col>
+                </b-row>
+                <hr>
+                <h5 class="mb-3">
+                  {{ $t('edit.manageRecordFields') }}
+                </h5>
+                <b-row no-gutters>
+                  <b-form-group class="w-100">
+                    <table
+                      data-test-id="table-module-fields"
+                      class="table table-sm table-borderless table-responsive-lg"
+                    >
+                      <thead>
+                        <tr>
+                          <th />
+                          <th
+                            class="text-primary"
+                          >
+                            <div
+                              class="d-flex align-items-center"
+                            >
+                              {{ $t('general.label.name') }}
+                              <div
+                                v-b-tooltip.hover.topright
+                                :title="$t('edit.tooltip.name')"
+                                class="ml-1"
+                              >
+                                <font-awesome-icon
+                                  :icon="['far', 'question-circle']"
+                                />
+                              </div>
+                            </div>
+                          </th>
+                          <th
+                            class="text-primary"
+                          >
+                            <div
+                              class="d-flex align-items-center"
+                            >
+                              {{ $t('general.label.title') }}
+                              <div
+                                v-b-tooltip.hover.topright
+                                :title="$t('edit.tooltip.title')"
+                                class="ml-1"
+                              >
+                                <font-awesome-icon
+                                  :icon="['far', 'question-circle']"
+                                />
+                              </div>
+                            </div>
+                          </th>
+                          <th class="text-primary">
+                            {{ $t('general:label.type') }}
+                          </th>
+                          <th />
+                          <th />
+                          <th class="text-primary text-center">
+                            {{ $t('general:label.required') }}
+                          </th>
+                          <th />
+                        </tr>
+                      </thead>
+                      <draggable
+                        v-model="module.fields"
+                        :options="{handle:'.handle'}"
+                        tag="tbody"
+                      >
+                        <field-row-edit
+                          v-for="(field, index) in module.fields"
+                          :key="index"
+                          v-model="module.fields[index]"
+                          :can-grant="namespace.canGrant"
+                          :has-records="hasRecords"
+                          :module="module"
+                          :is-duplicate="!!duplicateFields[index]"
+                          @edit="handleFieldEdit(module.fields[index])"
+                          @delete="module.fields.splice(index, 1)"
+                        />
+                      </draggable>
+                      <tr>
+                        <td colspan="1" />
+                        <td colspan="7">
+                          <b-button
+                            data-test-id="button-field-add"
+                            class="mb-5"
+                            variant="primary"
+                            @click="handleNewField"
+                          >
+                            + {{ $t('edit.newField') }}
+                          </b-button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          colspan="7"
+                          class="font-weight-bold"
+                        >
+                          {{ $t('edit.systemFields') }}
+                        </td>
+                      </tr>
+                      <field-row-view
+                        v-for="(field, index) in systemFields"
+                        :key="index"
+                        :field="field"
+                        class="mt-4"
+                      />
+                    </table>
+                  </b-form-group>
+                </b-row>
               </b-tab>
 
               <b-tab :title="$t('edit.config.dal.title')">
@@ -326,7 +316,21 @@
 
               <b-tab :title="$t('edit.config.privacy.title')">
                 <data-privacy-settings
-                  :module="module"
+                  v-if="connection"
+                  :resource="module"
+                  :connection="connection"
+                  :sensitivity-levels="sensitivityLevels"
+                  :max-level="maxLevelID"
+                  :translations="{
+                    sensitivity: {
+                      label: $t('edit.config.privacy.sensitivity-level.label'),
+                      description: $t('edit.config.privacy.sensitivity-level.description'),
+                      placeholder: $t('edit.config.privacy.sensitivity-level.placeholder'),
+                    },
+                    usage: {
+                      label: $t('edit.config.privacy.usage-disclosure.label'),
+                    },
+                  }"
                 />
               </b-tab>
 
@@ -357,6 +361,8 @@
           :field.sync="updateField"
           :namespace="namespace"
           :module="module"
+          :connection="connection"
+          :sensitivity-levels="sensitivityLevels"
         />
       </b-modal>
 
@@ -446,6 +452,9 @@ export default {
   data () {
     return {
       activeTab: 0,
+
+      connection: undefined,
+      sensitivityLevels: [],
 
       updateField: null,
       module: undefined,
@@ -561,6 +570,11 @@ export default {
     allRecords () {
       return this.isEdit ? { name: 'admin.modules.record.list', params: { moduleID: this.moduleID } } : undefined
     },
+
+    maxLevelID () {
+      const { sensitivityLevelID = NoID } = this.connection.config.privacy || {}
+      return sensitivityLevelID
+    },
   },
 
   watch: {
@@ -590,6 +604,14 @@ export default {
               .then(({ set }) => { this.hasRecords = (set.length > 0) })
           })
         }
+
+        this.fetchSensitivityLevels()
+      },
+    },
+
+    'module.config.dal.connectionID': {
+      handler (connectionID) {
+        this.fetchConnection(connectionID)
       },
     },
   },
@@ -701,6 +723,32 @@ export default {
           this.toastSuccess(this.$t('notification:module.deleted'))
           this.processing = false
           this.$router.push({ name: 'admin.modules' })
+        })
+    },
+
+    async fetchConnection (connectionID) {
+      if (connectionID && connectionID !== NoID) {
+        this.$SystemAPI.dalConnectionRead({ connectionID })
+          .then(connection => {
+            this.connection = connection
+          })
+          .catch(this.toastErrorHandler(this.$t('notification:connection.read-failed')))
+          .finally(() => {
+            this.processing = false
+          })
+      }
+    },
+
+    async fetchSensitivityLevels () {
+      this.processing = true
+
+      return this.$SystemAPI.dalSensitivityLevelList()
+        .then(({ set = [] }) => {
+          this.sensitivityLevels = set
+        })
+        .catch(this.toastErrorHandler(this.$t('notification:sensitivity-level.fetch-failed')))
+        .finally(() => {
+          this.processing = false
         })
     },
   },

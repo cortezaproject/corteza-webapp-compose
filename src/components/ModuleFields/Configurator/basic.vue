@@ -2,7 +2,7 @@
   <div>
     <b-form-checkbox
       v-model="field.isRequired"
-      :disabled="!field.cap.required || showvalueExpr"
+      :disabled="!field.cap.required || showValueExpr"
     >
       {{ $t('general:label.required') }}
     </b-form-checkbox>
@@ -15,7 +15,7 @@
     </b-form-checkbox>
 
     <b-form-checkbox
-      v-model="showvalueExpr"
+      v-model="showValueExpr"
       :disabled="field.isRequired || defaultValueEnabled"
     >
       {{ $t('valueExpr.label') }}
@@ -24,7 +24,7 @@
     <b-form-checkbox
       v-if="showDefaultValue"
       :checked="defaultValueEnabled"
-      :disabled="!!showvalueExpr"
+      :disabled="!!showValueExpr"
       @change="toggleDefaultValue()"
     >
       {{ $t('defaultValue') }}
@@ -33,7 +33,7 @@
     <hr>
 
     <b-form-group
-      v-if="showvalueExpr"
+      v-if="showValueExpr"
       :label="$t('valueExpr.label')"
       class="mt-2"
     >
@@ -74,18 +74,7 @@
       />
     </b-form-group>
 
-    <b-form-group
-      :label="$t('privacy.sensitivity-level.label')"
-      class="text-primary"
-    >
-      <c-sensitivity-level-picker
-        v-model="field.config.privacy.sensitivityLevelID"
-        :placeholder="$t('privacy.sensitivity-level.placeholder')"
-        :max-level="maxLevelID"
-      />
-    </b-form-group>
-
-    <hr>
+    <hr v-if="showValueExpr || showDefaultField">
 
     <b-form-group
       :label="$t(`options.description.label.${noDescriptionEdit ? 'default' : 'view'}`)"
@@ -200,10 +189,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import { compose, validator, NoID } from '@cortezaproject/corteza-js'
-import { components } from '@cortezaproject/corteza-vue'
 import FieldEditor from '../Editor'
 import FieldTranslator from 'corteza-webapp-compose/src/components/Admin/Module/FieldTranslator'
-const { CSensitivityLevelPicker } = components
 
 export default {
   i18nOptions: {
@@ -213,7 +200,6 @@ export default {
   components: {
     FieldEditor,
     FieldTranslator,
-    CSensitivityLevelPicker,
   },
 
   props: {
@@ -235,9 +221,7 @@ export default {
 
   data () {
     return {
-      maxLevelID: undefined,
-
-      showvalueExpr: false,
+      showValueExpr: false,
 
       mock: {
         show: true,
@@ -290,7 +274,7 @@ export default {
     defaultValueEnabled: {
       handler (val) {
         if (val) {
-          this.showvalueExpr = false
+          this.showValueExpr = false
         }
       },
     },
@@ -365,17 +349,15 @@ export default {
       this.$set(this.field.options.description, 'edit', undefined)
     }
 
-    this.showvalueExpr = expressions.value && expressions.value.length > 0
+    this.showValueExpr = expressions.value && expressions.value.length > 0
     if (!this.field.expressions.value) {
       this.$set(this.field.expressions, 'value', '')
     }
-
-    this.maxLevelID = this.field.config.privacy.sensitivityLevelID
   },
 
   beforeDestroy () {
     // Sanitize expression/required flag
-    if (this.showvalueExpr) {
+    if (this.showValueExpr) {
       this.field.required = false
       this.field.defaultValue = []
     } else {

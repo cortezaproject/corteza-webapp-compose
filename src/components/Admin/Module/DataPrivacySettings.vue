@@ -1,52 +1,64 @@
 <template>
-  <b-container
-    v-if="module"
+  <div
+    v-if="resource && connection"
   >
     <b-form-group
-      :label="$t('sensitivity-level.label')"
-      :description="$t('sensitivity-level.description')"
+      :label="translations.sensitivity.label"
+      :description="translations.sensitivity.description"
       label-class="text-primary"
     >
-      <vue-select
-        v-model="module.config.privacy.sensitivityLevelID"
+      <c-sensitivity-level-picker
+        v-model="resource.config.privacy.sensitivityLevelID"
         :options="sensitivityLevels"
+        :placeholder="translations.sensitivity.placeholder"
+        :max-level="maxLevel"
         :disabled="processing"
-        :clearable="false"
-        :reduce="s => s.ID"
-        :placeholder="$t('sensitivity-level.placeholder')"
-        label="label"
-        value="ID"
-        class="bg-white"
       />
     </b-form-group>
     <b-form-group
-      :label="$t('usage-disclosure.label')"
+      :label="translations.usage.label"
       label-class="text-primary"
     >
       <b-textarea
-        v-model="module.config.privacy.usageDisclosure"
+        v-model="resource.config.privacy.usageDisclosure"
       />
     </b-form-group>
-  </b-container>
+  </div>
 </template>
 
 <script>
-import { compose } from '@cortezaproject/corteza-js'
-import VueSelect from 'vue-select'
+import { components } from '@cortezaproject/corteza-vue'
+const { CSensitivityLevelPicker } = components
 
 export default {
-  i18nOptions: {
-    namespaces: 'module',
-    keyPrefix: 'edit.config.privacy',
-  },
-
   components: {
-    VueSelect,
+    CSensitivityLevelPicker,
   },
 
   props: {
-    module: {
-      type: compose.Module,
+    resource: {
+      type: Object,
+      required: true,
+    },
+
+    connection: {
+      type: Object,
+      required: true,
+    },
+
+    // ID of sensitivityLevel with the maximum allowed level
+    maxLevel: {
+      type: String,
+      default: undefined,
+    },
+
+    sensitivityLevels: {
+      type: Array,
+      required: true,
+    },
+
+    translations: {
+      type: Object,
       required: true,
     },
   },
@@ -54,32 +66,7 @@ export default {
   data () {
     return {
       processing: false,
-
-      sensitivityLevels: [],
     }
-  },
-
-  mounted () {
-    this.fetchSensitivityLevels()
-  },
-
-  methods: {
-    async fetchSensitivityLevels () {
-      this.processing = true
-
-      return this.$SystemAPI.dalSensitivityLevelList()
-        .then(({ set = [] }) => {
-          this.sensitivityLevels = set.map(({ sensitivityLevelID: ID, handle, meta: { name } }) => ({
-            ID,
-            label: name || handle || ID,
-          }))
-        })
-        .catch(this.toastErrorHandler(this.$t('sensitivity-levels.fetch-failed')))
-        .finally(() => {
-          this.processing = false
-        })
-    },
-
   },
 }
 </script>
