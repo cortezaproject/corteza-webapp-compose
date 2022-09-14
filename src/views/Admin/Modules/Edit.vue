@@ -592,11 +592,24 @@ export default {
             this.namespace,
           )
         } else {
-          this.findModuleByID({ namespace: this.namespace, moduleID: moduleID }).then((module) => {
+          const params = {
+            // make sure module is loaded from the API every time!
+            force: true,
+            namespace: this.namespace,
+            moduleID: moduleID,
+          }
+
+          this.findModuleByID(params).then((module) => {
             // Make a copy so that we do not change store item by ref
             this.module = module.clone()
 
-            const { moduleID, namespaceID } = this.module
+            const { moduleID, namespaceID, issues = [] } = this.module
+
+            if (issues.length > 0) {
+              // do not proceed with record search as it's
+              // likely to fail due to issues on a module
+              return
+            }
 
             // Count existing records to see what we can do with this module
             this.$ComposeAPI
