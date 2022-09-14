@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="page"
+    v-if="!!page"
     class="flex-grow-1 overflow-auto d-flex px-2 w-100"
   >
     <portal to="topbar-title">
@@ -318,6 +318,8 @@ export default {
     pageID: {
       immediate: true,
       handler (pageID) {
+        this.page = undefined
+
         if (pageID) {
           const { namespaceID, name } = this.namespace
           this.findPageByID({ namespaceID, pageID: this.pageID, force: true })
@@ -326,8 +328,6 @@ export default {
 
               this.page = page.clone()
             })
-        } else {
-          this.page = undefined
         }
       },
     },

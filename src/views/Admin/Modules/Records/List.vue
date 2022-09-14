@@ -30,11 +30,12 @@
     </portal>
 
     <record-list-base
-      v-if="block"
+      v-if="block && page"
       :block="block"
       :page="page"
+      :module="module"
       :namespace="namespace"
-      :bounding-rect="boundingRect"
+      :block-index="0"
       @save="handleSave"
     />
   </div>
@@ -58,8 +59,6 @@ export default {
   data () {
     return {
       block: undefined,
-      page: new compose.Page(),
-      boundingRect: {},
       namespace: this.$attrs.namespace,
     }
   },
@@ -89,6 +88,16 @@ export default {
 
       return undefined
     },
+
+    page () {
+      if (!this.module) {
+        return undefined
+      }
+
+      // Fake the pageID so record list uniqueID can be properly made
+      const { moduleID } = this.module
+      return new compose.Page({ pageID: moduleID })
+    },
   },
 
   created () {
@@ -99,6 +108,7 @@ export default {
 
     // Init block
     this.block = new compose.PageBlockRecordList({
+      blockIndex: 0,
       options: {
         moduleID: this.$attrs.moduleID,
         fields,
