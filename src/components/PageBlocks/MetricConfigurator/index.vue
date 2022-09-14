@@ -262,25 +262,22 @@
           lg="5"
         >
           <div
-            class="h-50"
+            v-if="metrics.length"
+            class="d-flex ml-auto"
           >
-            <div
-              v-if="metrics.length"
-              class="d-flex ml-auto"
+            <b-btn
+              variant="outline-primary"
+              @click="$root.$emit('metric.update')"
             >
-              <b-btn
-                variant="outline-primary"
-                @click="$root.$emit('metric.update')"
-              >
-                {{ $t('metric.edit.refreshData') }}
-              </b-btn>
-            </div>
-
-            <metric-base
-              v-bind="$props"
-              class="mt-2"
-            />
+              {{ $t('metric.edit.refreshData') }}
+            </b-btn>
           </div>
+
+          <metric-base
+            v-bind="$props"
+            class="mt-2"
+            style="height: 500px; width: auto;"
+          />
         </b-col>
       </b-row>
     </b-tab>
@@ -342,7 +339,7 @@ export default {
         return []
       }
 
-      return this.moduleByID(this.edit.moduleID).fields.concat([{ name: 'created_at', label: 'Created At', kind: 'DateTime' }])
+      return this.moduleByID(this.edit.moduleID).fields
     },
 
     metricFields () {
@@ -415,10 +412,6 @@ export default {
     },
 
     isTemporalField (name) {
-      if (name === 'created_at') {
-        return true
-      }
-
       return !!this.fields.find(f => f.name === name && f.kind === 'DateTime')
     },
   },
