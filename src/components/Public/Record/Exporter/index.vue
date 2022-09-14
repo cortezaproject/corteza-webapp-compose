@@ -10,7 +10,7 @@
     <b-modal
       :visible="showExportModal"
       size="lg"
-      title="Export"
+      :title="$t('label.export')"
       hide-footer
       body-class="p-0"
       @hide="toggleModal"

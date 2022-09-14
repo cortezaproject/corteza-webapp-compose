@@ -38,7 +38,7 @@
         v-model="value[ctx.index]"
         type="url"
         class="mr-2"
-        placeholder="Example URL: https://example.com"
+        :placeholder="$t('kind.url.example')"
         :formatter="fixUrl"
         lazy-formatter
       />
@@ -49,7 +49,7 @@
       <b-form-input
         v-model="value"
         type="url"
-        placeholder="Example URL: https://example.com"
+        :placeholder="$t('kind.url.example')"
         :formatter="fixUrl"
         lazy-formatter
       />
@@ -62,6 +62,9 @@ import base from './base'
 import { trimUrlFragment, trimUrlQuery, trimUrlPath, onlySecureUrl } from '../url'
 
 export default {
+  i18nOptions: {
+    namespaces: 'field',
+  },
   extends: base,
   methods: {
     fixUrl (value) {
