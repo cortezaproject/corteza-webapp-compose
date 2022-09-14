@@ -33,8 +33,8 @@
             >
               <b-row>
                 <b-col
-                  xl="6"
-                  md="12"
+                  md="6"
+                  sm="12"
                 >
                   <div v-if="modules">
                     <b-form-group
@@ -155,8 +155,9 @@
                 </b-col>
 
                 <b-col
-                  xl="6"
-                  md="12"
+                  md="6"
+                  sm="12"
+                  style="min-height: 400px;"
                 >
                   <b-button
                     v-if="!error"
@@ -217,7 +218,6 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Report from 'corteza-webapp-compose/src/components/Admin/Chart/Editor/Report'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import { compose, NoID } from '@cortezaproject/corteza-js'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
@@ -234,7 +234,7 @@ import { evaluatePrefilter } from 'corteza-webapp-compose/src/lib/record-filter'
 const defaultReport = {
   moduleID: undefined,
   metrics: [{ field: 'count' }],
-  dimensions: [{ field: 'created_at', modifier: 'MONTH' }],
+  dimensions: [{ field: 'createdAt', modifier: 'MONTH' }],
 }
 
 export default {
@@ -243,7 +243,6 @@ export default {
   },
 
   components: {
-    Report,
     EditorToolbar,
     Export,
     ChartComponent,
@@ -304,7 +303,7 @@ export default {
 
           rr.push({
             label: `${capitalize(g)}: ${capitalize(gn.label)} (${this.$t('colorLabel', gn)})`,
-            colors: [...schemes[g][sc]].reverse(),
+            colors: [...schemes[g][sc]],
             value: `${g}.${sc}`,
           })
         }
@@ -471,7 +470,6 @@ export default {
       const resourceTranslationLanguage = this.currentLanguage
 
       const c = Object.assign({}, this.chart, resourceTranslationLanguage)
-      delete (c.config.renderer.data)
 
       if (this.chart.chartID === NoID) {
         this.createChart(c).then(({ chartID }) => {

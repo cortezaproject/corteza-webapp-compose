@@ -2,12 +2,6 @@ import Vue from 'vue'
 import { capitalize } from 'lodash'
 import { components } from '@cortezaproject/corteza-vue'
 
-// Need to import it here since it inits when imported
-// Order is important, colorschemes first others after
-/* eslint-disable no-unused-vars */
-import colorschemes from 'chartjs-plugin-colorschemes'
-import Funnel from 'chartjs-plugin-funnel'
-
 const {
   CReportChart,
   CReportMetric,

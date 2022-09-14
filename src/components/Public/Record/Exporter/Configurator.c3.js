@@ -12,7 +12,7 @@ const props = {
   query: undefined,
   selection: [],
   filterRangeType: 'all',
-  filterRangeBy: 'created_at',
+  filterRangeBy: 'createdAt',
   dateRange: 'lastMonth',
   startDate: null,
   endDate: null,

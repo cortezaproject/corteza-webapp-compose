@@ -7,30 +7,28 @@
       <b-spinner />
     </div>
 
-    <div
-      class="justify-content-center position-relative h-100 p-1 overflow-hidden"
-      :class="{ 'd-none': processing, 'd-flex': !processing }"
-    >
-      <canvas
-        ref="chartCanvas"
-        class="mh-100 w-auto"
-      />
-    </div>
+    <c-chart
+      v-if="renderer"
+      :chart="renderer"
+      class="p-1"
+    />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import { chartConstructor } from 'corteza-webapp-compose/src/lib/charts'
-import ChartJS from 'chart.js'
-import Funnel from 'chartjs-plugin-funnel'
-import Gauge from 'chartjs-gauge'
-import csc from 'chartjs-plugin-colorschemes'
 import { compose, NoID } from '@cortezaproject/corteza-js'
+import { components } from '@cortezaproject/corteza-vue'
+const { CChart } = components
 
 export default {
   i18nOptions: {
     namespaces: 'notification',
+  },
+
+  components: {
+    CChart,
   },
 
   props: {
@@ -53,7 +51,7 @@ export default {
     return {
       processing: false,
 
-      renderer: null,
+      renderer: undefined,
     }
   },
 
@@ -70,29 +68,20 @@ export default {
       handler () {
         const { pageID = NoID } = this.$route.params
         this.$root.$on(`refetch-non-record-blocks:${pageID}`, this.requestChartUpdate)
-        this.$nextTick(() => {
-          this.updateChart()
-        })
+        this.updateChart()
       },
     },
   },
 
-  mounted () {
-    this.$root.$on('chart.update', this.requestChartUpdate)
-    this.$root.$on(`refetch-non-record-blocks:${this.page.pageID}`, this.requestChartUpdate)
-  },
-
   beforeDestroy () {
-    if (this.renderer) {
-      this.renderer.destroy()
-    }
-
     const { pageID = NoID } = this.$route.params
     this.$root.$off(`refetch-non-record-blocks:${pageID}`)
   },
 
   methods: {
     async updateChart () {
+      this.renderer = undefined
+
       const [report = {}] = this.chart.config.reports
 
       if (!report.moduleID) {
@@ -173,22 +162,10 @@ export default {
           }
 
           data.labels = data.labels.map(l => l === 'undefined' ? this.$t('chart:undefined') : l)
-          const options = chart.makeOptions(data)
-          const plugins = chart.plugins()
-          if (!options) {
-            this.toastWarning(this.$t('chart.optionsBuildFailed'))
-          }
-          const type = chart.baseChartType(data.datasets)
 
-          const canvas = this.$refs.chartCanvas || undefined
+          this.renderer = chart.makeOptions(data)
 
-          if (canvas) {
-            const newRenderer = () => new ChartJS(this.$refs.chartCanvas.getContext('2d'), { options, plugins: [...plugins, Funnel, Gauge, csc], data, type })
-            if (this.renderer) {
-              this.renderer.destroy()
-            }
-            this.renderer = newRenderer()
-          }
+          console.log(this.renderer)
         } else {
           data.labels = []
         }
@@ -202,15 +179,15 @@ export default {
 
     requestChartUpdate ({ name, handle } = {}) {
       if (!name && !handle) {
-        this.$nextTick(() => this.updateChart())
+        this.updateChart()
       }
 
       if (name && this.chart && this.chart.name === name) {
-        this.$nextTick(() => this.updateChart())
+        this.updateChart()
       }
 
       if (handle && this.chart && this.chart.handle === handle) {
-        this.$nextTick(() => this.updateChart())
+        this.updateChart()
       }
     },
 

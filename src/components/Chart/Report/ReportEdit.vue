@@ -299,7 +299,7 @@ export default {
 
   computed: {
     defaultValueInputType () {
-      return ({ field }) => field === 'created_at' || (this.module.fields.filter(f => f.name === field)[0] || {}).kind === 'DateTime' ? 'date' : 'text'
+      return ({ field }) => (this.module.fields.filter(f => f.name === field)[0] || {}).kind === 'DateTime' ? 'date' : 'text'
     },
 
     canAddMetric () {
@@ -329,7 +329,7 @@ export default {
       ].filter(({ kind, options = {} }) => {
         return this.dimensionFieldKind.includes(kind) && !(options.useRichTextEditor || options.multiLine)
       }).map(({ name, label, kind }) => {
-        return { value: name, text: `${label} (${kind})` }
+        return { value: name, text: `${label} (${kind})`, kind }
       })
     },
 
@@ -414,11 +414,7 @@ export default {
     },
 
     isTemporalField (name) {
-      if (name === 'created_at') {
-        return true
-      }
-
-      return !!this.module.fields.find(f => f.name === name && f.kind === 'DateTime')
+      return this.dimensionFields.some(f => f.value === name && f.kind === 'DateTime')
     },
   },
 }

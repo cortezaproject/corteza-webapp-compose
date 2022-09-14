@@ -237,7 +237,7 @@ export default {
     },
     filterRangeBy: {
       type: String,
-      default: 'created_at',
+      default: 'createdAt',
     },
     dateRange: {
       type: String,
@@ -328,11 +328,11 @@ export default {
     rangeByOptions () {
       return [
         {
-          value: 'created_at',
+          value: 'createdAt',
           text: this.$t('recordList.export.filter.createdAt'),
         },
         {
-          value: 'updated_at',
+          value: 'updatedAt',
           text: this.$t('recordList.export.filter.updatedAt'),
         },
       ]

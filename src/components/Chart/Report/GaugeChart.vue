@@ -124,26 +124,5 @@ export default {
       return this.chart.chartID === NoID
     },
   },
-
-  methods: {
-    renderPicker (field) {
-      return field && field.kind === 'Select' && field.options.options
-    },
-
-    makeOptions (field, dimension) {
-      const ff = dimension.meta.fields || []
-      return field.options.options.map(({ text, value }) => ({
-        text,
-        value,
-        color: (ff.find(b => value === b.value) || {}).color,
-      }))
-    },
-  },
 }
 </script>
-
-<style scoped lang="scss">
-  .color-picker {
-    width: 30px;
-  }
-</style>
