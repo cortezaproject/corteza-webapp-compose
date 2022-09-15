@@ -29,12 +29,28 @@
         :placeholder="$t('ident.placeholder')"
       />
     </b-form-group>
+    <b-form-group
+      :label="$t('system-fields.label')"
+      :description="$t('system-fields.description')"
+    >
+      <b-container>
+        <dal-field-store-encoding
+          v-for="({ field, storeIdent }) in systemFields"
+          :key="field"
+          :config="systemFieldEncoding[field] || {}"
+          :field="field"
+          :store-ident="storeIdent"
+          @change="applyStrategyConfig(field, $event)"
+        />
+      </b-container>
+    </b-form-group>
   </div>
 </template>
 
 <script>
 import { compose, NoID } from '@cortezaproject/corteza-js'
 import VueSelect from 'vue-select'
+import DalFieldStoreEncoding from 'corteza-webapp-compose/src/components/Admin/Module/DalFieldStoreEncoding'
 
 const PrimaryConnType = 'corteza::system:primary-dal-connection'
 
@@ -46,6 +62,7 @@ export default {
 
   components: {
     VueSelect,
+    DalFieldStoreEncoding,
   },
 
   props: {
@@ -56,9 +73,31 @@ export default {
   },
 
   data () {
+    const systemFieldEncoding = this.module.config.dal.systemFieldEncoding || {}
+    const systemFields = [
+      { field: 'id', storeIdent: 'id' },
+      { field: 'moduleID', storeIdent: 'rel_namespace' },
+      { field: 'namespaceID', storeIdent: 'rel_module' },
+      { field: 'revision', storeIdent: 'revision' },
+      { field: 'meta', storeIdent: 'meta' },
+      { field: 'ownedBy', storeIdent: 'created_at' },
+      { field: 'createdAt', storeIdent: 'created_by' },
+      { field: 'createdBy', storeIdent: 'updated_at' },
+      { field: 'updatedAt', storeIdent: 'updated_by' },
+      { field: 'updatedBy', storeIdent: 'deleted_at' },
+      { field: 'deletedAt', storeIdent: 'deleted_by' },
+      { field: 'deletedBy', storeIdent: 'owned_by' },
+    ]
+
     return {
       processing: false,
       connections: [],
+
+      systemFields,
+      systemFieldEncoding: systemFields.reduce((enc, { field }) => {
+        enc[field] = systemFieldEncoding[field] || {}
+        return enc
+      }, {}),
     }
   },
 
@@ -87,6 +126,20 @@ export default {
 
     getConnectionLabel ({ connectionID, handle, meta = {} }) {
       return meta.name || handle || connectionID
+    },
+
+    applyStrategyConfig (field, config) {
+      // merge new config into existing
+      this.systemFieldEncoding = { ...this.systemFieldEncoding, [field]: config }
+
+      // filter out empty configs and update the original config
+      this.module.config.dal.systemFieldEncoding = Object.entries(this.systemFieldEncoding)
+        .reduce((enc, [f, c]) => {
+          if (c === null || Object.keys(c).length) {
+            enc[f] = c
+          }
+          return enc
+        }, {})
     },
   },
 }
