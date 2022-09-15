@@ -339,6 +339,20 @@
                   :module="module"
                 />
               </b-tab>
+              <b-tab
+                v-if="module.issues.length > 0"
+                :title="$t('edit.issues.label', { count: module.issues.length })"
+                title-link-class="text-danger"
+              >
+                <b-alert
+                  v-for="(issue, index) in module.issues"
+                  :key="index"
+                  show
+                  variant="danger"
+                >
+                  {{ issue }}
+                </b-alert>
+              </b-tab>
             </b-tabs>
           </b-card>
         </b-col>
