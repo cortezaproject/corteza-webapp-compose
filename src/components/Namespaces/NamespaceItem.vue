@@ -61,21 +61,14 @@
         >
           <small>{{ namespace.meta.description }}</small>
         </p>
-      </b-card-body>
-      <template #footer>
         <b-link
           v-if="isEnabled"
           :to="{ name: 'pages', params: { slug: (namespace.slug || namespace.namespaceID) } }"
           data-test-id="button-visit-namespace"
           :aria-label="$t('visit') + ' ' + namespace.name"
           class="stretched-link"
-        >
-          <font-awesome-icon
-            :icon="['fas', 'arrow-right']"
-            class="arrow"
-          />
-        </b-link>
-      </template>
+        />
+      </b-card-body>
     </b-card>
   </b-col>
 </template>
