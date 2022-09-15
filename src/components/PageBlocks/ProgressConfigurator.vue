@@ -58,11 +58,11 @@
             >
               <vue-select
                 v-model="options.value.field"
-                label="name"
                 :placeholder="$t('progress.field.select')"
                 :options="valueModuleFields"
-                :reduce="f => f.fieldID"
+                :reduce="f => f.name"
                 class="bg-white"
+                @input="fieldChanged($event, options.value)"
               />
             </b-form-group>
           </b-col>
@@ -75,7 +75,7 @@
               :label="$t('progress.aggregate.label')"
             >
               <vue-select
-                v-model="options.value.aggregation"
+                v-model="options.value.operation"
                 label="name"
                 :disabled="!options.value.field || options.value.field === 'count'"
                 :placeholder="$t('progress.aggregate.select')"
@@ -146,11 +146,11 @@
             >
               <vue-select
                 v-model="options.maxValue.field"
-                label="name"
                 :placeholder="$t('progress.field.select')"
                 :options="maxValueModuleFields"
-                :reduce="f => f.fieldID"
+                :reduce="f => f.name"
                 class="bg-white"
+                @input="fieldChanged($event, options.maxValue)"
               />
             </b-form-group>
           </b-col>
@@ -163,10 +163,10 @@
               :label="$t('progress.aggregate.label')"
             >
               <vue-select
-                v-model="options.maxValue.aggregation"
+                v-model="options.maxValue.operation"
                 label="name"
                 :disabled="!options.maxValue.field || options.maxValue.field === 'count'"
-                placeholder="$t('progress.aggregate.select')"
+                :placeholder="$t('progress.aggregate.select')"
                 :options="aggregationOperations"
                 :reduce="a => a.operation"
                 class="bg-white"
@@ -427,7 +427,7 @@ export default {
 
     sharedModuleFields () {
       return [
-        { fieldID: 'count', name: 'Count' },
+        { name: 'count', label: 'Count' },
       ]
     },
 
@@ -488,6 +488,12 @@ export default {
     removeThreshold (index) {
       if (index > -1) {
         this.options.display.thresholds.splice(index, 1)
+      }
+    },
+
+    fieldChanged (value, optionsType) {
+      if (!value) {
+        optionsType.operation = ''
       }
     },
   },

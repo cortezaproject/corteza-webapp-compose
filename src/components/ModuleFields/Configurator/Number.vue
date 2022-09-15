@@ -219,7 +219,7 @@
           <b-form-input
             v-model="liveExample"
             type="number"
-            step="0.01"
+            step="0.1"
           />
         </b-col>
 
