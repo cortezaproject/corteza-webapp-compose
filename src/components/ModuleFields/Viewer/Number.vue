@@ -33,7 +33,7 @@ export default {
   computed: {
     formatted () {
       if (!this.value) {
-        return []
+        return
       }
 
       const value = this.field.isMulti ? this.value : [this.value]
@@ -43,6 +43,10 @@ export default {
       } else {
         return value
       }
+    },
+
+    sortedVariants () {
+      return [...this.field.options.thresholds].filter(t => t.value >= 0).sort((a, b) => b.value - a.value)
     },
   },
 
@@ -70,8 +74,7 @@ export default {
       let progressVariant = this.field.options.variant
 
       if (this.field.options.thresholds.length) {
-        const sortedVariants = [...this.field.options.thresholds].filter(t => t.value).sort((a, b) => b.value - a.value)
-        const { variant } = sortedVariants.find(t => value > t.value) || {}
+        const { variant } = this.sortedVariants.find(t => value >= t.value) || {}
         progressVariant = variant || progressVariant
       }
 

@@ -17,16 +17,6 @@ export default {
       type: compose.ModuleField,
       required: true,
     },
-
-    connection: {
-      type: Object,
-      required: true,
-    },
-
-    sensitivityLevels: {
-      type: Array,
-      default: () => [],
-    },
   },
 
   computed: {

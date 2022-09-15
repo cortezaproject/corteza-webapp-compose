@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-hidden h-100">
+  <div class="overflow-hidden h-100 p-2">
     <slot name="toolbar" />
     <slot name="default" />
     <slot name="footer" />

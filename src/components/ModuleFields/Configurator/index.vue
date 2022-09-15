@@ -91,6 +91,18 @@ export default {
 
   extends: base,
 
+  props: {
+    connection: {
+      type: Object,
+      required: true,
+    },
+
+    sensitivityLevels: {
+      type: Array,
+      default: () => [],
+    },
+  },
+
   computed: {
     fieldComponent () {
       // If field doesn't have a configurator, we show no field tab

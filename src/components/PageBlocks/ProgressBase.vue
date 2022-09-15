@@ -1,6 +1,5 @@
 <template>
   <wrap
-    class="p-2"
     v-bind="$props"
     v-on="$listeners"
   >
@@ -11,25 +10,32 @@
       <b-spinner />
     </div>
 
-    <b-progress
+    <div
       v-else
-      :max="50"
-      class="w-100 h-100 bg-light"
+      class="h-100"
+      :class="{ 'p-2': block.style.wrap.kind === 'card' }"
     >
-      <b-progress-bar
-        :value="15"
-        :striped="options.display.striped"
-        :animated="options.display.animated"
-        :variant="progressVariant"
+      <b-progress
+        :max="max"
+        class="h-100 bg-light"
       >
-        {{ progressLabel }}
-      </b-progress-bar>
-    </b-progress>
+        <b-progress-bar
+          :value="value"
+          :striped="options.display.striped"
+          :animated="options.display.animated"
+          :variant="progressVariant"
+        >
+          {{ progressLabel }}
+        </b-progress-bar>
+      </b-progress>
+    </div>
   </wrap>
 </template>
 
 <script>
 import base from './base'
+import { NoID } from '@cortezaproject/corteza-js'
+import { evaluatePrefilter } from 'corteza-webapp-compose/src/lib/record-filter'
 
 export default {
   extends: base,
@@ -41,16 +47,14 @@ export default {
     return {
       processing: false,
 
-      preview: {
-        value: 15,
-        max: 50,
-      },
+      value: undefined,
+      max: undefined,
     }
   },
 
   computed: {
     progressLabel () {
-      let { value, max } = this.preview
+      let { value } = this
       const { showValue, showRelative, showProgress } = this.options.display || {}
 
       if (!showValue) {
@@ -59,28 +63,40 @@ export default {
 
       if (showRelative) {
         // https://stackoverflow.com/a/21907972/17926309
-        value = `${Math.round(((value / max) * 100) * 100) / 100}%`
+        value = `${Math.round(((value / this.max) * 100) * 100) / 100}%`
       }
 
       if (showProgress) {
-        value = `${value} / ${showRelative ? '100' : max}${showRelative ? '%' : ''}`
+        value = `${value} / ${showRelative ? '100' : this.max}${showRelative ? '%' : ''}`
       }
 
       return value
     },
 
+    sortedVariants () {
+      return [...this.options.display.thresholds].filter(t => t.value >= 0).sort((a, b) => b.value - a.value)
+    },
+
     progressVariant () {
-      const { value } = this.preview
+      const { value } = this
       const { variant } = this.options.display || {}
       let progressVariant = variant
 
       if (this.options.display.thresholds.length) {
-        const sortedVariants = [...this.options.display.thresholds].filter(t => t.value).sort((a, b) => b.value - a.value)
-        const { variant } = sortedVariants.find(t => value > t.value) || {}
+        const { variant } = this.sortedVariants.find(t => value > t.value) || {}
         progressVariant = variant || progressVariant
       }
 
       return progressVariant
+    },
+  },
+
+  watch: {
+    'record.recordID': {
+      immediate: true,
+      handler () {
+        this.update()
+      },
     },
   },
 
@@ -90,6 +106,44 @@ export default {
 
   beforeDestroy () {
     this.$root.$off(`refetch-non-record-blocks:${this.page.pageID}`)
+  },
+
+  methods: {
+    /**
+     * Pulls fresh data from the API
+     */
+    async update () {
+      this.processing = true
+
+      const { namespaceID } = this.namespace || {}
+
+      const additionalOptions = {
+        value: {
+          filter: evaluatePrefilter(this.options.value.filter, {
+            record: this.record,
+            recordID: (this.record || {}).recordID || NoID,
+            ownerID: (this.record || {}).userID || NoID,
+            userID: (this.$auth.user || {}).userID || NoID,
+          }),
+        },
+        maxValue: {
+          filter: evaluatePrefilter(this.options.maxValue.filter, {
+            record: this.record,
+            recordID: (this.record || {}).recordID || NoID,
+            ownerID: (this.record || {}).userID || NoID,
+            userID: (this.$auth.user || {}).userID || NoID,
+          }),
+        },
+      }
+
+      return this.block.fetch(additionalOptions, this.$ComposeAPI, namespaceID).then(({ value, max }) => {
+        this.value = value
+        this.max = max
+      }).catch(this.toastErrorHandler(this.$t('progress.fetch-failed')))
+        .finally(() => {
+          this.processing = false
+        })
+    },
   },
 }
 </script>
