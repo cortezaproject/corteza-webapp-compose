@@ -21,7 +21,7 @@
 
     <b-form-group
       :label="$t('ident.label')"
-      :description="$t('ident.description')"
+      :description="$t('ident.description', { interpolation: { prefix: '{{{', suffix: '}}}' } })"
       label-class="text-primary"
     >
       <b-input
