@@ -7,10 +7,17 @@
       cols="3"
     >
       <b-form-checkbox
+        v-if="allowOmitStrategy"
         v-model="use"
       >
-        {{ $t(`field:system.${field}`) }}
+        {{ label }}
       </b-form-checkbox>
+      <div
+        v-else
+        class="font-weight-bold"
+      >
+        {{ label }}
+      </div>
     </b-col>
     <b-col
       cols="3"
@@ -34,42 +41,25 @@
       />
     </b-col>
     <b-col
-      v-else-if="strategy === 'json' || strategy === 'alias'"
+      v-else-if="showIdentInput"
       cols="6"
     >
       <b-form-input
         v-model="draft.ident"
         :placeholder="$t('ident.placeholder')"
+        :disabled="disableIdentInput"
         size="sm"
       />
     </b-col>
   </b-row>
 </template>
 <script>
-
-const ESDefault = ''
-const ESOmit = 'omit'
-const ESAlias = 'alias'
-const ESJSON = 'json'
-
-function strategyConfig (strategy, config) {
-  switch (strategy) {
-    case ESJSON:
-      return { [strategy]: { ident: config.ident } }
-    case ESAlias:
-      return { [strategy]: { ident: config.ident } }
-    case ESOmit:
-      return { [strategy]: true }
-
-    default:
-      return null
-  }
-}
+import { defaultConfigDraft, types } from './encoding-strategy'
 
 export default {
   i18nOptions: {
     namespaces: 'module',
-    keyPrefix: 'edit.config.dal.system-fields.editor',
+    keyPrefix: 'edit.config.dal.encoding-strategy',
   },
 
   props: {
@@ -83,55 +73,86 @@ export default {
       required: true,
     },
 
+    label: {
+      type: String,
+      required: true,
+    },
+
+    // default store-ident
     storeIdent: {
       type: String,
       required: true,
+    },
+
+    defaultStrategy: {
+      type: String,
+      default: types.Plain,
+    },
+
+    allowOmitStrategy: {
+      type: Boolean,
+      default: true,
     },
   },
 
   data () {
     return {
       // holds working copy of strategy config
-      draft: {
-        ident: this.storeIdent,
-      },
+      draft: defaultConfigDraft(this.config, this.storeIdent),
 
       // strategy before omit
-      undoOmit: ESDefault,
+      undoOmit: this.defaultStrategy,
 
       // list of available strategies
       strategies: [
-        { value: ESDefault, text: this.$t('strategies.default.label') },
-        { value: ESJSON, text: this.$t('strategies.json.label') },
-        { value: ESAlias, text: this.$t('strategies.alias.label') },
+        { value: types.Plain, text: this.$t('strategies.plain.label') },
+        { value: types.Alias, text: this.$t('strategies.alias.label') },
+        { value: types.JSON, text: this.$t('strategies.json.label') },
       ],
     }
   },
 
   computed: {
+    showIdentInput () {
+      return [types.JSON, types.Alias, types.Plain].includes(this.strategy)
+    },
+
+    disableIdentInput () {
+      return [types.Plain].includes(this.strategy)
+    },
+
     // current strategy
     strategy: {
       get () {
-        return Object.keys(this.config)[0] || ESDefault
+        // iterate over all types and return the first one that matches
+        for (const t of Object.values(types)) {
+          if (this.config[t] === undefined) {
+            continue
+          }
+
+          return t
+        }
+
+        return this.defaultStrategy
       },
 
       set (strategy) {
-        this.$emit('change', strategyConfig(strategy, this.draft))
+        this.$emit('change', { strategy, config: this.draft })
       },
     },
 
     // use => when field is not used it is omitted
     use: {
       get () {
-        return this.strategy !== ESOmit
+        return this.strategy !== types.Omit
       },
 
       set (use) {
-        if (this.strategy !== ESOmit) {
+        if (this.strategy !== types.Omit) {
           this.undoOmit = this.strategy
         }
 
-        this.strategy = use ? this.undoOmit : ESOmit
+        this.strategy = use ? this.undoOmit : types.Omit
       },
     },
   },
@@ -139,8 +160,8 @@ export default {
   watch: {
     draft: {
       deep: true,
-      handler () {
-        this.$emit('change', strategyConfig(this.strategy, this.draft))
+      handler (config) {
+        this.$emit('change', { strategy: this.strategy, config })
       },
     },
   },

@@ -30,17 +30,36 @@
       />
     </b-form-group>
     <b-form-group
+      :label="$t('module-fields.label')"
+      :description="$t('module-fields.description')"
+    >
+      <b-container>
+        <dal-field-store-encoding
+          v-for="({ field, storeIdent, label }) in moduleFields"
+          :key="field"
+          :config="moduleFieldEncoding[field] || {}"
+          :field="field"
+          :label="label"
+          :default-strategy="moduleFieldDefaultEncodingStrategy"
+          :store-ident="storeIdent"
+          @change="applyModuleFieldStrategyConfig(field, $event)"
+        />
+      </b-container>
+    </b-form-group>
+    <b-form-group
       :label="$t('system-fields.label')"
       :description="$t('system-fields.description')"
     >
       <b-container>
         <dal-field-store-encoding
-          v-for="({ field, storeIdent }) in systemFields"
+          v-for="({ field, storeIdent, label }) in systemFields"
           :key="field"
           :config="systemFieldEncoding[field] || {}"
           :field="field"
+          :label="label"
           :store-ident="storeIdent"
-          @change="applyStrategyConfig(field, $event)"
+          :allow-omit-strategy="true"
+          @change="applySystemFieldStrategyConfig(field, $event)"
         />
       </b-container>
     </b-form-group>
@@ -49,6 +68,7 @@
 
 <script>
 import { compose, NoID } from '@cortezaproject/corteza-js'
+import { moduleFieldStrategyConfig, systemFieldStrategyConfig, types } from './encoding-strategy'
 import VueSelect from 'vue-select'
 import DalFieldStoreEncoding from 'corteza-webapp-compose/src/components/Admin/Module/DalFieldStoreEncoding'
 
@@ -87,11 +107,14 @@ export default {
       { field: 'updatedBy', storeIdent: 'deleted_at' },
       { field: 'deletedAt', storeIdent: 'deleted_by' },
       { field: 'deletedBy', storeIdent: 'owned_by' },
-    ]
+    ].map(sf => ({ ...sf, label: this.$t(`field:system.${sf.field}`) }))
 
     return {
       processing: false,
       connections: [],
+
+      moduleFields: [],
+      moduleFieldEncoding: [],
 
       systemFields,
       systemFieldEncoding: systemFields.reduce((enc, { field }) => {
@@ -99,6 +122,35 @@ export default {
         return enc
       }, {}),
     }
+  },
+
+  computed: {
+    moduleFieldDefaultEncodingStrategy () {
+      return types.JSON
+    },
+  },
+
+  watch: {
+    'module.fields': {
+      handler (m) {
+        this.moduleFields = this.module.fields.map(f => ({
+          field: f.name,
+          label: f.label || f.name,
+          storeIdent: f.name,
+        }))
+
+        this.moduleFieldEncoding = this.moduleFields.reduce((enc, { field }) => {
+          const f = this.module.findField(field)
+          if (f) {
+            enc[field] = f.config.dal.encodingStrategy || {}
+          }
+
+          return enc
+        }, {})
+      },
+      deep: true,
+      immediate: true,
+    },
   },
 
   mounted () {
@@ -128,9 +180,24 @@ export default {
       return meta.name || handle || connectionID
     },
 
-    applyStrategyConfig (field, config) {
+    applyModuleFieldStrategyConfig (field, { strategy, config }) {
+      const value = moduleFieldStrategyConfig(strategy, config)
+
       // merge new config into existing
-      this.systemFieldEncoding = { ...this.systemFieldEncoding, [field]: config }
+      this.moduleFieldEncoding = { ...this.moduleFieldEncoding, [field]: value }
+
+      // filter out empty configs and update the original config
+      const moduleField = this.module.findField(field)
+      if (moduleField) {
+        moduleField.config.dal.encodingStrategy = value
+      }
+    },
+
+    applySystemFieldStrategyConfig (field, { strategy, config }) {
+      const value = systemFieldStrategyConfig(strategy, config)
+
+      // merge new config into existing
+      this.systemFieldEncoding = { ...this.systemFieldEncoding, [field]: value }
 
       // filter out empty configs and update the original config
       this.module.config.dal.systemFieldEncoding = Object.entries(this.systemFieldEncoding)
