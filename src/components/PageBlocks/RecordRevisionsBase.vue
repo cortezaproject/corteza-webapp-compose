@@ -4,61 +4,33 @@
     :scrollable-body="true"
     v-on="$listeners"
   >
-    <template
-      v-if="showHeader"
-      #header
+    <div
+      class="d-flex flex-column align-items-center h-100 overflow-hidden"
     >
-      <h5
-        class="d-flex align-items-center text-truncate mb-0"
-      >
-        {{ block.title }}
-      </h5>
-
-      <b-card-text
-        v-if="block.description"
-        class="text-dark text-truncate mt-1"
-      >
-        {{ block.description }}
-      </b-card-text>
-    </template>
-    <template
-      #default
-    >
-      <b-alert
-        v-if="!record"
-        show
-        variant="warn"
-      >
-        {{ $t('errors.no-record') }}
-      </b-alert>
-      <b-alert
-        v-else-if="revisionsDisabledOnModule"
-        show
-        variant="warn"
+      <span
+        v-if="revisionsDisabledOnModule"
+        class="my-auto"
       >
         {{ $t('errors.disabled-on-module') }}
-      </b-alert>
-      <div
-        v-else-if="!options.preload && !preloadRequested"
-        class="d-flex align-items-center justify-content-center h-100"
+      </span>
+      <b-spinner
+        v-else-if="noRecord || processing"
+        class="my-auto"
+      />
+      <b-button
+        v-else-if="!preloadRevisions && !loadedRevisions"
+        class="my-auto"
+        @click="loadRevisions()"
       >
-        <b-button
-          @click="refresh()"
-        >
-          Show record revisions ({{ record.revision }}).
-          {{ $t('show-revisions', { revision: record.revision }) }}
-        </b-button>
-      </div>
-      <div
-        v-else-if="processing"
-        class="d-flex align-items-center justify-content-center h-100"
-      >
-        <b-spinner />
-      </div>
+        {{ $t('show-revisions', { revision: record.revision }) }}
+      </b-button>
+
       <b-table-lite
         v-else
         :items="revisions"
         :fields="columns"
+        sticky-header
+        class="flex-fill mh-100 mb-0 w-100 rounded"
       >
         <template #cell(timestamp)="row">
           {{ row.item.timestamp | locFullDateTime }}
@@ -112,12 +84,12 @@
           </div>
         </template>
       </b-table-lite>
-    </template>
+    </div>
   </wrap>
 </template>
 <script>
 import base from './base'
-import { compose, NoID } from '@cortezaproject/corteza-js'
+import { NoID } from '@cortezaproject/corteza-js'
 
 export default {
   i18nOptions: {
@@ -128,13 +100,6 @@ export default {
   components: {},
 
   extends: base,
-
-  props: {
-    record: {
-      type: compose.Record,
-      required: true,
-    },
-  },
 
   data () {
     return {
@@ -151,10 +116,9 @@ export default {
       processing: false,
 
       /**
-       * When page block is configured to ask user to preload revisions
-       * this flag is set to true when user clicks on the button
+       * Flag for if user clicked on show revisions button
        */
-      preloadRequested: false,
+      loadedRevisions: false,
 
       /**
        * List of revisions when loaded
@@ -171,24 +135,29 @@ export default {
         {
           key: 'revision',
           label: '',
-          class: 'text-right',
+          thClass: 'border-top-0',
+          class: 'text-center',
         },
         {
           key: 'timestamp',
           label: this.$t('revisions.columns.timestamp.label'),
+          thClass: 'border-top-0',
         },
         {
           key: 'operation',
           label: this.$t('revisions.columns.operation.label'),
+          thClass: 'border-top-0',
         },
         {
           key: 'user',
           label: this.$t('revisions.columns.user.label'),
+          thClass: 'border-top-0',
           formatter: (u) => u ? (u.name || u.email || u.userID) : '-',
         },
         {
           key: 'adt',
           label: '',
+          thClass: 'border-top-0',
           class: 'nowrap text-right',
         },
       ],
@@ -201,43 +170,41 @@ export default {
     },
 
     revisionsDisabledOnModule () {
-      return !this.module.config.recordRevisions.enabled
+      return this.module ? !this.module.config.recordRevisions.enabled : false
     },
 
-    preloadRecords () {
-      return this.options.preload || this.preloadRequested
+    preloadRevisions () {
+      return this.options.preload
+    },
+
+    noRecord () {
+      return !this.record
     },
   },
 
   watch: {
-    options: {
+    'record.recordID': {
       immediate: true,
-      deep: true,
       handler () {
-        if (this.preloadRecords) {
-          this.refresh()
-        }
+        this.refresh()
       },
     },
 
-    record: {
-      immediate: true,
+    options: {
+      deep: true,
       handler () {
-        if (this.preloadRecords) {
-          this.refresh()
-        }
+        this.refresh()
       },
     },
   },
 
   methods: {
     async refresh () {
-      this.preloadRequested = true
       if (this.revisionsDisabledOnModule) {
         return
       }
 
-      if (!this.record || this.record.recordID === NoID) {
+      if (this.noRecord || this.record.recordID === NoID) {
         return
       }
 
@@ -245,11 +212,18 @@ export default {
 
       this.processing = true
       return this.block.fetch($ComposeAPI, this.record)
-        .then(set => { this.revisions = set })
+        .then(set => {
+          this.revisions = set
+        })
         .then(() => this.block.expandReferences({ $ComposeAPI, $SystemAPI }, this.module, this.revisions))
         .finally(() => {
           this.processing = false
         })
+    },
+
+    loadRevisions () {
+      this.loadedRevisions = true
+      this.refresh()
     },
   },
 }

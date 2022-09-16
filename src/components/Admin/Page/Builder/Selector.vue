@@ -122,6 +122,7 @@ export default {
           label: this.$t('recordRevisions.label'),
           block: new compose.PageBlockRecordRevisions(),
           image: images.RecordRevisions,
+          recordPageOnly: true,
         },
         {
           label: this.$t('report.label'),
