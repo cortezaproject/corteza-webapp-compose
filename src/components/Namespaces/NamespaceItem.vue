@@ -64,7 +64,7 @@
         <b-link
           v-if="isEnabled"
           :to="{ name: 'pages', params: { slug: (namespace.slug || namespace.namespaceID) } }"
-          data-test-id="button-visit-namespace"
+          data-test-id="link-visit-namespace"
           :aria-label="$t('visit') + ' ' + namespace.name"
           class="stretched-link"
         />

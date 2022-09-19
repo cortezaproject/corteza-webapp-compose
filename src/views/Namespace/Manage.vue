@@ -8,7 +8,7 @@
 
     <portal to="topbar-tools">
       <b-btn
-        data-test-id="public-view"
+        data-test-id="button-namespace-list"
         variant="primary"
         size="sm"
         class="mr-1 float-left"
