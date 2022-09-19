@@ -9,7 +9,7 @@
     <portal to="topbar-tools">
       <b-btn
         v-if="canManage"
-        data-test-id="public-view"
+        data-test-id="button-manage-namespaces"
         variant="primary"
         size="sm"
         class="mr-1 float-left"
