@@ -314,6 +314,21 @@
                 />
               </b-tab>
 
+              <b-tab
+                v-if="module.config.recordDeDup.enabled"
+                :title="$t('edit.config.validation.title')"
+              >
+                <validation
+                  :module="module"
+                />
+              </b-tab>
+
+              <b-tab :title="$t('edit.config.record-revisions.title')">
+                <record-revisions-settings
+                  :module="module"
+                />
+              </b-tab>
+
               <b-tab :title="$t('edit.config.privacy.title')">
                 <data-privacy-settings
                   v-if="connection"
@@ -334,11 +349,6 @@
                 />
               </b-tab>
 
-              <b-tab :title="$t('edit.config.record-revisions.title')">
-                <record-revisions-settings
-                  :module="module"
-                />
-              </b-tab>
               <b-tab
                 v-if="module.issues.length > 0"
                 :title="$t('edit.issues.label', { count: module.issues.length })"
@@ -423,6 +433,7 @@ import DalSettings from 'corteza-webapp-compose/src/components/Admin/Module/DalS
 import RecordRevisionsSettings from 'corteza-webapp-compose/src/components/Admin/Module/RecordRevisionsSettings'
 import DataPrivacySettings from 'corteza-webapp-compose/src/components/Admin/Module/DataPrivacySettings'
 import ModuleTranslator from 'corteza-webapp-compose/src/components/Admin/Module/ModuleTranslator'
+import Validation from 'corteza-webapp-compose/src/components/Admin/Module/Validation'
 import RelatedPages from 'corteza-webapp-compose/src/components/Admin/Module/RelatedPages'
 import { compose, NoID } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
@@ -447,6 +458,7 @@ export default {
     ModuleTranslator,
     RelatedPages,
     EditorToolbar,
+    Validation,
     Export,
   },
 

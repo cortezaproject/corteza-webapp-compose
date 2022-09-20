@@ -6,7 +6,11 @@
       force-show
       class="m-0"
     >
-      {{ $t(error.message) }}
+      <span
+        :class="{ 'text-info': error.kind.includes('warning') }"
+      >
+        {{ $t(error.message) }}
+      </span>
     </b-form-invalid-feedback>
   </div>
 </template>

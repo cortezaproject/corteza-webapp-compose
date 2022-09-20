@@ -45,6 +45,14 @@ export default {
     },
   },
 
+  watch: {
+    'record.valueErrors': {
+      handler ({ set = [] } = {}) {
+        this.errors.push(...set)
+      },
+    },
+  },
+
   methods: {
     ...mapActions({
       updatePrompts: 'wfPrompts/update',
@@ -143,7 +151,9 @@ export default {
         .then(() => this.dispatchUiEvent('afterFormSubmit', this.record, { $records: records }))
         .then(() => this.updatePrompts())
         .then(() => {
-          this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
+          if (!this.record.valueErrors) {
+            this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
+          }
         })
         .catch(this.toastErrorHandler(this.$t(
           isNew
@@ -194,7 +204,9 @@ export default {
         .then(() => this.dispatchUiEvent('beforeFormSubmit', this.record))
         .then(() => this.updatePrompts())
         .then(() => {
-          this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
+          if (!this.record.valueErrors) {
+            this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
+          }
         })
         .catch(this.toastErrorHandler(this.$t(
           isNew
