@@ -131,11 +131,23 @@ export default {
   watch: {
     'module.fields': {
       handler (m) {
-        this.moduleFields = this.module.fields.map(f => ({
-          field: f.name,
-          label: f.label || f.name,
-          storeIdent: f.name,
-        }))
+        this.moduleFields = []
+
+        for (const f of this.module.fields) {
+          const a = {
+            field: f.name,
+            label: f.label || f.name,
+            storeIdent: f.name,
+          }
+
+          // In case of a JSON encoding strategy, default to values
+          const strat = f.config.dal.encodingStrategy
+          if (!strat || strat[types.JSON]) {
+            a.storeIdent = 'values'
+          }
+
+          this.moduleFields.push(a)
+        }
 
         this.moduleFieldEncoding = this.moduleFields.reduce((enc, { field }) => {
           const f = this.module.findField(field)
