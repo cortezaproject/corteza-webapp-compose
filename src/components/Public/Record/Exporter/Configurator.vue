@@ -14,7 +14,6 @@
         :system-fields="systemFields"
         :disabled-types="disabledTypes"
         :fields.sync="selectedFields"
-        class="d-flex flex-column"
         style="max-height: 45vh;"
       />
     </b-form-group>

@@ -28,7 +28,6 @@
           :fields.sync="currentFields"
           disable-system-fields
           style="max-height: 70vh;"
-          class="d-flex flex-column"
         />
       </b-tab>
     </b-tabs>
