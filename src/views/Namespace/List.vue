@@ -16,6 +16,11 @@
         :to="{ name: 'namespace.manage' }"
       >
         {{ $t('manage-view.label') }}
+        <font-awesome-icon
+          :icon="['far', 'edit']"
+          size="sm"
+          class="ml-2"
+        />
       </b-btn>
     </portal>
 

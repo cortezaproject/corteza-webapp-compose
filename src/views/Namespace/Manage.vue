@@ -15,6 +15,10 @@
         :to="{ name: 'namespace.list' }"
       >
         {{ $t('list-view') }}
+        <font-awesome-icon
+          :icon="['fas', 'columns']"
+          class="ml-2"
+        />
       </b-btn>
     </portal>
 
