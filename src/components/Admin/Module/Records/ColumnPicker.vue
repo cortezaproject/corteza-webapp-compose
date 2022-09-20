@@ -25,7 +25,6 @@
         <field-picker
           :module="module"
           :fields.sync="filteredFields"
-          class="d-flex flex-column"
           style="max-height: 71vh;"
         />
       </b-card-body>

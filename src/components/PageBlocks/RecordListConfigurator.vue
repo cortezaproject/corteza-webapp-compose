@@ -34,7 +34,6 @@
           :module="recordListModule"
           :fields.sync="options.fields"
           style="max-height: 40vh;"
-          class="d-flex flex-column"
         />
       </b-form-group>
 
@@ -66,7 +65,6 @@
             :fields.sync="options.editFields"
             :field-subset="options.fields"
             disable-system-fields
-            class="d-flex flex-column"
             style="max-height: 40vh;"
           />
         </b-form-group>

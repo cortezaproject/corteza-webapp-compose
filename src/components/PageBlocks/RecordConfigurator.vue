@@ -24,7 +24,6 @@
         v-if="module"
         :module="module"
         :fields.sync="options.fields"
-        class="d-flex flex-column"
         style="max-height: 52vh;"
       />
     </b-form-group>
