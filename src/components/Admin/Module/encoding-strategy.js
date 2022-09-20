@@ -28,6 +28,8 @@ export function moduleFieldStrategyConfig (strategy, config) {
       return { [types.Plain]: {} }
     case types.Alias:
       return { [strategy]: { ident: config.ident } }
+    case types.JSON:
+      return { [strategy]: { ident: config.ident } }
     case types.Omit:
       return { [strategy]: true }
 
