@@ -1,6 +1,7 @@
 <template>
   <b-button
     v-if="list.length > 0"
+    data-test-id="button-export"
     variant="light"
     size="lg"
     @click="jsonExport(list, type)"
