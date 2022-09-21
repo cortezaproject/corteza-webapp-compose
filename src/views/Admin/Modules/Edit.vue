@@ -53,6 +53,7 @@
                   <template v-if="isEdit">
                     <b-button
                       v-if="federationEnabled"
+                      data-test-id="button-federation-settings"
                       variant="light"
                       size="lg"
                       class="mr-1"
@@ -66,6 +67,7 @@
                     </b-button>
                     <b-button
                       v-if="discoveryEnabled"
+                      data-test-id="button-discovery-settings"
                       variant="light"
                       size="lg"
                       class="mr-1"
@@ -85,6 +87,7 @@
 
                     <b-dropdown
                       v-if="module.canGrant"
+                      data-test-id="dropdown-permissions"
                       size="lg"
                       variant="light"
                       class="permissions-dropdown mr-1"
