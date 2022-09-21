@@ -340,7 +340,7 @@ export default {
       handler (value) {
         if (this.mock.field) {
           value = Number(value).toFixed(this.field.options.precision)
-          this.mock.record.values.mockField = this.field.isMulti ? [value] : value
+          this.mock.record.values.mockField = value
         }
       },
     },
@@ -349,6 +349,7 @@ export default {
   created () {
     this.mock.namespace = this.namespace
     this.mock.field = compose.ModuleFieldMaker(this.field)
+    this.mock.field.isMulti = false
     this.mock.field.apply({ name: 'mockField' })
     this.mock.module = new compose.Module({ fields: [this.mock.field] }, this.namespace)
     this.mock.record = new compose.Record(this.mock.module, { })
