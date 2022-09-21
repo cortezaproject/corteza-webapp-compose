@@ -151,9 +151,7 @@ export default {
         .then(() => this.dispatchUiEvent('afterFormSubmit', this.record, { $records: records }))
         .then(() => this.updatePrompts())
         .then(() => {
-          if (!this.record.valueErrors) {
-            this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
-          }
+          this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
         })
         .catch(this.toastErrorHandler(this.$t(
           isNew
@@ -204,9 +202,7 @@ export default {
         .then(() => this.dispatchUiEvent('beforeFormSubmit', this.record))
         .then(() => this.updatePrompts())
         .then(() => {
-          if (!this.record.valueErrors) {
-            this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
-          }
+          this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
         })
         .catch(this.toastErrorHandler(this.$t(
           isNew

@@ -34,7 +34,7 @@ export default {
 
   computed: {
     set () {
-      return this.index >= 0 ? this.errors.filterByMeta('index', this.index).get() : this.errors.get()
+      return (this.index >= 0 ? this.errors.filterByMeta('index', this.index).get() : this.errors.get()).slice(0, 1)
     },
   },
 }
