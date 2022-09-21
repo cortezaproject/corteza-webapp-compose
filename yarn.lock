@@ -701,13 +701,13 @@
     "@babel/helper-validator-identifier" "^7.14.0"
     to-fast-properties "^2.0.0"
 
-"@cortezaproject/corteza-js@^2022.9.0-dev.2":
-  version "2022.9.0-dev.2"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2022.9.0-dev.2.tgz#21746127ad277ef07553afd587a8b97d8d77ca87"
-  integrity sha512-kmBNMgyt/5StPsKb45I8Rz/0lK9C7frDTh7uPQIbw0BA19Ei6Z3YjaMMgPtS9Nakuqf81w91lTLQL4xliTmxCg==
+"@cortezaproject/corteza-js@^2022.9.0-dev.3":
+  version "2022.9.0-dev.3"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-js/-/corteza-js-2022.9.0-dev.3.tgz#ffc2297a9439bb52066906da7586fe9f461960ff"
+  integrity sha512-6mg+vEsDMX7m/i7qNSg0aPI1yp2NOB5LaDkRCM6AzHAb71ig9xnJ8buJ3Cca+4LlNwIq08T+KFUFIegrL36BYg==
   dependencies:
     axios "^0.21.1"
-    chart.js "2.9.3"
+    chartjs-plugin-colorschemes "^0.4.0"
     hex-rgb "^4.1.0"
     lodash "^4.17.15"
     minimalist "^1.0.0"
@@ -716,12 +716,12 @@
     numeral "^2.0.6"
     pino "^5.16.0"
 
-"@cortezaproject/corteza-vue@^2022.9.0-dev.2":
-  version "2022.9.0-dev.2"
-  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2022.9.0-dev.2.tgz#d2f39cf581ade957c7aad1b7fbff251dfdd4d5e7"
-  integrity sha512-6rZ1SNDmKnD87pf38oc5sv1CLEl6GAO3bs5aesKIyQUPfHv83olC/WVp63190ayypOgeZM8vuJAcEZLv2vUhTg==
+"@cortezaproject/corteza-vue@^2022.9.0-dev.3":
+  version "2022.9.0-dev.3"
+  resolved "https://registry.yarnpkg.com/@cortezaproject/corteza-vue/-/corteza-vue-2022.9.0-dev.3.tgz#c6dcdfbeb7bb554dd53d0e1b794ed69cef3e9029"
+  integrity sha512-SgvNik6XqFs0qy9c6WejBK5bFiZZFyjCCAwWJkM/my3l3LylaJCge6gtAxx+/AzupQkexSTt41JQXb4BhZ7rzw==
   dependencies:
-    "@cortezaproject/corteza-js" "^2022.9.0-dev.2"
+    "@cortezaproject/corteza-js" "^2022.9.0-dev.3"
     "@fortawesome/fontawesome-svg-core" "^1.2.26"
     "@fortawesome/free-solid-svg-icons" "^5.12.0"
     "@fortawesome/vue-fontawesome" "^0.1.9"
@@ -729,8 +729,7 @@
     "@popperjs/core" "^2.11.2"
     acorn "^7.3.1"
     bootstrap-vue "^2.21.2"
-    chartjs-plugin-colorschemes "^0.4.0"
-    chartjs-plugin-funnel "^1.1.5"
+    echarts "^5.3.3"
     fuzzysort "^1.2.1"
     highlight.js "^10.4.1"
     html-parse-stringify "^3.0.1"
@@ -748,7 +747,7 @@
     tiptap "^1.26.0"
     tiptap-extensions "^1.28.4"
     v-photoswipe "^1.0.3-1"
-    vue "^2.6.14"
+    vue-echarts "^6.2.3"
     vue-select "^3.4.0"
     vue-swatches "^1.0.4"
     vuedraggable "^2.23.0"
@@ -2844,7 +2843,7 @@ chardet@^0.7.0:
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
 
-chart.js@2.9.3, chart.js@>2.7.0:
+chart.js@2.9.3:
   version "2.9.3"
   resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.9.3.tgz#ae3884114dafd381bc600f5b35a189138aac1ef7"
   integrity sha512-+2jlOobSk52c1VU6fzkh3UwqHMdSlgH1xFv9FKMqHiNCpXsGPQa/+81AFa+i3jZ253Mq9aAycPwDjnn1XbRNNw==
@@ -2871,13 +2870,6 @@ chartjs-plugin-colorschemes@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/chartjs-plugin-colorschemes/-/chartjs-plugin-colorschemes-0.4.0.tgz#7a310c32411ef0b5135df1f47da4d379e22220f7"
   integrity sha512-GUAulGFa6igdhi/xF9XopLJknwtXZT0wwEB+e/D4SJcRGY1HdwzX84pVn5BSpnk1idF6RJxZoA7w396R7BOE9A==
-
-chartjs-plugin-funnel@^1.1.5:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/chartjs-plugin-funnel/-/chartjs-plugin-funnel-1.1.5.tgz#45f262d5a1f322be326692fdde2a730a43fc21d2"
-  integrity sha512-iblHmQ+8ApfVLaWPVRM7+4GAzCIGyKh540rhEpUcjtmDgKdKkHQ9KNqm3QEEpHAWlb4RUWWIdI1dCDRHXxiLSw==
-  dependencies:
-    chart.js ">2.7.0"
 
 check-error@^1.0.2:
   version "1.0.2"
@@ -11759,7 +11751,7 @@ vue2-leaflet@^2.7.1:
   resolved "https://registry.yarnpkg.com/vue2-leaflet/-/vue2-leaflet-2.7.1.tgz#2f95c287621bf778f10804c88223877f5c049257"
   integrity sha512-K7HOlzRhjt3Z7+IvTqEavIBRbmCwSZSCVUlz9u4Rc+3xGCLsHKz4TAL4diAmfHElCQdPPVdZdJk8wPUt2fu6WQ==
 
-vue@2.6.14, vue@^2.6.14:
+vue@2.6.14:
   version "2.6.14"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.14.tgz#e51aa5250250d569a3fbad3a8a5a687d6036e235"
   integrity sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ==
