@@ -164,8 +164,6 @@ export default {
           data.labels = data.labels.map(l => l === 'undefined' ? this.$t('chart:undefined') : l)
 
           this.renderer = chart.makeOptions(data)
-
-          console.log(this.renderer)
         } else {
           data.labels = []
         }
