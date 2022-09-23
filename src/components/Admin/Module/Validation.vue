@@ -72,9 +72,11 @@ export default {
 
       // Merge current non strict fields with the new strict
       set (fields = []) {
+        const fieldNames = fields.map(({ name }) => name)
+
         this.module.config.recordDeDup.rules = [
-          ...this.getRuleFields(false),
-          ...fields.map(({ name }) => {
+          ...this.getRuleFields(false).filter(({ attributes }) => !fieldNames.includes(attributes[0])),
+          ...fieldNames.map(name => {
             return {
               name: 'case-sensitive',
               strict: true,
@@ -95,9 +97,11 @@ export default {
 
       // Merge current strict fields with the new non-strict
       set (fields = []) {
+        const fieldNames = fields.map(({ name }) => name)
+
         this.module.config.recordDeDup.rules = [
-          ...this.getRuleFields(true),
-          ...fields.map(({ name }) => {
+          ...this.getRuleFields(true).filter(({ attributes }) => !fieldNames.includes(attributes[0])),
+          ...fieldNames.map(name => {
             return {
               name: 'case-sensitive',
               strict: false,
