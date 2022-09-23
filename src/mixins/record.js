@@ -151,7 +151,14 @@ export default {
         .then(() => this.dispatchUiEvent('afterFormSubmit', this.record, { $records: records }))
         .then(() => this.updatePrompts())
         .then(() => {
-          this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
+          if (!this.record.valueErrors) {
+            this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
+          } else {
+            const { set = [] } = this.record.valueErrors
+            this.errors = new validator.Validated()
+            this.errors.push(...set)
+            this.toastWarning(this.$t('notification:record.validationWarnings'))
+          }
         })
         .catch(this.toastErrorHandler(this.$t(
           isNew
@@ -202,7 +209,11 @@ export default {
         .then(() => this.dispatchUiEvent('beforeFormSubmit', this.record))
         .then(() => this.updatePrompts())
         .then(() => {
-          this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
+          if (!this.record.valueErrors) {
+            this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
+          } else {
+            this.toastWarning(this.$t('notification:record.validationWarnings'))
+          }
         })
         .catch(this.toastErrorHandler(this.$t(
           isNew
