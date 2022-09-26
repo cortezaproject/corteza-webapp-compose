@@ -404,9 +404,9 @@ export default {
       this.findPageByID({ namespaceID, pageID: this.pageID, force: true })
         .then(page => {
           // Merge changes
-          this.page = new compose.Page({ namespaceID, ...page, blocks: this.blocks })
+          const mergedPage = new compose.Page({ namespaceID, ...page, blocks: this.blocks })
 
-          this.updatePage(this.page).then((page) => {
+          this.updatePage(mergedPage).then((page) => {
             this.toastSuccess(this.$t('notification:page.saved'))
             if (closeOnSuccess) {
               this.$router.push({ name: 'admin.pages' })
