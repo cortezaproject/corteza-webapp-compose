@@ -75,11 +75,16 @@
                         class="bg-white h-100 w-100"
                       >
                         <template #option="option">
+                          <p
+                            class="mb-1"
+                          >
+                            {{ option.label }}
+                          </p>
                           <div
                             v-for="(color, index) in option.colors"
                             :key="`${option.value}-${index}`"
                             :style="`background: ${color};`"
-                            class="d-inline-block color-box mr-1"
+                            class="d-inline-block color-box mr-1 mb-1"
                           />
                         </template>
                       </vue-select>
