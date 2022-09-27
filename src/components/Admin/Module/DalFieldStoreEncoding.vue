@@ -1,10 +1,11 @@
 <template>
   <b-row
     cols="12"
-    class="mb-1"
+    class="mx-1 mb-2"
   >
     <b-col
       cols="3"
+      align-self="center"
     >
       <b-form-checkbox
         v-if="allowOmitStrategy"
@@ -23,6 +24,7 @@
       cols="3"
     >
       <b-select
+        v-show="strategy !== 'omit'"
         v-model="strategy"
         :options="strategies"
         :disabled="!use"
