@@ -33,35 +33,31 @@
       :label="$t('module-fields.label')"
       :description="$t('module-fields.description')"
     >
-      <b-container>
-        <dal-field-store-encoding
-          v-for="({ field, storeIdent, label }) in moduleFields"
-          :key="field"
-          :config="moduleFieldEncoding[field] || {}"
-          :field="field"
-          :label="label"
-          :default-strategy="moduleFieldDefaultEncodingStrategy"
-          :store-ident="storeIdent"
-          @change="applyModuleFieldStrategyConfig(field, $event)"
-        />
-      </b-container>
+      <dal-field-store-encoding
+        v-for="({ field, storeIdent, label }) in moduleFields"
+        :key="field"
+        :config="moduleFieldEncoding[field] || {}"
+        :field="field"
+        :label="label"
+        :default-strategy="moduleFieldDefaultEncodingStrategy"
+        :store-ident="storeIdent"
+        @change="applyModuleFieldStrategyConfig(field, $event)"
+      />
     </b-form-group>
     <b-form-group
       :label="$t('system-fields.label')"
       :description="$t('system-fields.description')"
     >
-      <b-container>
-        <dal-field-store-encoding
-          v-for="({ field, storeIdent, label }) in systemFields"
-          :key="field"
-          :config="systemFieldEncoding[field] || {}"
-          :field="field"
-          :label="label"
-          :store-ident="storeIdent"
-          :allow-omit-strategy="true"
-          @change="applySystemFieldStrategyConfig(field, $event)"
-        />
-      </b-container>
+      <dal-field-store-encoding
+        v-for="({ field, storeIdent, label }) in systemFields"
+        :key="field"
+        :config="systemFieldEncoding[field] || {}"
+        :field="field"
+        :label="label"
+        :store-ident="storeIdent"
+        :allow-omit-strategy="true"
+        @change="applySystemFieldStrategyConfig(field, $event)"
+      />
     </b-form-group>
   </div>
 </template>
@@ -96,17 +92,17 @@ export default {
     const systemFieldEncoding = this.module.config.dal.systemFieldEncoding || {}
     const systemFields = [
       { field: 'id', storeIdent: 'id' },
-      { field: 'moduleID', storeIdent: 'rel_namespace' },
-      { field: 'namespaceID', storeIdent: 'rel_module' },
+      { field: 'namespaceID', storeIdent: 'rel_namespace' },
+      { field: 'moduleID', storeIdent: 'rel_module' },
       { field: 'revision', storeIdent: 'revision' },
       { field: 'meta', storeIdent: 'meta' },
-      { field: 'ownedBy', storeIdent: 'created_at' },
-      { field: 'createdAt', storeIdent: 'created_by' },
-      { field: 'createdBy', storeIdent: 'updated_at' },
-      { field: 'updatedAt', storeIdent: 'updated_by' },
-      { field: 'updatedBy', storeIdent: 'deleted_at' },
-      { field: 'deletedAt', storeIdent: 'deleted_by' },
-      { field: 'deletedBy', storeIdent: 'owned_by' },
+      { field: 'ownedBy', storeIdent: 'owned_by' },
+      { field: 'createdAt', storeIdent: 'created_at' },
+      { field: 'createdBy', storeIdent: 'created_by' },
+      { field: 'updatedAt', storeIdent: 'updated_at' },
+      { field: 'updatedBy', storeIdent: 'updated_by' },
+      { field: 'deletedAt', storeIdent: 'deleted_at' },
+      { field: 'deletedBy', storeIdent: 'deleted_by' },
     ].map(sf => ({ ...sf, label: this.$t(`field:system.${sf.field}`) }))
 
     return {
