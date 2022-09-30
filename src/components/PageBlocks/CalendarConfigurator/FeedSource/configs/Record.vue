@@ -15,7 +15,7 @@
             text-field="name"
           >
             <template slot="first">
-              <option :value="null">
+              <option value="0">
                 {{ $t('calendar.recordFeed.modulePlaceholder') }}
               </option>
             </template>
@@ -35,6 +35,7 @@
               v-model="feed.options.color"
               style="max-width: 50px;"
               type="color"
+              debounce="300"
             />
           </b-input-group>
         </b-form-group>
@@ -51,7 +52,7 @@
             <template slot="first">
               <option
                 disabled
-                :value="null"
+                value=""
               >
                 {{ $t('calendar.recordFeed.titlePlaceholder') }}
               </option>
@@ -72,7 +73,7 @@
             <template slot="first">
               <option
                 disabled
-                :value="null"
+                value=""
               >
                 {{ $t('calendar.recordFeed.eventStartFieldPlaceholder') }}
               </option>
@@ -98,7 +99,7 @@
             :options="dateFields | optionizeFields"
           >
             <template slot="first">
-              <option :value="null">
+              <option value="">
                 {{ $t('calendar.recordFeed.eventEndFieldPlaceholder') }}
               </option>
             </template>

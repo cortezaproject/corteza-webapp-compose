@@ -11,6 +11,7 @@
           v-model="feed.options.color"
           style="max-width: 50px;"
           type="color"
+          debounce="300"
         />
       </b-input-group>
     </b-form-group>

@@ -17,7 +17,7 @@
           >
             <template slot="first">
               <option
-                :value="null"
+                value=""
                 :disabled="true"
               >
                 {{ $t('calendar.feedPlaceholder') }}
@@ -114,7 +114,7 @@ export default {
      * Handles feed's addition
      */
     handleAddButton () {
-      this.options.feeds.push(compose.PageBlockCalendar.makeFeed())
+      this.options.feeds.push({ ...compose.PageBlockCalendar.makeFeed() })
     },
 
     /**
