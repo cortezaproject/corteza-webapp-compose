@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100">
+  <div class="h-100 position-relative">
     <div
       v-if="processing"
       class="d-flex align-items-center justify-content-center h-100"
