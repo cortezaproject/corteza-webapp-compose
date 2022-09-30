@@ -97,7 +97,7 @@ export default {
 
   created () {
     if (this.options.feeds.length === 0) {
-      this.options.feeds = []
+      this.block.options.feeds = []
     }
   },
 
@@ -107,14 +107,14 @@ export default {
      * @param {Number} i Feed's index
      */
     onRemoveFeed (i) {
-      this.options.feeds.splice(i, 1)
+      this.block.options.feeds.splice(i, 1)
     },
 
     /**
      * Handles feed's addition
      */
     handleAddButton () {
-      this.options.feeds.push({ ...compose.PageBlockCalendar.makeFeed() })
+      this.block.options.feeds.push(compose.PageBlockCalendar.makeFeed())
     },
 
     /**

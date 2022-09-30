@@ -153,7 +153,7 @@ export default {
 
   computed: {
     /**
-     * Finds the module, this feed configuratior should use
+     * Finds the module, this feed configurator should use
      * @returns {Module|undefined}
      */
     module () {
