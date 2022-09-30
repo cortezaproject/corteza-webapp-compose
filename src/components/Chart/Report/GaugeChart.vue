@@ -79,6 +79,7 @@
         <b-form-input
           v-model="metric.backgroundColor"
           type="color"
+          debounce="300"
           class="p-0 border-0 color-picker"
         />
       </b-form-group>

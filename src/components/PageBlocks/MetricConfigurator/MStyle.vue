@@ -21,6 +21,7 @@
         <b-form-input
           v-model="options.backgroundColor"
           type="color"
+          debounce="300"
           class="mb-1"
         />
       </b-form-group>
