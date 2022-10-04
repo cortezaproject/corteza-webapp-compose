@@ -1096,6 +1096,11 @@
     consola "^2.15.0"
     node-fetch "^2.6.1"
 
+"@nylas/components-composer@^1.1.6-canary.0":
+  version "1.1.6-canary.0"
+  resolved "https://registry.yarnpkg.com/@nylas/components-composer/-/components-composer-1.1.6-canary.0.tgz#bef7fcbcfa0f7a56a030a28cc37b13d2e5f91a10"
+  integrity sha512-atef2KvB2Kh4Hm/cC5sQ6TD1lIFHw3sTlm3YF7BWu+GRtHjQzFrSx09eVBsDSyluruQcCIeRcvXQFu3Ccmt2UA==
+
 "@panter/vue-i18next@^0.15.0":
   version "0.15.2"
   resolved "https://registry.yarnpkg.com/@panter/vue-i18next/-/vue-i18next-0.15.2.tgz#814f6774237e444eb9b69156e9c507d41b7fbd32"
