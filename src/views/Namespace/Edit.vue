@@ -444,7 +444,7 @@ export default {
     exportNamespace () {
       const params = {
         namespaceID: this.namespace.namespaceID,
-        filename: this.namespace.name,
+        filename: encodeURIComponent(this.namespace.name),
       }
 
       const exportUrl = url.Make({
