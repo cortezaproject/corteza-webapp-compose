@@ -224,7 +224,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
-import { compose, NoID } from '@cortezaproject/corteza-js'
+import { compose, NoID, shared } from '@cortezaproject/corteza-js'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import ChartComponent from 'corteza-webapp-compose/src/components/Chart'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
@@ -232,9 +232,9 @@ import draggable from 'vuedraggable'
 import ReportItem from 'corteza-webapp-compose/src/components/Chart/ReportItem'
 import Reports from 'corteza-webapp-compose/src/components/Chart/Report'
 import { chartConstructor } from 'corteza-webapp-compose/src/lib/charts'
-import schemes from 'chartjs-plugin-colorschemes/src/colorschemes'
 import VueSelect from 'vue-select'
 import { evaluatePrefilter } from 'corteza-webapp-compose/src/lib/record-filter'
+const { colorschemes } = shared
 
 const defaultReport = {
   moduleID: undefined,
@@ -302,13 +302,13 @@ export default {
       }
 
       const rr = []
-      for (const g in schemes) {
-        for (const sc in schemes[g]) {
+      for (const g in colorschemes) {
+        for (const sc in colorschemes[g]) {
           const gn = splicer(sc)
 
           rr.push({
             label: `${capitalize(g)}: ${capitalize(gn.label)} (${this.$t('colorLabel', gn)})`,
-            colors: [...schemes[g][sc]],
+            colors: [...colorschemes[g][sc]],
             value: `${g}.${sc}`,
           })
         }
