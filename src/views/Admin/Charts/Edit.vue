@@ -4,8 +4,15 @@
       {{ $t('edit.title') }}
     </portal>
 
+    <div
+      v-if="!chart"
+      class="d-flex align-items-center justify-content-center h-100"
+    >
+      <b-spinner />
+    </div>
+
     <b-container
-      v-if="chart"
+      v-else
       tag="form"
       fluid="xl"
       @submit.prevent="handleSave"
@@ -409,6 +416,7 @@ export default {
       immediate: true,
       handler (chartID) {
         this.chart = undefined
+        const { namespaceID } = this.namespace
 
         if (chartID === NoID) {
           let c = new compose.Chart({ namespaceID: this.namespace.namespaceID })
@@ -424,7 +432,7 @@ export default {
           this.chart = c
           this.onEditReport(0)
         } else {
-          this.findChartByID({ chartID: this.chartID }).then((chart) => {
+          this.findChartByID({ namespaceID, chartID, force: true }).then((chart) => {
             // Make a copy so that we do not change store item by ref
             this.chart = chartConstructor(chart)
             this.onEditReport(0)
