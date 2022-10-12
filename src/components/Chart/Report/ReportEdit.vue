@@ -13,8 +13,7 @@
       >
         <template slot="first">
           <option
-            :value="null"
-            disabled
+            :value="undefined"
           >
             {{ $t('edit.module.placeholder') }}
           </option>
@@ -36,7 +35,7 @@
           :options="predefinedFilters"
         >
           <template slot="first">
-            <option value="">
+            <option :value="undefined">
               {{ $t('edit.filter.noFilter') }}
             </option>
           </template>
@@ -56,6 +55,7 @@
         />
       </b-form-group>
     </div>
+
     <slot
       name="y-axis"
       :report="editReport"
@@ -63,6 +63,8 @@
 
     <!-- Configure report dimensions -->
     <div v-if="!!module">
+      <hr>
+
       <fieldset
         v-for="(d, i) in dimensions"
         :key="i"
@@ -85,7 +87,6 @@
             >
               <template slot="first">
                 <option
-                  disabled
                   :value="undefined"
                 >
                   {{ $t('edit.dimension.fieldPlaceholder') }}
@@ -107,7 +108,6 @@
             >
               <template slot="first">
                 <option
-                  disabled
                   :value="undefined"
                 >
                   {{ $t('edit.dimension.function.placeholder') }}
@@ -153,37 +153,49 @@
         />
       </fieldset>
 
+      <hr>
+
+      <h4 class="d-flex align-items-center mb-3">
+        {{ $t('edit.metric.title') }}
+        <b-button
+          v-if="canAddMetric"
+          variant="link"
+          class="text-decoration-none"
+          @click.prevent="addMetric"
+        >
+          + {{ $t('edit.metric.add') }}
+        </b-button>
+      </h4>
+
       <!-- Configure report metrics -->
       <draggable
         class="metrics mb-3"
         :list.sync="metrics"
-        :options="{ group: 'metrics_'+moduleID, sort: true }"
+        handle=".metric-handle"
+        :options="{ group: `metrics_${moduleID}` }"
       >
-        <hr>
-        <h4 class="mb-3">
-          {{ $t('edit.metric.title') }}
-        </h4>
         <fieldset
           v-for="(m,i) in metrics"
           :key="i"
           class="main-fieldset mb-3"
         >
-          <font-awesome-icon
-            v-if="metrics.length>1"
-            class="align-baseline text-secondary mr-2"
-            :icon="['fas', 'grip-vertical']"
-          />
-          <h5 class="mb-3 d-inline-block">
-            {{ $t('edit.metric.label') }}
-          </h5>
-          <b-button
+          <h5
             v-if="metrics.length > 1"
-            variant="link"
-            class="text-danger align-baseline"
-            @click.prevent="removeMetric(i)"
+            class="d-flex align-items-center mb-3"
           >
-            <font-awesome-icon :icon="['far', 'trash-alt']" />
-          </b-button>
+            <font-awesome-icon
+              class="grab metric-handle align-baseline text-secondary mr-2"
+              :icon="['fas', 'grip-vertical']"
+            />
+            {{ $t('edit.metric.label') }} {{ i + 1 }}
+            <b-button
+              variant="link"
+              class="text-danger align-baseline"
+              @click.prevent="removeMetric(i)"
+            >
+              <font-awesome-icon :icon="['far', 'trash-alt']" />
+            </b-button>
+          </h5>
 
           <b-form-group
             horizontal
@@ -194,10 +206,10 @@
             <b-form-select
               v-model="m.field"
               :options="metricFields"
+              @change="onMetricFieldChange($event, m)"
             >
               <template slot="first">
                 <option
-                  disabled
                   :value="undefined"
                 >
                   {{ $t('edit.metric.fieldPlaceholder') }}
@@ -219,7 +231,6 @@
             >
               <template slot="first">
                 <option
-                  disabled
                   :value="undefined"
                 >
                   {{ $t('edit.metric.function.placeholder') }}
@@ -235,14 +246,6 @@
         </fieldset>
       </draggable>
     </div>
-
-    <b-button
-      v-if="canAddMetric"
-      variant="primary"
-      @click.prevent="addMetric"
-    >
-      + {{ $t('edit.metric.add') }}
-    </b-button>
   </div>
 </template>
 
@@ -406,6 +409,12 @@ export default {
     onDimFieldChange (f, d) {
       if (!this.isTemporalField(f)) {
         this.$set(d, 'modifier', this.dimensionModifiers[0].value)
+      }
+    },
+
+    onMetricFieldChange (field, m) {
+      if (field === 'count') {
+        this.$set(m, 'aggregate', undefined)
       }
     },
 
