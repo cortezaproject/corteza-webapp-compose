@@ -29,22 +29,6 @@
       </small>
     </template>
 
-    <div
-      class="d-flex mb-2"
-    >
-      <b-button
-        variant="light"
-        rounded
-        class="w-100 ml-auto"
-        @click="openMap"
-      >
-        {{ $t('openMap') }}
-        <font-awesome-icon
-          :icon="['fas', 'map-marked-alt']"
-        />
-      </b-button>
-    </div>
-
     <multi
       v-if="field.isMulti"
       v-slot="ctx"
@@ -65,6 +49,17 @@
           number
           :placeholder="$t('longitude')"
         />
+        <b-input-group-append>
+          <b-button
+            variant="primary"
+            rounded
+            @click="openMap"
+          >
+            <font-awesome-icon
+              :icon="['fas', 'map-marked-alt']"
+            />
+          </b-button>
+        </b-input-group-append>
       </b-input-group>
     </multi>
 
@@ -82,6 +77,17 @@
           number
           :placeholder="$t('longitude')"
         />
+        <b-input-group-append>
+          <b-button
+            variant="light"
+            rounded
+            @click="openMap"
+          >
+            <font-awesome-icon
+              :icon="['fas', 'map-marked-alt']"
+            />
+          </b-button>
+        </b-input-group-append>
       </b-input-group>
     </template>
 
@@ -195,7 +201,9 @@ export default {
     },
 
     placeMarker (e) {
-      const { lat = 0, lng = 0 } = e.latlng || {}
+      let { lat = 0, lng = 0 } = e.latlng || {}
+      lat = Math.round(lat * 1e7) / 1e7
+      lng = Math.round(lng * 1e7) / 1e7
 
       if (this.field.isMulti) {
         this.localValue.push({ coordinates: [lat, lng] })
