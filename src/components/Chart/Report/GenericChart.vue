@@ -4,7 +4,6 @@
     :modules="modules"
   >
     <template #y-axis="{ report }">
-      <hr>
       <div>
         <h4 class="mb-3">
           {{ $t('edit.yAxis.label') }}
@@ -83,24 +82,9 @@
           />
         </b-form-group>
       </div>
-      <hr>
     </template>
 
     <template #metric-options="{ metric }">
-      <b-form-group
-        horizontal
-        :label-cols="2"
-        breakpoint="md"
-        :label="$t('edit.metric.labelColor')"
-      >
-        <b-form-input
-          v-model="metric.backgroundColor"
-          type="color"
-          debounce="300"
-          class="color-picker"
-        />
-      </b-form-group>
-
       <b-form-group
         horizontal
         :label-cols="2"
@@ -145,12 +129,10 @@
       >
         <b-form-select
           v-model="metric.type"
-          :disabled="!metric.field"
           :options="chartTypes"
         >
           <template slot="first">
             <option
-              disabled
               :value="undefined"
             >
               {{ $t('edit.metric.output.placeholder') }}
@@ -166,22 +148,6 @@
         label=""
       >
         <template v-if="hasRelativeDisplay(metric)">
-          <template v-if="metric.type === 'pie' || metric.type === 'doughnut'">
-            <b-form-select
-              v-model="metric.legendPosition"
-              :options="legendPositions"
-            >
-              <template slot="first">
-                <option
-                  disabled
-                  :value="undefined"
-                >
-                  {{ $t('edit.metric.legend.positionPlaceholder') }}
-                </option>
-              </template>
-            </b-form-select>
-          </template>
-
           <b-form-checkbox
             v-model="metric.relativeValue"
             :value="true"
@@ -189,20 +155,6 @@
           >
             {{ $t('edit.metric.relative') }}
           </b-form-checkbox>
-
-          <template v-if="metric.relativeValue">
-            <b-form-group
-              horizontal
-              breakpoint="md"
-              :label="$t('edit.metric.relativePrecision')"
-            >
-              <b-form-input
-                v-model="metric.relativePrecision"
-                type="number"
-                placeholder="2"
-              />
-            </b-form-group>
-          </template>
         </template>
 
         <template v-if="metric.type === 'line'">
@@ -213,26 +165,6 @@
           >
             {{ $t('edit.metric.fillArea') }}
           </b-form-checkbox>
-
-          <b-form-group
-            horizontal
-            breakpoint="md"
-            :label="$t('edit.metric.lineTension.label')"
-          >
-            <b-form-select
-              v-model="metric.lineTension"
-              :options="tensionSteps"
-            >
-              <template slot="first">
-                <option
-                  disabled
-                  :value="undefined"
-                >
-                  {{ $t('edit.metric.lineTension.placeholder') }}
-                </option>
-              </template>
-            </b-form-select>
-          </b-form-group>
         </template>
 
         <b-form-checkbox

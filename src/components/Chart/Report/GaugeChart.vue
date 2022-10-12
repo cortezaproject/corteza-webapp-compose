@@ -71,19 +71,6 @@
         />
       </b-form-group>
 
-      <b-form-group
-        horizontal
-        :label="$t('edit.metric.gaugeColor')"
-        :label-cols="2"
-      >
-        <b-form-input
-          v-model="metric.backgroundColor"
-          type="color"
-          debounce="300"
-          class="p-0 border-0 color-picker"
-        />
-      </b-form-group>
-
       <b-form-checkbox
         v-model="metric.fixTooltips"
         :value="true"

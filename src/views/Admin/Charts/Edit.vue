@@ -277,7 +277,7 @@ export default {
 
   data () {
     return {
-      chart: new compose.Chart(),
+      chart: undefined,
       error: null,
       processing: false,
 
@@ -409,6 +409,7 @@ export default {
       immediate: true,
       handler (chartID) {
         this.chart = undefined
+
         if (chartID === NoID) {
           let c = new compose.Chart({ namespaceID: this.namespace.namespaceID })
           switch (this.category) {
