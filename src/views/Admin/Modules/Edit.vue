@@ -29,8 +29,15 @@
       </b-button-group>
     </portal>
 
+    <div
+      v-if="!module"
+      class="d-flex align-items-center justify-content-center h-100"
+    >
+      <b-spinner />
+    </div>
+
     <b-container
-      v-if="module"
+      v-else
       tag="form"
       fluid="xl"
       @submit.prevent="handleSave"
@@ -610,6 +617,8 @@ export default {
     moduleID: {
       immediate: true,
       handler (moduleID) {
+        this.module = undefined
+
         /**
          * Every time module changes we switch to the 1st tab
          */
