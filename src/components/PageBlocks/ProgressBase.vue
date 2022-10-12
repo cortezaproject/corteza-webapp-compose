@@ -53,6 +53,11 @@ export default {
   },
 
   computed: {
+    progress () {
+      const { value = 0, max = 100 } = this
+      return 100 * (value / max)
+    },
+
     progressLabel () {
       let { value } = this
       const { showValue, showRelative, showProgress } = this.options.display || {}
@@ -78,12 +83,11 @@ export default {
     },
 
     progressVariant () {
-      const { value } = this
       const { variant } = this.options.display || {}
       let progressVariant = variant
 
       if (this.options.display.thresholds.length) {
-        const { variant } = this.sortedVariants.find(t => value > t.value) || {}
+        const { variant } = this.sortedVariants.find(t => this.progress >= t.value) || {}
         progressVariant = variant || progressVariant
       }
 
