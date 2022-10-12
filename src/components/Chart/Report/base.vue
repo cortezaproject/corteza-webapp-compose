@@ -33,6 +33,11 @@ export default {
       ],
     },
 
+    usesDimensionsField: {
+      type: Boolean,
+      default: true,
+    },
+
     unSkippable: {
       type: Boolean,
       required: false,

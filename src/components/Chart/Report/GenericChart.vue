@@ -85,6 +85,7 @@
       </div>
       <hr>
     </template>
+
     <template #metric-options="{ metric }">
       <b-form-group
         horizontal
