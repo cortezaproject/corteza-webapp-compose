@@ -277,12 +277,16 @@
               :class="{ 'mt-2': i }"
             >
               <b-col>
-                <b-form-input
-                  v-model="t.value"
-                  :placeholder="$t('progress.threshold.label')"
-                  type="number"
-                  number
-                />
+                <b-input-group
+                  append="%"
+                >
+                  <b-form-input
+                    v-model="t.value"
+                    :placeholder="$t('progress.threshold.label')"
+                    type="number"
+                    number
+                  />
+                </b-input-group>
               </b-col>
               <b-col
                 class="d-flex align-items-center justify-content-center"
@@ -445,6 +449,11 @@ export default {
       ]
     },
 
+    progress () {
+      const { value = 0, max = 100 } = this.preview
+      return 100 * (value / max)
+    },
+
     progressLabel () {
       let { value, max } = this.preview
       const { showValue, showRelative, showProgress } = this.options.display || {}
@@ -466,13 +475,12 @@ export default {
     },
 
     progressVariant () {
-      const { value } = this.preview
       const { variant } = this.options.display || {}
       let progressVariant = variant
 
       if (this.options.display.thresholds.length) {
-        const sortedVariants = [...this.options.display.thresholds].filter(t => t.value).sort((a, b) => b.value - a.value)
-        const { variant } = sortedVariants.find(t => value > t.value) || {}
+        const sortedVariants = [...this.options.display.thresholds].filter(t => t.value >= 0).sort((a, b) => b.value - a.value)
+        const { variant } = sortedVariants.find(t => this.progress >= t.value) || {}
         progressVariant = variant || progressVariant
       }
 

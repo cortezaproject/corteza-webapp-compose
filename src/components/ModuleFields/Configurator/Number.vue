@@ -178,12 +178,16 @@
               :class="{ 'mt-2': i }"
             >
               <b-col>
-                <b-form-input
-                  v-model="t.value"
-                  :placeholder="'Threshold'"
-                  type="number"
-                  number
-                />
+                <b-input-group
+                  append="%"
+                >
+                  <b-form-input
+                    v-model="t.value"
+                    :placeholder="'Threshold'"
+                    type="number"
+                    number
+                  />
+                </b-input-group>
               </b-col>
               <b-col
                 class="d-flex align-items-center justify-content-center"
