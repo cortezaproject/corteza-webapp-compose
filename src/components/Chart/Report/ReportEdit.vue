@@ -63,15 +63,15 @@
 
     <!-- Configure report dimensions -->
     <div v-if="!!module">
-      <div>
-        <fieldset
-          v-for="(d, i) in dimensions"
-          :key="i"
-        >
-          <h4 class="mb-3">
-            {{ $t('edit.dimension.label') }}
-          </h4>
+      <fieldset
+        v-for="(d, i) in dimensions"
+        :key="i"
+      >
+        <h4 class="mb-3">
+          {{ $t('edit.dimension.label') }}
+        </h4>
 
+        <template v-if="usesDimensionsField">
           <b-form-group
             horizontal
             :label-cols="2"
@@ -143,15 +143,15 @@
               />
             </b-form-group>
           </template>
+        </template>
 
-          <slot
-            name="dimension-options"
-            :index="i"
-            :dimension="d"
-            :field="getField(d)"
-          />
-        </fieldset>
-      </div>
+        <slot
+          name="dimension-options"
+          :index="i"
+          :dimension="d"
+          :field="getField(d)"
+        />
+      </fieldset>
 
       <!-- Configure report metrics -->
       <draggable

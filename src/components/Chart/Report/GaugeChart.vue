@@ -2,8 +2,8 @@
   <report-edit
     :report.sync="editReport"
     :modules="modules"
-    :dimension-field-kind="['Select']"
     :supported-metrics="1"
+    :uses-dimensions-field="false"
     un-skippable
   >
     <template #dimension-options="{ dimension }">
