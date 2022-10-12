@@ -64,7 +64,7 @@ export default {
         nr.filter = evaluatePrefilter(nr.filter, {
           record: this.record,
           recordID: (this.record || {}).recordID || NoID,
-          ownerID: (this.record || {}).userID || NoID,
+          ownerID: (this.record || {}).ownedBy || NoID,
           userID: (this.$auth.user || {}).userID || NoID,
         })
       }
