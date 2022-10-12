@@ -380,7 +380,7 @@ export default {
     },
 
     exportDisabled () {
-      return !this.dateRangeValid || this.fields.length === 0 || !this.recordCount
+      return !this.dateRangeValid || this.fields.length === 0 || !this.getExportableCount
     },
 
     selectedFields: {
