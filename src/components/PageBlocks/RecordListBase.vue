@@ -359,7 +359,7 @@
               </b-td>
 
               <b-td
-                class="text-right align-top pl-0"
+                class="d-flex justify-content-end align-items-top"
                 @click.stop
               >
                 <template v-if="inlineEditing">
@@ -393,7 +393,7 @@
                   v-if="!inlineEditing && !options.hideRecordReminderButton"
                   variant="link"
                   :title="$t('recordList.record.tooltip.reminder')"
-                  class="p-0 m-0 pl-1 text-primary d-print-none"
+                  class="p-0 m-0 ml-2 text-primary d-print-none"
                   @click.prevent="createReminder(item.r)"
                 >
                   <font-awesome-icon
@@ -401,12 +401,12 @@
                   />
                 </b-button>
 
-                <template v-if="!options.hideRecordCloneButton && recordListModule.canCreateRecord && recordPageID">
+                <template v-if="!options.hideRecordCloneButton && recordListModule.canCreateRecord && (options.rowCreateUrl || recordPageID)">
                   <b-button
                     v-if="!inlineEditing"
                     variant="link"
                     :title="$t('recordList.record.tooltip.clone')"
-                    class="p-0 m-0 pl-1 text-secondary d-print-none"
+                    class="p-0 m-0 ml-2 text-secondary d-print-none"
                     :to="{ name: options.rowCreateUrl || 'page.record.create', params: { pageID: recordPageID, values: item.r.values }, query: null }"
                   >
                     <font-awesome-icon
@@ -417,7 +417,7 @@
                     v-else
                     variant="link"
                     :title="$t('recordList.record.tooltip.clone')"
-                    class="pl-1 text-primary d-print-none"
+                    class="ml-2 text-primary d-print-none"
                     @click="handleCloneInline(item.r)"
                   >
                     <font-awesome-icon
@@ -428,10 +428,10 @@
 
                 <template v-if="!inlineEditing">
                   <b-button
-                    v-if="!options.hideRecordEditButton && item.r.canUpdateRecord && recordPageID"
+                    v-if="!options.hideRecordEditButton && item.r.canUpdateRecord && (options.rowEditUrl || recordPageID)"
                     variant="link"
                     :title="$t('recordList.record.tooltip.edit')"
-                    class="p-0 m-0 pl-1 text-primary d-print-none"
+                    class="p-0 m-0 ml-2 text-primary d-print-none"
                     :to="{ name: options.rowEditUrl || 'page.record.edit', params: { pageID: recordPageID, recordID: item.r.recordID }, query: null }"
                   >
                     <font-awesome-icon
@@ -439,10 +439,10 @@
                     />
                   </b-button>
                   <b-button
-                    v-if="!options.hideRecordViewButton && item.r.canReadRecord && recordPageID"
+                    v-if="!options.hideRecordViewButton && item.r.canReadRecord && (options.rowViewUrl || recordPageID)"
                     variant="link"
                     :title="$t('recordList.record.tooltip.view')"
-                    class="p-0 m-0 pl-1 text-primary d-print-none"
+                    class="p-0 m-0 ml-2 text-primary d-print-none"
                     :to="{ name: options.rowViewUrl || 'page.record', params: { pageID: recordPageID, recordID: item.r.recordID }, query: null }"
                   >
                     <font-awesome-icon
@@ -457,7 +457,7 @@
                     :title="item.r.recordID"
                     :tooltip="$t('permissions:resources.compose.record.tooltip')"
                     button-variant="link"
-                    class="text-dark m-0 p-0 pl-1 d-print-none"
+                    class="text-dark m-0 p-0 ml-2 d-print-none"
                   />
                 </template>
               </b-td>

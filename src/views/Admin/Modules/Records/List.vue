@@ -114,7 +114,7 @@ export default {
         fields,
         hideRecordReminderButton: true,
         hideRecordViewButton: true,
-        hideRecordCloneButton: true,
+        hideRecordCloneButton: false,
         hideRecordPermissionsButton: false,
         selectable: true,
         allowExport: true,
