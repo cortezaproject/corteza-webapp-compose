@@ -381,7 +381,7 @@ export default {
         const pf = evaluatePrefilter(this.field.options.prefilter, {
           record: this.record,
           recordID: (this.record || {}).recordID || NoID,
-          ownerID: (this.record || {}).userID || NoID,
+          ownerID: (this.record || {}).ownedBy || NoID,
           userID: (this.$auth.user || {}).userID || NoID,
         })
         if (query) {
