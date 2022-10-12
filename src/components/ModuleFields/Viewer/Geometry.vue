@@ -2,33 +2,18 @@
   <div
     v-if="localValue.length"
   >
-    <div
-      class="d-flex mb-2"
-    >
-      <b-button
-        variant="light"
-        rounded
-        class="w-100 ml-auto"
-        @click.stop="openMap"
-      >
-        <span
-          v-if="!valueOnly"
-        >
-          {{ $t('openMap') }}
-        </span>
-        <font-awesome-icon
-          :icon="['fas', 'map-marked-alt']"
-        />
-      </b-button>
-    </div>
-
-    <p
+    <a
       v-for="(c, index) in localValue"
       :key="index"
-      class="mb-0"
+      class="mb-0 pointer text-decoration-none"
+      @click.stop="openMap"
     >
-      {{ c[0] }}, {{ c[1] }}{{ index !== localValue.length - 1 ? field.options.multiDelimiter : '' }}
-    </p>
+      {{ c[0].toFixed(7) }}, {{ c[1].toFixed(7) }}{{ index !== localValue.length - 1 ? field.options.multiDelimiter : '' }}
+      <font-awesome-icon
+        :icon="['fas', 'map-marked-alt']"
+        class="text-primary"
+      />
+    </a>
 
     <b-modal
       v-model="map.show"
