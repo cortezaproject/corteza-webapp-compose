@@ -2,18 +2,22 @@
   <div
     v-if="localValue.length"
   >
-    <a
-      v-for="(c, index) in localValue"
+    <span
+      v-for="(c, index) of localValue"
       :key="index"
-      class="mb-0 pointer text-decoration-none"
-      @click.stop="openMap"
+      :class="{ 'd-block': field.options.multiDelimiter === '\n' }"
     >
-      {{ c[0].toFixed(7) }}, {{ c[1].toFixed(7) }}{{ index !== localValue.length - 1 ? field.options.multiDelimiter : '' }}
-      <font-awesome-icon
-        :icon="['fas', 'map-marked-alt']"
-        class="text-primary"
-      />
-    </a>
+      <a
+        @click.stop="openMap"
+      >
+        {{ c[0].toFixed(7) }}, {{ c[1].toFixed(7) }}
+        <font-awesome-icon
+          :icon="['fas', 'map-marked-alt']"
+          class="text-primary"
+        />
+        {{ index !== localValue.length - 1 ? field.options.multiDelimiter : '' }}
+      </a>
+    </span>
 
     <b-modal
       v-model="map.show"

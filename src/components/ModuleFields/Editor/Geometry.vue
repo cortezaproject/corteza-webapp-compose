@@ -29,12 +29,26 @@
       </small>
     </template>
 
+    <div class="d-flex w-100">
+      <b-button
+        v-if="field.isMulti"
+        variant="primary"
+        rounded
+        class="w-100"
+        @click="openMap"
+      >
+        <font-awesome-icon
+          :icon="['fas', 'map-marked-alt']"
+        />
+      </b-button>
+    </div>
+
     <multi
       v-if="field.isMulti"
       v-slot="ctx"
       :value.sync="localValue"
       :errors="errors"
-      :default-value="{ coordinates: [0, 0] }"
+      single-input
     >
       <b-input-group>
         <b-form-input
@@ -49,17 +63,6 @@
           number
           :placeholder="$t('longitude')"
         />
-        <b-input-group-append>
-          <b-button
-            variant="primary"
-            rounded
-            @click="openMap"
-          >
-            <font-awesome-icon
-              :icon="['fas', 'map-marked-alt']"
-            />
-          </b-button>
-        </b-input-group-append>
       </b-input-group>
     </multi>
 
