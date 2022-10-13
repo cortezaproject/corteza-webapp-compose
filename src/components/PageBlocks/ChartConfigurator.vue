@@ -4,8 +4,8 @@
       :label="$t('chart.display')"
     >
       <b-form-select
-        v-model="options.chartID"
-        :options="filterCharts()"
+        v-model="block.options.chartID"
+        :options="options"
         text-field="name"
         value-field="chartID"
       />
@@ -30,21 +30,12 @@ export default {
     ...mapGetters({
       charts: 'chart/set',
     }),
-  },
 
-  methods: {
-    filterCharts () {
-      const rr = [
+    options () {
+      return [
         { chartID: NoID, name: this.$t('chart.pick') },
+        ...this.charts,
       ]
-
-      for (const c of this.charts) {
-        try {
-          c.isValid()
-          rr.push(c)
-        } catch (e) {}
-      }
-      return rr
     },
   },
 }
