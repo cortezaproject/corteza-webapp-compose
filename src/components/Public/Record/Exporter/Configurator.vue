@@ -609,10 +609,10 @@ export default {
     doExport (kind) {
       this.$emit('export', {
         ext: kind,
-        fields: this.fields.map(({ name }) => name),
-        filter: this.makeFilter(this.filter),
-        filterRaw: this.filter,
-        timezone: this.forTimezone ? this.exportTimezone : undefined,
+        fields: encodeURIComponent(this.fields.map(({ name }) => name)),
+        filter: encodeURIComponent(this.makeFilter(this.filter)),
+        filterRaw: encodeURIComponent(this.filter),
+        timezone: encodeURIComponent(this.forTimezone ? this.exportTimezone : undefined),
       })
     },
 
