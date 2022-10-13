@@ -409,26 +409,25 @@ export default {
       this.processing = true
 
       const namespaceID = this.$route.params.namespaceID
+
+      this.application = undefined
+      this.isApplication = false
+
       if (namespaceID) {
         await this.$store.dispatch('namespace/findByID', { namespaceID })
-          .then((ns) => {
+          .then(ns => {
             this.namespaceEnabled = ns.enabled
+            this.namespace = new compose.Namespace(ns)
+
             if (this.isClone) {
-              this.namespace = new compose.Namespace({
-                ...ns,
-                name: `${ns.name} (${this.$t('cloneSuffix')})`,
-                slug: `${ns.slug}_${this.$t('cloneSuffix')}`,
-              })
-            } else {
-              this.namespace = new compose.Namespace(ns)
+              this.namespace.name = `${ns.name} (${this.$t('cloneSuffix')})`
+              this.namespace.slug = `${ns.slug}_${this.$t('cloneSuffix')}`
             }
 
             this.fetchApplication()
           })
       } else {
         this.namespace = new compose.Namespace({ enabled: true })
-        this.application = undefined
-        this.isApplication = false
       }
 
       this.namespace.meta = {
@@ -544,7 +543,7 @@ export default {
       this.processing = false
 
       if (closeOnSuccess) {
-        this.$router.push({ name: 'root' })
+        this.$router.push({ name: 'namespace.manage' })
       } else if (!this.isEdit || this.isClone) {
         this.$router.push({ name: 'namespace.edit', params: { namespaceID: this.namespace.namespaceID } })
       }
@@ -571,7 +570,7 @@ export default {
         })
         .finally(() => {
           this.processing = false
-          this.$router.push({ name: 'root' })
+          this.$router.push({ name: 'namespace.manage' })
         })
     },
 
