@@ -180,12 +180,6 @@ export default {
       return this.module.ID !== NoID && this.value.fieldID !== NoID
     },
   },
-
-  methods: {
-    handleKindChange (field) {
-      field.merge({ kind: field.kind })
-    },
-  },
 }
 </script>
 <style lang="scss" scoped>

@@ -24,11 +24,12 @@
       :description="$t('ident.description', { interpolation: { prefix: '{{{', suffix: '}}}' } })"
       label-class="text-primary"
     >
-      <b-input
+      <b-form-input
         v-model="module.config.dal.ident"
         :placeholder="$t('ident.placeholder')"
       />
     </b-form-group>
+
     <b-form-group
       :label="$t('module-fields.label')"
       :description="$t('module-fields.description')"
@@ -44,6 +45,7 @@
         @change="applyModuleFieldStrategyConfig(field, $event)"
       />
     </b-form-group>
+
     <b-form-group
       :label="$t('system-fields.label')"
       :description="$t('system-fields.description')"

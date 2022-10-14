@@ -50,7 +50,7 @@ export default [
                 redirect: { name: 'admin.modules' },
 
                 children: [
-                  r('admin.modules', 'modules', 'Admin/Modules/Index'),
+                  r('admin.modules', 'modules', 'Admin/Modules/List'),
                   r('admin.modules.create', 'modules/new', 'Admin/Modules/Edit'),
                   r('admin.modules.edit', 'modules/:moduleID/edit', 'Admin/Modules/Edit'),
                   r('admin.modules.record.list', 'modules/:moduleID/record/list', 'Admin/Modules/Records/List'),
@@ -58,11 +58,11 @@ export default [
                   r('admin.modules.record.create', 'modules/:moduleID/record', 'Admin/Modules/Records/Create'),
                   r('admin.modules.record.edit', 'modules/:moduleID/record/:recordID/edit', 'Admin/Modules/Records/Edit'),
 
-                  r('admin.pages', 'pages', 'Admin/Pages/Index'),
+                  r('admin.pages', 'pages', 'Admin/Pages/List'),
                   r('admin.pages.edit', 'pages/:pageID/edit', 'Admin/Pages/Edit'),
                   r('admin.pages.builder', 'pages/:pageID/builder', 'Admin/Pages/Builder'),
 
-                  r('admin.charts', 'charts', 'Admin/Charts/Index'),
+                  r('admin.charts', 'charts', 'Admin/Charts/List'),
                   r('admin.charts.create', 'charts/new/:category?', 'Admin/Charts/Edit'),
                   r('admin.charts.edit', 'charts/:chartID/edit', 'Admin/Charts/Edit'),
 

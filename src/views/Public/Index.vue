@@ -7,6 +7,7 @@
       <h1 class="display-3">
         {{ $t('label.welcome') }}
       </h1>
+
       <p class="lead">
         {{ $t('message.noPages') }}
         <span v-if="namespace.canManageNamespace">
@@ -16,6 +17,7 @@
           {{ $t('message.notifyAdministrator') }}
         </span>
       </p>
+
       <b-container
         v-if="namespace.canManageNamespace"
         fluid="xl"
@@ -131,6 +133,7 @@
       :namespace="namespace"
       :page="page"
     />
+
     <portal-target
       name="toolbar"
     />

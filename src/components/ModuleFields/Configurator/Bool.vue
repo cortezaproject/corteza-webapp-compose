@@ -21,6 +21,7 @@
         </b-input-group-append>
       </b-input-group>
     </b-form-group>
+
     <b-form-group
       :label="$t('kind.bool.uncheckedValueLabel')"
     >
