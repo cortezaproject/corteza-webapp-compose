@@ -34,6 +34,7 @@
         :options="modes"
       />
     </b-form-group>
+
     <b-form-group
       v-if="enableFileNameHiding"
       class="mb-0"

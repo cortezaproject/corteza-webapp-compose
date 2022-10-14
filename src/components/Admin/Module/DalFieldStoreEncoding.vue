@@ -20,10 +20,11 @@
         {{ label }}
       </div>
     </b-col>
+
     <b-col
       cols="3"
     >
-      <b-select
+      <b-form-select
         v-show="strategy !== 'omit'"
         v-model="strategy"
         :options="strategies"
@@ -31,6 +32,7 @@
         size="sm"
       />
     </b-col>
+
     <b-col
       v-if="strategy === ''"
       cols="6"
@@ -42,6 +44,7 @@
         readonly
       />
     </b-col>
+
     <b-col
       v-else-if="showIdentInput"
       cols="6"

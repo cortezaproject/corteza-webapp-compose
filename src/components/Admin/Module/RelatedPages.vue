@@ -103,7 +103,7 @@ export default {
 
     recordListPage () {
       return this.pages.find(p => {
-        return p.blocks.find(b => b.options.moduleID === this.module.moduleID)
+        return p.blocks.find(b => b.kind === 'RecordList' && b.options.moduleID === this.module.moduleID)
       })
     },
   },

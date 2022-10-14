@@ -207,11 +207,6 @@ export default {
       sortDesc: false,
 
       creatingRecordPage: false,
-
-      newModule: new compose.Module(
-        { fields: [new compose.ModuleFieldString({ fieldID: '0', name: 'Sample' })] },
-        this.namespace,
-      ),
     }
   },
 
@@ -264,47 +259,6 @@ export default {
 
     moduleFilter (mod, query) {
       return filter.Assert(mod, query, 'handle', 'name')
-    },
-
-    openEditor (module) {
-      const { moduleID } = module
-      this.$router.push({ name: 'admin.modules.edit', params: { moduleID } })
-    },
-
-    openPageBuilder ({ moduleID }) {
-      const { pageID } = this.pages.find(p => p.moduleID === moduleID) || {}
-      if (pageID) {
-        // Record page already exists
-        this.$router.push({ name: 'admin.pages.builder', params: { pageID } })
-        return
-      }
-
-      // Collect params and construct payload for new record page
-      const module = this.modules.find(m => m.moduleID === moduleID)
-      const { namespaceID } = this.namespace
-      const blocks = [new compose.PageBlockRecord({ xywh: [0, 0, 12, 16] })]
-
-      // Get recordList page if it exists and make it parent of record page
-      const { pageID: selfID } = this.pages.find(p => {
-        return p.blocks.find(b => b.options.moduleID === module.moduleID)
-      }) || {}
-
-      const payload = {
-        namespaceID,
-        title: `${this.$t('forModule.recordPage')} "${module.name || moduleID}"`,
-        moduleID,
-        blocks,
-        selfID,
-      }
-
-      // Create page record page
-      this.creatingRecordPage = true
-
-      this.createPage(payload)
-        .catch(this.toastErrorHandler(this.$t('notification:module.recordPage.createFailed')))
-        .finally(() => {
-          this.creatingRecordPage = false
-        })
     },
 
     handleRowClicked ({ moduleID, canUpdateModule, canDeleteModule }) {

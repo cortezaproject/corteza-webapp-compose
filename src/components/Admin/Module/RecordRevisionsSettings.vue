@@ -9,12 +9,13 @@
         {{ $t('enabled') }}
       </b-form-checkbox>
     </b-form-group>
+
     <b-form-group
       :label="$t('ident.label')"
       :description="$t('ident.description', { interpolation: { prefix: '{{{', suffix: '}}}' } })"
       label-class="text-primary"
     >
-      <b-input
+      <b-form-input
         v-model="module.config.recordRevisions.ident"
         :disabled="!module.config.recordRevisions.enabled"
         :placeholder="$t('ident.placeholder')"
@@ -37,12 +38,6 @@ export default {
       type: compose.Module,
       required: true,
     },
-  },
-
-  data () {
-    return {
-      processing: false,
-    }
   },
 }
 </script>

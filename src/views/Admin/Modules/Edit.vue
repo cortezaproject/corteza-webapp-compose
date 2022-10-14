@@ -21,6 +21,7 @@
             class="ml-2"
           />
         </b-button>
+
         <module-translator
           v-if="module"
           :module.sync="trModule"
@@ -49,6 +50,7 @@
             class="shadow-sm"
           >
             <b-card-header
+              v-if="isEdit"
               header-bg-variant="white"
               class="py-3"
             >
@@ -57,94 +59,93 @@
                 class="wrap-with-vertical-gutters align-items-center"
               >
                 <div class="flex-grow-1 wrap-with-vertical-gutters">
-                  <template v-if="isEdit">
-                    <b-button
-                      v-if="federationEnabled"
-                      data-test-id="button-federation-settings"
-                      variant="light"
-                      size="lg"
-                      class="mr-1"
-                      @click="federationSettings.modal = true"
-                    >
-                      <font-awesome-icon
-                        :icon="['fas', 'share-alt']"
-                      />
-
-                      {{ $t('edit.federationSettings.title') }}
-                    </b-button>
-                    <b-button
-                      v-if="discoveryEnabled"
-                      data-test-id="button-discovery-settings"
-                      variant="light"
-                      size="lg"
-                      class="mr-1"
-                      @click="discoverySettings.modal = true"
-                    >
-                      <font-awesome-icon
-                        :icon="['fas', 'search-location']"
-                      />
-                      {{ $t('edit.discoverySettings.title') }}
-                    </b-button>
-
-                    <export
-                      :list="[module]"
-                      type="module"
-                      class="mr-1"
+                  <b-button
+                    v-if="federationEnabled"
+                    data-test-id="button-federation-settings"
+                    variant="light"
+                    size="lg"
+                    class="mr-1"
+                    @click="federationSettings.modal = true"
+                  >
+                    <font-awesome-icon
+                      :icon="['fas', 'share-alt']"
                     />
 
-                    <b-dropdown
-                      v-if="module.canGrant"
-                      data-test-id="dropdown-permissions"
-                      size="lg"
-                      variant="light"
-                      class="permissions-dropdown mr-1"
-                    >
-                      <template #button-content>
-                        <font-awesome-icon :icon="['fas', 'lock']" />
-                        <span>
-                          {{ $t('general.label.permissions') }}
-                        </span>
-                      </template>
+                    {{ $t('edit.federationSettings.title') }}
+                  </b-button>
 
-                      <b-dropdown-item>
-                        <c-permissions-button
-                          :title="module.name"
-                          :target="module.name"
-                          :resource="`corteza::compose:module/${namespace.namespaceID}/${module.moduleID}`"
-                          :button-label="$t('general:label.module')"
-                          :show-button-icon="false"
-                          button-variant="white text-left w-100"
-                        />
-                      </b-dropdown-item>
+                  <b-button
+                    v-if="discoveryEnabled"
+                    data-test-id="button-discovery-settings"
+                    variant="light"
+                    size="lg"
+                    class="mr-1"
+                    @click="discoverySettings.modal = true"
+                  >
+                    <font-awesome-icon
+                      :icon="['fas', 'search-location']"
+                    />
+                    {{ $t('edit.discoverySettings.title') }}
+                  </b-button>
 
-                      <b-dropdown-item>
-                        <c-permissions-button
-                          :title="module.name"
-                          :target="module.name"
-                          :resource="`corteza::compose:module-field/${namespace.namespaceID}/${module.moduleID}/*`"
-                          :button-label="$t('general:label.field')"
-                          :show-button-icon="false"
-                          all-specific
-                          button-variant="white text-left w-100"
-                        />
-                      </b-dropdown-item>
+                  <export
+                    :list="[module]"
+                    type="module"
+                    class="mr-1"
+                  />
 
-                      <b-dropdown-item>
-                        <c-permissions-button
-                          :title="module.name"
-                          :target="module.name"
-                          :resource="`corteza::compose:record/${namespace.namespaceID}/${module.moduleID}/*`"
-                          :button-label="$t('general:label.record')"
-                          :show-button-icon="false"
-                          all-specific
-                          button-variant="white text-left w-100"
-                        />
-                      </b-dropdown-item>
-                    </b-dropdown>
-                  </template>
+                  <b-dropdown
+                    v-if="module.canGrant"
+                    data-test-id="dropdown-permissions"
+                    size="lg"
+                    variant="light"
+                    class="permissions-dropdown mr-1"
+                  >
+                    <template #button-content>
+                      <font-awesome-icon :icon="['fas', 'lock']" />
+                      <span>
+                        {{ $t('general.label.permissions') }}
+                      </span>
+                    </template>
+
+                    <b-dropdown-item>
+                      <c-permissions-button
+                        :title="module.name"
+                        :target="module.name"
+                        :resource="`corteza::compose:module/${namespace.namespaceID}/${module.moduleID}`"
+                        :button-label="$t('general:label.module')"
+                        :show-button-icon="false"
+                        button-variant="white text-left w-100"
+                      />
+                    </b-dropdown-item>
+
+                    <b-dropdown-item>
+                      <c-permissions-button
+                        :title="module.name"
+                        :target="module.name"
+                        :resource="`corteza::compose:module-field/${namespace.namespaceID}/${module.moduleID}/*`"
+                        :button-label="$t('general:label.field')"
+                        :show-button-icon="false"
+                        all-specific
+                        button-variant="white text-left w-100"
+                      />
+                    </b-dropdown-item>
+
+                    <b-dropdown-item>
+                      <c-permissions-button
+                        :title="module.name"
+                        :target="module.name"
+                        :resource="`corteza::compose:record/${namespace.namespaceID}/${module.moduleID}/*`"
+                        :button-label="$t('general:label.record')"
+                        :show-button-icon="false"
+                        all-specific
+                        button-variant="white text-left w-100"
+                      />
+                    </b-dropdown-item>
+                  </b-dropdown>
                 </div>
+
                 <div
-                  v-if="isEdit"
                   class="flex-grow-1 d-flex justify-content-md-end"
                 >
                   <related-pages
@@ -168,18 +169,17 @@
                 <h5 class="mb-3">
                   {{ $t('edit.moduleInfo') }}
                 </h5>
+
                 <b-row>
                   <b-col
                     cols="12"
                     md="6"
                     xl="4"
                   >
-                    <b-form-group>
-                      <label
-                        class="text-primary"
-                      >
-                        {{ $t('newLabel') }}
-                      </label>
+                    <b-form-group
+                      :label="$t('newLabel')"
+                      label-class="text-primary"
+                    >
                       <b-form-input
                         v-model="module.name"
                         data-test-id="input-module-name"
@@ -189,13 +189,16 @@
                       />
                     </b-form-group>
                   </b-col>
+
                   <b-col
                     cols="12"
                     md="6"
                     xl="4"
                   >
-                    <b-form-group>
-                      <label class="text-primary">{{ $t('general.label.handle') }}</label>
+                    <b-form-group
+                      :label="$t('general.label.handle')"
+                      label-class="text-primary"
+                    >
                       <b-form-input
                         v-model="module.handle"
                         data-test-id="input-module-handle"
@@ -209,10 +212,13 @@
                     </b-form-group>
                   </b-col>
                 </b-row>
+
                 <hr>
+
                 <h5 class="mb-3">
                   {{ $t('edit.manageRecordFields') }}
                 </h5>
+
                 <b-row no-gutters>
                   <b-form-group class="w-100">
                     <table
@@ -222,6 +228,7 @@
                       <thead>
                         <tr>
                           <th />
+
                           <th
                             class="text-primary"
                           >
@@ -240,6 +247,7 @@
                               </div>
                             </div>
                           </th>
+
                           <th
                             class="text-primary"
                           >
@@ -258,20 +266,25 @@
                               </div>
                             </div>
                           </th>
+
                           <th class="text-primary">
                             {{ $t('general:label.type') }}
                           </th>
+
                           <th />
                           <th />
+
                           <th class="text-primary text-center">
                             {{ $t('general:label.required') }}
                           </th>
+
                           <th />
                         </tr>
                       </thead>
+
                       <draggable
                         v-model="module.fields"
-                        :options="{handle:'.handle'}"
+                        :options="{ handle:'.handle' }"
                         tag="tbody"
                       >
                         <field-row-edit
@@ -286,6 +299,7 @@
                           @delete="module.fields.splice(index, 1)"
                         />
                       </draggable>
+
                       <tr>
                         <td colspan="1" />
                         <td colspan="7">
@@ -307,6 +321,7 @@
                           {{ $t('edit.systemFields') }}
                         </td>
                       </tr>
+
                       <field-row-view
                         v-for="(field, index) in systemFields"
                         :key="index"
@@ -451,6 +466,8 @@ import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 
 export default {
+  name: 'ModulesEdit',
+
   i18nOptions: {
     namespaces: 'module',
   },
@@ -604,7 +621,7 @@ export default {
     },
 
     allRecords () {
-      return this.isEdit ? { name: 'admin.modules.record.list', params: { moduleID: this.moduleID } } : undefined
+      return { name: 'admin.modules.record.list', params: { moduleID: this.moduleID } }
     },
 
     maxLevelID () {

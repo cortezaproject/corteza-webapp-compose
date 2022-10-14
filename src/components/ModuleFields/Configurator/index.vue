@@ -12,9 +12,10 @@
       <basic
         :namespace="namespace"
         :module="module"
-        :field="field"
+        :field.sync="f"
       />
     </b-tab>
+
     <b-tab
       v-if="fieldComponent"
       :title="$t(`fieldKinds.${field.kind}.label`)"
@@ -23,9 +24,10 @@
         :is="fieldComponent"
         :namespace="namespace"
         :module="module"
-        :field="field"
+        :field.sync="f"
       />
     </b-tab>
+
     <b-tab
       v-if="field.cap.multi"
       :disabled="!field.isMulti"
@@ -33,18 +35,20 @@
     >
       <multi
         :namespace="namespace"
-        :field="field"
+        :field.sync="f"
       />
     </b-tab>
+
     <b-tab
       :title="$t('label.validation')"
     >
       <validation
-        :field="field"
-        :module="module"
         :namespace="namespace"
+        :module="module"
+        :field.sync="f"
       />
     </b-tab>
+
     <b-tab
       :title="$t('label.privacy')"
     >

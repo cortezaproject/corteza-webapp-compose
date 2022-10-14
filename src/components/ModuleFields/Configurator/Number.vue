@@ -26,6 +26,7 @@
             />
           </b-form-group>
         </b-col>
+
         <b-col
           cols="12"
           sm="6"
@@ -171,6 +172,7 @@
                 {{ $t('kind.number.progress.thresholds.description') }}
               </small>
             </template>
+
             <b-row
               v-for="(t, i) in field.options.thresholds"
               :key="i"
@@ -189,6 +191,7 @@
                   />
                 </b-input-group>
               </b-col>
+
               <b-col
                 class="d-flex align-items-center justify-content-center"
               >

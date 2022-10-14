@@ -1,10 +1,8 @@
 <template>
   <div>
-    <div>
-      <b-form-checkbox v-model="f.options.outputPlain">
-        {{ $t('kind.email.preventToLink') }}
-      </b-form-checkbox>
-    </div>
+    <b-form-checkbox v-model="f.options.outputPlain">
+      {{ $t('kind.email.preventToLink') }}
+    </b-form-checkbox>
   </div>
 </template>
 

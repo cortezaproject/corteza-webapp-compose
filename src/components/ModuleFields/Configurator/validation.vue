@@ -30,6 +30,7 @@
           </b-button>
         </div>
       </template>
+
       <field-expressions
         v-model="field.expressions.sanitizers"
         :placeholder="$t('sanitizers.expression.placeholder')"
@@ -100,6 +101,7 @@
           />
         </b-input-group-append>
       </field-expressions>
+
       <b-checkbox
         v-model="field.expressions.disableDefaultValidators"
         :disabled="!field.expressions.validators || field.expressions.validators.length === 0"

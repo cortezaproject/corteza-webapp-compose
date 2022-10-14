@@ -44,15 +44,3 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="scss">
-// This has to be there, so chevrons are clickable inside the button
-.pointer-none {
-  pointer-events: none;
-}
-
-// Using font-weight-bold moves the sidebar nav content; text-stroke keeps in nicely in place
-.nav-active > span {
-  -webkit-text-stroke: 1px black;
-}
-</style>
