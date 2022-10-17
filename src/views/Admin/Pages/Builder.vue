@@ -76,6 +76,7 @@
               @confirmed="deleteBlock(index)"
             />
           </div>
+
           <page-block
             v-bind="{ ...$attrs, ...$props, page, block, boundingRect, blockIndex: index }"
             :record="record"

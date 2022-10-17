@@ -886,7 +886,7 @@ export default {
 
     onUpdateFields (fields = []) {
       this.options.fields = [...fields]
-      this.$emit('save', this.options.fields)
+      this.$emit('save-fields', this.options.fields)
     },
 
     onSelectRow (selected, item) {

@@ -73,6 +73,7 @@
                 </span>
               </b-col>
             </b-row>
+
             <page-tree
               v-model="tree"
               :namespace="namespace"
