@@ -117,7 +117,10 @@ export default {
 
   data () {
     return {
+      inEditing: false,
+
       blocks: [],
+
       bindParams: {
         page: new compose.Page(),
         boundingRect: {},

@@ -21,11 +21,13 @@
             class="ml-2"
           />
         </b-button>
+
         <page-translator
           v-if="page"
           :page="page"
           style="margin-left:2px;"
         />
+
         <b-button
           variant="primary"
           :title="$t('tooltip.view')"

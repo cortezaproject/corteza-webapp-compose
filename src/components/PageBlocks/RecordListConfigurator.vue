@@ -285,6 +285,7 @@
         </b-form-checkbox>
       </b-form-group>
     </b-tab>
+
     <automation-tab
       v-bind="$props"
       :module="recordListModule"

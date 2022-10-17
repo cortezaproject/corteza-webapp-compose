@@ -151,12 +151,12 @@ export default {
 
   watch: {
     blocks: {
+      immediate: true,
+      deep: true,
       handler (blocks) {
         if (blocks.length === 0) this.$emit('change', [])
         this.grid = blocks.map(({ xywh: [x, y, w, h] }, i) => ({ i, x, y, w, h }))
       },
-      immediate: true,
-      deep: true,
     },
   },
 

@@ -14,6 +14,7 @@
         button-variant="link"
       />
     </template>
+
     <b-tab
       active
       :title="$t('general.label.general')"
@@ -43,6 +44,7 @@
             </b-input-group-append>
           </b-input-group>
         </b-form-group>
+
         <b-form-group
           for="description"
           :label="$t('general.descriptionLabel')"

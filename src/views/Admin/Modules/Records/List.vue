@@ -36,7 +36,7 @@
       :module="module"
       :namespace="namespace"
       :block-index="0"
-      @save="handleSave"
+      @save-fields="handleFieldsSave"
     />
   </div>
 </template>
@@ -140,7 +140,7 @@ export default {
       updateModule: 'module/update',
     }),
 
-    handleSave (fields = []) {
+    handleFieldsSave (fields = []) {
       if (!this.module.meta.ui) {
         this.module.meta.ui = { admin: { fields } }
       } else {
