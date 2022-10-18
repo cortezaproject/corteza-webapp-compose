@@ -443,7 +443,7 @@ export default {
     exportNamespace () {
       const params = {
         namespaceID: this.namespace.namespaceID,
-        filename: encodeURIComponent(this.namespace.name),
+        filename: encodeURIComponent(this.namespace.name.replace(/\./g, '-')),
       }
 
       const exportUrl = url.Make({
