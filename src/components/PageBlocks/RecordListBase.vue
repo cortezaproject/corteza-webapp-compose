@@ -1117,6 +1117,9 @@ export default {
         e.filename += ` - ${timezone.label}`
       }
 
+      // Make sure the generated filename won't break the URL
+      e.filename = encodeURIComponent(e.filename.replace(/\./g, '-'))
+
       const exportUrl = url.Make({
         url: `${this.$ComposeAPI.baseURL}${this.$ComposeAPI.recordExportEndpoint(e)}`,
         query: {
