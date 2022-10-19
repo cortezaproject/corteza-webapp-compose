@@ -1124,7 +1124,8 @@ export default {
         url: `${this.$ComposeAPI.baseURL}${this.$ComposeAPI.recordExportEndpoint(e)}`,
         query: {
           fields: e.fields,
-          filter: encodeURI(filter),
+          // url.Make already URL encodes the the values, so the filter shouldn't be encoded
+          filter: filter,
           jwt: this.$auth.accessToken,
           timezone: timezone ? timezone.tzCode : undefined,
         },
