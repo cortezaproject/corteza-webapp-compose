@@ -36,12 +36,14 @@ export default {
       const { prefix, title } = opt
 
       return (err = {}) => {
+        // only messages starting with 'notification:' or 'notification.' should be translated
         if (err.message && err.message.startsWith('notification')) {
-          err.message = 'notification:' + err.message.substring('notification.'.length)
+          err.message = `notification:${err.message.substring('notification.'.length)}`
         }
         /* eslint-disable no-console */
         console.error(err)
-        const msg = err.message ? (prefix + ': ' + this.$t(err.message)) : prefix
+        // all other messages should be shown as they are
+        const msg = err.message ? `${prefix}: ${err.message}` : prefix
         this.toastDanger(msg, title)
       }
     },
