@@ -176,11 +176,11 @@
 </template>
 
 <script>
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import FieldPicker from 'corteza-webapp-compose/src/components/Common/FieldPicker'
 import moment from 'moment'
 import tz from 'compact-timezone-list'
-import { queryToFilter } from 'corteza-webapp-compose/src/lib/record-filter'
+import { evaluatePrefilter, queryToFilter } from 'corteza-webapp-compose/src/lib/record-filter'
 import { VueSelect } from 'vue-select'
 const fmtDate = (d) => d.format('YYYY-MM-DD')
 
@@ -577,6 +577,12 @@ export default {
     },
 
     makeFilter ({ query, filter, rangeType, rangeBy, date }) {
+      if (filter) {
+        filter = evaluatePrefilter(filter, {
+          userID: (this.$auth.user || {}).userID || NoID,
+        })
+      }
+
       query = queryToFilter(query, filter, this.module.fields)
 
       if (rangeType === 'all') {
@@ -618,9 +624,12 @@ export default {
 
     getTotalCount () {
       const { moduleID, namespaceID } = this.module || {}
-      const query = this.makeFilter(this.filter)
+
       if (moduleID && namespaceID) {
         this.processingCount = true
+
+        const query = this.makeFilter(this.filter)
+
         this.$ComposeAPI.recordList({ namespaceID, moduleID, query, limit: 1, incTotal: true })
           .then(({ filter = {} }) => {
             this.rangeRecordCount = filter.total || 0
