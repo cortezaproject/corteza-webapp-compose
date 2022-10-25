@@ -54,11 +54,13 @@
         <b-form-input
           v-model="localValue[ctx.index].coordinates[0]"
           type="number"
+          number
           :placeholder="$t('latitude')"
         />
         <b-form-input
           v-model="localValue[ctx.index].coordinates[1]"
           type="number"
+          number
           :placeholder="$t('longitude')"
         />
       </b-input-group>
@@ -69,11 +71,13 @@
         <b-form-input
           v-model="localValue.coordinates[0]"
           type="number"
+          number
           :placeholder="$t('latitude')"
         />
         <b-form-input
           v-model="localValue.coordinates[1]"
           type="number"
+          number
           :placeholder="$t('longitude')"
         />
         <b-input-group-append>
@@ -166,6 +170,7 @@ export default {
 
   watch: {
     localValue: {
+      deep: true,
       handler (value) {
         this.value = this.field.isMulti ? value.filter(v => (v || {}).coordinates).map(v => JSON.stringify(v)) : JSON.stringify(value)
       },
