@@ -1,55 +1,5 @@
 <template>
-  <div>
-    <b-form-group
-      :label="$t('kind.file.view.maxSizeLabel')"
-    >
-      <b-input-group>
-        <b-form-input
-          v-model="f.options.maxSize"
-          type="number"
-        />
-      </b-input-group>
-    </b-form-group>
-
-    <b-form-group
-      :label="$t('kind.file.view.mimetypesLabel')"
-      :description="$t('kind.file.view.mimetypesFootnote')"
-      class="mt-2"
-    >
-      <b-form-input
-        v-model="f.options.mimetypes"
-      />
-    </b-form-group>
-
-    <b-form-group
-      :description="$t('kind.file.view.modeFootnote')"
-      :label="$t('kind.file.view.modeLabel')"
-    >
-      <b-form-radio-group
-        v-model="f.options.mode"
-        buttons
-        button-variant="outline-secondary"
-        size="sm"
-        name="buttons2"
-        :options="modes"
-      />
-    </b-form-group>
-
-    <b-form-group
-      v-if="enableFileNameHiding"
-      class="mb-0"
-    >
-      <b-form-checkbox
-        v-model="f.options.hideFileName"
-      >
-        {{ $t('kind.file.view.showName') }}
-      </b-form-checkbox>
-    </b-form-group>
-
-    <hr>
-
-    <h5>{{ $t('kind.file.view.style') }}</h5>
-
+  <b-tab :title="$t('kind.file.view.style')">
     <b-row
       cols="12"
       class="mb-2 mt-2"
@@ -64,7 +14,7 @@
             :append="$t('kind.file.view.px')"
           >
             <b-form-input
-              v-model="f.options.height"
+              v-model="options.height"
               type="number"
               :placeholder="$t('kind.file.view.height')"
             />
@@ -81,7 +31,7 @@
             :append="$t('kind.file.view.px')"
           >
             <b-form-input
-              v-model="f.options.width"
+              v-model="options.width"
               type="number"
               :placeholder="$t('kind.file.view.width')"
             />
@@ -99,7 +49,7 @@
             :append="$t('kind.file.view.px')"
           >
             <b-form-input
-              v-model="f.options.maxHeight"
+              v-model="options.maxHeight"
               type="number"
               :placeholder="$t('kind.file.view.maxHeight')"
             />
@@ -116,7 +66,7 @@
             :append="$t('kind.file.view.px')"
           >
             <b-form-input
-              v-model="f.options.maxWidth"
+              v-model="options.maxWidth"
               type="number"
               :placeholder="$t('kind.file.view.maxWidth')"
             />
@@ -134,7 +84,7 @@
             :append="$t('kind.file.view.px')"
           >
             <b-form-input
-              v-model="f.options.borderRadius"
+              v-model="options.borderRadius"
               type="number"
               :placeholder="$t('kind.file.view.borderRadius')"
             />
@@ -149,7 +99,7 @@
           :label="$t('kind.file.view.background')"
         >
           <b-form-input
-            v-model="f.options.backgroundColor"
+            v-model="options.backgroundColor"
             type="color"
             debounce="300"
             class="mb-1"
@@ -167,7 +117,7 @@
             :append="$t('kind.file.view.px')"
           >
             <b-form-input
-              v-model="f.options.margin"
+              v-model="options.margin"
               type="number"
               :placeholder="$t('kind.file.view.margin')"
             />
@@ -175,36 +125,22 @@
         </b-form-group>
       </b-col>
     </b-row>
-  </div>
+  </b-tab>
 </template>
 
 <script>
-import base from './base'
+import base from '../base'
 
 export default {
   i18nOptions: {
     namespaces: 'field',
   },
 
+  name: 'FileStyleTab',
+
+  components: {},
+
   extends: base,
 
-  computed: {
-    modes () {
-      return [
-        { value: 'list', text: this.$t('kind.file.view.list') },
-        { value: 'grid', text: this.$t('kind.file.view.grid') },
-        { value: 'single', text: this.$t('kind.file.view.single') },
-        { value: 'gallery', text: this.$t('kind.file.view.gallery') },
-      ]
-    },
-
-    options () {
-      return {}
-    },
-
-    enableFileNameHiding () {
-      return (this.f.options.mode === 'single') || (this.f.options.mode === 'gallery')
-    },
-  },
 }
 </script>

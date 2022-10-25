@@ -13,6 +13,13 @@
         :namespace="namespace"
         :mode="options.mode"
         :hide-file-name="options.hideFileName"
+        :height="options.height"
+        :width="options.width"
+        :max-height="options.maxHeight"
+        :max-width="options.maxWidth"
+        :border-radius="options.borderRadius"
+        :background-color="options.backgroundColor"
+        :margin="options.margin"
       />
     </div>
   </wrap>

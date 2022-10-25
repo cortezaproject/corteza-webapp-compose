@@ -111,7 +111,7 @@
           :meta="a.meta"
           :name="a.name"
           :alt="a.name"
-          :preview-style="{ width: 'unset' }"
+          :preview-style="{ width: 'unset', ...customStyles }"
           :labels="previewLabels"
           @openPreview="openLightbox({ ...a, ...$event })"
         />
@@ -189,6 +189,41 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    height: {
+      type: String,
+      default: '',
+    },
+
+    width: {
+      type: String,
+      default: '',
+    },
+
+    maxHeight: {
+      type: String,
+      default: '',
+    },
+
+    maxWidth: {
+      type: String,
+      default: '',
+    },
+
+    borderRadius: {
+      type: String,
+      default: '',
+    },
+
+    backgroundColor: {
+      type: String,
+      default: '',
+    },
+
+    margin: {
+      type: String,
+      default: '',
+    },
   },
 
   data () {
@@ -231,6 +266,20 @@ export default {
         return this.attachments.slice(this.attachments.length - 1)
       } else {
         return this.attachments
+      }
+    },
+
+    customStyles () {
+      return {
+        ...(this.height && { height: `${this.height}px` }),
+        ...(this.width && { width: `${this.width}px` }),
+        ...(this.maxHeight && { maxHeight: `${this.maxHeight}px` }),
+        ...(this.maxWidth && { maxWidth: `${this.maxWidth}px` }),
+        ...(this.borderRadius && { borderRadius: `${this.borderRadius}px` }),
+        ...(this.backgroundColor && { backgroundColor: this.backgroundColor }),
+        ...(this.margin && { margin: `${this.margin}px` }),
+        objectFit: 'cover',
+        objectPosition: 'center',
       }
     },
   },
