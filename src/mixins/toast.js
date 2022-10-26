@@ -38,7 +38,7 @@ export default {
       return (err = {}) => {
         // only messages starting with 'notification:' or 'notification.' should be translated
         if (err.message && err.message.startsWith('notification')) {
-          err.message = `notification:${err.message.substring('notification.'.length)}`
+          err.message = this.$t(`notification:${err.message.substring('notification.'.length)}`)
         }
         /* eslint-disable no-console */
         console.error(err)
