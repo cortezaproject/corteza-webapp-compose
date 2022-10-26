@@ -83,7 +83,6 @@
             :icon="['far', 'file-'+ext(a)]"
             class="text-dark float-left mr-2"
           />
-          {{ a.name }}
         </attachment-link>
         <i18next
           path="general.label.attachmentFileInfo"
@@ -111,7 +110,7 @@
           :meta="a.meta"
           :name="a.name"
           :alt="a.name"
-          :preview-style="{ width: 'unset', ...customStyles }"
+          :preview-style="{ width: 'unset', ...inlineCustomStyles(a) }"
           :labels="previewLabels"
           @openPreview="openLightbox({ ...a, ...$event })"
         />
@@ -268,20 +267,6 @@ export default {
         return this.attachments
       }
     },
-
-    customStyles () {
-      return {
-        ...(this.height && { height: `${this.height}px` }),
-        ...(this.width && { width: `${this.width}px` }),
-        ...(this.maxHeight && { maxHeight: `${this.maxHeight}px` }),
-        ...(this.maxWidth && { maxWidth: `${this.maxWidth}px` }),
-        ...(this.borderRadius && { borderRadius: `${this.borderRadius}px` }),
-        ...(this.backgroundColor && { backgroundColor: this.backgroundColor }),
-        ...(this.margin && { margin: `${this.margin}px` }),
-        objectFit: 'cover',
-        objectPosition: 'center',
-      }
-    },
   },
 
   watch: {
@@ -369,6 +354,24 @@ export default {
           return 'image'
         default: return 'alt'
       }
+    },
+
+    inlineCustomStyles (a) {
+      if (this.ext(a) === 'image') {
+        return {
+          ...(this.height && { height: `${this.height}px` }),
+          ...(this.width && { width: `${this.width}px` }),
+          ...(this.maxHeight && { maxHeight: `${this.maxHeight}px` }),
+          ...(this.maxWidth && { maxWidth: `${this.maxWidth}px` }),
+          ...(this.borderRadius && { borderRadius: `${this.borderRadius}px` }),
+          ...(this.backgroundColor && { backgroundColor: this.backgroundColor }),
+          ...(this.margin && { margin: `${this.margin}px` }),
+          objectFit: 'cover',
+          objectPosition: 'center',
+        }
+      }
+
+      return {}
     },
   },
 }

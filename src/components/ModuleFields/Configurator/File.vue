@@ -48,7 +48,9 @@
 
     <hr>
 
-    <h5>{{ $t('kind.file.view.style') }}</h5>
+    <h5 class="mb-2">
+      {{ $t('kind.file.view.style') }}
+    </h5>
 
     <b-row
       cols="12"
