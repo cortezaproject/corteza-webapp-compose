@@ -92,6 +92,8 @@
           </b-button>
         </b-input-group-append>
       </b-input-group>
+
+      <errors :errors="errors" />
     </template>
 
     <b-modal
@@ -123,7 +125,7 @@
         <l-marker
           v-for="(marker, i) in markers"
           :key="i"
-          :lat-lng="getLatLng(marker)"
+          :lat-lng="marker"
           @click="removeMarker(i)"
         />
       </l-map>
@@ -164,7 +166,7 @@ export default {
         markers = this.localValue.map(({ coordinates }) => coordinates && coordinates.length ? coordinates : undefined)
       }
 
-      return markers.filter(c => c && c.length > 1)
+      return markers.map(this.getLatLng).filter(c => c)
     },
   },
 
@@ -199,8 +201,12 @@ export default {
       }, 100)
     },
 
-    getLatLng (coordinates = [0, 0]) {
-      return latLng(coordinates[0], coordinates[1])
+    getLatLng (coordinates = [undefined, undefined]) {
+      const [lat, lng] = coordinates
+
+      if (lat && lng) {
+        return latLng(lat, lng)
+      }
     },
 
     placeMarker (e) {

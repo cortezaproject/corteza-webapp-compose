@@ -1,19 +1,17 @@
 <template>
-  <div
-    v-if="localValue.length"
-  >
+  <div>
     <span
       v-for="(c, index) of localValue"
       :key="index"
       :class="{ 'd-block': field.options.multiDelimiter === '\n' }"
     >
       <a
+        class="text-primary pointer"
         @click.stop="openMap"
       >
-        {{ c[0].toFixed(7) }}, {{ c[1].toFixed(7) }}
+        {{ c.lat }}, {{ c.lng }}
         <font-awesome-icon
           :icon="['fas', 'map-marked-alt']"
-          class="text-primary"
         />
         {{ index !== localValue.length - 1 ? field.options.multiDelimiter : '' }}
       </a>
@@ -40,7 +38,7 @@
         <l-marker
           v-for="(marker, i) in localValue"
           :key="i"
-          :lat-lng="getLatLng(marker)"
+          :lat-lng="marker"
         />
       </l-map>
     </b-modal>
@@ -76,10 +74,10 @@ export default {
     localValue () {
       if (this.field.isMulti) {
         return this.value.map(v => {
-          return JSON.parse(v || '{"coordinates":[]}').coordinates || []
-        })
+          return this.getLatLng(JSON.parse(v || '{"coordinates":[]}').coordinates || [])
+        }).filter(c => c)
       } else {
-        return [JSON.parse(this.value || '{"coordinates":[]}').coordinates || []].filter(c => c.length)
+        return [this.getLatLng(JSON.parse(this.value || '{"coordinates":[]}').coordinates || [])].filter(c => c)
       }
     },
   },
@@ -96,8 +94,12 @@ export default {
       }, 100)
     },
 
-    getLatLng (coordinates = [0, 0]) {
-      return latLng(coordinates[0], coordinates[1])
+    getLatLng (coordinates = [undefined, undefined]) {
+      const [lat, lng] = coordinates
+
+      if (lat && lng) {
+        return latLng(lat, lng)
+      }
     },
   },
 }
