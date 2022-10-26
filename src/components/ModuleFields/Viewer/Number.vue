@@ -1,26 +1,30 @@
 <template>
-  <!-- Extra empty line is added thanks to white-space: pre-line (multivalue) if we write div in multiple lines  -->
-  <!-- eslint-disable-next-line -->
-  <div v-if="field.options.display === 'number'" :class="classes">{{ formatted }}</div>
+  <div>
+    <!-- Extra empty line is added thanks to white-space: pre-line (multivalue) if we write div in multiple lines  -->
+    <!-- eslint-disable-next-line -->
+    <div v-if="field.options.display === 'number'" :class="classes">{{ formatted }}</div>
 
-  <div v-else>
-    <b-progress
-      v-for="(v, i) in formatted"
-      :key="i"
-      :max="field.options.max"
-      height="1.5rem"
-      class="bg-light"
-      :class="{ 'mt-2': i }"
-    >
-      <b-progress-bar
-        :value="v"
-        :striped="field.options.striped"
-        :animated="field.options.animated"
-        :variant="getProgressVariant(v)"
+    <div v-else>
+      <b-progress
+        v-for="(v, i) in formatted"
+        :key="i"
+        :max="field.options.max"
+        height="1.5rem"
+        class="bg-light"
+        :class="{ 'mt-2': i }"
       >
-        {{ getProgressLabel(v) }}
-      </b-progress-bar>
-    </b-progress>
+        <b-progress-bar
+          :value="v"
+          :striped="field.options.striped"
+          :animated="field.options.animated"
+          :variant="getProgressVariant(v)"
+        >
+          {{ getProgressLabel(v) }}
+        </b-progress-bar>
+      </b-progress>
+    </div>
+
+    <errors :errors="errors" />
   </div>
 </template>
 

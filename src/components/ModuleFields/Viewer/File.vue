@@ -9,6 +9,8 @@
       :mode="field.options.mode"
       :hide-file-name="field.options.hideFileName"
     />
+
+    <errors :errors="errors" />
   </div>
 </template>
 <script>
