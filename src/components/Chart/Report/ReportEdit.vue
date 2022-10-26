@@ -35,7 +35,7 @@
           :options="predefinedFilters"
         >
           <template slot="first">
-            <option :value="undefined">
+            <option value="">
               {{ $t('edit.filter.noFilter') }}
             </option>
           </template>
