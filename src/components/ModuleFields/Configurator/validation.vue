@@ -22,9 +22,9 @@
 
           <b-button
             variant="link"
-            class="p-0 ml-1"
-            :href="documentationURL"
+            :href="`${documentationURL}#value-sanitizers`"
             target="_blank"
+            class="p-0 ml-1"
           >
             {{ $t('sanitizers.examples') }}
           </b-button>
@@ -63,9 +63,9 @@
 
           <b-button
             variant="link"
-            class="p-0 ml-1"
-            :href="documentationURL"
+            :href="`${documentationURL}#value-validators`"
             target="_blank"
+            class="p-0 ml-1"
           >
             {{ $t('sanitizers.examples') }}
           </b-button>
@@ -156,7 +156,7 @@ export default {
     documentationURL () {
       // eslint-disable-next-line no-undef
       const [year, month] = VERSION.split('.')
-      return `https://docs.cortezaproject.org/corteza-docs/${year}.${month}/integrator-guide/compose-configuration/index.html#field-expressions`
+      return `https://docs.cortezaproject.org/corteza-docs/${year}.${month}/integrator-guide/compose-configuration/index.html`
     },
   },
 
