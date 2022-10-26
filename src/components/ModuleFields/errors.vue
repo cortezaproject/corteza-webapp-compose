@@ -9,7 +9,7 @@
       <span
         :class="{ 'text-primary': error.kind.includes('warning') }"
       >
-        {{ $t(error.message) }}
+        {{ $t(error.message, { value: error.meta.value }) }}
       </span>
     </b-form-invalid-feedback>
   </div>

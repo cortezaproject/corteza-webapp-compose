@@ -44,6 +44,7 @@
           >
             {{ (field.options.description || {}).view }}
           </small>
+
           <div
             v-if="field.canReadRecordValue"
             class="value"

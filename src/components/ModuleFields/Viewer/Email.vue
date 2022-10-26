@@ -19,6 +19,8 @@
         {{ v }}{{ index !== formattedValue.length - 1 ? field.options.multiDelimiter : '' }}
       </a>
     </span>
+
+    <errors :errors="errors" />
   </div>
 </template>
 <script>
