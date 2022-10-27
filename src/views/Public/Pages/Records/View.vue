@@ -8,6 +8,10 @@
       {{ $t('record.recordDeleted') }}
     </b-alert>
 
+    <portal to="topbar-title">
+      {{ title }}
+    </portal>
+
     <grid
       v-bind="$props"
       :errors="errors"
@@ -111,6 +115,11 @@ export default {
         aux[key] = label
       })
       return aux
+    },
+
+    title () {
+      const { name, handle } = this.module
+      return this.$t('page:public.record.view.title', { name: name || handle, interpolation: { escapeValue: false } })
     },
   },
 
