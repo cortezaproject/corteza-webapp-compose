@@ -189,39 +189,9 @@ export default {
       default: false,
     },
 
-    height: {
-      type: String,
-      default: '',
-    },
-
-    width: {
-      type: String,
-      default: '',
-    },
-
-    maxHeight: {
-      type: String,
-      default: '',
-    },
-
-    maxWidth: {
-      type: String,
-      default: '',
-    },
-
-    borderRadius: {
-      type: String,
-      default: '',
-    },
-
-    backgroundColor: {
-      type: String,
-      default: '',
-    },
-
-    margin: {
-      type: String,
-      default: '',
+    previewOptions: {
+      type: Object,
+      default: () => ({}),
     },
   },
 
@@ -357,15 +327,25 @@ export default {
     },
 
     inlineCustomStyles (a) {
+      const {
+        height,
+        width,
+        maxHeight,
+        maxWidth,
+        borderRadius,
+        backgroundColor,
+        margin,
+      } = this.previewOptions
+
       if (this.ext(a) === 'image') {
         return {
-          ...(this.height && { height: `${this.height}px` }),
-          ...(this.width && { width: `${this.width}px` }),
-          ...(this.maxHeight && { maxHeight: `${this.maxHeight}px` }),
-          ...(this.maxWidth && { maxWidth: `${this.maxWidth}px` }),
-          ...(this.borderRadius && { borderRadius: `${this.borderRadius}px` }),
-          ...(this.backgroundColor && { backgroundColor: this.backgroundColor }),
-          ...(this.margin && { margin: `${this.margin}px` }),
+          ...(height && { height: `${height}px` }),
+          ...(width && { width: `${width}px` }),
+          ...(maxHeight && { maxHeight: `${maxHeight}px` }),
+          ...(maxWidth && { maxWidth: `${maxWidth}px` }),
+          ...(borderRadius && { borderRadius: `${borderRadius}px` }),
+          ...(backgroundColor && { backgroundColor: backgroundColor }),
+          ...(margin && { margin: `${margin}px` }),
           objectFit: 'cover',
           objectPosition: 'center',
         }

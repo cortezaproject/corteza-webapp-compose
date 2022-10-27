@@ -7,6 +7,7 @@
         <b-form-input
           v-model="f.options.maxSize"
           type="number"
+          :number="true"
         />
       </b-input-group>
     </b-form-group>
@@ -46,137 +47,156 @@
       </b-form-checkbox>
     </b-form-group>
 
-    <hr>
+    <template v-if="enablePreviewStyling">
+      <hr>
 
-    <h5 class="mb-2">
-      {{ $t('kind.file.view.style') }}
-    </h5>
+      <h5 class="mb-2">
+        {{ $t('kind.file.view.previewStyle') }}
+      </h5>
 
-    <b-row
-      cols="12"
-      class="mb-2 mt-2"
-    >
-      <b-col
-        cols="6"
-        align-self="center"
+      <b-row
+        class="mb-2 mt-2"
       >
-        <b-form-group>
-          <label>{{ $t('kind.file.view.height') }}</label>
-          <b-input-group
-            :append="$t('kind.file.view.px')"
-          >
-            <b-form-input
-              v-model="f.options.height"
-              type="number"
-              :placeholder="$t('kind.file.view.height')"
-            />
-          </b-input-group>
-        </b-form-group>
-      </b-col>
-      <b-col
-        cols="6"
-        align-self="center"
-      >
-        <b-form-group>
-          <label>{{ $t('kind.file.view.width') }}</label>
-          <b-input-group
-            :append="$t('kind.file.view.px')"
-          >
-            <b-form-input
-              v-model="f.options.width"
-              type="number"
-              :placeholder="$t('kind.file.view.width')"
-            />
-          </b-input-group>
-        </b-form-group>
-      </b-col>
-
-      <b-col
-        cols="6"
-        align-self="center"
-      >
-        <b-form-group>
-          <label>{{ $t('kind.file.view.maxHeight') }}</label>
-          <b-input-group
-            :append="$t('kind.file.view.px')"
-          >
-            <b-form-input
-              v-model="f.options.maxHeight"
-              type="number"
-              :placeholder="$t('kind.file.view.maxHeight')"
-            />
-          </b-input-group>
-        </b-form-group>
-      </b-col>
-      <b-col
-        cols="6"
-        align-self="center"
-      >
-        <b-form-group>
-          <label>{{ $t('kind.file.view.maxWidth') }}</label>
-          <b-input-group
-            :append="$t('kind.file.view.px')"
-          >
-            <b-form-input
-              v-model="f.options.maxWidth"
-              type="number"
-              :placeholder="$t('kind.file.view.maxWidth')"
-            />
-          </b-input-group>
-        </b-form-group>
-      </b-col>
-
-      <b-col
-        cols="6"
-        align-self="center"
-      >
-        <b-form-group>
-          <label>{{ $t('kind.file.view.borderRadius') }}</label>
-          <b-input-group
-            :append="$t('kind.file.view.px')"
-          >
-            <b-form-input
-              v-model="f.options.borderRadius"
-              type="number"
-              :placeholder="$t('kind.file.view.borderRadius')"
-            />
-          </b-input-group>
-        </b-form-group>
-      </b-col>
-      <b-col
-        cols="6"
-        align-self="center"
-      >
-        <b-form-group
-          :label="$t('kind.file.view.background')"
+        <b-col
+          sm="12"
+          md="6"
         >
-          <b-form-input
-            v-model="f.options.backgroundColor"
-            type="color"
-            debounce="300"
-            class="mb-1"
-          />
-        </b-form-group>
-      </b-col>
+          <b-form-group
+            :label="$t('kind.file.view.height')"
+          >
+            <b-input-group
+              :append="$t('kind.file.view.px')"
+            >
+              <b-form-input
+                v-model="f.options.height"
+                type="number"
+                :number="true"
+                :placeholder="$t('kind.file.view.height')"
+              />
+            </b-input-group>
+          </b-form-group>
+        </b-col>
+        <b-col
+          sm="12"
+          md="6"
+          align-self="center"
+        >
+          <b-form-group
+            :label="$t('kind.file.view.width')"
+          >
+            <b-input-group
+              :append="$t('kind.file.view.px')"
+            >
+              <b-form-input
+                v-model="f.options.width"
+                type="number"
+                :number="true"
+                :placeholder="$t('kind.file.view.width')"
+              />
+            </b-input-group>
+          </b-form-group>
+        </b-col>
 
-      <b-col
-        cols="6"
-        align-self="center"
-      >
-        <b-form-group>
-          <label>{{ $t('kind.file.view.margin') }}</label>
-          <b-input-group
-            :append="$t('kind.file.view.px')"
+        <b-col
+          sm="12"
+          md="6"
+          align-self="center"
+        >
+          <b-form-group
+            :label="$t('kind.file.view.maxHeight')"
+          >
+            <b-input-group
+              :append="$t('kind.file.view.px')"
+            >
+              <b-form-input
+                v-model="f.options.maxHeight"
+                type="number"
+                :number="true"
+                :placeholder="$t('kind.file.view.maxHeight')"
+              />
+            </b-input-group>
+          </b-form-group>
+        </b-col>
+        <b-col
+          sm="12"
+          md="6"
+          align-self="center"
+        >
+          <b-form-group
+            :label="$t('kind.file.view.maxWidth')"
+          >
+            <b-input-group
+              :append="$t('kind.file.view.px')"
+            >
+              <b-form-input
+                v-model="f.options.maxWidth"
+                type="number"
+                :number="true"
+                :placeholder="$t('kind.file.view.maxWidth')"
+              />
+            </b-input-group>
+          </b-form-group>
+        </b-col>
+
+        <b-col
+          sm="12"
+          md="6"
+          align-self="center"
+        >
+          <b-form-group
+            :label="$t('kind.file.view.borderRadius')"
+          >
+            <b-input-group
+              :append="$t('kind.file.view.px')"
+            >
+              <b-form-input
+                v-model="f.options.borderRadius"
+                type="number"
+                :number="true"
+                :placeholder="$t('kind.file.view.borderRadius')"
+              />
+            </b-input-group>
+          </b-form-group>
+        </b-col>
+        <b-col
+          sm="12"
+          md="6"
+          align-self="center"
+        >
+          <b-form-group
+            :label="$t('kind.file.view.background')"
           >
             <b-form-input
-              v-model="f.options.margin"
-              type="number"
-              :placeholder="$t('kind.file.view.margin')"
+              v-model="f.options.backgroundColor"
+              type="color"
+              debounce="300"
+              class="mb-1"
             />
-          </b-input-group>
-        </b-form-group>
-      </b-col>
-    </b-row>
+          </b-form-group>
+        </b-col>
+
+        <b-col
+          sm="12"
+          md="6"
+          align-self="center"
+        >
+          <b-form-group
+            :label="$t('kind.file.view.margin')"
+          >
+            <b-input-group
+              :append="$t('kind.file.view.px')"
+            >
+              <b-form-input
+                v-model="f.options.margin"
+                type="number"
+                :number="true"
+                :placeholder="$t('kind.file.view.margin')"
+              />
+            </b-input-group>
+          </b-form-group>
+        </b-col>
+      </b-row>
+    </template>
   </div>
 </template>
 
@@ -200,11 +220,11 @@ export default {
       ]
     },
 
-    options () {
-      return {}
+    enableFileNameHiding () {
+      return (this.f.options.mode === 'single') || (this.f.options.mode === 'gallery')
     },
 
-    enableFileNameHiding () {
+    enablePreviewStyling () {
       return (this.f.options.mode === 'single') || (this.f.options.mode === 'gallery')
     },
   },

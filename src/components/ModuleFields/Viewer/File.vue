@@ -8,13 +8,7 @@
       :namespace="namespace"
       :mode="field.options.mode"
       :hide-file-name="field.options.hideFileName"
-      :height="options.height"
-      :width="options.width"
-      :max-height="options.maxHeight"
-      :max-width="options.maxWidth"
-      :border-radius="options.borderRadius"
-      :background-color="options.backgroundColor"
-      :margin="options.margin"
+      :preview-options="options"
     />
 
     <errors :errors="errors" />
