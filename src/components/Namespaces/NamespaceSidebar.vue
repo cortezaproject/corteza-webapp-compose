@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div
+    :showSidebar="showSidebar"
+  >
     <portal to="sidebar-header-expanded">
       <vue-select
         v-if="!hideNamespaceList"
@@ -185,6 +187,7 @@ export default {
 
   data () {
     return {
+      hasSidebar: true,
       namespace: undefined,
 
       query: '',
@@ -205,6 +208,14 @@ export default {
     // Loading is true only when a resource is being force loaded (API call)
     loading () {
       return this.moduleLoading || this.chartLoading || this.pageLoading
+    },
+
+    showSidebar () {
+      if (typeof this.namespace !== 'undefined') {
+        return this.$store.dispatch('namespace/sidebar', this.namespace.meta.hideSidebar)
+      } else {
+        return false
+      }
     },
 
     hideNamespaceList () {
@@ -301,6 +312,7 @@ export default {
   },
 
   watch: {
+
     isAdminPage: {
       handler () {
         this.query = ''
@@ -317,6 +329,7 @@ export default {
   },
 
   methods: {
+
     namespaceSelected ({ canManageNamespace, slug = '' }) {
       let { name, params } = this.$route
 

@@ -14,13 +14,24 @@
         class="mr-1"
       >
         <b-button
-          data-test-id="button-visit-namespace"
+          data-test-id="button-visit-admin panel"
           variant="primary"
           class="d-flex align-items-center"
           :to="openNamespace"
           :disabled="!namespaceEnabled"
         >
           {{ $t('visit') }}
+        </b-button>
+        <b-button
+          variant="primary"
+          class="d-flex align-items-center ml-3"
+          :to="{ name: 'admin.modules', params: { slug: namespace.slug } }"
+        >
+          {{ $t('admin') }}
+          <font-awesome-icon
+            :icon="['fas', 'cogs']"
+            class="ml-2"
+          />
         </b-button>
         <namespace-translator
           v-if="namespace"
@@ -232,6 +243,17 @@
                 </b-input-group-append>
               </b-input-group>
             </b-form-group>
+            <hr class="mt-3">
+            <b-form-group
+              :label="$t('sidebar.title')"
+            >
+              <b-form-checkbox
+                v-model="namespace.meta.hideSidebar"
+                data-test-id="checkbox-show-namespace-sidebar"
+              >
+                {{ $t('sidebar.hide') }}
+              </b-form-checkbox>
+            </b-form-group>
           </b-form>
 
           <template
@@ -432,6 +454,7 @@ export default {
       this.namespace.meta = {
         subtitle: '',
         description: '',
+        hideSidebar: false,
         ...this.namespace.meta,
       }
 
@@ -550,6 +573,7 @@ export default {
       this.namespace.meta = {
         subtitle: '',
         description: '',
+        hideSidebar: false,
         ...this.namespace.meta,
       }
     },

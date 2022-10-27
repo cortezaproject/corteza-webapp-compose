@@ -9,6 +9,7 @@ const types = {
   updateSet: 'updateSet',
   removeFromSet: 'removeFromSet',
   clearSet: 'clearSet',
+  sidebarHidden: 'sidebarHidden',
 }
 
 export default function (ComposeAPI) {
@@ -18,6 +19,7 @@ export default function (ComposeAPI) {
     state: {
       loading: false,
       pending: false,
+      sidebarHidden: false,
       set: [],
     },
 
@@ -25,6 +27,8 @@ export default function (ComposeAPI) {
       loading: (state) => state.loading,
 
       pending: (state) => state.pending,
+
+      sidebarHidden: (state) => state.sidebarHidden,
 
       getByID (state) {
         return (ID) => state.set.find(({ namespaceID }) => ID === namespaceID)
@@ -40,6 +44,11 @@ export default function (ComposeAPI) {
     },
 
     actions: {
+
+      sidebar ({ commit }, hideSidebar) {
+        commit(types.sidebarHidden, hideSidebar)
+      },
+
       async load ({ commit, getters }, { force = false } = {}) {
         if (!force && getters.set.length > 1) {
           // When there's forced load, make sure we have more than 1 item in the set
@@ -144,6 +153,10 @@ export default function (ComposeAPI) {
 
       [types.completed] (state) {
         state.pending = false
+      },
+
+      [types.sidebarHidden] (state, setState) {
+        state.sidebarHidden = setState
       },
 
       [types.updateSet] (state, set) {

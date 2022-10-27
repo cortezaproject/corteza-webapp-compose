@@ -4,7 +4,7 @@
       class="mw-100"
     >
       <c-topbar
-        :sidebar-pinned="pinned"
+        :sidebar-pinned="showSidebar? pinned: 0"
         :settings="$Settings.get('ui.topbar', {})"
         :labels="{
           helpForum: $t('help.forum'),
@@ -31,28 +31,30 @@
       </c-topbar>
     </header>
 
-    <aside>
-      <c-sidebar
-        :expanded.sync="expanded"
-        :pinned.sync="pinned"
-        :icon="icon"
-        :logo="logo"
-        :disabled-routes="disabledRoutes"
-        expand-on-hover
-        :right="textDirectionality() === 'rtl'"
-      >
-        <template #header-expanded>
-          <portal-target name="sidebar-header-expanded" />
-        </template>
+    <aside v-if="showSidebar">
+      <template>
+        <c-sidebar
+          :expanded.sync="expanded"
+          :pinned.sync="pinned"
+          :icon="icon"
+          :logo="logo"
+          :disabled-routes="disabledRoutes"
+          expand-on-hover
+          :right="textDirectionality() === 'rtl'"
+        >
+          <template #header-expanded>
+            <portal-target name="sidebar-header-expanded" />
+          </template>
 
-        <template #body-expanded>
-          <portal-target name="sidebar-body-expanded" />
-        </template>
+          <template #body-expanded>
+            <portal-target name="sidebar-body-expanded" />
+          </template>
 
-        <template #footer-expanded>
-          <portal-target name="sidebar-footer-expanded" />
-        </template>
-      </c-sidebar>
+          <template #footer-expanded>
+            <portal-target name="sidebar-footer-expanded" />
+          </template>
+        </c-sidebar>
+      </template>
     </aside>
 
     <main class="d-inline-flex h-100 overflow-auto d-print-flex">
@@ -64,7 +66,7 @@
         <div
           class="spacer d-print-none"
           :class="{
-            'expanded': expanded && pinned,
+            'expanded': expanded && pinned && showSidebar,
           }"
         />
       </template>
@@ -145,6 +147,11 @@ export default {
   },
 
   computed: {
+    showSidebar () {
+      console.log(!this.$store.getters['namespace/sidebarHidden'])
+      return !this.$store.getters['namespace/sidebarHidden']
+    },
+
     user () {
       const { user } = this.$auth
       return user.name || user.handle || user.email || ''
