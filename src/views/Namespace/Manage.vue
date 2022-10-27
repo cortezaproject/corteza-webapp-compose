@@ -30,85 +30,73 @@
         class="my-3"
         no-gutters
       >
-        <b-card
-          no-body
-          class="w-100"
+        <c-resource-list
+          :primary-key="primaryKey"
+          :filter="filter"
+          :sorting="sorting"
+          :pagination="pagination"
+          :fields="namespacesFields"
+          :items="namespaceList"
+          :translations="{
+            searchPlaceholder: $t('toolbar.search.placeholder'),
+            notFound: $t('general:resourceList.notFound'),
+            noItems: $t('general:resourceList.noItems'),
+            loading: $t('general:label.loading'),
+            showingPagination: 'general:resourceList.pagination.showing',
+            singlePluralPagination: 'general:resourceList.pagination.single_plural',
+            prevPagination: $t('general:resourceList.pagination.prev'),
+            nextPagination: $t('general:resourceList.pagination.next'),
+          }"
+          clickable
+          class="h-100 w-100"
+          @search="filterList"
+          @row-clicked="handleRowClicked"
         >
-          <b-card-header
-            header-bg-variant="white"
-          >
-            <b-row
+          <template #header>
+            <div
               class="wrap-with-vertical-gutters"
-              no-gutters
             >
-              <div
-                class="flex-grow-1"
+              <b-btn
+                v-if="canCreate"
+                data-test-id="button-create"
+                :to="{ name: 'namespace.create' }"
+                variant="primary"
+                size="lg"
+                class="mr-1 float-left"
               >
-                <div
-                  class="wrap-with-vertical-gutters"
-                >
-                  <b-btn
-                    v-if="canCreate"
-                    data-test-id="button-create"
-                    :to="{ name: 'namespace.create' }"
-                    variant="primary"
-                    size="lg"
-                    class="mr-1 float-left"
-                  >
-                    {{ $t('toolbar.buttons.create') }}
-                  </b-btn>
+                {{ $t('toolbar.buttons.create') }}
+              </b-btn>
 
-                  <importer-modal
-                    v-if="canImport"
-                    class="mr-1 float-left"
-                    @imported="onImported"
-                    @failed="onFailed"
-                  />
+              <importer-modal
+                v-if="canImport"
+                class="mr-1 float-left"
+                @imported="onImported"
+                @failed="onFailed"
+              />
 
-                  <c-permissions-button
-                    v-if="canGrant"
-                    resource="corteza::compose:namespace/*"
-                    button-variant="light"
-                    :button-label="$t('toolbar.buttons.permissions')"
-                    class="btn-lg float-left"
-                  />
-                </div>
-              </div>
-              <div class="flex-grow-1">
-                <c-input-search
-                  v-model.trim="query"
-                  :placeholder="$t('toolbar.search.placeholder')"
-                />
-              </div>
-            </b-row>
-          </b-card-header>
-          <b-table
-            :fields="namespacesFields"
-            :items="namespaces"
-            :filter="query"
-            :empty-text="$t('noResults')"
-            head-variant="light"
-            tbody-tr-class="pointer"
-            class="position-relative"
-            responsive
-            show-empty
-            hover
-            @row-clicked="handleRowClicked"
-          >
-            <template #cell(name)="{ item }">
-              {{ item.name }}
-              <b-badge
-                v-if="!item.enabled"
-                variant="warning"
-              >
-                {{ $t('disabled') }}
-              </b-badge>
-            </template>
-            <template #cell(lastChange)="{ item }">
-              {{ (item.updatedAt || item.createdAt) | locFullDateTime }}
-            </template>
-          </b-table>
-        </b-card>
+              <c-permissions-button
+                v-if="canGrant"
+                resource="corteza::compose:namespace/*"
+                button-variant="light"
+                :button-label="$t('toolbar.buttons.permissions')"
+                class="btn-lg float-left"
+              />
+            </div>
+          </template>
+          <template #name="{ item }">
+            {{ item.name }}
+            <b-badge
+              v-if="!item.enabled"
+              variant="warning"
+            >
+              {{ $t('disabled') }}
+            </b-badge>
+          </template>
+
+          <template #updatedAt="{ item }">
+            {{ (item.updatedAt || item.createdAt) | locFullDateTime }}
+          </template>
+        </c-resource-list>
       </b-row>
     </b-container>
   </div>
@@ -116,8 +104,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import ImporterModal from 'corteza-webapp-compose/src/components/Namespaces/Importer'
-import { components } from '@cortezaproject/corteza-vue'
-const { CInputSearch } = components
+import listHelpers from 'corteza-webapp-compose/src/mixins/listHelpers'
 
 export default {
   i18nOptions: {
@@ -127,12 +114,24 @@ export default {
 
   components: {
     ImporterModal,
-    CInputSearch,
   },
+
+  mixins: [
+    listHelpers,
+  ],
 
   data () {
     return {
-      query: '',
+      primaryKey: 'namespaceID',
+
+      filter: {
+        query: '',
+      },
+
+      sorting: {
+        sortBy: 'createdAt',
+        sortDesc: true,
+      },
     }
   },
 
@@ -163,13 +162,6 @@ export default {
       return this.$ComposeAPI.namespaceImportEndpoint({})
     },
 
-    namespacesFiltered () {
-      return this.namespaces.filter(ns => {
-        const query = this.query.toLowerCase()
-        return (ns.slug).toLowerCase().indexOf(query) > -1 || (ns.name).toLowerCase().indexOf(query) > -1
-      })
-    },
-
     namespacesFields () {
       return [
         {
@@ -184,7 +176,7 @@ export default {
           label: this.$t('table.columns.handle'),
         },
         {
-          key: 'lastChange',
+          key: 'updatedAt',
           sortable: true,
           class: 'text-nowrap',
           label: this.$t('table.columns.last-change'),
@@ -209,6 +201,10 @@ export default {
         name: 'namespace.edit',
         params: { namespaceID },
       })
+    },
+
+    namespaceList () {
+      return this.procListResults(this.$ComposeAPI.namespaceList(this.encodeListParams()))
     },
   },
 }

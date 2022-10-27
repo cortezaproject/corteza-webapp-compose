@@ -7,111 +7,95 @@
     <b-container fluid="xl">
       <b-row no-gutters>
         <b-col>
-          <b-card
-            no-body
-            class="shadow-sm"
+          <c-resource-list
+            :primary-key="primaryKey"
+            :filter="filter"
+            :sorting="sorting"
+            :pagination="pagination"
+            :fields="tableFields"
+            :items="chartList"
+            :translations="{
+              searchPlaceholder: $t('chart.searchPlaceholder'),
+              notFound: $t('general:resourceList.notFound'),
+              noItems: $t('general:resourceList.noItems'),
+              loading: $t('general:label.loading'),
+              showingPagination: 'general:resourceList.pagination.showing',
+              singlePluralPagination: 'general:resourceList.pagination.single_plural',
+              prevPagination: $t('general:resourceList.pagination.prev'),
+              nextPagination: $t('general:resourceList.pagination.next'),
+            }"
+            clickable
+            @search="filterList"
+            @row-clicked="handleRowClicked"
           >
-            <b-card-header
-              header-bg-variant="white"
-              class="py-3"
-            >
-              <b-row
-                class="wrap-with-vertical-gutters justify-content-between"
-                no-gutters
+            <template #header>
+              <div
+                class="wrap-with-vertical-gutters"
               >
-                <div class="flex-grow-1">
-                  <div
-                    class="wrap-with-vertical-gutters"
+                <b-dropdown
+                  v-if="namespace.canCreateChart"
+                  variant="primary"
+                  size="lg"
+                  class="float-left mr-1"
+                  :text="$t('chart.add')"
+                >
+                  <b-dropdown-item-button
+                    variant="dark"
+                    @click="$router.push({ name: 'admin.charts.create', params: { category: 'generic' } })"
                   >
-                    <b-dropdown
-                      v-if="namespace.canCreateChart"
-                      variant="primary"
-                      size="lg"
-                      class="float-left mr-1"
-                      :text="$t('chart.add')"
-                    >
-                      <b-dropdown-item-button
-                        variant="dark"
-                        @click="$router.push({ name: 'admin.charts.create', params: { category: 'generic' } })"
-                      >
-                        {{ $t('chart.addGeneric') }}
-                      </b-dropdown-item-button>
-                      <b-dropdown-item-button
-                        variant="dark"
-                        @click="$router.push({ name: 'admin.charts.create', params: { category: 'funnel' } })"
-                      >
-                        {{ $t('chart.addFunnel') }}
-                      </b-dropdown-item-button>
-                      <b-dropdown-item-button
-                        variant="dark"
-                        @click="$router.push({ name: 'admin.charts.create', params: { category: 'gauge' } })"
-                      >
-                        {{ $t('chart.addGauge') }}
-                      </b-dropdown-item-button>
-                    </b-dropdown>
+                    {{ $t('chart.addGeneric') }}
+                  </b-dropdown-item-button>
+                  <b-dropdown-item-button
+                    variant="dark"
+                    @click="$router.push({ name: 'admin.charts.create', params: { category: 'funnel' } })"
+                  >
+                    {{ $t('chart.addFunnel') }}
+                  </b-dropdown-item-button>
+                  <b-dropdown-item-button
+                    variant="dark"
+                    @click="$router.push({ name: 'admin.charts.create', params: { category: 'gauge' } })"
+                  >
+                    {{ $t('chart.addGauge') }}
+                  </b-dropdown-item-button>
+                </b-dropdown>
 
-                    <import
-                      v-if="namespace.canCreateChart"
-                      :namespace="namespace"
-                      type="chart"
-                      class="float-left mr-1"
-                    />
+                <import
+                  v-if="namespace.canCreateChart"
+                  :namespace="namespace"
+                  type="chart"
+                  class="float-left mr-1"
+                />
 
-                    <export
-                      :list="charts"
-                      type="chart"
-                      class="float-left mr-1"
-                    />
-                    <c-permissions-button
-                      v-if="namespace.canGrant"
-                      :resource="`corteza::compose:chart/${namespace.namespaceID}/*`"
-                      :button-label="$t('general.label.permissions')"
-                      button-variant="light"
-                      class="btn-lg"
-                    />
-                  </div>
-                </div>
-                <div class="flex-grow-1 w-25">
-                  <c-input-search
-                    v-model.trim="query"
-                    :placeholder="$t('chart.searchPlaceholder')"
-                  />
-                </div>
-              </b-row>
-            </b-card-header>
+                <export
+                  :list="charts"
+                  type="chart"
+                  class="float-left mr-1"
+                />
+                <c-permissions-button
+                  v-if="namespace.canGrant"
+                  :resource="`corteza::compose:chart/${namespace.namespaceID}/*`"
+                  :button-label="$t('general.label.permissions')"
+                  button-variant="light"
+                  class="btn-lg"
+                />
+              </div>
+            </template>
 
-            <b-card-body class="p-0">
-              <b-table
-                :fields="tableFields"
-                :items="charts"
-                :filter="query"
-                :filter-function="chartFilter"
-                :sort-by.sync="sortBy"
-                :sort-desc="sortDesc"
-                head-variant="light"
-                tbody-tr-class="pointer"
-                :empty-text="$t('chart.noChart')"
-                show-empty
-                responsive
-                hover
-                @row-clicked="handleRowClicked"
-              >
-                <template v-slot:cell(updatedAt)="{ item: c }">
-                  {{ (c.updatedAt || c.createdAt) | locDate }}
-                </template>
-                <template v-slot:cell(actions)="{ item: c }">
-                  <c-permissions-button
-                    v-if="c.canGrant"
-                    :title="c.name"
-                    :target="c.name"
-                    :resource="`corteza::compose:chart/${namespace.namespaceID}/${c.chartID}`"
-                    link
-                    class="btn px-2"
-                  />
-                </template>
-              </b-table>
-            </b-card-body>
-          </b-card>
+            <template #actions="{ item: c }">
+              <c-permissions-button
+                v-if="c.canGrant"
+                :title="c.name"
+                :target="c.name"
+                :resource="`corteza::compose:chart/${namespace.namespaceID}/${c.chartID}`"
+                link
+                class="btn px-2"
+              />
+            </template>
+
+            <template #updatedAt="{ item }">
+              {{ (item.updatedAt || item.createdAt) | locFullDateTime }}
+            </template>
+          </c-resource-list>
         </b-col>
       </b-row>
     </b-container>
@@ -119,11 +103,10 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { compose, fmt } from '@cortezaproject/corteza-js'
-import { filter, components } from '@cortezaproject/corteza-vue'
+import { compose } from '@cortezaproject/corteza-js'
 import Import from 'corteza-webapp-compose/src/components/Admin/Import'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
-const { CInputSearch } = components
+import listHelpers from 'corteza-webapp-compose/src/mixins/listHelpers'
 
 export default {
   i18nOptions: {
@@ -135,8 +118,11 @@ export default {
   components: {
     Import,
     Export,
-    CInputSearch,
   },
+
+  mixins: [
+    listHelpers,
+  ],
 
   props: {
     namespace: {
@@ -148,10 +134,17 @@ export default {
 
   data () {
     return {
-      query: '',
+      primaryKey: 'chartID',
 
-      sortBy: 'name',
-      sortDesc: false,
+      filter: {
+        query: '',
+        namespaceID: this.namespace.namespaceID,
+      },
+
+      sorting: {
+        sortBy: 'name',
+        sortDesc: false,
+      },
 
       newChart: new compose.Chart({}),
     }
@@ -167,23 +160,16 @@ export default {
         {
           key: 'name',
           sortable: true,
-          tdClass: 'align-middle pl-4 text-nowrap',
-          thClass: 'pl-4',
+          tdClass: 'text-nowrap',
         },
         {
           key: 'handle',
           sortable: true,
-          tdClass: 'align-middle',
         },
         {
           key: 'updatedAt',
           sortable: true,
-          sortByFormatted: true,
-          tdClass: 'align-middle',
-          class: 'text-right',
-          formatter: (updatedAt, key, item) => {
-            return fmt.date(updatedAt || item.createdAt)
-          },
+          class: 'text-right text-nowrap',
         },
         {
           key: 'actions',
@@ -195,13 +181,13 @@ export default {
   },
 
   methods: {
+    chartList () {
+      return this.procListResults(this.$ComposeAPI.chartList(this.encodeListParams()))
+    },
+
     ...mapActions({
       createChart: 'chart/create',
     }),
-
-    chartFilter (chart, query) {
-      return filter.Assert(chart, query, 'handle', 'name')
-    },
 
     create (subType) {
       let c = new compose.Chart({ ...this.newChart, namespaceID: this.namespace.namespaceID })
@@ -219,6 +205,22 @@ export default {
         this.$router.push({ name: 'admin.charts.edit', params: { chartID: chart.chartID } })
       }).catch(this.toastErrorHandler(this.$t('notification:chart.createFailed')))
     },
+
+    encodeRouteParams () {
+      const { query } = this.filter
+      const { limit, pageCursor, page } = this.pagination
+
+      return {
+        query: {
+          limit,
+          ...this.sorting,
+          query,
+          page,
+          pageCursor,
+        },
+      }
+    },
+
     handleRowClicked ({ chartID, canUpdateChart, canDeleteChart }) {
       if (!(canUpdateChart || canDeleteChart)) {
         return

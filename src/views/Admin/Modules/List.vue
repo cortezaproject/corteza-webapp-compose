@@ -5,165 +5,150 @@
     </portal>
 
     <b-container fluid="xl">
-      <b-row no-gutters>
+      <b-row>
         <b-col>
-          <b-card
-            no-body
-            class="shadow-sm"
+          <c-resource-list
+            data-test-id="table-modules-list"
+            :primary-key="primaryKey"
+            :filter="filter"
+            :sorting="sorting"
+            :pagination="pagination"
+            :fields="fields"
+            :items="items"
+            :translations="{
+              searchPlaceholder: $t('searchPlaceholder'),
+              notFound: $t('general:resourceList.notFound'),
+              noItems: $t('general:resourceList.noItems'),
+              loading: $t('general:label.loading'),
+              showingPagination: 'general:resourceList.pagination.showing',
+              singlePluralPagination: 'general:resourceList.pagination.single_plural',
+              prevPagination: $t('general:resourceList.pagination.prev'),
+              nextPagination: $t('general:resourceList.pagination.next'),
+            }"
+            clickable
+            @search="filterList"
+            @row-clicked="handleRowClicked"
           >
-            <b-card-header
-              header-bg-variant="white"
-              class="py-3"
-            >
-              <b-row
-                class="justify-content-between wrap-with-vertical-gutters"
-                no-gutters
-              >
-                <div class="flex-grow-1">
-                  <div
-                    class="wrap-with-vertical-gutters"
-                  >
-                    <b-btn
-                      v-if="namespace.canCreateModule"
-                      data-test-id="button-create"
-                      variant="primary"
-                      size="lg"
-                      class="mr-1 float-left"
-                      :to="{ name: 'admin.modules.create' }"
-                    >
-                      {{ $t('createLabel') }}
-                    </b-btn>
-
-                    <import
-                      v-if="namespace.canCreateModule"
-                      :namespace="namespace"
-                      type="module"
-                      class="mr-1 float-left"
-                    />
-
-                    <export
-                      :list="modules"
-                      type="module"
-                      class="mr-1 float-left"
-                    />
-
-                    <b-dropdown
-                      v-if="namespace.canGrant"
-                      size="lg"
-                      variant="light"
-                      class="permissions-dropdown mr-1"
-                    >
-                      <template #button-content>
-                        <font-awesome-icon :icon="['fas', 'lock']" />
-                        <span>
-                          {{ $t('general:label.permissions') }}
-                        </span>
-                      </template>
-
-                      <b-dropdown-item>
-                        <c-permissions-button
-                          :resource="`corteza::compose:module/${namespace.namespaceID}/*`"
-                          :button-label="$t('general:label.module')"
-                          :show-button-icon="false"
-                          button-variant="white text-left w-100"
-                        />
-                      </b-dropdown-item>
-
-                      <b-dropdown-item>
-                        <c-permissions-button
-                          :resource="`corteza::compose:module-field/${namespace.namespaceID}/*/*`"
-                          :button-label="$t('general:label.field')"
-                          :show-button-icon="false"
-                          button-variant="white text-left w-100"
-                        />
-                      </b-dropdown-item>
-
-                      <b-dropdown-item>
-                        <c-permissions-button
-                          :resource="`corteza::compose:record/${namespace.namespaceID}/*/*`"
-                          :button-label="$t('general:label.record')"
-                          :show-button-icon="false"
-                          button-variant="white text-left w-100"
-                        />
-                      </b-dropdown-item>
-                    </b-dropdown>
-                  </div>
-                </div>
+            <template #header>
+              <div class="flex-grow-1">
                 <div
-                  class="flex-grow-1 w-25"
+                  class="wrap-with-vertical-gutters"
                 >
-                  <c-input-search
-                    v-model="query"
-                    :placeholder="$t('searchPlaceholder')"
-                  />
-                </div>
-              </b-row>
-            </b-card-header>
-            <b-card-body class="p-0">
-              <b-table
-                data-test-id="table-modules-list"
-                :fields="tableFields"
-                :items="modules"
-                :filter="query"
-                :filter-function="moduleFilter"
-                :sort-by.sync="sortBy"
-                :sort-desc="sortDesc"
-                head-variant="light"
-                tbody-tr-class="pointer"
-                :empty-text="$t('noModule')"
-                :empty-filtered-text="$t('noModuleFilter')"
-                responsive
-                show-empty
-                hover
-                @row-clicked="handleRowClicked"
-              >
-                <template v-slot:cell(name)="{ item: m }">
-                  <div
-                    class="d-flex align-items-center"
+                  <b-btn
+                    v-if="namespace.canCreateModule"
+                    data-test-id="button-create"
+                    variant="primary"
+                    size="lg"
+                    class="mr-1 float-left"
+                    :to="{ name: 'admin.modules.create' }"
                   >
-                    {{ m.name }}
-                    <h5
-                      class="ml-2 mb-0"
-                    >
-                      <b-badge
-                        v-if="Object.keys(m.labels || {}).includes('federation')"
-                        pill
-                        variant="primary"
-                      >
-                        {{ $t('federated') }}
-                      </b-badge>
-                    </h5>
-                  </div>
-                </template>
-                <template v-slot:cell(updatedAt)="{ item: m }">
-                  {{ (m.updatedAt || m.createdAt) | locDate }}
-                </template>
-                <template v-slot:cell(actions)="{ item: m }">
-                  <related-pages
+                    {{ $t('createLabel') }}
+                  </b-btn>
+
+                  <import
+                    v-if="namespace.canCreateModule"
                     :namespace="namespace"
-                    :module="m"
+                    type="module"
+                    class="mr-1 float-left"
                   />
-                  <b-button
-                    data-test-id="button-all-records"
-                    variant="link"
-                    :to="{name: 'admin.modules.record.list', params: { moduleID: m.moduleID }}"
-                    class="text-dark text-decoration-none"
+
+                  <export
+                    :list="modules"
+                    type="module"
+                    class="mr-1 float-left"
+                  />
+
+                  <b-dropdown
+                    v-if="namespace.canGrant"
+                    size="lg"
+                    variant="light"
+                    class="permissions-dropdown mr-1"
                   >
-                    {{ $t('allRecords.label') }}
-                  </b-button>
-                  <c-permissions-button
-                    v-if="m.canGrant"
-                    :title="m.name"
-                    :target="m.name"
-                    :resource="`corteza::compose:module/${m.namespaceID}/${m.moduleID}`"
-                    :tooltip="$t('permissions:resources.compose.module.tooltip')"
-                    class="btn px-2"
-                    link
-                  />
-                </template>
-              </b-table>
-            </b-card-body>
-          </b-card>
+                    <template #button-content>
+                      <font-awesome-icon :icon="['fas', 'lock']" />
+                      <span>
+                        {{ $t('general:label.permissions') }}
+                      </span>
+                    </template>
+
+                    <b-dropdown-item>
+                      <c-permissions-button
+                        :resource="`corteza::compose:module/${namespace.namespaceID}/*`"
+                        :button-label="$t('general:label.module')"
+                        :show-button-icon="false"
+                        button-variant="white text-left w-100"
+                      />
+                    </b-dropdown-item>
+
+                    <b-dropdown-item>
+                      <c-permissions-button
+                        :resource="`corteza::compose:module-field/${namespace.namespaceID}/*/*`"
+                        :button-label="$t('general:label.field')"
+                        :show-button-icon="false"
+                        button-variant="white text-left w-100"
+                      />
+                    </b-dropdown-item>
+
+                    <b-dropdown-item>
+                      <c-permissions-button
+                        :resource="`corteza::compose:record/${namespace.namespaceID}/*/*`"
+                        :button-label="$t('general:label.record')"
+                        :show-button-icon="false"
+                        button-variant="white text-left w-100"
+                      />
+                    </b-dropdown-item>
+                  </b-dropdown>
+                </div>
+              </div>
+            </template>
+
+            <template #actions="{ item: m }">
+              <related-pages
+                :namespace="namespace"
+                :module="m"
+              />
+              <b-button
+                data-test-id="button-all-records"
+                variant="link"
+                :to="{name: 'admin.modules.record.list', params: { moduleID: m.moduleID }}"
+                class="text-dark text-decoration-none"
+              >
+                {{ $t('allRecords.label') }}
+              </b-button>
+              <c-permissions-button
+                v-if="m.canGrant"
+                :title="m.name"
+                :target="m.name"
+                :resource="`corteza::compose:module/${m.namespaceID}/${m.moduleID}`"
+                :tooltip="$t('permissions:resources.compose.module.tooltip')"
+                class="btn px-2"
+                link
+              />
+            </template>
+
+            <template #name="{ item: m }">
+              <div
+                class="d-flex align-items-center"
+              >
+                {{ m.name }}
+                <h5
+                  class="ml-2 mb-0"
+                >
+                  <b-badge
+                    v-if="Object.keys(m.labels || {}).includes('federation')"
+                    pill
+                    variant="primary"
+                  >
+                    {{ $t('federated') }}
+                  </b-badge>
+                </h5>
+              </div>
+            </template>
+
+            <template #updatedAt="{ item }">
+              {{ (item.updatedAt || item.createdAt) | locFullDateTime }}
+            </template>
+          </c-resource-list>
         </b-col>
       </b-row>
     </b-container>
@@ -171,12 +156,11 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { compose, fmt } from '@cortezaproject/corteza-js'
-import { filter, components } from '@cortezaproject/corteza-vue'
+import { compose } from '@cortezaproject/corteza-js'
+import listHelpers from 'corteza-webapp-compose/src/mixins/listHelpers'
 import RelatedPages from 'corteza-webapp-compose/src/components/Admin/Module/RelatedPages'
 import Import from 'corteza-webapp-compose/src/components/Admin/Import'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
-const { CInputSearch } = components
 
 export default {
   i18nOptions: {
@@ -189,8 +173,11 @@ export default {
     Import,
     Export,
     RelatedPages,
-    CInputSearch,
   },
+
+  mixins: [
+    listHelpers,
+  ],
 
   props: {
     namespace: {
@@ -201,10 +188,17 @@ export default {
 
   data () {
     return {
-      query: '',
+      primaryKey: 'moduleID',
 
-      sortBy: 'name',
-      sortDesc: false,
+      filter: {
+        query: '',
+        namespaceID: this.namespace.namespaceID,
+      },
+
+      sorting: {
+        sortBy: 'name',
+        sortDesc: false,
+      },
 
       creatingRecordPage: false,
     }
@@ -216,28 +210,21 @@ export default {
       pages: 'page/set',
     }),
 
-    tableFields () {
+    fields () {
       return [
         {
           key: 'name',
           sortable: true,
-          tdClass: 'align-middle pl-4 text-nowrap',
-          thClass: 'pl-4',
+          tdClass: 'text-nowrap',
         },
         {
           key: 'handle',
           sortable: true,
-          tdClass: 'align-middle',
         },
         {
           key: 'updatedAt',
           sortable: true,
-          sortByFormatted: true,
-          tdClass: 'align-middle',
-          class: 'text-right',
-          formatter: (updatedAt, key, item) => {
-            return fmt.date(updatedAt || item.createdAt)
-          },
+          class: 'text-right text-nowrap',
         },
         {
           key: 'actions',
@@ -257,10 +244,6 @@ export default {
       createPage: 'page/create',
     }),
 
-    moduleFilter (mod, query) {
-      return filter.Assert(mod, query, 'handle', 'name')
-    },
-
     handleRowClicked ({ moduleID, canUpdateModule, canDeleteModule }) {
       if (!(canUpdateModule || canDeleteModule)) {
         return
@@ -271,16 +254,28 @@ export default {
         query: null,
       })
     },
+
+    encodeRouteParams () {
+      const { query } = this.filter
+      const { limit, pageCursor, page } = this.pagination
+
+      return {
+        query: {
+          limit,
+          ...this.sorting,
+          query,
+          page,
+          pageCursor,
+        },
+      }
+    },
+
+    items () {
+      return this.procListResults(this.$ComposeAPI.moduleList(this.encodeListParams()))
+    },
   },
 }
 </script>
-<style lang="scss" scoped>
-$input-height: 42px;
-
-.module-name-input {
-  height: $input-height;
-}
-</style>
 
 <style lang="scss">
 .permissions-dropdown {
