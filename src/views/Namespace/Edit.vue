@@ -14,7 +14,7 @@
         class="mr-1"
       >
         <b-button
-          data-test-id="button-visit-admin panel"
+          data-test-id="button-visit-namespace"
           variant="primary"
           class="d-flex align-items-center"
           :to="openNamespace"
@@ -23,11 +23,14 @@
           {{ $t('visit') }}
         </b-button>
         <b-button
+          v-if="namespace.canManageNamespace"
+          data-test-id="button-visit-admin-panel"
           variant="primary"
-          class="d-flex align-items-center ml-3"
+          class="d-flex align-items-center"
+          :tooltip="$t('admin')"
           :to="{ name: 'admin.modules', params: { slug: namespace.slug } }"
+          style="margin-left:2px;"
         >
-          {{ $t('admin') }}
           <font-awesome-icon
             :icon="['fas', 'cogs']"
             class="ml-2"

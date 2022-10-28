@@ -4,7 +4,7 @@
       class="mw-100"
     >
       <c-topbar
-        :sidebar-pinned="showSidebar? pinned: false"
+        :sidebar-pinned="pinned"
         :settings="$Settings.get('ui.topbar', {})"
         :labels="{
           helpForum: $t('help.forum'),
@@ -31,16 +31,17 @@
       </c-topbar>
     </header>
 
-    <aside v-if="showSidebar">
+    <aside>
       <template>
         <c-sidebar
           :expanded.sync="expanded"
           :pinned.sync="pinned"
           :icon="icon"
           :logo="logo"
-          :disabled-routes="disabledRoutes"
+          :disabled-routes="showSidebar ? disabledRoutes : ['page', 'pages', ...disabledRoutes]"
           expand-on-hover
           :right="textDirectionality() === 'rtl'"
+          @show-sidebar="onShowSidebar"
         >
           <template #header-expanded>
             <portal-target name="sidebar-header-expanded" />
@@ -66,7 +67,7 @@
         <div
           class="spacer d-print-none"
           :class="{
-            'expanded': expanded && pinned && showSidebar,
+            'expanded': expanded && pinned,
           }"
         />
       </template>
@@ -132,7 +133,7 @@ export default {
       // Sidebar and Topbar
       expanded: false,
       pinned: false,
-      sb: false,
+      showSidebar: false,
 
       toasts: [],
 
@@ -148,11 +149,6 @@ export default {
   },
 
   computed: {
-
-    showSidebar () {
-      console.log(this.onShowSidebar())
-      return this.onShowSidebar()
-    },
 
     user () {
       const { user } = this.$auth
@@ -188,7 +184,7 @@ export default {
     this.$root.$on('alert', ({ message, ...params }) => this.toast(message, params))
     this.$root.$on('reminder.show', this.showReminder)
 
-    return this.$root.$on('sidebar.show', this.onShowSidebar)
+    this.$root.$on('sidebar-show', this.onShowSidebar)
   },
 
   beforeDestroy () {
@@ -198,7 +194,11 @@ export default {
 
   methods: {
     onShowSidebar (handle) {
-      return handle
+      if (handle) {
+        this.showSidebar = true
+      } else {
+        this.showSidebar = false
+      }
     },
 
     removeToast (reminderID) {

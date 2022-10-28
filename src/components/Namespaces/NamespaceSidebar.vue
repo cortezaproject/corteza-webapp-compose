@@ -210,17 +210,9 @@ export default {
       return this.moduleLoading || this.chartLoading || this.pageLoading
     },
 
-    __showSidebar () {
-      if (typeof this.namespace !== 'undefined') {
-        return this.$store.dispatch('namespace/sidebar', this.namespace.meta.hideSidebar)
-      } else {
-        return false
-      }
-    },
-
     showSidebar () {
       if (typeof this.namespace !== 'undefined') {
-        return this.$root.$emit('sidebar.show', !this.namespace.meta.hideSidebar)
+        return this.$root.$emit('sidebar-show', !this.namespace.meta.hideSidebar)
       } else {
         return false
       }
@@ -320,7 +312,6 @@ export default {
   },
 
   watch: {
-
     isAdminPage: {
       handler () {
         this.query = ''
@@ -337,7 +328,6 @@ export default {
   },
 
   methods: {
-
     namespaceSelected ({ canManageNamespace, slug = '' }) {
       let { name, params } = this.$route
 
