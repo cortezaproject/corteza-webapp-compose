@@ -4,7 +4,7 @@
       class="mw-100"
     >
       <c-topbar
-        :sidebar-pinned="showSidebar? pinned: 0"
+        :sidebar-pinned="showSidebar? pinned: false"
         :settings="$Settings.get('ui.topbar', {})"
         :labels="{
           helpForum: $t('help.forum'),
@@ -132,6 +132,7 @@ export default {
       // Sidebar and Topbar
       expanded: false,
       pinned: false,
+      sb: false,
 
       toasts: [],
 
@@ -147,9 +148,10 @@ export default {
   },
 
   computed: {
+
     showSidebar () {
-      console.log(!this.$store.getters['namespace/sidebarHidden'])
-      return !this.$store.getters['namespace/sidebarHidden']
+      console.log(this.onShowSidebar())
+      return this.onShowSidebar()
     },
 
     user () {
@@ -185,6 +187,8 @@ export default {
      */
     this.$root.$on('alert', ({ message, ...params }) => this.toast(message, params))
     this.$root.$on('reminder.show', this.showReminder)
+
+    return this.$root.$on('sidebar.show', this.onShowSidebar)
   },
 
   beforeDestroy () {
@@ -193,6 +197,10 @@ export default {
   },
 
   methods: {
+    onShowSidebar (handle) {
+      return handle
+    },
+
     removeToast (reminderID) {
       const i = this.toasts.findIndex(r => r.reminderID === reminderID)
       if (i > -1) {

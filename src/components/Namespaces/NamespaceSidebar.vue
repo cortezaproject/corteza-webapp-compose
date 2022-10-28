@@ -210,9 +210,17 @@ export default {
       return this.moduleLoading || this.chartLoading || this.pageLoading
     },
 
-    showSidebar () {
+    __showSidebar () {
       if (typeof this.namespace !== 'undefined') {
         return this.$store.dispatch('namespace/sidebar', this.namespace.meta.hideSidebar)
+      } else {
+        return false
+      }
+    },
+
+    showSidebar () {
+      if (typeof this.namespace !== 'undefined') {
+        return this.$root.$emit('sidebar.show', !this.namespace.meta.hideSidebar)
       } else {
         return false
       }
