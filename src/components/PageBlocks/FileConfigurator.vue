@@ -44,12 +44,12 @@
       </h5>
 
       <b-row
+        align-v
         class="mb-2 mt-2"
       >
         <b-col
           sm="12"
           md="6"
-          align-self="center"
         >
           <b-form-group
             :label="$t('kind.file.view.height')"
@@ -69,7 +69,6 @@
         <b-col
           sm="12"
           md="6"
-          align-self="center"
         >
           <b-form-group
             :label="$t('kind.file.view.width')"
@@ -90,7 +89,6 @@
         <b-col
           sm="12"
           md="6"
-          align-self="center"
         >
           <b-form-group
             :label="$t('kind.file.view.maxHeight')"
@@ -110,7 +108,6 @@
         <b-col
           sm="12"
           md="6"
-          align-self="center"
         >
           <b-form-group
             :label="$t('kind.file.view.maxWidth')"
@@ -131,7 +128,6 @@
         <b-col
           sm="12"
           md="6"
-          align-self="center"
         >
           <b-form-group
             :label="$t('kind.file.view.borderRadius')"
@@ -151,7 +147,6 @@
         <b-col
           sm="12"
           md="6"
-          align-self="center"
         >
           <b-form-group
             :label="$t('kind.file.view.background')"
@@ -168,7 +163,6 @@
         <b-col
           sm="12"
           md="6"
-          align-self="center"
         >
           <b-form-group
             :label="$t('kind.file.view.margin')"
@@ -228,11 +222,13 @@ export default {
     },
 
     enableFileNameHiding () {
-      return (this.options.mode === 'single') || (this.options.mode === 'gallery')
+      const { mode } = this.f.options
+      return (mode === 'single') || (mode === 'gallery')
     },
 
     enablePreviewStyling () {
-      return (this.options.mode === 'single') || (this.options.mode === 'gallery')
+      const { mode } = this.f.options
+      return (mode === 'single') || (mode === 'gallery')
     },
   },
 
