@@ -5,37 +5,19 @@
       :key="i"
     >
       <b-form-group
-        horizontal
-        :label="$t('calendar.feedLabel')"
+        :label="$t('geometry.feedLabel')"
       >
-        <b-input-group>
-          <b-form-select
-            v-model="feed.resource"
-            :options="feedSources"
+        <template
+          v-if="feed.resource"
+        >
+          <b-button
+            variant="outline-danger mr-auto"
+            class="border-0"
+            @click="onRemoveFeed(i)"
           >
-            <template slot="first">
-              <option
-                value=""
-                :disabled="true"
-              >
-                {{ $t('calendar.feedPlaceholder') }}
-              </option>
-            </template>
-          </b-form-select>
-
-          <template
-            v-if="feed.resource"
-            v-slot:append
-          >
-            <b-button
-              variant="outline-danger"
-              class="border-0"
-              @click="onRemoveFeed(i)"
-            >
-              <font-awesome-icon :icon="['far', 'trash-alt']" />
-            </b-button>
-          </template>
-        </b-input-group>
+            <font-awesome-icon :icon="['far', 'trash-alt']" />
+          </b-button>
+        </template>
       </b-form-group>
 
       <b-form-group horizontal>
@@ -54,7 +36,7 @@
       class="btn btn-url test-feed-add"
       @click.prevent="handleAddButton"
     >
-      {{ $t('geometry.addEventsSource') }}
+      {{ $t('geometry.addSource') }}
     </b-button>
   </fieldset>
 </template>
@@ -110,7 +92,7 @@ export default {
      * Handles feed's addition
      */
     handleAddButton () {
-      this.block.options.feeds.push(compose.PageBlockCalendar.makeFeed())
+      this.block.options.feeds.push(compose.PageBlockGeometry.makeFeed())
     },
 
     /**

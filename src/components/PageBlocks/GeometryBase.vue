@@ -87,14 +87,12 @@ export default {
     },
 
     bounds () {
-      let { east, north, south, west } = this.options.bounds
+      let { boundsUpper, boundsLower } = this.options
 
-      east = this.parseGeometryField(east)
-      north = this.parseGeometryField(north)
-      south = this.parseGeometryField(south)
-      west = this.parseGeometryField(west)
+      boundsUpper = this.parseGeometryField(boundsUpper)
+      boundsLower = this.parseGeometryField(boundsLower)
 
-      return latLngBounds([this.getLatLng(east), this.getLatLng(north), this.getLatLng(south), this.getLatLng(west)])
+      return latLngBounds([this.getLatLng(boundsUpper), this.getLatLng(boundsLower)])
     },
   },
 
@@ -113,8 +111,8 @@ export default {
       this.processing = true
 
       this.colors = this.options.feeds.map(feed => feed.options.color)
-      this.map.zoom = this.options.zoom.starting || 4
-      this.map.center = this.options.center ? this.parseGeometryField(this.options.center) : [30, 30]
+      this.map.zoom = this.options.zoom.starting
+      this.map.center = this.parseGeometryField(this.options.center)
 
       Promise.all(this.options.feeds.map((feed, idx) => {
         return this.findModuleByID({ namespace: this.namespace, moduleID: feed.options.moduleID })
@@ -126,7 +124,7 @@ export default {
                   geometry: this.parseGeometryField(e.values[feed.geometryField]),
                 }))
 
-                // this.fitMap()
+                this.fitMap()
               })
           })
       })).finally(() => {

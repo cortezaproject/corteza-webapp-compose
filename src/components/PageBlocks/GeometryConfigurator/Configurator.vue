@@ -11,42 +11,9 @@
           sm="12"
           md="4"
         >
-          <b-form-group
-            :label="$t('geometry.zoom.min')"
-          >
+          <b-form-group>
             <b-form-input
-              v-model="options.zoom.min"
-              :placeholder="$t('geometry.zoom.min')"
-              number
-              type="number"
-            />
-          </b-form-group>
-        </b-col>
-        <b-col
-          sm="12"
-          md="4"
-        >
-          <b-form-group
-            :label="$t('geometry.zoom.max')"
-          >
-            <b-form-input
-              v-model="options.zoom.max"
-              :placeholder="$t('geometry.zoom.max')"
-              number
-              type="number"
-            />
-          </b-form-group>
-        </b-col>
-        <b-col
-          sm="12"
-          md="4"
-        >
-          <b-form-group
-            :label="$t('geometry.zoom.starting')"
-          >
-            <b-form-input
-              v-model="options.zoom.starting"
-              :placeholder="$t('geometry.zoom.starting')"
+              v-model="options.zoom"
               number
               type="number"
             />
@@ -68,8 +35,8 @@
           md="6"
         >
           <geometry-field
-            v-model="options.bounds.west"
-            :form-label="$t('geometry.bounds.west')"
+            v-model="options.boundsUpper"
+            :form-label="$t('geometry.bounds.boundsUpper')"
           />
         </b-col>
         <b-col
@@ -77,46 +44,8 @@
           md="6"
         >
           <geometry-field
-            v-model="options.bounds.east"
-            :form-label="$t('geometry.bounds.east')"
-          />
-        </b-col>
-        <b-col
-          sm="12"
-          md="6"
-        >
-          <geometry-field
-            v-model="options.bounds.south"
-            :form-label="$t('geometry.bounds.south')"
-          />
-        </b-col>
-        <b-col
-          sm="12"
-          md="6"
-        >
-          <geometry-field
-            v-model="options.bounds.north"
-            :form-label="$t('geometry.bounds.north')"
-          />
-        </b-col>
-      </b-row>
-    </template>
-
-    <hr>
-    <template>
-      <h5 class="text-primary">
-        {{ $t('geometry.centerLabel') }}
-      </h5>
-      <b-row
-        class="mb-2 mt-4"
-      >
-        <b-col
-          sm="12"
-          md="6"
-        >
-          <geometry-field
-            v-model="options.center"
-            :form-label="$t('geometry.centerLabel')"
+            v-model="options.boundsLower"
+            :form-label="$t('geometry.bounds.boundsLower')"
           />
         </b-col>
       </b-row>
