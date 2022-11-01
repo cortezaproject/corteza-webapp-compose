@@ -139,6 +139,12 @@ export default {
           block: new compose.PageBlockProgress(),
           image: images.Progress,
         },
+        {
+          label: this.$t('geometry.label'),
+          block: new compose.PageBlockGeometry(),
+          image: images.Geometry,
+          recordPageOnly: true,
+        },
       ],
     }
   },
