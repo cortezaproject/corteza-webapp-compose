@@ -24,10 +24,10 @@
         </b-button>
         <b-button
           v-if="namespace.canManageNamespace"
+          :title="$t('configure')"
           data-test-id="button-visit-admin-panel"
           variant="primary"
           class="d-flex align-items-center"
-          :tooltip="$t('admin')"
           :to="{ name: 'admin.modules', params: { slug: namespace.slug } }"
           style="margin-left:2px;"
         >
@@ -248,7 +248,7 @@
             </b-form-group>
             <hr class="mt-3">
             <b-form-group
-              :label="$t('sidebar.title')"
+              :label="$t('sidebar.configure')"
             >
               <b-form-checkbox
                 v-model="namespace.meta.hideSidebar"

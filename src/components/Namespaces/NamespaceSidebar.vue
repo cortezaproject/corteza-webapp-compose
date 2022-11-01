@@ -187,7 +187,6 @@ export default {
 
   data () {
     return {
-      hasSidebar: true,
       namespace: undefined,
 
       query: '',
