@@ -15,6 +15,8 @@
         :center="map.center"
         :min-zoom="map.zoomMin"
         :max-zoom="map.zoomMax"
+        :bounds="bounds"
+        :max-bounds="bounds"
         class="w-100"
         style="height: 100%;"
       >
@@ -87,12 +89,12 @@ export default {
     },
 
     bounds () {
-      let { boundTopLeft, lowerRight } = this.options
+      let { boundLowerRight, boundTopLeft } = this.options
 
       boundTopLeft = this.parseGeometryField(boundTopLeft)
-      lowerRight = this.parseGeometryField(lowerRight)
+      boundLowerRight = this.parseGeometryField(boundLowerRight)
 
-      return latLngBounds([this.getLatLng(boundTopLeft), this.getLatLng(lowerRight)])
+      return latLngBounds([this.getLatLng(boundTopLeft), this.getLatLng(boundLowerRight)])
     },
   },
 
