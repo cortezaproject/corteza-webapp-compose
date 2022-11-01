@@ -32,6 +32,8 @@ import ReportBase from './Report/Base'
 import ReportConfigurator from './Report/Configurator'
 import ProgressBase from './ProgressBase'
 import ProgressConfigurator from './ProgressConfigurator'
+import GeometryBase from './GeometryBase'
+import GeometryConfigurator from './GeometryConfigurator/index'
 
 /**
  * List of all known page block components
@@ -69,6 +71,8 @@ const Registry = {
   CommentConfigurator,
   ProgressBase,
   ProgressConfigurator,
+  GeometryBase,
+  GeometryConfigurator,
 }
 
 const defaultMode = 'Base'
