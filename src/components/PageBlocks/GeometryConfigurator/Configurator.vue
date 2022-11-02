@@ -6,7 +6,7 @@
         :zoom="options.zoomStarting"
         :min-zoom="options.zoomMin"
         :max-zoom="options.zoomMax"
-        :center="center"
+        :center="options.center"
         style="height: 45vh; width: 100%; cursor: pointer;"
         @update:center="updateCenter"
       >
@@ -28,57 +28,52 @@
         sm="12"
         md="4"
       >
-        <b-row>
-          <b-col
-            sm="12"
-            md="4"
-          >
-            <b-form-group
-              :label="$t('geometry.zoom.zoomStartingLabel')"
-              class="rounded-left"
-            >
-              <b-form-input
-                v-model="options.zoomStarting"
-                number
-                type="number"
-              />
-            </b-form-group>
-          </b-col>
-          <b-col
-            sm="12"
-            md="4"
-          >
-            <b-form-group
-              :label="$t('geometry.zoom.zoomMinLabel')"
-              class="rounded-0"
-            >
-              <b-form-input
-                v-model="options.zoomMin"
-                number
-                type="number"
-              />
-            </b-form-group>
-          </b-col>
-          <b-col
-            sm="12"
-            md="4"
-          >
-            <b-form-group
-              :label="$t('geometry.zoom.zoomMaxLabel')"
-            >
-              <b-form-input
-                v-model="options.zoomMax"
-                number
-                type="number"
-              />
-            </b-form-group>
-          </b-col>
-        </b-row>
+        <b-form-group
+          :label="$t('geometry.zoom.zoomStartingLabel')"
+          class="rounded-left"
+        >
+          <b-form-input
+            v-model="options.zoomStarting"
+            number
+            type="number"
+          />
+        </b-form-group>
       </b-col>
 
       <b-col
         sm="12"
-        md="2"
+        md="4"
+      >
+        <b-form-group
+          :label="$t('geometry.zoom.zoomMinLabel')"
+          class="rounded-0"
+        >
+          <b-form-input
+            v-model="options.zoomMin"
+            number
+            type="number"
+          />
+        </b-form-group>
+      </b-col>
+
+      <b-col
+        sm="12"
+        md="4"
+      >
+        <b-form-group
+          :label="$t('geometry.zoom.zoomMaxLabel')"
+        >
+          <b-form-input
+            v-model="options.zoomMax"
+            number
+            type="number"
+          />
+        </b-form-group>
+      </b-col>
+
+      <b-col
+        sm="12"
+        md="4"
       >
         <b-form-group
           label-class="text-primary"
@@ -86,13 +81,13 @@
         >
           <b-input-group>
             <b-form-input
-              v-model="center[0]"
+              v-model="options.center[0]"
               type="number"
               number
               :placeholder="$t('latitude')"
             />
             <b-form-input
-              v-model="center[1]"
+              v-model="options.center[1]"
               type="number"
               number
               :placeholder="$t('longitude')"
@@ -103,16 +98,17 @@
 
       <b-col
         sm="12"
-        md="3"
+        md="4"
       >
         <geometry-field
           v-model="options.boundTopLeft"
           :form-label="$t('geometry.bounds.topLeft')"
         />
       </b-col>
+
       <b-col
         sm="12"
-        md="3"
+        md="4"
       >
         <geometry-field
           v-model="options.boundLowerRight"
@@ -162,19 +158,6 @@ export default {
     },
   },
 
-  watch: {
-    'options.center': {
-      deep: true,
-      handler (value) {
-        this.center = JSON.parse(value || '{"coordinates":[]}').coordinates
-      },
-    },
-  },
-
-  created () {
-    this.center = JSON.parse(this.options.center || '{"coordinates":[]}').coordinates
-  },
-
   methods: {
     getLatLng (coordinates = [undefined, undefined]) {
       const [lat, lng] = coordinates
@@ -186,7 +169,7 @@ export default {
     updateCenter (coordinates) {
       const { lat, lng } = coordinates
 
-      this.center = [lat, lng]
+      this.options.center = [lat, lng]
     },
   },
 }

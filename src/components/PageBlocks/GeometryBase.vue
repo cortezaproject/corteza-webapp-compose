@@ -49,7 +49,6 @@ import { latLng, latLngBounds } from 'leaflet'
 import base from './base'
 
 export default {
-
   components: { LPolygon },
 
   extends: base,
@@ -115,7 +114,7 @@ export default {
       this.map.zoom = this.options.zoomStarting
       this.map.zoomMin = this.options.zoomMin
       this.map.zoomMax = this.options.zoomMax
-      this.map.center = this.parseGeometryField(this.options.center)
+      this.map.center = this.options.center
 
       Promise.all(this.options.feeds.map((feed, idx) => {
         return this.findModuleByID({ namespace: this.namespace, moduleID: feed.options.moduleID })
