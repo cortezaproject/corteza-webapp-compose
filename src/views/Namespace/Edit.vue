@@ -252,7 +252,7 @@
             >
               <b-form-checkbox
                 v-model="namespace.meta.hideSidebar"
-                data-test-id="checkbox-show-namespace-sidebar"
+                data-test-id="checkbox-show-sidebar"
               >
                 {{ $t('sidebar.hide') }}
               </b-form-checkbox>
