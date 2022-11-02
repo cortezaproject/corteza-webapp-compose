@@ -119,6 +119,12 @@ export default {
         this.$emit('input', input)
       },
     },
+    value: {
+      deep: true,
+      handler (value) {
+        this.localValue = JSON.parse(value || '{"coordinates":[]}')
+      },
+    },
   },
 
   created () {

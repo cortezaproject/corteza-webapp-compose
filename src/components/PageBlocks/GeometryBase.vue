@@ -13,7 +13,8 @@
       <l-map
         :zoom="map.zoom"
         :center="map.center"
-        :bounds="bounds"
+        :min-zoom="map.zoomMin"
+        :max-zoom="map.zoomMax"
         class="w-100"
         style="height: 100%;"
       >
@@ -87,12 +88,12 @@ export default {
     },
 
     bounds () {
-      let { boundsUpper, boundsLower } = this.options
+      let { boundTopLeft, lowerRight } = this.options
 
-      boundsUpper = this.parseGeometryField(boundsUpper)
-      boundsLower = this.parseGeometryField(boundsLower)
+      boundTopLeft = this.parseGeometryField(boundTopLeft)
+      lowerRight = this.parseGeometryField(lowerRight)
 
-      return latLngBounds([this.getLatLng(boundsUpper), this.getLatLng(boundsLower)])
+      return latLngBounds([this.getLatLng(boundTopLeft), this.getLatLng(lowerRight)])
     },
   },
 
@@ -111,7 +112,9 @@ export default {
       this.processing = true
 
       this.colors = this.options.feeds.map(feed => feed.options.color)
-      this.map.zoom = this.options.zoom.starting
+      this.map.zoom = this.options.zoomStarting
+      this.map.zoomMin = this.options.zoomMin
+      this.map.zoomMax = this.options.zoomMax
       this.map.center = this.parseGeometryField(this.options.center)
 
       Promise.all(this.options.feeds.map((feed, idx) => {
@@ -124,7 +127,7 @@ export default {
                   geometry: this.parseGeometryField(e.values[feed.geometryField]),
                 }))
 
-                this.fitMap()
+                // this.fitMap()
               })
           })
       })).finally(() => {
