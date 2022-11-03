@@ -33,7 +33,6 @@
         >
           <font-awesome-icon
             :icon="['fas', 'cogs']"
-            class="ml-2"
           />
         </b-button>
         <namespace-translator
