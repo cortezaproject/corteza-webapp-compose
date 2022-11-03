@@ -198,8 +198,9 @@ export default {
         'namespace.clone',
         'namespace.manage',
       ]
-      const nameSpaceRoutes = ['page', 'pages']
-      this.disabledRoutes = [...defaultDisabledRoutes, ...(handle ? [] : nameSpaceRoutes)]
+      const namespaceRoutes = ['page', 'pages']
+
+      this.disabledRoutes = [...defaultDisabledRoutes, ...(handle ? [] : namespaceRoutes)]
     },
 
     removeToast (reminderID) {

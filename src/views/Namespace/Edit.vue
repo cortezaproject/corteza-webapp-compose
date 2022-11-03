@@ -246,6 +246,7 @@
               </b-input-group>
             </b-form-group>
             <hr>
+
             <b-form-group
               :label="$t('sidebar.configure')"
             >
