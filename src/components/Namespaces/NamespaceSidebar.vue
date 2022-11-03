@@ -1,7 +1,5 @@
 <template>
-  <div
-    :showSidebar="showSidebar"
-  >
+  <div>
     <portal to="sidebar-header-expanded">
       <vue-select
         v-if="!hideNamespaceList"
@@ -207,14 +205,6 @@ export default {
     // Loading is true only when a resource is being force loaded (API call)
     loading () {
       return this.moduleLoading || this.chartLoading || this.pageLoading
-    },
-
-    showSidebar () {
-      if (typeof this.namespace !== 'undefined') {
-        return this.$root.$emit('sidebar-show', !this.namespace.meta.hideSidebar)
-      } else {
-        return false
-      }
     },
 
     hideNamespaceList () {

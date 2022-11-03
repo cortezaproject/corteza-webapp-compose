@@ -38,10 +38,9 @@
           :pinned.sync="pinned"
           :icon="icon"
           :logo="logo"
-          :disabled-routes="showSidebar ? disabledRoutes : ['page', 'pages', ...disabledRoutes]"
+          :disabled-routes="disabledRoutes"
           expand-on-hover
           :right="textDirectionality() === 'rtl'"
-          @show-sidebar="onShowSidebar"
         >
           <template #header-expanded>
             <portal-target name="sidebar-header-expanded" />
@@ -133,7 +132,6 @@ export default {
       // Sidebar and Topbar
       expanded: false,
       pinned: false,
-      showSidebar: false,
 
       toasts: [],
 
@@ -184,21 +182,23 @@ export default {
     this.$root.$on('alert', ({ message, ...params }) => this.toast(message, params))
     this.$root.$on('reminder.show', this.showReminder)
 
-    this.$root.$on('sidebar-show', this.onShowSidebar)
+    this.$root.$on('sidebar-show', this.checkNamespaceSidebar)
   },
 
   beforeDestroy () {
     this.$root.$off('alert')
     this.$root.$off('reminder.show', this.showReminder)
+    this.$root.$off('sidebar-show', this.checkNamespaceSidebar)
   },
 
   methods: {
-    onShowSidebar (handle) {
-      if (handle) {
-        this.showSidebar = true
-      } else {
-        this.showSidebar = false
+    checkNamespaceSidebar (handle) {
+      if (!handle) {
+        this.disabledRoutes.push('page')
+        this.disabledRoutes.push('pages')
       }
+      // const nameSpaceRoutes = ['page', 'pages']
+      // return [...this.disabledRoutes, ...(handle ? [] : nameSpaceRoutes)]
     },
 
     removeToast (reminderID) {
