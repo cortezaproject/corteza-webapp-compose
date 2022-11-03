@@ -60,7 +60,7 @@
               <b-form-input
                 v-model="options.height"
                 type="number"
-                :number="true"
+                number
                 :placeholder="$t('kind.file.view.height')"
               />
             </b-input-group>
@@ -79,7 +79,7 @@
               <b-form-input
                 v-model="options.width"
                 type="number"
-                :number="true"
+                number
                 :placeholder="$t('kind.file.view.width')"
               />
             </b-input-group>
@@ -99,7 +99,7 @@
               <b-form-input
                 v-model="options.maxHeight"
                 type="number"
-                :number="true"
+                number
                 :placeholder="$t('kind.file.view.maxHeight')"
               />
             </b-input-group>
@@ -118,7 +118,7 @@
               <b-form-input
                 v-model="options.maxWidth"
                 type="number"
-                :number="true"
+                number
                 :placeholder="$t('kind.file.view.maxWidth')"
               />
             </b-input-group>
@@ -138,7 +138,7 @@
               <b-form-input
                 v-model="options.borderRadius"
                 type="number"
-                :number="true"
+                number
                 :placeholder="$t('kind.file.view.borderRadius')"
               />
             </b-input-group>
@@ -173,7 +173,7 @@
               <b-form-input
                 v-model="options.margin"
                 type="number"
-                :number="true"
+                number
                 :placeholder="$t('kind.file.view.margin')"
               />
             </b-input-group>

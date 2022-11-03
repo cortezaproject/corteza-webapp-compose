@@ -37,7 +37,7 @@
     </b-form-group>
 
     <b-form-group
-      v-if="enableFileNameHiding"
+      v-if="enablePreviewStyling"
       class="mb-0"
     >
       <b-form-checkbox
@@ -213,11 +213,6 @@ export default {
         { value: 'single', text: this.$t('kind.file.view.single') },
         { value: 'gallery', text: this.$t('kind.file.view.gallery') },
       ]
-    },
-
-    enableFileNameHiding () {
-      const { mode } = this.f.options
-      return (mode === 'single') || (mode === 'gallery')
     },
 
     enablePreviewStyling () {
