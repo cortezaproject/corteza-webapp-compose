@@ -32,29 +32,27 @@
     </header>
 
     <aside>
-      <template>
-        <c-sidebar
-          :expanded.sync="expanded"
-          :pinned.sync="pinned"
-          :icon="icon"
-          :logo="logo"
-          :disabled-routes="disabledRoutes"
-          expand-on-hover
-          :right="textDirectionality() === 'rtl'"
-        >
-          <template #header-expanded>
-            <portal-target name="sidebar-header-expanded" />
-          </template>
+      <c-sidebar
+        :expanded.sync="expanded"
+        :pinned.sync="pinned"
+        :icon="icon"
+        :logo="logo"
+        :disabled-routes="disabledRoutes"
+        expand-on-hover
+        :right="textDirectionality() === 'rtl'"
+      >
+        <template #header-expanded>
+          <portal-target name="sidebar-header-expanded" />
+        </template>
 
-          <template #body-expanded>
-            <portal-target name="sidebar-body-expanded" />
-          </template>
+        <template #body-expanded>
+          <portal-target name="sidebar-body-expanded" />
+        </template>
 
-          <template #footer-expanded>
-            <portal-target name="sidebar-footer-expanded" />
-          </template>
-        </c-sidebar>
-      </template>
+        <template #footer-expanded>
+          <portal-target name="sidebar-footer-expanded" />
+        </template>
+      </c-sidebar>
     </aside>
 
     <main class="d-inline-flex h-100 overflow-auto d-print-flex">
@@ -147,7 +145,6 @@ export default {
   },
 
   computed: {
-
     user () {
       const { user } = this.$auth
       return user.name || user.handle || user.email || ''
@@ -193,12 +190,16 @@ export default {
 
   methods: {
     checkNamespaceSidebar (handle) {
-      if (!handle) {
-        this.disabledRoutes.push('page')
-        this.disabledRoutes.push('pages')
-      }
-      // const nameSpaceRoutes = ['page', 'pages']
-      // return [...this.disabledRoutes, ...(handle ? [] : nameSpaceRoutes)]
+      const defaultDisabledRoutes = [
+        'namespaces',
+        'namespace.list',
+        'namespace.edit',
+        'namespace.create',
+        'namespace.clone',
+        'namespace.manage',
+      ]
+      const nameSpaceRoutes = ['page', 'pages']
+      this.disabledRoutes = [...defaultDisabledRoutes, ...(handle ? [] : nameSpaceRoutes)]
     },
 
     removeToast (reminderID) {

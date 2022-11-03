@@ -226,7 +226,7 @@
 
             <b-form-group
               :label="$t('description.label')"
-              class="mb-0"
+              class="mb-3"
             >
               <b-input-group>
                 <b-form-textarea
@@ -245,7 +245,7 @@
                 </b-input-group-append>
               </b-input-group>
             </b-form-group>
-            <hr class="mt-3">
+            <hr>
             <b-form-group
               :label="$t('sidebar.configure')"
             >
