@@ -9,6 +9,7 @@
         :center="options.center"
         style="height: 45vh; width: 100%; cursor: pointer;"
         @update:center="updateCenter"
+        @update:bounds="boundsUpdated"
       >
         <l-tile-layer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -35,6 +36,7 @@
           <b-form-input
             v-model="options.zoomStarting"
             number
+            readonly
             type="number"
           />
         </b-form-group>
@@ -100,20 +102,17 @@
         sm="12"
         md="4"
       >
-        <geometry-field
-          v-model="options.boundTopLeft"
-          :form-label="$t('geometry.bounds.topLeft')"
-        />
-      </b-col>
-
-      <b-col
-        sm="12"
-        md="4"
-      >
-        <geometry-field
-          v-model="options.boundLowerRight"
-          :form-label="$t('geometry.bounds.lowerRight')"
-        />
+        <b-form-group
+          :label="$t('geometry.bounds.lockBounds')"
+          class="rounded-left"
+        >
+          <b-form-checkbox
+            v-model="options.lockBounds"
+            name="lock-bounds"
+            switch
+            size="lg"
+          />
+        </b-form-group>
       </b-col>
     </b-row>
   </div>
@@ -122,12 +121,9 @@
 <script>
 import { latLng } from 'leaflet'
 import base from '../base'
-import GeometryField from './GeometryField'
 
 export default {
-  components: {
-    GeometryField,
-  },
+  components: {},
 
   i18nOptions: {
     namespaces: 'block',
@@ -170,6 +166,11 @@ export default {
       const { lat, lng } = coordinates
 
       this.options.center = [lat, lng]
+    },
+    boundsUpdated (coordinates) {
+      // let { _northEast, _southWest } = this.options
+
+      console.log(coordinates)
     },
   },
 }

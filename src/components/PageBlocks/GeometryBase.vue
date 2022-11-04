@@ -26,15 +26,16 @@
         />
         <l-polygon
           v-for="(geometry, i) in geometries"
-          :key="`polyline-${i}`"
+          :key="`polygon-${i}`"
           :lat-lngs="geometry.map(value => value.geometry)"
           :color="colors[i]"
         />
 
         <l-marker
           v-for="(marker, i) in localValue"
-          :key="i"
-          :lat-lng="marker"
+          :key="`marker-${i}`"
+          :lat-lng="marker.value"
+          :icon="getIcon(marker)"
         />
       </l-map>
     </template>
@@ -42,12 +43,13 @@
 </template>
 
 <script>
+import { divIcon, latLng, latLngBounds } from 'leaflet'
 import {
   LPolygon,
 } from 'vue2-leaflet'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import { mapGetters, mapActions } from 'vuex'
-import { latLng, latLngBounds } from 'leaflet'
+import { evaluatePrefilter } from 'corteza-webapp-compose/src/lib/record-filter'
 import base from './base'
 
 export default {
@@ -81,7 +83,7 @@ export default {
 
       this.geometries.forEach((geo) => {
         geo.forEach((value) => {
-          values.push(this.getLatLng(value.geometry))
+          values.push({ value: this.getLatLng(value.geometry), color: value.color })
         })
       })
 
@@ -121,18 +123,45 @@ export default {
       Promise.all(this.options.feeds.map((feed, idx) => {
         return this.findModuleByID({ namespace: this.namespace, moduleID: feed.options.moduleID })
           .then(module => {
-            return compose.PageBlockGeometry.RecordFeed(this.$ComposeAPI, module, this.namespace, feed, this.loaded)
-              .then(events => {
-                this.geometries[idx] = events.map(e => ({
+            // Interpolate prefilter variables
+            if (feed.options.prefilter) {
+              feed.options.prefilter = evaluatePrefilter(feed.options.prefilter, {
+                record: this.record,
+                recordID: (this.record || {}).recordID || NoID,
+                ownerID: (this.record || {}).ownedBy || NoID,
+                userID: (this.$auth.user || {}).userID || NoID,
+              })
+            }
+
+            return compose.PageBlockGeometry.RecordFeed(this.$ComposeAPI, module, this.namespace, feed)
+              .then(records => {
+                this.geometries[idx] = records.map(e => ({
                   title: e.values[feed.titleField],
                   geometry: this.parseGeometryField(e.values[feed.geometryField]),
+                  color: feed.options.color,
                 }))
-
-                // this.fitMap()
               })
           })
       })).finally(() => {
         this.processing = false
+      })
+    },
+
+    getIcon (item) {
+      item.color = item.color || '#2f85cb'
+      item.strokeColor = item.color || '#3383cc'
+      item.circleColor = '#ffffff'
+
+      return divIcon({
+        className: 'my-custom-pin',
+        html: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 34.892337" height="60" width="40" style="margin-top: -40px;margin-left: -15px;height: 35px;">
+  <g transform="translate(-814.59595,-274.38623)">
+    <g transform="matrix(1.1855854,0,0,1.1855854,-151.17715,-57.3976)">
+      <path d="m 817.11249,282.97118 c -1.25816,1.34277 -2.04623,3.29881 -2.01563,5.13867 0.0639,3.84476 1.79693,5.3002 4.56836,10.59179 0.99832,2.32851 2.04027,4.79237 3.03125,8.87305 0.13772,0.60193 0.27203,1.16104 0.33416,1.20948 0.0621,0.0485 0.19644,-0.51262 0.33416,-1.11455 0.99098,-4.08068 2.03293,-6.54258 3.03125,-8.87109 2.77143,-5.29159 4.50444,-6.74704 4.56836,-10.5918 0.0306,-1.83986 -0.75942,-3.79785 -2.01758,-5.14062 -1.43724,-1.53389 -3.60504,-2.66908 -5.91619,-2.71655 -2.31115,-0.0475 -4.4809,1.08773 -5.91814,2.62162 z" style="fill:${item.color};stroke:${item.strokeColor};"/>
+      <circle r="3.0355" cy="288.25278" cx="823.03064" id="path3049" style="display:inline;fill:${item.circleColor};"/>
+    </g>
+  </g>
+</svg>`,
       })
     },
 

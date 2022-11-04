@@ -4,21 +4,25 @@
       v-for="(feed, i) in options.feeds"
       :key="i"
     >
-      <b-form-group
-        :label="$t('geometry.feedLabel')"
+      <div
+        class="d-flex justify-content-between mb-3"
       >
+        <h5>
+          {{ $t('geometry.feedLabel') }}
+        </h5>
+
         <template
           v-if="feed.resource"
         >
           <b-button
-            variant="outline-danger mr-auto"
+            variant="outline-danger"
             class="border-0"
             @click="onRemoveFeed(i)"
           >
             <font-awesome-icon :icon="['far', 'trash-alt']" />
           </b-button>
         </template>
-      </b-form-group>
+      </div>
 
       <b-form-group horizontal>
         <component
