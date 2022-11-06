@@ -11,14 +11,15 @@
     </div>
     <template v-else>
       <l-map
+        ref="map"
         :zoom="map.zoom"
         :center="map.center"
         :min-zoom="map.zoomMin"
         :max-zoom="map.zoomMax"
-        :bounds="bounds"
-        :max-bounds="bounds"
+        :bounds="map.bounds"
         class="w-100"
         style="height: 100%;"
+        :max-bounds="map.lockBounds ? map.bounds : null"
       >
         <l-tile-layer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -115,10 +116,8 @@ export default {
       this.processing = true
 
       this.colors = this.options.feeds.map(feed => feed.options.color)
+      this.map = this.options
       this.map.zoom = this.options.zoomStarting
-      this.map.zoomMin = this.options.zoomMin
-      this.map.zoomMax = this.options.zoomMax
-      this.map.center = this.options.center
 
       Promise.all(this.options.feeds.map((feed, idx) => {
         return this.findModuleByID({ namespace: this.namespace, moduleID: feed.options.moduleID })

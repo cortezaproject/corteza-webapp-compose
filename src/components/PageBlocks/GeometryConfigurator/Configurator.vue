@@ -8,6 +8,8 @@
         :max-zoom="options.zoomMax"
         :center="options.center"
         style="height: 45vh; width: 100%; cursor: pointer;"
+        :max-bounds="options.lockBounds ? options.bounds : null"
+        @update:zoom="zoomUpdated"
         @update:center="updateCenter"
         @update:bounds="boundsUpdated"
       >
@@ -168,9 +170,10 @@ export default {
       this.options.center = [lat, lng]
     },
     boundsUpdated (coordinates) {
-      // let { _northEast, _southWest } = this.options
-
-      console.log(coordinates)
+      this.options.bounds = coordinates
+    },
+    zoomUpdated (zoom) {
+      this.options.zoomStarting = zoom
     },
   },
 }
