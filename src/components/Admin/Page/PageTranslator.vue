@@ -167,19 +167,14 @@ export default {
               }
             }
 
-            if (this.block) {
-              this.block.title = (find(`pageBlock.${this.block.blockID}.title`) || {}).message
-              this.block.description = (find(`pageBlock.${this.block.blockID}.description`) || {}).message
-            }
-
-            this.page.blocks = this.page.blocks.map(block => {
+            const updateBlockTranslations = block => {
               block.title = (find(`pageBlock.${block.blockID}.title`) || {}).message
               block.description = (find(`pageBlock.${block.blockID}.description`) || {}).message
 
               switch (true) {
                 case block instanceof compose.PageBlockAutomation:
                   block.options.buttons.forEach((btn, index) => {
-                    tr = find(`pageBlock.${block.blockID}.button.${btn.buttonID || (index + 1)}.label`)
+                    tr = find(`pageBlock.${block.blockID}.button.${btn.buttonID || index}.label`)
                     if (tr) {
                       btn.label = tr.message
                     }
@@ -188,7 +183,7 @@ export default {
 
                 case block instanceof compose.PageBlockRecordList:
                   block.options.selectionButtons.forEach((btn, index) => {
-                    tr = find(`pageBlock.${block.blockID}.button.${btn.buttonID || (index + 1)}.label`)
+                    tr = find(`pageBlock.${block.blockID}.button.${btn.buttonID || index}.label`)
                     if (tr) {
                       btn.label = tr.message
                     }
@@ -196,15 +191,21 @@ export default {
                   break
 
                 case block instanceof compose.PageBlockContent:
-                  tr = find(`pageBlock.${block.blockID}.body`)
+                  tr = find(`pageBlock.${block.blockID}.content.body`)
                   if (tr) {
-                    block.options.label = tr.message
+                    block.options.body = tr.message
                   }
                   break
               }
 
               return block
-            })
+            }
+
+            if (this.block) {
+              this.block = updateBlockTranslations(this.block)
+            }
+
+            this.page.blocks = this.page.blocks.map(block => updateBlockTranslations(block))
 
             return this.page
           })

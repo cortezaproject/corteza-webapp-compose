@@ -55,7 +55,7 @@
           <button-editor
             v-if="currentButton"
             :page="page"
-            :block="block"
+            :block.sync="block"
             :button="currentButton"
             :script="currentScript"
             :trigger="currentTrigger"

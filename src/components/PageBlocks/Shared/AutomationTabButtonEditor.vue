@@ -10,18 +10,9 @@
         <b-form-input
           v-model="button.label"
         />
-        <b-input-group-append>
-          <page-translator
-            v-if="page"
-            :page="page"
-            :block="block"
-            :disabled="isNew"
-            :highlight-key="`pageBlock.${block.blockID}.automation`"
-            button-variant="light"
-          />
-        </b-input-group-append>
       </b-input-group>
     </b-form-group>
+
     <b-form-group
       :label="$t('automation.buttonVariant')"
     >
@@ -50,11 +41,13 @@
         {{ $t('automation.stepID', { stepID: trigger.stepID}) }}
       </var>
     </div>
+
     <code
       v-else-if="button.script"
     >
       {{ button.script }}
     </code>
+
     <b-alert
       v-else
       show
@@ -62,18 +55,21 @@
     >
       {{ $t('automation.noScript' ) }}
     </b-alert>
+
     <p
       v-if="workflow && workflow.meta"
       class="mb-0 mt-2"
     >
       {{ workflow.meta.description || $t('automation.noDescription') }}
     </p>
+
     <p
       v-else-if="script"
       class="mb-0 mt-2"
     >
       {{ script.description || $t('automation.noDescription') }}
     </p>
+
     <template #footer>
       <c-input-confirm
         variant="link-light"
@@ -84,13 +80,8 @@
 </template>
 <script>
 import { compose, NoID } from '@cortezaproject/corteza-js'
-import PageTranslator from 'corteza-webapp-compose/src/components/Admin/Page/PageTranslator'
 
 export default {
-  components: {
-    PageTranslator,
-  },
-
   i18nOptions: {
     namespaces: 'block',
   },
