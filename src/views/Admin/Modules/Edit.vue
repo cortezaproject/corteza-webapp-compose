@@ -581,9 +581,11 @@ export default {
     },
 
     systemFields () {
+      const systemFieldEncoding = this.module.config.dal.systemFieldEncoding || {}
+
       return this.module.systemFields().map(sf => {
         sf.label = this.$t(`field:system.${sf.name}`)
-        return sf
+        return { ...sf, ...systemFieldEncoding[sf.name] }
       })
     },
 

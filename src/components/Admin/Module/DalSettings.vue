@@ -50,14 +50,26 @@
       :label="$t('system-fields.label')"
       :description="$t('system-fields.description')"
     >
+      <b-form-radio-group
+        v-model="selectedGroup"
+        buttons
+        button-variant="outline-secondary"
+        size="sm"
+        name="buttons"
+        :options="optionsGroups"
+        class="mb-3"
+        @change="applySelectedSystemFields"
+      />
+
       <dal-field-store-encoding
-        v-for="({ field, storeIdent, label }) in systemFields"
+        v-for="({ field, storeIdent, label, disabled }) in systemFields"
         :key="field"
         :config="systemFieldEncoding[field] || {}"
         :field="field"
         :label="label"
         :store-ident="storeIdent"
         :allow-omit-strategy="true"
+        :disabled="disabled"
         @change="applySystemFieldStrategyConfig(field, $event)"
       />
     </b-form-group>
@@ -93,18 +105,18 @@ export default {
   data () {
     const systemFieldEncoding = this.module.config.dal.systemFieldEncoding || {}
     const systemFields = [
-      { field: 'id', storeIdent: 'id' },
-      { field: 'namespaceID', storeIdent: 'rel_namespace' },
-      { field: 'moduleID', storeIdent: 'rel_module' },
-      { field: 'revision', storeIdent: 'revision' },
-      { field: 'meta', storeIdent: 'meta' },
-      { field: 'ownedBy', storeIdent: 'owned_by' },
-      { field: 'createdAt', storeIdent: 'created_at' },
-      { field: 'createdBy', storeIdent: 'created_by' },
-      { field: 'updatedAt', storeIdent: 'updated_at' },
-      { field: 'updatedBy', storeIdent: 'updated_by' },
-      { field: 'deletedAt', storeIdent: 'deleted_at' },
-      { field: 'deletedBy', storeIdent: 'deleted_by' },
+      { field: 'id', storeIdent: 'id', disabled: true, groupType: ['all'] },
+      { field: 'namespaceID', storeIdent: 'rel_namespace', disabled: false, groupType: ['all', 'partition'] },
+      { field: 'moduleID', storeIdent: 'rel_module', disabled: false, groupType: ['all', 'partition'] },
+      { field: 'revision', storeIdent: 'revision', disabled: false, groupType: ['all', 'extras'] },
+      { field: 'meta', storeIdent: 'meta', disabled: false, groupType: ['all', 'extras'] },
+      { field: 'ownedBy', storeIdent: 'owned_by', disabled: false, groupType: ['all', 'user_reference'] },
+      { field: 'createdAt', storeIdent: 'created_at', disabled: false, groupType: ['all', 'timestamps'] },
+      { field: 'createdBy', storeIdent: 'created_by', disabled: false, groupType: ['all', 'user_reference'] },
+      { field: 'updatedAt', storeIdent: 'updated_at', disabled: false, groupType: ['all', 'timestamps'] },
+      { field: 'updatedBy', storeIdent: 'updated_by', disabled: false, groupType: ['all', 'user_reference'] },
+      { field: 'deletedAt', storeIdent: 'deleted_at', disabled: false, groupType: ['all', 'timestamps'] },
+      { field: 'deletedBy', storeIdent: 'deleted_by', disabled: false, groupType: ['all', 'user_reference'] },
     ].map(sf => ({ ...sf, label: this.$t(`field:system.${sf.field}`) }))
 
     return {
@@ -119,6 +131,14 @@ export default {
         enc[field] = systemFieldEncoding[field] || {}
         return enc
       }, {}),
+      selectedGroup: '',
+      optionsGroups: [
+        { text: this.$t('system-fields.grouptypes.all'), value: 'all' },
+        { text: this.$t('system-fields.grouptypes.partition'), value: 'partition' },
+        { text: this.$t('system-fields.grouptypes.userReference'), value: 'user_reference' },
+        { text: this.$t('system-fields.grouptypes.timestamps'), value: 'timestamps' },
+        { text: this.$t('system-fields.grouptypes.extras'), value: 'extras' },
+      ],
     }
   },
 
@@ -217,6 +237,17 @@ export default {
           }
           return enc
         }, {})
+    },
+
+    applySelectedSystemFields (selectedOption) {
+      console.log(selectedOption)
+      this.systemFieldEncoding = this.systemFields.reduce((enc, { field, groupType }) => {
+        console.log(groupType.includes(selectedOption))
+        enc[field] = groupType.includes(selectedOption) ? {} : { omit: true }
+        return enc
+      }, {})
+
+      console.log(this.systemFieldEncoding)
     },
   },
 }

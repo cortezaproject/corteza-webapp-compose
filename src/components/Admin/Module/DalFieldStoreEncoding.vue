@@ -10,6 +10,7 @@
       <b-form-checkbox
         v-if="allowOmitStrategy"
         v-model="use"
+        :disabled="disabled"
       >
         {{ label }}
       </b-form-checkbox>
@@ -97,6 +98,11 @@ export default {
     allowOmitStrategy: {
       type: Boolean,
       default: true,
+    },
+
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
 
