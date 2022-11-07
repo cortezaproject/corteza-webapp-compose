@@ -242,8 +242,9 @@ export default {
     applySelectedSystemFields (selectedOption) {
       console.log(selectedOption)
       this.systemFieldEncoding = this.systemFields.reduce((enc, { field, groupType }) => {
-        console.log(groupType.includes(selectedOption))
-        enc[field] = groupType.includes(selectedOption) ? {} : { omit: true }
+        if (field !== 'id') {
+          enc[field] = groupType.includes(selectedOption) ? {} : { omit: true }
+        }
         return enc
       }, {})
 
