@@ -66,10 +66,10 @@
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
 import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
 import AttachmentModal from 'corteza-webapp-compose/src/components/Public/Page/Attachment/Modal'
 import PageTranslator from 'corteza-webapp-compose/src/components/Admin/Page/PageTranslator'
-
 import { compose, NoID } from '@cortezaproject/corteza-js'
 
 export default {
@@ -159,6 +159,12 @@ export default {
 
   beforeDestroy () {
     this.$root.$off('refetch-records')
+  },
+
+  methods: {
+    ...mapActions({
+      updatePageSet: 'page/updateSet',
+    }),
   },
 }
 </script>

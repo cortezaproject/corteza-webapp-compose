@@ -238,7 +238,6 @@ export default {
       createModule: 'module/create',
       createPage: 'page/create',
       createChart: 'chart/create',
-      updatePageSet: 'page/updateSet',
     }),
 
     createNewModule () {
