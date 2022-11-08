@@ -574,6 +574,14 @@
           </b-col>
         </b-row>
       </b-container>
+      <b-modal
+        v-model="showRecordModal"
+        title="BootstrapVue"
+      >
+        <p class="my-4">
+          Hello from modal!
+        </p>
+      </b-modal>
     </template>
   </wrap>
 </template>
@@ -594,6 +602,9 @@ import { components, url } from '@cortezaproject/corteza-vue'
 import draggable from 'vuedraggable'
 import RecordListFilter from 'corteza-webapp-compose/src/components/Common/RecordListFilter'
 import ColumnPicker from 'corteza-webapp-compose/src/components/Admin/Module/Records/ColumnPicker'
+import Grid from 'corteza-webapp-compose/src/components/Public/Page/Grid'
+import ViewRecord from 'corteza-webapp-compose/src/views/Public/Pages/Records/View'
+
 const { CInputSearch } = components
 
 export default {
@@ -611,6 +622,8 @@ export default {
     RecordListFilter,
     ColumnPicker,
     CInputSearch,
+    Grid,
+    ViewRecord,
   },
 
   extends: base,
@@ -666,6 +679,8 @@ export default {
       items: [],
       idPrefix: `rl:${this.blockIndex}`,
       recordListFilter: [],
+
+      showRecordModal: false,
     }
   },
 
@@ -1149,9 +1164,17 @@ export default {
         },
         query: null,
       }
+      /* old logic - to be deleted */
+      // if (this.options.openInNewTab) {
+      //   window.open(this.$router.resolve(route).href)
+      // } else {
+      //   this.$router.push(route)
+      // }
 
-      if (this.options.openInNewTab) {
+      if (this.options.recordDisplayOption === 'newTab') {
         window.open(this.$router.resolve(route).href)
+      } else if (this.options.recordDisplayOption === 'modal') {
+        this.showRecordModal = true
       } else {
         this.$router.push(route)
       }

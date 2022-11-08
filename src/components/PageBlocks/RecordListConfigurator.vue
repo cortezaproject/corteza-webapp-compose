@@ -250,12 +250,36 @@
         <b-form-checkbox v-model="options.selectable">
           {{ $t('recordList.selectable') }}
         </b-form-checkbox>
-        <b-form-checkbox
+        <!--Old logic - to be deleted -->
+        <!-- <b-form-checkbox
           v-model="options.openInNewTab"
         >
           {{ $t('recordList.record.openInNewTab') }}
-        </b-form-checkbox>
+        </b-form-checkbox> -->
       </b-form-group>
+
+      <!--Select options how to open a record-->
+      <b-form-group
+        :label="$t('recordList.record.recordDisplayOptions')"
+        :label-cols="3"
+        breakpoint="md"
+        horizontal
+      >
+        <b-form-select
+          v-model="options.recordDisplayOption"
+          :options="recordDisplayOptions"
+          required
+        >
+          <template slot="first">
+            <option
+              :value="0"
+            >
+              {{ $t('recordList.record.openInSameTab') }}
+            </option>
+          </template>
+        </b-form-select>
+      </b-form-group>
+
       <b-form-group
         horizontal
         :label-cols="3"
@@ -323,6 +347,13 @@ export default {
       modules: 'module/set',
       pages: 'page/set',
     }),
+
+    recordDisplayOptions () {
+      return [
+        { value: 'newTab', text: this.$t('recordList.record.openInNewTab') },
+        { value: 'modal', text: this.$t('recordList.record.openInModal') },
+      ]
+    },
 
     moduleOptions () {
       return [
