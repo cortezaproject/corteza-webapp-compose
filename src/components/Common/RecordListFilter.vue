@@ -354,29 +354,52 @@ export default {
         },
       ]
 
-      if (['Number', 'DateTime'].includes(kind)) {
-        return [
-          ...operators,
-          {
-            value: '>',
-            text: this.$t('recordList.filter.operators.greaterThan'),
-          },
-          {
-            value: '<',
-            text: this.$t('recordList.filter.operators.lessThan'),
-          },
-        ]
-      } else if (['String', 'Url', 'Email'].includes(kind)) {
-        return [
-          ...operators,
-          {
-            value: 'LIKE',
-            text: this.$t('recordList.filter.operators.contains'),
-          },
-        ]
-      }
+      const inOperators = [
+        {
+          value: 'IN',
+          text: this.$t('recordList.filter.operators.contains'),
+        },
+        {
+          value: 'NOT IN',
+          text: this.$t('recordList.filter.operators.notContains'),
+        },
+      ]
+      const lgOperators = [
+        {
+          value: '>',
+          text: this.$t('recordList.filter.operators.greaterThan'),
+        },
+        {
+          value: '<',
+          text: this.$t('recordList.filter.operators.lessThan'),
+        },
+      ]
+      const matchOperators = [
+        {
+          value: 'LIKE',
+          text: this.$t('recordList.filter.operators.like'),
+        },
+        {
+          value: 'NOT LIKE',
+          text: this.$t('recordList.filter.operators.notLike'),
+        },
+      ]
 
-      return operators
+      switch (kind) {
+        case 'Number':
+          return [...operators, ...inOperators, ...lgOperators]
+
+        case 'DateTime':
+          return [...operators, ...lgOperators]
+
+        case 'String':
+        case 'Url':
+        case 'Email':
+          return [...operators, ...inOperators, ...lgOperators, ...matchOperators]
+
+        default:
+          return operators
+      }
     },
 
     getField (name = '') {
@@ -491,6 +514,7 @@ export default {
           if (record) {
             f.value = record.values[f.name]
           }
+
           return f
         })
 

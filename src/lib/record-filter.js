@@ -31,6 +31,20 @@ export function getFieldFilter (name, kind, query = '', operator = '=') {
   const boolQuery = toBoolean(query)
   const numQuery = Number.parseFloat(query)
 
+  const build = (op, left, right) => {
+    switch (op.toUpperCase()) {
+      case '!=':
+      case 'NOT LIKE':
+        return `${left} ${op} ${right} OR ${left} IS NULL)`
+      case 'IN':
+      case 'NOT IN':
+        // flip left/right for IN/NOT IN
+        return `${right} ${op} ${left}`
+      default:
+        return `${left} ${op} ${right}`
+    }
+  }
+
   // Boolean should search for literal values. Example `${name} = true` or just `${name}
   // At the moment it doesn't seem to be working as intended
 
@@ -64,7 +78,7 @@ export function getFieldFilter (name, kind, query = '', operator = '=') {
     .replace(/^[%]+/, '')
 
   if (['Number'].includes(kind) && !isNaN(numQuery)) {
-    return `${name} ${operator} ${numQuery}`
+    return build(operator, name, numQuery)
   }
 
   if (['DateTime'].includes(kind)) {
@@ -85,17 +99,15 @@ export function getFieldFilter (name, kind, query = '', operator = '=') {
 
   // Since userID and recordID must be numbers, we check if query is number to avoid wrong queries
   if (['User', 'Record'].includes(kind) && !isNaN(numQuery)) {
-    return `${name} ${operator} '${query}'`
+    return build(operator, name, `'${query}'`)
   }
 
   if (['String', 'Url', 'Select', 'Email'].includes(kind)) {
-    if (operator === 'LIKE') {
-      return `${name} LIKE '%${strQuery}%'`
-    } else if (operator === '!=') {
-      return `(${name} ${operator} '${strQuery}' OR ${name} is null)`
-    } else {
-      return `${name} ${operator} '${strQuery}'`
+    if (operator === 'LIKE' || operator === 'NOT LIKE') {
+      return build(operator, name, `'%${strQuery}%'`)
     }
+
+    return build(operator, name, `'${strQuery}'`)
   }
 }
 
