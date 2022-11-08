@@ -288,10 +288,9 @@
 
 <script>
 import { compose, NoID } from '@cortezaproject/corteza-js'
-import { url } from '@cortezaproject/corteza-vue'
+import { url, handle } from '@cortezaproject/corteza-vue'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import NamespaceTranslator from 'corteza-webapp-compose/src/components/Namespaces/NamespaceTranslator'
-import { handleState } from 'corteza-webapp-compose/src/lib/handle'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -375,7 +374,7 @@ export default {
     },
 
     slugState () {
-      return this.namespace.slug.length > 0 ? handleState(this.namespace.slug) : false
+      return handle.handleState(this.namespace.slug)
     },
 
     canToggleApplication () {

@@ -234,7 +234,7 @@ import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToo
 import { compose, NoID, shared } from '@cortezaproject/corteza-js'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import ChartComponent from 'corteza-webapp-compose/src/components/Chart'
-import { handleState } from 'corteza-webapp-compose/src/lib/handle'
+import { handle } from '@cortezaproject/corteza-vue'
 import draggable from 'vuedraggable'
 import ReportItem from 'corteza-webapp-compose/src/components/Chart/ReportItem'
 import Reports from 'corteza-webapp-compose/src/components/Chart/Report'
@@ -337,7 +337,7 @@ export default {
     },
 
     handleState () {
-      return this.chart.handle.length > 0 ? handleState(this.chart.handle) : false
+      return handle.handleState(this.chart.handle)
     },
 
     supportsMultipleReports () {

@@ -172,7 +172,7 @@ import { mapGetters, mapActions } from 'vuex'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import PageTranslator from 'corteza-webapp-compose/src/components/Admin/Page/PageTranslator'
 import { compose, NoID } from '@cortezaproject/corteza-js'
-import { handleState } from 'corteza-webapp-compose/src/lib/handle'
+import { handle } from '@cortezaproject/corteza-vue'
 
 export default {
   i18nOptions: {
@@ -215,7 +215,7 @@ export default {
     },
 
     handleState () {
-      return handleState(this.page.handle)
+      return handle.handleState(this.page.handle)
     },
 
     pageViewer () {

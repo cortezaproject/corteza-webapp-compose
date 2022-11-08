@@ -463,7 +463,7 @@ import RelatedPages from 'corteza-webapp-compose/src/components/Admin/Module/Rel
 import { compose, NoID } from '@cortezaproject/corteza-js'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
-import { handleState } from 'corteza-webapp-compose/src/lib/handle'
+import { handle } from '@cortezaproject/corteza-vue'
 
 export default {
   name: 'ModulesEdit',
@@ -551,7 +551,7 @@ export default {
     },
 
     handleState () {
-      return handleState(this.module.handle)
+      return handle.handleState(this.module.handle)
     },
 
     duplicateFields () {
