@@ -49,32 +49,21 @@
     <b-form-group
       :description="$t('system-fields.description')"
     >
-      <b-row class="my-4">
-        <b-col
-          sm="12"
-          md="4"
-        >
-          <label>
-            {{ $t('system-fields.label') }}
-          </label>
-        </b-col>
-        <b-col
-          sm="12"
-          md="4"
-          offset-md="4"
-        >
-          <b-form-radio-group
-            v-model="selectedGroup"
-            buttons
-            button-variant="outline-secondary"
-            size="sm"
-            name="buttons"
-            :options="optionsGroups"
-            class="mb-3"
-            @change="applySelectedSystemFields"
-          />
-        </b-col>
-      </b-row>
+      <div class="my-4 d-flex justify-content-between flex-wrap">
+        <label>
+          {{ $t('system-fields.label') }}
+        </label>
+        <b-form-radio-group
+          v-model="selectedGroup"
+          buttons
+          button-variant="outline-secondary"
+          size="sm"
+          name="buttons"
+          :options="optionsGroups"
+          class="mb-3"
+          @change="applySelectedSystemFields"
+        />
+      </div>
 
       <dal-field-store-encoding
         v-for="({ field, storeIdent, label, disabled }) in systemFields"
