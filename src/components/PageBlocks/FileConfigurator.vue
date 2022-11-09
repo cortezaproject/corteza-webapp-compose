@@ -16,7 +16,7 @@
     </b-form-group>
     <b-form-checkbox
       v-model="options.hideFileName"
-      :disabled="!enableFileNameHiding"
+      :disabled="!currentPreviewMode"
       class="mb-3"
     >
       {{ $t('kind.file.view.showName') }}
@@ -36,7 +36,7 @@
       class="mt-2"
     />
 
-    <template v-if="enablePreviewStyling">
+    <template v-if="currentPreviewMode">
       <hr>
 
       <h5 class="mb-2">
@@ -44,7 +44,7 @@
       </h5>
 
       <b-row
-        align-v
+        align-v="center"
         class="mb-2 mt-2"
       >
         <b-col
@@ -66,6 +66,7 @@
             </b-input-group>
           </b-form-group>
         </b-col>
+
         <b-col
           sm="12"
           md="6"
@@ -105,6 +106,7 @@
             </b-input-group>
           </b-form-group>
         </b-col>
+
         <b-col
           sm="12"
           md="6"
@@ -144,6 +146,7 @@
             </b-input-group>
           </b-form-group>
         </b-col>
+
         <b-col
           sm="12"
           md="6"
@@ -155,7 +158,6 @@
               v-model="options.backgroundColor"
               type="color"
               debounce="300"
-              class="mb-1"
             />
           </b-form-group>
         </b-col>
@@ -221,12 +223,7 @@ export default {
       ]
     },
 
-    enableFileNameHiding () {
-      const { mode } = this.f.options
-      return (mode === 'single') || (mode === 'gallery')
-    },
-
-    enablePreviewStyling () {
+    currentPreviewMode () {
       const { mode } = this.f.options
       return (mode === 'single') || (mode === 'gallery')
     },

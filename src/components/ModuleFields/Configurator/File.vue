@@ -55,7 +55,7 @@
       </h5>
 
       <b-row
-        align-v
+        align-v="center"
         class="mb-2 mt-2"
       >
         <b-col
@@ -77,6 +77,7 @@
             </b-input-group>
           </b-form-group>
         </b-col>
+
         <b-col
           sm="12"
           md="6"
@@ -116,6 +117,7 @@
             </b-input-group>
           </b-form-group>
         </b-col>
+
         <b-col
           sm="12"
           md="6"
@@ -155,6 +157,7 @@
             </b-input-group>
           </b-form-group>
         </b-col>
+
         <b-col
           sm="12"
           md="6"
@@ -166,7 +169,6 @@
               v-model="f.options.backgroundColor"
               type="color"
               debounce="300"
-              class="mb-1"
             />
           </b-form-group>
         </b-col>
