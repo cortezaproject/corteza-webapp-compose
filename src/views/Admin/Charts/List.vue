@@ -20,7 +20,7 @@
               noItems: $t('general:resourceList.noItems'),
               loading: $t('general:label.loading'),
               showingPagination: 'general:resourceList.pagination.showing',
-              singlePluralPagination: 'general:resourceList.pagination.single_plural',
+              singlePluralPagination: 'general:resourceList.pagination.single',
               prevPagination: $t('general:resourceList.pagination.prev'),
               nextPagination: $t('general:resourceList.pagination.next'),
             }"
