@@ -13,6 +13,14 @@
         :disabled="disabled"
       >
         {{ label }}
+
+        <b-badge
+          v-if="!use"
+          variant="info"
+          class="text-sm ml-2"
+        >
+          {{ $t('unavailable') }}
+        </b-badge>
       </b-form-checkbox>
       <div
         v-else

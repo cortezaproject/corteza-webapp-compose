@@ -47,19 +47,34 @@
     </b-form-group>
 
     <b-form-group
-      :label="$t('system-fields.label')"
       :description="$t('system-fields.description')"
     >
-      <b-form-radio-group
-        v-model="selectedGroup"
-        buttons
-        button-variant="outline-secondary"
-        size="sm"
-        name="buttons"
-        :options="optionsGroups"
-        class="mb-3"
-        @change="applySelectedSystemFields"
-      />
+      <b-row class="my-4">
+        <b-col
+          sm="12"
+          md="4"
+        >
+          <label>
+            {{ $t('system-fields.label') }}
+          </label>
+        </b-col>
+        <b-col
+          sm="12"
+          md="4"
+          offset-md="4"
+        >
+          <b-form-radio-group
+            v-model="selectedGroup"
+            buttons
+            button-variant="outline-secondary"
+            size="sm"
+            name="buttons"
+            :options="optionsGroups"
+            class="mb-3"
+            @change="applySelectedSystemFields"
+          />
+        </b-col>
+      </b-row>
 
       <dal-field-store-encoding
         v-for="({ field, storeIdent, label, disabled }) in systemFields"
