@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-grow-1 w-100">
+  <div class="d-flex flex-grow-1 w-100 h-100">
     <b-alert
       v-if="isDeleted"
       show
@@ -20,7 +20,34 @@
       @reload="loadRecord()"
     />
 
-    <portal to="toolbar">
+    <portal
+      v-if="showRecordModal"
+      to="record-modal-footer"
+    >
+      <record-toolbar
+        :module="module"
+        :record="record"
+        :labels="recordToolbarLabels"
+        :processing="processing"
+        :processing-submit="processingSubmit"
+        :processing-delete="processingDelete"
+        :is-deleted="isDeleted"
+        :in-editing="inEditing"
+        :hide-clone="inCreating"
+        :hide-add="inCreating"
+        @add="handleAdd()"
+        @clone="handleClone()"
+        @edit="handleEdit()"
+        @delete="handleDelete()"
+        @back="handleBack()"
+        @submit="handleFormSubmit('page.record')"
+      />
+    </portal>
+
+    <portal
+      v-else
+      to="toolbar"
+    >
       <record-toolbar
         :module="module"
         :record="record"
@@ -86,6 +113,11 @@ export default {
       type: String,
       required: false,
       default: '',
+    },
+
+    showRecordModal: {
+      type: Boolean,
+      required: false,
     },
   },
 
@@ -183,11 +215,21 @@ export default {
        * Not the best way since we can not always know where we
        * came from (and "were" is back).
        */
-      this.$router.back()
+      if (this.showRecordModal) {
+        this.inEditing = false
+        this.inCreating = false
+      } else {
+        this.$router.back()
+      }
     },
 
     handleAdd () {
-      this.$router.push({ name: 'page.record.create', params: this.newRouteParams })
+      if (this.showRecordModal) {
+        this.inEditing = true
+        this.inCreating = true
+      } else {
+        this.$router.push({ name: 'page.record.create', params: this.newRouteParams })
+      }
     },
 
     handleClone () {
@@ -195,7 +237,12 @@ export default {
     },
 
     handleEdit () {
-      this.$router.push({ name: 'page.record.edit', params: this.$route.params })
+      if (this.showRecordModal) {
+        this.inEditing = true
+      } else {
+        this.$router.push({ name: 'page.record.edit', params: this.$route.params })
+      }
+      this.inEditing = true
     },
   },
 }
