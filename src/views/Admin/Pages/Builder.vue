@@ -69,6 +69,28 @@
               />
             </b-button>
 
+            <b-button
+              title="Clone Block"
+              variant="link"
+              class="p-1 text-light"
+              @click="cloneBlock(index)"
+            >
+              <font-awesome-icon
+                :icon="['far', 'clone']"
+              />
+            </b-button>
+
+            <b-button
+              title="Copy Block"
+              variant="link"
+              class="p-1 text-light"
+              @click="copyBlock(index)"
+            >
+              <font-awesome-icon
+                :icon="['far', 'copy']"
+              />
+            </b-button>
+
             <c-input-confirm
               class="p-1"
               size="md"
@@ -204,6 +226,7 @@ import PageBlock from 'corteza-webapp-compose/src/components/PageBlocks'
 import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToolbar'
 import { compose, NoID } from '@cortezaproject/corteza-js'
 import Configurator from 'corteza-webapp-compose/src/components/PageBlocks/Configurator'
+// import copy from 'copy-to-clipboard'
 
 export default {
   i18nOptions: {
@@ -461,6 +484,33 @@ export default {
       }
 
       return true
+    },
+
+    cloneBlock (index) {
+      // Get the last block on the page to use its y value
+      // eslint-disable-next-line
+      const [, y, , ,] = this.blocks[this.blocks.length - 1].xywh
+      const blockClone = Object.assign({}, this.blocks[index])
+      blockClone.xywh = [0, y + 2, 3, 3]
+      this.editor = { index: undefined, block: compose.PageBlockMaker(blockClone) }
+      this.updateBlocks()
+      this.page.blocks = this.blocks
+      if (!this.editor) {
+        this.toastSuccess('Block has been cloned successfully!')
+      } else {
+        this.toastErrorHandler('Something went wrong')
+      }
+    },
+
+    async copyBlock (index) {
+      const parsedBlock = JSON.stringify(this.blocks[index])
+      navigator.clipboard.writeText(parsedBlock).then(() => {
+        this.toastSuccess('Block has been copied successfully!')
+        this.toastInfo('There is a page-block awaiting')
+      },
+      (err) => {
+        this.toastErrorHandler('Could not copy block: ', err)
+      })
     },
   },
 }
