@@ -8,7 +8,8 @@
         :max-zoom="options.zoomMax"
         :center="options.center"
         style="height: 45vh; width: 100%; cursor: pointer;"
-        :max-bounds="options.lockBounds ? options.bounds : null"
+        :bounds="bounds"
+        :max-bounds="options.bounds"
         @update:zoom="zoomUpdated"
         @update:center="updateCenter"
         @update:bounds="boundsUpdated"
@@ -113,6 +114,7 @@
             name="lock-bounds"
             switch
             size="lg"
+            @change="updateBounds"
           />
         </b-form-group>
       </b-col>
@@ -145,15 +147,8 @@ export default {
 
       localValue: { coordinates: [] },
       center: [],
+      bounds: null,
     }
-  },
-
-  computed: {
-    markers () {
-      const markers = [this.center]
-
-      return markers.map(this.getLatLng).filter(c => c)
-    },
   },
 
   methods: {
@@ -165,15 +160,25 @@ export default {
       }
     },
     updateCenter (coordinates) {
-      const { lat, lng } = coordinates
+      let { lat = 0, lng = 0 } = coordinates || {}
+
+      lat = Math.round(lat * 1e7) / 1e7
+      lng = Math.round(lng * 1e7) / 1e7
 
       this.options.center = [lat, lng]
     },
     boundsUpdated (coordinates) {
-      this.options.bounds = coordinates
+      this.bounds = coordinates
     },
     zoomUpdated (zoom) {
       this.options.zoomStarting = zoom
+    },
+    updateBounds (value) {
+      if (value) {
+        this.options.bounds = this.bounds
+      } else {
+        this.options.bounds = null
+      }
     },
   },
 }

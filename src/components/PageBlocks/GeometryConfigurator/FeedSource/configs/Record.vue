@@ -59,6 +59,19 @@
             </template>
           </b-form-select>
         </b-form-group>
+        <b-form-group
+          horizontal
+          :label-cols="3"
+          breakpoint="md"
+          :label="$t('geometry.recordFeed.displayMarker')"
+        >
+          <b-form-checkbox
+            v-model="feed.displayMarker"
+            name="display-marker"
+            switch
+            size="lg"
+          />
+        </b-form-group>
 
         <b-form-group
           horizontal

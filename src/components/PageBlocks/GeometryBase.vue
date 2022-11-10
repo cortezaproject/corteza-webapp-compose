@@ -19,7 +19,7 @@
         :bounds="map.bounds"
         class="w-100"
         style="height: 100%;"
-        :max-bounds="map.lockBounds ? map.bounds : null"
+        :max-bounds="map.bounds"
       >
         <l-tile-layer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { divIcon, latLng, latLngBounds } from 'leaflet'
+import { divIcon, latLng } from 'leaflet'
 import {
   LPolygon,
 } from 'vue2-leaflet'
@@ -84,24 +84,33 @@ export default {
 
       this.geometries.forEach((geo) => {
         geo.forEach((value) => {
-          values.push({ value: this.getLatLng(value.geometry), color: value.color })
+          if (value.displayMarker) {
+            values.push({ value: this.getLatLng(value.geometry), color: value.color })
+          }
         })
       })
 
       return values
     },
+  },
 
-    bounds () {
-      let { boundLowerRight, boundTopLeft } = this.options
-
-      boundTopLeft = this.parseGeometryField(boundTopLeft)
-      boundLowerRight = this.parseGeometryField(boundLowerRight)
-
-      return latLngBounds([this.getLatLng(boundTopLeft), this.getLatLng(boundLowerRight)])
+  watch: {
+    'record.recordID': {
+      deep: true,
+      handler () {
+        this.loadEvents()
+      },
+    },
+    options: {
+      deep: true,
+      handler () {
+        this.loadEvents()
+      },
     },
   },
 
   created () {
+    this.bounds = this.options.bounds
     this.loadEvents()
   },
 
@@ -138,6 +147,7 @@ export default {
                   title: e.values[feed.titleField],
                   geometry: this.parseGeometryField(e.values[feed.geometryField]),
                   color: feed.options.color,
+                  displayMarker: feed.displayMarker,
                 }))
               })
           })
@@ -147,20 +157,18 @@ export default {
     },
 
     getIcon (item) {
-      item.color = item.color || '#2f85cb'
-      item.strokeColor = item.color || '#3383cc'
       item.circleColor = '#ffffff'
 
       return divIcon({
-        className: 'my-custom-pin',
+        className: 'marker-pin',
         html: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 34.892337" height="60" width="40" style="margin-top: -40px;margin-left: -15px;height: 35px;">
-  <g transform="translate(-814.59595,-274.38623)">
-    <g transform="matrix(1.1855854,0,0,1.1855854,-151.17715,-57.3976)">
-      <path d="m 817.11249,282.97118 c -1.25816,1.34277 -2.04623,3.29881 -2.01563,5.13867 0.0639,3.84476 1.79693,5.3002 4.56836,10.59179 0.99832,2.32851 2.04027,4.79237 3.03125,8.87305 0.13772,0.60193 0.27203,1.16104 0.33416,1.20948 0.0621,0.0485 0.19644,-0.51262 0.33416,-1.11455 0.99098,-4.08068 2.03293,-6.54258 3.03125,-8.87109 2.77143,-5.29159 4.50444,-6.74704 4.56836,-10.5918 0.0306,-1.83986 -0.75942,-3.79785 -2.01758,-5.14062 -1.43724,-1.53389 -3.60504,-2.66908 -5.91619,-2.71655 -2.31115,-0.0475 -4.4809,1.08773 -5.91814,2.62162 z" style="fill:${item.color};stroke:${item.strokeColor};"/>
-      <circle r="3.0355" cy="288.25278" cx="823.03064" id="path3049" style="display:inline;fill:${item.circleColor};"/>
-    </g>
-  </g>
-</svg>`,
+          <g transform="translate(-814.59595,-274.38623)">
+            <g transform="matrix(1.1855854,0,0,1.1855854,-151.17715,-57.3976)">
+              <path d="m 817.11249,282.97118 c -1.25816,1.34277 -2.04623,3.29881 -2.01563,5.13867 0.0639,3.84476 1.79693,5.3002 4.56836,10.59179 0.99832,2.32851 2.04027,4.79237 3.03125,8.87305 0.13772,0.60193 0.27203,1.16104 0.33416,1.20948 0.0621,0.0485 0.19644,-0.51262 0.33416,-1.11455 0.99098,-4.08068 2.03293,-6.54258 3.03125,-8.87109 2.77143,-5.29159 4.50444,-6.74704 4.56836,-10.5918 0.0306,-1.83986 -0.75942,-3.79785 -2.01758,-5.14062 -1.43724,-1.53389 -3.60504,-2.66908 -5.91619,-2.71655 -2.31115,-0.0475 -4.4809,1.08773 -5.91814,2.62162 z" style="fill:${item.color};stroke:${item.color};"/>
+              <circle r="3.0355" cy="288.25278" cx="823.03064" id="path3049" style="display:inline;fill:${item.circleColor};"/>
+            </g>
+          </g>
+        </svg>`,
       })
     },
 
@@ -175,12 +183,6 @@ export default {
         return latLng(lat, lng)
       }
     },
-
-    fitMap () {
-      const bounds = latLngBounds(this.localValue)
-      this.bounds = bounds
-    },
-
   },
 }
 </script>
