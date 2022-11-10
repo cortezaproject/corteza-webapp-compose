@@ -92,13 +92,6 @@
               </option>
             </template>
           </b-form-select>
-
-          <b-form-text
-            v-if="hasMultiFields"
-            class="test-multi-field-ntf"
-          >
-            {{ $t('geometry.recordFeed.noMultiFields') }}
-          </b-form-text>
         </b-form-group>
 
         <br>
@@ -163,7 +156,15 @@ export default {
         return []
       }
       return [...this.module.fields]
-        .filter(f => ['String', 'Email', 'Url'].includes(f.kind))
+        .filter(f => [
+          'DateTime',
+          'Select',
+          'Number',
+          'Bool',
+          'String',
+          'Record',
+          'User',
+        ].includes(f.kind))
         .sort((a, b) => a.label.localeCompare(b.label))
     },
 
@@ -185,7 +186,7 @@ export default {
           sf.label = this.$t(`field:system.${sf.name}`)
           return sf
         }),
-      ].filter(f => f.kind === 'Geometry' && !f.isMulti)
+      ].filter(f => f.kind === 'Geometry')
     },
   },
 }

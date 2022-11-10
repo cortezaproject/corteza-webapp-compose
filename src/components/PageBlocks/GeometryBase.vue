@@ -85,7 +85,14 @@ export default {
       this.geometries.forEach((geo) => {
         geo.forEach((value) => {
           if (value.displayMarker) {
-            values.push({ value: this.getLatLng(value.geometry), color: value.color })
+            console.log(value)
+            if (value.hasMulti) {
+              value.geometry.map(subValue => {
+                values.push({ value: this.getLatLng(subValue), color: value.color })
+              })
+            } else {
+              values.push({ value: this.getLatLng(value.geometry), color: value.color })
+            }
           }
         })
       })
@@ -96,7 +103,7 @@ export default {
 
   watch: {
     'record.recordID': {
-      deep: true,
+      immediate: true,
       handler () {
         this.loadEvents()
       },
@@ -111,7 +118,6 @@ export default {
 
   created () {
     this.bounds = this.options.bounds
-    this.loadEvents()
   },
 
   methods: {
@@ -143,12 +149,26 @@ export default {
 
             return compose.PageBlockGeometry.RecordFeed(this.$ComposeAPI, module, this.namespace, feed)
               .then(records => {
-                this.geometries[idx] = records.map(e => ({
-                  title: e.values[feed.titleField],
-                  geometry: this.parseGeometryField(e.values[feed.geometryField]),
-                  color: feed.options.color,
-                  displayMarker: feed.displayMarker,
-                }))
+                this.geometries[idx] = records.map(e => {
+                  let geometry = e.values[feed.geometryField]
+                  let hasMulti = false
+
+                  if (Array.isArray(geometry)) {
+                    geometry = geometry.map(value => this.parseGeometryField(value))
+                    hasMulti = true
+                  } else {
+                    geometry = this.parseGeometryField(e.values[feed.geometryField])
+                    hasMulti = false
+                  }
+
+                  return ({
+                    title: e.values[feed.titleField],
+                    geometry,
+                    color: feed.options.color,
+                    displayMarker: feed.displayMarker,
+                    hasMulti,
+                  })
+                })
               })
           })
       })).finally(() => {

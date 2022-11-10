@@ -143,7 +143,6 @@ export default {
           label: this.$t('geometry.label'),
           block: new compose.PageBlockGeometry(),
           image: images.Geometry,
-          recordPageOnly: true,
         },
       ],
     }
