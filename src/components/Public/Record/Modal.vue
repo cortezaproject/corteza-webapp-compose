@@ -2,11 +2,12 @@
   <b-modal
     id="record-modal"
     v-model="showRecordModal"
+    scrollable
     body-class="p-0"
     size="xl"
   >
     <template #modal-title>
-      <portal-target name="record-modal-header" />
+      {{ pageTitle }}
     </template>
     <view-record
       :namespace="namespace"
@@ -16,14 +17,17 @@
       :show-record-modal="showRecordModal"
     />
     <template #modal-footer>
-      <portal-target name="record-modal-footer" />
+      <portal-target
+        class="w-100"
+        name="record-modal-footer"
+      />
     </template>
   </b-modal>
 </template>
 
 <script>
 import record from 'corteza-webapp-compose/src/mixins/record'
-import { compose } from '@cortezaproject/corteza-js'
+import { compose, NoID } from '@cortezaproject/corteza-js'
 import ViewRecord from 'corteza-webapp-compose/src/views/Public/Pages/Records/View'
 import { mapGetters } from 'vuex'
 
@@ -63,26 +67,32 @@ export default {
       getModuleByID: 'module/getByID',
       pages: 'page/set',
     }),
+
+    pageTitle () {
+      if (this.page.pageID !== NoID) {
+        const { title = '', handle = '' } = this.page
+        return title || handle || this.$t('navigation:noPageTitle')
+      }
+
+      return ''
+    },
   },
 
   created () {
-    this.$root.$on('showRecordModal', this.showModal)
+    this.$root.$on('show-record-modal', this.showModal)
   },
 
   beforeDestroy () {
-    this.$root.$off('showRecordModal', this.showModal)
+    this.$root.$off('show-record-modal')
   },
 
   methods: {
     showModal (e) {
-      const { recordID, moduleID, recordPageID, showRecordModal } = e
-      if (showRecordModal) {
-        this.showRecordModal = true
-        this.recordID = recordID
-        this.module = module
-        this.page = this.pages.find(p => p.pageID === recordPageID)
-        this.module = this.getModuleByID(moduleID)
-      }
+      const { recordID, moduleID, recordPageID } = e
+      this.showRecordModal = true
+      this.recordID = recordID
+      this.page = this.pages.find(p => p.pageID === recordPageID)
+      this.module = this.getModuleByID(moduleID)
     },
   },
 }
@@ -92,6 +102,7 @@ export default {
 <style>
 #record-modal .modal-dialog {
   height: 100%;
+  max-width: 85vw;
 }
 
 #record-modal .modal-content {

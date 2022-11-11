@@ -1,5 +1,8 @@
 <template>
-  <div class="d-flex flex-grow-1 w-100 h-100">
+  <div
+    :class="{'flex-column': showRecordModal}"
+    class="d-flex flex-grow-1 w-100 h-100"
+  >
     <b-alert
       v-if="isDeleted"
       show
@@ -7,10 +10,6 @@
     >
       {{ $t('record.recordDeleted') }}
     </b-alert>
-
-    <portal to="topbar-title">
-      {{ title }}
-    </portal>
 
     <grid
       v-bind="$props"
@@ -21,34 +20,11 @@
     />
 
     <portal
-      v-if="showRecordModal"
-      to="record-modal-footer"
+      class="w-100"
+      :to="recordToolbar"
     >
       <record-toolbar
-        :module="module"
-        :record="record"
-        :labels="recordToolbarLabels"
-        :processing="processing"
-        :processing-submit="processingSubmit"
-        :processing-delete="processingDelete"
-        :is-deleted="isDeleted"
-        :in-editing="inEditing"
-        :hide-clone="inCreating"
-        :hide-add="inCreating"
-        @add="handleAdd()"
-        @clone="handleClone()"
-        @edit="handleEdit()"
-        @delete="handleDelete()"
-        @back="handleBack()"
-        @submit="handleFormSubmit('page.record')"
-      />
-    </portal>
-
-    <portal
-      v-else
-      to="toolbar"
-    >
-      <record-toolbar
+        :show-record-modal="showRecordModal"
         :module="module"
         :record="record"
         :labels="recordToolbarLabels"
@@ -129,6 +105,10 @@ export default {
   },
 
   computed: {
+    recordToolbar () {
+      return this.showRecordModal ? 'record-modal-footer' : 'toolbar'
+    },
+
     newRouteParams () {
       // Remove recordID and values from route params
       const { recordID, values, ...params } = this.$route.params
@@ -218,6 +198,7 @@ export default {
       if (this.showRecordModal) {
         this.inEditing = false
         this.inCreating = false
+        this.$bvModal.hide('record-modal')
       } else {
         this.$router.back()
       }
@@ -227,18 +208,25 @@ export default {
       if (this.showRecordModal) {
         this.inEditing = true
         this.inCreating = true
+        this.record = new compose.Record(this.module, { values: this.values })
       } else {
         this.$router.push({ name: 'page.record.create', params: this.newRouteParams })
       }
     },
 
     handleClone () {
-      this.$router.push({ name: 'page.record.create', params: { pageID: this.page.pageID, values: this.record.values } })
+      if (this.showRecordModal) {
+        this.inEditing = true
+        this.inCreating = true
+        this.record = new compose.Record(this.module, { values: this.record.values })
+      } else {
+        this.$router.push({ name: 'page.record.create', params: { pageID: this.page.pageID, values: this.record.values } })
+      }
     },
 
     handleEdit () {
       if (this.showRecordModal) {
-        this.inEditing = true
+        this.inCreating = false
       } else {
         this.$router.push({ name: 'page.record.edit', params: this.$route.params })
       }

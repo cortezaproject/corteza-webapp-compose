@@ -667,8 +667,6 @@ export default {
       items: [],
       idPrefix: `rl:${this.blockIndex}`,
       recordListFilter: [],
-
-      showRecordModal: false,
     }
   },
 
@@ -1156,12 +1154,10 @@ export default {
       if (this.options.recordDisplayOption === 'newTab') {
         window.open(this.$router.resolve(route).href)
       } else if (this.options.recordDisplayOption === 'modal') {
-        this.showRecordModal = true
-        this.$root.$emit('showRecordModal', {
+        this.$root.$emit('show-record-modal', {
           moduleID: this.recordListModule.moduleID,
           recordPageID: this.recordPageID,
           recordID,
-          showRecordModal: this.showRecordModal,
         })
       } else {
         this.$router.push(route)

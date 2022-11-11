@@ -1,7 +1,8 @@
 <template>
   <b-container
     fluid
-    class="bg-white shadow border-top p-3"
+    :class="{'shadow border-top': !showRecordModal}"
+    class="bg-white p-3"
   >
     <b-row
       no-gutters
@@ -19,10 +20,16 @@
           @click.prevent="$emit('back')"
         >
           <font-awesome-icon
+            v-if="!showRecordModal"
             :icon="['fas', 'chevron-left']"
             class="back-icon"
           />
-          {{ labels.back || $t('label.back') }}
+          <font-awesome-icon
+            v-else
+            :icon="['fa', 'times']"
+            class="back-icon"
+          />
+          {{ showRecordModal ? $t('label.close') : labels.back || $t('label.back') }}
         </b-button>
       </div>
 
@@ -172,6 +179,11 @@ export default {
     isDeleted: {
       type: Boolean,
       default: true,
+    },
+
+    showRecordModal: {
+      type: Boolean,
+      required: false,
     },
   },
 
