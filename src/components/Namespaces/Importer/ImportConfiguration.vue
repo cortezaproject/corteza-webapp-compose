@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { handleState } from 'corteza-webapp-compose/src/lib/handle'
+import { handle } from '@cortezaproject/corteza-vue'
 
 export default {
   i18nOptions: {
@@ -81,7 +81,7 @@ export default {
     },
 
     slugState () {
-      return this.slug.length > 0 ? handleState(this.slug) : false
+      return handle.handleState(this.slug)
     },
   },
 
