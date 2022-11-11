@@ -224,7 +224,7 @@ export default {
     },
 
     currentPreviewMode () {
-      const { mode } = this.f.options
+      const { mode } = this.options
       return (mode === 'single') || (mode === 'gallery')
     },
   },
