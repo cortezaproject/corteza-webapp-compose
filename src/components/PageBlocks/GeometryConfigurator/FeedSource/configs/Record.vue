@@ -39,6 +39,7 @@
             />
           </b-input-group>
         </b-form-group>
+
         <b-form-group
           horizontal
           :label-cols="3"
@@ -59,6 +60,7 @@
             </template>
           </b-form-select>
         </b-form-group>
+
         <b-form-group
           horizontal
           :label-cols="3"
@@ -67,6 +69,20 @@
         >
           <b-form-checkbox
             v-model="feed.displayMarker"
+            name="display-marker"
+            switch
+            size="lg"
+          />
+        </b-form-group>
+
+        <b-form-group
+          horizontal
+          :label-cols="3"
+          breakpoint="md"
+          :label="$t('geometry.recordFeed.displayPolygon')"
+        >
+          <b-form-checkbox
+            v-model="feed.displayPolygon"
             name="display-marker"
             switch
             size="lg"

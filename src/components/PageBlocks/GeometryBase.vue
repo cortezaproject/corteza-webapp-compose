@@ -11,15 +11,15 @@
     </div>
     <template v-else>
       <l-map
+        v-if="map"
         ref="map"
         :zoom="map.zoom"
         :center="map.center"
         :min-zoom="map.zoomMin"
         :max-zoom="map.zoomMax"
         :bounds="map.bounds"
-        class="w-100"
-        style="height: 100%;"
         :max-bounds="map.bounds"
+        class="w-100 h-100"
       >
         <l-tile-layer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -60,10 +60,7 @@ export default {
 
   data () {
     return {
-      map: {
-        zoom: 4,
-        center: [47.31322, -1.319482],
-      },
+      map: undefined,
 
       processing: false,
       show: false,
@@ -85,14 +82,9 @@ export default {
       this.geometries.forEach((geo) => {
         geo.forEach((value) => {
           if (value.displayMarker) {
-            console.log(value)
-            if (value.hasMulti) {
-              value.geometry.map(subValue => {
-                values.push({ value: this.getLatLng(subValue), color: value.color })
-              })
-            } else {
-              values.push({ value: this.getLatLng(value.geometry), color: value.color })
-            }
+            value.markers.map(subValue => {
+              values.push({ value: this.getLatLng(subValue), color: value.color })
+            })
           }
         })
       })
@@ -131,8 +123,22 @@ export default {
       this.processing = true
 
       this.colors = this.options.feeds.map(feed => feed.options.color)
-      this.map = this.options
-      this.map.zoom = this.options.zoomStarting
+
+      const {
+        bounds,
+        center,
+        zoomStarting,
+        zoomMin,
+        zoomMax,
+      } = this.options
+
+      this.map = {
+        bounds,
+        center,
+        zoom: zoomStarting,
+        zoomMin,
+        zoomMax,
+      }
 
       Promise.all(this.options.feeds.map((feed, idx) => {
         return this.findModuleByID({ namespace: this.namespace, moduleID: feed.options.moduleID })
@@ -149,26 +155,30 @@ export default {
 
             return compose.PageBlockGeometry.RecordFeed(this.$ComposeAPI, module, this.namespace, feed)
               .then(records => {
-                this.geometries[idx] = records.map(e => {
-                  let geometry = e.values[feed.geometryField]
-                  let hasMulti = false
+                const mapModuleField = module.fields.find(f => f.name === feed.geometryField)
 
-                  if (Array.isArray(geometry)) {
-                    geometry = geometry.map(value => this.parseGeometryField(value))
-                    hasMulti = true
-                  } else {
-                    geometry = this.parseGeometryField(e.values[feed.geometryField])
-                    hasMulti = false
-                  }
+                if (mapModuleField) {
+                  this.geometries[idx] = records.map(e => {
+                    let geometry = e.values[feed.geometryField]
+                    let markers = []
 
-                  return ({
-                    title: e.values[feed.titleField],
-                    geometry,
-                    color: feed.options.color,
-                    displayMarker: feed.displayMarker,
-                    hasMulti,
+                    if (mapModuleField.isMulti) {
+                      geometry = geometry.map(value => this.parseGeometryField(value))
+                      markers = geometry
+                    } else {
+                      geometry = this.parseGeometryField(geometry)
+                      markers = [geometry]
+                    }
+
+                    return ({
+                      title: e.values[feed.titleField],
+                      geometry: feed.displayPolygon ? geometry : [],
+                      markers,
+                      color: feed.options.color,
+                      displayMarker: feed.displayMarker,
+                    })
                   })
-                })
+                }
               })
           })
       })).finally(() => {
