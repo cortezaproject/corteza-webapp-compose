@@ -587,7 +587,12 @@ export default {
         if (!sf) return
 
         sf.label = this.$t(`field:system.${sf.name}`)
-        return { ...sf, ...systemFieldEncoding[sf.name] }
+
+        if (systemFieldEncoding[sf.name]) {
+          return { ...sf, ...systemFieldEncoding[sf.name] }
+        }
+
+        return {}
       }).filter(sf => sf)
     },
 
