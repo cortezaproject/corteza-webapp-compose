@@ -585,14 +585,8 @@ export default {
 
       return this.module.systemFields().map(sf => {
         if (!sf) return
-
         sf.label = this.$t(`field:system.${sf.name}`)
-
-        if (systemFieldEncoding[sf.name]) {
-          return { ...sf, ...systemFieldEncoding[sf.name] }
-        }
-
-        return {}
+        return { ...sf, ...(systemFieldEncoding[sf.name] || {}) }
       }).filter(sf => sf)
     },
 
