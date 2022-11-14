@@ -49,7 +49,7 @@
     <b-form-group
       :description="$t('system-fields.description')"
     >
-      <div class="my-4 d-flex justify-content-between flex-wrap">
+      <div class="my-4 d-flex justify-content-between align-items-center flex-wrap">
         <label>
           {{ $t('system-fields.label') }}
         </label>
@@ -109,18 +109,18 @@ export default {
   data () {
     const systemFieldEncoding = this.module.config.dal.systemFieldEncoding || {}
     const systemFields = [
-      { field: 'id', storeIdent: 'id', disabled: true, groupType: ['all'] },
-      { field: 'namespaceID', storeIdent: 'rel_namespace', disabled: false, groupType: ['all', 'partition'] },
-      { field: 'moduleID', storeIdent: 'rel_module', disabled: false, groupType: ['all', 'partition'] },
-      { field: 'revision', storeIdent: 'revision', disabled: false, groupType: ['all', 'extras'] },
-      { field: 'meta', storeIdent: 'meta', disabled: false, groupType: ['all', 'extras'] },
-      { field: 'ownedBy', storeIdent: 'owned_by', disabled: false, groupType: ['all', 'user_reference'] },
-      { field: 'createdAt', storeIdent: 'created_at', disabled: false, groupType: ['all', 'timestamps'] },
-      { field: 'createdBy', storeIdent: 'created_by', disabled: false, groupType: ['all', 'user_reference'] },
-      { field: 'updatedAt', storeIdent: 'updated_at', disabled: false, groupType: ['all', 'timestamps'] },
-      { field: 'updatedBy', storeIdent: 'updated_by', disabled: false, groupType: ['all', 'user_reference'] },
-      { field: 'deletedAt', storeIdent: 'deleted_at', disabled: false, groupType: ['all', 'timestamps'] },
-      { field: 'deletedBy', storeIdent: 'deleted_by', disabled: false, groupType: ['all', 'user_reference'] },
+      { field: 'id', storeIdent: 'id', disabled: true },
+      { field: 'namespaceID', storeIdent: 'rel_namespace', group: 'partition' },
+      { field: 'moduleID', storeIdent: 'rel_module', group: 'partition' },
+      { field: 'revision', storeIdent: 'revision', group: 'extras' },
+      { field: 'meta', storeIdent: 'meta', group: 'extras' },
+      { field: 'ownedBy', storeIdent: 'owned_by', group: 'user_reference' },
+      { field: 'createdAt', storeIdent: 'created_at', group: 'timestamps' },
+      { field: 'createdBy', storeIdent: 'created_by', group: 'user_reference' },
+      { field: 'updatedAt', storeIdent: 'updated_at', group: 'timestamps' },
+      { field: 'updatedBy', storeIdent: 'updated_by', group: 'user_reference' },
+      { field: 'deletedAt', storeIdent: 'deleted_at', group: 'timestamps' },
+      { field: 'deletedBy', storeIdent: 'deleted_by', group: 'user_reference' },
     ].map(sf => ({ ...sf, label: this.$t(`field:system.${sf.field}`) }))
 
     return {
@@ -244,15 +244,16 @@ export default {
     },
 
     applySelectedSystemFields (selectedOption) {
-      console.log(selectedOption)
-      this.systemFieldEncoding = this.systemFields.reduce((enc, { field, groupType }) => {
+      this.systemFieldEncoding = this.systemFields.reduce((enc, { field, group }) => {
         if (field !== 'id') {
-          enc[field] = groupType.includes(selectedOption) ? {} : { omit: true }
+          if (selectedOption === 'all') {
+            enc[field] = { omit: true }
+          } else {
+            enc[field] = group === selectedOption ? {} : { omit: true }
+          }
         }
         return enc
       }, {})
-
-      console.log(this.systemFieldEncoding)
     },
   },
 }
