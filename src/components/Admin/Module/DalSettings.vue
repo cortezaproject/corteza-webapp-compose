@@ -247,7 +247,7 @@ export default {
       this.systemFieldEncoding = this.systemFields.reduce((enc, { field, group }) => {
         if (field !== 'id') {
           if (selectedOption === 'all') {
-            enc[field] = { omit: true }
+            enc[field] = {}
           } else {
             enc[field] = group === selectedOption ? {} : { omit: true }
           }
