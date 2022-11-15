@@ -9,6 +9,7 @@
     <template #modal-title>
       {{ pageTitle }}
     </template>
+
     <view-record
       :namespace="namespace"
       :page="page"
@@ -16,10 +17,11 @@
       :record-i-d="recordID"
       :show-record-modal="showRecordModal"
     />
+
     <template #modal-footer>
       <portal-target
-        class="w-100"
         name="record-modal-footer"
+        class="w-100 m-0"
       />
     </template>
   </b-modal>
@@ -102,7 +104,7 @@ export default {
 <style>
 #record-modal .modal-dialog {
   height: 100%;
-  max-width: 85vw;
+  max-width: 90vw;
 }
 
 #record-modal .modal-content {

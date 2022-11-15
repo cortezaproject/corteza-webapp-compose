@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="{'flex-column': showRecordModal}"
+    :class="{ 'flex-column': showRecordModal }"
     class="d-flex flex-grow-1 w-100 h-100"
   >
     <b-alert
@@ -20,11 +20,9 @@
     />
 
     <portal
-      class="w-100"
       :to="recordToolbar"
     >
       <record-toolbar
-        :show-record-modal="showRecordModal"
         :module="module"
         :record="record"
         :labels="recordToolbarLabels"
@@ -35,6 +33,7 @@
         :in-editing="inEditing"
         :hide-clone="inCreating"
         :hide-add="inCreating"
+        :show-record-modal="showRecordModal"
         @add="handleAdd()"
         @clone="handleClone()"
         @edit="handleEdit()"
@@ -90,7 +89,7 @@ export default {
       required: false,
       default: '',
     },
-
+    // Open record in a modal
     showRecordModal: {
       type: Boolean,
       required: false,

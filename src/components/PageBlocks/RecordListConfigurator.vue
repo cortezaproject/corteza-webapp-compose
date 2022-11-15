@@ -262,7 +262,6 @@
         <b-form-select
           v-model="options.recordDisplayOption"
           :options="recordDisplayOptions"
-          required
         />
       </b-form-group>
 
