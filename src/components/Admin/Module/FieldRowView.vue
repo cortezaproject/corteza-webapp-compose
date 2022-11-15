@@ -6,7 +6,7 @@
       <b-badge
         v-if="field.omit"
         variant="info"
-        class="text-sm ml-2"
+        class="text-sm ml-2 text-center"
       >
         {{ $t('unavailable') }}
       </b-badge>

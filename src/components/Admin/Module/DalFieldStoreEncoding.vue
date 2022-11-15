@@ -17,7 +17,7 @@
         <b-badge
           v-if="!use"
           variant="info"
-          class="text-sm ml-2"
+          class="text-sm ml-2 text-center"
         >
           {{ $t('unavailable') }}
         </b-badge>
