@@ -4,10 +4,13 @@
     v-model="showRecordModal"
     scrollable
     body-class="p-0"
+    footer-class="p-0"
     size="xl"
   >
     <template #modal-title>
-      {{ pageTitle }}
+      <portal-target
+        name="record-modal-header"
+      />
     </template>
 
     <view-record

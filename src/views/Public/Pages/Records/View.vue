@@ -11,6 +11,12 @@
       {{ $t('record.recordDeleted') }}
     </b-alert>
 
+    <portal
+      :to="portalTopbarTitle"
+    >
+      {{ title }}
+    </portal>
+
     <grid
       v-bind="$props"
       :errors="errors"
@@ -20,7 +26,7 @@
     />
 
     <portal
-      :to="recordToolbar"
+      :to="portalRecordToolbar"
     >
       <record-toolbar
         :module="module"
@@ -100,11 +106,15 @@ export default {
     return {
       inEditing: false,
       inCreating: false,
+      titlePreffix: 'view', // dynamic i18n variable to show correct record title based on different actions
     }
   },
 
   computed: {
-    recordToolbar () {
+    portalTopbarTitle () {
+      return this.showRecordModal ? 'record-modal-header' : 'topbar-title'
+    },
+    portalRecordToolbar () {
       return this.showRecordModal ? 'record-modal-footer' : 'toolbar'
     },
 
@@ -130,7 +140,7 @@ export default {
 
     title () {
       const { name, handle } = this.module
-      return this.$t('page:public.record.view.title', { name: name || handle, interpolation: { escapeValue: false } })
+      return this.$t(`page:public.record.${this.titlePreffix}.title`, { name: name || handle, interpolation: { escapeValue: false } })
     },
   },
 
@@ -207,6 +217,7 @@ export default {
       if (this.showRecordModal) {
         this.inEditing = true
         this.inCreating = true
+        this.titlePreffix = 'create'
         this.record = new compose.Record(this.module, { values: this.values })
       } else {
         this.$router.push({ name: 'page.record.create', params: this.newRouteParams })
@@ -226,10 +237,11 @@ export default {
     handleEdit () {
       if (this.showRecordModal) {
         this.inCreating = false
+        this.inEditing = true
+        this.titlePreffix = 'edit'
       } else {
         this.$router.push({ name: 'page.record.edit', params: this.$route.params })
       }
-      this.inEditing = true
     },
   },
 }

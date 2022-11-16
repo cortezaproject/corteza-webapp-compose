@@ -153,13 +153,11 @@ export default {
         .then(() => {
           if (this.record.valueErrors.set) {
             this.toastWarning(this.$t('notification:record.validationWarnings'))
+          } else if (this.showRecordModal) {
+            this.inEditing = false
+            this.inCreating = false
           } else {
-            if (this.showRecordModal) {
-              this.inEditing = false
-              this.inCreating = false
-            } else {
-              this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
-            }
+            this.$router.push({ name: route, params: { ...this.$route.params, recordID: this.record.recordID } })
           }
         })
         .catch(this.toastErrorHandler(this.$t(
