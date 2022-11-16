@@ -6,8 +6,7 @@
       <b-badge
         v-if="field.omit"
         variant="info"
-        class="text-sm ml-2 text-center d-inline"
-        style="vertical-align: middle;"
+        class="text-sm ml-2 text-center align-middle"
       >
         {{ $t('unavailable') }}
       </b-badge>
