@@ -69,6 +69,28 @@
               />
             </b-button>
 
+            <b-button
+              title="Clone Block"
+              variant="link"
+              class="p-1 text-light"
+              @click="cloneBlock(index)"
+            >
+              <font-awesome-icon
+                :icon="['far', 'clone']"
+              />
+            </b-button>
+
+            <b-button
+              title="Copy Block"
+              variant="link"
+              class="p-1 text-light"
+              @click="copyBlock(index)"
+            >
+              <font-awesome-icon
+                :icon="['far', 'copy']"
+              />
+            </b-button>
+
             <c-input-confirm
               class="p-1"
               size="md"
@@ -237,6 +259,7 @@ export default {
       page: undefined,
 
       blocks: [],
+      board: null,
     }
   },
 
@@ -334,6 +357,14 @@ export default {
         }
       },
     },
+  },
+
+  mounted () {
+    window.addEventListener('paste', this.pasteBlock)
+  },
+
+  destroyed () {
+    window.removeEventListener('paste', this.pasteBlock)
   },
 
   methods: {
@@ -461,6 +492,73 @@ export default {
       }
 
       return true
+    },
+
+    cloneBlock (index) {
+      const blockClone = Object.assign({}, this.blocks[index])
+      this.appendBlock(blockClone, this.$t('notification:page.cloneSuccess'))
+    },
+
+    async copyBlock (index) {
+      const parsedBlock = JSON.stringify(this.blocks[index])
+      navigator.clipboard.writeText(parsedBlock).then(() => {
+        this.toastSuccess(this.$t('notification:page.copySuccess'))
+        this.toastInfo(this.$t('notification:page.blockWaiting'))
+      },
+      (err) => {
+        this.toastErrorHandler(this.$t('notification:page.copyFailed', { reason: err }))
+      })
+    },
+
+    pasteBlock (event) {
+      if (this.$route.name === 'admin.pages.builder') {
+        const active = document.activeElement
+        const inputs = document.querySelectorAll('input')
+        let inputActive = false
+
+        // Not to intrude on paste for any input field
+        // Using forEach because other array methods don't work on NodeList
+        inputs.forEach(input => {
+          if (input === active) {
+            inputActive = true
+          }
+        })
+
+        if (!inputActive) {
+          event.preventDefault()
+          const paste = (event.clipboardData || window.clipboardData).getData('text')
+          // Doing this to handle JSON parse error
+          try {
+            const block = JSON.parse(paste)
+            const valid = this.isValid(block)
+
+            if (valid) {
+              this.appendBlock(block, this.$t('notification:page.pasteSuccess'))
+            }
+          } catch (error) {
+            this.toastWarning(this.$t('notification:page.invalidBlock'))
+            console.log(error)
+          }
+        }
+      }
+    },
+
+    appendBlock (block, msg) {
+      if (this.blocks.length) {
+        // ensuring we append the block to the end of the page
+        // eslint-disable-next-line
+        const [, y, , ,] = this.blocks[this.blocks.length - 1].xywh
+        block.xywh = [0, y + 2, 3, 3]
+      }
+      this.editor = { index: undefined, block: compose.PageBlockMaker(block) }
+      this.updateBlocks()
+      this.page.blocks = this.blocks
+
+      if (!this.editor) {
+        this.toastSuccess(msg)
+      } else {
+        this.toastErrorHandler(this.$t('notification:page.duplicateFailed'))
+      }
     },
   },
 }
